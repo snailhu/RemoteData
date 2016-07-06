@@ -10,43 +10,37 @@
     <meta property="qc:admins" content="1403664507655111637646375" />
     <title>中国航天</title>
     <link href="${base}/static/css/cssnew.css" rel="stylesheet"/>
-
     <script src="${base}/static/js/modernizr.js"></script>
 
-
     <script>
-var _hmt = _hmt || [];
-(function() {
-  var hm = document.createElement("script");
-  hm.src = "//hm.baidu.com/hm.js?7c8197ea90292d824c41dd9e11621ef2";
-  var s = document.getElementsByTagName("script")[0];
-  s.parentNode.insertBefore(hm, s);
-})();
+		var _hmt = _hmt || [];
+		(function() {
+		  var hm = document.createElement("script");
+		  hm.src = "//hm.baidu.com/hm.js?7c8197ea90292d824c41dd9e11621ef2";
+		  var s = document.getElementsByTagName("script")[0];
+		  s.parentNode.insertBefore(hm, s);
+		})();
     </script>
 
 </head>
-<body style="overflow-x:hidden;overflow-y:no-display">
-    
-          
-    
+<body style="overflow-x:hidden;overflow-y:no-display">             
     <div class="navbar navbar-inverse  navbar-static-top">
-        <div class="container topxx" style="font-size:12px">    <ul class="nav navbar-nav navbar-right pull-right">
-        <li><a href="/Account/Register" id="registerLink">注册</a></li>
-        <li style="position:relative; top:15px"> |</li>
-        <li><a href="/Account/Login" id="loginLink">登录</a></li>
-    </ul>
-</div>
+        <div class="container topxx" style="font-size:12px">    
+	        <ul class="nav navbar-nav navbar-right pull-right">
+		        <li><a href="/Account/Register" id="registerLink">注册</a></li>
+		        <li style="position:relative; top:15px"> |</li>
+		        <li><a href="/Account/Login" id="loginLink">登录</a></li>
+		    </ul>
+		</div>
         <div class="container">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
-                </button>
-                
+                </button>               
                 <a class="navbar-brand" href="/">  </a> 
             </div>
-
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav navbar-right">
                     <li><a href="/">网站首页</a></li>
@@ -55,16 +49,11 @@ var _hmt = _hmt || [];
                     <li><a href="/Home/Contact">美银团队</a></li>
                     <li><a href="/Home/Iflve">开发报价</a></li>        
                     <li><a href="/Home/Hongbao">试用下载</a></li>
-                </ul>
-                
+                </ul>               
             </div>
         </div>
     </div>
-    
-
-        
-
-
+   
 <div class="jumbotron masthead">
     <div class="container">
         <h1>China Areospace</h1>
@@ -212,9 +201,7 @@ var _hmt = _hmt || [];
     </div>
 
     <script src="${base}/static/js/jqueryNew.js"></script>
-
-    <script src="${base}/static/js/bootstrapNew.js"></script>
-
-    
+    <script src="${base}/static/js/bootstrapNew.js"></script>   
 </body>
 </html>
+

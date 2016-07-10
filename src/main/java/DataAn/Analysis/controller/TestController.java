@@ -12,6 +12,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class TestController {
 	@RequestMapping(value = "/test", method = { RequestMethod.GET })
 	public String goIndex(HttpServletRequest request, HttpServletResponse response) {
-		return "contentBase";
+		return "DataAnalysis";
 	}
 }

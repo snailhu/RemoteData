@@ -14,7 +14,12 @@
 	<@block name="script"></@block>
  </head>
  <body>
- 	<@block name="header"></@block>
+ 	<div class="navbar navbar-default" id="navbar">
+		<script type="text/javascript">
+			try{ace.settings.check('navbar' , 'fixed')}catch(e){}
+		</script>
+ 		<@block name="header"></@block>
+ 	</div>
  	<div class="main-container" id="main-container">
  		<@block name="content_left"></@block>
  		<@block name="content_right"></@block>

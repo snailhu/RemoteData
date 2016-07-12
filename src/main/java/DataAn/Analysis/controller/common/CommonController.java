@@ -15,4 +15,9 @@ public class CommonController {
 	public String goIndex(HttpServletRequest request, HttpServletResponse response) {
 		return "index";
 	}
+	
+	@RequestMapping(value = "/showPanel", method = { RequestMethod.GET })
+	public String showPanel(HttpServletRequest request, HttpServletResponse response) {
+		return "showPanel";
+	}
 }

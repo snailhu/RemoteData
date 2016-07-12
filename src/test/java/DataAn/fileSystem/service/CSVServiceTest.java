@@ -17,7 +17,7 @@ public class CSVServiceTest {
 
 	private ICSVService csvService;
 	
-	private String filePath = "C:\\j9-02--2015-08-10.csv";
+	private String filePath = "D:/QQCustom/2625279655/FileRecv/j9-02--2015-08-10.csv";
 	@Before
 	public void init(){
 		csvService = new CSVServiceImpl();

@@ -1,4 +1,4 @@
-<#assign base=request.contextPath />
+<#assign base=request.contextPath + '/DataRemote'/>
 <#assign gogsUrl="http://gogs.modelica-china.com">
 <!DOCTYPE html>
 <html lang="en">

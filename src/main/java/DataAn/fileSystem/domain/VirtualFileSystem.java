@@ -14,6 +14,7 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import DataAn.fileSystem.option.DataType;
 import DataAn.fileSystem.option.FileType;
 
 /**
@@ -38,6 +39,10 @@ public class VirtualFileSystem {
 	//星 如: 02
 	@Column(name = "star", nullable = false)
 	private String star;
+	
+	@Enumerated(EnumType.STRING)
+	@Column(name = "dataType", nullable = true, length = 16)
+	private DataType dataType;
 	
 	@Column(name = "parentId", nullable = true)
 	private Long parentId;
@@ -74,6 +79,30 @@ public class VirtualFileSystem {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public String getSeries() {
+		return series;
+	}
+
+	public void setSeries(String series) {
+		this.series = series;
+	}
+
+	public String getStar() {
+		return star;
+	}
+
+	public void setStar(String star) {
+		this.star = star;
+	}
+
+	public DataType getDataType() {
+		return dataType;
+	}
+
+	public void setDataType(DataType dataType) {
+		this.dataType = dataType;
 	}
 
 	public Long getParentId() {
@@ -150,12 +179,15 @@ public class VirtualFileSystem {
 
 	@Override
 	public String toString() {
-		return "VirtualFileSystem [id=" + id + ", parentId=" + parentId
+		return "VirtualFileSystem [id=" + id + ", series=" + series + ", star="
+				+ star + ", dataType=" + dataType + ", parentId=" + parentId
 				+ ", fileName=" + fileName + ", fileType=" + fileType
 				+ ", fileSize=" + fileSize + ", updateDate=" + updateDate
 				+ ", mongoFSUUId=" + mongoFSUUId + ", year_month_day="
 				+ year_month_day + "]";
 	}
+
+	
 
 	
 	

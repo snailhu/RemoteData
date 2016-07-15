@@ -4,7 +4,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -14,6 +16,8 @@ import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import DataAn.common.pageModel.Pager;
+import DataAn.fileSystem.domain.VirtualFileSystem;
 import DataAn.fileSystem.dto.FileDto;
 
 
@@ -61,5 +65,32 @@ public class VirtualFileSystemServiceTest {
 		String str = "1/dir";
 		FileDto fileDto = fileService.downloadFiles(str);
 		System.out.println(fileDto);
+	}
+	
+	@Test
+	public void getParentFSCatalog(){
+//		List<VirtualFileSystem> list = fileService.getParentFSCatalog(5l);
+//		Collections.reverse(list);
+//		for (VirtualFileSystem fs : list) {
+//			System.out.println(fs.getId() + "--" + fs.getFileName());
+//		}
+		String json = fileService.getParentFSCatalog(1l);
+		System.out.println(json);
+	}
+	@Test
+	public void getMongoFSList(){
+		int pageIndex = 1;
+		int pageSize = 10;
+		String series = "j9";
+		String star = "02";
+		long dirId = 0;
+		String beginTime = "";
+		String endTime = "";
+		String dataTypes = "";
+		Pager pager = fileService.getMongoFSList(pageIndex, pageSize, series, star, dirId, beginTime, endTime, dataTypes);
+		List<VirtualFileSystem> list =pager.getRows();
+		for (VirtualFileSystem fs : list) {
+			System.out.println(fs);
+		}
 	}
 }

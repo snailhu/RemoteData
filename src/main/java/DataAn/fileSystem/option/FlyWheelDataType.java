@@ -231,7 +231,16 @@ public enum FlyWheelDataType {
 	
 	public abstract String getValue();
 	
-	public static FlyWheelDataType getFlyWheelDataType(String typeValue){
+	/**
+	* @Title: getFlyWheelDataTypeByEn
+	* @Description: 通过中文字符获取飞轮数据类型
+	* @param typeValue
+	* @return
+	* @author Shenwp
+	* @date 2016年7月14日
+	* @version 1.0
+	*/
+	public static FlyWheelDataType getFlyWheelDataTypeByZh(String typeValue){
 		
 		typeValue = typeValue.trim();
 		switch (typeValue) {
@@ -316,4 +325,98 @@ public enum FlyWheelDataType {
 		}
 	}
 
+	/**
+	* @Title: getFlyWheelDataTypeByEn
+	* @Description: 通过英文字符获取飞轮数据类型
+	* @param typeValue
+	* @return
+	* @author Shenwp
+	* @date 2016年7月14日
+	* @version 1.0
+	*/
+	public static FlyWheelDataType getFlyWheelDataTypeByEn(String typeValue){
+		
+		typeValue = typeValue.trim();
+		switch (typeValue) {
+
+		case "datetime":
+			return FlyWheelDataType.DATETIME;
+		
+
+		case "flywheel_a_motor_current":
+			return FlyWheelDataType.FLYWHEEL_A_MOTOR_CURRENT;
+
+		case "flywheel_a_power_plus_5V":
+			return FlyWheelDataType.FLYWHEEL_A_POWER_PLUS_5V;
+
+		case "flywheel_b_motor_current":
+			return FlyWheelDataType.FLYWHEEL_B_MOTOR_CURRENT;
+
+		case "flywheel_b_power_plus_5V":
+			return FlyWheelDataType.FLYWHEEL_B_POWER_PLUS_5V;
+
+		case "flywheel_c_motor_current":
+			return FlyWheelDataType.FLYWHEEL_C_MOTOR_CURRENT;
+
+		case "flywheel_c_power_plus_5V":
+			return FlyWheelDataType.FLYWHEEL_C_POWER_PLUS_5V;
+
+		case "flywheel_d_motor_current":
+			return FlyWheelDataType.FLYWHEEL_D_MOTOR_CURRENT;
+
+		case "flywheel_d_power_plus_5V":
+			return FlyWheelDataType.FLYWHEEL_D_POWER_PLUS_5V;
+
+		case "flywheel_e_motor_current":
+			return FlyWheelDataType.FLYWHEEL_E_MOTOR_CURRENT;
+
+		case "flywheel_e_power_plus_5V":
+			return FlyWheelDataType.FLYWHEEL_E_POWER_PLUS_5V;
+
+		case "flywheel_f_motor_current":
+			return FlyWheelDataType.FLYWHEEL_F_MOTOR_CURRENT;
+
+		case "flywheel_f_power_plus_5V":
+			return FlyWheelDataType.FLYWHEEL_F_POWER_PLUS_5V;
+
+		case "flywheel_a_power_supply_status":
+			return FlyWheelDataType.FLYWHEEL_A_POWER_SUPPLY_STATUS;
+
+		case "flywheel_b_power_supply_status":
+			return FlyWheelDataType.FLYWHEEL_B_POWER_SUPPLY_STATUS;
+
+		case "flywheel_c_power_supply_status":
+			return FlyWheelDataType.FLYWHEEL_C_POWER_SUPPLY_STATUS;
+
+		case "flywheel_d_power_supply_status":
+			return FlyWheelDataType.FLYWHEEL_D_POWER_SUPPLY_STATUS;
+
+		case "flywheel_e_power_supply_status":
+			return FlyWheelDataType.FLYWHEEL_E_POWER_SUPPLY_STATUS;
+
+		case "flywheel_f_power_supply_status":
+			return FlyWheelDataType.FLYWHEEL_F_POWER_SUPPLY_STATUS;
+
+		case "flywheel_a_speed":
+			return FlyWheelDataType.FLYWHEEL_A_SPEED;
+
+		case "flywheel_b_speed":
+			return FlyWheelDataType.FLYWHEEL_B_SPEED;
+
+		case "flywheel_c_speed":
+			return FlyWheelDataType.FLYWHEEL_C_SPEED;
+
+		case "flywheel_d_speed":
+			return FlyWheelDataType.FLYWHEEL_D_SPEED;
+
+		case "flywheel_e_speed":
+			return FlyWheelDataType.FLYWHEEL_E_SPEED;
+
+		case "flywheel_f_speed":
+			return FlyWheelDataType.FLYWHEEL_F_SPEED;
+
+		default:
+			return null;
+		}
+	}
 }

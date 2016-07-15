@@ -19,4 +19,7 @@ public interface IVirtualFileSystemDao extends IBaseDao<VirtualFileSystem>{
 	public List<VirtualFileSystem> selectBySeriesAndStarAndParentIdisNullAndOrder(String series, String star, String order);
 	
 	public List<VirtualFileSystem> selectBySeriesAndStarAndParentIdAndOrder(String series, String star, long parentId, String order);
+
+	public List<VirtualFileSystem> selectByOption(String series, String star, long parentId,
+			String beginTime,String endTime,String dataTypes, String order);
 }

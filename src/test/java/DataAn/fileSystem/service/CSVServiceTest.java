@@ -17,7 +17,7 @@ public class CSVServiceTest {
 
 	private ICSVService csvService;
 	
-	private String filePath = "C:\\j9-02--2015-08-10.csv";
+	private String filePath = "C:\\j9-02--2015-08-15.csv";
 	@Before
 	public void init(){
 		csvService = new CSVServiceImpl();
@@ -34,6 +34,11 @@ public class CSVServiceTest {
 		System.out.println(stars[1]);
 	}
 	
+	@Test
+	public void testData(){
+		String data = "#1234";
+		System.out.println(data.indexOf("#"));
+	}
 	@Test
 	public void readCSVFileToDoc(){
 		long begin = System.currentTimeMillis();

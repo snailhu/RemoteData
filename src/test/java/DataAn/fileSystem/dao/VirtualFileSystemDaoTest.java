@@ -36,4 +36,18 @@ public class VirtualFileSystemDaoTest {
 			System.out.println(fs);
 		}
 	}
+	
+	@Test
+	public void selectByOption(){
+		String series = "j9";
+		String star = "02";
+		long dirId = 1;
+		String beginTime = "2015-08-11";
+		String endTime = "2015-08-12";
+		String dataTypes = "dat,csv";
+		List<VirtualFileSystem> list =fileDao.selectByOption(series, star, dirId, beginTime, endTime, dataTypes, "fileName");
+		for (VirtualFileSystem fs : list) {
+			System.out.println(fs);
+		}
+	}
 }

@@ -65,11 +65,11 @@ public class FileController {
 		return "admin/mongoFs/index";
 	}
 	
-	@RequestMapping(value = "getList/", method = RequestMethod.POST)
+	@RequestMapping(value = "getList/{series}/{star}/{dirId}/", method = RequestMethod.POST)
 	@ResponseBody
-	public EasyuiDataGridJson getMongoFSList(//@PathVariable String series, 
-			   								 //@PathVariable String star,
-			   								// @PathVariable long dirId ,
+	public EasyuiDataGridJson getMongoFSList(@PathVariable String series, 
+			   								 @PathVariable String star,
+			   								 @PathVariable long dirId ,
 			   								 HttpServletRequest request) {
 		System.out.println("come in getMongoFSList..");
 		EasyuiDataGridJson json = new EasyuiDataGridJson();
@@ -78,9 +78,9 @@ public class FileController {
 		String strDirId = request.getParameter("dirId");
 		String strPage = request.getParameter("page");
 		String strRows= request.getParameter("rows");
-		String series = "";
-		String star = "02";
-		long dirId = 0;
+//		String series = "";
+//		String star = "02";
+//		long dirId = 0;
 		int page = 1;
 		int rows = 10;
 		if (StringUtils.isNotBlank(strSeries)) {
@@ -103,15 +103,27 @@ public class FileController {
 		System.out.println("strDirId: " + strDirId);
 		System.out.println("page: " + page);
 		System.out.println("rows: " + rows);
+		System.out.println("series: " + series);
+		System.out.println("star: " + star);
 		System.out.println("dirId: " + dirId);
-		System.out.println("dirId: " + dirId);
-		System.out.println("dirId: " + dirId);
-		Pager pager = fileService.getMongoFSList(page, rows, dirId);
+		Pager pager = fileService.getMongoFSList(page, rows, series, star, dirId);//(page, rows, dirId);
 		json.setRows(pager.getRows());
 		json.setTotal(pager.getTotalCount());			
 		return json;
 	}
 	
+	@RequestMapping(value = "getParentCatalog", method = RequestMethod.POST)
+	@ResponseBody
+	public JsonMessage getParentCatalog(long dirId){
+		System.out.println("come in getParentCatalog...");
+		System.out.println("dirId: " + dirId);
+		JsonMessage msg = new JsonMessage();
+		String json = fileService.getParentFSCatalog(dirId);
+		System.out.println("json: " + json);
+		msg.setSuccess(true);
+		msg.setObj(json);
+		return msg;
+	}
 	//返回上传文件界面
 	@RequestMapping("/toUploadFile")
 	public String uploadHome() {
@@ -194,8 +206,8 @@ public class FileController {
 		try {
 			FileDto fileDto = fileService.downloadFile(fileId);
 			
-//			System.out.println("download ..");
-//			System.out.println("fileName: " + fileDto.getFileName());
+			System.out.println("download ..");
+			System.out.println("fileName: " + fileDto.getFileName());
 			
 			response.setCharacterEncoding("utf-8");
 			response.setContentType("multipart/form-data");

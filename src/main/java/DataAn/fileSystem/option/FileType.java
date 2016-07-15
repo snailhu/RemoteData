@@ -2,7 +2,6 @@ package DataAn.fileSystem.option;
 
 /**
  * Title: FileType
- * 
  * @Description: 文件类型:dir、file
  * @author Shewp
  * @date 2016年7月5日

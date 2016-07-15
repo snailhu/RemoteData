@@ -1,0 +1,19 @@
+*{margin: 0;padding: 0;border: 0;font-size:12px;}
+html,body{height:100%;overflow: auto;}
+body{background: #FFFFFF url('../images/login/1322881745_wSliP.jpg') center center repeat;}
+#table .l{font-size:14px;}
+#table input{border:1px solid #C5C5C5;height:27px;width: 156px;outline: none;line-height:27px;padding:0 3px;font-size:14px;background: url('../images/login/input_bg.gif') repeat-x;}
+#table input.focus{border:1px solid #FF8000;} 
+a.submit{width: 94px;height:28px;display:block;background: url('../images/login/submit.gif') no-repeat;}
+a.submit:hover{background-position: 0 -28px;}
+#tooltip{position:absolute;border:1px solid #333;background:#f7f5d1;padding:2px 5px;color:#333;display:none;z-index:999;}
+.c_red{color:red;} 
+.split{ background:url('../images/login/login_split.png') left center no-repeat;_background:none; _filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src="../images/login/login_split.png" ,sizingMethod="crop");}
+.authCodeImg{border:1px solid #C5C5C5;padding:2px;padding-bottom:3px;background-color: #FFF;}
+.companylk{color:#333}
+.companylk:hover{color:red} 
+.split
+{
+    background: url('../images/login/login_split.png') no-repeat scroll left center transparent;
+}
+

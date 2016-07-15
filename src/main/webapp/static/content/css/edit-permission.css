@@ -1,0 +1,18 @@
+﻿.sep-line{border-top:solid 1px #aaa; height:1px; margin:10px;}
+.group{ margin:0 10px 10px 10px; padding:10px; border:solid 1px #aaa; border-radius:3px 3px 3px 3px; }
+.group-title{ padding:0 5px 3px 0; padding-left:2px; min-width:160px; padding-top:2px; height:19px; border:solid 1px #aaa; background-color:#ddd; }
+.group .itemline{clear:both;border-top:dashed 1px #aaa; margin: 3px 0 2px 0; height:1px; line-height:1px; font-size:0px; overflow:hidden;}
+.group label{cursor:pointer; }
+.checkbox-item{ float:left; margin:5px 3px 5px 7px; padding-left:2px; width:165px; height:22px; padding-top:2px; border:solid 1px #ccc; background-color:#F6FEEA;overflow:hidden;}
+.textbox-item{ float:left; margin:5px 3px 5px 7px; padding:0; width:346px; height:24px; border:solid 1px #ccc; background-color:#F6FEEA;overflow:hidden; text-align:right;}
+.textbox-item input{ width:161px; margin:2px 3px 3px 3px; height:16px; }
+.dropdownlist-item{ float:left; margin:5px 3px 5px 7px; padding:0; width:346px; height:24px; border:solid 1px #ccc; background-color:#F6FEEA;overflow:hidden; text-align:right;}
+.dropdownlist-item select{ width:166px; margin:2px 3px 3px 3px; height:20px; }
+.treeview-item{ float:left; margin:5px 3px 5px 7px; padding:0; width:346px; height:211px; border:solid 1px #ccc; background-color:#EAFAD0;}
+.treeview-item .title{ margin:auto 3px; height:25px; line-height:25px;}
+.treeview-item .treeview{ margin:0 0 5px 0; width:auto; height:176px; border: 0px solid #eee;border-radius:5px 5px 5px 5px;background: #F6FEEA;overflow-y:auto;overflow-x:auto;}
+.treeview-item .treeview a:hover{ text-decoration:none; }
+.treeview-item .treeview .loading { margin:auto 1px;}
+.treeview-item .treeview img { vertical-align:middle; }
+.group-title,.checkbox-item,.textbox-item,.dropdownlist-item,.treeview-item{border-radius:2px 2px 2px 2px; }
+.no-data { padding:3px 0 3px 0; width:90%; height:25px; padding-top:10px; text-indent:20px; }

@@ -1,0 +1,307 @@
+/*
+File Created: 2012-6-20  
+*/
+/*通用*/
+
+body
+{
+    font-size: 12px;
+    font-family: Tahoma, "Times New Roman" ,Times, "宋体";
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+p, span, b, div
+{
+    text-align: left;
+}
+a{text-decoration: underline; }
+a:hover{ text-decoration: none; }
+.l-clear
+{
+    clear: both;
+}
+.required
+{
+	color:red;
+	text-align:right;
+}
+/*Portal布局(table)*/
+.portal-column-td
+{
+    vertical-align: top;
+}
+.portal-column
+{
+    padding: 10px 0 10px 10px;
+    overflow: hidden;
+}
+.portal-column-left
+{
+    padding-left: 10px;
+}
+.portal-panel
+{
+    margin-bottom: 10px;
+}
+
+/* 表单 */
+.l-form
+{
+    margin: 7px 7px 7px 15px;
+}
+.l-form .l-group
+{
+    clear: both;
+    margin: 0;
+    height: 28px;
+    line-height: 28px;
+    font-weight: bold;
+    font-size: 12px;
+    color: #333;
+    border-bottom: solid 1px #ebebeb;
+    margin-bottom: 14px;
+    display: block;
+    position: relative;
+    clear: both;
+}
+.l-form .l-group-hasicon
+{
+    padding-left: 30px;
+}
+.l-form .l-group-hasicon img
+{
+    width: 16px;
+    height: 16px;
+    position: absolute;
+    left: 6px;
+    top: 6px;
+}
+.l-form ul, .l-form li
+{
+    list-style: none;
+    padding-left: 0;
+}
+.l-form ul
+{
+    clear: both;
+    margin-top: 2px;
+    margin-bottom: 2px;
+}
+.l-form li
+{
+    float: left;
+    overflow: hidden;
+    text-align: left; 
+    line-height: 20px;
+    padding: 0;
+    padding-top: 2px;
+    padding-bottom: 2px;
+}
+.l-form li textarea
+{
+    height: 80px;
+    font-size: 12px;
+    font-family: 微软雅黑,新宋体;
+}
+
+.l-hidden
+{
+    display: none;
+}
+
+
+
+
+
+
+
+/* Styles for validation helpers
+-----------------------------------------------------------*/
+.field-validation-error
+{
+    color: #ff0000;
+}
+
+.field-validation-valid
+{
+    display: none;
+}
+
+.input-validation-error
+{
+    border: 1px solid #ff0000;
+    background-color: #ffeeee;
+}
+
+.validation-summary-errors
+{
+    font-weight: bold;
+    color: #ff0000;
+}
+
+.validation-summary-valid
+{
+    display: none;
+}
+
+/* 数据表单 */
+.data-form
+{
+    width: 100%;
+    border: 0px;
+}
+.data-form tr
+{
+    height: 35px; /*line-height: 35px;*/
+}
+.data-form th
+{
+    width: 200px;
+    color: #4b4a4a;
+    text-align: right;
+    font-weight: normal;
+}
+.data-form td
+{
+    padding-left: 5px;
+}
+.data-form #tip, .search #tip
+{
+    padding-left: 5px;
+    font-weight: bold;
+    color: #FF6600;
+}
+.sep-line
+{
+    border-top: solid 1px #aaa;
+    height: 1px;
+    margin: 10px;
+}
+
+
+
+.data-form-1
+{
+    width: 700px;
+    border: 0px;
+}
+.data-form-1 tr
+{
+    height: 25px; /*line-height: 35px;*/
+}
+.data-form-1 th
+{
+    width: 100px;
+    color: #4b4a4a;
+    text-align: right;
+    font-weight: normal;
+}
+.data-form-1 td
+{
+    padding-left: 5px;
+}
+
+.moreHead
+{
+    color: #1364C4;
+    text-decoration: none;
+    float: left;
+    outline: medium none;
+}
+.collapsibleArea_expanding
+{
+    background-image: url('../icons/arrow-left.gif');
+    height: 12px;
+    width: 12px;
+    display: inline-block;
+    overflow: hidden;
+}
+.collapsibleArea_Title
+{
+    color: #3F529C;
+    font-family: 'Segoe UI' ,Verdana,Arial;
+    font-size: 1.538em;
+    font-weight: bold;
+    padding-left: 6px;
+    word-break: break-all;
+    word-wrap: break-word;
+}
+/*搜索表单*/
+/*.search-form {
+	width: 100%;
+	height: 100%; 
+	padding-left: 50px;
+}
+.search-form th {
+	width: 80px;
+	text-align: right;
+}
+.search-form td 
+{
+    padding-left : 5px;
+	width: 150px;
+}*/
+
+/*----------------------------Begin----单一表单-----------------------------*/
+.fa_fv
+{
+    background-color: #FFFFFF;
+    border: 1px solid #CCCCCC;
+    /*padding: 4px;*/
+    position: relative;
+}
+.fa_fv_table
+{
+    background-color: #FFFFFF;
+    table-layout: fixed;
+    width: 100%;
+    border-collapse: collapse;
+    border-spacing: 0;
+   /* margin: 0 10 0 10;*/
+}
+.fa_fv_group
+{
+    background-color: #E4E4E4;
+    font-weight: bold;
+    height: 25px;
+}
+
+
+.fa_fv_td, .fa_fv_th
+{
+    border: 1px solid #CCCCCC;
+    word-break: break-all;
+}
+
+
+.fa_fv_th
+{
+    background-color: #F2F2F2;
+    font-weight: normal;
+    text-align: right;
+    color: #333333;
+}
+
+
+.fa_fv_c
+{
+    padding: 5px 10px 5px 5px;
+}
+
+.fa_fv_right
+{
+    padding: 5px 50px 5px 5px;
+}
+/*----------------------------End----单一表单-----------------------------*/
+.txt-white{color:#ffffff; font-weight:normal;}
+.txt-white-b{color:#ffffff; font-weight:bold;}
+.txt-green{color:#147a00; font-weight:normal;}
+.txt-green-b{color:#147a00; font-weight:bold;}
+.txt-gray{color:#666666; font-weight:normal;}
+.txt-gray-b{color:#666666; font-weight:bold;}
+.txt-red{color:#FF0000; font-weight:normal;}
+.txt-red-b{color:#FF0000; font-weight:bold;}
+.txt-orange{color:#FF6600; font-weight:normal;}
+.txt-orange-b{color:#FF6600; font-weight:bold;}
+

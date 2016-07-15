@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sitemesh>
+	
+	<!-- 指明满足“/*”的页面，将被“/WEB-INF/jsp/layouts/admin-home.jsp”所装饰 -->
+	<mapping path="/admin/index" decorator="/WEB-INF/jsp/layouts/admin-home.jsp" />
+	<mapping path="/admin/*/index" decorator="/WEB-INF/jsp/layouts/admin-home.jsp" />
+	<mapping path="/admin/*/index/*/" decorator="/WEB-INF/jsp/layouts/admin-home.jsp" />
+<!-- 	<mapping path="/admin/file/toUploadFile" decorator="/WEB-INF/jsp/layouts/admin-home.jsp" /> -->
+	<mapping path="/admin/approval/needApprovalIndex" decorator="/WEB-INF/jsp/layouts/admin-home.jsp" />
+	
+	<!-- 指明满足“/exclude.jsp*”的页面，将被排除，不被装饰 -->
+<!--  	<mapping path="/admin/role/toCreateRole" exclue="true" />  -->
+	<mapping path="/admin/file/toUploadFile"  exclue="true"/>
+</sitemesh>

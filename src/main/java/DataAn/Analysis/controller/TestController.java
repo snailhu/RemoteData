@@ -24,8 +24,19 @@ public class TestController {
 	
 	@RequestMapping(value = "/test", method = { RequestMethod.GET })
 	public String goIndex(HttpServletRequest request, HttpServletResponse response) {
-		return "DataAnalysis";
+		return "/secondStyle/dataAnalysis";
 	}
+	
+	@RequestMapping(value = "/showTest", method = { RequestMethod.GET })
+	public String showTest(HttpServletRequest request, HttpServletResponse response) {
+		return "/secondStyle/contentBase";
+	}
+	
+	@RequestMapping(value = "/analysisData", method = { RequestMethod.GET })
+	public String analysisData(HttpServletRequest request, HttpServletResponse response) {
+		return "/secondStyle/dataAnalysis";
+	}
+	
 	
 	
 	@RequestMapping(value = "/getData", method = { RequestMethod.GET })

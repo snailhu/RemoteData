@@ -11,16 +11,16 @@
 						http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa.xsd
 						http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache-3.2.xsd">
 
-	<!-- 启用缓存注解功能，这个是必须的，否则注解不会生效，另外，该注解一定要声明在spring主配置文件中才会生效 
-	<cache:annotation-driven cache-manager="cacheManager" />-->
-	<!-- cacheManager工厂类，指定ehcache.xml的位置 
+	<!-- 启用缓存注解功能，这个是必须的，否则注解不会生效，另外，该注解一定要声明在spring主配置文件中才会生效 -->
+	<cache:annotation-driven cache-manager="cacheManager" />
+	<!-- cacheManager工厂类，指定ehcache.xml的位置 -->
 	<bean id="cacheManagerFactory"
 		class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean" scope="singleton"
-		p:configLocation="classpath:ehcache.xml" p:shared="true"/>-->
+		p:configLocation="classpath:ehcache.xml" p:shared="true"/>
  
-	<!-- 声明cacheManager 
+	<!-- 声明cacheManager -->
 	<bean id="cacheManager" class="org.springframework.cache.ehcache.EhCacheCacheManager"
-		p:cacheManager-ref="cacheManagerFactory" />-->
+		p:cacheManager-ref="cacheManagerFactory" />
 	<!-- 开启aop注解方式 -->	
 	<aop:aspectj-autoproxy></aop:aspectj-autoproxy>
 	

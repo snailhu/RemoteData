@@ -216,9 +216,9 @@ public class CSVServiceImpl implements ICSVService{
 			//CSV格式文件为逗号分隔符文件，这里根据逗号切分
 			String[] items = line.split(",");
 			date = items[0];
-			map.put("year", DateUtil.formatString(date, "yyyy"));
-			map.put("year_month", DateUtil.formatString(date, "yyyy-MM"));
-			map.put("year_month_day", DateUtil.formatString(date, "yyyy-MM-dd"));
+//			map.put("year", DateUtil.formatString(date, "yyyy"));
+//			map.put("year_month", DateUtil.formatString(date, "yyyy-MM"));
+			map.put("yyyy-MM-dd-HH-mm-ss", DateUtil.formatString(date, "yyyy-MM-dd-HH-mm-ss"));
 			//items.length;
 			for (int i = 0; i < 3; i++) {
 				map.put(FlyWheelDataType.getFlyWheelDataTypeByZh(array[i]).getName(), items[i].trim());

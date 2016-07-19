@@ -198,10 +198,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			<div id="content" region="center" style="overflow: hidden">
 				<div id="toolbar" class="datagrid-toolbar" style="height: 28px;">
 					<div style="height: 28px;">
-						<a class="easyui-linkbutton" iconcls="icon-cloud-up"
-							onclick="uploadFS();" plain="true" href="javascript:void(0);"
-							style="float: left;">上传</a>
-						<div class="datagrid-btn-separator"></div>
+<!-- 						<a class="easyui-linkbutton" iconcls="icon-cloud-up" -->
+<!-- 							onclick="uploadFS();" plain="true" href="javascript:void(0);" -->
+<!-- 							style="float: left;">上传</a> -->
+<!-- 						<div class="datagrid-btn-separator"></div> -->
 						<a class="easyui-linkbutton" iconcls="icon-cloud-download"
 							onclick="downloadFS();" plain="true" href="javascript:void(0);"
 							style="float: left;">下载</a>

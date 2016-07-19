@@ -1,5 +1,6 @@
 package DataAn.fileSystem.service.impl;
 
+import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
@@ -291,10 +292,10 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 //		String day = dateMap.get("day");
 		
 		//解析 *.csv文件保存csv里面的数据
-		InputStream csvInput = fileDto.getIn();
-		csvInput.mark(0);
+		BufferedInputStream csvInput = new BufferedInputStream(fileDto.getIn()) ;
+//		csvInput.mark(0);
 		this.saveDataOfCSVInMongoDB(csvInput, star);
-		csvInput.reset();
+//		csvInput.reset();
 		
 		//查找csv的文件夹是否存在
 		VirtualFileSystem csvDir = fileDao.selectByParentIdisNullAndFileName("csv");
@@ -348,7 +349,7 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 		
 		//保存csv文件
 		IDfsDb dfs = MongoDfsDb.getInstance();
-		dfs.upload(fileDto.getFileName(), uuId, csvInput);
+		dfs.upload(fileDto.getFileName(), uuId, fileDto.getIn());
 	}
 	
 	private void saveFileOfDAT(FileDto fileDto, Map<String,String> dataMap){

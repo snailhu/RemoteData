@@ -53,6 +53,7 @@ public class MongodbUtilTest {
 //		}
 	}
 
+	@Test
 	public void findAll(){
 //		List<Float> list = mg.findAll(collectionName);
 //		for (Float value : list) {

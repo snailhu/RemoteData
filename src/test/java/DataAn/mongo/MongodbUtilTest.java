@@ -2,6 +2,7 @@ package DataAn.mongo;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.bson.Document;
@@ -49,6 +50,18 @@ public class MongodbUtilTest {
 //		Collection<Object> cols = doc.values();
 //		for (Object object : cols) {
 //			System.out.println(object);
+//		}
+	}
+	@Test
+	public void findAll(){
+//		List<Float> list = mg.findAll(collectionName);
+//		for (Float value : list) {
+//			System.out.println(value);
+//		}
+		Map<String,Float> map = mg.findAll(collectionName);
+//		Set<String> keySet = map.keySet();
+//		for (String key : keySet) {
+//			System.out.println(key + " : " + map.get(key));
 //		}
 	}
 }

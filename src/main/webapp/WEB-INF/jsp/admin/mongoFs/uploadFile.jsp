@@ -230,6 +230,14 @@ input[type=text]::-webkit-focus-inner {
 <!--[if lte IE 8]>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/static/assets/css/ace-ie.min.css" />
 <![endif]-->
+<script type="text/javascript">
+	$(function(){
+		var scroll_offset = $("#main-container").offset();  //得到pos这个div层的offset，包含两个值，top和left
+		  $("body,html").animate({
+		     scrollTop:scroll_offset.top  //让body的scrollTop等于pos的top，就实现了滚动
+		   },0);
+	})
+</script>
 </head>
   <body>
 	<jsp:include page="/WEB-INF/jsp/layouts/admin-include-header2.jsp"></jsp:include>
@@ -242,9 +250,12 @@ input[type=text]::-webkit-focus-inner {
 		</script>
 
 		<div class="main-container-inner">
-		
-			<div class="main-content2">
-				<div class="page-content">
+			<a class="menu-toggler" id="menu-toggler" href="#"> <span
+				class="menu-text"></span>
+			</a>
+			<jsp:include page="/WEB-INF/jsp/layouts/admin-include-left.jsp"></jsp:include>
+			<div class="main-content">
+				<div class="page-content" id="page-content">
 					<div class="page-header" style="padding-bottom: 10px; /**margin: -5px 0px 5px;*/">
 						<h1>文件上传</h1>
 					</div>					
@@ -324,9 +335,9 @@ input[type=text]::-webkit-focus-inner {
         	  datFile: {
                   message: 'dat文件名输入不合法',
                   validators: {
-                      notEmpty: {
-                          message: 'dat文件不能为空'
-                      },
+//                       notEmpty: {
+//                           message: 'dat文件不能为空'
+//                       },
                       
                   }
               },

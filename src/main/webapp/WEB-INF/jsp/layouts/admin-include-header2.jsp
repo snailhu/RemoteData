@@ -19,6 +19,19 @@ a:hover {
 a:active {
 	text-decoration: none;
 }
+a, a:focus, a:hover, a:active, button, button:hover {
+    outline: 0 !important;
+/*     color: #4e5eff; */
+}
+.navbar-nav>li>a {
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
+.nav>li>a {
+    position: relative;
+    display: block;
+/*     padding: 10px 15px; */
+}
 </style>
 <div class="navbar navbar-inverse  navbar-static-top">
 	<div class="container topxx" style="font-size:12px">
@@ -37,14 +50,12 @@ a:active {
 			</button>
 			<a class="navbar-brand" href="/"> </a>
 		</div>
-		<div class="navbar-collapse collapse">
+		<div class="navbar-collapse collapse" >
 			<ul class="nav navbar-nav navbar-right">
-				<li><a href="/">网站首页</a></li>
-				<li><a href="/Home/Web">网站开发</a></li>
-				<li><a href="/Home/App">APP开发</a></li>
-				<li><a href="/Home/Contact">美银团队</a></li>
-				<li><a href="/Home/Iflve">开发报价</a></li>
-				<li><a href="/Home/Hongbao">试用下载</a></li>
+				<li><a href="Index" style="color: #9d9d9d;;font-size: 18px;line-height: 1.8;">网站首页</a></li>
+				<li><a href="admin/file/toUploadFile" style="color: #9d9d9d;;font-size: 18px;line-height: 1.8;">文件上传</a></li>
+				<li><a href="admin/file/index" style="color: #9d9d9d;;font-size: 18px;line-height: 1.8;">文件管理</a></li>
+				<li><a href="analysisData" style="color: #9d9d9d;;font-size: 18px;line-height: 1.8;">图表管理</a></li>
 			</ul>
 		</div>
 	</div>

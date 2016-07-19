@@ -1,4 +1,4 @@
-<#assign base=request.contextPath />
+<#assign base=request.contextPath + '/DataRemote'/>
 <!DOCTYPE html>
 <html lang="en">
  <head>
@@ -41,7 +41,6 @@
 		<!-- ace scripts -->
 		<script src="${base}/static/assets/js/ace-elements.min.js"></script>
 		<script src="${base}/static/assets/js/ace.min.js"></script>	
-  	
   	
 	<@block name="style"></@block>
 	<@block name="link"></@block>

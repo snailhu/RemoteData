@@ -23,7 +23,7 @@
     </context:component-scan>  
     -->
     <!-- 设置使用注解的类所在的jar包 -->
-	<context:component-scan base-package="DataAn.Analysis.controller.common"/>
+	<context:component-scan base-package="DataAn.Analysis.controller"/>
 	<context:component-scan base-package="DataAn.fileSystem.controller"/>
 	<!-- 处理器映射器和适配器，可以使用mvc注解驱动 -->
     <mvc:annotation-driven/>
@@ -77,10 +77,13 @@
         <property name="defaultEncoding" value="UTF-8" />  
         <property name="freemarkerVariables">  
             <map>  
-                <entry key="xml_escape" value-ref="fmXmlEscape" />  
+                <entry key="xml_escape" value-ref="fmXmlEscape" /> 
+                <entry key="extends" value-ref='extendsDirective'></entry>
+				<entry key="override" value-ref='overrideDirective'></entry>
+				<entry key="block" value-ref='blockDirective'></entry>
+				<entry key="super" value-ref='superDirective'></entry> 
             </map>  
         </property>  
-  
         <property name="freemarkerSettings">  
             <props>  
                 <!--<prop key="template_update_delay">3600</prop> -->  
@@ -100,6 +103,7 @@
                 <!-- ignore,debug,html_debug,rethrow -->  
             </props>  
         </property>  
+
     </bean>
     <bean id="fmXmlEscape" class="freemarker.template.utility.XmlEscape" />  
     <bean id="viewResolver"  
@@ -126,7 +130,6 @@
     </bean>  
     	
 	<!-- freemarker 模板继承支持 -->
-	<!--  
 	<bean id="blockDirective"
 		class="cn.org.rapid_framework.freemarker.directive.BlockDirective" />
 	<bean id="extendsDirective"
@@ -135,42 +138,7 @@
 		class="cn.org.rapid_framework.freemarker.directive.OverrideDirective" />
 	<bean id="superDirective"
 		class="cn.org.rapid_framework.freemarker.directive.SuperDirective" />
-	-->
-
-	<!-- Freemarker配置 -->
-	<!--  
-	<bean id="freemarkerConfig"
-		class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
-		<property name="templateLoaderPath" value="/WEB-INF/ftl/" />
-		<property name="freemarkerSettings">
-			<props>
-				<prop key="template_update_delay">0</prop>
-				<prop key="default_encoding">UTF-8</prop>
-				<prop key="number_format">0.##########</prop>
-				<prop key="datetime_format">yyyy-MM-dd HH:mm:ss</prop>
-				<prop key="classic_compatible">true</prop>
-				<prop key="template_exception_handler">ignore</prop>
-				
-			</props>
-		</property>
-		
-		<property name="freemarkerVariables">
-			<map>
-				<entry key="extends" value-ref='extendsDirective'></entry>
-				<entry key="override" value-ref='overrideDirective'></entry>
-				<entry key="block" value-ref='blockDirective'></entry>
-				<entry key="super" value-ref='superDirective'></entry>
-			</map>
-		</property>
-	</bean>
-	
-	<bean id="viewResolver"
-		class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver">
-		<property name="requestContextAttribute" value="request" />
-		<property name="suffix" value=".ftl"/>
-		<property name="contentType" value="textml;charset=UTF-8"></property>
-	</bean>
-	-->  
+	 
 	
 	<!-- 文件上传支持 -->
 	<bean id="multipartResolver"

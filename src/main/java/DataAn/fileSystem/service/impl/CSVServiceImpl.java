@@ -53,9 +53,9 @@ public class CSVServiceImpl implements ICSVService{
 		Set<Integer> delDateSet = new HashSet<Integer>();
 		while ((line = reader.readLine()) != null) {
 //			System.out.println(line);
-			if(count  == 50){
-				break;
-			}
+//			if(count  == 50){
+//				break;
+//			}
 			doc = new Document();
 			//CSV格式文件为逗号分隔符文件，这里根据逗号切分
 			String[] items = line.split(",");
@@ -63,8 +63,9 @@ public class CSVServiceImpl implements ICSVService{
 			doc.append("year", DateUtil.formatString(date, "yyyy"));
 			doc.append("year_month", DateUtil.formatString(date, "yyyy-MM"));
 			doc.append("year_month_day", DateUtil.formatString(date, "yyyy-MM-dd"));
+//			doc.append(FlyWheelDataType.getFlyWheelDataTypeByZh(array[0]).getName(), DateUtil.formatString(date, "yyyy-MM-dd HH-mm-ss"));
 			//items.length;
-			for (int i = 0; i < 5; i++) {
+			for (int i = 0; i < items.length; i++) {
 				colData = items[i].trim();
 //				System.out.println(colData);
 				if(colData.indexOf("#") >= 0){

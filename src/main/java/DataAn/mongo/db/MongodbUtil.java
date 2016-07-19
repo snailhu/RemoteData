@@ -1,10 +1,16 @@
 package DataAn.mongo.db;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import org.bson.Document;
+
+import DataAn.common.utils.DateUtil;
 import DataAn.common.utils.LogUtil;
 import DataAn.mongo.init.InitMongo;
+
 import com.mongodb.MongoClient;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
@@ -93,16 +99,29 @@ public class MongodbUtil {
 		return doc;
 	}
 	
-	public void findAll(String collectionName){
-		MongoCollection<Document> collection = db.getCollection("testNew");
+	public Map<String,Float> findAll(String collectionName){
+		List<Float> list = new ArrayList<Float>();
+		Map<String,Float> map = new HashMap<String,Float>();
+		MongoCollection<Document> collection = db.getCollection(collectionName);
 		MongoCursor<Document> cursor = collection.find().iterator();
 		try {
+			int count = 1;
 		    while (cursor.hasNext()) {
-		        System.out.println(cursor.next().toJson());
+		    	if(count == 100){
+		    		break;
+		    	}
+		    	Document doc = cursor.next();
+		    	String key = DateUtil.formatString(doc.getString("datetime"), "yyyy-MM-dd HH:mm:ss");
+		    	float value = Float.parseFloat(doc.getString("flywheel_a_power_plus_5V"));
+		    	System.out.println(key + " : " + value);
+//		    	map.put(key, value);
+//		    	list.add(value);
+		    	count ++;
 		    }
 		} finally {
 		    cursor.close();
 		}
+		return map;
 	}
 	
 	public void find(){

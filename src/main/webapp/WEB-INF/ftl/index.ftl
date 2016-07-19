@@ -4,14 +4,22 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta charset="utf-8" />
-    <META name="description" content="美银软件云南本土专业的手机软件开发商">
-    <META NAME="keywords" content="云南app开发,昆明app开发,云南手机软件开发,昆明手机软件开发,云南app设计,昆明app设计,云南手机软件设计,昆明手机软件设计,云南手机软件，昆明手机软件,app开发,手机软件开发,手机软件开发公司,昆明手机软件开发公司,云南手机软件开发公司,云南app开发公司,昆明app开发公司,昆明美银软件,云南美银软件,软件开发公司电话,云南软件开发公司电话,昆明软件开发公司电话,昆明网站建设,云南网站建设,昆明网页设计,昆明网页设计,美银联盟,昆明软件开发工作室,昆明软件工作室，云南软件开发工作室,云南软件工作室,昆明app开发工作室,云南app开发工作室,云南手机软件工作室,昆明手机软件开发工作室,昆明手机软件工作室,昆明手机网站建设,云南手机网站建设,美银联盟App，美银联盟软件,美银工作室,美银软件工作室,美银app工作室,美银软件工作室">
+    <META name="description" content="苏州同元软控信息有限公司">
+    <META NAME="keywords" content="苏州同元软控信息有限公司">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta property="qc:admins" content="1403664507655111637646375" />
     <title>中国航天</title>
     <link href="${base}/static/css/cssnew.css" rel="stylesheet"/>
     <script src="${base}/static/js/modernizr.js"></script>
-
+	<!-- basic scripts -->
+	<!--[if !IE]> -->
+	<script src="${base}/static/js/jquery-2.0.3.min.js"></script>
+	<!-- <![endif]-->
+	<!--[if !IE]> -->
+	<script type="text/javascript">
+		window.jQuery || document.write("<script src='${base}/static/assets/js/jquery-2.0.3.min.js'>"+"<"+"/script>");
+	</script>
+	<!-- <![endif]-->
     <script>
 		var _hmt = _hmt || [];
 		(function() {
@@ -21,7 +29,14 @@
 		  s.parentNode.insertBefore(hm, s);
 		})();
     </script>
-
+	<script type="text/javascript">
+		$(function(){
+			var scroll_offset = $("#main-container").offset();  //得到pos这个div层的offset，包含两个值，top和left
+			  $("body,html").animate({
+			     scrollTop:scroll_offset.top  //让body的scrollTop等于pos的top，就实现了滚动
+			   },0);
+		})
+	</script>
 </head>
 <body style="overflow-x:hidden;overflow-y:no-display">             
     <div class="navbar navbar-inverse  navbar-static-top">
@@ -43,12 +58,10 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a href="/">网站首页</a></li>
-                    <li><a href="/Home/Web">网站开发</a></li>
-                    <li><a href="/Home/App">APP开发</a></li>
-                    <li><a href="/Home/Contact">美银团队</a></li>
-                    <li><a href="/Home/Iflve">开发报价</a></li>        
-                    <li><a href="/Home/Hongbao">试用下载</a></li>
+                    <li><a href="Index">网站首页</a></li>
+                    <li><a href="admin/file/toUploadFile">文件上传</a></li>
+                    <li><a href="admin/file/index">文件管理</a></li>
+                    <li><a href="analysisData">图表管理</a></li>
                 </ul>               
             </div>
         </div>
@@ -62,7 +75,7 @@
     </div>
 </div>
 
-<div class="container">
+<div class="container" id="main-container">
     <div class="row">
         <div class="col-md-4 col-sm-6">
             <div class="pricing hover-effect">
@@ -91,7 +104,7 @@
                     <h4>数据导入<br /></h4>
                 </div>
                 <br />
-                <a href="http://www.iflve.com/app.html">
+                <a href="admin/file/toUploadFile">
                     <h4>
                         <img class="img-circle" src="${base}/static/images/dsf.png" />
                         <br /><br />
@@ -111,7 +124,7 @@
                     <h4>数据分析<br /></h4>
                 </div>
                 <br />
-                <a href="http://www.iflve.com/app.html">
+                <a href="analysisData">
                     <h4>
                         <img class="img-circle" src="${base}/static/images/appkf.png" />
                         <br /><br />
@@ -195,7 +208,7 @@
         </div><!--/footer-->
         <div class="copyright">
             <div class="container">
-                <p class="text-center">沪ICP备14032936号-1版权所有 © 上海全银金融信息服务有限公司/不支持低版本IE </p>
+                <p class="text-center">苏州同元软控信息有限公司/不支持低版本IE </p>
             </div>
         </div><!--/copyright-->
     </div>

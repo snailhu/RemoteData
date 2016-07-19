@@ -1,6 +1,8 @@
 <@override name="content_right">
+	
+	<script src="${base}/static/content/jQueryCalendar/calendar.js"></script> 
 	<link rel="stylesheet" href="${base}/static/jqwidgets/styles/jqx.base.css" type="text/css" />
-
+	<link rel="stylesheet" href="${base}/static/content/jQueryCalendar/calendar.css">
     <script type="text/javascript" src="${base}/static/jqwidgets/jqxcore.js"></script>
     <script type="text/javascript" src="${base}/static/jqwidgets/jqxdata.js"></script>
     <script type="text/javascript" src="${base}/static/jqwidgets/jqxbuttons.js"></script>
@@ -81,13 +83,25 @@
 		</div>	
 		<div class="page-content">
 			<div class="page-header">
-				<h1>
-					jqGrid
-					<small>
-						<i class="icon-double-angle-right"></i>
-						Dynamic tables and grids using jqGrid plugin
-					</small>
-				</h1>
+				<form id="fileupload" action="" class="form-horizontal" role="form" >
+						<div class="space-1"></div>
+						<div class="form-group">
+							<label class="col-sm-3 control-label no-padding-right" for="form-beginTime"> 开始时间 </label>
+							<div class="col-sm-9">
+								<input type="text" id="form-beginTime" name="beginTime" placeholder="开始时间" class="col-xs-10 col-sm-5" />
+								<div id="getBeginTime"></div>
+							</div>
+						</div>
+						<div class="space-4"></div>
+						<div class="form-group">
+							<label class="col-sm-3 control-label no-padding-right" for="form-endTime"> 结束时间 </label>
+							<div class="col-sm-9">
+								<input type="text" id="form-endTime" name="endTime" placeholder="结束时间" class="col-xs-10 col-sm-5" />
+								<div id="getEndTime"></div>
+							</div>
+						</div>				
+                       </div>
+					</form>   
 			</div><!-- /.page-header -->
 	
 			<div class="row">
@@ -101,7 +115,34 @@
 			</div><!-- /.row -->
 		</div><!-- /.page-content -->
 	</div><!-- /.main-content -->
-	<script type="text/javascript">
+	<script type="text/javascript">	
+		  $(function(){
+	  $('#getBeginTime').calendar({
+	        trigger: '#form-beginTime',
+	        zIndex: 999,
+			format: 'yyyy-mm-dd',
+	        onSelected: function (view, date, data) {
+	        },
+	        onClose: function (view, date, data) {
+
+	        }
+	    });
+	  $('#getEndTime').calendar({
+	        trigger: '#form-endTime',
+	        zIndex: 999,
+			format: 'yyyy-mm-dd',
+	        onSelected: function (view, date, data) {
+
+	        },
+	        onClose: function (view, date, data) {
+
+	        }
+	    });
+	
+  })
+	
+	
+	
 		var JsonG = {}
 		var AllRowselect = [];
 		var j=0;
@@ -159,39 +200,9 @@
         	})            
         }	
        $(document).ready(function () {
-           // var url = "../sampledata/products.xml";
+            var url = "${base}/getConstraint";
             // prepare the data
-            var data = [{
-                     "id": "1",
-                     "name": "Hot Chocolate",
-                     "max": "37",
-                     "min": "370"
-                     }, {
-                     "id": 2,
-                     "name": "Peppermint Hot Chocolate",
-                      "max": "37",
-                     "min": "370"
-                    }, {
-                     "id": "3",
-                     "name": "Salted Caramel Hot Chocolate",
-                     "max": "37",
-                     "min": "370"
-                    }, {
-                     "id": "4",
-                     "name": "White Hot Chocolate",
-                      "max": "37",
-                     "min": "370"
-                    }, {
-                     "id": "5",
-                     "name": "Caffe Americano",
-                     "max": "37",
-                     "min": "370"
-                    }, {
-                     "id": "6",
-                     "name": "Caffe Latte",
-                     "max": "37",
-                     "min": "370"
-                    }]
+           
             var source =
             {
                datatype: "json",
@@ -201,9 +212,8 @@
                     { name: 'min' },
 
                 ],
-                id: 'id',
-                localdata: data
-               // url: url
+                id: 'id',            
+               url: url
             };
             var dataAdapter = new $.jqx.dataAdapter(source, {
 

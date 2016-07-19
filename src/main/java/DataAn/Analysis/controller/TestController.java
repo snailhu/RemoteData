@@ -29,7 +29,7 @@ public class TestController {
 	
 	@RequestMapping(value = "/showTest", method = { RequestMethod.GET })
 	public String showTest(HttpServletRequest request, HttpServletResponse response) {
-		return "/secondStyle/contentBase";
+		return "/secondStyle/testEchars";
 	}
 	
 	@RequestMapping(value = "/analysisData", method = { RequestMethod.GET })
@@ -37,15 +37,16 @@ public class TestController {
 		return "/secondStyle/dataAnalysis";
 	}
 	
+
 	
 	
-	@RequestMapping(value = "/getData", method = { RequestMethod.GET })
-	public ModelAndView getData(HttpServletRequest request, HttpServletResponse response) throws Exception {
-		ModelAndView mv = new ModelAndView("showPanelData");
-		String [] dataArray = operateDataService.getDateArray();
-		mv.addObject("dataArray", dataArray);
-		return mv;
-	}
+//	@RequestMapping(value = "/getData", method = { RequestMethod.GET })
+//	public ModelAndView getData(HttpServletRequest request, HttpServletResponse response) throws Exception {
+//		ModelAndView mv = new ModelAndView("showPanelData");
+//		String [] dataArray = operateDataService.getDateArray();
+//		mv.addObject("dataArray", dataArray);
+//		return mv;
+//	}
 	
 	
 	@RequestMapping(value = "/getJsonData", method = RequestMethod.POST)

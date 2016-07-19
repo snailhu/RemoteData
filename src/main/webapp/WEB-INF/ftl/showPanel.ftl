@@ -10,8 +10,7 @@
 		
 		        title: {
 		            text: 'Custom tick positions'
-		        },
-		
+		        },		
 		        subtitle: {
 		            text: 'through axis.tickPositions and axis.tickPositioner'
 		        },

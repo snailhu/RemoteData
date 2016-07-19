@@ -1,10 +1,17 @@
 package DataAn.mongo.db;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import org.bson.Document;
+
+import DataAn.common.utils.DateUtil;
 import DataAn.common.utils.LogUtil;
 import DataAn.mongo.init.InitMongo;
+
 import com.mongodb.MongoClient;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
@@ -17,7 +24,7 @@ public class MongodbUtil {
 
 	private MongoClient mg = null;
 	
-	private MongoDatabase db = null;
+	private  MongoDatabase db = null;
 	
 	private volatile static MongodbUtil singleton = null;
 	
@@ -136,6 +143,53 @@ public class MongodbUtil {
 		    System.out.println(index.toJson());
 		}
 	}
+	
+	public List<Float> findAllByTie(String param){
+		MongoCollection<Document> collection = db.getCollection("star2");
+	//	MongoCursor<Document> cursor = collection.find().iterator();
+		MongoCursor<Document> cursor = collection.find(Filters.eq("year_month_day", "2016-10-10")).iterator();
+		try {
+			List<Float> paramValue =  new ArrayList<Float>();
+//			HashMap<String,List<String>> paramMap = new HashMap<String,List<String>>();
+			int count=0;
+		    while (cursor.hasNext()) {
+		    	if(count>=10000){break;}
+		    	Document doc = cursor.next();
+		    	Float value = Float.parseFloat(doc.getString("flywheel_b_power_plus_5V"));
+		    	//String value = doc.getString("flywheel_b_power_plus_5V");	        
+	            paramValue.add(value);	
+	            count++;
+		    }
+		    return paramValue;  
+		} finally {
+		    cursor.close();
+		}
+		
+	}
+	
+	public List<String> getDateList(String param){
+		MongoCollection<Document> collection = db.getCollection("star2");
+	//	MongoCursor<Document> cursor = collection.find().iterator();
+		MongoCursor<Document> cursor = collection.find(Filters.eq("year_month_day", "2016-10-10")).iterator();
+		try {
+			List<String> paramValue =  new ArrayList<String>();
+//			HashMap<String,List<String>> paramMap = new HashMap<String,List<String>>();
+			int count=0;
+		    while (cursor.hasNext()) {	
+		    	if(count>=10000){break;}
+		    	Document doc = cursor.next();
+		    //	DateUtil.formatString("2015年08月10日00时15分01秒","yyyy-MM-dd HH:mm:ss")
+		    	String value = DateUtil.formatString(doc.getString("datetime"),"yyyy-MM-dd HH:mm:ss");
+		    	//String value = doc.getString("flywheel_b_power_plus_5V");	        
+	            paramValue.add(value);	
+	           count++;
+		    }
+		    return paramValue;  
+		} finally {
+		    cursor.close();
+		}		
+	}
+	
 	
 	
 }

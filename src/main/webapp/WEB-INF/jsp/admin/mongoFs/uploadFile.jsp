@@ -324,9 +324,9 @@ input[type=text]::-webkit-focus-inner {
         	  datFile: {
                   message: 'dat文件名输入不合法',
                   validators: {
-                      notEmpty: {
-                          message: 'dat文件不能为空'
-                      },
+//                       notEmpty: {
+//                           message: 'dat文件不能为空'
+//                       },
                       
                   }
               },

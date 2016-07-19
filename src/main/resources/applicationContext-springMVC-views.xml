@@ -23,7 +23,7 @@
     </context:component-scan>  
     -->
     <!-- 设置使用注解的类所在的jar包 -->
-	<context:component-scan base-package="DataAn.Analysis.controller.common"/>
+	<context:component-scan base-package="DataAn.Analysis.controller"/>
 	<context:component-scan base-package="DataAn.fileSystem.controller"/>
 	<!-- 处理器映射器和适配器，可以使用mvc注解驱动 -->
     <mvc:annotation-driven/>
@@ -77,7 +77,11 @@
         <property name="defaultEncoding" value="UTF-8" />  
         <property name="freemarkerVariables">  
             <map>  
-                <entry key="xml_escape" value-ref="fmXmlEscape" />  
+                <entry key="xml_escape" value-ref="fmXmlEscape" /> 
+				<entry key="extends" value-ref='extendsDirective'></entry>
+				<entry key="override" value-ref='overrideDirective'></entry>
+				<entry key="block" value-ref='blockDirective'></entry>
+				<entry key="super" value-ref='superDirective'></entry>
             </map>  
         </property>  
   
@@ -126,7 +130,7 @@
     </bean>  
     	
 	<!-- freemarker 模板继承支持 -->
-	<!--  
+ 
 	<bean id="blockDirective"
 		class="cn.org.rapid_framework.freemarker.directive.BlockDirective" />
 	<bean id="extendsDirective"
@@ -135,7 +139,6 @@
 		class="cn.org.rapid_framework.freemarker.directive.OverrideDirective" />
 	<bean id="superDirective"
 		class="cn.org.rapid_framework.freemarker.directive.SuperDirective" />
-	-->
 
 	<!-- Freemarker配置 -->
 	<!--  
@@ -153,15 +156,8 @@
 				
 			</props>
 		</property>
+			
 		
-		<property name="freemarkerVariables">
-			<map>
-				<entry key="extends" value-ref='extendsDirective'></entry>
-				<entry key="override" value-ref='overrideDirective'></entry>
-				<entry key="block" value-ref='blockDirective'></entry>
-				<entry key="super" value-ref='superDirective'></entry>
-			</map>
-		</property>
 	</bean>
 	
 	<bean id="viewResolver"
@@ -169,8 +165,8 @@
 		<property name="requestContextAttribute" value="request" />
 		<property name="suffix" value=".ftl"/>
 		<property name="contentType" value="textml;charset=UTF-8"></property>
-	</bean>
-	-->  
+	</bean>-->
+  
 	
 	<!-- 文件上传支持 -->
 	<bean id="multipartResolver"

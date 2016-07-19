@@ -155,9 +155,13 @@ public class MongodbUtil {
 		    while (cursor.hasNext()) {
 		    	if(count>=10000){break;}
 		    	Document doc = cursor.next();
-		    	Float value = Float.parseFloat(doc.getString("flywheel_b_power_plus_5V"));
-		    	//String value = doc.getString("flywheel_b_power_plus_5V");	        
+		    	System.out.println(doc.getString(param));
+		    	if(doc.getString(param)!=null){
+		    		
+	    		Float value = Float.parseFloat(doc.getString(param));	  
 	            paramValue.add(value);	
+		    	}
+		    	
 	            count++;
 		    }
 		    return paramValue;  

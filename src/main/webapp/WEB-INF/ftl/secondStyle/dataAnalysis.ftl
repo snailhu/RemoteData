@@ -1,8 +1,8 @@
 <@override name="content_right">
 	
 	<script src="${base}/static/content/jQueryCalendar/calendar.js"></script> 
-	<link rel="stylesheet" href="${base}/static/jqwidgets/styles/jqx.base.css" type="text/css" />
-	<link rel="stylesheet" href="${base}/static/content/jQueryCalendar/calendar.css">
+
+	<link rel="stylesheet" href="${base}/static/jqwidgets/styles/jqx.base.css" type="text/css" />	
     <script type="text/javascript" src="${base}/static/jqwidgets/jqxcore.js"></script>
     <script type="text/javascript" src="${base}/static/jqwidgets/jqxdata.js"></script>
     <script type="text/javascript" src="${base}/static/jqwidgets/jqxbuttons.js"></script>
@@ -15,8 +15,8 @@
     <script type="text/javascript" src="${base}/static/jqwidgets/jqxgrid.pager.js"></script>
     <script type="text/javascript" src="${base}/static/jqwidgets/jqxgrid.selection.js"></script>
     <script type="text/javascript" src="${base}/static/jqwidgets/jqxgrid.edit.js"></script>
-    <script type="text/javascript" src="${base}/static/scripts/demos.js"></script>
-    
+    <script type="text/javascript" src="${base}/static/scripts/demos.js"></script>  
+      
     <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
 	  <div class="modal-dialog" role="document">
 	    <div class="modal-content">
@@ -83,25 +83,7 @@
 		</div>	
 		<div class="page-content">
 			<div class="page-header">
-				<form id="fileupload" action="" class="form-horizontal" role="form" >
-						<div class="space-1"></div>
-						<div class="form-group">
-							<label class="col-sm-3 control-label no-padding-right" for="form-beginTime"> 开始时间 </label>
-							<div class="col-sm-9">
-								<input type="text" id="form-beginTime" name="beginTime" placeholder="开始时间" class="col-xs-10 col-sm-5" />
-								<div id="getBeginTime"></div>
-							</div>
-						</div>
-						<div class="space-4"></div>
-						<div class="form-group">
-							<label class="col-sm-3 control-label no-padding-right" for="form-endTime"> 结束时间 </label>
-							<div class="col-sm-9">
-								<input type="text" id="form-endTime" name="endTime" placeholder="结束时间" class="col-xs-10 col-sm-5" />
-								<div id="getEndTime"></div>
-							</div>
-						</div>				
-                       </div>
-					</form>   
+ 
 			</div><!-- /.page-header -->
 	
 			<div class="row">

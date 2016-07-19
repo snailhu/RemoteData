@@ -2,19 +2,16 @@
 
 <script type="text/javascript" src="${base}/static/js/echarts.min.js"></script>
 <script type="text/javascript">
-
-     // 基于准备好的dom，初始化echarts实例
     
     $(function(){
     	var myChart = echarts.init(document.getElementById('main'));
     	var seriesOptions = []
         seriesCounter = 0
         var date = [];
-        names = ['flywheel_b_power_plus_5V'];
+        names = ['flywheel_a_speed','flywheel_f_motor_current'];
          var options = {
             tooltip: {
-                trigger: 'axis',
-              
+                trigger: 'axis',              
             },
             title: {
                 left: 'center',
@@ -22,8 +19,8 @@
             },
             legend: {
                 top: 'bottom', 
-                 data:['flywheel_b_power_plus_5V']
-                            
+                 data:['flywheel_a_speed']
+                           
             },
             toolbox: {
                 feature: {
@@ -35,11 +32,12 @@
                 }
             },
             xAxis: {
+            	// axisLabel: {					
+				//	rotate: 10
+				//	},
                 type: 'category',
                 boundaryGap: false,
-                // data:[ "2015-08-11 00:14:57","2015-08-12 00:14:57","2015-08-13 00:14:57","2015-08-14 00:14:58","2015-08-15 00:14:58","2015-08-16 00:14:58","2015-08-17 00:14:58","2015-08-18 00:14:59","2015-08-19 00:14:59","2015-08-20 00:14:59"]
-                 data:[]
-                
+                data:[]              
             },
             yAxis: [{
                 type: 'value',
@@ -47,36 +45,30 @@
             dataZoom: [{
                 type: 'inside',
                 start:20,
-                end:25
-         
+                end:25         
             }],
             series: []
-        };    	  
-    	
+        };    	     	
     	 $.getJSON('${base}/getDate', function (data) {
 			 options.xAxis.data = eval(data);
-
+			 myChart.setOption(options);	
      });   
     	    	   
         $.each(names, function (i, name) {
-
-        $.getJSON('${base}/getData?filename=' + name.toLowerCase(), function (data) {
-
-            seriesOptions[i] = {
-            	type: 'line',
-                name: name,
-                data: data
-            };
-            seriesCounter += 1;
-            if (seriesCounter === names.length) {
-            	options.series = eval(seriesOptions);
-            	console.log(options)
-                myChart.setOption(options);
-                
-            }
-        });
-    });
-    
+	        $.getJSON('${base}/getData?filename=' + name.toLowerCase(), function (data) {	
+	            seriesOptions[i] = {
+	            	type: 'line',
+	                name: name,
+	                data: data
+	            };
+	            seriesCounter += 1;
+	            if (seriesCounter === names.length) {
+	            	options.series = eval(seriesOptions);
+	            	console.log(options)
+	                myChart.setOption(options);	                
+	            }
+	        });
+    	});   
     	 
     })
 
@@ -146,7 +138,8 @@
 	            <ul class="submenu">
 				<#list lPs as lp>
 					<li>
-	                    <a href="${lp.id}" class="dropdown-toggle">
+	                  //  <a href="${base}/group/${lp.id}" class="dropdown-toggle">
+	                  <a href="#" class="dropdown-toggle">
 	                        <i class="icon-double-angle-right"></i>${lp.id}
 	                    	               
 	                    </a>
@@ -165,6 +158,6 @@
 </@override>
 
 <@override name="content_right">
-	 <div id="main" style="width: 1300px;height:400px;left:150px"></div>
+	 <div id="main" style="width: 1200px;height:400px;left:150px"></div>
 </@override>	
 <@extends name="/secondStyle/baseNew.ftl"/>

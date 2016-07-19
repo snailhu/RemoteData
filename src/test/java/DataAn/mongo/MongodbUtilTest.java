@@ -52,7 +52,7 @@ public class MongodbUtilTest {
 //			System.out.println(object);
 //		}
 	}
-	@Test
+
 	public void findAll(){
 //		List<Float> list = mg.findAll(collectionName);
 //		for (Float value : list) {
@@ -64,4 +64,5 @@ public class MongodbUtilTest {
 //			System.out.println(key + " : " + map.get(key));
 //		}
 	}
+
 }

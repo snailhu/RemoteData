@@ -42,14 +42,14 @@ public class FileController {
 	
 	@RequestMapping("/index")
 	public String mongoFSIndex(Model model) {
-//		System.out.println("come in mongoFSIndex");
+		System.out.println("come in mongoFSIndex");
 		//当前所在系列
 		model.addAttribute("nowSeries", "j9");
 		//当前所在星号
 		model.addAttribute("nowStar", "02");
 		//当前所在目录
 		model.addAttribute("nowDirId", 0);
-		return "admin/mongoFs/index";
+		return "/admin/mongoFs/index";
 	}
 	
 	@RequestMapping("/index/{series}/{star}/{dirId}/")

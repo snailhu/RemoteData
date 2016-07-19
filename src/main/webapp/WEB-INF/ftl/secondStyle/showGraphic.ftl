@@ -1,3 +1,87 @@
+<@override name="script">
+
+<script type="text/javascript" src="${base}/static/js/echarts.min.js"></script>
+<script type="text/javascript">
+
+     // 基于准备好的dom，初始化echarts实例
+    
+    $(function(){
+    	var myChart = echarts.init(document.getElementById('main'));
+    	var seriesOptions = []
+        seriesCounter = 0
+        var date = [];
+        names = ['flywheel_b_power_plus_5V'];
+         var options = {
+            tooltip: {
+                trigger: 'axis',
+              
+            },
+            title: {
+                left: 'center',
+
+            },
+            legend: {
+                top: 'bottom', 
+                 data:['flywheel_b_power_plus_5V']
+                            
+            },
+            toolbox: {
+                feature: {
+                    dataZoom: {
+                        yAxisIndex: 'none'
+                    },
+                    restore: {},
+                    saveAsImage: {}
+                }
+            },
+            xAxis: {
+                type: 'category',
+                boundaryGap: false,
+                // data:[ "2015-08-11 00:14:57","2015-08-12 00:14:57","2015-08-13 00:14:57","2015-08-14 00:14:58","2015-08-15 00:14:58","2015-08-16 00:14:58","2015-08-17 00:14:58","2015-08-18 00:14:59","2015-08-19 00:14:59","2015-08-20 00:14:59"]
+                 data:[]
+                
+            },
+            yAxis: [{
+                type: 'value',
+            }],
+            dataZoom: [{
+                type: 'inside',
+                start:20,
+                end:25
+         
+            }],
+            series: []
+        };    	  
+    	
+    	 $.getJSON('${base}/getDate', function (data) {
+			 options.xAxis.data = eval(data);
+
+     });   
+    	    	   
+        $.each(names, function (i, name) {
+
+        $.getJSON('${base}/getData?filename=' + name.toLowerCase(), function (data) {
+
+            seriesOptions[i] = {
+            	type: 'line',
+                name: name,
+                data: data
+            };
+            seriesCounter += 1;
+            if (seriesCounter === names.length) {
+            	options.series = eval(seriesOptions);
+            	console.log(options)
+                myChart.setOption(options);
+                
+            }
+        });
+    });
+    
+    	 
+    })
+
+    </script>	
+</@override>
 <@override name="header">	
 	<div class="navbar-container" id="navbar-container">
         <div class="navbar-header pull-left">
@@ -63,11 +147,8 @@
 				<#list lPs as lp>
 					<li>
 	                    <a href="${lp.id}" class="dropdown-toggle">
-	                        <i class="icon-double-angle-right"></i>
-	                        <#list (lp.sParamDtos) as lpd>
-	                        1111
-	                        </#list>
-	               
+	                        <i class="icon-double-angle-right"></i>${lp.id}
+	                    	               
 	                    </a>
 	                </li>
 				</#list>
@@ -84,6 +165,6 @@
 </@override>
 
 <@override name="content_right">
-
+	 <div id="main" style="width: 1300px;height:400px;left:150px"></div>
 </@override>	
 <@extends name="/secondStyle/baseNew.ftl"/>

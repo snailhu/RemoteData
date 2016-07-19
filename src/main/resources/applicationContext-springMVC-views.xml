@@ -138,7 +138,34 @@
 		class="cn.org.rapid_framework.freemarker.directive.OverrideDirective" />
 	<bean id="superDirective"
 		class="cn.org.rapid_framework.freemarker.directive.SuperDirective" />
-	 
+
+	<!-- Freemarker配置 -->
+	<!--  
+	<bean id="freemarkerConfig"
+		class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
+		<property name="templateLoaderPath" value="/WEB-INF/ftl/" />
+		<property name="freemarkerSettings">
+			<props>
+				<prop key="template_update_delay">0</prop>
+				<prop key="default_encoding">UTF-8</prop>
+				<prop key="number_format">0.##########</prop>
+				<prop key="datetime_format">yyyy-MM-dd HH:mm:ss</prop>
+				<prop key="classic_compatible">true</prop>
+				<prop key="template_exception_handler">ignore</prop>
+				
+			</props>
+		</property>
+			
+		
+	</bean>
+	
+	<bean id="viewResolver"
+		class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver">
+		<property name="requestContextAttribute" value="request" />
+		<property name="suffix" value=".ftl"/>
+		<property name="contentType" value="textml;charset=UTF-8"></property>
+	</bean>-->
+  
 	
 	<!-- 文件上传支持 -->
 	<bean id="multipartResolver"

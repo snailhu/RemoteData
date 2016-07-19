@@ -1,18 +1,24 @@
 package DataAn.Analysis.controller.common;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+
 import DataAn.Analysis.dto.ConstraintDto;
 import DataAn.fileSystem.service.IFlyWheelService;
+import DataAn.mongo.db.MongodbUtil;
+
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+
 import DataAn.Analysis.dto.AllJsonData;
 import DataAn.Analysis.dto.ParamGroup;
 import DataAn.Util.EhCache;
@@ -30,7 +36,7 @@ public class CommonController {
 		return "index";
 	}
 	
-	@RequestMapping(value = "getConstraint", method = RequestMethod.POST)
+	@RequestMapping(value = "/getConstraint", method = RequestMethod.GET)
 	@ResponseBody
 	public List<ConstraintDto> getConstraint() throws Exception{
 		
@@ -59,4 +65,29 @@ public class CommonController {
 		return mv;
 		}
 	
+	@RequestMapping(value = "/getDate", method = RequestMethod.GET)
+	@ResponseBody
+	public List<String> getDate(
+			HttpServletRequest request,
+			HttpServletResponse response
+			) throws Exception{
+			MongodbUtil mg = MongodbUtil.getInstance();
+			List<String> result = mg.getDateList("tesx");
+			return result;
+		}
+	
+	
+	@RequestMapping(value = "/getData", method = RequestMethod.GET)
+	@ResponseBody
+	public List<Float> getData(
+			HttpServletRequest request,
+			HttpServletResponse response,
+			@RequestParam(value="filename",required = true) String filename
+			) throws Exception{
+		MongodbUtil mg = MongodbUtil.getInstance();
+		List<Float> result = mg.findAllByTie(filename);
+		return result ;
+		
+		
+	}
 }

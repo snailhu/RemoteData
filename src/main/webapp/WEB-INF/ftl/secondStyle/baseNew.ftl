@@ -1,4 +1,4 @@
-<#assign base=request.contextPath + '/DataRemote'/>
+<#assign base=request.contextPath + '/DataRemote' />
 <!DOCTYPE html>
 <html lang="en">
  <head>
@@ -17,6 +17,7 @@
 	<link rel="stylesheet" href="${base}/static/assets/css/ace.min.css" />
 	<link rel="stylesheet" href="${base}/static/assets/css/ace-rtl.min.css" />
 	<link rel="stylesheet" href="${base}/static/assets/css/ace-skins.min.css" />
+	
 	<script src="${base}/static/assets/js/ace-extra.min.js"></script>
   	
   	
@@ -35,8 +36,7 @@
 		<script src="${base}/static/assets/js/bootstrap.min.js"></script>
 		<script src="${base}/static/assets/js/typeahead-bs2.min.js"></script>
 		<!-- page specific plugin scripts -->
-		<script src="${base}/static/assets/js/jquery-ui-1.10.3.custom.min.js"></script>
-		<script src="${base}/static/assets/js/jquery.ui.touch-punch.min.js"></script>
+
 		<script src="${base}/static/assets/js/jquery.slimscroll.min.js"></script>
 		<!-- ace scripts -->
 		<script src="${base}/static/assets/js/ace-elements.min.js"></script>
@@ -44,7 +44,7 @@
   	
 	<@block name="style"></@block>
 	<@block name="link"></@block>
-	<@block name="script"></@block>
+
  </head>
  <body>
  	<div class="navbar navbar-default" id="navbar">
@@ -62,4 +62,5 @@
 
   	<@block name="foot"></@block>
  </body>
+ 	<@block name="script"></@block>
 </html>

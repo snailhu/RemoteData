@@ -6,7 +6,7 @@
 
 <@override name="script">
 
-<script type="text/javascript" src="/static/scripts/jquery-1.11.1.min.js"></script>
+<script type="text/javascript" src="${base}/static/scripts/jquery-1.11.1.min.js"></script>
 <script type="text/javascript" src="${base}/static/jqwidgets/jqxcore.js"></script>
 <script type="text/javascript" src="${base}/static/jqwidgets/jqxsortable.js"></script>
 <script type="text/javascript" src="${base}/static/jqwidgets/jqxkanban.js"></script>

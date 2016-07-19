@@ -2,7 +2,7 @@ package DataAn.fileSystem.option;
 
 public class FlyWheel {
 	
-	public String flywheel_a_motor_current  =  "采集数据25:飞轮a电机电流(16025)";
+	public String flywheel_a_motor_current  = "采集数据25:飞轮a电机电流(16025)";
 	public String flywheel_a_power_plus_5V = "采集数据26:飞轮a电源+5V(16026)";
 	public String flywheel_b_motor_current = "采集数据27:飞轮b电机电流(16027)";
 	public String flywheel_b_power_plus_5V = "采集数据28:飞轮b电源+5V(16028)";

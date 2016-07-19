@@ -35,11 +35,15 @@
 -->	
 	<!-- #sidebar-shortcuts -->
 
+	<!-- 
 	<ul id="left_con" class="nav nav-list">
-<!-- 		<li><a href="admin/index"> <i class="icon-dashboard"></i> <span -->
-<!-- 				class="menu-text"> 欢迎页面 </span> -->
-<!-- 		</a></li> -->
+		<li><a href="admin/index"> <i class="icon-dashboard"></i> <span
+				class="menu-text"> 欢迎页面 </span>
+		</a></li>
 
+		<li><a href="admin/file/toUploadFile"> <i class="icon-dashboard"></i> <span
+				class="menu-text"> 文件上传 </span>
+		</a></li>
 		<li>
 			<a href="#" class="dropdown-toggle"> <i class="icon-list"></i>
 				<span class="menu-text"> 文件管理</span>
@@ -92,31 +96,199 @@
 			</ul>
 		</li>
 		
-<!-- 		<li> -->
-<!-- 			<a href="#" class="dropdown-toggle"> <i class="icon-list"></i> -->
-<!-- 				<span class="menu-text"> 系统管理</span> -->
-<!-- 				<b class="arrow icon-angle-down"></b> -->
-<!-- 			</a> -->
-<!-- 			<ul class="submenu"> -->
-<!-- 				<li><a href="admin/user/index"> <i class="icon-double-angle-right"></i> 用户管理 -->
-<!-- 					</a></li> -->
-<!-- 				<li><a href="#"> <i class="icon-double-angle-right"></i> 部门管理 -->
-<!-- 					</a></li> -->
-<!-- 				<li><a href="admin/role/index"> <i class="icon-double-angle-right"></i> 角色管理 -->
-<!-- 					</a></li> -->
-<!-- 				<li><a href="#"> <i class="icon-double-angle-right"></i> 权限管理 -->
-<!-- 					</a></li> -->
-<!-- 				<li><a href="javascript:void(0)"> <i class="icon-double-angle-right"></i> 日志管理 -->
-<!-- 					</a></li> -->
-<!-- 				<li><a href="ftl/hello"> <i class="icon-double-angle-right"></i> ftl视图 -->
-<!-- 				</a></li> -->
-<!-- 				<li><a href="echart/echartTest"> <i class="icon-double-angle-right"></i> echart图表 -->
-<!-- 					</a></li> -->
-<!-- 			</ul> -->
-<!-- 		</li> -->
+		<li>
+			<a href="#" class="dropdown-toggle"> <i class="icon-list"></i>
+				<span class="menu-text"> 系统管理</span>
+				<b class="arrow icon-angle-down"></b>
+			</a>
+			<ul class="submenu">
+				<li><a href="admin/user/index"> <i class="icon-double-angle-right"></i> 用户管理
+					</a></li>
+				<li><a href="#"> <i class="icon-double-angle-right"></i> 部门管理
+					</a></li>
+				<li><a href="admin/role/index"> <i class="icon-double-angle-right"></i> 角色管理
+					</a></li>
+				<li><a href="#"> <i class="icon-double-angle-right"></i> 权限管理
+					</a></li>
+				<li><a href="javascript:void(0)"> <i class="icon-double-angle-right"></i> 日志管理
+					</a></li>
+				<li><a href="ftl/hello"> <i class="icon-double-angle-right"></i> ftl视图
+				</a></li>
+				<li><a href="echart/echartTest"> <i class="icon-double-angle-right"></i> echart图表
+					</a></li>
+			</ul>
+		</li>
 		
 	</ul>
+	-->
 	<!-- /.nav-list -->
+	<ul id="left_con" class="nav nav-list">
+	    <li><a href="admin/file/toUploadFile"> <i class="icon-dashboard"></i> <span
+				class="menu-text"> 文件上传 </span>
+		</a></li>
+		<li>
+			<a href="#" class="dropdown-toggle"> <i class="icon-list"></i>
+				<span class="menu-text"> 文件管理</span>
+				<b class="arrow icon-angle-down"></b>
+			</a>
+			<ul class="submenu">
+				<li>
+					<a href="javascript:void(0)"> <i class="icon-double-angle-right"></i> 其他系列
+					</a>
+				</li>
+				<li>
+					<a href="#" class="dropdown-toggle">
+						<i class="icon-double-angle-right"></i>
+						j9系列
+						<b class="arrow icon-angle-down"></b>
+					</a>
+					<ul class="submenu">
+						<li>
+							<a href="admin/file/index/j9/01/0/">
+								<i class="icon-leaf"></i>
+								I号星
+							</a>
+						</li>
+						<li>
+							<a href="admin/file/index/j9/02/0/">
+								<i class="icon-leaf"></i>
+								II号星
+							</a>
+						</li>
+						<li>
+							<a href="admin/file/index/j9/03/0/">
+								<i class="icon-leaf"></i>
+								III号星
+							</a>
+						</li>
+						<li>
+							<a href="admin/file/index/j9/04/0/">
+								<i class="icon-leaf"></i>
+								IV号星
+							</a>
+						</li>
+						<li>
+							<a href="admin/file/index/j9/05/0/">
+								<i class="icon-leaf"></i>
+								V号星
+							</a>
+						</li>
+					</ul>
+				</li>
+			</ul>
+		</li>
+		<li>
+			<a href="#" class="dropdown-toggle"> <i class="icon-list"></i>
+				<span class="menu-text"> 图表管理</span>
+				<b class="arrow icon-angle-down"></b>
+			</a>
+			<ul class="submenu">
+				<li>
+					<a href="javascript:void(0)"> <i class="icon-double-angle-right"></i> 其他系列
+					</a>
+				</li>
+				<li>
+					<a href="#" class="dropdown-toggle">
+						<i class="icon-double-angle-right"></i>
+						j9系列
+						<b class="arrow icon-angle-down"></b>
+					</a>
+					<ul class="submenu">
+						<li>
+		                    <a href="#" class="dropdown-toggle">
+		                        <i class="icon-double-angle-right"></i>I号星
+		                        <b class="arrow icon-angle-down"></b>
+		                    </a>
+		                    <ul class="submenu">
+		                        <li>
+		                            <a href="#">
+		                                <i class="icon-leaf"></i> 飞轮
+		                            </a>
+		                        </li>
+		                          <li>
+		                            <a href="#">
+		                                <i class="icon-leaf"></i>陀螺
+		                            </a>
+		                        </li>
+		                    </ul>
+		                </li>
+						<li>
+							<a href="#" class="dropdown-toggle">
+		                        <i class="icon-double-angle-right"></i>II号星
+		                        <b class="arrow icon-angle-down"></b>
+		                    </a>
+		                    <ul class="submenu">
+		                        <li>
+		                            <a href="#">
+		                                <i class="icon-leaf"></i> 飞轮
+		                            </a>
+		                        </li>
+		                          <li>
+		                            <a href="#">
+		                                <i class="icon-leaf"></i>陀螺
+		                            </a>
+		                        </li>
+		                    </ul>
+						</li>
+						<li>
+							<a href="#" class="dropdown-toggle">
+		                        <i class="icon-double-angle-right"></i>III号星
+		                        <b class="arrow icon-angle-down"></b>
+		                    </a>
+		                    <ul class="submenu">
+		                        <li>
+		                            <a href="#">
+		                                <i class="icon-leaf"></i> 飞轮
+		                            </a>
+		                        </li>
+		                          <li>
+		                            <a href="#">
+		                                <i class="icon-leaf"></i>陀螺
+		                            </a>
+		                        </li>
+		                    </ul>
+						</li>
+						<li>
+							<a href="#" class="dropdown-toggle">
+		                        <i class="icon-double-angle-right"></i>IV号星
+		                        <b class="arrow icon-angle-down"></b>
+		                    </a>
+		                    <ul class="submenu">
+		                        <li>
+		                            <a href="#">
+		                                <i class="icon-leaf"></i> 飞轮
+		                            </a>
+		                        </li>
+		                          <li>
+		                            <a href="#">
+		                                <i class="icon-leaf"></i>陀螺
+		                            </a>
+		                        </li>
+		                    </ul>
+						</li>
+						<li>
+							<a href="#" class="dropdown-toggle">
+		                        <i class="icon-double-angle-right"></i>V号星
+		                        <b class="arrow icon-angle-down"></b>
+		                    </a>
+		                    <ul class="submenu">
+		                        <li>
+		                            <a href="#">
+		                                <i class="icon-leaf"></i> 飞轮
+		                            </a>
+		                        </li>
+		                          <li>
+		                            <a href="#">
+		                                <i class="icon-leaf"></i>陀螺
+		                            </a>
+		                        </li>
+		                    </ul>
+						</li>
+					</ul>
+				</li>
+			</ul>
+		</li>
+   </ul><!-- /.nav-list -->
 
 	<div class="sidebar-collapse" id="sidebar-collapse">
 		<i class="icon-double-angle-left" data-icon1="icon-double-angle-left"

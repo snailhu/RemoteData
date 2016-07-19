@@ -63,6 +63,7 @@ public class CSVServiceImpl implements ICSVService{
 			doc.append("year", DateUtil.formatString(date, "yyyy"));
 			doc.append("year_month", DateUtil.formatString(date, "yyyy-MM"));
 			doc.append("year_month_day", DateUtil.formatString(date, "yyyy-MM-dd"));
+//			doc.append(FlyWheelDataType.getFlyWheelDataTypeByZh(array[0]).getName(), DateUtil.formatString(date, "yyyy-MM-dd HH-mm-ss"));
 			//items.length;
 			for (int i = 0; i < items.length; i++) {
 				colData = items[i].trim();

@@ -1,5 +1,6 @@
 package DataAn.fileSystem.service.impl;
 
+import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
@@ -72,9 +73,7 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 //		String day = DateUtil.formatString(date, "yyyy-MM-dd", "dd");
 //		dateMap.put("day", day);
 //		System.out.println(year + "-" + month + "-" + day);
-		//解析 *.csv文件保存csv里面的数据
-		InputStream csvInput = csvFileDto.getIn();
-		this.saveDataOfCSVInMongoDB(csvInput, nowStar);
+		
 		// 保存 *.csv文件
 		this.saveFileOfCSV(csvFileDto, dataMap);
 		//获取map中的csv文件
@@ -281,16 +280,22 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 		String collectionName = J9SeriesType.getJ9StarType(nowStar).getName();
 		mg.insert(collectionName , docList);
 	}
-	private void saveFileOfCSV(FileDto fileDto, Map<String,String> dataMap){
+	private void saveFileOfCSV(FileDto fileDto, Map<String,String> dataMap) throws Exception{
+		
 		
 		String uuId = UUIDGeneratorUtil.getUUID();
-		
 		String series = dataMap.get("series");
 		String star = dataMap.get("star");
 		String date = dataMap.get("date");
 		String year = dataMap.get("year");
 		String month = dataMap.get("month");
 //		String day = dateMap.get("day");
+		
+		//解析 *.csv文件保存csv里面的数据
+		BufferedInputStream csvInput = new BufferedInputStream(fileDto.getIn()) ;
+//		csvInput.mark(0);
+		this.saveDataOfCSVInMongoDB(csvInput, star);
+//		csvInput.reset();
 		
 		//查找csv的文件夹是否存在
 		VirtualFileSystem csvDir = fileDao.selectByParentIdisNullAndFileName("csv");

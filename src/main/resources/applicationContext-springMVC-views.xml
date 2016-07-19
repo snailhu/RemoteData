@@ -78,13 +78,12 @@
         <property name="freemarkerVariables">  
             <map>  
                 <entry key="xml_escape" value-ref="fmXmlEscape" /> 
-				<entry key="extends" value-ref='extendsDirective'></entry>
+                <entry key="extends" value-ref='extendsDirective'></entry>
 				<entry key="override" value-ref='overrideDirective'></entry>
 				<entry key="block" value-ref='blockDirective'></entry>
-				<entry key="super" value-ref='superDirective'></entry>
+				<entry key="super" value-ref='superDirective'></entry> 
             </map>  
         </property>  
-  
         <property name="freemarkerSettings">  
             <props>  
                 <!--<prop key="template_update_delay">3600</prop> -->  
@@ -104,6 +103,7 @@
                 <!-- ignore,debug,html_debug,rethrow -->  
             </props>  
         </property>  
+
     </bean>
     <bean id="fmXmlEscape" class="freemarker.template.utility.XmlEscape" />  
     <bean id="viewResolver"  
@@ -130,7 +130,6 @@
     </bean>  
     	
 	<!-- freemarker 模板继承支持 -->
- 
 	<bean id="blockDirective"
 		class="cn.org.rapid_framework.freemarker.directive.BlockDirective" />
 	<bean id="extendsDirective"

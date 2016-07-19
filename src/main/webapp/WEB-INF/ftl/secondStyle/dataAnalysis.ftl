@@ -15,9 +15,15 @@
     <script type="text/javascript" src="${base}/static/jqwidgets/jqxgrid.pager.js"></script>
     <script type="text/javascript" src="${base}/static/jqwidgets/jqxgrid.selection.js"></script>
     <script type="text/javascript" src="${base}/static/jqwidgets/jqxgrid.edit.js"></script>
+
     <script type="text/javascript" src="${base}/static/scripts/demos.js"></script>  
       
     <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+
+    <script type="text/javascript" src="${base}/static/scripts/demos.js"></script>
+    
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" style="overflow: hidden;display:none">
+
 	  <div class="modal-dialog" role="document">
 	    <div class="modal-content">
 	      <div class="modal-header">
@@ -83,11 +89,30 @@
 		</div>	
 		<div class="page-content">
 			<div class="page-header">
- 
+
 			</div><!-- /.page-header -->
-	
+
+				<form id="fileupload" action="" class="form-horizontal" role="form" >
+					<div class="space-1"></div>
+					<div class="form-group">
+						<label class="col-sm-3 control-label no-padding-right" for="form-beginTime"> 开始时间 </label>
+						<div class="col-sm-9">
+							<input type="text" id="form-beginTime" name="beginTime" placeholder="开始时间" class="col-xs-10 col-sm-5" />
+							<div id="getBeginTime"></div>
+						</div>
+					</div>
+					<div class="space-1"></div>
+					<div class="form-group">
+						<label class="col-sm-3 control-label no-padding-right" for="form-endTime"> 结束时间 </label>
+						<div class="col-sm-9">
+							<input type="text" id="form-endTime" name="endTime" placeholder="结束时间" class="col-xs-10 col-sm-5" />
+							<div id="getEndTime"></div>
+						</div>
+					</div>				
+                   </div>
+				</form>   
 			<div class="row">
-				<div id='jqxWidget' style="font-size: 13px; font-family: Verdana; float: left;">
+				<div id='jqxWidget' style="font-size: 13px; font-family: Verdana; float: left;margin-left: 30px;margin-top: -70px;">
 			        <div id="jqxgrid">
 			        </div>
 			       	<button data-toggle="modal" data-target="#exampleModal">确定分组</button>
@@ -95,6 +120,8 @@
       				<button data-toggle="modal"	 onclick="submitGroup()">提交分组</button>
 			     </div>			      		     
 			</div><!-- /.row -->
+			</div><!-- /.page-header -->
+	
 		</div><!-- /.page-content -->
 	</div><!-- /.main-content -->
 	<script type="text/javascript">	

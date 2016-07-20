@@ -1,7 +1,5 @@
 <@override name="content_right">
 	
-	<script src="${base}/static/content/jQueryCalendar/calendar.js"></script> 
-
 	<link rel="stylesheet" href="${base}/static/jqwidgets/styles/jqx.base.css" type="text/css" />	
     <script type="text/javascript" src="${base}/static/jqwidgets/jqxcore.js"></script>
     <script type="text/javascript" src="${base}/static/jqwidgets/jqxdata.js"></script>
@@ -17,14 +15,9 @@
     <script type="text/javascript" src="${base}/static/jqwidgets/jqxgrid.edit.js"></script>
 
     <script type="text/javascript" src="${base}/static/scripts/demos.js"></script>  
-      
-    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
 
-    <script type="text/javascript" src="${base}/static/scripts/demos.js"></script>
-    
-    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" style="overflow: hidden;display:none">
-
-	  <div class="modal-dialog" role="document">
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"  >
+	  <div class="modal-dialog" role="document" style="margin:30px -200px">
 	    <div class="modal-content">
 	      <div class="modal-header">
 	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -89,28 +82,28 @@
 		</div>	
 		<div class="page-content">
 			<div class="page-header">
-
+				    <form id="fileupload" action="" class="form-horizontal" role="form" >
+				        <div class="space-1"></div>
+				        <div class="form-group" style="margin:0px auto !important">
+				            <label class="col-sm-3 control-label no-padding-right" for="form-beginTime"> 开始时间 </label>
+				            <div class="col-sm-9">
+				                <input type="text" id="form-beginTime" name="beginTime" placeholder="开始时间" class="col-xs-10 col-sm-5" />
+				                <div id="getBeginTime"></div>
+				            </div>
+				        </div>
+				        <div class="space-1"></div>
+				        <div class="form-group" style="margin:0px auto !important">
+				            <label class="col-sm-3 control-label no-padding-right" for="form-endTime"> 结束时间 </label>
+				            <div class="col-sm-9">
+				                <input type="text" id="form-endTime" name="endTime" placeholder="结束时间" class="col-xs-10 col-sm-5" />
+				                <div id="getEndTime"></div>
+				            </div>
+				        </div>				
+				       </div>
+				    </form>   
 			</div><!-- /.page-header -->
 
-				<form id="fileupload" action="" class="form-horizontal" role="form" >
-					<div class="space-1"></div>
-					<div class="form-group">
-						<label class="col-sm-3 control-label no-padding-right" for="form-beginTime"> 开始时间 </label>
-						<div class="col-sm-9">
-							<input type="text" id="form-beginTime" name="beginTime" placeholder="开始时间" class="col-xs-10 col-sm-5" />
-							<div id="getBeginTime"></div>
-						</div>
-					</div>
-					<div class="space-1"></div>
-					<div class="form-group">
-						<label class="col-sm-3 control-label no-padding-right" for="form-endTime"> 结束时间 </label>
-						<div class="col-sm-9">
-							<input type="text" id="form-endTime" name="endTime" placeholder="结束时间" class="col-xs-10 col-sm-5" />
-							<div id="getEndTime"></div>
-						</div>
-					</div>				
-                   </div>
-				</form>   
+		  
 			<div class="row">
 				<div id='jqxWidget' style="font-size: 13px; font-family: Verdana; float: left;margin-left: 30px;margin-top: -70px;">
 			        <div id="jqxgrid">
@@ -120,38 +113,12 @@
       				<button data-toggle="modal"	 onclick="submitGroup()">提交分组</button>
 			     </div>			      		     
 			</div><!-- /.row -->
-			</div><!-- /.page-header -->
+			
 	
 		</div><!-- /.page-content -->
 	</div><!-- /.main-content -->
 	<script type="text/javascript">	
-		  $(function(){
-	  $('#getBeginTime').calendar({
-	        trigger: '#form-beginTime',
-	        zIndex: 999,
-			format: 'yyyy-mm-dd',
-	        onSelected: function (view, date, data) {
-	        },
-	        onClose: function (view, date, data) {
 
-	        }
-	    });
-	  $('#getEndTime').calendar({
-	        trigger: '#form-endTime',
-	        zIndex: 999,
-			format: 'yyyy-mm-dd',
-	        onSelected: function (view, date, data) {
-
-	        },
-	        onClose: function (view, date, data) {
-
-	        }
-	    });
-	
-  })
-	
-	
-	
 		var JsonG = {}
 		var AllRowselect = [];
 		var j=0;

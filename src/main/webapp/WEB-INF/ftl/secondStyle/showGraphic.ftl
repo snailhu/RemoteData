@@ -2,19 +2,16 @@
 
 <script type="text/javascript" src="${base}/static/js/echarts.min.js"></script>
 <script type="text/javascript">
-
-     // 基于准备好的dom，初始化echarts实例
     
     $(function(){
     	var myChart = echarts.init(document.getElementById('main'));
     	var seriesOptions = []
         seriesCounter = 0
         var date = [];
-        names = ['flywheel_b_power_plus_5V'];
+        names = ['flywheel_a_speed','flywheel_f_motor_current'];
          var options = {
             tooltip: {
-                trigger: 'axis',
-              
+                trigger: 'axis',              
             },
             title: {
                 left: 'center',
@@ -22,8 +19,8 @@
             },
             legend: {
                 top: 'bottom', 
-                 data:['flywheel_b_power_plus_5V']
-                            
+                 data:['flywheel_a_speed']
+                           
             },
             toolbox: {
                 feature: {
@@ -35,11 +32,12 @@
                 }
             },
             xAxis: {
+            	// axisLabel: {					
+				//	rotate: 10
+				//	},
                 type: 'category',
                 boundaryGap: false,
-                // data:[ "2015-08-11 00:14:57","2015-08-12 00:14:57","2015-08-13 00:14:57","2015-08-14 00:14:58","2015-08-15 00:14:58","2015-08-16 00:14:58","2015-08-17 00:14:58","2015-08-18 00:14:59","2015-08-19 00:14:59","2015-08-20 00:14:59"]
-                 data:[]
-                
+                data:[]              
             },
             yAxis: [{
                 type: 'value',
@@ -47,91 +45,103 @@
             dataZoom: [{
                 type: 'inside',
                 start:20,
-                end:25
-         
+                end:25         
             }],
             series: []
-        };    	  
-    	
+        };    	     	
     	 $.getJSON('${base}/getDate', function (data) {
 			 options.xAxis.data = eval(data);
-
+			 myChart.setOption(options);	
      });   
     	    	   
         $.each(names, function (i, name) {
-
-        $.getJSON('${base}/getData?filename=' + name.toLowerCase(), function (data) {
-
-            seriesOptions[i] = {
-            	type: 'line',
-                name: name,
-                data: data
-            };
-            seriesCounter += 1;
-            if (seriesCounter === names.length) {
-            	options.series = eval(seriesOptions);
-            	console.log(options)
-                myChart.setOption(options);
-                
-            }
-        });
-    });
-    
+	        $.getJSON('${base}/getData?filename=' + name.toLowerCase(), function (data) {	
+	            seriesOptions[i] = {
+	            	type: 'line',
+	                name: name,
+	                data: data
+	            };
+	            seriesCounter += 1;
+	            if (seriesCounter === names.length) {
+	            	options.series = eval(seriesOptions);
+	            	console.log(options)
+	                myChart.setOption(options);	                
+	            }
+	        });
+    	});   
     	 
     })
 
     </script>	
 </@override>
 <@override name="header">	
-	<div class="navbar-container" id="navbar-container">
-        <div class="navbar-header pull-left">
-            <a href="#" class="navbar-brand">
-                <small>
-                    <i class="icon-leaf"></i>
-                    Ace Admin
-                </small>
-            </a><!-- /.brand -->
-        </div><!-- /.navbar-header -->
+<link rel="stylesheet"
+	href="${base}/static/css/cssnew2.css" />
+<style type="text/css">
+a:link {
+	text-decoration: none;
+}
 
-        <div class="navbar-header pull-right" role="navigation">
-            <ul class="nav ace-nav">
-                <li class="light-blue">
-                    <a data-toggle="dropdown" href="#" class="dropdown-toggle">
-                        <img class="nav-user-photo" src="${base}/static/assets/avatars/user.jpg" alt="Jason's Photo" />
-                        <span class="user-info">
-                            <small>Welcome,</small>
-                            Jason
-                        </span>
-                        <i class="icon-caret-down"></i>
-                    </a>
-                    <ul class="user-menu pull-right dropdown-menu dropdown-yellow dropdown-caret dropdown-close">
-                        <li>
-                            <a href="#">
-                                <i class="icon-cog"></i>
-                                Settings
-                            </a>
-                        </li>
+a:visited {
+	text-decoration: none;
+}
 
-                        <li>
-                            <a href="#">
-                                <i class="icon-user"></i>
-                                Profile
-                            </a>
-                        </li>
+a:hover {
+	text-decoration: none;
+}
 
-                        <li class="divider"></li>
-
-                        <li>
-                            <a href="#">
-                                <i class="icon-off"></i>
-                                Logout
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-            </ul><!-- /.ace-nav -->
-        </div><!-- /.navbar-header -->
-    </div><!-- /.container -->
+a:active {
+	text-decoration: none;
+}
+a, a:focus, a:hover, a:active, button, button:hover {
+    outline: 0 !important;
+/*     color: #4e5eff; */
+}
+.navbar-nav>li>a {
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
+.nav>li>a {
+    position: relative;
+    display: block;
+/*     padding: 10px 15px; */
+}
+.navbar {
+    position: relative;
+    min-height: 50px;
+    margin-bottom: 0px;
+   /* background-color: #fff;*/
+    border: 1px solid transparent;
+    border-bottom: 1px solid #4e5eff;
+}
+</style>
+<div class="navbar navbar-inverse  navbar-static-top">
+	<div class="container topxx" style="font-size:12px">
+		<ul class="nav navbar-nav navbar-right pull-right">
+			<li><a href="/Account/Register" id="registerLink">注册</a></li>
+			<li style="position:relative; top:15px">|</li>
+			<li><a href="/Account/Login" id="loginLink">登录</a></li>
+		</ul>
+	</div>
+	<div class="container">
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle" data-toggle="collapse"
+				data-target=".navbar-collapse">
+				<span class="icon-bar"></span> <span class="icon-bar"></span> <span
+					class="icon-bar"></span>
+			</button>
+			<a class="navbar-brand" href="/"> </a>
+		</div>
+		<div class="navbar-collapse collapse" >
+			<ul class="nav navbar-nav navbar-right">
+				<li><a href="Index" style="color: #9d9d9d;;font-size: 18px;line-height: 1.8;">网站首页</a></li>
+				<li><a href="admin/file/toUploadFile" style="color: #9d9d9d;;font-size: 18px;line-height: 1.8;">文件上传</a></li>
+				<li><a href="admin/file/index" style="color: #9d9d9d;;font-size: 18px;line-height: 1.8;">文件管理</a></li>
+				<li><a href="analysisData" style="color: #9d9d9d;;font-size: 18px;line-height: 1.8;">图表管理</a></li>
+			</ul>
+		</div>
+	</div>
+</div>
 </@override>
 <@override name="content_left">
     <div class="sidebar" id="sidebar">
@@ -146,7 +156,7 @@
 	            <ul class="submenu">
 				<#list lPs as lp>
 					<li>
-	                    <a href="${lp.id}" class="dropdown-toggle">
+	                  <a href="#" class="dropdown-toggle">
 	                        <i class="icon-double-angle-right"></i>${lp.id}
 	                    	               
 	                    </a>
@@ -165,6 +175,6 @@
 </@override>
 
 <@override name="content_right">
-	 <div id="main" style="width: 1300px;height:400px;left:150px"></div>
+	 <div id="main" style="width: 1200px;height:400px;left:150px"></div>
 </@override>	
 <@extends name="/secondStyle/baseNew.ftl"/>

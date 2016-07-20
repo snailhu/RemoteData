@@ -1,8 +1,10 @@
 package DataAn.fileSystem.service.impl;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -27,9 +29,16 @@ public class CSVServiceImpl implements ICSVService{
 	
 	@Override
 	public List<Document> readCSVFileToDoc(String filePath) throws Exception {
-		File file = new File(filePath);
-		InputStream in = new FileInputStream(file);
-		return this.readCSVFileToDoc(in);
+		InputStream in = null;
+		try {
+			in = new FileInputStream(new File(filePath));
+//			in = new BufferedInputStream(new FileInputStream(new File(filePath)));
+			return this.readCSVFileToDoc(in);
+		} finally{
+			if(in != null){
+				in.close();
+			}
+		}
 	}
 
 	@Override

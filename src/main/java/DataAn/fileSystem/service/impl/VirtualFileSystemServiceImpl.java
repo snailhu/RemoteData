@@ -1,9 +1,12 @@
 package DataAn.fileSystem.service.impl;
 
 import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -22,6 +25,7 @@ import com.alibaba.fastjson.JSON;
 
 import DataAn.common.pageModel.Pager;
 import DataAn.common.utils.DateUtil;
+import DataAn.common.utils.FileUtil;
 import DataAn.common.utils.UUIDGeneratorUtil;
 import DataAn.fileSystem.dao.IVirtualFileSystemDao;
 import DataAn.fileSystem.domain.VirtualFileSystem;
@@ -74,6 +78,15 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 //		dateMap.put("day", day);
 //		System.out.println(year + "-" + month + "-" + day);
 		
+		//保存csv临时文件
+		String csvTempFilePath = "D:\\temp\\csv";
+		File writeDir = new File(csvTempFilePath);
+		if (!writeDir.exists()) {
+			writeDir.mkdirs();
+		}	
+		csvTempFilePath = "D:\\temp\\csv\\" + fileName;
+		FileUtil.saveFile(csvTempFilePath, csvFileDto.getIn());
+		csvFileDto.setFilePath(csvTempFilePath);
 		// 保存 *.csv文件
 		this.saveFileOfCSV(csvFileDto, dataMap);
 		//获取map中的csv文件
@@ -274,12 +287,6 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 		return sb.toString();
 	}
 	
-	private void saveDataOfCSVInMongoDB(InputStream csvInput, String nowStar) throws Exception{
-		MongodbUtil mg = MongodbUtil.getInstance();
-		List<Document> docList = csvService.readCSVFileToDoc(csvInput);
-		String collectionName = J9SeriesType.getJ9StarType(nowStar).getName();
-		mg.insert(collectionName , docList);
-	}
 	private void saveFileOfCSV(FileDto fileDto, Map<String,String> dataMap) throws Exception{
 		
 		
@@ -290,12 +297,6 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 		String year = dataMap.get("year");
 		String month = dataMap.get("month");
 //		String day = dateMap.get("day");
-		
-		//解析 *.csv文件保存csv里面的数据
-		BufferedInputStream csvInput = new BufferedInputStream(fileDto.getIn()) ;
-//		csvInput.mark(0);
-		this.saveDataOfCSVInMongoDB(csvInput, star);
-//		csvInput.reset();
 		
 		//查找csv的文件夹是否存在
 		VirtualFileSystem csvDir = fileDao.selectByParentIdisNullAndFileName("csv");
@@ -347,9 +348,41 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 		file.setMongoFSUUId(uuId);
 		fileDao.add(file);
 		
-		//保存csv文件
-		IDfsDb dfs = MongoDfsDb.getInstance();
-		dfs.upload(fileDto.getFileName(), uuId, fileDto.getIn());
+//		//解析 *.csv文件保存csv里面的数据
+//		this.saveDataOfCSVInMongoDB(fileDto.getFilePath(), star);
+//
+//		//保存csv文件
+//		IDfsDb dfs = MongoDfsDb.getInstance();
+//		dfs.upload(uuId, fileDto.getFilePath());
+		
+//		InputStream fis = new FileInputStream(fileDto.getFilePath());   
+		BufferedInputStream bis = null;
+		try {
+			bis = new BufferedInputStream(new FileInputStream(fileDto.getFilePath()));  
+			bis.mark(0);
+			this.saveDataOfCSVInMongoDB(bis, star);
+			bis.reset();
+			
+			IDfsDb dfs = MongoDfsDb.getInstance();
+			dfs.upload(fileDto.getFileName(), uuId, bis);
+		} finally {
+			if(bis != null){
+				bis.close();
+			}
+		}
+	}
+	
+	private void saveDataOfCSVInMongoDB(InputStream csvInput, String nowStar) throws Exception{
+		MongodbUtil mg = MongodbUtil.getInstance();
+		List<Document> docList = csvService.readCSVFileToDoc(csvInput);
+		String collectionName = J9SeriesType.getJ9StarType(nowStar).getName();
+		mg.insert(collectionName , docList);
+	}
+	private void saveDataOfCSVInMongoDB(String csvPath, String nowStar) throws Exception{
+		MongodbUtil mg = MongodbUtil.getInstance();
+		List<Document> docList = csvService.readCSVFileToDoc(csvPath);
+		String collectionName = J9SeriesType.getJ9StarType(nowStar).getName();
+		mg.insert(collectionName , docList);
 	}
 	
 	private void saveFileOfDAT(FileDto fileDto, Map<String,String> dataMap){

@@ -1,6 +1,13 @@
 package DataAn.common.utils;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 public class FileUtil {
 
@@ -106,5 +113,31 @@ public class FileUtil {
 			return false;
 
 		return flag;
+	}
+	
+	public static void saveFile(String filePath,InputStream in) throws Exception{
+		//保存csv一个临时文件
+		BufferedInputStream bis = null; 
+		BufferedOutputStream bos = null;
+		try {
+			bis = new BufferedInputStream(in);
+			bos = new BufferedOutputStream(new FileOutputStream(new File(filePath)));
+			int hasRead = 0;  
+			byte b[] = new byte[1024];  
+			while((hasRead = bis.read(b)) > 0){  
+				bos.write(b, 0, hasRead);  
+			}  
+		} finally{  
+            if(bos != null){  
+            	bos.flush();  
+            	bos.close();    
+            }  
+            if(bis != null){  
+            	bis.close();  
+            }  
+            if(in != null){
+            	in.close();
+            }
+        }  
 	}
 }

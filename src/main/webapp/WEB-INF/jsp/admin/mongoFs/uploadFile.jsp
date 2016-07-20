@@ -272,7 +272,7 @@ input[type=text]::-webkit-focus-inner {
 										<div class="uploader white">
 											<input type="text" class="filename" name="showDatFileName" placeholder="No file selected..." readonly/>
 											<input type="button" class="button" value="Browse..."/>
-											<input type="file" name="datFile"/>
+											<input type="file" accept=".DAT" name="datFile"/>
 										</div>
 									</div>
 								</div>
@@ -283,7 +283,7 @@ input[type=text]::-webkit-focus-inner {
 										<div class="uploader blue">
 											<input type="text" class="filename" placeholder="No file selected..." readonly/>
 											<input type="button" class="button" value="Browse..."/>
-											<input type="file" name="csvFile"/>
+											<input type="file" accept=".csv" name="csvFile"/>
 										</div>
 									</div>
 								</div>

@@ -16,7 +16,7 @@
     <script type="text/javascript" src="${base}/static/jqwidgets/jqxgrid.selection.js"></script>
     <script type="text/javascript" src="${base}/static/jqwidgets/jqxgrid.edit.js"></script>
     <script type="text/javascript" src="${base}/static/scripts/demos.js"></script>
-    
+	
     <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" style="overflow: hidden;display:none">
 	  <div class="modal-dialog" role="document">
 	    <div class="modal-content">
@@ -117,6 +117,7 @@
 	</div><!-- /.main-content -->
 	<script type="text/javascript">	
 		  $(function(){
+	/**  
 	  $('#getBeginTime').calendar({
 	        trigger: '#form-beginTime',
 	        zIndex: 999,
@@ -138,7 +139,7 @@
 
 	        }
 	    });
-	
+	*/
   })
 	
 	

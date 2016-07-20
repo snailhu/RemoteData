@@ -1,10 +1,7 @@
 package DataAn.fileSystem.service;
 
-import java.util.List;
 import java.util.Map;
-
 import DataAn.common.pageModel.Pager;
-import DataAn.fileSystem.domain.VirtualFileSystem;
 import DataAn.fileSystem.dto.FileDto;
 
 public interface IVirtualFileSystemService {

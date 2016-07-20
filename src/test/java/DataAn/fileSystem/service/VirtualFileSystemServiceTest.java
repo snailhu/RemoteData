@@ -30,7 +30,7 @@ public class VirtualFileSystemServiceTest {
 	
 	@Test
 	public void test(){
-		fileService.isExistFile(null);
+		
 	}
 	
 	@Test
@@ -39,7 +39,7 @@ public class VirtualFileSystemServiceTest {
 		Map<String, FileDto> map = new HashMap<String,FileDto>();
 		
 		FileDto csvFileDto = new FileDto();
-		String csv = "C:\\j9-02--2015-08-11.csv";
+		String csv = "C:\\j9-02--2015-08-17.csv";
 		File csvFile = new File(csv);
 		InputStream csvInput = new FileInputStream(csvFile);
 		csvFileDto.setFileName(csvFile.getName());
@@ -48,7 +48,7 @@ public class VirtualFileSystemServiceTest {
 		map.put("csv", csvFileDto);
 		
 		FileDto datFileDto = new FileDto();
-		String dat = "C:\\XX9(02)--20150811(公开).DAT";
+		String dat = "C:\\XX9(02)--20150817(公开).DAT";
 		File datFile = new File(dat);
 		InputStream datInput = new FileInputStream(datFile);
 		datFileDto.setFileName(datFile.getName());

@@ -6,13 +6,14 @@ public interface IDfsDb {
 	/**
 	* @Title: upload
 	* @Description: 通过本地文件目录上传文件
+	* @param mongoFSUUId 跟数据库对应的唯一表示UUID
 	* @param filePath 本地文件路径
 	* @throws Exception
 	* @author Shenwp
 	* @date 2016年6月17日
 	* @version 1.0
 	*/
-	public abstract boolean upload(String filePath) throws Exception ;
+	public abstract boolean upload(String mongoFSUUId,String filePath) throws Exception ;
 
 
 	/**

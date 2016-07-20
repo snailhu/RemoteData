@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -64,6 +65,26 @@ public class CommonController {
 		mv.addObject("lPs", lPs);
 		return mv;
 		}
+	
+//	@RequestMapping(value = "/group/{id}", method = { RequestMethod.GET})
+//	public ModelAndView showGraphicBygroup(
+//			HttpServletRequest request,
+//			HttpServletResponse response,
+//			@PathVariable Integer id) throws Exception {	
+//		EhCache ehCache = new EhCache(); 
+//		AllJsonData ad = (AllJsonData) ehCache.getCacheElement("AllJsonData");
+//		List<ParamGroup> lPs = ad.getAlldata();
+//		for(ParamGroup pg:lPs){
+//			if(pg.getJ()==id){
+//				
+//			}
+//		}
+//		ModelAndView mv = new ModelAndView("/secondStyle/showGraphic");
+//		mv.addObject("lPs", lPs);
+//		return mv;
+//		}
+	
+	
 	
 	@RequestMapping(value = "/getDate", method = RequestMethod.GET)
 	@ResponseBody

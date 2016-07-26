@@ -21,6 +21,7 @@ import org.junit.Test;
 
 import DataAn.Analysis.dto.ConstraintDto;
 import DataAn.common.utils.DateUtil;
+import DataAn.common.utils.UUIDGeneratorUtil;
 import DataAn.fileSystem.service.impl.CSVServiceImpl;
 import DataAn.mongo.db.MongodbUtil;
 
@@ -32,7 +33,7 @@ public class CSVServiceTest {
 
 	private ICSVService csvService;
 	
-	private String filePath = "C:\\j9-02--2015-08-15.csv";
+	private String filePath = "C:\\j9-02--2015-08-17.csv";
 	@Before
 	public void init(){
 		csvService = new CSVServiceImpl();
@@ -58,7 +59,8 @@ public class CSVServiceTest {
 	public void readCSVFileToDoc(){
 		long begin = System.currentTimeMillis();
 		try {
-			List<Document> list = csvService.readCSVFileToDoc(filePath);
+			String uuId = UUIDGeneratorUtil.getUUID();
+			List<Document> list = csvService.readCSVFileToDoc(filePath,uuId);
 			System.out.println("size: " + list.size());
 			for (Document document : list) {
 				System.out.println(document);

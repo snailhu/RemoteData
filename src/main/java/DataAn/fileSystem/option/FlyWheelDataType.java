@@ -23,7 +23,7 @@ public enum FlyWheelDataType {
 	 /**采集数据26:飞轮a电源+5V(16026)*/
 	FLYWHEEL_A_POWER_PLUS_5V {
 		public String getName() {
-			return "flywheel_a_power_plus_5V";
+			return "flywheel_a_power_plus_5v";
 		}
 		public String getValue() {
 			return "采集数据26:飞轮a电源+5V(16026)";
@@ -41,10 +41,10 @@ public enum FlyWheelDataType {
 	 /**采集数据28:飞轮b电源+5V(16028)*/
 	FLYWHEEL_B_POWER_PLUS_5V {
 		public String getName() {
-			return "flywheel_b_power_plus_5V";
+			return "flywheel_b_power_plus_5v";
 		}
 		public String getValue() {
-			return "采集数据28:飞轮b电源+5V(16028)";
+			return "采集数据28:飞轮b电源+5v(16028)";
 		}
 	},
 	 /**采集数据29:飞轮c电机电流(16029)*/
@@ -59,7 +59,7 @@ public enum FlyWheelDataType {
 	 /**采集数据30:飞轮c电源+5V(16030)*/
 	FLYWHEEL_C_POWER_PLUS_5V {
 		public String getName() {
-			return "flywheel_c_power_plus_5V";
+			return "flywheel_c_power_plus_5v";
 		}
 		public String getValue() {
 			return "采集数据30:飞轮c电源+5V(16030)";
@@ -77,7 +77,7 @@ public enum FlyWheelDataType {
 	 /**采集数据32:飞轮d电源+5V(16032)*/
 	FLYWHEEL_D_POWER_PLUS_5V {
 		public String getName() {
-			return "flywheel_d_power_plus_5V";
+			return "flywheel_d_power_plus_5v";
 		}
 		public String getValue() {
 			return "采集数据32:飞轮d电源+5V(16032)";
@@ -95,7 +95,7 @@ public enum FlyWheelDataType {
 	 /**采集数据34:飞轮e电源+5V(16034)*/
 	FLYWHEEL_E_POWER_PLUS_5V {
 		public String getName() {
-			return "flywheel_e_power_plus_5V";
+			return "flywheel_e_power_plus_5v";
 		}
 		public String getValue() {
 			return "采集数据34:飞轮e电源+5V(16034)";
@@ -113,7 +113,7 @@ public enum FlyWheelDataType {
 	 /**采集数据36:飞轮f电源+5V(16036)*/
 	FLYWHEEL_F_POWER_PLUS_5V {
 		public String getName() {
-			return "flywheel_f_power_plus_5V";
+			return "flywheel_f_power_plus_5v";
 		}
 		public String getValue() {
 			return "采集数据36:飞轮f电源+5V(16036)";

@@ -10,6 +10,30 @@
     <meta property="qc:admins" content="1403664507655111637646375" />
     <title>中国航天</title>
     <link href="${base}/static/css/cssnew.css" rel="stylesheet"/>
+    <style type="text/css">
+	h1, h2, h3, h4, h5, h6 {
+	    color: #aaa;
+	    margin-top: -45px;
+	    text-shadow: none;
+	    font-weight: normal;
+	    font-family: Microsoft YaHei,tahoma,arial,"Hiragino Sans GB",\5b8b\4f53;
+	}
+	h2 {
+	    font-size: 36px;
+	    line-height: 33px;
+	}
+	.jumbotron p {
+	    margin-bottom: 15px;
+	    font-size: 50px;
+	    margin-top: 30px;
+	    margin-bottom: 60px;
+	}
+	.btn-primary {
+	    color: #fff;
+	    background-color: rgba(255,255,255,.15);
+	    border-color: rgba(0,0,0,.075);
+	}
+	</style>
     <script src="${base}/static/js/modernizr.js"></script>
 	<!-- basic scripts -->
 	<!--[if !IE]> -->
@@ -42,9 +66,19 @@
     <div class="navbar navbar-inverse  navbar-static-top">
         <div class="container topxx" style="font-size:12px">    
 	        <ul class="nav navbar-nav navbar-right pull-right">
+	        	<!--
 		        <li><a href="/Account/Register" id="registerLink">注册</a></li>
 		        <li style="position:relative; top:15px"> |</li>
-		        <li><a href="/Account/Login" id="loginLink">登录</a></li>
+		        -->
+		        <#if userName??>
+		        	<li>
+						<a href="javascript:void(0)" id="loginLink">
+								欢迎光临,${userName}
+						</a>
+					</li>
+		        <#else>
+			        <li><a href="login" id="loginLink">登录</a></li>
+		        </#if>
 		    </ul>
 		</div>
         <div class="container">
@@ -62,6 +96,7 @@
                     <li><a href="admin/file/toUploadFile">文件上传</a></li>
                     <li><a href="admin/file/index">文件管理</a></li>
                     <li><a href="analysisData">图表管理</a></li>
+                    <li><a href="admin/galaxy/index">星系管理</a></li>
                 </ul>               
             </div>
         </div>
@@ -69,9 +104,9 @@
    
 <div class="jumbotron masthead">
     <div class="container">
-        <h1>China Areospace</h1>
-        <p class="lead">中国航天集团</p>
-        <p><a href="http://www.tongyuan.cc/" class="btn btn-primary btn-lg">苏州·同元，0871-65228007 &raquo;</a></p>
+        <p class="lead">中国航天科技集团公司</p>
+        <h3>China Areospace Science and Technology Corpotation</h3>
+        <p><a href="javascript:void(0)" class="btn btn-primary btn-lg">第八研究院803所惯导部</a></p>
     </div>
 </div>
 

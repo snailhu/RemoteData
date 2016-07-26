@@ -220,7 +220,7 @@ public class BaseDaoImpl<T> implements IBaseDao<T> {
 	@Override
 	public long getTotalCount(String propertyName, Object value) {
 		String hql = ""; 
-		if(propertyName == null){
+		if(propertyName == null || "".equals(propertyName)){
 			hql = "select count (*) from " + this.clz.getName();
 			return (long) this.getSession().createQuery(hql).uniqueResult();
 		}else{

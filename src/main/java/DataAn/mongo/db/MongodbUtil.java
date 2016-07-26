@@ -112,9 +112,10 @@ public class MongodbUtil {
 		    		break;
 		    	}
 		    	Document doc = cursor.next();
-		    	String key = DateUtil.formatString(doc.getString("datetime"), "yyyy-MM-dd HH:mm:ss");
-		    	float value = Float.parseFloat(doc.getString("flywheel_a_power_plus_5V"));
-		    	System.out.println(key + " : " + value);
+		    	System.out.println(doc);
+//		    	String key = DateUtil.formatString(doc.getString("datetime"), "yyyy-MM-dd HH:mm:ss");
+//		    	float value = Float.parseFloat(doc.getString("flywheel_a_power_plus_5V"));
+//		    	System.out.println(key + " : " + value);
 //		    	map.put(key, value);
 //		    	list.add(value);
 		    	count ++;
@@ -131,19 +132,33 @@ public class MongodbUtil {
 		System.out.println(doc.toJson());
 	}
 	
-	public void update(){
-		MongoCollection<Document> collection = db.getCollection("testNew");
-		collection.updateOne(Filters.eq("i", 5), Updates.set("i", 51));
+	public void update(String collectionName,String key,String value){
+		MongoCollection<Document> collection = db.getCollection(collectionName);
+		collection.updateMany(Filters.eq(key, value), Updates.set("status", 0));
+		// 更新。若包含companyid属性，则热度加10后更新
+//        collection.updateOne(
+//                Filters.eq(key, value),
+//                new Document("$inc", new Document("status", 1)));
+        // 批量更新。所有包含hotness属性的其hotness值乘以2
+//        collection.updateMany(Filters.exists("hotness"), new Document(
+//                "$mul", new Document("hotness", 2)));
+	}
+	
+	public void updateBy(String collectionName, String beginDate, String endDate) {
+		MongoCollection<Document> collection = db.getCollection(collectionName);
+		collection.updateMany(
+							Filters.and(Filters.gte("datetime", beginDate),
+										Filters.lte("datetime", endDate)),
+							Updates.set("status", 1));
 	}
 	public void deleteOne(){
 		MongoCollection<Document> collection = db.getCollection("testNew");
 		collection.deleteOne(Filters.eq("i", 9));
 	}
-	public void deleteMany(){
-		MongoCollection<Document> collection = db.getCollection("testNew");
-		// >= 100
-		DeleteResult deleteResult = collection.deleteMany(Filters.gte("i", 10));
-		System.out.println(deleteResult.getDeletedCount());
+	public void deleteMany(String collectionName,String key,String value){
+		MongoCollection<Document> collection = db.getCollection(collectionName);
+		// key == value
+		collection.deleteMany(Filters.eq(key, value));
 	}
 	public void dropCollection(){
 		MongoCollection<Document> collection = db.getCollection("testNew");

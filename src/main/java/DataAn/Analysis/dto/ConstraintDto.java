@@ -1,5 +1,7 @@
 package DataAn.Analysis.dto;
 
+import java.util.List;
+
 /**
 * Title: ConstraintDto
 * @Description: 约束条件描述
@@ -9,9 +11,12 @@ package DataAn.Analysis.dto;
 public class ConstraintDto {
 
 	private int id;
+	private int parentId;
 	private String name;
+	private String value;
 	private float max;
 	private float min;
+	private List<ConstraintDto> children;
 	
 	public int getId() {
 		return id;
@@ -19,11 +24,25 @@ public class ConstraintDto {
 	public void setId(int id) {
 		this.id = id;
 	}
+	
+	public int getParentId() {
+		return parentId;
+	}
+	public void setParentId(int parentId) {
+		this.parentId = parentId;
+	}
 	public String getName() {
 		return name;
 	}
 	public void setName(String name) {
 		this.name = name;
+	}
+	
+	public String getValue() {
+		return value;
+	}
+	public void setValue(String value) {
+		this.value = value;
 	}
 	public float getMax() {
 		return max;
@@ -37,11 +56,22 @@ public class ConstraintDto {
 	public void setMin(float min) {
 		this.min = min;
 	}
+	public List<ConstraintDto> getChildren() {
+		return children;
+	}
+	public void setChildren(List<ConstraintDto> children) {
+		this.children = children;
+	}
 	@Override
 	public String toString() {
-		return "ConstraintDto [id=" + id + ", name=" + name + ", max=" + max
-				+ ", min=" + min + "]";
+		return "ConstraintDto [id=" + id + ", parentId=" + parentId + ", name="
+				+ name + ", value=" + value + ", max=" + max + ", min=" + min
+				+ ", children=" + children + "]";
 	}
+	
+	
+	
+	
 	
 	
 }

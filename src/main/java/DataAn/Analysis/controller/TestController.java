@@ -38,8 +38,12 @@ public class TestController {
 	}
 	
 	
-
-	
+//下面为由Hanz添加的用于测试的控制器
+	@RequestMapping(value ="/conditionMonitoring")
+	public String goConditionMonitoring()
+	{
+		return "conditionMonitoring";
+	}
 
 	
 	

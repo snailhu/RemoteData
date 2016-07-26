@@ -12,23 +12,47 @@
 	function title() {
 	    return '卫星运行状态信息';
 	}
-
-	//模拟动态加载内容(真实情况可能会跟后台进行ajax交互)
-	function content() {
+	var currentDate =new Date();
+	var beginDate=new Date(2016,1,1,1,1,1)
+	
+	//两个日期的差值(d1 - d2)
+	function DateDiff(d1,d2){
+	  	var day = 24 * 60 * 60 *1000;
+		try{  
+		    var dateArr = d1.split("-");
+		  var checkDate = new Date();
+		    checkDate.setFullYear(dateArr[0], dateArr[1]-1, dateArr[2]);
+		  var checkTime = checkDate.getTime();
+		  
+		  var dateArr2 = d2.split("-");
+		  var checkDate2 = new Date();
+		    checkDate2.setFullYear(dateArr2[0], dateArr2[1]-1, dateArr2[2]);
+		  var checkTime2 = checkDate2.getTime();
+		   
+		  var cha = (checkTime - checkTime2)/day; 
+		    return cha;
+		    alert(cha+"|"+d1+"|"+d2)
+		  }catch(e){
+		  return false;
+		}
+	}
 	//获取时间差
 	Date.prototype.diff = function(date){
 	  return (this.getTime() - date.getTime())/(24 * 60 * 60 * 1000);
 	}
-	var currentDate = new Date(); //实例一个时间对象；
-	var beginDate = new Date(2006,0,12,0,0,0);
-	var runtime = currentDate.diff(beginDate);
-	//alert(currentDate+"----"+beginDate);
+	//var runtime=DateDiff(currentDate,beginDate);
+	var runtime=(currentDate-beginDate)/;
+	//alert(currentDate+"|"+beginDate+"|"+runtime)
+	//模拟动态加载内容(真实情况可能会跟后台进行ajax交互)
+	function content() {
 	    var data = $("<form><ul><li><span aria-hidden='true' class='icon_globe'></span>&nbsp;<font>卫星代号:</font>j9-1</li>" +
 	             "<li><span aria-hidden='true' class='icon_piechart'></span>&nbsp;<font>开始时间:</font>2016年1月1日</li>" +
 	             "<li><span aria-hidden='true' class='icon_search_alt'></span>&nbsp;<font>运行时间:"+runtime+"</font></li>"); 
 	    return data;
-	}	
+		
+	}
 	$(function(){
+	
 		//中心点横坐标
 		var dotLeft = ($(".container").width()-$(".dot").width())/2-100;
 		//中心点纵坐标
@@ -86,7 +110,6 @@
 					"opacity":1
 				});
 				//alert($(this).attr('id'));
-				
      		});			
 		}
 		
@@ -105,7 +128,7 @@
 
 		//悬浮窗口消失时继续旋转
 		$("[data-toggle='popover']").on('hidden.bs.popover', function() {setAnimate = setInterval(fun_animat,100)}); 
-	})
+	});
 </script>
 <style type="text/css">
 	*{margin:0;padding:0;}
@@ -113,8 +136,18 @@
 		background:#FFFFFF;
 		}	
 	.container{position:relative;width:1000px;height:700px; margin:0 auto;z-index:1}
-	.container img{position:absolute;width:293px;height:144px;background:#000; color:#FFFFFF; font-size:16px;z-index:2}
+	.container imgg{position:absolute;width:293px;height:144px;background:#000; color:#FFFFFF; font-size:16px;z-index:2}
 	.dot{ position:absolute;width:20px;height:20px;background:#F00;}
+	
+	.container img {
+		position:absolute;width:293px;height:144px;
+		azimuth: expression_r(
+		this.pngSet?this.pngSet=true:(this.nodeName == "IMG" && this.src.toLowerCase().indexOf('.png')>-1?(this.runtimeStyle.backgroundImage = "none",
+		this.runtimeStyle.filter = "progid:DXImageTransform.Microsoft.AlphaImageLoader(src='" + this.src + "', sizingMethod='image')",
+		this.src = "transparent.gif"):(this.origBg = this.origBg? this.origBg :this.currentStyle.backgroundImage.toString().replace('url("','').replace('")',''),
+		this.runtimeStyle.filter = "progid:DXImageTransform.Microsoft.AlphaImageLoader(src='" + this.origBg + "', sizingMethod='crop')",
+		this.runtimeStyle.backgroundImage = "none")),this.pngSet=true);
+		}
 </style>
 </head>
 <body>
@@ -132,21 +165,23 @@
 		<img src="${base}/static/images/earth1.jpg" height="100%" width="100%"/>
 	</div>
 	<div class="container">
+	<div style="left:500px;top:500px;">
 		<a href="Index"  data-toggle="popover" data-placement="bottom" data-trigger="hover">
-		<img id="1" style="padding:5px; border:1px solid #CCC; left:500px; top:500px;" src="${base}/static/images/satellite.jpg" alt="卫星1" />
+		<img id="1"  src="${base}/static/images/satellite.png" alt="卫星1" />
 		</a>
 		<a href="Index"  data-toggle="popover" data-placement="bottom" data-trigger="hover">
-		<img style="padding:5px; border:1px solid #CCC" src="${base}/static/images/satellite.jpg" alt="卫星2" />
+		<img  src="${base}/static/images/satellite.png" alt="卫星2" />
 		</a>
 		<a href="Index"  data-toggle="popover" data-placement="bottom" data-trigger="hover">
-		<img id="2" style="padding:5px; border:1px solid #CCC" src="${base}/static/images/satellite.jpg" alt="卫星3" />
+		<img id="2"  src="${base}/static/images/satellite.png" alt="卫星3" />
 		</a>
 		<a  href="Index"  data-toggle="popover" data-placement="bottom" data-trigger="hover">
-		<img id="3" style="padding:5px; border:1px solid #CCC" src="${base}/static/images/satellite.jpg" alt="卫星4" />
+		<img id="3"  src="${base}/static/images/satellite.png" alt="卫星4" />
 		</a>
 		<a href="Index"  data-toggle="popover" data-placement="bottom" data-trigger="hover">
-		<img style="padding:5px; border:1px solid #CCC" src="${base}/static/images/satellite.jpg" alt="卫星5" />
+		<img  src="${base}/static/images/satellite.png" alt="卫星5" />
 		</a>
+	</div>
 	</div>
 </body>
 </html>

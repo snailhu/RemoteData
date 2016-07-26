@@ -10,9 +10,7 @@
   	<title><@block name="title"></@block></title>
   	 	
 	<link href="${base}/static/assets/css/bootstrap.min.css" rel="stylesheet" />
-	<link rel="stylesheet" href="${base}/static/assets/css/font-awesome.min.css" />
-	
-	
+	<link rel="stylesheet" href="${base}/static/assets/css/font-awesome.min.css" />	
 	<link rel="stylesheet" href="${base}/static/css/css.css" />
 	<link rel="stylesheet" href="${base}/static/assets/css/ace.min.css" />
 	<link rel="stylesheet" href="${base}/static/assets/css/ace-rtl.min.css" />

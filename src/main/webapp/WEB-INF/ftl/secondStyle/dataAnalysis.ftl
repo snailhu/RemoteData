@@ -1,7 +1,10 @@
-<@override name="content_right">
-	
+<@override name="content_right">	
 	<link rel="stylesheet" href="${base}/static/jqwidgets/styles/jqx.base.css" type="text/css" />	
     <script type="text/javascript" src="${base}/static/jqwidgets/jqxcore.js"></script>
+    <script type="text/javascript" src="${base}/static/jqwidgets/jqxdatetimeinput.js"></script>
+    <script type="text/javascript" src="${base}/static/jqwidgets/jqxcalendar.js"></script>
+    <script type="text/javascript" src="${base}/static/jqwidgets/jqxtooltip.js"></script>
+    <script type="text/javascript" src="${base}/static/jqwidgets/globalization/globalize.js"></script>
     <script type="text/javascript" src="${base}/static/jqwidgets/jqxdata.js"></script>
     <script type="text/javascript" src="${base}/static/jqwidgets/jqxbuttons.js"></script>
     <script type="text/javascript" src="${base}/static/jqwidgets/jqxscrollbar.js"></script>
@@ -13,9 +16,19 @@
     <script type="text/javascript" src="${base}/static/jqwidgets/jqxgrid.pager.js"></script>
     <script type="text/javascript" src="${base}/static/jqwidgets/jqxgrid.selection.js"></script>
     <script type="text/javascript" src="${base}/static/jqwidgets/jqxgrid.edit.js"></script>
-
     <script type="text/javascript" src="${base}/static/scripts/demos.js"></script>  
-
+	<style>
+		.dateStyle{
+			float:left;
+		}
+		.row {
+		  margin:0px !important
+		}
+		.page-header{
+			padding:0px !important
+		}
+	</style>
+	
     <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"  >
 	  <div class="modal-dialog" role="document" style="margin:30px -200px">
 	    <div class="modal-content">
@@ -82,32 +95,14 @@
 		</div>	
 		<div class="page-content">
 			<div class="page-header">
-				    <form id="fileupload" action="" class="form-horizontal" role="form" >
-				        <div class="space-1"></div>
-				        <div class="form-group" style="margin:0px auto !important">
-				            <label class="col-sm-3 control-label no-padding-right" for="form-beginTime"> 开始时间 </label>
-				            <div class="col-sm-9">
-				                <input type="text" id="form-beginTime" name="beginTime" placeholder="开始时间" class="col-xs-10 col-sm-5" />
-				                <div id="getBeginTime"></div>
-				            </div>
-				        </div>
-				        <div class="space-1"></div>
-				        <div class="form-group" style="margin:0px auto !important">
-				            <label class="col-sm-3 control-label no-padding-right" for="form-endTime"> 结束时间 </label>
-				            <div class="col-sm-9">
-				                <input type="text" id="form-endTime" name="endTime" placeholder="结束时间" class="col-xs-10 col-sm-5" />
-				                <div id="getEndTime"></div>
-				            </div>
-				        </div>				
-				       </div>
-				    </form>   
+				<div class="dateStyle"><label>开始日期</label><div id='dateStart'></div></div>
+				<div class="dateStyle" style="margin-left:20px"><label>结束日期</label><div id='dateEnd'></div> </div> 
+				<div style="clear:both"></div>
 			</div><!-- /.page-header -->
-
 		  
-			<div class="row">
-				<div id='jqxWidget' style="font-size: 13px; font-family: Verdana; float: left;margin-left: 30px;margin-top: -70px;">
-			        <div id="jqxgrid">
-			        </div>
+			<div class="row"> 
+				<div id='jqxWidget'>
+			        <div id="jqxgrid"></div>
 			       	<button data-toggle="modal" data-target="#exampleModal">确定分组</button>
       				<button onclick="getCleared()">清除</button>
       				<button data-toggle="modal"	 onclick="submitGroup()">提交分组</button>
@@ -118,7 +113,11 @@
 		</div><!-- /.page-content -->
 	</div><!-- /.main-content -->
 	<script type="text/javascript">	
-
+		$(function(){
+			$("#dateStart").jqxDateTimeInput({ width: '300px', height: '25px' });
+			$("#dateEnd").jqxDateTimeInput({ width: '300px', height: '25px' });	
+		})
+				
 		var JsonG = {}
 		var AllRowselect = [];
 		var j=0;
@@ -168,7 +167,7 @@
         $.post('${base}/showPanel',
         
         	{
-        		'JsonG':JSON.stringify(JsonG)
+        		'JsonG':JSON.stringify(AllRowselect)
         	
         	},function(){
         	

@@ -23,7 +23,7 @@
 
 	<cache name="captcha" maxElementsInMemory="10000"
 		maxElementsOnDisk="60000" eternal="false" overflowToDisk="true"
-		diskSpoolBufferSizeMB="30" timeToIdleSeconds="60" timeToLiveSeconds="300"
+		diskSpoolBufferSizeMB="30" timeToIdleSeconds="60" timeToLiveSeconds="0"
 		memoryStoreEvictionPolicy="LFU" />
 	<!--配置自定义缓存
         maxElementsInMemory：缓存中允许创建的最大对象数

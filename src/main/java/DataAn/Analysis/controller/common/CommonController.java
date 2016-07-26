@@ -1,7 +1,10 @@
 package DataAn.Analysis.controller.common;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -14,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import DataAn.Analysis.dto.ConstraintDto;
+import DataAn.fileSystem.option.FlyWheelDataType;
 import DataAn.fileSystem.service.IFlyWheelService;
 import DataAn.mongo.db.MongodbUtil;
 
@@ -21,7 +25,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import DataAn.Analysis.dto.AllJsonData;
+import DataAn.Analysis.dto.GroupMenu;
 import DataAn.Analysis.dto.ParamGroup;
+import DataAn.Analysis.dto.SingleParamDto;
 import DataAn.Util.EhCache;
 import DataAn.Util.JsonStringToObj;
 
@@ -47,10 +53,12 @@ public class CommonController {
 	public void showPanel(
 			HttpServletRequest request,
 			HttpServletResponse response,
-			@RequestParam(value="JsonG",required = true) String JsonG) throws Exception {		
-		AllJsonData ad =JsonStringToObj.jsonToObject(JsonG,AllJsonData.class);
+			@RequestParam(value="JsonG",required = true) String JsonG) throws Exception {	
+		Map<String, Class<SingleParamDto>> classMap = new HashMap<String, Class<SingleParamDto>>();
+		classMap.put("secectRow", SingleParamDto.class);
+		List<ParamGroup> pgs =JsonStringToObj.jsonArrayToListObject(JsonG,ParamGroup.class,classMap);
 		EhCache ehCache = new EhCache(); 
-		ehCache.addToCache("AllJsonData", ad);		
+		ehCache.addToCache("AllJsonData", pgs);		
 	}
 	
 
@@ -59,32 +67,14 @@ public class CommonController {
 			HttpServletRequest request,
 			HttpServletResponse response) throws Exception {	
 		EhCache ehCache = new EhCache(); 
-		AllJsonData ad = (AllJsonData) ehCache.getCacheElement("AllJsonData");
-		List<ParamGroup> lPs = ad.getAlldata();
-		ModelAndView mv = new ModelAndView("/secondStyle/showGraphic");
+		@SuppressWarnings("unchecked")
+		List<ParamGroup> lPs = (List<ParamGroup>) ehCache.getCacheElement("AllJsonData");
+		ModelAndView mv = new ModelAndView("/secondStyle/showGraphicByGroup");
 		mv.addObject("lPs", lPs);
 		return mv;
 		}
 	
-//	@RequestMapping(value = "/group/{id}", method = { RequestMethod.GET})
-//	public ModelAndView showGraphicBygroup(
-//			HttpServletRequest request,
-//			HttpServletResponse response,
-//			@PathVariable Integer id) throws Exception {	
-//		EhCache ehCache = new EhCache(); 
-//		AllJsonData ad = (AllJsonData) ehCache.getCacheElement("AllJsonData");
-//		List<ParamGroup> lPs = ad.getAlldata();
-//		for(ParamGroup pg:lPs){
-//			if(pg.getJ()==id){
-//				
-//			}
-//		}
-//		ModelAndView mv = new ModelAndView("/secondStyle/showGraphic");
-//		mv.addObject("lPs", lPs);
-//		return mv;
-//		}
-	
-	
+
 	
 	@RequestMapping(value = "/getDate", method = RequestMethod.GET)
 	@ResponseBody
@@ -98,6 +88,57 @@ public class CommonController {
 		}
 	
 	
+	@RequestMapping(value = "/getMenus", method = RequestMethod.GET)
+	@ResponseBody
+	public List<GroupMenu> getMenus(
+			HttpServletRequest request,
+			HttpServletResponse response
+			) throws Exception{
+		EhCache ehCache = new EhCache(); 
+		@SuppressWarnings("unchecked")
+		List<ParamGroup> lPs = (List<ParamGroup>) ehCache.getCacheElement("AllJsonData");
+		List<GroupMenu> lgm = new ArrayList<GroupMenu>();
+		for(ParamGroup  pg :lPs){
+//			String text="";
+//			List<SingleParamDto> spds =  pg.getSecectRow();
+//			for(SingleParamDto sd :spds){
+//				text+=sd.getName();
+//			}
+			GroupMenu gm = new GroupMenu();
+			gm.setId(pg.getId()+"");
+			gm.setText(pg.getId()+"");
+			gm.setIcon("icon-glass");
+			gm.setUrl("/DataRemote/showGraphic/"+pg.getId());
+			lgm.add(gm);
+		}
+		return lgm;
+	}
+	
+	
+	@RequestMapping(value = "/showGraphic/{id}", method = RequestMethod.GET)
+	@ResponseBody
+	public ModelAndView showGraphic(
+			HttpServletRequest request,
+			HttpServletResponse response,
+			@PathVariable("id") Integer id
+			) throws Exception{
+		EhCache ehCache = new EhCache(); 
+		@SuppressWarnings("unchecked")
+		List<ParamGroup> lPs = (List<ParamGroup>) ehCache.getCacheElement("AllJsonData");
+		List<String> params = new ArrayList<String>();
+		ModelAndView mv = new ModelAndView("/secondStyle/graphicShow");
+		for(ParamGroup  pg :lPs){		
+			if(pg.getId()==id){
+				List<SingleParamDto> spds = pg.getSecectRow();
+				for(SingleParamDto spd : spds){
+					params.add(FlyWheelDataType.getFlyWheelDataTypeByZh(spd.getName()).getName());
+				}	
+				mv.addObject("params", params);
+			}
+		}
+		return mv;
+	}
+		
 	@RequestMapping(value = "/getData", method = RequestMethod.GET)
 	@ResponseBody
 	public List<Float> getData(
@@ -107,8 +148,15 @@ public class CommonController {
 			) throws Exception{
 		MongodbUtil mg = MongodbUtil.getInstance();
 		List<Float> result = mg.findAllByTie(filename);
-		return result ;
-		
-		
+		return result ;				
+	}
+	
+	
+	@RequestMapping(value = "/showtab", method = RequestMethod.GET)
+	public String showtab(
+			HttpServletRequest request,
+			HttpServletResponse response
+			) throws Exception{
+		return "DataAnalysis" ;				
 	}
 }

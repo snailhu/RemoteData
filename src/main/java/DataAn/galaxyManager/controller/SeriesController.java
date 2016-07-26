@@ -58,7 +58,7 @@ public class SeriesController {
 	    return jsonMsg;
 	}
 	
-	@RequestMapping(value="/createSeries", method = RequestMethod.POST)
+	@RequestMapping(value="/createSeries111", method = RequestMethod.POST)
 	@ResponseBody
 	public SeriesDto getSeriesForm(long seriesId){
 		

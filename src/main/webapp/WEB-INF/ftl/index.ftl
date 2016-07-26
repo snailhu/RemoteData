@@ -1,4 +1,4 @@
-<#assign base=request.contextPath + '/DataRemote' />
+<#assign base=request.contextPath>
 <!DOCTYPE html>
 <html>
 <head>

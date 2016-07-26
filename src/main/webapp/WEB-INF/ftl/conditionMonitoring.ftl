@@ -28,7 +28,7 @@
 		  var checkDate2 = new Date();
 		    checkDate2.setFullYear(dateArr2[0], dateArr2[1]-1, dateArr2[2]);
 		  var checkTime2 = checkDate2.getTime();
-		   
+		  		   
 		  var cha = (checkTime - checkTime2)/day; 
 		    return cha;
 		    alert(cha+"|"+d1+"|"+d2)
@@ -41,7 +41,7 @@
 	  return (this.getTime() - date.getTime())/(24 * 60 * 60 * 1000);
 	}
 	//var runtime=DateDiff(currentDate,beginDate);
-	var runtime=(currentDate-beginDate)/;
+	var runtime=(currentDate-beginDate);
 	//alert(currentDate+"|"+beginDate+"|"+runtime)
 	//模拟动态加载内容(真实情况可能会跟后台进行ajax交互)
 	function content() {

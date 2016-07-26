@@ -7,7 +7,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import DataAn.Analysis.dto.ConstraintDto;
-import DataAn.fileSystem.option.FlyWheel;
+import DataAn.fileSystem.option.J9Series_Star_ParameterConfig;
 import DataAn.fileSystem.service.IFlyWheelService;
 
 @Service

@@ -2,15 +2,19 @@ package DataAn.common.pageModel;
 
 import java.util.List;
 
-public class Pager {
+public class Pager<T> {
 	
+	//起始页
     private int pageIndex; 
+    //页面大小
     private int pageSize; 
+    //总记录数
     private Long totalCount;
+    //总页数
     private Long totalPages;
-    private boolean hasPreviousPage; 
-    private boolean hasNextPage; 
-    private List rows;
+//    private boolean hasPreviousPage; 
+//    private boolean hasNextPage; 
+    private List<T>  rows;
     
  /**
   * 
@@ -19,7 +23,7 @@ public class Pager {
   * @param totalCount
   * @param rows
   */
-    public Pager(int pageIndex,int pageSize,Long totalCount,List rows)
+    public Pager(int pageIndex,int pageSize,Long totalCount,List<T>  rows)
     {
     	this.pageIndex = pageIndex;
     	this.pageSize = pageSize;
@@ -63,11 +67,11 @@ public class Pager {
 		return pageIndex<totalPages;
 	}
 
-	public List getRows() {
+	public List<T>  getRows() {
 		return rows;
 	}
 
-	public void setRows(List rows) {
+	public void setRows(List<T>  rows) {
 		this.rows = rows;
 	}
 	

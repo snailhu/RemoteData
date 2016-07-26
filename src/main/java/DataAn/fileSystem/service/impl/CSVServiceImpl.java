@@ -28,12 +28,12 @@ public class CSVServiceImpl implements ICSVService{
 
 	
 	@Override
-	public List<Document> readCSVFileToDoc(String filePath) throws Exception {
+	public List<Document> readCSVFileToDoc(String filePath, String versions) throws Exception {
 		InputStream in = null;
 		try {
-			in = new FileInputStream(new File(filePath));
-//			in = new BufferedInputStream(new FileInputStream(new File(filePath)));
-			return this.readCSVFileToDoc(in);
+//			in = new FileInputStream(new File(filePath));
+			in = new BufferedInputStream(new FileInputStream(new File(filePath)));
+			return this.readCSVFileToDoc(in,versions);
 		} finally{
 			if(in != null){
 				in.close();
@@ -42,7 +42,7 @@ public class CSVServiceImpl implements ICSVService{
 	}
 
 	@Override
-	public List<Document> readCSVFileToDoc(InputStream in) throws Exception {
+	public List<Document> readCSVFileToDoc(InputStream in, String versions) throws Exception {
 		List<Document> docList = new ArrayList<Document>();
 		InputStreamReader inputStreamReader = new InputStreamReader(in, "gb2312");
 		BufferedReader reader = new BufferedReader(inputStreamReader);// 换成你的文件名
@@ -62,13 +62,15 @@ public class CSVServiceImpl implements ICSVService{
 		Set<Integer> delDateSet = new HashSet<Integer>();
 		while ((line = reader.readLine()) != null) {
 //			System.out.println(line);
-//			if(count  == 50){
+//			if(count == 50){
 //				break;
 //			}
 			doc = new Document();
 			//CSV格式文件为逗号分隔符文件，这里根据逗号切分
 			String[] items = line.split(",");
 			date = items[0].trim();
+			doc.append("versions", versions);
+			doc.append("status", 1);
 			doc.append("year", DateUtil.formatString(date, "yyyy"));
 			doc.append("year_month", DateUtil.formatString(date, "yyyy-MM"));
 			doc.append("year_month_day", DateUtil.formatString(date, "yyyy-MM-dd"));
@@ -81,7 +83,7 @@ public class CSVServiceImpl implements ICSVService{
 					flag = true;
 					break;
 				}else{
-					doc.append(FlyWheelDataType.getFlyWheelDataTypeByZh(array[i]).getName(), colData);					
+					doc.append(FlyWheelDataType.getFlyWheelDataTypeByZh(array[i]).getName().toLowerCase(), colData);					
 				}
 			}
 			//判断一条记录没有无效点就保存 1

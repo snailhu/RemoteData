@@ -14,4 +14,5 @@ import DataAn.Analysis.dto.ConstraintDto;
 public interface IFlyWheelService {
 
 	public List<ConstraintDto> getFlyWheelParameterList() throws Exception;
+	
 }

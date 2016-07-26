@@ -9,6 +9,7 @@ import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import DataAn.common.pageModel.Pager;
 import DataAn.fileSystem.domain.VirtualFileSystem;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -45,7 +46,8 @@ public class VirtualFileSystemDaoTest {
 		String beginTime = "2015-08-11";
 		String endTime = "2015-08-12";
 		String dataTypes = "dat,csv";
-		List<VirtualFileSystem> list =fileDao.selectByOption(series, star, dirId, beginTime, endTime, dataTypes, "fileName");
+		Pager<VirtualFileSystem> pager = fileDao.selectByOption(series, star, dirId, beginTime, endTime, dataTypes, "fileName",1,10);
+		List<VirtualFileSystem> list = pager.getRows();
 		for (VirtualFileSystem fs : list) {
 			System.out.println(fs);
 		}

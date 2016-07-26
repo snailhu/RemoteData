@@ -3,6 +3,7 @@ package DataAn.fileSystem.dao;
 import java.util.List;
 
 import DataAn.common.dao.IBaseDao;
+import DataAn.common.pageModel.Pager;
 import DataAn.fileSystem.domain.VirtualFileSystem;
 
 
@@ -16,10 +17,10 @@ public interface IVirtualFileSystemDao extends IBaseDao<VirtualFileSystem>{
 	
 	public List<VirtualFileSystem> selectByParentIdisNullAndOrder(String order);
 	
-	public List<VirtualFileSystem> selectBySeriesAndStarAndParentIdisNullAndOrder(String series, String star, String order);
+	public Pager<VirtualFileSystem> selectBySeriesAndStarAndParentIdisNullAndOrder(String series, String star, String order, int pageIndex, int pageSize);
 	
-	public List<VirtualFileSystem> selectBySeriesAndStarAndParentIdAndOrder(String series, String star, long parentId, String order);
+	public Pager<VirtualFileSystem> selectBySeriesAndStarAndParentIdAndOrder(String series, String star, long parentId, String order, int pageIndex, int pageSize);
 
-	public List<VirtualFileSystem> selectByOption(String series, String star, long parentId,
-			String beginTime,String endTime,String dataTypes, String order);
+	public Pager<VirtualFileSystem> selectByOption(String series, String star, long parentId,
+			String beginTime,String endTime,String dataTypes, String order, int pageIndex, int pageSize);
 }

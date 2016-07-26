@@ -1,8 +1,10 @@
 package DataAn.fileSystem.service;
 
 import java.util.Map;
+
 import DataAn.common.pageModel.Pager;
 import DataAn.fileSystem.dto.FileDto;
+import DataAn.fileSystem.dto.MongoFSDto;
 
 public interface IVirtualFileSystemService {
 
@@ -75,11 +77,11 @@ public interface IVirtualFileSystemService {
 	* @date 2016年7月8日
 	* @version 1.0
 	*/
-	public Pager getMongoFSList(int pageIndex, int pageSize,long dirId);
+	public Pager<MongoFSDto> getMongoFSList(int pageIndex, int pageSize,long dirId);
 	
-	public Pager getMongoFSList(int pageIndex, int pageSize,String series, String star, long dirId);
+	public Pager<MongoFSDto> getMongoFSList(int pageIndex, int pageSize,String series, String star, long dirId);
 	
-	public Pager getMongoFSList(int pageIndex, int pageSize,String series, String star, long dirId,
+	public Pager<MongoFSDto> getMongoFSList(int pageIndex, int pageSize,String series, String star, long dirId,
 			String beginTime,String endTime,String dataTypes);
 	
 	public String getParentFSCatalog(long dirId);

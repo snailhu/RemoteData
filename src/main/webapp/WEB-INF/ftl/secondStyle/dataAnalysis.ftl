@@ -74,13 +74,13 @@
 			<ul class="breadcrumb">
 				<li>
 					<i class="icon-home home-icon"></i>
-					<a href="#">Home</a>
+					<a href="#">J9系</a>
 				</li>
 	
 				<li>
-					<a href="#">Tables</a>
+					<a href="#">star2</a>
 				</li>
-				<li class="active">jqGrid plugin</li>
+				<li class="active">飞轮</li>
 			</ul><!-- .breadcrumb -->
 	
 			<div class="nav-search" id="nav-search">

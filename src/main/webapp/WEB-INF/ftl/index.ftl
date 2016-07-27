@@ -1,4 +1,4 @@
-<#assign base=request.contextPath>
+<#assign base=request.contextPath+ 	'/DataRemote' />
 <!DOCTYPE html>
 <html>
 <head>
@@ -159,7 +159,7 @@
                     <h4>数据分析<br /></h4>
                 </div>
                 <br />
-                <a href="analysisData">
+                <a href="conditionMonitoring">
                     <h4>
                         <img class="img-circle" src="${base}/static/images/appkf.png" />
                         <br /><br />

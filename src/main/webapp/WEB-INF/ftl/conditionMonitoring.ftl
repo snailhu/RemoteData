@@ -1,5 +1,5 @@
 <#assign base=request.contextPath + '/DataRemote' />
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -166,19 +166,19 @@
 	</div>
 	<div class="container">
 	<div style="left:500px;top:500px;">
-		<a href="Index"  data-toggle="popover" data-placement="bottom" data-trigger="hover">
+		<a href="analysisData"  data-toggle="popover" data-placement="bottom" data-trigger="hover">
 		<img id="1"  src="${base}/static/images/satellite.png" alt="卫星1" />
 		</a>
-		<a href="Index"  data-toggle="popover" data-placement="bottom" data-trigger="hover">
+		<a href="analysisData"  data-toggle="popover" data-placement="bottom" data-trigger="hover">
 		<img  src="${base}/static/images/satellite.png" alt="卫星2" />
 		</a>
-		<a href="Index"  data-toggle="popover" data-placement="bottom" data-trigger="hover">
+		<a href="analysisData"  data-toggle="popover" data-placement="bottom" data-trigger="hover">
 		<img id="2"  src="${base}/static/images/satellite.png" alt="卫星3" />
 		</a>
-		<a  href="Index"  data-toggle="popover" data-placement="bottom" data-trigger="hover">
+		<a  href="analysisData"  data-toggle="popover" data-placement="bottom" data-trigger="hover">
 		<img id="3"  src="${base}/static/images/satellite.png" alt="卫星4" />
 		</a>
-		<a href="Index"  data-toggle="popover" data-placement="bottom" data-trigger="hover">
+		<a href="analysisData"  data-toggle="popover" data-placement="bottom" data-trigger="hover">
 		<img  src="${base}/static/images/satellite.png" alt="卫星5" />
 		</a>
 	</div>

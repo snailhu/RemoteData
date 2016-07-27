@@ -31,6 +31,7 @@ import DataAn.common.pageModel.EasyuiDataGridJson;
 import DataAn.common.pageModel.JsonMessage;
 import DataAn.common.pageModel.Pager;
 import DataAn.fileSystem.dto.FileDto;
+import DataAn.fileSystem.dto.MongoFSDto;
 import DataAn.fileSystem.service.IVirtualFileSystemService;
 
 @Controller
@@ -78,9 +79,9 @@ public class FileController {
 		String strDirId = request.getParameter("dirId");
 		String strPage = request.getParameter("page");
 		String strRows= request.getParameter("rows");
-//		String series = "";
-//		String star = "02";
-//		long dirId = 0;
+		String beginTime = request.getParameter("beginTime");
+		String endTime = request.getParameter("endTime");
+		String fileTypes= request.getParameter("fileTypes");
 		int page = 1;
 		int rows = 10;
 		if (StringUtils.isNotBlank(strSeries)) {
@@ -106,9 +107,19 @@ public class FileController {
 		System.out.println("series: " + series);
 		System.out.println("star: " + star);
 		System.out.println("dirId: " + dirId);
-		Pager pager = fileService.getMongoFSList(page, rows, series, star, dirId);//(page, rows, dirId);
+		System.out.println("beginTime: " + beginTime);
+		System.out.println("endTime: " + endTime);
+		System.out.println("fileTypes: " + fileTypes);
+		Pager<MongoFSDto> pager = null;
+		if(StringUtils.isNotBlank(beginTime) || StringUtils.isNotBlank(endTime) || StringUtils.isNotBlank(fileTypes)){
+			pager = fileService.getMongoFSList(page, rows, series, star, dirId, beginTime, endTime, fileTypes);			
+		}else{
+			pager = fileService.getMongoFSList(page, rows, series, star, dirId);			
+		}
 		json.setRows(pager.getRows());
-		json.setTotal(pager.getTotalCount());			
+		json.setTotal(pager.getTotalCount());	
+		System.out.println("totalCount: " + pager.getTotalCount());
+		System.out.println();
 		return json;
 	}
 	
@@ -116,10 +127,10 @@ public class FileController {
 	@ResponseBody
 	public JsonMessage getParentCatalog(long dirId){
 		System.out.println("come in getParentCatalog...");
-		System.out.println("dirId: " + dirId);
+//		System.out.println("dirId: " + dirId);
 		JsonMessage msg = new JsonMessage();
 		String json = fileService.getParentFSCatalog(dirId);
-		System.out.println("json: " + json);
+//		System.out.println("json: " + json);
 		msg.setSuccess(true);
 		msg.setObj(json);
 		return msg;
@@ -179,7 +190,7 @@ public class FileController {
 		System.out.println("getSize: " + csvFile.getSize());
 		
 		long begin = System.currentTimeMillis();
-		Map<String, FileDto> map = new HashMap<String,FileDto>();
+		final Map<String, FileDto> map = new HashMap<String,FileDto>();
 		FileDto csvFileDto = new FileDto();
 		csvFileDto.setFileName(csvFile.getOriginalFilename());
 		csvFileDto.setFileSize(csvFile.getSize());
@@ -190,7 +201,16 @@ public class FileController {
 		datFileDto.setFileSize(datFile.getSize());
 		datFileDto.setIn(datFile.getInputStream());
 		map.put("dat", datFileDto);
-		fileService.saveFile(map);
+		//打开另外一个线程处理文件
+		new Thread(new Runnable(){
+			@Override
+			public void run() {
+				try {
+					fileService.saveFile(map);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}				
+			}}).start();
 		long end = System.currentTimeMillis();
 		System.out.println("time: " + (end - begin));
 //		jsonMsg.setSuccess(true);

@@ -1,9 +1,12 @@
 package DataAn.fileSystem.service.impl;
 
 import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -22,6 +25,7 @@ import com.alibaba.fastjson.JSON;
 
 import DataAn.common.pageModel.Pager;
 import DataAn.common.utils.DateUtil;
+import DataAn.common.utils.FileUtil;
 import DataAn.common.utils.UUIDGeneratorUtil;
 import DataAn.fileSystem.dao.IVirtualFileSystemDao;
 import DataAn.fileSystem.domain.VirtualFileSystem;
@@ -74,6 +78,15 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 //		dateMap.put("day", day);
 //		System.out.println(year + "-" + month + "-" + day);
 		
+		//保存csv临时文件
+		String csvTempFilePath = "D:\\temp\\csv";
+		File writeDir = new File(csvTempFilePath);
+		if (!writeDir.exists()) {
+			writeDir.mkdirs();
+		}	
+		csvTempFilePath = "D:\\temp\\csv\\" + fileName;
+		FileUtil.saveFile(csvTempFilePath, csvFileDto.getIn());
+		csvFileDto.setFilePath(csvTempFilePath);
 		// 保存 *.csv文件
 		this.saveFileOfCSV(csvFileDto, dataMap);
 		//获取map中的csv文件
@@ -196,37 +209,37 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 	}
 	
 	@Override
-	public Pager getMongoFSList(int pageIndex, int pageSize, long dirId) {
+	public Pager<MongoFSDto> getMongoFSList(int pageIndex, int pageSize, long dirId) {
 		List<VirtualFileSystem> fileList = null;
 		if(dirId == 0){
-			fileList = fileDao.selectByParentIdisNullAndOrder("fileName");
+			fileList = fileDao.selectByParentIdisNullAndOrder("updateDate");
 		}else{
-			fileList = fileDao.findByParam("parentId", dirId, "fileName");
+			fileList = fileDao.findByParam("parentId", dirId, "updateDate");
 		}
-		return this.returnPager(pageIndex, pageSize, fileList);
+		return this.returnPager(pageIndex, pageSize, fileList,0);
 	}
 	
 	@Override
-	public Pager getMongoFSList(int pageIndex, int pageSize, String series,
+	public Pager<MongoFSDto> getMongoFSList(int pageIndex, int pageSize, String series,
 			String star, long dirId) {
-		List<VirtualFileSystem> fileList = null;
+		Pager<VirtualFileSystem> pager = null;
 		if(dirId == 0){
-			fileList = fileDao.selectBySeriesAndStarAndParentIdisNullAndOrder(series, star, "fileName");
+			pager = fileDao.selectBySeriesAndStarAndParentIdisNullAndOrder(series, star, "updateDate", pageIndex, pageSize);
 		}else{
-			fileList = fileDao.selectBySeriesAndStarAndParentIdAndOrder(series, star, dirId, "fileName");
+			pager = fileDao.selectBySeriesAndStarAndParentIdAndOrder(series, star, dirId, "updateDate", pageIndex, pageSize);
 		}
-		return this.returnPager(pageIndex, pageSize, fileList);
+		return this.returnPager(pageIndex, pageSize, pager.getRows(),pager.getTotalCount());
 	}
 	
 	@Override
 	@Transactional(readOnly = true)
-	public Pager getMongoFSList(int pageIndex, int pageSize, String series,String star, 
+	public Pager<MongoFSDto> getMongoFSList(int pageIndex, int pageSize, String series,String star, 
 			long dirId, String beginTime, String endTime,String dataTypes) {
-		List<VirtualFileSystem> fileList = fileDao.selectByOption(series, star, dirId, beginTime, endTime, dataTypes, "fileName");
-		return this.returnPager(pageIndex, pageSize, fileList);
+		Pager<VirtualFileSystem> pager = fileDao.selectByOption(series, star, dirId, beginTime, endTime, dataTypes, "updateDate",pageIndex,pageSize);
+		return this.returnPager(pageIndex, pageSize, pager.getRows(),pager.getTotalCount());
 	}
 	
-	private Pager returnPager(int pageIndex, int pageSize, List<VirtualFileSystem> fileList){
+	private Pager<MongoFSDto> returnPager(int pageIndex, int pageSize, List<VirtualFileSystem> fileList,long totalCount){
 		List<MongoFSDto> fsList = new ArrayList<MongoFSDto>();
 		if(fileList != null && fileList.size() > 0){
 			MongoFSDto fsDto = null;
@@ -244,9 +257,7 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 				fsList.add(fsDto);
 			}
 		}
-		long totalCount = 0;
-		totalCount = fsList.size();
-		Pager pager = new Pager(pageIndex, pageSize, totalCount, fsList);
+		Pager<MongoFSDto> pager = new Pager<MongoFSDto>(pageIndex, pageSize, totalCount, fsList);
 		return pager;
 	}
 	
@@ -274,12 +285,6 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 		return sb.toString();
 	}
 	
-	private void saveDataOfCSVInMongoDB(InputStream csvInput, String nowStar) throws Exception{
-		MongodbUtil mg = MongodbUtil.getInstance();
-		List<Document> docList = csvService.readCSVFileToDoc(csvInput);
-		String collectionName = J9SeriesType.getJ9StarType(nowStar).getName();
-		mg.insert(collectionName , docList);
-	}
 	private void saveFileOfCSV(FileDto fileDto, Map<String,String> dataMap) throws Exception{
 		
 		
@@ -291,11 +296,41 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 		String month = dataMap.get("month");
 //		String day = dateMap.get("day");
 		
-		//解析 *.csv文件保存csv里面的数据
-		BufferedInputStream csvInput = new BufferedInputStream(fileDto.getIn()) ;
-//		csvInput.mark(0);
-		this.saveDataOfCSVInMongoDB(csvInput, star);
-//		csvInput.reset();
+//		//解析 *.csv文件保存csv里面的数据
+//		this.saveDataOfCSVInMongoDB(fileDto.getFilePath(), star);
+//
+//		//保存csv文件
+//		IDfsDb dfs = MongoDfsDb.getInstance();
+//		dfs.upload(uuId, fileDto.getFilePath());
+		
+//		InputStream fis = new FileInputStream(fileDto.getFilePath());   
+		BufferedInputStream bis = null;
+		IDfsDb dfs = MongoDfsDb.getInstance();
+		try {
+			bis = new BufferedInputStream(new FileInputStream(fileDto.getFilePath()));  
+			dfs.upload(fileDto.getFileName(), uuId, bis);
+		} catch(Exception e){
+//			e.printStackTrace();
+			dfs.delete(uuId);
+			throw new Exception("csv 文件上传失败！！！");
+		}finally {
+			if(bis != null){
+				bis.close();
+			}
+		}
+		MongodbUtil mg = MongodbUtil.getInstance();
+		String collectionName = J9SeriesType.getJ9StarType(star).getName();
+		try {
+			List<Document> docList = csvService.readCSVFileToDoc(fileDto.getFilePath(),uuId);
+			mg.insert(collectionName , docList);
+			int a =9/0;
+			System.out.println(a);
+		} catch (Exception e) {
+//			e.printStackTrace();
+			dfs.delete(uuId);
+			mg.deleteMany(collectionName, "versions", uuId);
+			throw new Exception("csv 文件解析失败！！！");
+		}
 		
 		//查找csv的文件夹是否存在
 		VirtualFileSystem csvDir = fileDao.selectByParentIdisNullAndFileName("csv");
@@ -347,10 +382,21 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 		file.setMongoFSUUId(uuId);
 		fileDao.add(file);
 		
-		//保存csv文件
-		IDfsDb dfs = MongoDfsDb.getInstance();
-		dfs.upload(fileDto.getFileName(), uuId, fileDto.getIn());
+
 	}
+	
+//	private void saveDataOfCSVInMongoDB(InputStream csvInput, String nowStar, String versions) throws Exception{
+//		MongodbUtil mg = MongodbUtil.getInstance();
+//		List<Document> docList = csvService.readCSVFileToDoc(csvInput,versions);
+//		String collectionName = J9SeriesType.getJ9StarType(nowStar).getName();
+//		mg.insert(collectionName , docList);
+//	}
+//	private void saveDataOfCSVInMongoDB(String csvPath, String nowStar, String versions) throws Exception{
+//		MongodbUtil mg = MongodbUtil.getInstance();
+//		List<Document> docList = csvService.readCSVFileToDoc(csvPath,versions);
+//		String collectionName = J9SeriesType.getJ9StarType(nowStar).getName();
+//		mg.insert(collectionName , docList);
+//	}
 	
 	private void saveFileOfDAT(FileDto fileDto, Map<String,String> dataMap){
 		String uuId = UUIDGeneratorUtil.getUUID();

@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import DataAn.Analysis.dto.ConstraintDto;
 import DataAn.fileSystem.option.FlyWheelDataType;
 import DataAn.fileSystem.service.IFlyWheelService;
+import DataAn.fileSystem.service.IJ9Series_Star_Service;
 import DataAn.mongo.db.MongodbUtil;
 
 import org.springframework.web.bind.annotation.RequestParam;
@@ -36,7 +37,7 @@ import DataAn.Util.JsonStringToObj;
 public class CommonController {
 
 	@Resource
-	private IFlyWheelService flyWheelService;
+	private IJ9Series_Star_Service j9Series_Star_Service;
 	
 	@RequestMapping(value = "/Index", method = { RequestMethod.GET })
 	public String goIndex(HttpServletRequest request, HttpServletResponse response) {
@@ -47,7 +48,7 @@ public class CommonController {
 	@ResponseBody
 	public List<ConstraintDto> getConstraint() throws Exception{
 		
-		return flyWheelService.getFlyWheelParameterList();
+		return j9Series_Star_Service.getFlyWheelParameterList();
 	}
 	@RequestMapping(value = "/showPanel", method = { RequestMethod.POST})
 	public void showPanel(
@@ -106,7 +107,7 @@ public class CommonController {
 //			}
 			GroupMenu gm = new GroupMenu();
 			gm.setId(pg.getId()+"");
-			gm.setText(pg.getId()+"");
+			gm.setText((pg.getId()+1)+"组");
 			gm.setIcon("icon-glass");
 			gm.setUrl("/DataRemote/showGraphic/"+pg.getId());
 			lgm.add(gm);
@@ -131,7 +132,7 @@ public class CommonController {
 			if(pg.getId()==id){
 				List<SingleParamDto> spds = pg.getSecectRow();
 				for(SingleParamDto spd : spds){
-					params.add(FlyWheelDataType.getFlyWheelDataTypeByZh(spd.getName()).getName());
+					params.add(FlyWheelDataType.getFlyWheelDataTypeByZh2(spd.getName()).getName());
 				}	
 				mv.addObject("params", params);
 			}

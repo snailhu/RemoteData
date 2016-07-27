@@ -33,12 +33,21 @@ a, a:focus, a:hover, a:active, button, button:hover {
 /*     padding: 10px 15px; */
 }
 </style>
+<script type="text/javascript">
+var userName = '${userName}';
+$(function () {
+	if(userName != ''){
+		$('#login-nav').empty();
+		$('#login-nav').append("<li> <a href='javascript:void(0)' id='loginLink'> 欢迎光临,${userName} </a> </li>");
+	}
+});
+</script>
 <div class="navbar navbar-inverse  navbar-static-top">
 	<div class="container topxx" style="font-size:12px">
-		<ul class="nav navbar-nav navbar-right pull-right">
-			<li><a href="/Account/Register" id="registerLink">注册</a></li>
-			<li style="position:relative; top:15px">|</li>
-			<li><a href="/Account/Login" id="loginLink">登录</a></li>
+		<ul class="nav navbar-nav navbar-right pull-right" id="login-nav">
+<!-- 			<li><a href="/Account/Register" id="registerLink">注册</a></li> -->
+<!-- 			<li style="position:relative; top:15px">|</li> -->
+			<li><a href="login" id="loginLink">登录</a></li>
 		</ul>
 	</div>
 	<div class="container">
@@ -56,6 +65,7 @@ a, a:focus, a:hover, a:active, button, button:hover {
 				<li><a href="admin/file/toUploadFile" style="color: #9d9d9d;;font-size: 18px;line-height: 1.8;">文件上传</a></li>
 				<li><a href="admin/file/index" style="color: #9d9d9d;;font-size: 18px;line-height: 1.8;">文件管理</a></li>
 				<li><a href="analysisData" style="color: #9d9d9d;;font-size: 18px;line-height: 1.8;">图表管理</a></li>
+				<li><a href="admin/galaxy/index" style="color: #9d9d9d;;font-size: 18px;line-height: 1.8;">星系管理</a></li>
 			</ul>
 		</div>
 	</div>

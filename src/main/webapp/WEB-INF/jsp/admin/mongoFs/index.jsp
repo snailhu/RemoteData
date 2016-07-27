@@ -282,7 +282,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	              width: 100
 	          },  {
 	              field: 'createDate',
-	              title: '更新时间',
+	              title: '上传时间',
 	              width: 150
 	          }
 	          ]]
@@ -294,12 +294,20 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	    	  $("[name='form-fileType-checkbox']:checked").each(function(){
 	    		  fileTypes.push($(this).val());
 	    	  });
-	    	  console.log('beginTime:' + beginTime);
-	    	  console.log('endTime:' + endTime);
-	    	  console.log('fileTypes:'+fileTypes.join(','));	
-	    	  console.log('nowSeries:'+nowSeries);
-	    	  console.log('nowStar:'+nowStar);
-	    	  console.log('nowDirId:'+nowDirId);
+// 	    	  console.log('beginTime:' + beginTime);
+// 	    	  console.log('endTime:' + endTime);
+// 	    	  console.log('fileTypes:'+fileTypes.join(','));	
+// 	    	  console.log('series:'+nowSeries);
+// 	    	  console.log('star:'+nowStar);
+// 	    	  console.log('dirId:'+nowDirId);
+	    	  fsGrid.datagrid('load', {
+				  series: nowSeries,
+				  star: nowStar,
+				  dirId: nowDirId,
+				  beginTime: beginTime,
+				  endTime: endTime,
+				  fileTypes:fileTypes.join(',')
+		              });
 		  });
 	  });
 	

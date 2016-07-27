@@ -45,7 +45,7 @@ public class MongoDfsDb implements IDfsDb{
 	}
 	
 	@Override
-	public boolean upload(String filePath) throws Exception {
+	public boolean upload(String mongoFSUUId, String filePath) throws Exception {
 //		// 查找条件
 //		DBObject query = new BasicDBObject("uuId","fb9ade04cacd4ab6a57f192b829b4048");
 //		// 查询的结果：
@@ -57,16 +57,12 @@ public class MongoDfsDb implements IDfsDb{
 		File f = new File(filePath);
 		GridFSInputFile inputFile = gridFS.createFile(f);
 		// 可以再添加属性
-//		inputFile.setFilename(f.getName());
-//		inputFile.put("path","d:/" + f.getName());
-		inputFile.put("filename", f.getName());
 		inputFile.put("uploadDate", new Date());
-		String uuId = UUIDGeneratorUtil.getUUID();
-		System.out.println("uuId" + uuId);
-		inputFile.put("uuId", uuId);
+		inputFile.put("uuId", mongoFSUUId);
+		inputFile.put("filename", f.getName());
 		inputFile.save();
-		System.out.println("fileId: " + inputFile.getId().toString() +"---"+ inputFile.getId().toString().length());
-		System.out.println("md5: " + inputFile.getMD5() + "---" + inputFile.getMD5().length());
+//		System.out.println("fileId: " + inputFile.getId().toString() +"---"+ inputFile.getId().toString().length());
+//		System.out.println("md5: " + inputFile.getMD5() + "---" + inputFile.getMD5().length());
 		return false;
 		
 	}

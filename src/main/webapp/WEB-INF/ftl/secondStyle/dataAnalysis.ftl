@@ -12,11 +12,10 @@
     <script type="text/javascript" src="${base}/static/jqwidgets/jqxcheckbox.js"></script>
     <script type="text/javascript" src="${base}/static/jqwidgets/jqxlistbox.js"></script>
     <script type="text/javascript" src="${base}/static/jqwidgets/jqxdropdownlist.js"></script>
-    <script type="text/javascript" src="${base}/static/jqwidgets/jqxgrid.js"></script>
-    <script type="text/javascript" src="${base}/static/jqwidgets/jqxgrid.pager.js"></script>
-    <script type="text/javascript" src="${base}/static/jqwidgets/jqxgrid.selection.js"></script>
-    <script type="text/javascript" src="${base}/static/jqwidgets/jqxgrid.edit.js"></script>
+ 
     <script type="text/javascript" src="${base}/static/scripts/demos.js"></script>  
+    <script type="text/javascript" src="${base}/static/jqwidgets/jqxdatatable.js"></script>
+    <script type="text/javascript" src="${base}/static/jqwidgets/jqxtreegrid.js"></script>     
 	<style>
 		.dateStyle{
 			float:left;
@@ -102,7 +101,7 @@
 		  
 			<div class="row"> 
 				<div id='jqxWidget'>
-			        <div id="jqxgrid"></div>
+			        <div id="treeGrid"></div>
 			       	<button data-toggle="modal" data-target="#exampleModal">确定分组</button>
       				<button onclick="getCleared()">清除</button>
       				<button data-toggle="modal"	 onclick="submitGroup()">提交分组</button>
@@ -113,11 +112,14 @@
 		</div><!-- /.page-content -->
 	</div><!-- /.main-content -->
 	<script type="text/javascript">	
-		$(function(){
-			$("#dateStart").jqxDateTimeInput({ width: '300px', height: '25px' });
-			$("#dateEnd").jqxDateTimeInput({ width: '300px', height: '25px' });	
-		})
-				
+		$(function() {
+
+        $("#dateStart").jqxDateTimeInput({width: '300px', height: '25px'});
+        $("#dateEnd").jqxDateTimeInput({width: '300px', height: '25px'});
+
+    });
+	
+	
 		var JsonG = {}
 		var AllRowselect = [];
 		var j=0;
@@ -125,17 +127,17 @@
         	$('#exampleModal').modal('hide')
             var groupObject={}
             var selectRow = []
-            var rowindex = $('#jqxgrid').jqxGrid('getselectedrowindexes');
+            var rowindex = $("#treeGrid").jqxTreeGrid('getCheckedRows');
             var stringName="参数名：";
             var chkObjs = $('input:radio:checked').val();
             if(rowindex.length>0){        	
                 for(i=0;i<rowindex.length;i++){
                 	var rowObject={}
-                    var value = $('#jqxgrid').jqxGrid('getcellvalue', rowindex[i], "name");
-                    rowObject.id=rowindex[i]
-                    rowObject.name=$('#jqxgrid').jqxGrid('getcellvalue', rowindex[i], "name");
-                    rowObject.max=$('#jqxgrid').jqxGrid('getcellvalue', rowindex[i], "max");
-                    rowObject.min=$('#jqxgrid').jqxGrid('getcellvalue', rowindex[i], "min");
+                    var value = rowindex[i].name;
+                    rowObject.id=rowindex[i].id
+                    rowObject.name=rowindex[i].name;
+                    rowObject.max=rowindex[i].max;
+                    rowObject.min=rowindex[i].min;
                     selectRow.push( rowObject);
                     stringName+=value+",";
                 }
@@ -160,7 +162,8 @@
         	AllRowselect.splice(parseInt(clearGroupId),1)          
         }                
          function getCleared(){
-             $('#jqxgrid').jqxGrid('clearselection');
+        
+           $("#treeGrid").jqxTreeGrid('refresh');
         }
         
         function submitGroup(){
@@ -174,43 +177,50 @@
         		window.location.href="${base}/showPanel"
         	})            
         }	
-       $(document).ready(function () {
-            var url = "${base}/getConstraint";
+        
+         $(document).ready(function () {          
             // prepare the data
-           
+            var url = "${base}/getConstraint";
             var source =
             {
-               datatype: "json",
-               datafields: [
-                    { name: 'name' },
-                    { name: 'max' },
-                    { name: 'min' },
-
+                dataType: "json",
+                dataFields: [
+                    { name: 'id', type: 'number' },
+                    { name: 'parentId', type: 'number' },
+                    { name: 'name', type: 'string' },
+                    { name: 'max', type: 'number' },
+                    { name: 'min', type: 'number' }
+  
                 ],
-                id: 'id',            
-               url: url
+                hierarchy:
+                {
+                    keyDataField: { name: 'id' },
+                    parentDataField: { name: 'parentId' }
+                },
+                id: 'id',
+                url: url
             };
-            var dataAdapter = new $.jqx.dataAdapter(source, {
+            var dataAdapter = new $.jqx.dataAdapter(source);
+            // create Tree Grid
+            $("#treeGrid").jqxTreeGrid(
+            {
+                width: 760,
+                source: dataAdapter,
+                sortable: true,
+                editable: true,
+               checkboxes: true,
+             
+                columns: [
+                	{ text: 'ID',  dataField: 'id',editable: false, width: 200 },
+                  { text: 'name',  dataField: 'name',editable: false, width: 200 },
+                  { text: 'max', dataField: 'max', width: 200 },
+                  { text: 'min', dataField: 'min', width: 160 }
+                ]
 
             });
-            // initialize jqxGrid
-            $("#jqxgrid").jqxGrid(
-            {              
-                source: dataAdapter,
-                pageable: true,
-                autoheight: true,
-                altrows: true,
-                enabletooltips: true,
-                editable: true,
-                selectionmode: 'checkbox',
-                 columns: [
-                  { text: 'Name',pinned: true,editable: false, datafield: 'name',  },
-                  { text: 'max', datafield: 'max',  },
-                  { text: 'min', datafield: 'min', }
-              ]
-
-            });	
         });
+        
+
     </script>	
 </@override>	
 <@extends name="/secondStyle/contentBase.ftl"/>

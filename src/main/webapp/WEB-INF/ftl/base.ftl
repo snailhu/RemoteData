@@ -1,9 +1,4 @@
-<<<<<<< HEAD
-<#assign base=request.contextPath/>
-<#assign gogsUrl="http://gogs.modelica-china.com">
-=======
 <#assign base=request.contextPath />
->>>>>>> refs/remotes/origin/master
 <!DOCTYPE html>
 <html lang="en">
  <head>
@@ -12,11 +7,11 @@
 	<meta name="keywords" content="同元协同,tongyuan协同" />
 	<meta name="description" content="同元协同,tongyuan协同" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  	<title><@block name="title"></@block></title>
-  
+  	<title><@block name="title"></@block></title> 
 	<script src="${base}/static/js/jquery-1.11.0.min.js"></script>
 	<script src="${base}/static/js/bootstrap.min.js"></script>
 	<style>
+		*{margin:0;padding:0;font-size: 12px}
 		.container-out{margin:20px auto !important;border:1px solid red}
 		.container-out .content_left{padding:0px!important}
 		.container-out .content_right{border:1px solid black}

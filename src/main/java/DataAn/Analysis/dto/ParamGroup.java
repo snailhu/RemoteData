@@ -3,7 +3,7 @@ package DataAn.Analysis.dto;
 import java.util.List;
 
 public class ParamGroup {
-	private int j;
+	private int id;
 	
 	private String Ycount;
 	
@@ -11,15 +11,24 @@ public class ParamGroup {
 	
 	private String Y2name;
 	
-	private List<SingleParamDto> sParamDtos;
+	private List<SingleParamDto> secectRow;
 	
 	
-	public int getJ() {
-		return j;
+	
+	public int getId() {
+		return id;
 	}
 
-	public void setJ(int j) {
-		this.j = j;
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public List<SingleParamDto> getSecectRow() {
+		return secectRow;
+	}
+
+	public void setSecectRow(List<SingleParamDto> secectRow) {
+		this.secectRow = secectRow;
 	}
 
 	public String getY2name() {
@@ -44,14 +53,6 @@ public class ParamGroup {
 
 	public void setY1name(String y1name) {
 		Y1name = y1name;
-	}
-
-	public List<SingleParamDto> getsParamDtos() {
-		return sParamDtos;
-	}
-
-	public void setsParamDtos(List<SingleParamDto> sParamDtos) {
-		this.sParamDtos = sParamDtos;
 	}
 	
 	

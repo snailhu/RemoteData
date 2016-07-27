@@ -3,12 +3,20 @@
 <script type="text/javascript" src="${base}/static/js/echarts.min.js"></script>
 <script type="text/javascript">
     
-    $(function(){
+    $(function(){     
     	var myChart = echarts.init(document.getElementById('main'));
     	var seriesOptions = []
         seriesCounter = 0
         var date = [];
-        names = ['flywheel_a_speed','flywheel_f_motor_current'];
+        var names = [];
+        <#if (params?size>0) >
+        	<#list params as param>
+        		names.push(${param})
+        	</#list>       	
+        <#else>
+        	names = ['flywheel_a_speed','flywheel_f_motor_current'];
+		</#if>
+        
          var options = {
             tooltip: {
                 trigger: 'axis',              
@@ -19,7 +27,7 @@
             },
             legend: {
                 top: 'bottom', 
-                 data:['flywheel_a_speed']
+                data:['flywheel_a_speed']
                            
             },
             toolbox: {
@@ -153,21 +161,10 @@ a, a:focus, a:hover, a:active, button, button:hover {
 	                <b class="arrow icon-angle-down"></b>
 	            </a>	
 	
-	            <ul class="submenu">
-				<#list lPs as lp>
-					<li>
-	                  <a href="#" class="dropdown-toggle">
-	                        <i class="icon-double-angle-right"></i>${lp.id}
-	                    	               
-	                    </a>
-	                </li>
-				</#list>
-	                
-	            </ul>
+	            <ul class="nav nav-list" id="menu"></ul>
 	        </li>
 	
-	    </ul><!-- /.nav-list -->
-	
+	    </ul><!-- /.nav-list -->	
 	    <div class="sidebar-collapse" id="sidebar-collapse">
 	        <i class="icon-double-angle-left" data-icon1="icon-double-angle-left" data-icon2="icon-double-angle-right"></i>
 	    </div>	

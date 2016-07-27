@@ -1,7 +1,10 @@
-<@override name="content_right">
-	
+<@override name="content_right">	
 	<link rel="stylesheet" href="${base}/static/jqwidgets/styles/jqx.base.css" type="text/css" />	
     <script type="text/javascript" src="${base}/static/jqwidgets/jqxcore.js"></script>
+    <script type="text/javascript" src="${base}/static/jqwidgets/jqxdatetimeinput.js"></script>
+    <script type="text/javascript" src="${base}/static/jqwidgets/jqxcalendar.js"></script>
+    <script type="text/javascript" src="${base}/static/jqwidgets/jqxtooltip.js"></script>
+    <script type="text/javascript" src="${base}/static/jqwidgets/globalization/globalize.js"></script>
     <script type="text/javascript" src="${base}/static/jqwidgets/jqxdata.js"></script>
     <script type="text/javascript" src="${base}/static/jqwidgets/jqxbuttons.js"></script>
     <script type="text/javascript" src="${base}/static/jqwidgets/jqxscrollbar.js"></script>
@@ -9,14 +12,22 @@
     <script type="text/javascript" src="${base}/static/jqwidgets/jqxcheckbox.js"></script>
     <script type="text/javascript" src="${base}/static/jqwidgets/jqxlistbox.js"></script>
     <script type="text/javascript" src="${base}/static/jqwidgets/jqxdropdownlist.js"></script>
-    <script type="text/javascript" src="${base}/static/jqwidgets/jqxgrid.js"></script>
-    <script type="text/javascript" src="${base}/static/jqwidgets/jqxgrid.pager.js"></script>
-    <script type="text/javascript" src="${base}/static/jqwidgets/jqxgrid.selection.js"></script>
-    <script type="text/javascript" src="${base}/static/jqwidgets/jqxgrid.edit.js"></script>
-
-
+ 
     <script type="text/javascript" src="${base}/static/scripts/demos.js"></script>  
-
+    <script type="text/javascript" src="${base}/static/jqwidgets/jqxdatatable.js"></script>
+    <script type="text/javascript" src="${base}/static/jqwidgets/jqxtreegrid.js"></script>     
+	<style>
+		.dateStyle{
+			float:left;
+		}
+		.row {
+		  margin:0px !important
+		}
+		.page-header{
+			padding:0px !important
+		}
+	</style>
+	
     <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"  >
 	  <div class="modal-dialog" role="document" style="margin:30px -200px">
 	    <div class="modal-content">
@@ -83,32 +94,14 @@
 		</div>	
 		<div class="page-content">
 			<div class="page-header">
-				    <form id="fileupload" action="" class="form-horizontal" role="form" >
-				        <div class="space-1"></div>
-				        <div class="form-group" style="margin:0px auto !important">
-				            <label class="col-sm-3 control-label no-padding-right" for="form-beginTime"> 开始时间 </label>
-				            <div class="col-sm-9">
-				                <input type="text" id="form-beginTime" name="beginTime" placeholder="开始时间" class="col-xs-10 col-sm-5" />
-				                <div id="getBeginTime"></div>
-				            </div>
-				        </div>
-				        <div class="space-1"></div>
-				        <div class="form-group" style="margin:0px auto !important">
-				            <label class="col-sm-3 control-label no-padding-right" for="form-endTime"> 结束时间 </label>
-				            <div class="col-sm-9">
-				                <input type="text" id="form-endTime" name="endTime" placeholder="结束时间" class="col-xs-10 col-sm-5" />
-				                <div id="getEndTime"></div>
-				            </div>
-				        </div>				
-				       </div>
-				    </form>   
+				<div class="dateStyle"><label>开始日期</label><div id='dateStart'></div></div>
+				<div class="dateStyle" style="margin-left:20px"><label>结束日期</label><div id='dateEnd'></div> </div> 
+				<div style="clear:both"></div>
 			</div><!-- /.page-header -->
-
 		  
-			<div class="row">
-				<div id='jqxWidget' style="font-size: 13px; font-family: Verdana; float: left;margin-left: 30px;margin-top: -70px;">
-			        <div id="jqxgrid">
-			        </div>
+			<div class="row"> 
+				<div id='jqxWidget'>
+			        <div id="treeGrid"></div>
 			       	<button data-toggle="modal" data-target="#exampleModal">确定分组</button>
       				<button onclick="getCleared()">清除</button>
       				<button data-toggle="modal"	 onclick="submitGroup()">提交分组</button>
@@ -119,30 +112,14 @@
 		</div><!-- /.page-content -->
 	</div><!-- /.main-content -->
 	<script type="text/javascript">	
-		  $(function(){
-	/**  
-	  $('#getBeginTime').calendar({
-	        trigger: '#form-beginTime',
-	        zIndex: 999,
-			format: 'yyyy-mm-dd',
-	        onSelected: function (view, date, data) {
-	        },
-	        onClose: function (view, date, data) {
-	        }
-	    });
-	  $('#getEndTime').calendar({
-	        trigger: '#form-endTime',
-	        zIndex: 999,
-			format: 'yyyy-mm-dd',
-	        onSelected: function (view, date, data) {
+		$(function() {
 
-	        },
-	        onClose: function (view, date, data) {
+        $("#dateStart").jqxDateTimeInput({width: '300px', height: '25px'});
+        $("#dateEnd").jqxDateTimeInput({width: '300px', height: '25px'});
 
-	        }
-	    });
-	*/
-  })
+    });
+	
+	
 		var JsonG = {}
 		var AllRowselect = [];
 		var j=0;
@@ -150,17 +127,17 @@
         	$('#exampleModal').modal('hide')
             var groupObject={}
             var selectRow = []
-            var rowindex = $('#jqxgrid').jqxGrid('getselectedrowindexes');
+            var rowindex = $("#treeGrid").jqxTreeGrid('getCheckedRows');
             var stringName="参数名：";
             var chkObjs = $('input:radio:checked').val();
             if(rowindex.length>0){        	
                 for(i=0;i<rowindex.length;i++){
                 	var rowObject={}
-                    var value = $('#jqxgrid').jqxGrid('getcellvalue', rowindex[i], "name");
-                    rowObject.id=rowindex[i]
-                    rowObject.name=$('#jqxgrid').jqxGrid('getcellvalue', rowindex[i], "name");
-                    rowObject.max=$('#jqxgrid').jqxGrid('getcellvalue', rowindex[i], "max");
-                    rowObject.min=$('#jqxgrid').jqxGrid('getcellvalue', rowindex[i], "min");
+                    var value = rowindex[i].name;
+                    rowObject.id=rowindex[i].id
+                    rowObject.name=rowindex[i].name;
+                    rowObject.max=rowindex[i].max;
+                    rowObject.min=rowindex[i].min;
                     selectRow.push( rowObject);
                     stringName+=value+",";
                 }
@@ -185,57 +162,65 @@
         	AllRowselect.splice(parseInt(clearGroupId),1)          
         }                
          function getCleared(){
-             $('#jqxgrid').jqxGrid('clearselection');
+        
+           $("#treeGrid").jqxTreeGrid('refresh');
         }
         
         function submitGroup(){
         $.post('${base}/showPanel',
         
         	{
-        		'JsonG':JSON.stringify(JsonG)
+        		'JsonG':JSON.stringify(AllRowselect)
         	
         	},function(){
         	
         		window.location.href="${base}/showPanel"
         	})            
         }	
-       $(document).ready(function () {
-            var url = "${base}/getConstraint";
+        
+         $(document).ready(function () {          
             // prepare the data
-           
+            var url = "${base}/getConstraint";
             var source =
             {
-               datatype: "json",
-               datafields: [
-                    { name: 'name' },
-                    { name: 'max' },
-                    { name: 'min' },
-
+                dataType: "json",
+                dataFields: [
+                    { name: 'id', type: 'number' },
+                    { name: 'parentId', type: 'number' },
+                    { name: 'name', type: 'string' },
+                    { name: 'max', type: 'number' },
+                    { name: 'min', type: 'number' }
+  
                 ],
-                id: 'id',            
-               url: url
+                hierarchy:
+                {
+                    keyDataField: { name: 'id' },
+                    parentDataField: { name: 'parentId' }
+                },
+                id: 'id',
+                url: url
             };
-            var dataAdapter = new $.jqx.dataAdapter(source, {
+            var dataAdapter = new $.jqx.dataAdapter(source);
+            // create Tree Grid
+            $("#treeGrid").jqxTreeGrid(
+            {
+                width: 760,
+                source: dataAdapter,
+                sortable: true,
+                editable: true,
+               checkboxes: true,
+             
+                columns: [
+                	{ text: 'ID',  dataField: 'id',editable: false, width: 200 },
+                  { text: 'name',  dataField: 'name',editable: false, width: 200 },
+                  { text: 'max', dataField: 'max', width: 200 },
+                  { text: 'min', dataField: 'min', width: 160 }
+                ]
 
             });
-            // initialize jqxGrid
-            $("#jqxgrid").jqxGrid(
-            {              
-                source: dataAdapter,
-                pageable: true,
-                autoheight: true,
-                altrows: true,
-                enabletooltips: true,
-                editable: true,
-                selectionmode: 'checkbox',
-                 columns: [
-                  { text: 'Name',pinned: true,editable: false, datafield: 'name',  },
-                  { text: 'max', datafield: 'max',  },
-                  { text: 'min', datafield: 'min', }
-              ]
-
-            });	
         });
+        
+
     </script>	
 </@override>	
 <@extends name="/secondStyle/contentBase.ftl"/>

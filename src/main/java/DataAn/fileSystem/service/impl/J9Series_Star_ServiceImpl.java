@@ -7,10 +7,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.springframework.stereotype.Service;
+
 import DataAn.Analysis.dto.ConstraintDto;
 import DataAn.fileSystem.option.J9Series_Star_ParameterGroupType;
 import DataAn.fileSystem.service.IJ9Series_Star_Service;
 
+@Service
 public class J9Series_Star_ServiceImpl implements IJ9Series_Star_Service{
 
 	@Override
@@ -43,8 +46,9 @@ public class J9Series_Star_ServiceImpl implements IJ9Series_Star_Service{
 				}
 			}
 			if(children != null && children.size() > 0){
-				c.setChildren(children);
-				list.add(c);				
+				//c.setChildren(children);
+				list.add(c);	
+				list.addAll(children);
 			}
 		}
 		return list;

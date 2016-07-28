@@ -26,7 +26,7 @@ import DataAn.fileSystem.service.impl.CSVServiceImpl;
 import DataAn.mongo.db.MongodbUtil;
 
 import com.alibaba.fastjson.JSON;
-import com.csvreader.CsvWriter;
+//import com.csvreader.CsvWriter;
 
 
 public class CSVServiceTest {
@@ -115,60 +115,60 @@ public class CSVServiceTest {
 	
 //	@Test
 	public void testWriteCSVByJavacsv(int year,int month,int day) throws Exception{
-		Class<?> pojoClass = Class.forName("DataAn.fileSystem.option.FlyWheel");
-		Object obj = pojoClass.newInstance();
-		Field[] fields = pojoClass.getDeclaredFields();
-		List<String> titleList = new ArrayList<String>();
-		titleList.add("时间");
-		for (Field field : fields) {
-//			field.setAccessible(true);// 修改访问控制权限
-			titleList.add(field.get(obj).toString());
-		}
-		
-//		String outputFile = "C:\\j9-02--2016-01-10.csv";
-		String outputFile = "C:\\j9-02--" + year +"-0" + month +"-0" + day +".csv";
-		if(month > 9){
-			outputFile = "C:\\j9-02--" + year +"-" + month +"-10.csv";
-		}
-		if(day > 9){
-			outputFile = "C:\\j9-02--" + year +"-0" + month +"-" + day +".csv";
-		}
-		if(month > 9 && day > 9){
-			outputFile = "C:\\j9-02--" + year +"-" + month +"-" + day +".csv";
-		}
-		File file = new File(outputFile);
-		OutputStream outputStream = new FileOutputStream(file,true);
-//		OutputStreamWriter writer = new OutputStreamWriter(outputStream, "utf-8");
-//		FileWriter fileWriter = new FileWriter(file,true);
-		CsvWriter csvOutput = new CsvWriter(outputFile, ',',Charset.forName("gb2312"));
-		
-		for (String title : titleList) {
-			csvOutput.write(title);
-		}
-		csvOutput.endRecord();
-		//月份从0开始计数
-//		Date date1 = new Date(2015,5,10,0,0,0);
-//		Date date2 = new Date(2015,5,11,0,0,0);
-		Date date1 = new Date(year,month-1,day,0,0,0);
-		Date date2 = new Date(year,month-1,day+1,0,0,0);
-		Date tempDate = date1;
-		long time = tempDate.getTime();
-		String format = year+ "年MM月dd日HH时mm分ss秒";
-		while(tempDate.before(date2)){
-			tempDate = new Date(time);
-			csvOutput.write(DateUtil.format(tempDate, format));
-			for (int i = 1; i < titleList.size(); i++) {
-				Double data = Math.random() * Math.random();
-				if(data < 0.01){
-					csvOutput.write("0.01");
-				}else{
-					csvOutput.write(String.valueOf(data.floatValue()));					
-				}
-			}
-			csvOutput.endRecord();
-			time = time + 500;
-		}
-		csvOutput.close();
+//		Class<?> pojoClass = Class.forName("DataAn.fileSystem.option.FlyWheel");
+//		Object obj = pojoClass.newInstance();
+//		Field[] fields = pojoClass.getDeclaredFields();
+//		List<String> titleList = new ArrayList<String>();
+//		titleList.add("时间");
+//		for (Field field : fields) {
+////			field.setAccessible(true);// 修改访问控制权限
+//			titleList.add(field.get(obj).toString());
+//		}
+//		
+////		String outputFile = "C:\\j9-02--2016-01-10.csv";
+//		String outputFile = "C:\\j9-02--" + year +"-0" + month +"-0" + day +".csv";
+//		if(month > 9){
+//			outputFile = "C:\\j9-02--" + year +"-" + month +"-10.csv";
+//		}
+//		if(day > 9){
+//			outputFile = "C:\\j9-02--" + year +"-0" + month +"-" + day +".csv";
+//		}
+//		if(month > 9 && day > 9){
+//			outputFile = "C:\\j9-02--" + year +"-" + month +"-" + day +".csv";
+//		}
+//		File file = new File(outputFile);
+//		OutputStream outputStream = new FileOutputStream(file,true);
+////		OutputStreamWriter writer = new OutputStreamWriter(outputStream, "utf-8");
+////		FileWriter fileWriter = new FileWriter(file,true);
+//		CsvWriter csvOutput = new CsvWriter(outputFile, ',',Charset.forName("gb2312"));
+//		
+//		for (String title : titleList) {
+//			csvOutput.write(title);
+//		}
+//		csvOutput.endRecord();
+//		//月份从0开始计数
+////		Date date1 = new Date(2015,5,10,0,0,0);
+////		Date date2 = new Date(2015,5,11,0,0,0);
+//		Date date1 = new Date(year,month-1,day,0,0,0);
+//		Date date2 = new Date(year,month-1,day+1,0,0,0);
+//		Date tempDate = date1;
+//		long time = tempDate.getTime();
+//		String format = year+ "年MM月dd日HH时mm分ss秒";
+//		while(tempDate.before(date2)){
+//			tempDate = new Date(time);
+//			csvOutput.write(DateUtil.format(tempDate, format));
+//			for (int i = 1; i < titleList.size(); i++) {
+//				Double data = Math.random() * Math.random();
+//				if(data < 0.01){
+//					csvOutput.write("0.01");
+//				}else{
+//					csvOutput.write(String.valueOf(data.floatValue()));					
+//				}
+//			}
+//			csvOutput.endRecord();
+//			time = time + 500;
+//		}
+//		csvOutput.close();
 		
 	}
 	

@@ -61,7 +61,6 @@ public class SeriesController {
 	}
 	
 	@RequestMapping(value="/getSeriesForm", method = RequestMethod.POST)
-	@ResponseBody
 	public SeriesDto getSeriesForm(long seriesId){
 		
 		return seriesService.getSeriesDto(seriesId);

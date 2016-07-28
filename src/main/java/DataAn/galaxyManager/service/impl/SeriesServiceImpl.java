@@ -5,12 +5,14 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import DataAn.common.pageModel.Pager;
 import DataAn.common.utils.DateUtil;
 import DataAn.galaxyManager.dao.ISeriesDao;
+import DataAn.galaxyManager.dao.IStarDao;
 import DataAn.galaxyManager.domain.Series;
 import DataAn.galaxyManager.dto.SeriesDto;
 import DataAn.galaxyManager.service.ISeriesService;
@@ -20,6 +22,8 @@ public class SeriesServiceImpl implements ISeriesService{
 
 	@Resource
 	private ISeriesDao seriesDao;
+	@Resource
+	private IStarDao starDao;
 	
 	@Override
 	@Transactional
@@ -27,6 +31,31 @@ public class SeriesServiceImpl implements ISeriesService{
 		Series series = new Series();
 		series.setName(dto.getName());
 		series.setDescription(dto.getDescription());
+		seriesDao.add(series);
+		
+	}
+	
+	@Override
+	@Transactional
+	public void deleteSeries(String seriesIds) {
+		String[] ids = seriesIds.split(",");
+		for (String strId : ids) {
+			long seriesId = Long.parseLong(strId);
+			starDao.deleteBySeriesId(seriesId);
+			seriesDao.delete(seriesId);
+		}
+	}
+
+	@Override
+	@Transactional
+	public void updateSeries(SeriesDto dto) {
+		Series series = seriesDao.get(dto.getId());
+		if(StringUtils.isNotBlank(dto.getName())){
+			series.setName(dto.getName());			
+		}
+		if(StringUtils.isNotBlank(dto.getDescription())){
+			series.setDescription(dto.getDescription());
+		}
 		seriesDao.add(series);
 		
 	}
@@ -62,7 +91,5 @@ public class SeriesServiceImpl implements ISeriesService{
 		dto.setDescription(series.getDescription());
 		return dto;
 	}
-
-
 
 }

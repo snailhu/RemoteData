@@ -8,7 +8,9 @@ public class StarDto {
 	
 	private String description;
 	
-	private String startRunDate;
+	private String beginDate;
+	
+	private long seriesId;
 
 	public long getId() {
 		return id;
@@ -34,12 +36,20 @@ public class StarDto {
 		this.description = description;
 	}
 
-	public String getStartRunDate() {
-		return startRunDate;
+	public String getBeginDate() {
+		return beginDate;
 	}
 
-	public void setStartRunDate(String startRunDate) {
-		this.startRunDate = startRunDate;
+	public void setBeginDate(String beginDate) {
+		this.beginDate = beginDate;
+	}
+
+	public long getSeriesId() {
+		return seriesId;
+	}
+
+	public void setSeriesId(long seriesId) {
+		this.seriesId = seriesId;
 	}
 	
 	

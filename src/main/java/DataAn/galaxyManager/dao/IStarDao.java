@@ -5,4 +5,5 @@ import DataAn.galaxyManager.domain.Star;
 
 public interface IStarDao extends IBaseDao<Star>{
 
+	public void deleteBySeriesId(long seriesId);
 }

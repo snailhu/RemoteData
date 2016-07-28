@@ -40,8 +40,10 @@ public class SeriesController {
 									@RequestParam(value = "description", required = false) String description){
 		JsonMessage jsonMsg = new JsonMessage();
 		try {
+			System.out.println("come in createSeries..");
 			System.out.println("name: " + name);
 			System.out.println("description: " + description);
+			System.out.println();
 			SeriesDto dto = new SeriesDto();
 			dto.setName(name);
 			dto.setDescription(description);
@@ -58,11 +60,61 @@ public class SeriesController {
 	    return jsonMsg;
 	}
 	
-	@RequestMapping(value="/createSeries", method = RequestMethod.POST)
+	@RequestMapping(value="/getSeriesForm", method = RequestMethod.POST)
 	@ResponseBody
 	public SeriesDto getSeriesForm(long seriesId){
 		
 		return seriesService.getSeriesDto(seriesId);
 	}
 	
+	@RequestMapping(value="/editSeries", method = RequestMethod.POST)
+	@ResponseBody
+	public JsonMessage editSeries(@RequestParam(value = "id", required = true) long id,
+								  @RequestParam(value = "name", required = true) String name,
+								  @RequestParam(value = "description", required = false) String description){
+		JsonMessage jsonMsg = new JsonMessage();
+		try {
+			System.out.println("come in editSeries...");
+			System.out.println("id: " + id);
+			System.out.println("name: " + name);
+			System.out.println("description: " + description);
+			System.out.println();
+			SeriesDto dto = new SeriesDto();
+			dto.setId(id);
+			dto.setName(name);
+			dto.setDescription(description);
+			seriesService.updateSeries(dto);
+		} catch (Exception e) {
+			e.printStackTrace();
+			jsonMsg.setSuccess(false);
+			jsonMsg.setMsg("编辑系列出错！");
+			jsonMsg.setObj(e.getMessage());
+			return jsonMsg;
+		}
+		jsonMsg.setSuccess(true);
+		jsonMsg.setMsg("编辑系列成功！");
+	    return jsonMsg;
+	}
+	@RequestMapping(value="/deleteSeries", method = RequestMethod.POST)
+	@ResponseBody
+	public JsonMessage deleteSeries(@RequestParam(value = "seriesIds", required = true) String seriesIds){
+		JsonMessage jsonMsg = new JsonMessage();
+		try {
+			System.out.println("come in deleteSeries..");
+			System.out.println("seriesIds: " + seriesIds);
+			System.out.println();
+			seriesService.deleteSeries(seriesIds);
+		} catch (Exception e) {
+			e.printStackTrace();
+			jsonMsg.setSuccess(false);
+			jsonMsg.setMsg("删除系列出错！");
+			jsonMsg.setObj(e.getMessage());
+			return jsonMsg;
+		}
+		jsonMsg.setSuccess(true);
+		jsonMsg.setMsg("删除系列成功！");
+	    return jsonMsg;
+	}
+	
+
 }

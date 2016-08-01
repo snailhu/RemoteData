@@ -17,9 +17,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import DataAn.Analysis.dto.ConstraintDto;
+import DataAn.common.pageModel.Pager;
 import DataAn.fileSystem.option.FlyWheelDataType;
 import DataAn.fileSystem.service.IFlyWheelService;
 import DataAn.fileSystem.service.IJ9Series_Star_Service;
+import DataAn.galaxyManager.dao.ISeriesDao;
+import DataAn.galaxyManager.domain.Series;
 import DataAn.mongo.db.MongodbUtil;
 
 import org.springframework.web.bind.annotation.RequestParam;
@@ -29,8 +32,15 @@ import DataAn.Analysis.dto.AllJsonData;
 import DataAn.Analysis.dto.GroupMenu;
 import DataAn.Analysis.dto.ParamGroup;
 import DataAn.Analysis.dto.SingleParamDto;
+import DataAn.Analysis.dto.SeriesBtnMenu;
 import DataAn.Util.EhCache;
 import DataAn.Util.JsonStringToObj;
+import DataAn.galaxyManager.domain.*;
+import DataAn.galaxyManager.dto.SeriesDto;
+import DataAn.galaxyManager.dto.StarDto;
+import DataAn.galaxyManager.service.ISeriesService;
+import DataAn.galaxyManager.service.IStarService;
+import DataAn.galaxyManager.service.impl.SeriesServiceImpl;
 
 
 @Controller
@@ -160,4 +170,39 @@ public class CommonController {
 			) throws Exception{
 		return "DataAnalysis" ;				
 	}
+	
+	//获取卫星系列信息，生成综合状态预览页面的卫星系列按钮
+	@Resource
+	private ISeriesService seriesService;
+	@RequestMapping(value = "/getSeriesBtnMenus" ,method =RequestMethod.GET)
+	@ResponseBody
+	public List<SeriesBtnMenu> getSeriesBtnMenus(
+			HttpServletRequest request, 
+			HttpServletResponse response) throws Exception{
+			EhCache ehCache = new EhCache();
+			@SuppressWarnings("unchecked")		
+			Pager<SeriesDto> pager= seriesService.getRoleList(0, 100);
+			List<SeriesDto> lsb = pager.getRows();
+			List<SeriesBtnMenu> lseriesbtnMenu =new ArrayList<SeriesBtnMenu>();
+			for(SeriesDto pg:lsb){
+				SeriesBtnMenu sbtnm =new SeriesBtnMenu();
+				sbtnm.setId(pg.getId());
+				sbtnm.setName(pg.getName());
+				sbtnm.setDescription(pg.getDescription());
+				sbtnm.setCreateDate(pg.getCreateDate());
+				lseriesbtnMenu.add(sbtnm);
+			}
+		return lseriesbtnMenu;
+	}
+	//获取一个系列的所有卫星信息，用于生成卫星图片
+	@Resource private IStarService starService;
+		@RequestMapping(value = "/conditionMonitoring/getSatellites" ,method =RequestMethod.POST)
+		@ResponseBody
+		public List<StarDto> getSatellites(
+				@RequestParam(value = "seriesId", required = true) long seriesId,
+				HttpServletRequest request, 
+				HttpServletResponse response) throws Exception{			
+				List<StarDto> lstarinfor= starService.getStarsBySeriesId(seriesId);
+			return lstarinfor;
+		}
 }

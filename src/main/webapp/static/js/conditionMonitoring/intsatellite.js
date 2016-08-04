@@ -1,0 +1,202 @@
+function intsatellite(seriesId) {
+	
+	 var name;
+	 var begindate;
+	 var currentdate;
+	 var rundate;
+	 var url = window.location.pathname+"/getSatellites";
+	 //var base=window.location;
+	 var containerdiv=$("#id_container");
+	 	 containerdiv.empty();
+	 	timeout = false;
+		time();
+/*    $.post(url, { "seriesId": seriesId },
+    		   function(data){
+		        $.each(data, function (i, item) {
+		            var div = $('<div></div>');
+		            div.attr('class','imagediv')
+		            var a = $('<a></a>');
+		            var img = $('<img/>');
+		            var span = $('<span></span>');
+		            span.text(item.name);
+		            img.attr('id',item.id);
+		            var imgurl = "http://localhost:8080/DataRemote/static/images/satellite.png";
+		            img.attr('src',imgurl)
+		            a.attr('data-trigger','hover');
+		            a.attr('data-placement','top');
+		            a.attr('data-toggle','popover');		            
+		            a.append(img);
+		            a.append(span);
+		            div.append(a);
+		            containerdiv.append(div);
+		          });
+    		   }, "json");*/
+	
+	$.ajax({  
+         type : "post",  
+         url : url,  
+         data : "seriesId=" + seriesId,  
+         async : false,  
+         success : function(data){ 
+        	 var containerdiv=$("#id_container");
+    	 	 containerdiv.empty();
+        	 $.each(data, function (i, item) {
+        		 	name=item.name;        		 	
+        		 	var begintime=item.beginDate;
+        		 	//begindate = formatDate(begintime)
+        		 	begindate =begintime.substring(0,10);
+        		 	currenttime=new Date();
+        		 	currentdate =formatDate(currenttime);
+        		 	rundate = DateDiff('d',currentdate,begindate);
+		            var div = $('<div></div>');
+		            div.attr('class','imagediv')
+		            var a = $('<a></a>');
+		            var img = $('<img/>');
+		            var span = $('<span></span>');
+		            span.text(item.name);
+		            img.attr('id',item.id);
+		            var imgurl = "http://localhost:8080/DataRemote/static/images/satellite.png";
+		            img.attr('src',imgurl)
+		            a.attr('data-trigger','hover');
+		            a.attr('data-placement','top');
+		            a.attr('data-toggle','popover');		            
+		            a.append(img);
+		            a.append(span);
+		            div.append(a);
+		            containerdiv.append(div);
+		            
+         })	
+			//中心点横坐标
+			var dotLeft = ($(".container").width()-$(".dot").width())/2-100;
+			//中心点纵坐标
+			var dotTop = ($(".container").height()-$(".dot").height())/2-100;
+			//椭圆长边
+			a=460;
+			//椭圆短边
+			b=150;
+			//起始角度
+			var stard = 0;	
+			//每一个BOX对应的角度;
+			var avd = 360/$(".container img").length;
+			//每一个BOX对应的弧度;
+			var ahd = avd*Math.PI/180;
+			//运动的速度
+			var speed = 2;
+			//图片的宽高
+			//var wid = $(".container img").width();
+			//var hei = $(".container img").height();
+			var wid = $(".imagediv").width();
+			var hei = $(".imagediv").height();
+			//总的TOP值
+			var totTop = dotTop+100;
+			//设置圆的中心点的位置
+			$(".dot").css({"left":dotLeft,"top":dotTop});
+			//运动函数
+			 fun_animat = function(){
+				speed = speed<360?speed:2;
+				//运运的速度
+				speed+=2;
+				//运动距离，即运动的弧度数;
+				var ainhd = speed*Math.PI/180;
+				//按速度来定位DIV元素
+				$(".imagediv").each(function(index, element){
+				var allpers = (Math.cos((ahd*index+ainhd))*b+dotTop)/totTop;
+				var wpers = Math.max(0.1,allpers);
+				var hpers = Math.max(0.1,allpers);
+				$(this).css({
+					"left":Math.sin((ahd*index+ainhd))*a+dotLeft,
+					"top":Math.cos((ahd*index+ainhd))*b+dotTop,
+					//"z-index":Math.ceil(allpers*10),
+					"z-index":2,
+					"width":wpers*wid,
+					"height":hpers*hei,
+					"opacity":1
+				});
+				});
+			}
+         
+         }  
+    });
+/*			//中心点横坐标
+			var dotLeft = ($(".container").width()-$(".dot").width())/2-100;
+			//中心点纵坐标
+			var dotTop = ($(".container").height()-$(".dot").height())/2-100;
+			//椭圆长边
+			//a = document.documentElement.clientWidth/3;//获取可见区域的宽度和高度
+			//a = document.body.clientWidth/3;//body区域的宽度和高度
+			//a = $(".container").width()/3;
+			a=460;
+			//椭圆短边
+			//b = document.documentElement.clientHeight/3;
+			//b = document.body.clientHeight/3;
+			//b = $(".container").height()/3;
+			b=150;
+			//起始角度
+			var stard = 0;
+		
+			//每一个BOX对应的角度;
+			var avd = 360/$(".container img").length;
+			//每一个BOX对应的弧度;
+			var ahd = avd*Math.PI/180;
+			//运动的速度
+			var speed = 2;
+			//图片的宽高
+			//var wid = $(".container img").width();
+			//var hei = $(".container img").height();
+			var wid = $(".imagediv").width();
+			var hei = $(".imagediv").height();
+			//总的TOP值
+			var totTop = dotTop+100;
+		
+			//设置圆的中心点的位置
+			$(".dot").css({"left":dotLeft,"top":dotTop});
+			
+			//运动函数
+			 fun_animat = function(){
+				speed = speed<360?speed:2;
+				//运运的速度
+				speed+=2;
+				//运动距离，即运动的弧度数;
+				var ainhd = speed*Math.PI/180;
+				//按速度来定位DIV元素
+				$(".imagediv").each(function(index, element){
+				var allpers = (Math.cos((ahd*index+ainhd))*b+dotTop)/totTop;
+				var wpers = Math.max(0.1,allpers);
+				var hpers = Math.max(0.1,allpers);
+				$(this).css({
+					"left":Math.sin((ahd*index+ainhd))*a+dotLeft,
+					"top":Math.cos((ahd*index+ainhd))*b+dotTop,
+					//"z-index":Math.ceil(allpers*10),
+					"z-index":2,
+					"width":wpers*wid,
+					"height":hpers*hei,
+					"opacity":1
+				});
+				});
+			}*/
+			//定时调用运动函数
+			 //var setAnimate = setInterval(fun_animat,100);
+			 //clearInterval(setAnimate);
+
+			time();
+			 
+			//加载悬浮提示窗口
+					$("[data-toggle='popover']").popover({  
+			        html : true,    
+			        title: title(),    
+			        delay:{show:10, hide:10},  
+			        content: function() { 
+						//clearInterval(setAnimate);
+			        	timeout = true;
+						time();
+			          	return content(name,begindate,rundate);    
+			          	//return content();    
+						}   
+					});
+			//悬浮窗口消失时继续旋转
+			$("[data-toggle='popover']").on('hidden.bs.popover', function() {
+				//setAnimate = setInterval(fun_animat,100);
+				timeout = false;
+				time();
+				});
+  }

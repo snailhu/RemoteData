@@ -194,6 +194,7 @@ public class CommonController {
 			}
 		return lseriesbtnMenu;
 	}
+	
 	//获取一个系列的所有卫星信息，用于生成卫星图片
 	@Resource private IStarService starService;
 		@RequestMapping(value = "/conditionMonitoring/getSatellites" ,method =RequestMethod.POST)

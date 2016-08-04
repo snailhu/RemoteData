@@ -16,6 +16,7 @@ public class ConstraintDto {
 	private String value;
 	private float max;
 	private float min;
+	private String yname; //hanz添加约束条件中当前参数Y轴名称
 	private List<ConstraintDto> children;
 	
 	public int getId() {
@@ -56,6 +57,12 @@ public class ConstraintDto {
 	public void setMin(float min) {
 		this.min = min;
 	}
+	public String getYname() {
+		return yname;
+	}
+	public void setYname(String yname) {
+		this.yname = yname;
+	}
 	public List<ConstraintDto> getChildren() {
 		return children;
 	}
@@ -64,14 +71,11 @@ public class ConstraintDto {
 	}
 	@Override
 	public String toString() {
+		System.out.println("执行到Constrain Dto的重载tostring函数");
 		return "ConstraintDto [id=" + id + ", parentId=" + parentId + ", name="
 				+ name + ", value=" + value + ", max=" + max + ", min=" + min
-				+ ", children=" + children + "]";
+				+ ",yname="+yname+", children=" + children + "]";
 	}
-	
-	
-	
-	
 	
 	
 }

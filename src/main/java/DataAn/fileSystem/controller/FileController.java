@@ -141,6 +141,20 @@ public class FileController {
 //		System.out.println("come in uploadHome");
 		return "admin/mongoFs/uploadFile";
 	}
+	
+	@RequestMapping(value = "existFile", method = RequestMethod.POST)
+	@ResponseBody
+	public JsonMessage existFile(String fileName){
+//		System.out.println("come in existFile..");
+//		System.out.println("fileName: " + fileName);
+		JsonMessage msg = new JsonMessage();
+		fileName = fileName.replace("\\", "/");
+		String[] strs = fileName.split("/");
+		boolean flag = fileService.isExistFile(strs[strs.length-1]);
+		msg.setSuccess(flag);
+		return msg;
+	}
+	
 	@RequestMapping(value = "/uploadFile", method = { RequestMethod.POST })
 	public String uploadFile(
 			@RequestParam(value = "dirId", required = true) long dirId,
@@ -191,16 +205,20 @@ public class FileController {
 		
 		long begin = System.currentTimeMillis();
 		final Map<String, FileDto> map = new HashMap<String,FileDto>();
-		FileDto csvFileDto = new FileDto();
-		csvFileDto.setFileName(csvFile.getOriginalFilename());
-		csvFileDto.setFileSize(csvFile.getSize());
-		csvFileDto.setIn(csvFile.getInputStream());
-		map.put("csv", csvFileDto);
-		FileDto datFileDto = new FileDto();
-		datFileDto.setFileName(datFile.getOriginalFilename());
-		datFileDto.setFileSize(datFile.getSize());
-		datFileDto.setIn(datFile.getInputStream());
-		map.put("dat", datFileDto);
+		if(csvFile.getSize() != 0){
+			FileDto csvFileDto = new FileDto();
+			csvFileDto.setFileName(csvFile.getOriginalFilename());
+			csvFileDto.setFileSize(csvFile.getSize());
+			csvFileDto.setIn(csvFile.getInputStream());
+			map.put("csv", csvFileDto);			
+		}
+		if(datFile.getSize() != 0){
+			FileDto datFileDto = new FileDto();
+			datFileDto.setFileName(datFile.getOriginalFilename());
+			datFileDto.setFileSize(datFile.getSize());
+			datFileDto.setIn(datFile.getInputStream());
+			map.put("dat", datFileDto);			
+		}
 		//打开另外一个线程处理文件
 		new Thread(new Runnable(){
 			@Override

@@ -19,15 +19,20 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	
 	<jsp:include page="/WEB-INF/jsp/inc/include-easyUI.jsp"></jsp:include>
 	
-	<link type="text/css" rel="stylesheet" href="<%=request.getContextPath()%>/static/content/jeDate/jedate/skin/jedate.css">
-    <script type="text/javascript" src="<%=request.getContextPath()%>/static/content/jeDate/jedate/jedate.js"></script>
+	<link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/static/content/jeDate/jedate/skin/jedate.css">
+    <script type="text/javascript" src="${pageContext.request.contextPath}/static/content/jeDate/jedate/jedate.js"></script>
     
-	<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/static/content/sweetalert/dist/sweetalert.css">
-	<script src="<%=request.getContextPath()%>/static/content/sweetalert/dist/sweetalert.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/static/content/sweetalert/dist/sweetalert.css">
+	<script src="${pageContext.request.contextPath}/static/content/sweetalert/dist/sweetalert.min.js"></script>
 	
-	<script src="<%=request.getContextPath()%>/static/content/js/outlook2.js" type="text/javascript"></script>
-	<script type="text/javascript" src="<%=request.getContextPath()%>/static/content/js/validDate.js"></script>
-	<script type="text/javascript" src="<%=request.getContextPath()%>/static/content/jquery-easyui-datagridview/datagrid-detailview.js"></script>
+	<!--     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/content/bootstrapValidator/vendor/bootstrap/css/bootstrap.css"/> -->
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/content/bootstrapValidator/dist/css/bootstrapValidator.css"/>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/static/content/bootstrapValidator/vendor/bootstrap/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/static/content/bootstrapValidator/dist/js/bootstrapValidator.js"></script>
+    
+	<script src="${pageContext.request.contextPath}/static/content/js/outlook2.js" type="text/javascript"></script>
+	<script type="text/javascript" src="${pageContext.request.contextPath}/static/content/js/validDate.js"></script>
+	<script type="text/javascript" src="${pageContext.request.contextPath}/static/content/jquery-easyui-datagridview/datagrid-detailview.js"></script>
   	<script src="${pageContext.request.contextPath}/static/assets/js/bootstrap.min.js"></script>
 	<script src="${pageContext.request.contextPath}/static/assets/js/typeahead-bs2.min.js"></script>
 	<script src="${pageContext.request.contextPath}/static/assets/js/bootstrap-colorpicker.min.js"></script>
@@ -100,8 +105,154 @@ p, span, b, div {
 .icon-edit {
     background: url('') no-repeat center center;
 }
+.glyphicon {
+    position: relative;
+    top: -23px;
+    padding-right: 10px;
+    display: inline-block;
+    font-family: 'Glyphicons Halflings';
+    -webkit-font-smoothing: antialiased;
+    font-style: normal;
+    font-weight: normal;
+    line-height: 1;
+    float: right;
+}
+.help-block {
+    display: block;
+    margin-top: 10px;
+    margin-bottom: 0px;
+    color: #737373;
+}
   </style>
-  
+  <script type="text/javascript">
+  	$(function(){
+  		$('#addSeriesInfoForm').bootstrapValidator({
+//          live: 'disabled',
+          message: 'This value is not valid',
+          feedbackIcons: {
+              valid: 'glyphicon glyphicon-ok',
+              invalid: 'glyphicon glyphicon-remove',
+              validating: 'glyphicon glyphicon-refresh'
+          },
+          fields: {
+              name: {
+                  message: '系列名称不能为空',
+                  validators: {
+                      notEmpty: {
+                          message: '系列名称不能为空'
+                      }
+                  }
+              },
+              description : {
+            	  message: '',
+              }
+          }
+      });
+	$('#add-series-close').click(function() {
+	    $('#addSeriesInfoForm').data('bootstrapValidator').resetForm(true);
+	});	
+  	$('#editSeriesInfoForm').bootstrapValidator({
+//          live: 'disabled',
+          message: 'This value is not valid',
+          feedbackIcons: {
+              valid: 'glyphicon glyphicon-ok',
+              invalid: 'glyphicon glyphicon-remove',
+              validating: 'glyphicon glyphicon-refresh'
+          },
+          fields: {
+              name: {
+                  message: '系列名称不能为空',
+                  validators: {
+                      notEmpty: {
+                          message: '系列名称不能为空'
+                      }
+                  }
+              },
+              description : {
+            	  message: '',
+              }
+          }
+      });
+  	$('#edit-series-close').click(function() {
+	    $('#editSeriesInfoForm').data('bootstrapValidator').resetForm(true);
+	});	
+  	$('#addStarInfoForm').bootstrapValidator({
+//      live: 'disabled',
+      message: 'This value is not valid',
+      feedbackIcons: {
+          valid: 'glyphicon glyphicon-ok',
+          invalid: 'glyphicon glyphicon-remove',
+          validating: 'glyphicon glyphicon-refresh'
+      },
+      fields: {
+          name: {
+              message: '星名称不能为空',
+              validators: {
+                  notEmpty: {
+                      message: '星名称不能为空'
+                  }
+              }
+          },
+          beginDate: {
+              validators: {
+            	  notEmpty: {
+                      message: '开始运行时间不能为空'
+                  },
+              regexp: {
+                  regexp: /^(\d{4})-(0\d{1}|1[0-2])-(0\d{1}|[12]\d{1}|3[01])$/,
+                  message: '时间格式不对'
+              },
+              }
+          },
+          description : {
+        	  message: '',
+          }
+      }
+  	});  
+  	$('#add-star-close').click(function() {
+	    $('#addStarInfoForm').data('bootstrapValidator').resetForm(true);
+	});	
+    $('#editStarInfoForm').bootstrapValidator({
+//        live: 'disabled',
+        message: 'This value is not valid',
+        feedbackIcons: {
+            valid: 'glyphicon glyphicon-ok',
+            invalid: 'glyphicon glyphicon-remove',
+            validating: 'glyphicon glyphicon-refresh'
+        },
+        fields: {
+            name: {
+                message: '星名称不能为空',
+                validators: {
+                    notEmpty: {
+                        message: '星名称不能为空'
+                    }
+                }
+            },
+            beginDate: {
+                validators: {
+              	  notEmpty: {
+                        message: '开始运行时间不能为空'
+                    },
+                regexp: {
+                    regexp: /^(\d{4})-(0\d{1}|1[0-2])-(0\d{1}|[12]\d{1}|3[01])$/,
+                    message: '时间格式不对'
+                },
+                }
+            }
+        }
+    });  	
+    $('#edit-star-close').click(function() {
+	    $('#editStarInfoForm').data('bootstrapValidator').resetForm(true);
+	});	
+    
+	$('#add-series11-close').click(function() {
+        $('#defaultForm').bootstrapValidator('validate');
+    });
+
+
+  	});
+  </script>  
   </head>
   
   <body>
@@ -170,15 +321,15 @@ p, span, b, div {
 					<form id="addSeriesInfoForm" class="form-horizontal" role="form">
 						<div class="space-4"></div>
 						<div class="form-group">
-							<label class="col-sm-2 control-label no-padding-right" for="add-series-name"> 系列名称:</label>
-							<div class="col-sm-9">
+							<label class="col-sm-3 control-label no-padding-right" for="add-series-name"> 系列名称:</label>
+							<div class="col-sm-8">
 								<input type="text" name="name" id="add-series-name" placeholder="系列名称" class="form-control" />
 							</div>
 						</div>
 						<div class="space-8"></div>
 						<div class="form-group">
-							<label class="col-sm-2 control-label no-padding-right" for="add-series-description"> 系列描述： </label>
-							<div class="col-sm-9">
+							<label class="col-sm-3 control-label no-padding-right" for="add-series-description"> 系列描述： </label>
+							<div class="col-sm-8">
 								<textarea class="form-control" name="description" id="add-series-description" placeholder="系列描述"></textarea>
 							</div>
 						</div>
@@ -188,7 +339,7 @@ p, span, b, div {
 			      	<div class="col-lg-4 col-lg-offset-5">
 <!--                         <button type="submit" class="btn btn-primary" name="signup" value="Sign up">提交</button> -->
 <!--                         <button type="button" class="btn btn-info" id="resetBtn">重置表单</button> -->
-				        <button type="button" class="btn btn-default" id="modal-close" data-dismiss="modal">关闭</button>
+				        <button type="button" class="btn btn-default" id="add-series-close" data-dismiss="modal">关闭</button>
 				        <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="submit_addSeriesInfo()">确定</button>
                     </div>
 			      </div>
@@ -207,15 +358,15 @@ p, span, b, div {
 					<form id="editSeriesInfoForm" class="form-horizontal" role="form">
 						<div class="space-4"></div>
 						<div class="form-group">
-							<label class="col-sm-2 control-label no-padding-right" for="edit-series-name"> 系列名称:</label>
-							<div class="col-sm-9">
+							<label class="col-sm-3 control-label no-padding-right" for="edit-series-name"> 系列名称:</label>
+							<div class="col-sm-8">
 								<input type="text" name="name" id="edit-series-name" placeholder="系列名称" class="form-control" />
 							</div>
 						</div>
 						<div class="space-8"></div>
 						<div class="form-group">
-							<label class="col-sm-2 control-label no-padding-right" for="edit-series-description"> 系列描述： </label>
-							<div class="col-sm-9">
+							<label class="col-sm-3 control-label no-padding-right" for="edit-series-description"> 系列描述： </label>
+							<div class="col-sm-8">
 								<textarea class="form-control" name="description" id="edit-series-description" placeholder="系列描述"></textarea>
 							</div>
 						</div>
@@ -225,7 +376,7 @@ p, span, b, div {
 			      	<div class="col-lg-4 col-lg-offset-5">
 <!--                         <button type="submit" class="btn btn-primary" name="signup" value="Sign up">提交</button> -->
 <!--                         <button type="button" class="btn btn-info" id="resetBtn">重置表单</button> -->
-				        <button type="button" class="btn btn-default" id="modal-close" data-dismiss="modal">关闭</button>
+				        <button type="button" class="btn btn-default" id="edit-series-close" data-dismiss="modal">关闭</button>
 				        <button type="button" class="btn btn-primary" data-dismiss="modal" id="submit_editSeriesInfo" >确定</button>
                     </div>
 			      </div>
@@ -269,7 +420,7 @@ p, span, b, div {
 			      	<div class="col-lg-4 col-lg-offset-5">
 <!--                         <button type="submit" class="btn btn-primary" name="signup" value="Sign up">提交</button> -->
 <!--                         <button type="button" class="btn btn-info" id="resetBtn">重置表单</button> -->
-				        <button type="button" class="btn btn-default" id="modal-close" data-dismiss="modal">关闭</button>
+				        <button type="button" class="btn btn-default" id="add-star-close" data-dismiss="modal">关闭</button>
 				        <button type="button" class="btn btn-primary" data-dismiss="modal" id="submit_addStarInfo">确定</button>
                     </div>
 			      </div>
@@ -313,7 +464,7 @@ p, span, b, div {
 			      	<div class="col-lg-4 col-lg-offset-5">
 <!--                         <button type="submit" class="btn btn-primary" name="signup" value="Sign up">提交</button> -->
 <!--                         <button type="button" class="btn btn-info" id="resetBtn">重置表单</button> -->
-				        <button type="button" class="btn btn-default" id="modal-close" data-dismiss="modal">关闭</button>
+				        <button type="button" class="btn btn-default" id="edit-star-close" data-dismiss="modal">关闭</button>
 				        <button type="button" class="btn btn-primary" data-dismiss="modal" id="submit_editStarInfo">确定</button>
                     </div>
 			      </div>
@@ -343,7 +494,7 @@ $(function() {
 	
 	galaxyGrid = $('#galaxyList').datagrid({
 		view : detailview,
-		url: '<%=request.getContextPath()%>/admin/series/getList',
+		url: '${pageContext.request.contextPath}/admin/series/getList',
 		rownumbers: true,
 		fitColumns:true,
 		idField: 'id',//'id',
@@ -360,7 +511,7 @@ $(function() {
 		onExpandRow : function(index, row) {
 			var subgridId = 'ddv-' + index;
 			$('#' + subgridId).datagrid({
-				url : '<%=request.getContextPath()%>/admin/star/getStars?seriesId='+ row.id,
+				url : '${pageContext.request.contextPath}/admin/star/getStars?seriesId='+ row.id,
 						//title: '星星项列表[所属组：'+row.Name+']',
 						fitColumns : true,
 						rownumbers : true,
@@ -450,7 +601,7 @@ $(function() {
 		$('#add-series-description').val("");
 		if(name != ""){
 			$.ajax({
-				url : '<%=request.getContextPath()%>/admin/series/createSeries',
+				url : '${pageContext.request.contextPath}/admin/series/createSeries',
 				data : {
 					name : name,
 					description : description
@@ -484,9 +635,9 @@ $(function() {
 				$('#submit_editSeriesInfo').click(function(){
 					var name = $('#edit-series-name').val();
 					var description = $('#edit-series-description').val();
-					if(oldName != name && oldDescription != description){
+					if(oldName != name || oldDescription != description){
 						$.ajax({
-							url : '<%=request.getContextPath()%>/admin/series/editSeries',
+							url : '${pageContext.request.contextPath}/admin/series/editSeries',
 							data : {
 								id : rows[0].id,
 								name : name,
@@ -508,6 +659,8 @@ $(function() {
 						top.showMsg('提示', "系列信息没有被修改！");
 					}
 				});
+			}else{
+				top.showMsg("提示", "只能编辑一列！");
 			}
 		}else {
 			top.showMsg("提示", "请选择要编辑的系列！");
@@ -539,7 +692,7 @@ $(function() {
 						ids.push(rows[i].id);
 					}
 					$.ajax({
-						url : '<%=request.getContextPath()%>/admin/series/deleteSeries',
+						url : '${pageContext.request.contextPath}/admin/series/deleteSeries',
 						data : {
 							seriesIds : ids.join(',')
 						},
@@ -579,7 +732,7 @@ $(function() {
 			$('#add-star-beginDate').val("");
 			if(name != ""){
 				$.ajax({
-					url : '<%=request.getContextPath()%>/admin/star/createStar',
+					url : '${pageContext.request.contextPath}/admin/star/createStar',
 					data : {
 						seriesId : seriesId,
 						name : name,
@@ -601,17 +754,22 @@ $(function() {
  		});
 	}
 	function editStarInfo(datagridId, starId) {
-// 		console.log('datagridId:' + datagridId);
-// 		console.log('starId:'+starId);
+		var rows = $('#' + datagridId).datagrid("getSelections");
+		var oldName = rows[0].name;
+		var oldBeginDate = rows[0].beginDate;
+		var oldDescription = rows[0].description;
+		$('#edit-star-name').val(oldName);
+		$('#edit-star-beginDate').val(oldBeginDate);
+		$('#edit-star-description').val(oldDescription);
 		$('#editStarInfoModal').modal('show');
-		$('#editStarInfoForm').form('load', '<%=request.getContextPath()%>/admin/star/getStarForm' + '?starId=' + starId);
+		//$('#editStarInfoForm').form('load', '${pageContext.request.contextPath}/admin/star/getStarForm' + '?starId=' + starId);
  		$('#submit_editStarInfo').click(function(){
 			var name = $('#edit-star-name').val();
 			var beginDate = $('#edit-star-beginDate').val();
 			var description = $('#edit-star-description').val();
-			if(name != ""){
+			if(oldName != name || oldDescription != description || oldBeginDate != oldBeginDate){
 				$.ajax({
-					url : '<%=request.getContextPath()%>/admin/star/editStar',
+					url : '${pageContext.request.contextPath}/admin/star/editStar',
 					data : {
 						id : starId,
 						name : name,
@@ -629,6 +787,8 @@ $(function() {
 						}
 					}
 				});
+			}else{
+				top.showMsg('提示', "星信息没有被修改！");
 			}
  		});
 
@@ -651,7 +811,7 @@ $(function() {
 		function(isConfirm) {
 			if (isConfirm) {
 				$.ajax({
-					url : '<%=request.getContextPath()%>/admin/star/deleteStar',
+					url : '${pageContext.request.contextPath}/admin/star/deleteStar',
 					data : {
 						starId : starId
 					},

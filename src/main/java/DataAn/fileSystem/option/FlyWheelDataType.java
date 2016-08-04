@@ -1,5 +1,6 @@
 package DataAn.fileSystem.option;
 
+@Deprecated
 public enum FlyWheelDataType {
 
 	/**时间*/

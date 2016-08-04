@@ -6,13 +6,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * 
- * ClassName: LogUtil 
- * Function: 日志记录类
- * date: 2014年10月22日 上午9:33:55 
- *
- * @author sid
- */
+* Title: LogUtil
+* @Description: 日志记录类
+* @author  Shewp
+* @date 2016年7月28日
+*/
 public class LogUtil {
 	
 	private static ConcurrentHashMap<String, Logger> logs = new ConcurrentHashMap<String, Logger>();

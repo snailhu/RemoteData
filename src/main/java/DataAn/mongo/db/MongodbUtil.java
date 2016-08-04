@@ -16,6 +16,7 @@ import com.mongodb.MongoClient;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.MongoIterable;
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.Updates;
 import com.mongodb.client.result.DeleteResult;
@@ -50,6 +51,24 @@ public class MongodbUtil {
 //		}
 	}
 	
+	public void getListCollections(){
+		MongoIterable<String> collections = db.listCollectionNames();
+		for (String collection : collections) {
+			System.out.println(collection);
+		}
+	}
+	
+	public void dropCollection(){
+		MongoCollection<Document> collection = db.getCollection("testNew");
+		collection.drop();
+	}
+	public void getIndex(){
+		MongoCollection<Document> collection = db.getCollection("testNew");
+		for (final Document index : collection.listIndexes()) {
+			System.out.println(index.toJson());
+		}
+	}
+
 	/**
 	* @Title: insert
 	* @Description: 为相应的集合添加数据
@@ -94,9 +113,55 @@ public class MongodbUtil {
 		collection.insertOne(doc);
 	}
 	
+	public void deleteOne(){
+		MongoCollection<Document> collection = db.getCollection("testNew");
+		collection.deleteOne(Filters.eq("i", 9));
+	}
+	public void deleteMany(String collectionName,String key,Object value){
+		MongoCollection<Document> collection = db.getCollection(collectionName);
+		// key == value
+		collection.deleteMany(Filters.eq(key, value));
+	}
+	
+	/**
+	* Description: 将某一行的状态标志为0
+	* @param collectionName 集合名称
+	* @param key uuId
+	* @param value
+	* @author Shenwp
+	* @date 2016年8月2日
+	* @version 1.0
+	*/
+	public void update(String collectionName,String key,String value){
+		MongoCollection<Document> collection = db.getCollection(collectionName);
+		collection.updateMany(Filters.eq(key, value), Updates.set("status", 0));
+		// 更新。若包含companyid属性，则热度加10后更新
+//        collection.updateOne(
+//                Filters.eq(key, value),
+//                new Document("$inc", new Document("status", 1)));
+        // 批量更新。所有包含hotness属性的其hotness值乘以2
+//        collection.updateMany(Filters.exists("hotness"), new Document(
+//                "$mul", new Document("hotness", 2)));
+	}
+	
+	public void updateBy(String collectionName, String beginDate, String endDate) {
+		MongoCollection<Document> collection = db.getCollection(collectionName);
+		collection.updateMany(
+							Filters.and(Filters.gte("datetime", beginDate),
+										Filters.lte("datetime", endDate)),
+							Updates.set("status", 0));
+	}
+
+
 	public Document findFirst(String collectionName){
 		MongoCollection<Document> collection = db.getCollection(collectionName);
 		Document doc = collection.find().first();
+		return doc;
+	}
+	
+	public Document findFirstByYear_month_day(String collectionName,String date){
+		MongoCollection<Document> collection = db.getCollection(collectionName);
+		Document doc = collection.find(Filters.eq("year_month_day", date)).first();
 		return doc;
 	}
 	
@@ -131,47 +196,6 @@ public class MongodbUtil {
 		Document doc = collection.find(Filters.eq("i", 7)).first();
 		System.out.println(doc.toJson());
 	}
-	
-	public void update(String collectionName,String key,String value){
-		MongoCollection<Document> collection = db.getCollection(collectionName);
-		collection.updateMany(Filters.eq(key, value), Updates.set("status", 0));
-		// 更新。若包含companyid属性，则热度加10后更新
-//        collection.updateOne(
-//                Filters.eq(key, value),
-//                new Document("$inc", new Document("status", 1)));
-        // 批量更新。所有包含hotness属性的其hotness值乘以2
-//        collection.updateMany(Filters.exists("hotness"), new Document(
-//                "$mul", new Document("hotness", 2)));
-	}
-	
-	public void updateBy(String collectionName, String beginDate, String endDate) {
-		MongoCollection<Document> collection = db.getCollection(collectionName);
-		collection.updateMany(
-							Filters.and(Filters.gte("datetime", beginDate),
-										Filters.lte("datetime", endDate)),
-							Updates.set("status", 1));
-	}
-	public void deleteOne(){
-		MongoCollection<Document> collection = db.getCollection("testNew");
-		collection.deleteOne(Filters.eq("i", 9));
-	}
-	public void deleteMany(String collectionName,String key,String value){
-		MongoCollection<Document> collection = db.getCollection(collectionName);
-		// key == value
-		collection.deleteMany(Filters.eq(key, value));
-	}
-	public void dropCollection(){
-		MongoCollection<Document> collection = db.getCollection("testNew");
-		collection.drop();
-	}
-	
-	public void getIndex(){
-		MongoCollection<Document> collection = db.getCollection("testNew");
-		for (final Document index : collection.listIndexes()) {
-		    System.out.println(index.toJson());
-		}
-	}
-	
 	public List<Float> findAllByTie(String param){
 		MongoCollection<Document> collection = db.getCollection("star2");
 	//	MongoCursor<Document> cursor = collection.find().iterator();

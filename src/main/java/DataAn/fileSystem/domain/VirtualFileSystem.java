@@ -14,7 +14,7 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import DataAn.fileSystem.option.DataType;
+import DataAn.fileSystem.option.FileDataType;
 import DataAn.fileSystem.option.FileType;
 
 /**
@@ -42,7 +42,7 @@ public class VirtualFileSystem {
 	
 	@Enumerated(EnumType.STRING)
 	@Column(name = "dataType", nullable = true, length = 16)
-	private DataType dataType;
+	private FileDataType dataType;
 	
 	@Column(name = "parentId", nullable = true)
 	private Long parentId;
@@ -97,11 +97,11 @@ public class VirtualFileSystem {
 		this.star = star;
 	}
 
-	public DataType getDataType() {
+	public FileDataType getDataType() {
 		return dataType;
 	}
 
-	public void setDataType(DataType dataType) {
+	public void setDataType(FileDataType dataType) {
 		this.dataType = dataType;
 	}
 

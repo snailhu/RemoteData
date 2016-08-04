@@ -11,6 +11,12 @@ import DataAn.common.pageModel.JsonMessage;
 import DataAn.galaxyManager.dto.StarDto;
 import DataAn.galaxyManager.service.IStarService;
 
+/**
+* Title: StarController
+* @Description: 星信息的Contrller
+* @author  Shewp
+* @date 2016年7月28日
+*/
 @Controller
 @RequestMapping("/admin/star")
 public class StarController {
@@ -33,12 +39,12 @@ public class StarController {
 								  @RequestParam(value = "description", required = false) String description){
 		JsonMessage jsonMsg = new JsonMessage();
 		try {
-			System.out.println("come in createStar..");
-			System.out.println("seriesId: " + seriesId);
-			System.out.println("name: " + name);
-			System.out.println("beginDate: " + beginDate);
-			System.out.println("description: " + description);
-			System.out.println();
+//			System.out.println("come in createStar..");
+//			System.out.println("seriesId: " + seriesId);
+//			System.out.println("name: " + name);
+//			System.out.println("beginDate: " + beginDate);
+//			System.out.println("description: " + description);
+//			System.out.println();
 			StarDto starDto = new StarDto();
 			starDto.setSeriesId(seriesId);
 			starDto.setName(name);
@@ -72,12 +78,12 @@ public class StarController {
 								@RequestParam(value = "description", required = false) String description){
 		JsonMessage jsonMsg = new JsonMessage();
 		try {
-			System.out.println("come in editStar..");
-			System.out.println("id: " + id);
-			System.out.println("name: " + name);
-			System.out.println("beginDate: " + beginDate);
-			System.out.println("description: " + description);
-			System.out.println();
+//			System.out.println("come in editStar..");
+//			System.out.println("id: " + id);
+//			System.out.println("name: " + name);
+//			System.out.println("beginDate: " + beginDate);
+//			System.out.println("description: " + description);
+//			System.out.println();
 			StarDto starDto = new StarDto();
 			starDto.setId(id);
 			starDto.setName(name);
@@ -100,9 +106,9 @@ public class StarController {
 	public JsonMessage deleteStar(@RequestParam(value = "starId", required = true) long starId){
 		JsonMessage jsonMsg = new JsonMessage();
 		try {
-			System.out.println("come in deleteStar..");
-			System.out.println("starId: " + starId);
-			System.out.println();
+//			System.out.println("come in deleteStar..");
+//			System.out.println("starId: " + starId);
+//			System.out.println();
 			starService.deleteStar(starId);
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -1,12 +1,12 @@
 package DataAn.fileSystem.option;
 
 /**
-* Title: DataType
+* Title: FileDataType
 * @Description: 文件数据类型 dat csv
 * @author  Shewp
 * @date 2016年7月13日
 */
-public enum DataType {
+public enum FileDataType {
 
 	/**dat文件类型*/
 	DAT {
@@ -24,11 +24,11 @@ public enum DataType {
 	};
 	public abstract String getName();
 
-	public static DataType getType(String type) {
+	public static FileDataType getType(String type) {
 		if ("dat".equals(type)) {
-			return DataType.DAT;
+			return FileDataType.DAT;
 		} else {
-			return DataType.CSV;
+			return FileDataType.CSV;
 		}
 	}
 }

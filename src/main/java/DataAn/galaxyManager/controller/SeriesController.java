@@ -16,6 +16,12 @@ import DataAn.galaxyManager.dto.SeriesDto;
 import DataAn.galaxyManager.service.ISeriesService;
 
 
+/**
+* Title: SeriesController
+* @Description: 系列信息的 Controller
+* @author  Shewp
+* @date 2016年7月28日
+*/
 @Controller
 @RequestMapping("/admin/series")
 public class SeriesController {
@@ -40,10 +46,10 @@ public class SeriesController {
 									@RequestParam(value = "description", required = false) String description){
 		JsonMessage jsonMsg = new JsonMessage();
 		try {
-			System.out.println("come in createSeries..");
-			System.out.println("name: " + name);
-			System.out.println("description: " + description);
-			System.out.println();
+//			System.out.println("come in createSeries..");
+//			System.out.println("name: " + name);
+//			System.out.println("description: " + description);
+//			System.out.println();
 			SeriesDto dto = new SeriesDto();
 			dto.setName(name);
 			dto.setDescription(description);
@@ -73,11 +79,11 @@ public class SeriesController {
 								  @RequestParam(value = "description", required = false) String description){
 		JsonMessage jsonMsg = new JsonMessage();
 		try {
-			System.out.println("come in editSeries...");
-			System.out.println("id: " + id);
-			System.out.println("name: " + name);
-			System.out.println("description: " + description);
-			System.out.println();
+//			System.out.println("come in editSeries...");
+//			System.out.println("id: " + id);
+//			System.out.println("name: " + name);
+//			System.out.println("description: " + description);
+//			System.out.println();
 			SeriesDto dto = new SeriesDto();
 			dto.setId(id);
 			dto.setName(name);
@@ -99,9 +105,9 @@ public class SeriesController {
 	public JsonMessage deleteSeries(@RequestParam(value = "seriesIds", required = true) String seriesIds){
 		JsonMessage jsonMsg = new JsonMessage();
 		try {
-			System.out.println("come in deleteSeries..");
-			System.out.println("seriesIds: " + seriesIds);
-			System.out.println();
+//			System.out.println("come in deleteSeries..");
+//			System.out.println("seriesIds: " + seriesIds);
+//			System.out.println();
 			seriesService.deleteSeries(seriesIds);
 		} catch (Exception e) {
 			e.printStackTrace();

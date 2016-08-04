@@ -1,30 +1,24 @@
 package DataAn.Analysis.controller.common;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-
 import DataAn.Analysis.dto.ConstraintDto;
 import DataAn.fileSystem.option.FlyWheelDataType;
 import DataAn.fileSystem.service.IFlyWheelService;
 import DataAn.fileSystem.service.IJ9Series_Star_Service;
 import DataAn.mongo.db.MongodbUtil;
-
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
-
 import DataAn.Analysis.dto.AllJsonData;
 import DataAn.Analysis.dto.GroupMenu;
 import DataAn.Analysis.dto.ParamGroup;
@@ -46,9 +40,13 @@ public class CommonController {
 	
 	@RequestMapping(value = "/getConstraint", method = RequestMethod.GET)
 	@ResponseBody
-	public List<ConstraintDto> getConstraint() throws Exception{
+	public List<ConstraintDto> getConstraint(String beginDate,String endDate) throws Exception{
 		
+		System.out.println("beginDate； " + beginDate);
+		System.out.println("endDate: " + endDate);
+		//test
 		return j9Series_Star_Service.getFlyWheelParameterList();
+//		return j9Series_Star_Service.getAllParameterListFromBeginDateToEndDate(beginDate, endDate);
 	}
 	@RequestMapping(value = "/showPanel", method = { RequestMethod.POST})
 	public void showPanel(

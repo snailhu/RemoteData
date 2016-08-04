@@ -10,99 +10,67 @@ import java.util.List;
  * @date 2016年7月26日
  */
 public enum J9Series_Star_ParameterGroupType {
-
-	/** 飞轮a */
-	FLYWHEEL_A {
-		@Override
+	
+	/**飞轮*/
+	FLYWHEEL {
 		public String getName() {
-			return "飞轮a";
+			return "飞轮";
 		}
 	},
-	/** 飞轮b */
-	FLYWHEEL_B {
-		@Override
-		public String getName() {
-			return "飞轮b";
-		}
-	},
-	/** 飞轮c */
-	FLYWHEEL_C {
-		@Override
-		public String getName() {
-			return "飞轮c";
-		}
-	},
-	/** 飞轮d */
-	FLYWHEEL_D {
-		@Override
-		public String getName() {
-			return "飞轮d";
-		}
-	},
-	/** 飞轮e */
-	FLYWHEEL_E {
-		@Override
-		public String getName() {
-			return "飞轮e";
-		}
-	},
-	/** 飞轮f */
-	FLYWHEEL_F {
-		@Override
-		public String getName() {
-			return "飞轮f";
-		}
-	},
-	/** 飞轮g */
-	FLYWHEEL_G {
-		@Override
-		public String getName() {
-			return "飞轮g";
-		}
-	},
+	/**陀螺*/
 	TOP {
-		@Override
 		public String getName() {
-			return null;
+			return "陀螺";
 		}
 	};
 	public abstract String getName();
-
+	
 	/**
-	* @Title: get_FLYWHEE_Type
-	* @Description: 获取飞轮数据类型
-	* @return
+	* Description: 获取飞轮数据类型 通过名称分类
+	* @return  
 	* @author Shenwp
-	* @date 2016年7月26日
+	* @date 2016年8月2日
 	* @version 1.0
 	*/
-	public static List<J9Series_Star_ParameterGroupType> get_FLYWHEE_Type() {
-		List<J9Series_Star_ParameterGroupType> list = new ArrayList<J9Series_Star_ParameterGroupType>();
-		J9Series_Star_ParameterGroupType[] s = J9Series_Star_ParameterGroupType.values();
-		for (J9Series_Star_ParameterGroupType starDataType : s) {
-			if(starDataType.name().indexOf("FLYWHEE") != -1){
-				list.add(starDataType);
-			}
-		}
+	public static List<String> getFlywheelTypeOnName() {
+		List<String> list = new ArrayList<String>();
+		list.add("飞轮a");
+		list.add("飞轮b");
+		list.add("飞轮c");
+		list.add("飞轮d");
+		list.add("飞轮e");
+		list.add("飞轮f");
 		return list;
 	}
 	
 	/**
-	* @Title: get_TOP_Type
-	* @Description: 获取陀螺数据类型
-	* @return
+	* Description:  获取飞轮数据类型 通过参数分类  "电流","转速","温度","指令","供电状态","角动量"
+	* @return  
 	* @author Shenwp
-	* @date 2016年7月26日
+	* @date 2016年8月2日
 	* @version 1.0
 	*/
-	public static List<J9Series_Star_ParameterGroupType> get_TOP_Type() {
-		List<J9Series_Star_ParameterGroupType> list = new ArrayList<J9Series_Star_ParameterGroupType>();
-		J9Series_Star_ParameterGroupType[] s = J9Series_Star_ParameterGroupType.values();
-		for (J9Series_Star_ParameterGroupType starDataType : s) {
-			if(starDataType.name().indexOf("TOP") != -1){
-				list.add(starDataType);
-			}
-		}
+	public static List<String> getFlywheelTypeOnParams() {
+		List<String> list = new ArrayList<String>();
+		list.add("电流");
+		list.add("转速");
+		list.add("温度");
+		list.add("指令");
+		list.add("供电状态");
+		list.add("角动量");
 		return list;
 	}
+	
+	/**
+	* Description: 获取陀螺数据类型 通过名称分类
+	* @return
+	* @author Shenwp
+	* @date 2016年8月2日
+	* @version 1.0
+	*/
+	public static List<String> getTopTypeOnName() {
+		List<String> list = new ArrayList<String>();
+		return list;
+	}
+
 }

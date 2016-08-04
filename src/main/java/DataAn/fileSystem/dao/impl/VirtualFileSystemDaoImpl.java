@@ -11,7 +11,7 @@ import DataAn.common.dao.BaseDaoImpl;
 import DataAn.common.pageModel.Pager;
 import DataAn.fileSystem.dao.IVirtualFileSystemDao;
 import DataAn.fileSystem.domain.VirtualFileSystem;
-import DataAn.fileSystem.option.DataType;
+import DataAn.fileSystem.option.FileDataType;
 import DataAn.fileSystem.option.FileType;
 
 
@@ -19,7 +19,17 @@ import DataAn.fileSystem.option.FileType;
 public class VirtualFileSystemDaoImpl extends BaseDaoImpl<VirtualFileSystem>
 implements IVirtualFileSystemDao{
 
-	private Pager<VirtualFileSystem> pager;
+	
+	@Override
+	public VirtualFileSystem selectByFileName(String fileName) {
+		String hql = "from VirtualFileSystem fs where fs.fileName=?";
+		Object obj = this.getSession().createQuery(hql).setParameter(0, fileName).uniqueResult();
+		if(obj == null){
+			return null;
+		}
+		return (VirtualFileSystem) obj;
+	}
+	
 	@Override
 	public VirtualFileSystem selectByParentIdisNullAndFileName(String fileName) {
 		String hql = "from VirtualFileSystem fs where fs.parentId is null and fs.fileName=?";
@@ -134,9 +144,9 @@ implements IVirtualFileSystemDao{
 		}
 		if(StringUtils.isNotBlank(dataTypes)){
 			String[] types = dataTypes.split(",");
-			List<DataType> list = new ArrayList<DataType>();
+			List<FileDataType> list = new ArrayList<FileDataType>();
 			for (String type : types) {
-				list.add(DataType.getType(type));
+				list.add(FileDataType.getType(type));
 			}
 			query.setParameterList("datatype", list);
 			countQuery.setParameterList("datatype", list);
@@ -149,6 +159,7 @@ implements IVirtualFileSystemDao{
         Pager<VirtualFileSystem> pager = new Pager<VirtualFileSystem>(pageIndex,pageSize,totalCount,query.list());
 		return pager;
 	}
+
 
 	
 

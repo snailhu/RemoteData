@@ -16,6 +16,7 @@
     <script type="text/javascript" src="${base}/static/scripts/demos.js"></script>  
     <script type="text/javascript" src="${base}/static/jqwidgets/jqxdatatable.js"></script>
     <script type="text/javascript" src="${base}/static/jqwidgets/jqxtreegrid.js"></script>     
+    <script type="text/javascript" src="${base}/static//jqwidgets/jqxbuttons.js"></script>
 	<style>
 		.dateStyle{
 			float:left;
@@ -95,16 +96,18 @@
 		<div class="page-content">
 			<div class="page-header">
 				<div class="dateStyle"><label>开始日期</label><div id='dateStart'></div></div>
-				<div class="dateStyle" style="margin-left:20px"><label>结束日期</label><div id='dateEnd'></div> </div> 
+				<div class="dateStyle" style="margin-left:20px"><label>结束日期</label><div id='dateEnd'></div> 
+                	<div style="margin-left:320px;margin-top:-25px" id='jqxButton-getParameters'>获取参数</div>
+            	</div> 
 				<div style="clear:both"></div>
 			</div><!-- /.page-header -->
 		  
 			<div class="row"> 
 				<div id='jqxWidget'>
 			        <div id="treeGrid"></div>
-			       	<button data-toggle="modal" data-target="#exampleModal">确定分组</button>
+			       	<button onclick="getSelected()">确定分组</button>
       				<button onclick="getCleared()">清除</button>
-      				<button data-toggle="modal"	 onclick="submitGroup()">提交分组</button>
+      				<button data-toggle="modal"	 onclick="submitGroup()">上传分组</button>
 			     </div>			      		     
 			</div><!-- /.row -->
 			
@@ -116,71 +119,16 @@
 
         $("#dateStart").jqxDateTimeInput({width: '300px', height: '25px'});
         $("#dateEnd").jqxDateTimeInput({width: '300px', height: '25px'});
-
-    });
-	
-	
-		var JsonG = {}
-		var AllRowselect = [];
-		var j=0;
-        function getSelected(){      	
-        	$('#exampleModal').modal('hide')
-            var groupObject={}
-            var selectRow = []
-            var rowindex = $("#treeGrid").jqxTreeGrid('getCheckedRows');
-            var stringName="参数名：";
-            var chkObjs = $('input:radio:checked').val();
-            if(rowindex.length>0){        	
-                for(i=0;i<rowindex.length;i++){
-                	var rowObject={}
-                    var value = rowindex[i].name;
-                    rowObject.id=rowindex[i].id
-                    rowObject.name=rowindex[i].name;
-                    rowObject.max=rowindex[i].max;
-                    rowObject.min=rowindex[i].min;
-                    selectRow.push( rowObject);
-                    stringName+=value+",";
-                }
-            }
-            groupObject.id=j
-            groupObject.secectRow = selectRow;
-            groupObject.Ycount = chkObjs;
-            groupObject.Y1name=$("#firsty-name").val();
-            if(chkObjs=="2"){
-            	groupObject.Y2name= $("#secondy-name").val();
-            }
-            var group= $("<div name="+j+" class='alert alert-warning alert-dismissible' role='alert'> <button type='button' class='close' onclick='clearGroup(this)'><span aria-hidden='true'>&times;</span></button>"+stringName+"</div>")
-            $('#jqxWidget').append(group)
-            AllRowselect[j]=groupObject;
-            j++;           
-            JsonG.alldata=AllRowselect;
-            
-        }       
-         function clearGroup(obj){
-        	var clearGroupId = $(obj).parent('.alert').attr("name")
-        	$(obj).parent('.alert').remove();
-        	AllRowselect.splice(parseInt(clearGroupId),1)          
-        }                
-         function getCleared(){
         
-           $("#treeGrid").jqxTreeGrid('refresh');
-        }
-        
-        function submitGroup(){
-        $.post('${base}/showPanel',
-        
-        	{
-        		'JsonG':JSON.stringify(AllRowselect)
-        	
-        	},function(){
-        	
-        		window.location.href="${base}/showPanel"
-        	})            
-        }	
-        
-         $(document).ready(function () {          
+		//
+		$("#jqxButton-getParameters").jqxButton({ width: '100', height: '17'});
+		
+		 $("#jqxButton-getParameters").click( function ()  {    
+		 	var beginDate = $("#dateStart").val();
+		 	var endDate = $("#dateEnd").val();
+		 	//alert(beginDate + "--" + endDate);
             // prepare the data
-            var url = "${base}/getConstraint";
+            var url = "${base}/getConstraint?beginDate="+beginDate+"&endDate="+endDate;
             var source =
             {
                 dataType: "json",
@@ -204,21 +152,85 @@
             // create Tree Grid
             $("#treeGrid").jqxTreeGrid(
             {
-                width: 760,
+                width: 920,
                 source: dataAdapter,
                 sortable: true,
                 editable: true,
-               checkboxes: true,
-             
+                checkboxes: true,
                 columns: [
-                	{ text: 'ID',  dataField: 'id',editable: false, width: 200 },
-                  { text: 'name',  dataField: 'name',editable: false, width: 200 },
-                  { text: 'max', dataField: 'max', width: 200 },
-                  { text: 'min', dataField: 'min', width: 160 }
+                  { text: 'ID',  dataField: 'id',editable: false, width: 200 },
+                  { text: '参数名',  dataField: 'name',editable: false, width: 250 },
+                  { text: '最大值', dataField: 'max', width: 160 },
+                  { text: '最小值', dataField: 'min', width: 160 },
+                  { text: 'y2轴名称', dataField: 'y2Name',  width:160,  }
                 ]
 
             });
         });
+    });
+	
+	
+		var JsonG = {}
+		var AllRowselect = [];
+		var j=0;
+        function getSelected(){      	
+        	//$('#exampleModal').modal('hide')
+            var groupObject={}
+            var selectRow = []
+            var rowindex = $("#treeGrid").jqxTreeGrid('getCheckedRows');
+            var stringName="参数名：";
+            var chkObjs = $('input:radio:checked').val();
+            if(rowindex.length>0){        	
+                for(i=0;i<rowindex.length;i++){
+                	var rowObject={}
+                    var value = rowindex[i].name;
+                    rowObject.id=rowindex[i].id
+                    rowObject.name=rowindex[i].name;
+                    rowObject.max=rowindex[i].max;
+                    rowObject.min=rowindex[i].min;
+                    rowObject.y2Name=rowindex[i].y2Name;
+                    selectRow.push( rowObject);
+                    stringName+=value+",";
+                }
+	            groupObject.id=j
+	            groupObject.secectRow = selectRow;
+	            groupObject.Ycount = chkObjs;
+	            groupObject.Y1name=$("#firsty-name").val();
+	            if(chkObjs=="2"){
+	            	groupObject.Y2name= $("#secondy-name").val();
+	            }
+	            var group= $("<div name="+j+" class='alert alert-warning alert-dismissible' role='alert'> <button type='button' class='close' onclick='clearGroup(this)'><span aria-hidden='true'>&times;</span></button>"+stringName+"</div>")
+	            $('#jqxWidget').append(group)
+	            AllRowselect[j]=groupObject;
+	            j++;           
+	            JsonG.alldata=AllRowselect;
+            }else{
+            	alert("至少请选择一行参数！");
+            }
+        }    
+         function clearGroup(obj){
+        	var clearGroupId = $(obj).parent('.alert').attr("name")
+        	$(obj).parent('.alert').remove();
+        	AllRowselect.splice(parseInt(clearGroupId),1)          
+        }                
+         function getCleared(){
+        
+           $("#treeGrid").jqxTreeGrid('refresh');
+        }
+        
+        function submitGroup(){
+        $.post('${base}/showPanel',
+        
+        	{
+        		'JsonG':JSON.stringify(AllRowselect)
+        	
+        	},function(){
+        	
+        		window.location.href="${base}/showPanel"
+        	})            
+        }	
+        
+        
         
 
     </script>	

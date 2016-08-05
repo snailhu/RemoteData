@@ -10,7 +10,10 @@ public class EhCache {
 	    private Cache cache;  
 	    public EhCache(){  
 	        this.cache=cacheManager.getCache("ehcache")  ;
-	    }  	  
+	    }  
+	    public EhCache(String cacheName){  
+	        this.cache=cacheManager.getCache(cacheName)  ;
+	    } 
 	    public Cache getCache() {  
 	        return cache;  
 	    }  

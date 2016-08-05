@@ -11,6 +11,7 @@ import DataAn.Analysis.dto.ConstraintDto;
 * @author  Shewp
 * @date 2016年7月15日
 */
+@Deprecated
 public interface IFlyWheelService {
 
 	public List<ConstraintDto> getFlyWheelParameterList() throws Exception;

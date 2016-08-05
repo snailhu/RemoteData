@@ -22,15 +22,20 @@ import DataAn.fileSystem.dto.FileDto;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = "classpath:applicationContext-hibernate.xml")
+@ContextConfiguration(locations = {"classpath:applicationContext-hibernate.xml","classpath:applicationContext.xml"})
 public class VirtualFileSystemServiceTest {
 
 	@Resource
 	private IVirtualFileSystemService fileService;
 	
 	@Test
-	public void test(){
-		
+	public void isExistFile(){
+		String str = "C:\\fakepath\\j9-02--2015-08-16.csv";
+		str = str.replace("\\", "/");
+		String[] strs = str.split("/");
+		System.out.println(strs[strs.length-1]);
+		boolean flag = fileService.isExistFile(strs[strs.length-1]);
+		System.out.println(flag);
 	}
 	
 	@Test
@@ -39,7 +44,7 @@ public class VirtualFileSystemServiceTest {
 		Map<String, FileDto> map = new HashMap<String,FileDto>();
 		
 		FileDto csvFileDto = new FileDto();
-		String csv = "C:\\j9-02--2015-08-17.csv";
+		String csv = "C:\\j9-02--2015-08-16.csv";
 		File csvFile = new File(csv);
 		InputStream csvInput = new FileInputStream(csvFile);
 		csvFileDto.setFileName(csvFile.getName());
@@ -47,14 +52,14 @@ public class VirtualFileSystemServiceTest {
 		csvFileDto.setIn(csvInput);
 		map.put("csv", csvFileDto);
 		
-		FileDto datFileDto = new FileDto();
-		String dat = "C:\\XX9(02)--20150817(公开).DAT";
-		File datFile = new File(dat);
-		InputStream datInput = new FileInputStream(datFile);
-		datFileDto.setFileName(datFile.getName());
-		datFileDto.setFileSize(datFile.length());
-		datFileDto.setIn(datInput);
-		map.put("dat", datFileDto);
+//		FileDto datFileDto = new FileDto();
+//		String dat = "C:\\XX9(02)--20150817(公开).DAT";
+//		File datFile = new File(dat);
+//		InputStream datInput = new FileInputStream(datFile);
+//		datFileDto.setFileName(datFile.getName());
+//		datFileDto.setFileSize(datFile.length());
+//		datFileDto.setIn(datInput);
+//		map.put("dat", datFileDto);
 		
 		fileService.saveFile(map);
 		long end = System.currentTimeMillis();

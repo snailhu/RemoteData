@@ -9,6 +9,8 @@ public class SingleParamDto {
 	private int max;
 	
 	private int min;
+	
+	private String y2Name;
 
 	public int getId() {
 		return id;
@@ -40,6 +42,14 @@ public class SingleParamDto {
 
 	public void setMin(int min) {
 		this.min = min;
+	}
+
+	public String getY2Name() {
+		return y2Name;
+	}
+
+	public void setY2Name(String y2Name) {
+		this.y2Name = y2Name;
 	}
 	
 	

@@ -14,14 +14,20 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+
+import javax.annotation.Resource;
 
 import org.bson.Document;
-import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import DataAn.Analysis.dto.ConstraintDto;
 import DataAn.common.utils.DateUtil;
 import DataAn.common.utils.UUIDGeneratorUtil;
+import DataAn.fileSystem.option.J9Series_Star_ParameterGroupType;
 import DataAn.fileSystem.service.impl.CSVServiceImpl;
 import DataAn.mongo.db.MongodbUtil;
 
@@ -29,25 +35,33 @@ import com.alibaba.fastjson.JSON;
 //import com.csvreader.CsvWriter;
 
 
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations = {"classpath:applicationContext-hibernate.xml","classpath:applicationContext.xml"})
 public class CSVServiceTest {
 
+	@Resource
 	private ICSVService csvService;
+	@Resource
+	private IJ9Series_Star_Service j9Series_Star_Service;
 	
-	private String filePath = "C:\\j9-02--2015-08-17.csv";
-	@Before
-	public void init(){
-		csvService = new CSVServiceImpl();
-	}
+	
+	
+//	private String filePath = "C:\\j9-02--2015-08-17.csv";
+	
+//	private String filePath = "C:\\excel_result\\数管分系统.csv";
+	
+	private String filePath = "D:\\temp\\data\\2015\\5\\j9-02--2015-05-10.csv";
 	
 	@Test
 	public void test(){
-		String fileName = "j9-02--2015-08-10.csv";
-		String[] strs = fileName.substring(0, fileName.lastIndexOf(".csv")).split("--");
-		for (String str : strs) {
-			System.out.println(str);
-		}
-		String[] stars = strs[0].split("-");
-		System.out.println(stars[1]);
+//		String fileName = "j9-02--2015-08-10.csv";
+//		String[] strs = fileName.substring(0, fileName.lastIndexOf(".csv")).split("--");
+//		for (String str : strs) {
+//			System.out.println(str);
+//		}
+//		String[] stars = strs[0].split("-");
+//		System.out.println(stars[1]);
+		System.out.println(j9Series_Star_Service);
 	}
 	
 	@Test
@@ -62,6 +76,9 @@ public class CSVServiceTest {
 			String uuId = UUIDGeneratorUtil.getUUID();
 			List<Document> list = csvService.readCSVFileToDoc(filePath,uuId);
 			System.out.println("size: " + list.size());
+//			System.out.println(list.get(list.size() - 1));
+//			list.remove(list.size()-1);
+//			System.out.println("size: " + list.size());
 			for (Document document : list) {
 				System.out.println(document);
 			}
@@ -115,14 +132,19 @@ public class CSVServiceTest {
 	
 //	@Test
 	public void testWriteCSVByJavacsv(int year,int month,int day) throws Exception{
-//		Class<?> pojoClass = Class.forName("DataAn.fileSystem.option.FlyWheel");
-//		Object obj = pojoClass.newInstance();
-//		Field[] fields = pojoClass.getDeclaredFields();
+//		String type = J9Series_Star_ParameterGroupType.FLYWHEEL.getName();
+//		//"电流","转速","温度","指令","供电状态","角动量"
+//		List<String> params = J9Series_Star_ParameterGroupType.getFlywheelTypeOnParams();
+//		Map<String,String> map =  j9Series_Star_Service.getAllParameterList_allZh_and_enByOption(type,params);
+//		Set<String> keys = map.keySet();
 //		List<String> titleList = new ArrayList<String>();
 //		titleList.add("时间");
-//		for (Field field : fields) {
-////			field.setAccessible(true);// 修改访问控制权限
-//			titleList.add(field.get(obj).toString());
+//		int count = 1;
+//		for (String key: keys) {
+//			if(count > (day * 3)){
+//				titleList.add(key);				
+//			}
+//			count++;
 //		}
 //		
 ////		String outputFile = "C:\\j9-02--2016-01-10.csv";
@@ -136,8 +158,8 @@ public class CSVServiceTest {
 //		if(month > 9 && day > 9){
 //			outputFile = "C:\\j9-02--" + year +"-" + month +"-" + day +".csv";
 //		}
-//		File file = new File(outputFile);
-//		OutputStream outputStream = new FileOutputStream(file,true);
+////		File file = new File(outputFile);
+////		OutputStream outputStream = new FileOutputStream(file,true);
 ////		OutputStreamWriter writer = new OutputStreamWriter(outputStream, "utf-8");
 ////		FileWriter fileWriter = new FileWriter(file,true);
 //		CsvWriter csvOutput = new CsvWriter(outputFile, ',',Charset.forName("gb2312"));
@@ -166,7 +188,7 @@ public class CSVServiceTest {
 //				}
 //			}
 //			csvOutput.endRecord();
-//			time = time + 500;
+//			time = time + 250;
 //		}
 //		csvOutput.close();
 		
@@ -175,8 +197,8 @@ public class CSVServiceTest {
 	@Test
 	public void testWriteCSVByJavacsvList() throws Exception{
 		long begin = System.currentTimeMillis();
-		for (int i = 1; i <= 6; i++) {
-			this.testWriteCSVByJavacsv(2016,i,10);		
+		for (int i = 1; i <= 10; i++) {
+			this.testWriteCSVByJavacsv(2015,5,i);		
 		}
 		long end = System.currentTimeMillis();
 		System.out.println("time: " + (end - begin));

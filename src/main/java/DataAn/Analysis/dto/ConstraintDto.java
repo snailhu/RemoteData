@@ -12,8 +12,8 @@ public class ConstraintDto {
 
 	private int id;
 	private int parentId;
-	private String name;
-	private String value;
+	private String name; //中文键
+	private String value; //英文值
 	private float max;
 	private float min;
 	private String yname; //hanz添加约束条件中当前参数Y轴名称

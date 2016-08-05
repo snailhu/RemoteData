@@ -6,6 +6,12 @@ import DataAn.common.pageModel.Pager;
 import DataAn.fileSystem.dto.FileDto;
 import DataAn.fileSystem.dto.MongoFSDto;
 
+/**
+* Title: IVirtualFileSystemService
+* @Description: 虚拟文件目录信息服务类
+* @author  Shewp
+* @date 2016年7月28日
+*/
 public interface IVirtualFileSystemService {
 
 	
@@ -84,5 +90,14 @@ public interface IVirtualFileSystemService {
 	public Pager<MongoFSDto> getMongoFSList(int pageIndex, int pageSize,String series, String star, long dirId,
 			String beginTime,String endTime,String dataTypes);
 	
+	/**
+	* Description: 获取当前目录的父级目录列表
+	* @param dirId
+	* @return
+	* @author Shenwp
+	* @date 2016年7月28日
+	* @version 1.0
+	*/
 	public String getParentFSCatalog(long dirId);
+
 }

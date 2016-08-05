@@ -14,7 +14,6 @@ public class ParamGroup {
 	private List<SingleParamDto> secectRow;
 	
 	
-	
 	public int getId() {
 		return id;
 	}

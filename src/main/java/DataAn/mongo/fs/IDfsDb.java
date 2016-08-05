@@ -1,6 +1,12 @@
 package DataAn.mongo.fs;
 
 import java.io.InputStream;
+/**
+* Title: IDfsDb
+* @Description: 文件服务器的接口
+* @author  Shewp
+* @date 2016年7月28日
+*/
 public interface IDfsDb {
 
 	/**

@@ -174,8 +174,8 @@
 	<bean id="multipartResolver"
 		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
 		<property name="defaultEncoding" value="UTF-8" />
-		<!--max size: 100M -->
-		<property name="maxUploadSize" value="104857600" />
+		<!--max size: 1000M -->
+		<property name="maxUploadSize" value="1048576000" />
 	</bean>	
 	
     <!-- 匹配的是url路径， 如果不配置或/**,将拦截所有的Controller --> 	    

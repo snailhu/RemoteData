@@ -20,17 +20,7 @@ public class FlyWheelServiceTest {
 	
 	@Test
 	public void test(){
-		String str = "采集数据25:飞轮a电机电流(16025)";
-		System.out.println(str.indexOf("飞轮b"));
-		List<J9Series_Star_ParameterGroupType> list = J9Series_Star_ParameterGroupType.get_FLYWHEE_Type();
-		for (J9Series_Star_ParameterGroupType starDataType : list) {
-			System.out.println(starDataType);
-		}
-		System.out.println("---");
-		List<J9Series_Star_ParameterGroupType> list2 = J9Series_Star_ParameterGroupType.get_TOP_Type();
-		for (J9Series_Star_ParameterGroupType starDataType : list2) {
-			System.out.println(starDataType);
-		}
+		
 	}
 	@Test
 	public void testGetFlyWheelParameterList() throws Exception{

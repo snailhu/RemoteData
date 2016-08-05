@@ -4,13 +4,15 @@ package DataAn.Analysis.dto;
 public class SingleParamDto {
 	private int id;
 	
-	private String name;
+	private String name;//中文键
+	
+	private String value;//英文值
 	
 	private int max;
 	
 	private int min;
 	
-	private String y2Name;
+	private String yname;
 
 	public int getId() {
 		return id;
@@ -26,6 +28,14 @@ public class SingleParamDto {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public String getValue() {
+		return value;
+	}
+
+	public void setValue(String value) {
+		this.value = value;
 	}
 
 	public int getMax() {
@@ -44,14 +54,22 @@ public class SingleParamDto {
 		this.min = min;
 	}
 
-	public String getY2Name() {
-		return y2Name;
+	public String getYname() {
+		return yname;
 	}
 
-	public void setY2Name(String y2Name) {
-		this.y2Name = y2Name;
+	public void setYname(String yname) {
+		this.yname = yname;
 	}
+
+	@Override
+	public String toString() {
+		return "SingleParamDto [id=" + id + ", name=" + name + ", value="
+				+ value + ", max=" + max + ", min=" + min + ", yname=" + yname
+				+ "]";
+	}
+
 	
-	
+
 	
 }		

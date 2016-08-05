@@ -80,23 +80,24 @@
 			<ul class="breadcrumb">
 				<li>
 					<i class="icon-home home-icon"></i>
-					<a href="#">Home</a>
+					<a href="#">j9系列</a>
 				</li>
 	
 				<li>
-					<a href="#">Tables</a>
+					<a href="#">02星</a>
 				</li>
-				<li class="active">jqGrid plugin</li>
+				<li class="active">飞轮</li>
 			</ul><!-- .breadcrumb -->
 	
-			<div class="nav-search" id="nav-search">
+<!-- 			<div class="nav-search" id="nav-search">
 				<form class="form-search">
 					<span class="input-icon">
 						<input type="text" placeholder="搜索 ..." class="nav-search-input" id="nav-search-input" autocomplete="off" />
 						<i class="icon-search nav-search-icon"></i>
 					</span>
 				</form>
-			</div><!-- #nav-search -->
+			</div> -->
+			<!-- #nav-search -->
 		</div>	
 		<div class="page-content">
 			<div class="page-header">
@@ -109,7 +110,6 @@
 		  			  	
 		  	<div >
 				<div class="col-xs-12 col-sm-12">
-					<!-- PAGE CONTENT BEGINS -->
 					<div class="widget-box">
 						<div class="widget-header" id="change-search-box" data-action="collapse">
 							<h4>常用模板</h4>
@@ -123,11 +123,9 @@
 							<div class="widget-main">				
 						        <div id="id_templateTreeGrid"></div>
 						        <button  onclick="getTemplate()">模板添加到分组</button>
-						        
 							</div>
 						</div>
 					</div>
-					<!-- PAGE CONTENT ENDS -->
 				</div><!-- /.col -->
 		  		  	
 			<div class="row">	
@@ -151,8 +149,6 @@
 	$(function() {	
     	$("#dateStart").jqxDateTimeInput({width: '300px', height: '25px'});
     	$("#dateEnd").jqxDateTimeInput({width: '300px', height: '25px'});
-        $("#dateStart").jqxDateTimeInput({width: '300px', height: '25px'});
-        $("#dateEnd").jqxDateTimeInput({width: '300px', height: '25px'});
         
 		//
 		$("#jqxButton-getParameters").jqxButton({ width: '100', height: '17'});
@@ -163,67 +159,70 @@
             var url = "${base}/getConstraint?beginDate="+beginDate+"&endDate="+endDate;
             updateParamTree(url);
 		 });
+		 $('#change-search-box').click();
+		 
 		 initTemplateTree()
 		 intTemplateList();
 	});
 		
-		 //刷新参数列表树
-		 function updateParamTree(url){
-	            var source =
-	            {
-	                dataType: "json",
-	                dataFields: [
-	                    { name: 'id', type: 'number' },
-	                    { name: 'parentId', type: 'number' },
-	                    { name: 'name', type: 'string' },
-	                    { name: 'max', type: 'number' },
-	                    { name: 'min', type: 'number' },
-	                    { name: 'yname',type:'string'}
-	                ],
-	                hierarchy:
-	                {
-	                    keyDataField: { name: 'id' },
-	                    parentDataField: { name: 'parentId' }
-	                },
-	                id: 'id',
-	                url: url
-	            };
-           		var dataAdapter = new $.jqx.dataAdapter(source);
-	            $("#treeGrid").jqxTreeGrid(
-	            {
-	                width: 760,                
-	                source: dataAdapter,
-	                sortable: true,
-	                editable: true,
-	               	checkboxes: true,
-	               	theme: 'energyblue',
-	               	hierarchicalCheckboxes: false,              	
-	                columns: [
-	                  { text: '参数名称',  dataField: 'name',editable: false, width: 200 },
-	                  { text: 'ID',  dataField: 'id',editable: false, width:200, hidden: true },
-	                  { text: '最大值', dataField: 'max', width: 200 },
-	                  { text: '最小值', dataField: 'min', width: 160 },
-	                  { text: 'Y轴', dataFaield:'yname',width:200,columnType:'template',
-						createEditor: function (row, cellValue, editor, cellText, width, height) {
-						  var source = ["Y1", "Y2"];
-	                      editor.jqxDropDownList({autoDropDownHeight: true, source: source, width: '100%', height: '100%' });		 
-						},
-						initEditor: function (row, cellValue, editor, cellText, width, height) {
-							editor.jqxDropDownList('selectItem', cellValue);
-						},
-						getEditorValue: function (row, cellValue, editor) {
-							//$("#treeGrid").jqxTreeGrid('setCellValue', row, 'yname', editor.val());
-							return editor.val();
-						}				
-	                  }                     
-	                ]
-	            });
-        	} 
+	//刷新参数列表树
+	function updateParamTree(url){
+       var source =
+       	{
+           dataType: "json",
+           dataFields: [
+               { name: 'id', type: 'number' },
+               { name: 'parentId', type: 'number' },
+               { name: 'name', type: 'string' },
+               { name: 'max', type: 'number' },
+               { name: 'min', type: 'number' },
+               { name: 'yname',type:'string'}
+           ],
+           hierarchy:
+           {
+               keyDataField: { name: 'id' },
+               parentDataField: { name: 'parentId' }
+           },
+           id: 'id',
+           url: url
+       };
+       var dataAdapter = new $.jqx.dataAdapter(source);
+       $("#treeGrid").jqxTreeGrid(
+       {
+           width: 760,                
+           source: dataAdapter,
+           sortable: true,
+           editable: true,
+           checkboxes: true,
+           theme: 'energyblue',
+           hierarchicalCheckboxes: false,              	
+           columns: [
+	             { text: '参数名称',  dataField: 'name',editable: false, width: 200 },
+	             { text: 'ID',  dataField: 'id',editable: false, width:200, hidden: true },
+	             { text: '最大值', dataField: 'max', width: 200 },
+	             { text: '最小值', dataField: 'min', width: 160 },
+	             { text: 'Y轴', dataFaield:'yname',width:200,columnType:'template',
+					createEditor: function (row, cellValue, editor, cellText, width, height) {
+					  var source = ["Y1", "Y2"];
+					  editor.jqxDropDownList({autoDropDownHeight: true, source: source, width: '100%', height: '100%' });		 
+					},
+					initEditor: function (row, cellValue, editor, cellText, width, height) {
+						editor.jqxDropDownList('selectItem', cellValue);
+					},
+					getEditorValue: function (row, cellValue, editor) {
+						//$("#treeGrid").jqxTreeGrid('setCellValue', row, 'yname', editor.val());
+// 						alert("1"+cellValue+"--"+editor.val());
+						return editor.val();
+					}				
+				}                     
+			]
+       });
+	} 
         	
-        //添加分组功能
-        var JsonG = {}
-		var AllRowselect = [];
-		var j=0;
+    //添加分组功能
+    var JsonG = {}
+	var AllRowselect = [];
+	var j=0;
 		/*//模板树提交分组按钮响应事件
         function getTemplate(){      	
             var groupObject={}
@@ -265,42 +264,48 @@
             JsonG.alldata=AllRowselect;
             
         }*/
-		//添加分组按钮响应事件
-        function getSelected(){      	
-            var groupObject={};
-            var selectRow = [];
-            var rowindex = $("#treeGrid").jqxTreeGrid('getCheckedRows');            
-            var stringName="参数名：";
-            var chkObjs = $('input:radio:checked').val();
-            if(rowindex.length>0){        	
-                for(i=0;i<rowindex.length;i++){
-                	var rowObject={}
-                    var value = rowindex[i].name;
-                    rowObject.id=rowindex[i].id
-                    rowObject.name=rowindex[i].name;
-                    rowObject.max=rowindex[i].max;
-                    rowObject.min=rowindex[i].min;
-                    selectRow.push( rowObject);
-                    stringName+=value+",";
-                }
-	            groupObject.id=j
-	            groupObject.secectRow = selectRow;
-	            groupObject.Ycount = chkObjs;
-	            groupObject.Y1name=$("#firsty-name").val();
-	            if(chkObjs=="2"){
-	            	groupObject.Y2name= $("#secondy-name").val();
-	            }
-	            //在已分组列表上添加“删除”和“保存为模板”按钮
-	            var btn_savemodel="<button type='button' class='close' onclick=''><span aria-hidden='true'>生成模板   </span></button>";
-	            var group= $("<div name="+j+" class='alert alert-warning alert-dismissible' role='alert'> <button type='button' class='close' onclick='clearGroup(this)'><span aria-hidden='true'>删除分组;</span></button>"+btn_savemodel+stringName+"</div>")            
-	            $('#jqxWidget').append(group)            
-	            AllRowselect[j]=groupObject;
-	            j++;           
-	            JsonG.alldata=AllRowselect;  
-         	}else{
-         		alert("至少请选择一行参数！");
-         	}  
-        }
+	//添加分组按钮响应事件
+      function getSelected(){      	
+          var groupObject={};
+          var selectRow = [];
+          var rowindex = $("#treeGrid").jqxTreeGrid('getCheckedRows');            
+          var stringName="参数名：";
+          var chkObjs = $('input:radio:checked').val();
+          if(rowindex.length>0){        	
+              for(i=0;i<rowindex.length;i++){
+              	var rowObject={}
+                  var value = rowindex[i].name;
+                  rowObject.id=rowindex[i].id
+                  rowObject.name=rowindex[i].name;
+                  rowObject.max=rowindex[i].max;
+                  rowObject.min=rowindex[i].min;
+                  var yname = rowindex[i].null;
+                  if(yname=='Y1'){
+	                  rowObject.yname=0;
+                  }else{
+                	  rowObject.yname=1;
+                  }
+                  selectRow.push( rowObject);
+                  stringName+=value+",";
+              }
+           groupObject.id=j
+           groupObject.secectRow = selectRow;
+//            groupObject.Ycount = chkObjs;
+//            groupObject.Y1name=$("#firsty-name").val();
+//            if(chkObjs=="2"){
+//            	groupObject.Y2name= $("#secondy-name").val();
+//            }
+           //在已分组列表上添加“删除”和“保存为模板”按钮
+           var btn_savemodel="<button type='button' class='close' onclick=''><span aria-hidden='true'>生成模板   </span></button>";
+           var group= $("<div name="+j+" class='alert alert-warning alert-dismissible' role='alert'> <button type='button' class='close' onclick='clearGroup(this)'><span aria-hidden='true'>删除分组;</span></button>"+btn_savemodel+stringName+"</div>")            
+           $('#jqxWidget').append(group)            
+           AllRowselect[j]=groupObject;
+           j++;           
+           JsonG.alldata=AllRowselect;  
+       	}else{
+       		alert("至少请选择一行参数！");
+       	}  
+      }
         
         //删除已经生成的分组
      	function clearGroup(obj){

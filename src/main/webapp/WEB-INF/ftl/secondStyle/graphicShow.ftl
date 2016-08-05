@@ -20,7 +20,11 @@
         var names = [];
         <#if (params?size>0) >
         	<#list params as param>
-        		names.push('${param}')
+		        var n={};
+        		n.name = '${param.name}';
+        		n.value = '${param.value}';
+        		n.y = '${param.yname}';
+        		names.push(n);
         	</#list>       	
         <#else>
         	names = ['flywheel_a_speed','flywheel_f_motor_current'];
@@ -57,8 +61,17 @@
                 data:[]              
             },
             yAxis: [{
-                type: 'value',
-            }],
+                	type: 'value',
+                	splitLine : {
+		                show: true
+		            }
+            	},{
+		            type : 'value',
+		            splitLine : {
+		                show: true
+		            }
+	        	}
+            ],
             dataZoom: [{
                 type: 'inside',
                 start:20,
@@ -71,11 +84,13 @@
 			 myChart.setOption(options);	
      });   
     	    	   
-        $.each(names, function (i, name) {
-	        $.getJSON('${base}/getData?filename=' + name.toLowerCase(), function (data) {	
+        $.each(names, function (i, n) {
+        	console.log(n);
+	        $.getJSON('${base}/getData?filename=' + n.value, function (data) {	
 	            seriesOptions[i] = {
 	            	type: 'line',
-	                name: name,
+	                name: n.name,
+	                yAxisIndex: n.y,
 	                data: data
 	            };
 	            seriesCounter += 1;

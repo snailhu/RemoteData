@@ -84,7 +84,7 @@ public class J9Series_Star_ServiceImpl implements IJ9Series_Star_Service{
 		if(list == null || list.size() == 0){
 //			System.out.println("getFlyWheelParameterList cache is null");
 			String type = J9Series_Star_ParameterGroupType.FLYWHEEL.getName();
-			List<String> flyWheelDataTypes = J9Series_Star_ParameterGroupType.getFlywheelTypeOnName();
+			List<String> flyWheelDataTypes = J9Series_Star_ParameterGroupType.getFlywheelTypeOnParams();
 			Map<String,String> map = this.getAllParameterList_simplyZh_and_en(this.getAllParameterList_allZh_and_enByOption(type,flyWheelDataTypes));
 			list = this.getFlyWheelOrTopParameterList(map,flyWheelDataTypes);	
 			ehCache.addToCache("flyWheelParameterList", list);

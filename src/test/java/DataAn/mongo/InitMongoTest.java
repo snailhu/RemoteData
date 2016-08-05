@@ -12,6 +12,5 @@ public class InitMongoTest {
 //		System.out.println(InitMongo.SERVER_HOST);
 //		System.out.println(InitMongo.SERVER_PORT);
 //		System.out.println(InitMongo.DATABASE_TEST);
-		System.out.println(Config.CACHE_PATH);
 	}
 }

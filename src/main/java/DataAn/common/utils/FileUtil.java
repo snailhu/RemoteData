@@ -12,14 +12,14 @@ import java.io.OutputStream;
 public class FileUtil {
 
 	/**
-	 * 删除文件夹以及其下的文件
+	 * 删除文件夹以及其下的文件 或文件夹
 	 * 
 	 * @param sPath
 	 *            被删除目录的文件路径
 	 * @return 删除成功返回true
 	 * @author ls
 	 */
-	public static boolean deleteDirectory(String sPath) {
+	public static boolean deleteDirectory(String sPath, boolean isDelDir) {
 		// 如果sPath不以文件分隔符结尾，自动添加文件分隔符
 		if (!sPath.endsWith(File.separator)) {
 			sPath = sPath + File.separator;
@@ -42,7 +42,7 @@ public class FileUtil {
 					break;
 			} // 删除子目录
 			else {
-				flag = deleteDirectory(files[i].getAbsolutePath());
+				flag = deleteDirectory(files[i].getAbsolutePath(),true);
 				if (!flag)
 					break;
 			}
@@ -50,12 +50,15 @@ public class FileUtil {
 		if (!flag)
 			return false;
 
-		// 删除当前目录
-		if (dirFile.delete()) {
-			return true;
-		} else {
-			return false;
+		if(isDelDir){
+			// 删除当前目录
+			if (dirFile.delete()) {
+				return true;
+			} else {
+				return false;
+			}			
 		}
+		return true;
 	}
 	
 	

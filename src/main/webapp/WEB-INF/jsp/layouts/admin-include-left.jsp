@@ -219,7 +219,7 @@
 		                    </a>
 		                    <ul class="submenu">
 		                        <li>
-		                            <a href="#">
+		                            <a href="analysisData">
 		                                <i class="icon-leaf"></i> 飞轮
 		                            </a>
 		                        </li>

@@ -323,8 +323,8 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 		try {
 			List<Document> docList = csvService.readCSVFileToDoc(fileDto.getFilePath(),uuId);
 			mg.insert(collectionName , docList);
-			int a =9/0;
-			System.out.println(a);
+//			int a =9/0;
+//			System.out.println(a);
 		} catch (Exception e) {
 //			e.printStackTrace();
 			dfs.delete(uuId);

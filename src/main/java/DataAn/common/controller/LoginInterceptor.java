@@ -17,7 +17,7 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 	@Override
 	public boolean preHandle(HttpServletRequest request,
 		HttpServletResponse response, Object handler) throws Exception {
-		System.out.println("come in longinInterceptor");
+//		System.out.println("come in longinInterceptor");
 //		String localAddr = request.getLocalAddr();//获取WEB服务器的IP地址
 //		String localName = request.getLocalName();//获取WEB服务器的主机名
 //		String contextPath = request.getContextPath();

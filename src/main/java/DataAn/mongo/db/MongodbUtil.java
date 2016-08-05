@@ -112,7 +112,7 @@ public class MongodbUtil {
 		    		break;
 		    	}
 		    	Document doc = cursor.next();
-		    	System.out.println(doc);
+//		    	System.out.println(doc);
 //		    	String key = DateUtil.formatString(doc.getString("datetime"), "yyyy-MM-dd HH:mm:ss");
 //		    	float value = Float.parseFloat(doc.getString("flywheel_a_power_plus_5V"));
 //		    	System.out.println(key + " : " + value);
@@ -183,7 +183,6 @@ public class MongodbUtil {
 		    while (cursor.hasNext()) {
 		    	if(count>=10000){break;}
 		    	Document doc = cursor.next();
-		    	System.out.println(doc.getString(param));
 		    	if(doc.getString(param)!=null){
 		    		
 	    		Float value = Float.parseFloat(doc.getString(param));	  

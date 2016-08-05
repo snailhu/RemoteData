@@ -149,7 +149,7 @@
             if(chkObjs=="2"){
             	groupObject.Y2name= $("#secondy-name").val();
             }
-            var group= $("<div name="+j+" class='alert alert-warning alert-dismissible' role='alert'> <button type='button' class='close' onclick='clearGroup(this)'><span aria-hidden='true'>&times;</span></button>"+stringName+"</div>")
+            var group= $("<div style='margin-top:30px' name="+j+" class='alert alert-warning alert-dismissible' role='alert'> <button type='button' class='close' onclick='clearGroup(this)'><span aria-hidden='true'>&times;</span></button>"+stringName+"</div>")
             $('#jqxWidget').append(group)
             AllRowselect[j]=groupObject;
             j++;           
@@ -163,7 +163,7 @@
         }                
          function getCleared(){
         
-           $("#treeGrid").jqxTreeGrid('refresh');
+           $(".jqx-tree-grid-checkbox").removeAttr("checked");
         }
         
         function submitGroup(){

@@ -72,7 +72,7 @@ public class FileController {
 			   								 @PathVariable String star,
 			   								 @PathVariable long dirId ,
 			   								 HttpServletRequest request) {
-		System.out.println("come in getMongoFSList..");
+//		System.out.println("come in getMongoFSList..");
 		EasyuiDataGridJson json = new EasyuiDataGridJson();
 		String strSeries = request.getParameter("series");
 		String strStar = request.getParameter("star");
@@ -99,17 +99,17 @@ public class FileController {
 		if (StringUtils.isNotBlank(strRows)) {
 			rows = Integer.parseInt(strRows);
 		}
-		System.out.println("strPage: " + strPage);
-		System.out.println("strRows: " + strRows);
-		System.out.println("strDirId: " + strDirId);
-		System.out.println("page: " + page);
-		System.out.println("rows: " + rows);
-		System.out.println("series: " + series);
-		System.out.println("star: " + star);
-		System.out.println("dirId: " + dirId);
-		System.out.println("beginTime: " + beginTime);
-		System.out.println("endTime: " + endTime);
-		System.out.println("fileTypes: " + fileTypes);
+//		System.out.println("strPage: " + strPage);
+//		System.out.println("strRows: " + strRows);
+//		System.out.println("strDirId: " + strDirId);
+//		System.out.println("page: " + page);
+//		System.out.println("rows: " + rows);
+//		System.out.println("series: " + series);
+//		System.out.println("star: " + star);
+//		System.out.println("dirId: " + dirId);
+//		System.out.println("beginTime: " + beginTime);
+//		System.out.println("endTime: " + endTime);
+//		System.out.println("fileTypes: " + fileTypes);
 		Pager<MongoFSDto> pager = null;
 		if(StringUtils.isNotBlank(beginTime) || StringUtils.isNotBlank(endTime) || StringUtils.isNotBlank(fileTypes)){
 			pager = fileService.getMongoFSList(page, rows, series, star, dirId, beginTime, endTime, fileTypes);			

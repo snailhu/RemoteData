@@ -50,6 +50,8 @@ public class CommonController {
 		
 		return j9Series_Star_Service.getFlyWheelParameterList();
 	}
+	
+	
 	@RequestMapping(value = "/showPanel", method = { RequestMethod.POST})
 	public void showPanel(
 			HttpServletRequest request,

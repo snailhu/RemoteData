@@ -1,5 +1,9 @@
 package DataAn.linegraph.service;
 
-public interface ILineTmplService {
+import java.util.List;
 
+import DataAn.linegraph.dto.LineGraphTemplateDto;
+
+public interface ILineTmplService {
+	public List<LineGraphTemplateDto> getTemplateList();
 }

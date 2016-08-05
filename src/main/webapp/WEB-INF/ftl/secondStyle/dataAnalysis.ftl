@@ -1,5 +1,8 @@
 <@override name="content_right">	
-	<link rel="stylesheet" href="${base}/static/jqwidgets/styles/jqx.base.css" type="text/css" />	
+	<link rel="stylesheet" href="${base}/static/jqwidgets/styles/jqx.base.css" type="text/css" />
+	
+	<link rel="stylesheet" href="${base}/static/content/css/default.css"  type="text/css"/>	
+    
     <script type="text/javascript" src="${base}/static/jqwidgets/jqxcore.js"></script>
     <script type="text/javascript" src="${base}/static/jqwidgets/jqxdatetimeinput.js"></script>
     <script type="text/javascript" src="${base}/static/jqwidgets/jqxcalendar.js"></script>
@@ -16,6 +19,8 @@
     <script type="text/javascript" src="${base}/static/scripts/demos.js"></script>  
     <script type="text/javascript" src="${base}/static/jqwidgets/jqxdatatable.js"></script>
     <script type="text/javascript" src="${base}/static/jqwidgets/jqxtreegrid.js"></script>     
+
+	<script type="text/javascript" src="${base}/static/content/js/outlook2.js" ></script>
 	<style>
 		.dateStyle{
 			float:left;
@@ -95,21 +100,47 @@
 		<div class="page-content">
 			<div class="page-header">
 				<div class="dateStyle"><label>开始日期</label><div id='dateStart'></div></div>
-				<div class="dateStyle" style="margin-left:20px"><label>结束日期</label><div id='dateEnd'></div> </div> 
+				<div class="dateStyle" style="margin-left:20px"><label>结束日期</label><div id='dateEnd'></div> </div> 				  
 				<div style="clear:both"></div>
 			</div><!-- /.page-header -->
+		  			  	
+		  	<div >
+				<div class="col-xs-12 col-sm-12">
+					<!-- PAGE CONTENT BEGINS -->
+					<div class="widget-box">
+						<div class="widget-header" id="change-search-box" data-action="collapse">
+							<h4>常用模板</h4>
+							<div class="widget-toolbar">
+								<a href="javascript:void(0);" >
+									<i class="icon-chevron-up"></i>
+								</a>
+							</div>
+						</div>
+						<div class="widget-body">
+							<div class="widget-main">				
+						        <div id="id_templateTreeGrid"></div>
+						        <button  onclick="getTemplate()">模板添加到分组</button>
+						        
+							</div>
+						</div>
+					</div>
+					<!-- PAGE CONTENT ENDS -->
+				</div><!-- /.col -->
+			</div><!-- /.row -->
 		  	
-			<div class="row">
+			<#--<div class="row">
 			<hr>常用图表模板<hr>				
 		        <div id="id_templateTreeGrid"></div>
 		        <button  onclick="getTemplate()">模板添加分组</button>
+
 			</div>
-			
+			-->
 			<hr>自定义图表<hr>
 			<div class="row">	
 		     	<button data-toggle="modal" data-target="#exampleModal">添加分组</button>
   				<button onclick="getCleared()">清空已选参数</button>
   				<button data-toggle="modal"	 onclick="submitGroup()">提交分组</button>	
+  				<div id="id_dplist_template"><div style="font-size: 12px; font-family: Verdana;" id="selectionlog"></div></div>
 			</div>
 			<div class="row"> 
   				<div id='jqxWidget'>
@@ -127,8 +158,8 @@
         	$("#dateStart").jqxDateTimeInput({width: '300px', height: '25px'});
         	$("#dateEnd").jqxDateTimeInput({width: '300px', height: '25px'});
     	});
-	
-	
+    	
+
 		var JsonG = {}
 		var AllRowselect = [];
 		var j=0;
@@ -147,7 +178,10 @@
                     rowObject.name=rowindex[i].name;
                     rowObject.max=rowindex[i].max;
                     rowObject.min=rowindex[i].min;
-                    //rowObject.yname=
+                    rowObject.yname=rowindex[i].yname;
+                    if(rowObject.yname=="y2"){
+                    	chkObjs=2;
+                    }
                     selectRow.push( rowObject);
                     stringName+=value+",";
                 }
@@ -221,6 +255,7 @@
          
             //$("#treeGrid").jqxTreeGrid('setCellValue', 1, 'yname', '132');
             var value = $("#treeGrid").jqxTreeGrid('getCellValue', 1, 'yname');
+            //var value = $("#id_dplist_template").jqxTreeGrid('getCellValue', 1, 'yname');
             alert(value);
         }
         //提交分组响应事件
@@ -270,12 +305,12 @@
                	hierarchicalCheckboxes: false,              	
                 columns: [
                   { text: '模板名称',  dataField: 'templateName', editable: false, width: 200 },
-                  { text: '模板参数',  dataField: 'name', width: 200 },
+                  { text: '模板包含参数',  dataField: 'name', width: 200 },
                   //{ text: 'ID',   dataField: 'id',editable: false, width:200, hidden: true },
                   { text: '最大值',   dataField: 'max', width: 200 },
                   { text: '最小值',    dataField: 'min', width: 160 },
                   { text: 'Y轴',     dataField: 'yname', width:200, columnType:'custom',
-                  	cellsRenderer: function (row, column, value, rowData) {if(value=="添加到分组"){return "<input type='button'>添加到分组</input>"}}, 
+                  	cellsRenderer: function (row, column, value, rowData) {if(value=="添加到分组") {return "<input type='button' value='删除模板'></input>"}}, 
                   	createEditor: function (row, cellValue, editor, cellText, width, height) {
 					  var source = ["y1", "y2"];
                       editor.jqxDropDownList({autoDropDownHeight: true, source: source, width: '100%', height: '100%' });		 
@@ -292,6 +327,46 @@
             
             //所有参数树
             var url = "${base}/getConstraint";
+            updateParamTree(url);
+            
+            //初始化选择模板下拉框
+            var url_templatelist = "getTemplateList";
+            var source_templatelist =
+            {
+                datatype: "json",
+                datafields: [
+                    { name: 'name' },
+                    { name: 'id' }
+                ],
+                url: url_templatelist,
+                async: true
+            };
+            var dataAdapter = new $.jqx.dataAdapter(source_templatelist);
+
+            // Create a jqxDropDownList
+            $("#id_dplist_template").jqxDropDownList({
+                selectedIndex: 2, 
+                source: dataAdapter, 
+                displayMember: "name", 
+                valueMember: "id",
+                placeHolder:"请选择模板",
+                width: 200, 
+                height: 25
+            });
+
+            // subscribe to the select event.
+            $("#id_dplist_template").on('select', function (event) {
+                if (event.args) {            
+                    var item = event.args.item;
+                    if (item) {
+                    var url = "${base}/getParamsByTemplateId?templateId="+item.value;
+                    updateParamTree(url);                                           
+                    }
+                }
+            });
+        }); 
+        
+        function updateParamTree(url){
             var source =
             {
                 dataType: "json",
@@ -319,7 +394,13 @@
                 sortable: true,
                 editable: true,
                	checkboxes: true,
-               	hierarchicalCheckboxes: false,              	
+               	theme: 'energyblue',
+               	hierarchicalCheckboxes: false,
+                ready: function () {
+                    // expand row with 'EmployeeKey = 32'
+                    $("#treeGrid").jqxTreeGrid('expandRow', 32);
+                    $("#treeGrid").jqxTreeGrid('expandRow', 112);
+                },              	
                 columns: [
                   //{ text: 'ID',  dataField: 'id',editable: false, width: 200 },
                   { text: '参数名称',  dataField: 'name',editable: false, width: 200 },
@@ -341,7 +422,7 @@
                   }                     
                 ]
             });
-        });        
+        }       
     </script>
     	
 </@override>	

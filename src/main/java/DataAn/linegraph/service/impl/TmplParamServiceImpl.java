@@ -49,7 +49,7 @@ public class TmplParamServiceImpl implements ITmplParamService {
 	public List<TemplateParameterDto> getTmplparamDtoByTmplId(
 			long LineGraphTemplateid) {
 		List<TemplateParameterDto> paramList = new ArrayList<TemplateParameterDto>();
-		List<TemplateParameter> list= tmplparamDao.findByParam("LineGraphTemplate.id",LineGraphTemplateid );
+		List<TemplateParameter> list= tmplparamDao.findByParam("linegraphtemplale.id",LineGraphTemplateid );
 		if(list != null && list.size() > 0){
 			TemplateParameterDto dto = null;
 			for (TemplateParameter tmplparam : list) {

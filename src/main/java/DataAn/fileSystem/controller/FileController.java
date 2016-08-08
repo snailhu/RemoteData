@@ -6,6 +6,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -205,17 +206,20 @@ public class FileController {
 		
 		long begin = System.currentTimeMillis();
 		final Map<String, FileDto> map = new HashMap<String,FileDto>();
+		DecimalFormat df = new DecimalFormat("#.00");
 		if(csvFile.getSize() != 0){
 			FileDto csvFileDto = new FileDto();
 			csvFileDto.setFileName(csvFile.getOriginalFilename());
-			csvFileDto.setFileSize(csvFile.getSize());
+			String size = df.format(csvFile.getSize());
+			csvFileDto.setFileSize(Float.parseFloat(size));
 			csvFileDto.setIn(csvFile.getInputStream());
 			map.put("csv", csvFileDto);			
 		}
 		if(datFile.getSize() != 0){
 			FileDto datFileDto = new FileDto();
 			datFileDto.setFileName(datFile.getOriginalFilename());
-			datFileDto.setFileSize(datFile.getSize());
+			String size = df.format(datFile.getSize());
+			datFileDto.setFileSize(Float.parseFloat(size));
 			datFileDto.setIn(datFile.getInputStream());
 			map.put("dat", datFileDto);			
 		}

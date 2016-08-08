@@ -199,7 +199,7 @@ public class MongodbUtil {
 	public List<Float> findAllByTie(String param){
 		MongoCollection<Document> collection = db.getCollection("star2");
 	//	MongoCursor<Document> cursor = collection.find().iterator();
-		MongoCursor<Document> cursor = collection.find(Filters.eq("year_month_day", "2016-10-10")).iterator();
+		MongoCursor<Document> cursor = collection.find(Filters.eq("year_month_day", "2015-05-03")).iterator();
 		try {
 			List<Float> paramValue =  new ArrayList<Float>();
 //			HashMap<String,List<String>> paramMap = new HashMap<String,List<String>>();
@@ -207,7 +207,7 @@ public class MongodbUtil {
 		    while (cursor.hasNext()) {
 		    	if(count>=10000){break;}
 		    	Document doc = cursor.next();
-		    	System.out.println(doc.getString(param));
+//		    	System.out.println(doc.getString(param));
 		    	if(doc.getString(param)!=null){
 		    		
 	    		Float value = Float.parseFloat(doc.getString(param));	  
@@ -226,7 +226,7 @@ public class MongodbUtil {
 	public List<String> getDateList(String param){
 		MongoCollection<Document> collection = db.getCollection("star2");
 	//	MongoCursor<Document> cursor = collection.find().iterator();
-		MongoCursor<Document> cursor = collection.find(Filters.eq("year_month_day", "2016-10-10")).iterator();
+		MongoCursor<Document> cursor = collection.find(Filters.eq("year_month_day", "2015-05-03")).iterator();
 		try {
 			List<String> paramValue =  new ArrayList<String>();
 //			HashMap<String,List<String>> paramMap = new HashMap<String,List<String>>();

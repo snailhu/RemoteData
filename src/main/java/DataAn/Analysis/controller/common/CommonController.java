@@ -4,14 +4,17 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+
 import DataAn.Analysis.dto.ConstraintDto;
 import DataAn.common.pageModel.Pager;
 import DataAn.fileSystem.option.FlyWheelDataType;
@@ -20,8 +23,12 @@ import DataAn.fileSystem.service.IJ9Series_Star_Service;
 import DataAn.galaxyManager.dao.ISeriesDao;
 import DataAn.galaxyManager.domain.Series;
 import DataAn.mongo.db.MongodbUtil;
+
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+
+import com.alibaba.fastjson.JSON;
+
 import DataAn.Analysis.dto.AllJsonData;
 import DataAn.Analysis.dto.GroupMenu;
 import DataAn.Analysis.dto.ParamGroup;
@@ -52,8 +59,8 @@ public class CommonController {
 	@ResponseBody
 	public List<ConstraintDto> getConstraint(String beginDate,String endDate) throws Exception{
 		
-		System.out.println("beginDate； " + beginDate);
-		System.out.println("endDate: " + endDate);
+//		System.out.println("beginDate； " + beginDate);
+//		System.out.println("endDate: " + endDate);
 		//test
 		return j9Series_Star_Service.getFlyWheelParameterList();
 //		return j9Series_Star_Service.getAllParameterListFromBeginDateToEndDate(beginDate, endDate);
@@ -134,13 +141,16 @@ public class CommonController {
 		EhCache ehCache = new EhCache(); 
 		@SuppressWarnings("unchecked")
 		List<ParamGroup> lPs = (List<ParamGroup>) ehCache.getCacheElement("AllJsonData");
-		List<String> params = new ArrayList<String>();
+//		List<String> params = new ArrayList<String>();
+		List<SingleParamDto> params = new ArrayList<SingleParamDto>();
+		Map<String,String> map = j9Series_Star_Service.getAllParameterList_simplyZh_and_en();
 		ModelAndView mv = new ModelAndView("/secondStyle/graphicShow");
 		for(ParamGroup  pg :lPs){		
 			if(pg.getId()==id){
 				List<SingleParamDto> spds = pg.getSecectRow();
 				for(SingleParamDto spd : spds){
-					params.add(FlyWheelDataType.getFlyWheelDataTypeByZh2(spd.getName()).getName());
+					spd.setValue(map.get(spd.getName()));
+					params.add(spd);
 				}	
 				mv.addObject("params", params);
 			}
@@ -155,6 +165,7 @@ public class CommonController {
 			HttpServletResponse response,
 			@RequestParam(value="filename",required = true) String filename
 			) throws Exception{
+//		System.out.println("getData.."+ filename);
 		MongodbUtil mg = MongodbUtil.getInstance();
 		List<Float> result = mg.findAllByTie(filename);
 		return result ;				

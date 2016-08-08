@@ -106,24 +106,14 @@
 			<ul class="breadcrumb">
 				<li>
 					<i class="icon-home home-icon"></i>
-					<a href="#">J9系列</a>
+					<a href="#">j9系列</a>
 				</li>
 	
 				<li>
-					<a href="#">卫星1</a>
+					<a href="#">02星</a>
 				</li>
-				<li class="active">图表管理</li>
+				<li class="active">飞轮</li>
 			</ul><!-- .breadcrumb -->
-	
-			<!--
-			<div class="nav-search" id="nav-search">
-				<form class="form-search">
-					<span class="input-icon">
-						<input type="text" placeholder="搜索 ..." class="nav-search-input" id="nav-search-input" autocomplete="off" />
-						<i class="icon-search nav-search-icon"></i>
-					</span>
-				</form>
-			</div>--><!-- #nav-search -->
 		</div>	
 		<div class="page-content">
 			<div class="page-header">
@@ -136,7 +126,6 @@
 		  			  	
 		  	<div >
 				<div class="col-xs-12 col-sm-12">
-					<!-- PAGE CONTENT BEGINS -->
 					<div class="widget-box">
 						<div class="widget-header" id="change-search-box" data-action="collapse">
 							<h4>常用模板</h4>
@@ -146,16 +135,13 @@
 								</a>
 							</div>
 						</div>
-						<div class="widget-body">
-							<div class="widget-main">						
-							    <div class="form-group">
-							    	<!--<button  onclick="getTemplate()">模板添加到分组</button>-->
-						        	<div id="id_templateTreeGrid"></div>
-							    </div>						        					        
+						<div class="widget-body">									        					        
+							<div class="widget-main">				
+						        <div id="id_templateTreeGrid"></div>
+
 							</div>
 						</div>
 					</div>
-					<!-- PAGE CONTENT ENDS -->
 				</div><!-- /.col -->
 		  		  	
 			<div class="row">	
@@ -179,8 +165,6 @@
 	$(function() {	
     	$("#dateStart").jqxDateTimeInput({width: '300px', height: '25px'});
     	$("#dateEnd").jqxDateTimeInput({width: '300px', height: '25px'});
-        $("#dateStart").jqxDateTimeInput({width: '300px', height: '25px'});
-        $("#dateEnd").jqxDateTimeInput({width: '300px', height: '25px'});
         
 		//
 		$("#jqxButton-getParameters").jqxButton({ width: '100', height: '17'});
@@ -191,6 +175,8 @@
             var url = "${base}/getConstraint?beginDate="+beginDate+"&endDate="+endDate;
             updateParamTree(url);
 		 });
+		 $('#change-search-box').click();
+		 
 		 initTemplateTree()
 		 intTemplateList();
 	});
@@ -246,11 +232,12 @@
 	                ]
 	            });
         	} 
+
         	
-        //添加分组功能
-        var JsonG = {}
-		var AllRowselect = [];
-		var j=0;
+    //添加分组功能
+    var JsonG = {}
+	var AllRowselect = [];
+	var j=0;
 		/*//模板树提交分组按钮响应事件
         function getTemplate(){      	
             var groupObject={}
@@ -363,7 +350,6 @@
         	templateNmae_dialog=$(id_template_name).val();
         	templateDescription_dialog=$(id_template_description).val();
         	$(id_Modal_template).modal('hide');	
-        	alert(JSON.stringify(JsonParams));
         	$.post('${base}/saveTotemplate',        
         	{
         		'templateNmae':templateNmae_dialog,
@@ -371,6 +357,7 @@
         		'JsonParams':JSON.stringify(paramarray)        	
         	})
         }
+
         //删除已经生成的分组
      	function clearGroup(obj){
 			var clearGroupId = $(obj).parent('.alert').attr("name")
@@ -493,7 +480,6 @@
 	            });
             }	
 </script>
-
 
 </@override>	
 <@extends name="/secondStyle/contentBase.ftl"/>

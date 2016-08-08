@@ -2,12 +2,13 @@ package DataAn.linegraph.service;
 
 import java.util.List;
 
+import DataAn.linegraph.dto.LineGraphTemplateDto;
 import DataAn.linegraph.dto.TemplateParameterDto;
 
 public interface ITmplParamService {
-public boolean saveStar(TemplateParameterDto tmplparamDto);
+public boolean saveTmplparam(TemplateParameterDto tmplparamDto);
 	
-	public boolean deleteTmplparam(long starId);
+	public boolean deleteTmplparam(long parameterid);
 	
 	public boolean updateTmplparam(TemplateParameterDto tmplparamDto);
 	
@@ -27,5 +28,8 @@ public boolean saveStar(TemplateParameterDto tmplparamDto);
 	public List<TemplateParameterDto> getAllTemlparamDto();
 	
 	public TemplateParameterDto getTmplparamDto(long parameterid);
+
+	boolean saveTemplateParam(LineGraphTemplateDto templateDto,
+			List<TemplateParameterDto> params);
 
 }

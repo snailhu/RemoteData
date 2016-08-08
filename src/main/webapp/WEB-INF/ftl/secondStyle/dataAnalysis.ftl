@@ -66,12 +66,38 @@
 	      </div>
 	      <div class="modal-footer">
 	        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-	        <button type="button" class="btn btn-primary" onclick="getSelected()">确定</button>
+	        <button type="button" class="btn btn-primary" onclick="postTemplate()">确定</button>
 	      </div>
 	    </div>
 	  </div>
 	</div>
-              
+    <div class="modal fade" id="id_Modal_template" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"  >
+	  <div class="modal-dialog" role="document" style="margin:30px -200px">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	        <h4 class="modal-title" id="Modal_template">添加分组为模板</h4>
+			<input id="Modal_template_input" style="display:none"/>
+	      </div>
+	      <div class="modal-body">
+	        <form>
+	          <div class="form-group">
+	            <label for="recipient-name" class="control-label">模板名称</label>
+	            <input type="text" class="form-control" id="id_template_name">
+	          </div>
+	          <div class="form-group">
+	            <label for="message-text" class="control-label">模板描述</label>
+	            <input type="text" class="form-control" id="id_template_description">
+	          </div>
+	        </form>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+	        <button type="button" class="btn btn-primary" onclick="postTemplate()">确定</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>        
 	<div class="main-content">
 		<div class="breadcrumbs" id="breadcrumbs">
 			<script type="text/javascript">
@@ -80,15 +106,16 @@
 			<ul class="breadcrumb">
 				<li>
 					<i class="icon-home home-icon"></i>
-					<a href="#">Home</a>
+					<a href="#">J9系列</a>
 				</li>
 	
 				<li>
-					<a href="#">Tables</a>
+					<a href="#">卫星1</a>
 				</li>
-				<li class="active">jqGrid plugin</li>
+				<li class="active">图表管理</li>
 			</ul><!-- .breadcrumb -->
 	
+			<!--
 			<div class="nav-search" id="nav-search">
 				<form class="form-search">
 					<span class="input-icon">
@@ -96,7 +123,7 @@
 						<i class="icon-search nav-search-icon"></i>
 					</span>
 				</form>
-			</div><!-- #nav-search -->
+			</div>--><!-- #nav-search -->
 		</div>	
 		<div class="page-content">
 			<div class="page-header">
@@ -120,10 +147,11 @@
 							</div>
 						</div>
 						<div class="widget-body">
-							<div class="widget-main">				
-						        <div id="id_templateTreeGrid"></div>
-						        <button  onclick="getTemplate()">模板添加到分组</button>
-						        
+							<div class="widget-main">						
+							    <div class="form-group">
+							    	<!--<button  onclick="getTemplate()">模板添加到分组</button>-->
+						        	<div id="id_templateTreeGrid"></div>
+							    </div>						        					        
 							</div>
 						</div>
 					</div>
@@ -147,7 +175,7 @@
 		</div><!-- /.page-content -->
 	</div><!-- /.main-content -->
 	
-<script type="text/javascript">	
+<script type="text/javascript">		
 	$(function() {	
     	$("#dateStart").jqxDateTimeInput({width: '300px', height: '25px'});
     	$("#dateEnd").jqxDateTimeInput({width: '300px', height: '25px'});
@@ -197,22 +225,21 @@
 	                editable: true,
 	               	checkboxes: true,
 	               	theme: 'energyblue',
-	               	hierarchicalCheckboxes: false,              	
+	               	hierarchicalCheckboxes: true,              	
 	                columns: [
 	                  { text: '参数名称',  dataField: 'name',editable: false, width: 200 },
 	                  { text: 'ID',  dataField: 'id',editable: false, width:200, hidden: true },
 	                  { text: '最大值', dataField: 'max', width: 200 },
 	                  { text: '最小值', dataField: 'min', width: 160 },
-	                  { text: 'Y轴', dataFaield:'yname',width:200,columnType:'template',
-						createEditor: function (row, cellValue, editor, cellText, width, height) {
-						  var source = ["Y1", "Y2"];
-	                      editor.jqxDropDownList({autoDropDownHeight: true, source: source, width: '100%', height: '100%' });		 
+	                  { text: 'Y轴', dataFaield:'yname',width:200,columnType:'custom',
+		                createEditor: function (row, cellValue, editor, cellText, width, height) {
+						  	var source = ["y1", "y2"];
+	                      	editor.jqxDropDownList({autoDropDownHeight: true, source: source, width: '100%', height: '100%' });		 
 						},
 						initEditor: function (row, cellValue, editor, cellText, width, height) {
 							editor.jqxDropDownList('selectItem', cellValue);
 						},
 						getEditorValue: function (row, cellValue, editor) {
-							//$("#treeGrid").jqxTreeGrid('setCellValue', row, 'yname', editor.val());
 							return editor.val();
 						}				
 	                  }                     
@@ -255,9 +282,8 @@
             	groupObject.Y2name= $("#secondy-name").val();
             }
             //在已分组列表上添加“删除”和“保存为模板”按钮
-            var btn_savemodel="<button type='button' class='close' onclick=''><span aria-hidden='true'>生成模板   </span></button>";
-            var group= $("<div name="+j+" class='alert alert-warning alert-dismissible' role='alert'> <button type='button' class='close' onclick='clearGroup(this)'><span aria-hidden='true'>删除分组;</span></button>"+btn_savemodel+stringName+"</div>")
-            
+            var btn_savemodel="<button type='button' class='close' onclick='saveToLineTemplate(this)'><span aria-hidden='true'>保存为模板   </span></button>";
+            var group= $("<div name="+j+" class='alert alert-warning alert-dismissible' role='alert'> <button type='button' class='close' onclick='clearGroup(this)'><span aria-hidden='true'>11删除分组;</span></button>"+btn_savemodel+stringName+"</div>")
             $('#jqxWidget').append(group)
             
             AllRowselect[j]=groupObject;
@@ -287,12 +313,14 @@
 	            groupObject.secectRow = selectRow;
 	            groupObject.Ycount = chkObjs;
 	            groupObject.Y1name=$("#firsty-name").val();
-	            if(chkObjs=="2"){
+	            if(chkObjs=="2"){ 
 	            	groupObject.Y2name= $("#secondy-name").val();
 	            }
 	            //在已分组列表上添加“删除”和“保存为模板”按钮
-	            var btn_savemodel="<button type='button' class='close' onclick=''><span aria-hidden='true'>生成模板   </span></button>";
-	            var group= $("<div name="+j+" class='alert alert-warning alert-dismissible' role='alert'> <button type='button' class='close' onclick='clearGroup(this)'><span aria-hidden='true'>删除分组;</span></button>"+btn_savemodel+stringName+"</div>")            
+	            var btn_savemodel="<button type='button' class='close' onclick='saveToLineTemplate(this)'><span aria-hidden='true'>保存为模板   </span></button>";
+				//var btn_savetotemplate_id = "btn_savetotemplate_id_"+j;
+	            //var btn_savemodel="<button id='"+btn_savetotemplate_id+"'type='button' class='close' data-toggle='modal' data-target='#id_Modal_template'><span aria-hidden='true'>保存为模板" +j+"  </span></button>";
+				var group= $("<div name="+j+" class='alert alert-warning alert-dismissible' role='alert'> <button type='button' class='close' onclick='clearGroup(this)'><span aria-hidden='true'>删除分组;</span></button>"+btn_savemodel+stringName+"</div>")            
 	            $('#jqxWidget').append(group)            
 	            AllRowselect[j]=groupObject;
 	            j++;           
@@ -301,7 +329,48 @@
          		alert("至少请选择一行参数！");
          	}  
         }
-        
+        //设定模板的名称和描述，隐藏保存为模板弹出框；
+        var templateNmae_dialog=" ";
+		var templateDescription_dialog=" ";
+		var JsonParams = {};
+		//一个参数对象数组
+        var paramarray=[];
+        //把已经生成的分组保存为曲线模板
+        function saveToLineTemplate(obj){
+			$(id_Modal_template).modal('show');			
+        	var GroupId = $(obj).parent('.alert').attr("name")
+        	var group=AllRowselect[GroupId].secectRow
+        	var template=group
+        	for(i=0;i<template.length;i++)
+        	{
+        		var param={}
+        		param.name=template[i].name;
+        		param.max=template[i].max;
+        		param.min=template[i].min;
+        		//param.yname=template[i].yname;
+        		param.yname="y1";
+        		paramarray.push(param);
+        		//alert(param.name+"max:"+param.max+"min:"+param.min+param.yname);
+        	}
+        	/*var a=AllRowselect[1].secectRow;
+        	var b=a[1];
+        	c=b.name;*/
+        	//alert(a.getname());
+        	JsonParams.alldata=paramarray;
+        }
+        function postTemplate()
+        {	        	
+        	templateNmae_dialog=$(id_template_name).val();
+        	templateDescription_dialog=$(id_template_description).val();
+        	$(id_Modal_template).modal('hide');	
+        	alert(JSON.stringify(JsonParams));
+        	$.post('${base}/saveTotemplate',        
+        	{
+        		'templateNmae':templateNmae_dialog,
+        		'templateDescription':templateDescription_dialog,
+        		'JsonParams':JSON.stringify(paramarray)        	
+        	})
+        }
         //删除已经生成的分组
      	function clearGroup(obj){
 			var clearGroupId = $(obj).parent('.alert').attr("name")
@@ -309,12 +378,13 @@
 			AllRowselect.splice(parseInt(clearGroupId),1)          
         } 
         //清空已选参数按钮响应事件            
-         function getCleared(){
-         
+         function getCleared(){      
             //$("#treeGrid").jqxTreeGrid('setCellValue', 1, 'yname', '132');
-            var value = $("#treeGrid").jqxTreeGrid('getCellValue', 1, 'yname');
-            //var value = $("#id_dplist_template").jqxTreeGrid('getCellValue', 1, 'yname');
-            alert(value);
+            //var value = $("#treeGrid").jqxTreeGrid('getCellValue', 1, 'yname');            
+            //var value2 = $("#treeGrid").jqxTreeGrid('getCellValue', 1, 'max');
+            var value = $("#id_dplist_template").jqxTreeGrid('getCellValue', 2, 'yname');
+            var value2 = $("#id_dplist_template").jqxTreeGrid('getCellValue', 2, 'max');
+            alert(value+value2);
         } 
         //提交分组响应事件
         function submitGroup(){
@@ -421,9 +491,7 @@
 	                  }                                     
 	                ]
 	            });
-            }
-                
-	
+            }	
 </script>
 
 

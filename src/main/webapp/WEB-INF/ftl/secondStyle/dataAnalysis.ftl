@@ -1,6 +1,6 @@
 <@override name="content_right">	
 	<link rel="stylesheet" href="${base}/static/jqwidgets/styles/jqx.base.css" type="text/css" />
-	
+	<link rel="stylesheet" href="${base}/static/jqwidgets/styles/jqx.energyblue.css" type="text/css" />
 	<link rel="stylesheet" href="${base}/static/content/css/default.css"  type="text/css"/>	
     
     <script type="text/javascript" src="${base}/static/jqwidgets/jqxcore.js"></script>
@@ -119,12 +119,12 @@
 			<div class="page-header">
 				<div class="dateStyle"><label>开始日期</label><div id='dateStart'></div></div>
 				<div class="dateStyle" style="margin-left:20px"><label>结束日期</label><div id='dateEnd'></div> 
-                	<div style="margin-left:320px;margin-top:-25px" id='jqxButton-getParameters'>获取参数</div>
-            	</div> 
+                <div style="margin-left:320px;margin-top:-25px" id='jqxButton-getParameters'>获取参数</div>
+            </div> 
 				<div style="clear:both"></div>
 			</div><!-- /.page-header -->
 		  			  	
-		  	<div >
+		  	<div class="row">
 				<div class="col-xs-12 col-sm-12">
 					<div class="widget-box">
 						<div class="widget-header" id="change-search-box" data-action="collapse">
@@ -138,27 +138,39 @@
 						<div class="widget-body">									        					        
 							<div class="widget-main">				
 						        <div id="id_templateTreeGrid"></div>
-
 							</div>
 						</div>
 					</div>
 				</div><!-- /.col -->
-		  		  	
-			<div class="row">	
-		     	<button onclick="getSelected()">添加分组</button>
-  				<button onclick="getCleared()">清空已选参数</button>
-  				<button data-toggle="modal"	 onclick="submitGroup()">提交分组</button>	
-  				<div id="id_dplist_template"><div style="font-size: 12px; font-family: Verdana;" id="selectionlog"></div></div>
-			</div>
-			
-			<div class="row"> 
-  				<div id='jqxWidget'>
-			        <div id="treeGrid"></div>
-	            	已有分组：			       	
-			     </div>	      		     
+		 </div>
+		  	
+		 <div class="hr hr32 hr-dotted"></div>
+			<div class="row">
+			<div class="col-xs-12">
+					<div style="margin-left:1px;margin-top:-25px" id='jqxButton_addgroup'>添加分组</div>
+  					<div style="margin-left:120px;margin-top:-25px" id='jqxButton_submitgroup'>提交分组</div>
+  					<!--<button onclick="getCleared()">清空已选参数</button>-->
+  					<div style="margin-left:560px;margin-top:-25px" id="id_dplist_template"></div>
+  		 	</div>
+  		 		
+  		 	<div class="col-xs-12">	
+  				<div id='jqxWidgett'>
+			        <div id="treeGrid"></div>			       	
+			     </div>
+			</div>	      		     
 			</div><!-- /.row -->
-										
+			
+			<div class="hr hr32 hr-dotted"></div>
+			<div class="row">
+			<div class="col-xs-12">	
+  				<div id='jqxWidget'>
+			              已有分组：		       	
+			    </div>
+			 </div>
+			 </div>
+									
 		</div><!-- /.page-content -->
+			
 	</div><!-- /.main-content -->
 	
 <script type="text/javascript">		
@@ -166,17 +178,26 @@
     	$("#dateStart").jqxDateTimeInput({width: '300px', height: '25px'});
     	$("#dateEnd").jqxDateTimeInput({width: '300px', height: '25px'});
         
-		//
-		$("#jqxButton-getParameters").jqxButton({ width: '100', height: '17'});
-		
+		 $("#jqxButton-getParameters").jqxButton({ width: '100', height: '17'});	
 		 $("#jqxButton-getParameters").click( function ()  {    
 		 	var beginDate = $("#dateStart").val();
 		 	var endDate = $("#dateEnd").val();
             var url = "${base}/getConstraint?beginDate="+beginDate+"&endDate="+endDate;
             updateParamTree(url);
 		 });
-		 $('#change-search-box').click();
 		 
+		 $("#jqxButton_addgroup").jqxButton({ width: '100', height: '17'});	
+		 $("#jqxButton_addgroup").click(function(){
+		 	getSelected();
+		 });
+		 
+		 $("#jqxButton_submitgroup").jqxButton({ width: '100', height: '17'});	
+		 $("#jqxButton_submitgroup").click(function(){
+		 	submitGroup();
+		 });
+		 
+		 
+		 $('#change-search-box').click();
 		 initTemplateTree()
 		 intTemplateList();
 	});
@@ -210,14 +231,14 @@
 	                sortable: true,
 	                editable: true,
 	               	checkboxes: true,
-	               	theme: 'energyblue',
+         			theme: 'energyblue',
 	               	hierarchicalCheckboxes: true,              	
 	                columns: [
 	                  { text: '参数名称',  dataField: 'name',editable: false, width: 200 },
 	                  { text: 'ID',  dataField: 'id',editable: false, width:200, hidden: true },
 	                  { text: '最大值', dataField: 'max', width: 200 },
 	                  { text: '最小值', dataField: 'min', width: 160 },
-	                  { text: 'Y轴', dataFaield:'yname',width:200,columnType:'custom',
+	                  { text: 'Y轴',   dataField: 'yname',width:200, columnType:'template',
 		                createEditor: function (row, cellValue, editor, cellText, width, height) {
 						  	var source = ["y1", "y2"];
 	                      	editor.jqxDropDownList({autoDropDownHeight: true, source: source, width: '100%', height: '100%' });		 
@@ -226,6 +247,9 @@
 							editor.jqxDropDownList('selectItem', cellValue);
 						},
 						getEditorValue: function (row, cellValue, editor) {
+							var yvalue = editor.val();
+							//alert(row+yvalue);
+							$("#treeGrid").jqxTreeGrid('setCellValue', row, 'yname', yvalue);
 							return editor.val();
 						}				
 	                  }                     
@@ -270,7 +294,7 @@
             }
             //在已分组列表上添加“删除”和“保存为模板”按钮
             var btn_savemodel="<button type='button' class='close' onclick='saveToLineTemplate(this)'><span aria-hidden='true'>保存为模板   </span></button>";
-            var group= $("<div name="+j+" class='alert alert-warning alert-dismissible' role='alert'> <button type='button' class='close' onclick='clearGroup(this)'><span aria-hidden='true'>11删除分组;</span></button>"+btn_savemodel+stringName+"</div>")
+            var group= $("<div name="+j+" class='alert alert-block alert-success' role='alert'> <button type='button' class='close' onclick='clearGroup(this)'><span aria-hidden='true'>删除分组;</span></button>"+btn_savemodel+stringName+"</div>")
             $('#jqxWidget').append(group)
             
             AllRowselect[j]=groupObject;
@@ -293,6 +317,7 @@
                     rowObject.name=rowindex[i].name;
                     rowObject.max=rowindex[i].max;
                     rowObject.min=rowindex[i].min;
+                    rowObject.yname=rowindex[i].yname;
                     selectRow.push( rowObject);
                     stringName+=value+",";
                 }
@@ -334,8 +359,7 @@
         		param.name=template[i].name;
         		param.max=template[i].max;
         		param.min=template[i].min;
-        		//param.yname=template[i].yname;
-        		param.yname="y1";
+        		param.yname=template[i].yname;
         		paramarray.push(param);
         		//alert(param.name+"max:"+param.max+"min:"+param.min+param.yname);
         	}
@@ -366,12 +390,11 @@
         } 
         //清空已选参数按钮响应事件            
          function getCleared(){      
-            //$("#treeGrid").jqxTreeGrid('setCellValue', 1, 'yname', '132');
-            //var value = $("#treeGrid").jqxTreeGrid('getCellValue', 1, 'yname');            
-            //var value2 = $("#treeGrid").jqxTreeGrid('getCellValue', 1, 'max');
-            var value = $("#id_dplist_template").jqxTreeGrid('getCellValue', 2, 'yname');
-            var value2 = $("#id_dplist_template").jqxTreeGrid('getCellValue', 2, 'max');
-            alert(value+value2);
+            var value = $("#treeGrid").jqxTreeGrid('getCellValue', 1, 'yname');            
+            var value2 = $("#treeGrid").jqxTreeGrid('getCellValue', 1, 'max');
+            //var value = $("#id_dplist_template").jqxTreeGrid('getCellValue', 2, 'yname');
+            //var value2 = $("#id_dplist_template").jqxTreeGrid('getCellValue', 2, 'max');
+            alert(value2+"---"+value);
         } 
         //提交分组响应事件
         function submitGroup(){
@@ -382,7 +405,7 @@
         		window.location.href="${base}/showPanel"
         	})            
         } 
-        
+                
         //初始化选择模板下拉框
        	function intTemplateList(){
 	            var url_templatelist = "getTemplateList";
@@ -405,6 +428,7 @@
 	                displayMember: "name", 
 	                valueMember: "id",
 	                placeHolder:"请选择模板",
+	                //theme: 'energyblue',
 	                width: 200, 
 	                height: 25
 	            });

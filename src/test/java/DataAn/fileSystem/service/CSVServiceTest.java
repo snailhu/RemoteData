@@ -8,6 +8,7 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.lang.reflect.Field;
 import java.nio.charset.Charset;
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -32,7 +33,7 @@ import DataAn.fileSystem.service.impl.CSVServiceImpl;
 import DataAn.mongo.db.MongodbUtil;
 
 import com.alibaba.fastjson.JSON;
-//import com.csvreader.CsvWriter;
+import com.csvreader.CsvWriter;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -132,73 +133,87 @@ public class CSVServiceTest {
 	
 //	@Test
 	public void testWriteCSVByJavacsv(int year,int month,int day) throws Exception{
-//		String type = J9Series_Star_ParameterGroupType.FLYWHEEL.getName();
-//		//"电流","转速","温度","指令","供电状态","角动量"
-//		List<String> params = J9Series_Star_ParameterGroupType.getFlywheelTypeOnParams();
-//		Map<String,String> map =  j9Series_Star_Service.getAllParameterList_allZh_and_enByOption(type,params);
-//		Set<String> keys = map.keySet();
-//		List<String> titleList = new ArrayList<String>();
-//		titleList.add("时间");
-//		int count = 1;
-//		for (String key: keys) {
-//			if(count > (day * 3)){
-//				titleList.add(key);				
-//			}
-//			count++;
-//		}
-//		
-////		String outputFile = "C:\\j9-02--2016-01-10.csv";
-//		String outputFile = "C:\\j9-02--" + year +"-0" + month +"-0" + day +".csv";
-//		if(month > 9){
-//			outputFile = "C:\\j9-02--" + year +"-" + month +"-10.csv";
-//		}
-//		if(day > 9){
-//			outputFile = "C:\\j9-02--" + year +"-0" + month +"-" + day +".csv";
-//		}
-//		if(month > 9 && day > 9){
-//			outputFile = "C:\\j9-02--" + year +"-" + month +"-" + day +".csv";
-//		}
-////		File file = new File(outputFile);
-////		OutputStream outputStream = new FileOutputStream(file,true);
-////		OutputStreamWriter writer = new OutputStreamWriter(outputStream, "utf-8");
-////		FileWriter fileWriter = new FileWriter(file,true);
-//		CsvWriter csvOutput = new CsvWriter(outputFile, ',',Charset.forName("gb2312"));
-//		
-//		for (String title : titleList) {
-//			csvOutput.write(title);
-//		}
-//		csvOutput.endRecord();
-//		//月份从0开始计数
-////		Date date1 = new Date(2015,5,10,0,0,0);
-////		Date date2 = new Date(2015,5,11,0,0,0);
-//		Date date1 = new Date(year,month-1,day,0,0,0);
-//		Date date2 = new Date(year,month-1,day+1,0,0,0);
-//		Date tempDate = date1;
-//		long time = tempDate.getTime();
-//		String format = year+ "年MM月dd日HH时mm分ss秒";
-//		while(tempDate.before(date2)){
-//			tempDate = new Date(time);
-//			csvOutput.write(DateUtil.format(tempDate, format));
-//			for (int i = 1; i < titleList.size(); i++) {
-//				Double data = Math.random() * Math.random();
-//				if(data < 0.01){
-//					csvOutput.write("0.01");
-//				}else{
-//					csvOutput.write(String.valueOf(data.floatValue()));					
-//				}
-//			}
-//			csvOutput.endRecord();
-//			time = time + 250;
-//		}
-//		csvOutput.close();
+		String type = J9Series_Star_ParameterGroupType.FLYWHEEL.getName();
+		//"电流","转速","温度","指令","供电状态","角动量"
+		List<String> params = J9Series_Star_ParameterGroupType.getFlywheelTypeOnParams();
+		Map<String,String> map =  j9Series_Star_Service.getAllParameterList_allZh_and_enByOption(type,params);
+		Set<String> keys = map.keySet();
+		List<String> titleList = new ArrayList<String>();
+		titleList.add("时间");
+		int count = 1;
+		for (String key: keys) {
+			//让参数动态变化
+			if(day<15){
+				if(count > (day + 3)){
+					titleList.add(key);				
+				}				
+			}else{
+				if(count > (day - 3)){
+					titleList.add(key);				
+				}
+			}
+			count++;
+		}
+		
+//		String outputFile = "C:\\j9-02--2016-01-10.csv";
+		String dirPath = "E:\\data\\"+year+"\\"+month;
+		File dir = new File(dirPath);
+		if(!dir.exists()){
+			dir.mkdirs();
+		}
+		String outputFile = dirPath +"\\" +"j9-02--" + year +"-0" + month +"-0" + day +".csv";
+		if(month > 9){
+			outputFile = dirPath +"\\" +"j9-02--" + year +"-" + month + "-" + day +".csv";
+		}
+		if(day > 9){
+			outputFile = dirPath +"\\" +"j9-02--" + year +"-0" + month +"-" + day +".csv";
+		}
+		if(month > 9 && day > 9){
+			outputFile = dirPath +"\\" +"j9-02--" + year +"-" + month +"-" + day +".csv";
+		}
+//		File file = new File(outputFile);
+//		OutputStream outputStream = new FileOutputStream(file,true);
+//		OutputStreamWriter writer = new OutputStreamWriter(outputStream, "utf-8");
+//		FileWriter fileWriter = new FileWriter(file,true);
+		CsvWriter csvOutput = new CsvWriter(outputFile, ',',Charset.forName("gb2312"));
+		
+		for (String title : titleList) {
+			csvOutput.write(title);
+		}
+		csvOutput.endRecord();
+		//月份从0开始计数
+//		Date date1 = new Date(2015,5,10,0,0,0);
+//		Date date2 = new Date(2015,5,11,0,0,0);
+		Date date1 = new Date(year,month-1,day,0,0,0);
+		Date date2 = new Date(year,month-1,day+1,0,0,0);
+		Date tempDate = date1;
+		long time = tempDate.getTime();
+		String format = year+ "年MM月dd日HH时mm分ss秒";
+		DecimalFormat df = new DecimalFormat("#.00");
+		while(tempDate.before(date2)){
+			tempDate = new Date(time);
+			csvOutput.write(DateUtil.format(tempDate, format));
+			for (int i = 1; i < titleList.size(); i++) {
+				Double data = 5 * i + Math.random() * Math.random() * 10;
+				
+				csvOutput.write(df.format(data));					
+			}
+			csvOutput.endRecord();
+			time = time + 250;
+		}
+		csvOutput.close();
 		
 	}
 	
 	@Test
 	public void testWriteCSVByJavacsvList() throws Exception{
 		long begin = System.currentTimeMillis();
-		for (int i = 1; i <= 10; i++) {
-			this.testWriteCSVByJavacsv(2015,5,i);		
+		for (int year = 2010; year <= 2012; year++) {
+			for (int month = 1; month <= 12; month++) {
+				for (int day = 1; day <= 30; day++) {
+					this.testWriteCSVByJavacsv(year,month,day);		
+				}							
+			}
 		}
 		long end = System.currentTimeMillis();
 		System.out.println("time: " + (end - begin));

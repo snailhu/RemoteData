@@ -10,4 +10,10 @@ import DataAn.galaxyManager.domain.Star;
 public class StarDaoImpl extends BaseDaoImpl<Star>
 implements IStarDao{
 
+	@Override
+	public void deleteBySeriesId(long seriesId) {
+		String hql = "delete from Star star where star.series.id=?";
+		this.getSession().createQuery(hql).setParameter(0, seriesId).executeUpdate();
+	}
+
 }

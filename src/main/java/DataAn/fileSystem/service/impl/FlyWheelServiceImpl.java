@@ -17,7 +17,7 @@ public class FlyWheelServiceImpl implements IFlyWheelService{
 	public List<ConstraintDto> getFlyWheelParameterList() throws Exception {
 		List<ConstraintDto> list = new ArrayList<ConstraintDto>();
 		//获取整个User类
-		Class<?> pojoClass = Class.forName("DataAn.fileSystem.option.FlyWheel");
+		Class<?> pojoClass = Class.forName("DataAn.fileSystem.option.J9Series_Star_ParameterConfig");
 		Object obj = pojoClass.newInstance();
 		Field[] fields = pojoClass.getDeclaredFields();
 		ConstraintDto c = null;

@@ -27,11 +27,13 @@ import DataAn.common.pageModel.Pager;
 import DataAn.common.utils.DateUtil;
 import DataAn.common.utils.FileUtil;
 import DataAn.common.utils.UUIDGeneratorUtil;
+import DataAn.fileSystem.dao.IDateParametersDao;
 import DataAn.fileSystem.dao.IVirtualFileSystemDao;
+import DataAn.fileSystem.domain.DateParameters;
 import DataAn.fileSystem.domain.VirtualFileSystem;
 import DataAn.fileSystem.dto.FileDto;
 import DataAn.fileSystem.dto.MongoFSDto;
-import DataAn.fileSystem.option.DataType;
+import DataAn.fileSystem.option.FileDataType;
 import DataAn.fileSystem.option.FileType;
 import DataAn.fileSystem.option.J9SeriesType;
 import DataAn.fileSystem.service.ICSVService;
@@ -48,6 +50,8 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 	@Resource
 	private IVirtualFileSystemDao fileDao;
 	@Resource
+	private IDateParametersDao parametersDao;
+	@Resource
 	private ICSVService csvService;	
 
 	@Override
@@ -56,11 +60,8 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 		
 		//获取map中的csv文件
 		FileDto csvFileDto = map.get("csv");
-		if(csvFileDto == null){
-			System.out.println("saveFile-->csv文件不能为空。。。");
-			return;
-		}
 		Map<String,String> dataMap = new HashMap<String,String>();
+		//解析csv中的文件名称 以获取信息
 		String fileName = csvFileDto.getFileName();
 		String[] strs = fileName.substring(0, fileName.lastIndexOf(".csv")).split("--");
 		String[] ss = strs[0].split("-");
@@ -75,7 +76,7 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 		String month = DateUtil.formatString(date, "yyyy-MM-dd", "MM");
 		dataMap.put("month", month);
 //		String day = DateUtil.formatString(date, "yyyy-MM-dd", "dd");
-//		dateMap.put("day", day);
+//		dataMap.put("day", day);
 //		System.out.println(year + "-" + month + "-" + day);
 		
 		//保存csv临时文件
@@ -87,8 +88,10 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 		csvTempFilePath = "D:\\temp\\csv\\" + fileName;
 		FileUtil.saveFile(csvTempFilePath, csvFileDto.getIn());
 		csvFileDto.setFilePath(csvTempFilePath);
+		
 		// 保存 *.csv文件
 		this.saveFileOfCSV(csvFileDto, dataMap);
+		
 		//获取map中的csv文件
 		FileDto datFile = map.get("dat");
 		if(datFile != null){			
@@ -201,11 +204,11 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 	@Override
 	@Transactional(readOnly = true)
 	public boolean isExistFile(String fileName) {
-		List<VirtualFileSystem> list = fileDao.findAll();
-		for (VirtualFileSystem fs : list) {
-			System.out.println(fs);
+		VirtualFileSystem file = fileDao.selectByFileName(fileName);
+		if(file == null){
+			return false;
 		}
-		return false;
+		return true;
 	}
 	
 	@Override
@@ -294,18 +297,11 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 		String date = dataMap.get("date");
 		String year = dataMap.get("year");
 		String month = dataMap.get("month");
-//		String day = dateMap.get("day");
+//		String day = dataMap.get("day");
 		
-//		//解析 *.csv文件保存csv里面的数据
-//		this.saveDataOfCSVInMongoDB(fileDto.getFilePath(), star);
-//
-//		//保存csv文件
-//		IDfsDb dfs = MongoDfsDb.getInstance();
-//		dfs.upload(uuId, fileDto.getFilePath());
-		
-//		InputStream fis = new FileInputStream(fileDto.getFilePath());   
-		BufferedInputStream bis = null;
+		//保存csv 原文件				
 		IDfsDb dfs = MongoDfsDb.getInstance();
+		BufferedInputStream bis = null;
 		try {
 			bis = new BufferedInputStream(new FileInputStream(fileDto.getFilePath()));  
 			dfs.upload(fileDto.getFileName(), uuId, bis);
@@ -320,25 +316,37 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 		}
 		MongodbUtil mg = MongodbUtil.getInstance();
 		String collectionName = J9SeriesType.getJ9StarType(star).getName();
+		List<Document> docList = null;
 		try {
-			List<Document> docList = csvService.readCSVFileToDoc(fileDto.getFilePath(),uuId);
+			docList = csvService.readCSVFileToDoc(fileDto.getFilePath(),uuId);
 			mg.insert(collectionName , docList);
 //			int a =9/0;
 //			System.out.println(a);
 		} catch (Exception e) {
 //			e.printStackTrace();
 			dfs.delete(uuId);
-			mg.deleteMany(collectionName, "versions", uuId);
+//			mg.deleteMany(collectionName, "versions", uuId);
+			mg.update(collectionName, "versions", uuId);
 			throw new Exception("csv 文件解析失败！！！");
 		}
-		
+		//存储某一天的参数信息
+		if(docList != null && docList.size() > 0){
+			Document doc1 = docList.get(0);
+			String year_month_day = doc1.getString("year_month_day");
+			Document doc2 = docList.get(docList.size() - 1);
+			String title = doc2.getString("title");
+			DateParameters dateParameters = new DateParameters();
+			dateParameters.setParameters(title);
+			dateParameters.setYear_month_day(year_month_day);
+			parametersDao.add(dateParameters);
+		}
 		//查找csv的文件夹是否存在
 		VirtualFileSystem csvDir = fileDao.selectByParentIdisNullAndFileName("csv");
 		if(csvDir == null){
 			csvDir = new VirtualFileSystem();
 			csvDir.setSeries(series);
 			csvDir.setStar(star);
-			csvDir.setDataType(DataType.CSV);
+			csvDir.setDataType(FileDataType.CSV);
 			csvDir.setFileName("csv");
 			csvDir.setFileType(FileType.DIR);
 			csvDir = fileDao.add(csvDir);
@@ -349,7 +357,7 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 			yearDir = new VirtualFileSystem();
 			yearDir.setSeries(series);
 			yearDir.setStar(star);
-			yearDir.setDataType(DataType.CSV);
+			yearDir.setDataType(FileDataType.CSV);
 			yearDir.setFileName(year);
 			yearDir.setFileType(FileType.DIR);
 			yearDir.setYear_month_day(year);
@@ -362,7 +370,7 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 			monthDir = new VirtualFileSystem();
 			monthDir.setSeries(series);
 			monthDir.setStar(star);
-			monthDir.setDataType(DataType.CSV);
+			monthDir.setDataType(FileDataType.CSV);
 			monthDir.setFileName(month);
 			monthDir.setFileType(FileType.DIR);
 			monthDir.setYear_month_day(year + "-" + month);
@@ -373,7 +381,7 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 		VirtualFileSystem file = new VirtualFileSystem();
 		file.setSeries(series);
 		file.setStar(star);
-		file.setDataType(DataType.CSV);
+		file.setDataType(FileDataType.CSV);
 		file.setFileName(fileDto.getFileName());
 		file.setFileSize(fileDto.getFileSize());
 		file.setFileType(FileType.FILE);
@@ -399,6 +407,7 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 //	}
 	
 	private void saveFileOfDAT(FileDto fileDto, Map<String,String> dataMap){
+		
 		String uuId = UUIDGeneratorUtil.getUUID();
 		
 		String series = dataMap.get("series");
@@ -414,7 +423,7 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 			datDir = new VirtualFileSystem();
 			datDir.setSeries(series);
 			datDir.setStar(star);
-			datDir.setDataType(DataType.DAT);
+			datDir.setDataType(FileDataType.DAT);
 			datDir.setFileName("dat");
 			datDir.setFileType(FileType.DIR);
 			datDir = fileDao.add(datDir);
@@ -425,7 +434,7 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 			yearDir = new VirtualFileSystem();
 			yearDir.setSeries(series);
 			yearDir.setStar(star);
-			yearDir.setDataType(DataType.DAT);
+			yearDir.setDataType(FileDataType.DAT);
 			yearDir.setFileName(year);
 			yearDir.setFileType(FileType.DIR);
 			yearDir.setYear_month_day(year);
@@ -438,7 +447,7 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 			monthDir = new VirtualFileSystem();
 			monthDir.setSeries(series);
 			monthDir.setStar(star);
-			monthDir.setDataType(DataType.DAT);
+			monthDir.setDataType(FileDataType.DAT);
 			monthDir.setFileName(month);
 			monthDir.setFileType(FileType.DIR);
 			monthDir.setYear_month_day(year + "-" + month);
@@ -449,7 +458,7 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 		VirtualFileSystem file = new VirtualFileSystem();
 		file.setSeries(series);
 		file.setStar(star);
-		file.setDataType(DataType.DAT);
+		file.setDataType(FileDataType.DAT);
 		file.setFileName(fileDto.getFileName());
 		file.setFileSize(fileDto.getFileSize());
 		file.setFileType(FileType.FILE);
@@ -462,14 +471,4 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 		IDfsDb dfs = MongoDfsDb.getInstance();
 		dfs.upload(fileDto.getFileName(), uuId, fileDto.getIn());
 	}
-
-
-
-
-
-
-
-
-
-
 }

@@ -14,7 +14,6 @@ public class ParamGroup {
 	private List<SingleParamDto> secectRow;
 	
 	
-	
 	public int getId() {
 		return id;
 	}
@@ -53,6 +52,13 @@ public class ParamGroup {
 
 	public void setY1name(String y1name) {
 		Y1name = y1name;
+	}
+
+	@Override
+	public String toString() {
+		return "ParamGroup [id=" + id + ", Ycount=" + Ycount + ", Y1name="
+				+ Y1name + ", Y2name=" + Y2name + ", secectRow=" + secectRow
+				+ "]";
 	}
 	
 	

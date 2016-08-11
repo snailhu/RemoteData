@@ -21,7 +21,7 @@ public class MongodbUtilTest {
 	private MongodbUtil mg;
 	private ICSVService csvService;
 	private String filePath = "C:\\j9-02--2015-08-17.csv";
-	private String collectionName = "star1";
+	private String collectionName = "star2";
 	
 	@Before
 	public void init(){
@@ -89,5 +89,25 @@ public class MongodbUtilTest {
 	public void updateBy(){
 		mg.updateBy(collectionName, "2015年08月10日00时15分02秒", "2015年08月10日00时15分04秒");
 		mg.findAll(collectionName);
+	}
+	
+	@Test
+	public void findFirstByYear_month_day(){
+		Document doc = mg.findFirstByYear_month_day(collectionName, "2016-01-10");
+		Set<String> keys = doc.keySet();
+		for (String key : keys) {
+			System.out.println(key);
+		}
+	}
+	@Test
+	public void test(){
+		String date1 = "2016-10-1";
+		String date2 = "2016-1-10";
+		Date date = new Date();
+	}
+	
+	@Test
+	public void getCollections(){
+		mg.getListCollections();
 	}
 }

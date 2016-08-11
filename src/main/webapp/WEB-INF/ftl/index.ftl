@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 <#assign base=request.contextPath+ 	'/DataRemote' />
+=======
+<#assign base=request.contextPath + '/DataRemote' >
+>>>>>>> branch 'master' of https://github.com/snailhu/RemoteData.git
 <!DOCTYPE html>
 <html>
 <head>

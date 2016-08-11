@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <script src="${base}/static/js/jquery-2.0.3.min.js"></script>
-    <script type="text/javascript" src="${base}/static/js/echarts.min.js"></script>
+    <script type="text/javascript" src="${base}/static/scripts/echarts.js"></script>
     
 </head>
 <body>
@@ -18,9 +18,14 @@
         seriesCounter = 0
         var date = [];
         var names = [];
+        var mouseover_message=[];
         <#if (params?size>0) >
         	<#list params as param>
-        		names.push('${param}')
+		        var n={};
+        		n.name = '${param.name}';
+        		n.value = '${param.value}';
+        		n.y = '${param.yname}';
+        		names.push(n);
         	</#list>       	
         <#else>
         	names = ['flywheel_a_speed','flywheel_f_motor_current'];
@@ -28,7 +33,10 @@
         
          var options = {
             tooltip: {
-                trigger: 'axis',              
+                trigger: 'axis',   
+                 formatter: function (params) {
+				     mouseover_message = params;
+ 					}           
             },
             title: {
                 left: 'center',
@@ -57,35 +65,69 @@
                 data:[]              
             },
             yAxis: [{
-                type: 'value',
-            }],
+                	type: 'value',
+                	splitLine : {
+		                show: true
+		            }
+            	},{
+		            type : 'value',
+		            splitLine : {
+		                show: true
+		            }
+	        	}
+            ],
             dataZoom: [{
                 type: 'inside',
-                start:20,
+                start:0,
                 end:21         
             }],
             series: []
         };    	     	
     	 $.getJSON('${base}/getDate', function (data) {
-			 options.xAxis.data = eval(data);
+			date = options.xAxis.data = eval(data);
 			 myChart.setOption(options);	
      });   
     	    	   
-        $.each(names, function (i, name) {
-	        $.getJSON('${base}/getData?filename=' + name.toLowerCase(), function (data) {	
+        $.each(names, function (i, n) {       
+	        $.getJSON('${base}/getData?start='+startDate+'&end='+endDate+'&filename=' + n.value, function (data) {	
 	            seriesOptions[i] = {
 	            	type: 'line',
-	                name: name,
+	                name: n.name,
+	                yAxisIndex: n.y,
 	                data: data
 	            };
 	            seriesCounter += 1;
 	            if (seriesCounter === names.length) {
-	            	options.series = eval(seriesOptions);
-	            	console.log(options)
+	            	options.series = eval(seriesOptions);	            
 	                myChart.setOption(options);	                
 	            }
 	        });
     	});   
+    	
+
+    		 
+    	      
+        myChart.on('dataZoom', function (params) {
+            console.log(params);
+            var endDate = date[params.batch[0].endValue];
+            var startDate = date[params.batch[0].startValue];
+         	$.each(names, function (i, n) {       
+	        $.getJSON('${base}/getData?start='+startDate+'&end='+endDate+'&filename=' + n.value, function (data) {	
+	            seriesOptions[i] = {
+	            	type: 'line',
+	                name: n.name,
+	                yAxisIndex: n.y,
+	                data: data
+	            };
+	            seriesCounter += 1;
+	            if (seriesCounter === names.length) {
+	            	options.series = eval(seriesOptions);	            
+	                myChart.setOption(options);	                
+	            }
+	        });
+    	});   
+        });
+      
     	 
     })
  </script>	

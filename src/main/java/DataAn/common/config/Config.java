@@ -3,6 +3,7 @@ package DataAn.common.config;
 import java.io.File;
 
 import DataAn.common.utils.PropertiesUtil;
+import DataAn.common.utils.UUIDGeneratorUtil;
 
 public class Config {
 
@@ -17,7 +18,7 @@ public class Config {
 	private static String CACHE_PATH ;
 
 	
-	public static String getCACHE_PATH() {
+	public static String getCachePath() {
 		String cachePath = PropertiesUtil.getProperties(config, charset).getProperty("path.cache");
 		if(cachePath != null && !cachePath.equals("")){
 			CACHE_PATH = cachePath.trim();
@@ -27,5 +28,19 @@ public class Config {
 		return CACHE_PATH.replace("/", File.separator);
 	}
 	
+	public static String getUplodCachePath() {
+		String uploadCachePath = getCachePath() + File.separator + "upload";
+		return uploadCachePath;
+	}
+	public static String getDownloadCachePath() {
+		String uploadCachePath = getCachePath() + File.separator + "download" 
+												+ File.separator + UUIDGeneratorUtil.getUUID();
+		return uploadCachePath;
+	}
+	public static String getZipCachePath() {
+		String uploadCachePath = getCachePath() + File.separator + "zip" 
+												+ File.separator + UUIDGeneratorUtil.getUUID();
+		return uploadCachePath;
+	}
 	
 }

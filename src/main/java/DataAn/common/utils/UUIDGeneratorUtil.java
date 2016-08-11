@@ -37,15 +37,16 @@ public class UUIDGeneratorUtil {
 	/**
 	 * 去除“-”符号
 	 * */
-	public static String getUUIDdelete_(String UUID){
+	private static String getUUIDdelete_(String UUID){
 		// 去掉“-”符号
 		return UUID.substring(0, 8) + UUID.substring(9, 13) + UUID.substring(14, 18)
 						+ UUID.substring(19, 23) + UUID.substring(24);
 	}
-	public static String getElementUUIDdelete_(String UUID){
+	
+/*	public static String getElementUUIDdelete_(String UUID){
 		// 去掉“-”符号
 		UUID = UUID.substring(1, UUID.length() - 1);
 		return UUID.substring(0, 8) + UUID.substring(9, 13) + UUID.substring(14, 18)
 						+ UUID.substring(19, 23) + UUID.substring(24);
-	}
+	}*/
 }

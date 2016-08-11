@@ -1,4 +1,4 @@
-package DataAn.mongo.service.impl;
+package DataAn.common.service.impl;
 
 import java.io.File;
 import java.util.Date;
@@ -7,9 +7,9 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import DataAn.common.config.Config;
+import DataAn.common.service.IJobService;
 import DataAn.common.utils.FileUtil;
 import DataAn.mongo.db.MongodbUtil;
-import DataAn.mongo.service.IJobService;
 
 @Service
 public class JobServiceImpl implements IJobService{
@@ -29,7 +29,7 @@ public class JobServiceImpl implements IJobService{
 	@Scheduled(cron = "0 0 23 20 * ?")  
 	@Override
 	public void delCacheFileJob() {
-		String sPath = Config.getCACHE_PATH();
+		String sPath = Config.getCachePath();
 		FileUtil.deleteDirectory(sPath,false);
 	}
 

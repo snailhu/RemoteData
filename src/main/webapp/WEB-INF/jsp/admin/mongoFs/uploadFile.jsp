@@ -242,12 +242,12 @@ input[type=text]::-webkit-focus-inner {
   <body>
 	<jsp:include page="/WEB-INF/jsp/layouts/admin-include-header2.jsp"></jsp:include>
   	<div class="main-container" id="main-container">
-		<script type="text/javascript">
+<!-- 		<script type="text/javascript">
 			try {
 				ace.settings.check('main-container', 'fixed')
 			} catch (e) {
 			}
-		</script>
+		</script> -->
 
 		<div class="main-container-inner">
 			<a class="menu-toggler" id="menu-toggler" href="#"> <span
@@ -272,7 +272,7 @@ input[type=text]::-webkit-focus-inner {
 										<div class="uploader white">
 											<input type="text" class="filename" name="showDatFileName" placeholder="No file selected..." readonly/>
 											<input type="button" class="button" value="Browse..."/>
-											<input type="file" accept=".DAT" name="datFile"/>
+											<input type="file" accept=".DAT" name="datFile" id="datFile"/>
 										</div>
 									</div>
 								</div>
@@ -283,14 +283,17 @@ input[type=text]::-webkit-focus-inner {
 										<div class="uploader blue">
 											<input type="text" class="filename" placeholder="No file selected..." readonly/>
 											<input type="button" class="button" value="Browse..."/>
-											<input type="file" accept=".csv" name="csvFile"/>
+											<input type="file" accept=".csv" name="csvFile" id="csvFile"/>
 										</div>
 									</div>
 								</div>
+								<div style="margin-left: 300px;">
+									<span id="returnMsg"></span>
+								</div>
 								<div class="space-20"></div>
 								<div class="form-group">
-		                           <div class="col-lg-4 col-lg-offset-4">
-				                        <button type="submit" class="btn btn-primary start">
+		                           <div class="col-sm-8" style="float: right;">
+				                        <button type="button" id="submit-fileupload" class="btn btn-primary start">
 						                    <i class="icon-upload icon-white"></i>
 						                    <span>开始 上传</span>
 						                </button>
@@ -323,7 +326,7 @@ input[type=text]::-webkit-focus-inner {
 				$(this).parents(".uploader").find(".filename").val("No file selected...");
 			}
 		});
-  		$('#fileupload').bootstrapValidator({
+  		$('#fileupload11').bootstrapValidator({
 //          live: 'disabled',
           message: 'This value is not valid',
           feedbackIcons: {
@@ -351,32 +354,54 @@ input[type=text]::-webkit-focus-inner {
                           regexp: /j9-0[1-9]--([0-9]{3}[1-9]|[0-9]{2}[1-9][0-9]{1}|[0-9]{1}[1-9][0-9]{2}|[1-9][0-9]{3})-(((0[13578]|1[02])-(0[1-9]|[12][0-9]|3[01]))|((0[469]|11)-(0[1-9]|[12][0-9]|30))|(02-(0[1-9]|[1][0-9]|2[0-8]))).csv/,
                           message: 'csv文件名输入不合法'
                       },
-                      callback: {
-                          message: '文件已存在',
-                          callback: function(value, validator) {
-                        	  var flag = false;
-                        	  $.post("${pageContext.request.contextPath}/admin/file/existFile", { fileName: value},
-                        			function(data){
-                        		  flag = data.success;
-                        		});
-                       		  if (flag) {
-                        			return false;
-                       		  }else{
-                       		 		return true;
-                       		  }
-                          }
-                      }
+//                       callback: {
+//                     	  message: '文件已存在',
+//                           callback: function(value, validator) {
+// 							 $.post("${pageContext.request.contextPath}/admin/file/existFile", { fileName: value},function(data){
+// 								console.log("flag: " + data.success);
+// 								if (data.success) {
+// 									$("#returnMsg").html("<img src='${pageContext.request.contextPath}/static/imgs/error.png'/><font color='red'>文件已存在</font>");
+// 									return false;
+// 								}else{
+// 									return true;
+// 								}
+// 							 });
+//                           }
+//                       }
                   }
               },
           }
       });
   		
-	$('#validateBtn').click(function() {
-        $('#defaultForm').bootstrapValidator('validate');
+	$('#submit-fileupload').click(function() {
+        
+        var fileName = $('#csvFile').val();
+        if(fileName.length == 0){
+        	$("#returnMsg").html("<img src='${pageContext.request.contextPath}/static/imgs/error.png'/><font color='red'>csv文件不能为空</font>");
+        }else{
+        	var regexp = /j9-0[1-9]--([0-9]{3}[1-9]|[0-9]{2}[1-9][0-9]{1}|[0-9]{1}[1-9][0-9]{2}|[1-9][0-9]{3})-(((0[13578]|1[02])-(0[1-9]|[12][0-9]|3[01]))|((0[469]|11)-(0[1-9]|[12][0-9]|30))|(02-(0[1-9]|[1][0-9]|2[0-8]))).csv/;
+        	if(regexp.test(fileName)){
+				$.post("${pageContext.request.contextPath}/admin/file/existFile", { fileName: fileName},function(data){
+					//console.log("flag: " + data.success);
+					if (data.success) {
+						$("#returnMsg").html("<img src='${pageContext.request.contextPath}/static/imgs/error.png'/><font color='red'>文件已存在</font>");
+					}else{
+						$("#fileupload").submit();
+					}
+				});
+        	}else{
+        		$("#returnMsg").html("<img src='${pageContext.request.contextPath}/static/imgs/error.png'/><font color='red'>csv文件名输入不合法</font>");
+        	}
+        }
+        
     });
-
+	$("#csvFile").blur(function() {
+		$("#returnMsg").empty();
+	});
+	
     $('#resetBtn').click(function() {
-        $('#fileupload').data('bootstrapValidator').resetForm(true);
+    	$("#returnMsg").empty();
+//         $('#fileupload').data('bootstrapValidator').resetForm(true);
     });	
   });
   </script>

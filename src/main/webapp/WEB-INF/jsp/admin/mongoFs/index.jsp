@@ -399,7 +399,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	                      ids.push(rows[i].id +"/"+rows[i].type);
 	                  }
 	                 // "ids": ids.join(','),"type":rows.type
-	                  $.post('<%=request.getContextPath()%>/admin/mongoFS/deleteFS', { "ids": ids.join(',')}, function (data) {
+	                  $.post('<%=request.getContextPath()%>/admin/file/deleteFiles', { "itemIds": ids.join(',')}, function (data) {
 	                      if (data.success) {
 	                          reloadDataGrid();
 	                          top.showMsg('提示', data.msg);

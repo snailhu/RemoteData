@@ -22,6 +22,9 @@
 
     <script type="text/javascript" src="${base}/static/jqwidgets/jqxbuttons.js"></script>
 
+	<link type="text/css" rel="stylesheet" href="${base}/static/content/jeDate/jedate/skin/jedate.css">
+    <script type="text/javascript" src="${base}/static/content/jeDate/jedate/jedate.js"></script>
+    
 	<style>
 		.dateStyle{
 			float:left;
@@ -31,6 +34,10 @@
 		}
 		.page-header{
 			padding:0px !important
+		}
+		.datainp{
+			width: 300px;
+			height: 25px;
 		}
 	</style>
 	
@@ -100,15 +107,26 @@
 			<!-- #nav-search -->
 		</div>	
 		<div class="page-content">
-			<div class="page-header">
-				<div class="dateStyle"><label>开始日期</label><div id='dateStart'></div></div>
-				<div class="dateStyle" style="margin-left:20px"><label>结束日期</label><div id='dateEnd'></div> 
-                	<div style="margin-left:320px;margin-top:-25px" id='jqxButton-getParameters'>获取参数</div>
-            	</div> 
-				<div style="clear:both"></div>
-			</div><!-- /.page-header -->
-		  			  	
-		  	<div >
+		<div class="page-header">
+			<div class="dateStyle">
+				<label>开始日期</label>
+				<div id="dateStart-div">
+					<input class="datainp" id="dateStart" type="text" placeholder="请选择" readonly>
+				</div>
+			</div>
+			<div class="dateStyle" style="margin-left:20px">
+				<label>结束日期</label>
+				<div id='dateEnd-div'>
+					<input class="datainp" id="dateEnd" type="text" placeholder="请选择" readonly>
+				</div>
+				<div style="margin-left:320px;margin-top:-25px"
+					id='jqxButton-getParameters'>获取参数</div>
+			</div>
+			<div style="clear:both"></div>
+		</div>
+		<!-- /.page-header -->
+
+		<div >
 				<div class="col-xs-12 col-sm-12">
 					<div class="widget-box">
 						<div class="widget-header" id="change-search-box" data-action="collapse">
@@ -146,9 +164,27 @@
 	</div><!-- /.main-content -->
 	
 <script type="text/javascript">	
+	jeDate({
+		dateCell:"#dateStart",//直接显示日期层的容器，可以是ID  CLASS
+		format:"YYYY-MM-DD hh:mm:ss",//日期格式
+		isinitVal:false, //是否初始化时间
+		festival:false, //是否显示节日
+		isTime:true, //是否开启时间选择
+		minDate:"2014-09-19 00:00:00",//最小日期
+		maxDate:jeDate.now(0), //设定最大日期为当前日期
+	});
+	jeDate({
+		dateCell:"#dateEnd",//直接显示日期层的容器，可以是ID  CLASS
+		format:"YYYY-MM-DD hh:mm:ss",//日期格式
+		isinitVal:false, //是否初始化时间
+		festival:false, //是否显示节日
+		isTime:true, //是否开启时间选择
+		minDate:"2014-09-19 00:00:00",//最小日期
+		maxDate:jeDate.now(0), //设定最大日期为当前日期
+	});
 	$(function() {	
-    	$("#dateStart").jqxDateTimeInput({width: '300px', height: '25px'});
-    	$("#dateEnd").jqxDateTimeInput({width: '300px', height: '25px'});
+//     	$("#dateStart").jqxDateTimeInput({width: '300px', height: '25px'});
+//     	$("#dateEnd").jqxDateTimeInput({width: '300px', height: '25px'});
         
 		//
 		$("#jqxButton-getParameters").jqxButton({ width: '100', height: '17'});
@@ -201,7 +237,7 @@
 	             { text: 'ID',  dataField: 'id',editable: false, width:200, hidden: true },
 	             { text: '最大值', dataField: 'max', width: 200 },
 	             { text: '最小值', dataField: 'min', width: 160 },
-	             { text: 'Y轴', dataFaield:'yname',width:200,columnType:'template',
+	             { text: 'Y轴', dataField:'yname',width:200,columnType:'template',
 					createEditor: function (row, cellValue, editor, cellText, width, height) {
 					  var source = ["Y1", "Y2"];
 					  editor.jqxDropDownList({autoDropDownHeight: true, source: source, width: '100%', height: '100%' });		 
@@ -271,6 +307,8 @@
           var rowindex = $("#treeGrid").jqxTreeGrid('getCheckedRows');            
           var stringName="参数名：";
           var chkObjs = $('input:radio:checked').val();
+          var beginDate = $("#dateStart").val();
+		  var endDate = $("#dateEnd").val();
           if(rowindex.length>0){        	
               for(i=0;i<rowindex.length;i++){
               	var rowObject={}
@@ -295,6 +333,9 @@
 //            if(chkObjs=="2"){
 //            	groupObject.Y2name= $("#secondy-name").val();
 //            }
+			//设置每一组的开始和结束时间
+			groupObject.beginDate = beginDate;
+			groupObject.endDate = endDate;
            //在已分组列表上添加“删除”和“保存为模板”按钮
            var btn_savemodel="<button type='button' class='close' onclick=''><span aria-hidden='true'>生成模板   </span></button>";
            var group= $("<div name="+j+" class='alert alert-warning alert-dismissible' role='alert'> <button type='button' class='close' onclick='clearGroup(this)'><span aria-hidden='true'>删除分组;</span></button>"+btn_savemodel+stringName+"</div>")            

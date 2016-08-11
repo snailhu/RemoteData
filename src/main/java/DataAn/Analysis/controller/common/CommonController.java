@@ -59,8 +59,8 @@ public class CommonController {
 	@ResponseBody
 	public List<ConstraintDto> getConstraint(String beginDate,String endDate) throws Exception{
 		
-//		System.out.println("beginDate； " + beginDate);
-//		System.out.println("endDate: " + endDate);
+		System.out.println("beginDate； " + beginDate);
+		System.out.println("endDate: " + endDate);
 		//test
 		return j9Series_Star_Service.getFlyWheelParameterList();
 //		return j9Series_Star_Service.getAllParameterListFromBeginDateToEndDate(beginDate, endDate);
@@ -70,9 +70,11 @@ public class CommonController {
 			HttpServletRequest request,
 			HttpServletResponse response,
 			@RequestParam(value="JsonG",required = true) String JsonG) throws Exception {	
+		System.out.println("JsonG: " + JsonG);
 		Map<String, Class<SingleParamDto>> classMap = new HashMap<String, Class<SingleParamDto>>();
 		classMap.put("secectRow", SingleParamDto.class);
 		List<ParamGroup> pgs =JsonStringToObj.jsonArrayToListObject(JsonG,ParamGroup.class,classMap);
+		System.out.println(pgs);
 		EhCache ehCache = new EhCache(); 
 		ehCache.addToCache("AllJsonData", pgs);		
 	}
@@ -152,6 +154,8 @@ public class CommonController {
 					spd.setValue(map.get(spd.getName()));
 					params.add(spd);
 				}	
+				mv.addObject("beginDate", pg.getBeginDate());
+				mv.addObject("endDate", pg.getEndDate());
 				mv.addObject("params", params);
 			}
 		}

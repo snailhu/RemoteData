@@ -11,6 +11,10 @@ public class ParamGroup {
 	
 	private String Y2name;
 	
+	private String beginDate;
+	
+	private String endDate;
+	
 	private List<SingleParamDto> secectRow;
 	
 	
@@ -54,12 +58,30 @@ public class ParamGroup {
 		Y1name = y1name;
 	}
 
+	public String getBeginDate() {
+		return beginDate;
+	}
+
+	public void setBeginDate(String beginDate) {
+		this.beginDate = beginDate;
+	}
+
+	public String getEndDate() {
+		return endDate;
+	}
+
+	public void setEndDate(String endDate) {
+		this.endDate = endDate;
+	}
+
 	@Override
 	public String toString() {
 		return "ParamGroup [id=" + id + ", Ycount=" + Ycount + ", Y1name="
-				+ Y1name + ", Y2name=" + Y2name + ", secectRow=" + secectRow
-				+ "]";
+				+ Y1name + ", Y2name=" + Y2name + ", beginDate=" + beginDate
+				+ ", endDate=" + endDate + ", secectRow=" + secectRow + "]";
 	}
+
+	
 	
 	
 }

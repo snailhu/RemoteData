@@ -146,12 +146,13 @@ public class FileController {
 	@RequestMapping(value = "existFile", method = RequestMethod.POST)
 	@ResponseBody
 	public JsonMessage existFile(String fileName){
-//		System.out.println("come in existFile..");
-//		System.out.println("fileName: " + fileName);
+		System.out.println("come in existFile..");
+		System.out.println("fileName: " + fileName);
 		JsonMessage msg = new JsonMessage();
 		fileName = fileName.replace("\\", "/");
 		String[] strs = fileName.split("/");
 		boolean flag = fileService.isExistFile(strs[strs.length-1]);
+		System.out.println("isExist: " + flag);
 		msg.setSuccess(flag);
 		return msg;
 	}
@@ -210,16 +211,18 @@ public class FileController {
 		if(csvFile.getSize() != 0){
 			FileDto csvFileDto = new FileDto();
 			csvFileDto.setFileName(csvFile.getOriginalFilename());
-			String size = df.format(csvFile.getSize());
-			csvFileDto.setFileSize(Float.parseFloat(size));
+			double size = csvFile.getSize() / 1024 /1024;
+			String strSize = df.format(size);
+			csvFileDto.setFileSize(Float.parseFloat(strSize));
 			csvFileDto.setIn(csvFile.getInputStream());
 			map.put("csv", csvFileDto);			
 		}
 		if(datFile.getSize() != 0){
 			FileDto datFileDto = new FileDto();
 			datFileDto.setFileName(datFile.getOriginalFilename());
-			String size = df.format(datFile.getSize());
-			datFileDto.setFileSize(Float.parseFloat(size));
+			double size = datFile.getSize() / 1024 /1024;
+			String strSize = df.format(size);
+			datFileDto.setFileSize(Float.parseFloat(strSize));
 			datFileDto.setIn(datFile.getInputStream());
 			map.put("dat", datFileDto);			
 		}
@@ -248,8 +251,8 @@ public class FileController {
 		try {
 			FileDto fileDto = fileService.downloadFile(fileId);
 			
-			System.out.println("download ..");
-			System.out.println("fileName: " + fileDto.getFileName());
+//			System.out.println("download ..");
+//			System.out.println("fileName: " + fileDto.getFileName());
 			
 			response.setCharacterEncoding("utf-8");
 			response.setContentType("multipart/form-data");
@@ -293,8 +296,8 @@ public class FileController {
 	//压缩下载
 	@RequestMapping("/downloads")
 	public String downloads(String itemIds, HttpServletRequest request,HttpServletResponse response) {
-		System.out.println("come in downloads ..");
-		System.out.println("fileIds: " + itemIds);
+//		System.out.println("come in downloads ..");
+//		System.out.println("fileIds: " + itemIds);
 		BufferedInputStream buff = null;
 		OutputStream myout = null;
 		FileInputStream fis = null;
@@ -368,4 +371,21 @@ public class FileController {
 		return null;
 	}
  
+	@RequestMapping(value="/deleteFiles",method = { RequestMethod.POST })
+	@ResponseBody
+	public JsonMessage deleteFiles(String itemIds) {
+		System.out.println("deleteFiles...");
+		System.out.println("itemIds: " + itemIds);
+		JsonMessage jsonMsg = new JsonMessage();
+		try {
+//			fileService.deleteFile(itemIds);
+			jsonMsg.setSuccess(true);
+			jsonMsg.setMsg("删除成功！");
+		} catch (Exception e) {
+//			e.printStackTrace();
+			jsonMsg.setSuccess(false);
+			jsonMsg.setMsg("删除失败！");
+		}
+		return jsonMsg;
+	}
 }

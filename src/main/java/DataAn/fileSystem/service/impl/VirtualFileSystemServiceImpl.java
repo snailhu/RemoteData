@@ -9,9 +9,12 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -23,6 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.alibaba.fastjson.JSON;
 
+import DataAn.common.config.Config;
 import DataAn.common.pageModel.Pager;
 import DataAn.common.utils.DateUtil;
 import DataAn.common.utils.FileUtil;
@@ -79,26 +83,76 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 //		dataMap.put("day", day);
 //		System.out.println(year + "-" + month + "-" + day);
 		
+		String versions = UUIDGeneratorUtil.getUUID();
+		dataMap.put("versions", versions);
+		
 		//保存csv临时文件
-		String csvTempFilePath = "D:\\temp\\csv";
-		File writeDir = new File(csvTempFilePath);
-		if (!writeDir.exists()) {
-			writeDir.mkdirs();
-		}	
-		csvTempFilePath = "D:\\temp\\csv\\" + fileName;
-		FileUtil.saveFile(csvTempFilePath, csvFileDto.getIn());
-		csvFileDto.setFilePath(csvTempFilePath);
-		
-		// 保存 *.csv文件
-		this.saveFileOfCSV(csvFileDto, dataMap);
-		
-		//获取map中的csv文件
-		FileDto datFile = map.get("dat");
-		if(datFile != null){			
-			// 保存 *.DAT文件
-			this.saveFileOfDAT(datFile, dataMap);
+		try {
+			String csvTempFilePath = Config.getUplodCachePath() + File.separator + versions;
+			FileUtil.saveFile(csvTempFilePath, fileName, csvFileDto.getIn());
+			csvTempFilePath = csvTempFilePath + File.separator + fileName;
+			csvFileDto.setFilePath(csvTempFilePath);
+			
+			// 保存 *.csv文件
+			this.saveFileOfCSV(csvFileDto, dataMap);
+			
+			//获取map中的csv文件
+			FileDto datFile = map.get("dat");
+			if(datFile != null){			
+				// 保存 *.DAT文件
+				this.saveFileOfDAT(datFile, dataMap);
+			}
+		} catch (Exception e) {
+//			e.printStackTrace();
+			throw new Exception("文件上传失败！！！");
 		}
 		
+	}
+	
+	@Override
+	@Transactional(readOnly = true)
+	public void deleteFile(String ids) {
+		String[] arrayIds = ids.split(",");
+		VirtualFileSystem file = null;
+		Set<String> uuIds = new HashSet<String>();
+		for (String id : arrayIds) {
+			String[] items = id.split("/");
+			//遍历目录写文件
+			if("dir".equals(items[1])){
+				VirtualFileSystem dir = fileDao.get(Long.parseLong(items[0]));
+				uuIds.addAll(this.deleteFile(dir));
+			}else{
+				file = fileDao.get(Long.parseLong(items[0]));
+				uuIds.add(file.getMongoFSUUId());
+//				fileDao.delete(file);
+			}
+		}
+		//删除mongodb的文件和标志记录状态
+//		IDfsDb dfs = MongoDfsDb.getInstance();
+//		MongodbUtil mg = MongodbUtil.getInstance();
+//		String collectionName = "";
+		for (String uuId : uuIds) {
+			if(uuId != null && !uuId.equals("")){
+				System.out.println(uuId);				
+				//dfs.delete(uuId);
+				//通过更新的方式设置状态为0
+//				mg.update(collectionName, "versions", uuId);
+			}
+		}
+	}
+	private Set<String> deleteFile(VirtualFileSystem dir) {
+		Set<String> uuIds = new HashSet<String>();
+		List<VirtualFileSystem> fileList = fileDao.findByParam("parentId", dir.getId());
+		if(fileList != null && fileList.size() > 0){
+			for (VirtualFileSystem childFile : fileList) {
+				if(childFile.getFileType().getName().equals("dir")){
+					uuIds.addAll(this.deleteFile(childFile));				
+				}
+				uuIds.add(childFile.getMongoFSUUId());
+				//fileDao.delete(childFile);
+			}
+		}
+		return uuIds;
 	}
 	
 	@Override
@@ -120,7 +174,7 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 	public FileDto downloadFiles(String ids) throws Exception {
 		FileDto fileDto = new FileDto();
 		String[] arrayIds = ids.split(",");
-		String mogodbFilePath = "D:\\temp\\mongo";
+		String mogodbFilePath = Config.getDownloadCachePath();
 		VirtualFileSystem file = null;
 		IDfsDb dfs = MongoDfsDb.getInstance();
 		for (String id : arrayIds) {
@@ -133,10 +187,12 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 				dfs.downLoad(file.getMongoFSUUId(),mogodbFilePath);
 			}
 		}
-		String zipPath = "D:\\szhzipant.zip";
+//		String zipPath = "D:\\szhzipant.zip";
+		String zipFileName = DateUtil.format(new Date(),"yyyy-MM-dd-HH-mm-ss") + ".zip";
+		String zipPath = Config.getZipCachePath() + File.separator + zipFileName;
 		ZipCompressorByAnt zca = new ZipCompressorByAnt(zipPath);  
 	    zca.compressExe(mogodbFilePath);  
-		fileDto.setFileName("szhzipant.zip");
+		fileDto.setFileName(zipFileName);
 		fileDto.setFilePath(zipPath);
 		return fileDto;
 	}
@@ -167,9 +223,9 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 		ZipOutputStream zipOut = null;
 		InputStream input = null;
 		try {
-			String path = "d:" + File.separator + "zipMany.zip";
-			File zipFile = new File(path);
-			zipOut = new ZipOutputStream(new FileOutputStream(zipFile));
+			String zipFileName = DateUtil.format(new Date(),"yyyy-MM-dd-HH-mm-ss") + ".zip";
+			String zipPath = Config.getZipCachePath() + File.separator + zipFileName;
+			zipOut = new ZipOutputStream(new FileOutputStream(new File(zipPath)));
 			IDfsDb dfs = MongoDfsDb.getInstance();
 			for (VirtualFileSystem file : fileList) {
 				
@@ -184,8 +240,8 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 		        }  
 		        input.close(); 
 			}
-			fileDto.setFileName("zipMany.zip");
-			fileDto.setFilePath(path);
+			fileDto.setFileName(zipFileName);
+			fileDto.setFilePath(zipPath);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}finally{
@@ -253,7 +309,7 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 				if(fs.getFileType().getName().equals("dir")){
 					fsDto.setFileSize("-");					
 				}else{
-					fsDto.setFileSize(String.valueOf(fs.getFileSize()));
+					fsDto.setFileSize(String.valueOf(fs.getFileSize()) + " M");
 				}
 				fsDto.setName(fs.getFileName());
 				fsDto.setType(fs.getFileType().getName());
@@ -291,7 +347,7 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 	private void saveFileOfCSV(FileDto fileDto, Map<String,String> dataMap) throws Exception{
 		
 		
-		String uuId = UUIDGeneratorUtil.getUUID();
+		String uuId = dataMap.get("versions");
 		String series = dataMap.get("series");
 		String star = dataMap.get("star");
 		String date = dataMap.get("date");
@@ -307,6 +363,7 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 			dfs.upload(fileDto.getFileName(), uuId, bis);
 		} catch(Exception e){
 //			e.printStackTrace();
+			//删除上传csv原文件
 			dfs.delete(uuId);
 			throw new Exception("csv 文件上传失败！！！");
 		}finally {
@@ -325,8 +382,11 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 		} catch (Exception e) {
 //			e.printStackTrace();
 			dfs.delete(uuId);
+			//删除mogodb记录 效率比较慢
 //			mg.deleteMany(collectionName, "versions", uuId);
+			//通过更新的方式设置状态为0
 			mg.update(collectionName, "versions", uuId);
+		
 			throw new Exception("csv 文件解析失败！！！");
 		}
 		//存储某一天的参数信息
@@ -408,8 +468,8 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 	
 	private void saveFileOfDAT(FileDto fileDto, Map<String,String> dataMap){
 		
-		String uuId = UUIDGeneratorUtil.getUUID();
 		
+		String uuId = dataMap.get("versions");
 		String series = dataMap.get("series");
 		String star = dataMap.get("star");
 		String date = dataMap.get("date");
@@ -417,6 +477,10 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 		String month = dataMap.get("month");
 //		String day = dateMap.get("day");
 		
+		//保存dat文件
+		IDfsDb dfs = MongoDfsDb.getInstance();
+		dfs.upload(fileDto.getFileName(), uuId, fileDto.getIn());
+
 		//查找dat的文件夹是否存在
 		VirtualFileSystem datDir = fileDao.selectByParentIdisNullAndFileName("dat");
 		if(datDir == null){
@@ -467,8 +531,8 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 		file.setMongoFSUUId(uuId);
 		fileDao.add(file);
 		
-		//保存dat文件
-		IDfsDb dfs = MongoDfsDb.getInstance();
-		dfs.upload(fileDto.getFileName(), uuId, fileDto.getIn());
+
 	}
+
+
 }

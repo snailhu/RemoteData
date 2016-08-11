@@ -30,7 +30,7 @@ public class VirtualFileSystemServiceTest {
 	
 	@Test
 	public void isExistFile(){
-		String str = "C:\\fakepath\\j9-02--2015-08-16.csv";
+		String str = "C:\\fakepath\\XX9(02)--20150109(公开).DAT";
 		str = str.replace("\\", "/");
 		String[] strs = str.split("/");
 		System.out.println(strs[strs.length-1]);
@@ -44,7 +44,7 @@ public class VirtualFileSystemServiceTest {
 		Map<String, FileDto> map = new HashMap<String,FileDto>();
 		
 		FileDto csvFileDto = new FileDto();
-		String csv = "C:\\j9-02--2015-08-16.csv";
+		String csv = "D:\\temp\\data\\2016\\7\\j9-02--2016-07-01.csv";
 		File csvFile = new File(csv);
 		InputStream csvInput = new FileInputStream(csvFile);
 		csvFileDto.setFileName(csvFile.getName());
@@ -65,9 +65,16 @@ public class VirtualFileSystemServiceTest {
 		long end = System.currentTimeMillis();
 		System.out.println((end - begin));
 	}
+	
+	@Test
+	public void deleteFile(){
+		String str = "1/dir,8/file";
+		fileService.deleteFile(str);
+	}
+	
 	@Test
 	public void downloadFiles() throws Exception{
-		String str = "1/dir";
+		String str = "1/dir,5/dir";
 		FileDto fileDto = fileService.downloadFiles(str);
 		System.out.println(fileDto);
 	}

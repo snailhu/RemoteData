@@ -12,6 +12,7 @@ import DataAn.linegraph.dao.ILineTmplDao;
 import DataAn.linegraph.dao.ITmplParamDao;
 import DataAn.linegraph.domain.LineGraphTemplate;
 import DataAn.linegraph.domain.TemplateParameter;
+import DataAn.linegraph.dto.LineGraphTemplateDto;
 import DataAn.linegraph.dto.TemplateParameterDto;
 import DataAn.linegraph.service.ITmplParamService;
 
@@ -25,14 +26,44 @@ public class TmplParamServiceImpl implements ITmplParamService {
 	
 	@Override
 	@Transactional
-	public boolean saveStar(TemplateParameterDto tmplparamDto) {
-		// TODO Auto-generated method stub
+	public boolean saveTmplparam(TemplateParameterDto tmplparamDto) {
+		LineGraphTemplate template = linetmpdao.get(tmplparamDto.getTemplateid());
+		if(null==template){
+			return false;
+		}
+		TemplateParameter param =new TemplateParameter();
+		param.setMax(tmplparamDto.getMax());
+		param.setMin(tmplparamDto.getMin());
+		param.setName(tmplparamDto.getName());
+		param.setYname(tmplparamDto.getYname());
+		param.setLinegraphtemplale(template);
+		tmplparamDao.add(param);
 		return false;
+	}
+	@Override
+	@Transactional
+	public boolean saveTemplateParam(LineGraphTemplateDto templateDto,List<TemplateParameterDto> params)
+	{
+		LineGraphTemplate template =new LineGraphTemplate();
+		template.setName(templateDto.getName());
+		template.setDescription(templateDto.getDescription());	
+		linetmpdao.add(template);
+		for(TemplateParameterDto paramdto:params)
+		{
+			TemplateParameter param=new TemplateParameter();
+			param.setName(paramdto.getName());
+			param.setMax(paramdto.getMax());
+			param.setMin(paramdto.getMin());
+			param.setYname(paramdto.getYname());
+			param.setLinegraphtemplale(template);
+			tmplparamDao.add(param);
+		}
+		return true;
 	}
 
 	@Override
 	@Transactional
-	public boolean deleteTmplparam(long starId) {
+	public boolean deleteTmplparam(long parameterid) {
 		// TODO Auto-generated method stub
 		return false;
 	}

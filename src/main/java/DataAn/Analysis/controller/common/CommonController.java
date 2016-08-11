@@ -59,8 +59,8 @@ public class CommonController {
 	@ResponseBody
 	public List<ConstraintDto> getConstraint(String beginDate,String endDate) throws Exception{
 		
-		System.out.println("beginDate； " + beginDate);
-		System.out.println("endDate: " + endDate);
+//		System.out.println("beginDate； " + beginDate);
+//		System.out.println("endDate: " + endDate);
 		//test
 		return j9Series_Star_Service.getFlyWheelParameterList();
 //		return j9Series_Star_Service.getAllParameterListFromBeginDateToEndDate(beginDate, endDate);
@@ -192,8 +192,8 @@ public class CommonController {
 	public List<SeriesBtnMenu> getSeriesBtnMenus(
 			HttpServletRequest request, 
 			HttpServletResponse response) throws Exception{
-			EhCache ehCache = new EhCache();
-			@SuppressWarnings("unchecked")		
+			//EhCache ehCache = new EhCache();
+			//@SuppressWarnings("unchecked")		
 			Pager<SeriesDto> pager= seriesService.getRoleList(0, 100);
 			List<SeriesDto> lsb = pager.getRows();
 			List<SeriesBtnMenu> lseriesbtnMenu =new ArrayList<SeriesBtnMenu>();

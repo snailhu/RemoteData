@@ -155,6 +155,8 @@ public class CommonController {
 					spd.setValue(map.get(spd.getName()));
 					params.add(spd);
 				}	
+				mv.addObject("beginDate", pg.getBeginDate());
+				mv.addObject("endDate", pg.getEndDate());
 				mv.addObject("params", params);
 			}
 		}
@@ -163,16 +165,22 @@ public class CommonController {
 		
 	@RequestMapping(value = "/getData", method = RequestMethod.GET)
 	@ResponseBody
-	public List<Float> getData(
+	public List<String> getData(
 			HttpServletRequest request,
 			HttpServletResponse response,
-			@RequestParam(value="filename",required = true) String filename
+			@RequestParam(value="filename",required = true) String filename,
+			@RequestParam(value="start",required = false) String start,
+			@RequestParam(value="end",required = false) String end
 			) throws Exception{
-//		System.out.println("getData.."+ filename);
 		MongodbUtil mg = MongodbUtil.getInstance();
-		List<Float> result = mg.findAllByTie(filename);
-		System.out.println(filename+"获取到的参数个数有:"+result.size());
-		return result ;				
+		if("".equals(start) || "".equals(start)){
+			List<String> result = mg.findAllByTie(filename);
+			return result ;	
+			
+		}else{				
+			List<String> result = mg.getDateList(new String[]{start,end,filename});
+			return result ;				
+		}
 	}
 	
 	

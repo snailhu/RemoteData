@@ -1,4 +1,4 @@
-package DataAn.mongo.service;
+package DataAn.common.service;
 
 /**
 * Title: IJobService

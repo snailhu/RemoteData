@@ -27,6 +27,15 @@ public interface IVirtualFileSystemService {
 	public void saveFile(Map<String,FileDto> map) throws Exception;
 	
 	/**
+	* Description: 删除一个或多个文件和目录
+	* @param ids 如："1/dir,2/file";
+	* @author Shenwp
+	* @date 2016年8月9日
+	* @version 1.0
+	*/
+	public void deleteFile(String ids);
+	
+	/**
 	* @Title: downloadFile
 	* @Description: 下载单个文件
 	* @param fileId  文件Id

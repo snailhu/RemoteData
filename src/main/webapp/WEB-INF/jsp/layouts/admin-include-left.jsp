@@ -1,12 +1,12 @@
 <%@ page language="java" pageEncoding="UTF-8"%>
 
 <div class="sidebar" id="sidebar">
-	<script type="text/javascript">
+<!-- 	<script type="text/javascript">
 		try {
 			ace.settings.check('sidebar', 'fixed')
 		} catch (e) {
 		}
-	</script>
+	</script> -->
 
 <!--  
 	<div class="sidebar-shortcuts" id="sidebar-shortcuts">
@@ -219,7 +219,7 @@
 		                    </a>
 		                    <ul class="submenu">
 		                        <li>
-		                            <a href="#">
+		                            <a href="analysisData">
 		                                <i class="icon-leaf"></i> 飞轮
 		                            </a>
 		                        </li>
@@ -295,10 +295,10 @@
 			data-icon2="icon-double-angle-right"></i>
 	</div>
 
-	<script type="text/javascript">
+<!-- 	<script type="text/javascript">
 		try {
 			ace.settings.check('sidebar', 'collapsed')
 		} catch (e) {
 		}
-	</script>
+	</script> -->
 </div>

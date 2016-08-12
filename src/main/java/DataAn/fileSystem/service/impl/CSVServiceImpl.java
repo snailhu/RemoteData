@@ -44,7 +44,7 @@ public class CSVServiceImpl implements ICSVService{
 	@Override
 	public List<Document> readCSVFileToDoc(InputStream in, String versions) throws Exception {
 
-		return this.readCSVFileToDoc_delFrontAndBack_arithmetic1(in, versions, 4, 50);
+		return this.readCSVFileToDoc_delFrontAndBack_arithmetic1(in, versions, 4, 0);
 		
 //		return this.readCSVFileToDoc_delFrontAndBack_arithmetic2(in, versions, 4, 50);
 		
@@ -89,8 +89,8 @@ public class CSVServiceImpl implements ICSVService{
 			doc.append("year_month", DateUtil.formatString(date, "yyyy-MM"));
 			doc.append("year_month_day", DateUtil.formatString(date, "yyyy-MM-dd"));
 //			doc.append(FlyWheelDataType.getFlyWheelDataTypeByZh(array[0]).getName(), DateUtil.formatString(date, "yyyy-MM-dd HH-mm-ss"));
-//			doc.append(j9SeriesPatameterMap.get(array[0]), DateUtil.formatString(date, "yyyy-MM-dd HH-mm-ss"));
-			for (int i = 0; i < items.length; i++) {
+			doc.append(j9SeriesPatameterMap.get(array[0]), DateUtil.formatString(date, "yyyy-MM-dd HH-mm-ss"));
+			for (int i = 1; i < items.length; i++) {
 				colData = items[i].trim();
 				if(colData.indexOf("#") >= 0){
 					flag = true;

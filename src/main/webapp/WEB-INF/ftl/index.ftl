@@ -1,4 +1,8 @@
+<<<<<<< HEAD
+<#assign base=request.contextPath+ 	'/DataRemote' />
+=======
 <#assign base=request.contextPath + '/DataRemote' >
+>>>>>>> branch 'master' of https://github.com/snailhu/RemoteData.git
 <!DOCTYPE html>
 <html>
 <head>
@@ -93,7 +97,7 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav navbar-right">
                     <li><a href="Index">网站首页</a></li>
-                    <li><a href="admin/file/toUploadFile">文件上传</a></li>
+                    <li><a href="#">报告管理</a></li>
                     <li><a href="admin/file/index">文件管理</a></li>
                     <li><a href="analysisData">图表管理</a></li>
                     <li><a href="admin/galaxy/index">星系管理</a></li>
@@ -119,9 +123,9 @@
                     <h4>系统管理<br /></h4>
                 </div>
                 <br />
-                <a href="http://www.iflve.com/app.html">
+                <a href="#">
                     <h4>
-                        <img class="img-circle" src="${base}/static/images/gw.png" />
+                        <img class="img-circle" src="${base}/static/images/manage.png" />
                         <br /><br />
                     </h4>
                     <p>快捷配置用户权限，管理用户群体</p>
@@ -141,7 +145,7 @@
                 <br />
                 <a href="admin/file/toUploadFile">
                     <h4>
-                        <img class="img-circle" src="${base}/static/images/dsf.png" />
+                        <img class="img-circle" src="${base}/static/images/import.png" />
                         <br /><br />
                     </h4>
                     <p>方便快速的导入海量数据，可选择不同格式的数据</p>
@@ -159,9 +163,9 @@
                     <h4>数据分析<br /></h4>
                 </div>
                 <br />
-                <a href="analysisData">
+                <a href="conditionMonitoring">
                     <h4>
-                        <img class="img-circle" src="${base}/static/images/appkf.png" />
+                        <img class="img-circle" src="${base}/static/images/analysis.png" />
                         <br /><br />
                     </h4>
                     <p>精确分析导入数据。</p>
@@ -232,9 +236,7 @@
                             <br/><img src="/Content/images/qrcode120.jpg" />
                         </address>
                         <!-- Social Links -->
-                     
-                       
-                        
+                                                             
                         <!-- End Social Links -->
                     </div>
                     <!-- End Address -->

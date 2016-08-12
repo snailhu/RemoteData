@@ -26,8 +26,7 @@ public class JsonStringToObj {
 	
 	@SuppressWarnings("unchecked")
 	public static <T> List<T> jsonArrayToListObject(String jsonString, Class<T> pojoCalss,Map<?, ?> classMap) {
-		try{
-			
+		try{			
 			net.sf.json.JSONArray array = net.sf.json.JSONArray.fromObject(jsonString);
 			List<T> Objectlist = new ArrayList<T>();
 			for(Iterator<T> iter = array.iterator() ; iter.hasNext();){

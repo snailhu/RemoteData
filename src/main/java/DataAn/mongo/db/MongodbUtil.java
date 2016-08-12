@@ -12,6 +12,8 @@ import DataAn.common.utils.DateUtil;
 import DataAn.common.utils.LogUtil;
 import DataAn.mongo.init.InitMongo;
 
+import com.mongodb.BasicDBObject;
+import com.mongodb.DBCursor;
 import com.mongodb.MongoClient;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
@@ -177,7 +179,7 @@ public class MongodbUtil {
 		    		break;
 		    	}
 		    	Document doc = cursor.next();
-		    	System.out.println(doc);
+//		    	System.out.println(doc);
 //		    	String key = DateUtil.formatString(doc.getString("datetime"), "yyyy-MM-dd HH:mm:ss");
 //		    	float value = Float.parseFloat(doc.getString("flywheel_a_power_plus_5V"));
 //		    	System.out.println(key + " : " + value);
@@ -196,22 +198,21 @@ public class MongodbUtil {
 		Document doc = collection.find(Filters.eq("i", 7)).first();
 		System.out.println(doc.toJson());
 	}
-	public List<Float> findAllByTie(String param){
+	public List<String> findAllByTie(String param){
 		MongoCollection<Document> collection = db.getCollection("star2");
 	//	MongoCursor<Document> cursor = collection.find().iterator();
-		MongoCursor<Document> cursor = collection.find(Filters.eq("year_month_day", "2015-05-03")).iterator();
+		MongoCursor<Document> cursor = collection.find(Filters.eq("year_month_day", "2016-10-10")).iterator();
 		try {
-			List<Float> paramValue =  new ArrayList<Float>();
+			List<String> paramValue =  new ArrayList<String>();
 //			HashMap<String,List<String>> paramMap = new HashMap<String,List<String>>();
 			int count=0;
 		    while (cursor.hasNext()) {
 		    	if(count>=10000){break;}
 		    	Document doc = cursor.next();
-//		    	System.out.println(doc.getString(param));
 		    	if(doc.getString(param)!=null){
 		    		
-	    		Float value = Float.parseFloat(doc.getString(param));	  
-	            paramValue.add(value);	
+	    		//Float value = Float.parseFloat(doc.getString(param));	  
+	            paramValue.add(doc.getString(param));	
 		    	}
 		    	
 	            count++;
@@ -223,10 +224,33 @@ public class MongodbUtil {
 		
 	}
 	
+	public List<String> getDateList(String ...params){
+		MongoCollection<Document> collection = db.getCollection("star2");
+		MongoCursor<Document> cursor =  collection.find(Filters.and(Filters.gte("datetime", params[0]),
+				Filters.lte("datetime", params[1]))).iterator();
+		try {
+			List<String> paramValue =  new ArrayList<String>();
+			int count=0;
+		    while (cursor.hasNext()) {
+		    	if(count>=10000){break;}
+		    	Document doc = cursor.next();
+		    	if(doc.getString(params[3])!=null){		    			  
+	            paramValue.add(doc.getString(params[3]));	
+		    	}		    	
+	            count++;
+		    }
+		    return paramValue;  
+		} finally {
+		    cursor.close();
+		}		
+		
+	}
+	
+	
 	public List<String> getDateList(String param){
 		MongoCollection<Document> collection = db.getCollection("star2");
 	//	MongoCursor<Document> cursor = collection.find().iterator();
-		MongoCursor<Document> cursor = collection.find(Filters.eq("year_month_day", "2015-05-03")).iterator();
+		MongoCursor<Document> cursor = collection.find(Filters.eq("year_month_day", "2016-10-10")).iterator();
 		try {
 			List<String> paramValue =  new ArrayList<String>();
 //			HashMap<String,List<String>> paramMap = new HashMap<String,List<String>>();
@@ -235,7 +259,8 @@ public class MongodbUtil {
 		    	if(count>=10000){break;}
 		    	Document doc = cursor.next();
 		    //	DateUtil.formatString("2015年08月10日00时15分01秒","yyyy-MM-dd HH:mm:ss")
-		    	String value = DateUtil.formatString(doc.getString("datetime"),"yyyy-MM-dd HH:mm:ss");
+		    	//String value = DateUtil.formatString(doc.getString("datetime"),"yyyy-MM-dd HH:mm:ss");
+		    	String value = doc.getString("datetime");
 		    	//String value = doc.getString("flywheel_b_power_plus_5V");	        
 	            paramValue.add(value);	
 	           count++;

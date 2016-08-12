@@ -118,13 +118,25 @@ public class FileUtil {
 		return flag;
 	}
 	
+	public static void saveFile(String dirPath,String fileName,InputStream in) throws Exception{
+		File parentDir = new File(dirPath);
+		if (!parentDir.exists()) {
+			parentDir.mkdirs();
+		}
+		File file = new File(dirPath,fileName);
+		saveFile(file,in);
+	}
 	public static void saveFile(String filePath,InputStream in) throws Exception{
+		File file = new File(filePath);
+		saveFile(file,in);
+	}
+	public static void saveFile(File file,InputStream in) throws Exception{
 		//保存csv一个临时文件
 		BufferedInputStream bis = null; 
 		BufferedOutputStream bos = null;
 		try {
 			bis = new BufferedInputStream(in);
-			bos = new BufferedOutputStream(new FileOutputStream(new File(filePath)));
+			bos = new BufferedOutputStream(new FileOutputStream(file));
 			int hasRead = 0;  
 			byte b[] = new byte[1024];  
 			while((hasRead = bis.read(b)) > 0){  

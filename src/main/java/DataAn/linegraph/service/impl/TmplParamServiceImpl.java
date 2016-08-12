@@ -111,6 +111,7 @@ public class TmplParamServiceImpl implements ITmplParamService {
 				//dto.setId(template.getId());
 				dto.setRowid(count);
 				dto.setParentid(0);
+				dto.setTemplateid(template.getId());
 				dto.setYname("添加到分组");
 				count++;
 				dto.setTemplateName(template.getName());

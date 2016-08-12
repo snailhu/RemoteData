@@ -9,5 +9,10 @@ import DataAn.linegraph.domain.TemplateParameter;
 @Repository
 public class TmplParamDaoImpl extends BaseDaoImpl<TemplateParameter>
 implements ITmplParamDao{
+	@Override
+	public void deleteByTemplateId(long tempalteId) {
+		String hql = "delete from TemplateParameter param where param.linegraphtemplale.id=?";
+		this.getSession().createQuery(hql).setParameter(0, tempalteId).executeUpdate();
+	}
 
 }

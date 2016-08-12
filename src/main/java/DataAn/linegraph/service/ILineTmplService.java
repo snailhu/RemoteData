@@ -8,4 +8,5 @@ import DataAn.linegraph.dto.TemplateParameterDto;
 public interface ILineTmplService {
 	public List<LineGraphTemplateDto> getTemplateList();
 	public void SaveTemplate(LineGraphTemplateDto templateDto);
+	void deleteTemplate(String templateids);
 }

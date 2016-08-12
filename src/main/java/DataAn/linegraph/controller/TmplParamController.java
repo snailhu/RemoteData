@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import DataAn.Util.JsonStringToObj;
+import DataAn.common.pageModel.JsonMessage;
 import DataAn.linegraph.dto.LineGraphTemplateDto;
 import DataAn.linegraph.dto.TemplateParameterDto;
 import DataAn.linegraph.service.ILineTmplService;
@@ -57,6 +58,25 @@ public class TmplParamController {
 		List<TemplateParameterDto> params_list = JsonStringToObj.jsonArrayToListObject(JsonParams, TemplateParameterDto.class, classMap);
 		//List<TemplateParameterDto> params_list = JsonStringToObj.jsonToObject(JsonParams,TemplateParameterDto.class,classMap);
 		templparamService.saveTemplateParam(templateDto, params_list);
+	}
+	
+	@RequestMapping(value="/deleteTemplates", method = RequestMethod.POST)
+	@ResponseBody
+	public void deleteTemplates(
+			@RequestParam(value = "templateIds", required = true) String templateIds){
+		JsonMessage jsonMsg = new JsonMessage();
+		try {
+			linegraphTemplateSrtvice.deleteTemplate(templateIds);
+		} catch (Exception e) {
+			//e.printStackTrace();
+			jsonMsg.setSuccess(false);
+			jsonMsg.setMsg("删除系列出错！");
+			jsonMsg.setObj(e.getMessage());
+			//return jsonMsg;
+		}
+		jsonMsg.setSuccess(true);
+		jsonMsg.setMsg("删除系列成功！");
+	    //return jsonMsg;
 	}
 	
 }

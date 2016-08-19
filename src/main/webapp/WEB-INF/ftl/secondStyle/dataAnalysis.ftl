@@ -113,16 +113,11 @@
 			<ul class="breadcrumb">
 				<li>
 					<i class="icon-home home-icon"></i>
-<<<<<<< HEAD
 					<a href="#">J9系</a>
 
-=======
-					<a href="#">j9系列</a>
->>>>>>> branch 'master' of https://github.com/snailhu/RemoteData.git
 				</li>
 	
 				<li>
-<<<<<<< HEAD
 					<a href="#">star2</a>
 
 
@@ -130,21 +125,6 @@
 				<li class="active">飞轮</li>
 			</ul><!-- .breadcrumb -->
 	
-<!-- 			<div class="nav-search" id="nav-search">
-				<form class="form-search">
-					<span class="input-icon">
-						<input type="text" placeholder="搜索 ..." class="nav-search-input" id="nav-search-input" autocomplete="off" />
-						<i class="icon-search nav-search-icon"></i>
-					</span>
-				</form>
-			</div> -->
-			<!-- #nav-search -->
-=======
-					<a href="#">02星</a>
-				</li>
-				<li class="active">飞轮</li>
-			</ul><!-- .breadcrumb -->
->>>>>>> branch 'master' of https://github.com/snailhu/RemoteData.git
 		</div>	
 		<div class="page-content">
 			<div class="page-header">
@@ -220,7 +200,7 @@
 		isinitVal:false, //是否初始化时间
 		festival:false, //是否显示节日
 		isTime:true, //是否开启时间选择
-		minDate:"2014-09-19 00:00:00",//最小日期
+		//minDate:"2014-09-19 00:00:00",//最小日期
 		maxDate:jeDate.now(0), //设定最大日期为当前日期
 	});
 	jeDate({
@@ -229,7 +209,7 @@
 		isinitVal:false, //是否初始化时间
 		festival:false, //是否显示节日
 		isTime:true, //是否开启时间选择
-		minDate:"2014-09-19 00:00:00",//最小日期
+		//minDate:"2014-09-19 00:00:00",//最小日期
 		maxDate:jeDate.now(0), //设定最大日期为当前日期
 	});
 

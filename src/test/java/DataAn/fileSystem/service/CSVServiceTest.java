@@ -199,7 +199,7 @@ public class CSVServiceTest {
 				csvOutput.write(df.format(data));					
 			}
 			csvOutput.endRecord();
-			time = time + 250;
+			time = time + 1000;
 		}
 		csvOutput.close();
 		
@@ -208,9 +208,9 @@ public class CSVServiceTest {
 	@Test
 	public void testWriteCSVByJavacsvList() throws Exception{
 		long begin = System.currentTimeMillis();
-		for (int year = 2010; year <= 2012; year++) {
-			for (int month = 1; month <= 12; month++) {
-				for (int day = 1; day <= 30; day++) {
+		for (int year = 2010; year <= 2015; year++) {
+			for (int month = 1; month <= 3; month++) {
+				for (int day = 1; day <= 5; day++) {
 					this.testWriteCSVByJavacsv(year,month,day);		
 				}							
 			}

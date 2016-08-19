@@ -8,7 +8,7 @@
 
     <script type="text/javascript" src="${base}/static/scripts/echarts.js"></script>
 
-  //  <script type="text/javascript" src="${base}/static/js/echarts.min.js"></script>
+
     <link type="text/css" rel="stylesheet" href="${base}/static/content/jeDate/jedate/skin/jedate.css">
     <script type="text/javascript" src="${base}/static/content/jeDate/jedate/jedate.js"></script>
     <style type="text/css">
@@ -32,7 +32,7 @@
 		<input class="datainp" id="dateStart" type="text" placeholder="请选择" readonly>
 		<label>结束日期</label>
 		<input class="datainp" id="dateEnd" type="text" placeholder="请选择" readonly>
-		<input class="getData-btn" id="getData" type="button" name="getData" value="获取数据">
+		<input class="getData-btn" id="getData"  type="button" name="getData" value="获取数据">
 	</div>
 	 <div id="main" style="width: 1000px;height:450px;"></div>
 </body>
@@ -55,14 +55,18 @@
 		minDate:'${beginDate}',//最小日期
 		maxDate:'${endDate}', //设定最大日期为当前日期
 	});
+	
 
     $(function(){     
     	var myChart = echarts.init(document.getElementById('main'));
     	var seriesOptions = []
-        seriesCounter = 0
+    	var pSeriesOptions = []
+        var seriesCounter = 0
         var date = [];
+        var pDate = [];
         var names = [];
         var mouseover_message=[];
+        var paramSize= ${params?size};
         <#if (params?size>0) >
         	<#list params as param>
 		        var n={};
@@ -78,9 +82,9 @@
          var options = {
             tooltip: {
                 trigger: 'axis',   
-                 formatter: function (params) {
-				     mouseover_message = params;
- 					}           
+           //      formatter: function (params) {
+			//	     mouseover_message = params;
+ 			//		}           
             },
             title: {
                 left: 'center',
@@ -123,53 +127,92 @@
             dataZoom: [{
                 type: 'inside',
                 start:0,
-                end:21         
+                end:100         
             }],
             series: []
         };    	     	
-    	 $.getJSON('${base}/getDate', function (data) {
-			date = options.xAxis.data = eval(data);
-			 myChart.setOption(options);	
-     });   
-    	    	   
+   	    	   
         $.each(names, function (i, n) {       
-	        $.getJSON('${base}/getData?start='+startDate+'&end='+endDate+'&filename=' + n.value, function (data) {	
+	        $.getJSON('${base}/getData?start=${beginDate}&end=${endDate}&paramSize='+paramSize+'&filename=' + n.value, function (data) {	
+	         //   console.log(data)
 	            seriesOptions[i] = {
 	            	type: 'line',
 	                name: n.name,
+	                smooth:true,
 	                yAxisIndex: n.y,
-	                data: data
+	                data: data["paramValue"]
 	            };
 	            seriesCounter += 1;
 	            if (seriesCounter === names.length) {
-	            	options.series = eval(seriesOptions);	            
+	            	pSeriesOptions = seriesOptions
+	            	options.series = eval(seriesOptions);
+	            	pDate=date=options.xAxis.data = data["yearValue"];	            
 	                myChart.setOption(options);	                
 	            }
 	        });
     	});   
-    	
-
-    		 
-    	      
+       	
+       	$("#getData").click(function(){
+       		var startDate =  $('#dateStart').val();
+       		var endDate =  $('#dateEnd').val();
+       		if(endDate && startDate){
+       			var seriesCounter_date = 0  
+       			var seriesOptionsDate = []	
+       			  $.each(names, function (i, n) {       
+			        $.getJSON('${base}/getData?start='+startDate+'&end='+endDate+'&paramSize='+paramSize+'&filename=' + n.value, function (data) {	
+			            seriesOptionsDate[i] = {
+			            	type: 'line',
+			                name: n.name,
+			                smooth:true,
+			                yAxisIndex: n.y,
+			                data: data["paramValue"]
+			            };
+			            seriesCounter_date += 1;
+			            if (seriesCounter_date === names.length) {			            	
+			            	options.series = eval(seriesOptionsDate);
+			            	date=options.xAxis.data = data["yearValue"];	            
+			                myChart.setOption(options);	                
+			            }
+			        });
+		    	});   
+       		}       		      	             	
+       	})
+       	
+       	
+       	myChart.on('restore' ,function(params){
+       		options.series = eval(pSeriesOptions);
+            date=options.xAxis.data = pDate;	
+            myChart.setOption(options);
+       		
+       	})
+       			  	      
         myChart.on('dataZoom', function (params) {
-            console.log(params);
-            var endDate = date[params.batch[0].endValue];
-            var startDate = date[params.batch[0].startValue];
-         	$.each(names, function (i, n) {       
-	        $.getJSON('${base}/getData?start='+startDate+'&end='+endDate+'&filename=' + n.value, function (data) {	
-	            seriesOptions[i] = {
-	            	type: 'line',
-	                name: n.name,
-	                yAxisIndex: n.y,
-	                data: data
-	            };
-	            seriesCounter += 1;
-	            if (seriesCounter === names.length) {
-	            	options.series = eval(seriesOptions);	            
-	                myChart.setOption(options);	                
-	            }
-	        });
-    	});   
+              //  console.log(params);
+                var endDate = date[params.batch[0].endValue];
+                var startDate = date[params.batch[0].startValue];
+                if(endDate && startDate){
+					var seriesCounter_new = 0    
+					var seriesOptionsDam = []	
+	                $.each(names, function (i, n) {
+	                    $.getJSON('${base}/getData?start='+startDate+'&end='+endDate+'&paramSize='+paramSize+'&filename=' + n.value, function (data) {
+	                    	console.log(data)
+	                        seriesOptionsDam[i] = {
+	                            type: 'line',
+	                            smooth:true,
+	                            name: n.name,
+	                            yAxisIndex: n.y,
+	                            data: data["paramValue"]
+	                        };
+	                        seriesCounter_new += 1;
+	                        if (seriesCounter_new === names.length) {
+	                            options.series = eval(seriesOptionsDam);
+	                            date=options.xAxis.data = data["yearValue"];	
+	                            myChart.setOption(options);
+	                        }
+	                    });
+	                });
+                }
+               
         });
       
     	 

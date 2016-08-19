@@ -43,8 +43,9 @@ public interface IVirtualFileSystemService {
 	* @author Shenwp
 	* @date 2016年7月8日
 	* @version 1.0
+	 * @throws Exception 
 	*/
-	public FileDto downloadFile(long fileId);
+	public FileDto downloadFile(long fileId) throws Exception;
 	
 	/**
 	* @Title: downloadFiles

@@ -82,7 +82,7 @@ public class DateUtil {
 			return null;
 		}
 		if (pattern == null || pattern.equals("") || pattern.equals("null")) {
-			pattern = "yyyy-MM-dd-HH-mm-ss";
+			pattern = "yyyy-MM-dd HH-mm-ss";
 		}
 		Date date = null;
 		try {

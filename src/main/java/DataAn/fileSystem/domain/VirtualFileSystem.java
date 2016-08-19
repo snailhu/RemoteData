@@ -72,6 +72,9 @@ public class VirtualFileSystem {
 	
 	@Column(name = "year_month_day", nullable = true, length = 32)
 	private String year_month_day;
+	
+	@Column(name = "cachePath", nullable = true, length = 512)
+	private String cachePath;
 
 	public Long getId() {
 		return id;
@@ -177,6 +180,15 @@ public class VirtualFileSystem {
 		this.year_month_day = year_month_day;
 	}
 
+	
+	public String getCachePath() {
+		return cachePath;
+	}
+
+	public void setCachePath(String cachePath) {
+		this.cachePath = cachePath;
+	}
+
 	@Override
 	public String toString() {
 		return "VirtualFileSystem [id=" + id + ", series=" + series + ", star="
@@ -184,11 +196,7 @@ public class VirtualFileSystem {
 				+ ", fileName=" + fileName + ", fileType=" + fileType
 				+ ", fileSize=" + fileSize + ", updateDate=" + updateDate
 				+ ", mongoFSUUId=" + mongoFSUUId + ", year_month_day="
-				+ year_month_day + "]";
+				+ year_month_day + ", cachePath=" + cachePath + "]";
 	}
-
-	
-
-	
 	
 }

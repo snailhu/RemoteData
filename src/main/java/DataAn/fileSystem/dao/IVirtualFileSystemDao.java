@@ -25,4 +25,6 @@ public interface IVirtualFileSystemDao extends IBaseDao<VirtualFileSystem>{
 
 	public Pager<VirtualFileSystem> selectByOption(String series, String star, long parentId,
 			String beginTime,String endTime,String dataTypes, String order, int pageIndex, int pageSize);
+	
+	public List<VirtualFileSystem> selectByFileTypeIsFileAndCachePathISNotNull();
 }

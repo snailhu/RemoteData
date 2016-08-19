@@ -25,4 +25,12 @@ public class FileUtilTest {
 		InputStream in = new FileInputStream(file);
 		FileUtil.saveFile(Config.getUplodCachePath(), "数管分系统.csv", in);
 	}
+	
+	@Test
+	public void copyFile(){
+		String srcPath = "D:\\temp\\data\\2016\\7";
+		String desDirectoy = "D:\\temp";
+		FileUtil.copyFile(srcPath, desDirectoy, true);
+	}
+	
 }

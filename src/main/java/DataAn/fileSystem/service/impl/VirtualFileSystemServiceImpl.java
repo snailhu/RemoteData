@@ -4,6 +4,7 @@ import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -87,24 +88,19 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 		dataMap.put("versions", versions);
 		
 		//保存csv临时文件
-		try {
-			String csvTempFilePath = Config.getUplodCachePath() + File.separator + versions;
-			FileUtil.saveFile(csvTempFilePath, fileName, csvFileDto.getIn());
-			csvTempFilePath = csvTempFilePath + File.separator + fileName;
-			csvFileDto.setFilePath(csvTempFilePath);
-			
-			// 保存 *.csv文件
-			this.saveFileOfCSV(csvFileDto, dataMap);
-			
-			//获取map中的csv文件
-			FileDto datFile = map.get("dat");
-			if(datFile != null){			
-				// 保存 *.DAT文件
-				this.saveFileOfDAT(datFile, dataMap);
-			}
-		} catch (Exception e) {
-//			e.printStackTrace();
-			throw new Exception("文件上传失败！！！");
+		String csvTempFilePath = Config.getUplodCachePath() + File.separator + versions;
+		FileUtil.saveFile(csvTempFilePath, fileName, csvFileDto.getIn());
+		csvTempFilePath = csvTempFilePath + File.separator + fileName;
+		csvFileDto.setFilePath(csvTempFilePath);
+		
+		// 保存 *.csv文件
+		this.saveFileOfCSV(csvFileDto, dataMap);
+		
+		//获取map中的csv文件
+		FileDto datFile = map.get("dat");
+		if(datFile != null){			
+			// 保存 *.DAT文件
+			this.saveFileOfDAT(datFile, dataMap);
 		}
 		
 	}
@@ -157,15 +153,22 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 	
 	@Override
 	@Transactional(readOnly = true)
-	public FileDto downloadFile(long fileId) {
+	public FileDto downloadFile(long fileId) throws Exception {
 		FileDto fileDto = new FileDto();
 		//从数据库中获取文件信息
 		VirtualFileSystem file = fileDao.get(fileId);
 		fileDto.setFileName(file.getFileName());
 		fileDto.setFileSize(file.getFileSize());
-		//从mongofs中获取数据流
-		IDfsDb dfs = MongoDfsDb.getInstance();
-		fileDto.setIn(dfs.downLoad(file.getMongoFSUUId()));
+		//判断临时文件是否存在
+		if(file.getCachePath() != null && !file.getCachePath().equals("")){
+			File cacheFile = new File(file.getCachePath());
+			InputStream in = new FileInputStream(cacheFile);
+			fileDto.setIn(in);
+		}else{
+			//从mongofs中获取数据流
+			IDfsDb dfs = MongoDfsDb.getInstance();
+			fileDto.setIn(dfs.downLoad(file.getMongoFSUUId()));			
+		}
 		return fileDto;
 	}
 	
@@ -184,10 +187,14 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 				this.writeDirFile(Long.parseLong(items[0]), dfs, mogodbFilePath);
 			}else{
 				file = fileDao.get(Long.parseLong(items[0]));
-				dfs.downLoad(file.getMongoFSUUId(),mogodbFilePath);
+				//判断临时文件是否存在
+				if(file.getCachePath() != null && !file.getCachePath().equals("")){
+					FileUtil.copyFile(file.getCachePath(), mogodbFilePath, true);
+				}else{
+					dfs.downLoad(file.getMongoFSUUId(),mogodbFilePath);										
+				}
 			}
 		}
-//		String zipPath = "D:\\szhzipant.zip";
 		String zipFileName = DateUtil.format(new Date(),"yyyy-MM-dd-HH-mm-ss") + ".zip";
 		String zipPath = Config.getZipCachePath() + File.separator + zipFileName;
 		ZipCompressorByAnt zca = new ZipCompressorByAnt(zipPath);  
@@ -203,10 +210,17 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 		List<VirtualFileSystem> fileList = fileDao.findByParam("parentId", dirId);
 		if(fileList != null && fileList.size() > 0){
 			for (VirtualFileSystem childFile : fileList) {
+				
 				if(childFile.getFileType().getName().equals("dir")){
 					this.writeDirFile(childFile.getId(), dfs, path);					
+				}else{
+					//判断临时文件是否存在
+					if(childFile.getCachePath() != null && !childFile.getCachePath().equals("")){
+						FileUtil.copyFile(childFile.getCachePath(), path, true);
+					}else{
+						dfs.downLoad(childFile.getMongoFSUUId(),path);											
+					}
 				}
-				dfs.downLoad(childFile.getMongoFSUUId(),path);
 			}
 		}
 	}
@@ -356,21 +370,22 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 //		String day = dataMap.get("day");
 		
 		//保存csv 原文件				
-		IDfsDb dfs = MongoDfsDb.getInstance();
-		BufferedInputStream bis = null;
-		try {
-			bis = new BufferedInputStream(new FileInputStream(fileDto.getFilePath()));  
-			dfs.upload(fileDto.getFileName(), uuId, bis);
-		} catch(Exception e){
-//			e.printStackTrace();
-			//删除上传csv原文件
-			dfs.delete(uuId);
-			throw new Exception("csv 文件上传失败！！！");
-		}finally {
-			if(bis != null){
-				bis.close();
-			}
-		}
+//		IDfsDb dfs = MongoDfsDb.getInstance();
+//		BufferedInputStream bis = null;
+//		try {
+//			bis = new BufferedInputStream(new FileInputStream(fileDto.getFilePath()));  
+//			dfs.upload(fileDto.getFileName(), uuId, bis);
+//		} catch(Exception e){
+////			e.printStackTrace();
+//			//删除上传csv原文件
+//			dfs.delete(uuId);
+//			throw new Exception("csv 文件上传失败！！！");
+//		}finally {
+//			if(bis != null){
+//				bis.close();
+//			}
+//		}
+		
 		MongodbUtil mg = MongodbUtil.getInstance();
 		String collectionName = J9SeriesType.getJ9StarType(star).getName();
 		List<Document> docList = null;
@@ -381,7 +396,7 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 //			System.out.println(a);
 		} catch (Exception e) {
 //			e.printStackTrace();
-			dfs.delete(uuId);
+//			dfs.delete(uuId);
 			//删除mogodb记录 效率比较慢
 //			mg.deleteMany(collectionName, "versions", uuId);
 			//通过更新的方式设置状态为0
@@ -448,6 +463,7 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 		file.setParentId(monthDir.getId());
 		file.setYear_month_day(date);
 		file.setMongoFSUUId(uuId);
+		file.setCachePath(fileDto.getFilePath());
 		fileDao.add(file);
 		
 

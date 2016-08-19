@@ -24,4 +24,13 @@ public interface IJobService {
 	* @version 1.0
 	*/
 	public void delCacheFileJob();
+	
+	/**
+	* Description: 通过定时任务来离线上传csv原文件
+	* @author Shenwp
+	* @date 2016年8月15日
+	* @version 1.0
+	 * @throws Exception 
+	*/
+	public void saveFileOfCSV() throws Exception;
 }

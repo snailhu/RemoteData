@@ -131,6 +131,7 @@
 	            seriesOptions[i] = {
 	            	type: 'line',
 	                name: n.name,
+	                smooth: true,
 	                yAxisIndex: n.y,
 	                data: data
 	            };

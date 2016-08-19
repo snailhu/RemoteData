@@ -1,4 +1,4 @@
-package DataAn.mongo;
+package DataAn.common;
 
 import javax.annotation.Resource;
 
@@ -19,7 +19,10 @@ public class JobServiceTest {
 	@Test
 	public void test(){
 		System.out.println(jobService);
-		jobService.delMongoDBInvalidValueJob();
 	}
 	
+	@Test
+	public void testSaveFileOfCSV() throws Exception{
+		jobService.saveFileOfCSV();
+	}
 }

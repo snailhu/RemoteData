@@ -1,6 +1,8 @@
 package DataAn.mongo;
 
+import java.util.Calendar;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -9,6 +11,9 @@ import java.util.Set;
 import org.bson.Document;
 import org.junit.Before;
 import org.junit.Test;
+
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.model.Filters;
 
 import DataAn.common.utils.DateUtil;
 import DataAn.common.utils.UUIDGeneratorUtil;
@@ -99,15 +104,26 @@ public class MongodbUtilTest {
 			System.out.println(key);
 		}
 	}
-	@Test
-	public void test(){
-		String date1 = "2016-10-1";
-		String date2 = "2016-1-10";
-		Date date = new Date();
-	}
 	
 	@Test
-	public void getCollections(){
-		mg.getListCollections();
+	public void getCollection(){
+//		Date date1 = new Date(2016,1,10);
+//		Date date2 = new Date(2016,2,10);
+//		Date date3 = new Date(2016,3,10);
+//		Date date4 = new Date(2016,4,10);
+//		Date date5 = new Date(2016,5,10);
+//		Date date6 = new Date(2016,6,10);
+		Calendar date1 = Calendar.getInstance();
+		String strDate = "2016-01-10 00:00:00";
+		String strDate2 = "2016-07-10 00:00:00";
+		date1.setTime(DateUtil.format(strDate));
+		Calendar date2 = Calendar.getInstance();
+		date2.setTime(DateUtil.format(strDate2));
+		MongoCollection<Document> collection = mg.getCollection(collectionName);
+		System.out.println(date1.getTime() + "--" + DateUtil.format(date1.getTime()));
+		System.out.println(date2.getTime() + "--" + DateUtil.format(date2.getTime()));
+		long month1 = collection.count(Filters.and(Filters.gte("datetime", date1.getTime()),Filters.lte("datetime", date2.getTime())));
+		System.out.println(month1);
+		mg.findAll(collectionName);
 	}
 }

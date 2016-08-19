@@ -3,7 +3,10 @@ package DataAn.fileSystem.service;
 import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
+
 import org.bson.Document;
+
+import DataAn.fileSystem.dto.SaveCSVFileResult;
 
 /**
 * Title: ICSVService
@@ -13,6 +16,19 @@ import org.bson.Document;
 */
 public interface ICSVService {
 
+	/**
+	* Description: 以读取流的方式读取cav文件并将它转化为document类型，并保存临时文件内容
+	* @param fileName
+	* @param in
+	* @param versions
+	* @return
+	* @throws Exception
+	* @author Shenwp
+	* @date 2016年8月19日
+	* @version 1.0
+	*/
+	public SaveCSVFileResult<Document> readCSVFileToDocAndSaveCacheFile(String fileName, InputStream in, String versions) throws Exception;
+	
 	/**
 	* @Title: readCSVFileToDoc
 	* @Description: 以系统路径的方式读取cav文件并将它转化为document类型

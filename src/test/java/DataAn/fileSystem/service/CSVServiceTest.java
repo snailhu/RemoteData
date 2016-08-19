@@ -1,8 +1,11 @@
 package DataAn.fileSystem.service;
 
+import java.io.BufferedInputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
@@ -28,6 +31,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import DataAn.Analysis.dto.ConstraintDto;
 import DataAn.common.utils.DateUtil;
 import DataAn.common.utils.UUIDGeneratorUtil;
+import DataAn.fileSystem.dto.SaveCSVFileResult;
 import DataAn.fileSystem.option.J9Series_Star_ParameterGroupType;
 import DataAn.fileSystem.service.impl.CSVServiceImpl;
 import DataAn.mongo.db.MongodbUtil;
@@ -70,6 +74,26 @@ public class CSVServiceTest {
 		String data = "#1234";
 		System.out.println(data.indexOf("#"));
 	}
+	
+	@Test
+	public void readCSVFileToDocAndSaveCacheFile(){
+		long begin = System.currentTimeMillis();
+		InputStream in = null;
+		try {
+			String uuId = UUIDGeneratorUtil.getUUID();
+			in = new BufferedInputStream(new FileInputStream(new File(filePath)));
+			SaveCSVFileResult<Document> result = csvService.readCSVFileToDocAndSaveCacheFile("j9-02--2015-05-10.csv", in, uuId);
+			List<Document> list = result.getDatas();
+			System.out.println("size: " + list.size());
+			System.out.println(result.getCacheFilePath());
+			System.out.println(result.getTitle());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		long end = System.currentTimeMillis();
+		System.out.println("time: " + (end - begin));
+	}
+	
 	@Test
 	public void readCSVFileToDoc(){
 		long begin = System.currentTimeMillis();

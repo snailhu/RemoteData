@@ -160,6 +160,14 @@ implements IVirtualFileSystemDao{
 		return pager;
 	}
 
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<VirtualFileSystem> selectByFileTypeIsFileAndCachePathISNotNull() {
+		String hql = "from VirtualFileSystem fs where fs.fileType=:fileType and fs.cachePath is not null";
+		Query query = this.getSession().createQuery(hql).setParameter("fileType", FileType.FILE);
+		return query.list();
+	}
+
 
 	
 

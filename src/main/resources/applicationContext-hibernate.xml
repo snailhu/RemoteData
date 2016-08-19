@@ -23,8 +23,8 @@
 	<bean id="masterDataSource"  parent="parentDataSource">
 	       <property name="driverClassName" value="${master.jdbc.driverClassName}"/>
 			<property name="url" value="${master.jdbc.url}"/>
-			<property name="username" value="root"/>
-			<property name="password" value="huyajun"/>			
+			<property name="username" value="${master.jdbc.username}"/>
+			<property name="password" value="${master.jdbc.password}"/>
 	</bean>	
 
     <!-- 主sessionFactory -->

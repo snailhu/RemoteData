@@ -39,29 +39,86 @@ public class VirtualFileSystemServiceTest {
 	}
 	
 	@Test
+	public void saveFilesThread() throws Exception{
+		String sPath = "D:\\temp\\data\\2016\\1-6";
+		if (!sPath.endsWith(File.separator)) {
+			sPath = sPath + File.separator;
+		}
+		File dirFile = new File(sPath);
+		if (dirFile.exists() && dirFile.isDirectory()) {
+			File[] files = dirFile.listFiles();
+			for (final File file : files) {
+				new Thread(new Runnable(){
+					@Override
+					public void run() {
+						long begin = System.currentTimeMillis();
+						try {
+							Map<String, FileDto> map = new HashMap<String,FileDto>();
+							FileDto csvFileDto = new FileDto();
+							File csvFile = new File(file.getAbsolutePath());
+							InputStream csvInput = new FileInputStream(csvFile);
+							csvFileDto.setFileName(csvFile.getName());
+							csvFileDto.setFileSize(csvFile.length());
+							csvFileDto.setIn(csvInput);
+							map.put("csv", csvFileDto);			
+							fileService.saveFile(map);
+						} catch (Exception e) {
+							e.printStackTrace();
+						}				
+						long end = System.currentTimeMillis();
+						Thread current = Thread.currentThread();  
+						System.out.println(current.getName() + "-time: " + (end - begin));
+					}}).start();
+			}
+		}
+	}
+	@Test
+	public void saveFiles() throws Exception{
+		long begin = System.currentTimeMillis();
+		String sPath = "D:\\temp\\data\\2016\\1-6";
+		if (!sPath.endsWith(File.separator)) {
+			sPath = sPath + File.separator;
+		}
+		File dirFile = new File(sPath);
+		if (dirFile.exists() && dirFile.isDirectory()) {
+			File[] files = dirFile.listFiles();
+			for (File file : files) {
+				System.out.println(file.getAbsolutePath());
+				this.saveFile(file.getAbsolutePath(), null);
+			}
+		}
+		long end = System.currentTimeMillis();
+		System.out.println("time: " + (end - begin));
+	}
+	
+	public void saveFile(String csv,String dat) throws Exception{
+		Map<String, FileDto> map = new HashMap<String,FileDto>();
+		if(csv != null && !csv.equals("")){
+			FileDto csvFileDto = new FileDto();
+			File csvFile = new File(csv);
+			InputStream csvInput = new FileInputStream(csvFile);
+			csvFileDto.setFileName(csvFile.getName());
+			csvFileDto.setFileSize(csvFile.length());
+			csvFileDto.setIn(csvInput);
+			map.put("csv", csvFileDto);			
+		}
+		if(dat != null && !dat.equals("")){
+			FileDto datFileDto = new FileDto();
+			File datFile = new File(dat);
+			InputStream datInput = new FileInputStream(datFile);
+			datFileDto.setFileName(datFile.getName());
+			datFileDto.setFileSize(datFile.length());
+			datFileDto.setIn(datInput);
+			map.put("dat", datFileDto);			
+		}
+		fileService.saveFile(map);
+	}
+	@Test
 	public void saveFile() throws Exception{
 		long begin = System.currentTimeMillis();
-		Map<String, FileDto> map = new HashMap<String,FileDto>();
-		
-		FileDto csvFileDto = new FileDto();
-		String csv = "E:\\data\\2015\\3\\j9-02--2015-03-01.csv";
-		File csvFile = new File(csv);
-		InputStream csvInput = new FileInputStream(csvFile);
-		csvFileDto.setFileName(csvFile.getName());
-		csvFileDto.setFileSize(csvFile.length());
-		csvFileDto.setIn(csvInput);
-		map.put("csv", csvFileDto);
-		
-//		FileDto datFileDto = new FileDto();
+		String csv = "D:\\temp\\data\\2016\\7\\j9-02--2016-07-02.csv";
 //		String dat = "C:\\XX9(02)--20150817(公开).DAT";
-//		File datFile = new File(dat);
-//		InputStream datInput = new FileInputStream(datFile);
-//		datFileDto.setFileName(datFile.getName());
-//		datFileDto.setFileSize(datFile.length());
-//		datFileDto.setIn(datInput);
-//		map.put("dat", datFileDto);
-		
-		fileService.saveFile(map);
+		this.saveFile(csv, null);
 		long end = System.currentTimeMillis();
 		System.out.println((end - begin));
 	}

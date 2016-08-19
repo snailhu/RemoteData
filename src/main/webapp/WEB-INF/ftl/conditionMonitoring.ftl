@@ -1,5 +1,5 @@
 <#assign base=request.contextPath + '/DataRemote' />
-<!DOCTYPE html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -217,46 +217,17 @@
 	</div>
 	<div id="id_div_seriesbtnmanage" class="seriesbutton" >
 	</div>
-<<<<<<< HEAD
-	<div id="Layer1" style="position:absolute; width:100%; height:100%; z-index:0">    
-		<img src="${base}/static/images/earth1.jpg" height="100%" width="100%"/>
-	</div>
-	<div class="container">	
-		<div class="imagediv" ><a href="analysisData"  data-toggle="popover" data-placement="top" data-trigger="hover">
-=======
 	<div id="id_container" class="container">
 		<!--<div class="imagediv" >
 			<a href="admin/file/index/j9/01/0/"  data-toggle="popover" data-placement="top" data-trigger="hover">
->>>>>>> branch 'master' of https://github.com/snailhu/RemoteData.git
 			<img id="1"  src="${base}/static/images/satellite.png" alt=""/>
 			<span>1号星</span></a>
 		</div>
-<<<<<<< HEAD
-		<div class="imagediv"><a href="analysisData"  data-toggle="popover" data-placement="top" data-trigger="hover">
-			<img  src="${base}/static/images/satellite.png" alt=""/>
-=======
 		<div class="imagediv" >
 			<a href="admin/file/index/j9/01/0/"  data-toggle="popover" data-placement="top" data-trigger="hover">
 			<img id="2"  src="${base}/static/images/satellite.png" alt=""/>
->>>>>>> branch 'master' of https://github.com/snailhu/RemoteData.git
 			<span>2号星</span></a>
-<<<<<<< HEAD
-		</div>
-		<div class="imagediv"><a href="analysisData"  data-toggle="popover" data-placement="top" data-trigger="hover">
-			<img id="2"  src="${base}/static/images/satellite.png" alt=""/></a>
-			<span>3号星</span>
-		</div>
-		<div class="imagediv"><a  href="analysisData"  data-toggle="popover" data-placement="top" data-trigger="hover">
-			<img id="3"  src="${base}/static/images/satellite.png" alt=""/></a>
-			<span>4号星</span>
-		</div>
-		<div class="imagediv"><a href="analysisData"  data-toggle="popover" data-placement="top" data-trigger="hover">
-			<img  src="${base}/static/images/satellite.png" alt=""/></a>
-			<span>5号星</span>
-		</div>	
-=======
 		</div>-->			
->>>>>>> branch 'master' of https://github.com/snailhu/RemoteData.git
 	</div>
 </body>
 </html>

@@ -189,12 +189,11 @@ public class MongodbUtil {
 		try {
 			int count = 1;
 		    while (cursor.hasNext()) {
-		    	if(count == 100){
+		    	if(count == 50){
 		    		break;
 		    	}
 		    	Document doc = cursor.next();
-//		    	System.out.println(doc);
-//		    	String key = DateUtil.formatString(doc.getString("datetime"), "yyyy-MM-dd HH:mm:ss");
+		    	System.out.println(doc.getDate("datetime") + "--" + DateUtil.format(doc.getDate("datetime")));
 //		    	float value = Float.parseFloat(doc.getString("flywheel_a_power_plus_5V"));
 //		    	System.out.println(key + " : " + value);
 //		    	map.put(key, value);
@@ -206,7 +205,10 @@ public class MongodbUtil {
 		}
 		return map;
 	}
-	
+	public MongoCollection<Document> getCollection(String collectionName){
+		MongoCollection<Document> collection = db.getCollection(collectionName);
+		return collection;
+	}
 	public void find(){
 		MongoCollection<Document> collection = db.getCollection("testNew");
 		Document doc = collection.find(Filters.eq("i", 7)).first();

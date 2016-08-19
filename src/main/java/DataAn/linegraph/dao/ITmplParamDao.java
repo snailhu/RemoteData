@@ -5,4 +5,6 @@ import DataAn.linegraph.domain.TemplateParameter;
 
 public interface ITmplParamDao extends IBaseDao<TemplateParameter>{
 
+	void deleteByTemplateId(long tempalteId);
+
 }

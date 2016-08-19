@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -50,6 +51,8 @@ public class CommonController {
 	@Resource
 	private IJ9Series_Star_Service j9Series_Star_Service;
 	
+	@Resource private IStarService starService;
+	
 	@RequestMapping(value = "/Index", method = { RequestMethod.GET })
 	public String goIndex(HttpServletRequest request, HttpServletResponse response) {
 		return "index";
@@ -70,11 +73,9 @@ public class CommonController {
 			HttpServletRequest request,
 			HttpServletResponse response,
 			@RequestParam(value="JsonG",required = true) String JsonG) throws Exception {	
-		System.out.println("JsonG: " + JsonG);
 		Map<String, Class<SingleParamDto>> classMap = new HashMap<String, Class<SingleParamDto>>();
 		classMap.put("secectRow", SingleParamDto.class);
 		List<ParamGroup> pgs =JsonStringToObj.jsonArrayToListObject(JsonG,ParamGroup.class,classMap);
-		System.out.println(pgs);
 		EhCache ehCache = new EhCache(); 
 		ehCache.addToCache("AllJsonData", pgs);		
 	}
@@ -164,15 +165,22 @@ public class CommonController {
 		
 	@RequestMapping(value = "/getData", method = RequestMethod.GET)
 	@ResponseBody
-	public List<Float> getData(
+	public List<String> getData(
 			HttpServletRequest request,
 			HttpServletResponse response,
-			@RequestParam(value="filename",required = true) String filename
+			@RequestParam(value="filename",required = true) String filename,
+			@RequestParam(value="start",required = false) String start,
+			@RequestParam(value="end",required = false) String end
 			) throws Exception{
-//		System.out.println("getData.."+ filename);
 		MongodbUtil mg = MongodbUtil.getInstance();
-		List<Float> result = mg.findAllByTie(filename);
-		return result ;				
+		if("".equals(start) || "".equals(start)){
+			List<String> result = mg.findAllByTie(filename);
+			return result ;	
+			
+		}else{				
+			List<String> result = mg.getDateList(new String[]{start,end,filename});
+			return result ;				
+		}
 	}
 	
 	
@@ -208,8 +216,7 @@ public class CommonController {
 		return lseriesbtnMenu;
 	}
 	
-	//获取一个系列的所有卫星信息，用于生成卫星图片
-	@Resource private IStarService starService;
+		//获取一个系列的所有卫星信息，用于生成卫星图片
 		@RequestMapping(value = "/conditionMonitoring/getSatellites" ,method =RequestMethod.POST)
 		@ResponseBody
 		public List<StarDto> getSatellites(
@@ -219,4 +226,19 @@ public class CommonController {
 				List<StarDto> lstarinfor= starService.getStarsBySeriesId(seriesId);
 			return lstarinfor;
 		}
+
+		//点击卫星图片跳转到图表管理页面中相应的卫星页面
+		@RequestMapping(value = "/analysisData/{SeriesId}/{StarId}")
+		@ResponseBody 
+		public ModelAndView showFlyWheelOrGyroscope(
+					@PathVariable String SeriesId, 
+					@PathVariable String StarId
+					){
+			ModelAndView modelview = new ModelAndView("/secondStyle/dataAnalysis");			
+			//当前所在系列
+			modelview.addObject("nowSeries", SeriesId);
+			//当前所在星号
+			modelview.addObject("nowStar", StarId);
+			return modelview;
+		}	
 }

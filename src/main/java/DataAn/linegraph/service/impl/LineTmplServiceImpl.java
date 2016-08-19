@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import DataAn.linegraph.dao.ILineTmplDao;
+import DataAn.linegraph.dao.ITmplParamDao;
 import DataAn.linegraph.domain.LineGraphTemplate;
 import DataAn.linegraph.dto.LineGraphTemplateDto;
 import DataAn.linegraph.dto.TemplateParameterDto;
@@ -19,6 +20,9 @@ public class LineTmplServiceImpl implements ILineTmplService {
 
 	@Resource
 	private ILineTmplDao linetmpdao;
+	@Resource
+	private ITmplParamDao tmplparamDao;
+
 	
 	@Override
 	@Transactional
@@ -45,6 +49,21 @@ public class LineTmplServiceImpl implements ILineTmplService {
 		template.setName(templateDto.getName());
 		template.setDescription(templateDto.getDescription());	
 		linetmpdao.add(template);	
+	}
+	
+	@Override
+	@Transactional
+	public void deleteTemplate(String templateids) {
+		String[] ids = templateids.split(",");
+		for (String strId : ids) {
+			long templateId = Long.parseLong(strId);
+			linetmpdao.delete(templateId);
+		}
+		//System.out.println("服务层删除模板");
+		//long templateIds=Long.parseLong(templateids);
+		//System.out.println(templateIds);
+		//linetmpdao.delete(templateIds);
+		//System.out.println("删除模板");
 	}
 
 }

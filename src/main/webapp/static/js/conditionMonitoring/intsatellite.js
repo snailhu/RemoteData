@@ -1,15 +1,11 @@
-function intsatellite(seriesId) {
-	
-	 var name;
-	 var begindate;
-	 var currentdate;
-	 var rundate;
+function intsatellite(seriesId) {	 
+	 var starList = new Array();
 	 var url = window.location.pathname+"/getSatellites";
 	 //var base=window.location;
 	 var containerdiv=$("#id_container");
 	 	 containerdiv.empty();
-	 	timeout = false;
-		time();
+	 	 timeout = false;
+		 time();
 /*    $.post(url, { "seriesId": seriesId },
     		   function(data){
 		        $.each(data, function (i, item) {
@@ -41,22 +37,32 @@ function intsatellite(seriesId) {
         	 var containerdiv=$("#id_container");
     	 	 containerdiv.empty();
         	 $.each(data, function (i, item) {
-        		 	name=item.name;        		 	
-        		 	var begintime=item.beginDate;
-        		 	//begindate = formatDate(begintime)
-        		 	begindate =begintime.substring(0,10);
         		 	currenttime=new Date();
-        		 	currentdate =formatDate(currenttime);
-        		 	rundate = DateDiff('d',currentdate,begindate);
+     		 		currentdate =formatDate(currenttime);
+     		 		var begintime=item.beginDate;
+        		 	//begindate = formatDate(begintime)
+        		 	var begindate =begintime.substring(0,10);
+        		    
+        		 	var starinformationObj = {};
+        		 	starinformationObj.id=item.id;
+        		    starinformationObj.name=item.name;
+        		    starinformationObj.begintime=begindate;       		    
+        		    rundate = DateDiff('d',currentdate,begindate);
+        		    starinformationObj.rundate=rundate;       		    
+        		    starList.push(starinformationObj);       		 	
 		            var div = $('<div></div>');
 		            div.attr('class','imagediv')
 		            var a = $('<a></a>');
+		            //a.attr('href','analysisData/j9/01');
+		            a.attr('href','analysisData/j9/'+item.name);
 		            var img = $('<img/>');
 		            var span = $('<span></span>');
 		            span.text(item.name);
 		            img.attr('id',item.id);
-		            var imgurl = "http://localhost:8080/DataRemote/static/images/satellite.png";
-		            img.attr('src',imgurl)
+		            var host = window.location.host;
+		            var imgurl = 'http://'+host+'/DataRemote/static/images/satellite.png';
+		            img.attr('src',imgurl);
+		            a.attr('id',i);
 		            a.attr('data-trigger','hover');
 		            a.attr('data-placement','top');
 		            a.attr('data-toggle','popover');		            
@@ -181,18 +187,21 @@ function intsatellite(seriesId) {
 			time();
 			 
 			//加载悬浮提示窗口
-					$("[data-toggle='popover']").popover({  
-			        html : true,    
-			        title: title(),    
-			        delay:{show:10, hide:10},  
-			        content: function() { 
-						//clearInterval(setAnimate);
-			        	timeout = true;
-						time();
-			          	return content(name,begindate,rundate);    
-			          	//return content();    
-						}   
-					});
+			$("[data-toggle='popover']").popover({  
+	        html : true,    
+	        title: title(),    
+	        delay:{show:10, hide:10},  
+	        content: function() { 
+				//clearInterval(setAnimate);
+	        	timeout = true;
+				time();
+				var nowid = $(this).attr('id');
+				//alert(starList[nowid].name);
+				//var nowname =
+	          	return content(starList[nowid].name,starList[nowid].begintime,starList[nowid].rundate);    
+	          	//return content();    
+				}   
+			});
 			//悬浮窗口消失时继续旋转
 			$("[data-toggle='popover']").on('hidden.bs.popover', function() {
 				//setAnimate = setInterval(fun_animat,100);

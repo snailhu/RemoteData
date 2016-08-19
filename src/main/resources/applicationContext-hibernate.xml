@@ -24,7 +24,7 @@
 	       <property name="driverClassName" value="${master.jdbc.driverClassName}"/>
 			<property name="url" value="${master.jdbc.url}"/>
 			<property name="username" value="${master.jdbc.username}"/>
-			<property name="password" value="${master.jdbc.password}"/>			
+			<property name="password" value="${master.jdbc.password}"/>
 	</bean>	
 
     <!-- 主sessionFactory -->

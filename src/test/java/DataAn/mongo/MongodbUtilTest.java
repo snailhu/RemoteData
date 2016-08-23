@@ -17,6 +17,7 @@ import com.mongodb.client.model.Filters;
 
 import DataAn.common.utils.DateUtil;
 import DataAn.common.utils.UUIDGeneratorUtil;
+import DataAn.fileSystem.dto.CSVFileDataResultDto;
 import DataAn.fileSystem.service.ICSVService;
 import DataAn.fileSystem.service.impl.CSVServiceImpl;
 import DataAn.mongo.db.MongodbUtil;
@@ -39,7 +40,8 @@ public class MongodbUtilTest {
 		try {
 			String uuId = UUIDGeneratorUtil.getUUID();
 			String dateVersions = DateUtil.format(new Date());
-			List<Document> documents = csvService.readCSVFileToDoc(filePath,dateVersions);
+			CSVFileDataResultDto<Document> result= csvService.readCSVFileToDoc(filePath,uuId);
+			List<Document> documents = result.getDatas();
 			for (Document document : documents) {
 				System.out.println(document);
 			}

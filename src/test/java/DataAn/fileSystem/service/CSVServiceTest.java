@@ -31,7 +31,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import DataAn.Analysis.dto.ConstraintDto;
 import DataAn.common.utils.DateUtil;
 import DataAn.common.utils.UUIDGeneratorUtil;
-import DataAn.fileSystem.dto.SaveCSVFileResult;
+import DataAn.fileSystem.dto.CSVFileDataResultDto;
 import DataAn.fileSystem.option.J9Series_Star_ParameterGroupType;
 import DataAn.fileSystem.service.impl.CSVServiceImpl;
 import DataAn.mongo.db.MongodbUtil;
@@ -82,7 +82,7 @@ public class CSVServiceTest {
 		try {
 			String uuId = UUIDGeneratorUtil.getUUID();
 			in = new BufferedInputStream(new FileInputStream(new File(filePath)));
-			SaveCSVFileResult<Document> result = csvService.readCSVFileToDocAndSaveCacheFile("j9-02--2015-05-10.csv", in, uuId);
+			CSVFileDataResultDto<Document> result = csvService.readCSVFileToDocAndSaveCacheFile("j9-02--2015-05-10.csv", in, uuId);
 			List<Document> list = result.getDatas();
 			System.out.println("size: " + list.size());
 			System.out.println(result.getCacheFilePath());
@@ -99,7 +99,8 @@ public class CSVServiceTest {
 		long begin = System.currentTimeMillis();
 		try {
 			String uuId = UUIDGeneratorUtil.getUUID();
-			List<Document> list = csvService.readCSVFileToDoc(filePath,uuId);
+			CSVFileDataResultDto<Document> result= csvService.readCSVFileToDoc(filePath,uuId);
+			List<Document> list = result.getDatas();
 			System.out.println("size: " + list.size());
 //			System.out.println(list.get(list.size() - 1));
 //			list.remove(list.size()-1);

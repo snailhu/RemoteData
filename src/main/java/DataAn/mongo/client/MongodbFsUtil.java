@@ -35,9 +35,7 @@ public class MongodbFsUtil {
 		Mongo connection = new Mongo(InitMongo.SERVER_HOST,InitMongo.SERVER_PORT);
 		// 2.创建相关数据库的连接
 		DB db_test = connection.getDB(InitMongo.DATABASE_TEST);
-		DB db_flywheel = connection.getDB(InitMongo.DATABASE_TEST);
 		dbs.put(InitMongo.DATABASE_TEST, new GridFS(db_test));
-		dbs.put(InitMongo.DATABASE_FLYWHEEL, new GridFS(db_flywheel));
 		
 	}
 }

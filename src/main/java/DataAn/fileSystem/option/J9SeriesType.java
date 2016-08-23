@@ -84,7 +84,7 @@ public enum J9SeriesType {
 
 	public abstract String getValue();
 
-	public static J9SeriesType getJ9StarType(String type) {
+	public static J9SeriesType getJ9SeriesType(String type) {
 		switch (type) {
 		case "01":
 			return J9SeriesType.STRA1;

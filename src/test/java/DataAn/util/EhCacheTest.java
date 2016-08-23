@@ -7,6 +7,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import DataAn.Util.EhCache;
+import DataAn.common.utils.DateUtil;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:applicationContext-hibernate.xml","classpath:applicationContext.xml"})
@@ -27,4 +28,5 @@ public class EhCacheTest {
 	public void get() throws Exception{
 		System.out.println(ehCache.getCacheElement("age"));
 	}
+
 }

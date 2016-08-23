@@ -45,17 +45,40 @@ public class FindPointByYearHead extends Thread {
 	public void run() {
 		// TODO Auto-generated method stub
 		super.run();
-		Date startDate = DateUtil.format(params[0]);
-		String year_start = (DateUtil.getYear(startDate)+1)+"";
+		Calendar date1 = Calendar.getInstance();
+		date1.setTime(DateUtil.format(params[0]));
+		Date startDate = date1.getTime();//DateUtil.format(params[0]);
+		
+//		Date startDate = DateUtil.format(params[0]);
+		int year_start = (DateUtil.getYear(startDate)+1);
+		Calendar date2 = Calendar.getInstance();
+		date2.set(year_start, 0, 0, 0, 0, 0);
+		Date year_start_n = date2.getTime();
 		//paramCount = (float)50;	
-		long paramCount =  collection.count(Filters.and(Filters.gte("datetime", params[0]),Filters.lte("year", year_start)));
-		System.out.println(DateUtil.getYear(startDate)+"数据总数："+paramCount);
+		long paramCount_head =  collection.count(Filters.and(Filters.gte("datetime",startDate),Filters.lte("datetime", year_start_n)));
+		System.out.println(DateUtil.getYear(startDate)+"数据总数："+paramCount_head);
 		//获取所有的结果集合
-		FindIterable<Document> document_It = collection.find(Filters.and(Filters.gte("datetime", params[0]),Filters.lte("year", year_start)));
+		FindIterable<Document> document_It = collection.find(Filters.and(Filters.gte("datetime", startDate),Filters.lte("datetime",year_start_n)));
 		if(document_It!=null){			
 			 // cursor = document_It.iterator();
 			YearAndParamDataDto yearAndParam = new YearAndParamDataDto();
-			getResults(document_It.iterator(), yearAndParam,params);	
+			//getResults(document_It.iterator(), yearAndParam,params);	
+			//MongoCursor<Document> cursor_head =document_It.iterator();
+			List<String> yearValue=new ArrayList<String>();
+			List<String> paramValue =  new ArrayList<String>();
+			int count_for = 0;
+			for (Document doc : document_It) {
+				if(count_for%getPoint==0){
+			    //	if(doc.getString(params[2])!=null){	
+			    	yearValue.add(DateUtil.format(doc.getDate("datetime")));
+			        paramValue.add(doc.getString(params[2]));	
+			   // 	}		    
+				}
+				count_for++;
+			}
+			System.out.println(Thread.currentThread().getName()+".....装载完毕"+count_for);
+		    yearAndParam.setParamValue(paramValue);
+		    yearAndParam.setYearValue(yearValue);	
 			try {
 				//放入队列
 				resultMap.put(1, yearAndParam);
@@ -65,37 +88,37 @@ public class FindPointByYearHead extends Thread {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-		}
-		
-		
+		}				
 	}
 	
-	private void getResults(MongoCursor<Document> cursor,YearAndParamDataDto yearAndParam,
-			String... params) {
-		try {
-			List<String> yearValue=new ArrayList<String>();
-			List<String> paramValue =  new ArrayList<String>();
-		//	int count=0;
-			System.out.println(Thread.currentThread().getName()+".....执行装载");
-			long count =0;
-		    while (cursor.hasNext()) {		    	
-		    	if(count%getPoint==0){
-		    		Document doc = cursor.next();
-			    	if(doc.getString(params[2])!=null){	
-			    	yearValue.add(doc.getString("datetime"));
-			        paramValue.add(doc.getString(params[2]));	
-			    	}		    	
-		    	}		    	
-		       count++;
-		    }
-		    System.out.println(Thread.currentThread().getName()+".....装载完毕");
-		    yearAndParam.setParamValue(paramValue);
-		    yearAndParam.setYearValue(yearValue);
-	 
-		} finally {
-		    cursor.close();
-		}
-	}
+//	private void getResults(MongoCursor<Document> cursor_head,YearAndParamDataDto yearAndParam,
+//			String... params) {
+//		try {
+//			List<String> yearValue=new ArrayList<String>();
+//			List<String> paramValue =  new ArrayList<String>();
+//		//	int count=0;
+//			System.out.println(Thread.currentThread().getName()+".....执行装载");
+//			int count_head =0;
+//		    while (cursor_head.hasNext()) {		    	
+//		    	if(count_head%getPoint==0){
+//		    		Document doc = cursor_head.next();
+//			    	if(doc.getString(params[2])!=null){	
+//			    	yearValue.add(doc.getDate("datetime")+"");
+//			    	 System.out.println(doc.getDate("datetime")+"");
+//			        paramValue.add(doc.getString(params[2]));	
+//			    	}		    	
+//		    	}
+//		    System.out.println("循环次数："+count_head);
+//		    count_head++;
+//		    }
+//		    System.out.println(Thread.currentThread().getName()+".....装载完毕"+count_head);
+//		    System.out.println(Thread.currentThread().getName()+".....装载完毕");
+//		    yearAndParam.setParamValue(paramValue);
+//		    yearAndParam.setYearValue(yearValue);	 
+//		} finally {
+//			cursor_head.close();
+//		}
+//	}
 	
 	
 	public HashMap<Integer, YearAndParamDataDto> getResultMap() {

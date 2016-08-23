@@ -189,4 +189,5 @@ public class DateUtil {
 		c.setTime(date);
 		return c.get(Calendar.YEAR);
 	}
+
 }

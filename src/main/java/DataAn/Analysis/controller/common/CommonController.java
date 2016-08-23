@@ -174,7 +174,7 @@ public class CommonController {
 			) throws Exception{
 		MongodbUtil mg = MongodbUtil.getInstance();	
 		YearAndParamDataDto result = mg.getDataList(paramSize,new String[]{start,end,filename});
-		return result ;						
+		return result;						
 	}
 	
 	

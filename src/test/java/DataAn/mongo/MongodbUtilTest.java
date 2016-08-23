@@ -114,16 +114,18 @@ public class MongodbUtilTest {
 //		Date date5 = new Date(2016,5,10);
 //		Date date6 = new Date(2016,6,10);
 		Calendar date1 = Calendar.getInstance();
-		String strDate = "2016-01-10 00:00:00";
-		String strDate2 = "2016-07-10 00:00:00";
+		String strDate = "2010-01-01 00:00:13";
+		String strDate2 = "2012-02-03 11:06:28";
 		date1.setTime(DateUtil.format(strDate));
+		Date startDate = date1.getTime();
 		Calendar date2 = Calendar.getInstance();
 		date2.setTime(DateUtil.format(strDate2));
+		Date endDate = date2.getTime();
 		MongoCollection<Document> collection = mg.getCollection(collectionName);
 		System.out.println(date1.getTime() + "--" + DateUtil.format(date1.getTime()));
 		System.out.println(date2.getTime() + "--" + DateUtil.format(date2.getTime()));
-		long month1 = collection.count(Filters.and(Filters.gte("datetime", date1.getTime()),Filters.lte("datetime", date2.getTime())));
+		long month1 = collection.count(Filters.and(Filters.gte("datetime", startDate),Filters.lte("datetime", endDate)));
 		System.out.println(month1);
-		mg.findAll(collectionName);
+		//mg.findAll(collectionName);
 	}
 }

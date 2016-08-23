@@ -1,6 +1,7 @@
 package DataAn.mongo.db;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -13,12 +14,16 @@ import java.util.concurrent.ArrayBlockingQueue;
 
 
 
+
+
 import org.bson.Document;
 
 import DataAn.Analysis.dto.YearAndParamDataDto;
 import DataAn.common.utils.DateUtil;
 import DataAn.common.utils.LogUtil;
 import DataAn.mongo.init.InitMongo;
+
+
 
 
 
@@ -243,8 +248,13 @@ public class MongodbUtil {
 		MongoCollection<Document> collection = db.getCollection("star2");
 		
 		//string 类型的时间转换成日期
-		Date startDate = DateUtil.format(params[0]);
-		Date endDate = DateUtil.format(params[1]);
+		Calendar date1 = Calendar.getInstance();
+		date1.setTime(DateUtil.format(params[0]));
+		Date startDate = date1.getTime();//DateUtil.format(params[0]);
+		Calendar date2 = Calendar.getInstance();
+		date2.setTime(DateUtil.format(params[1]));
+		Date endDate = date2.getTime();
+		
 		int startYear = DateUtil.getYear(startDate);
 		int endYear = DateUtil.getYear(endDate);		
 		//根据年来确定需要开启的线程数
@@ -257,11 +267,11 @@ public class MongodbUtil {
 		long paramCount=0;
 
 		//查出来的数据总量
-		paramCount =  collection.count(Filters.and(Filters.gte("datetime", params[0]),Filters.lte("datetime", params[1])));
+		paramCount =  collection.count(Filters.and(Filters.gte("datetime", startDate),Filters.lte("datetime", endDate)));
 		//获取所有的结果集合
 	
 		//	FindIterable<Document> a= collection.find(Filters.and(Filters.gte("datetime", params[0]),Filters.lte("datetime", params[1]))).batchSize(20);	
-								
+		
 		//设置每页可显示的最多点数
 		long total = 50000;
 		if(selectParamSize==1){
@@ -271,9 +281,19 @@ public class MongodbUtil {
 		}
 		
 		//如果参数的个数乘以每个参数查出来的数据小于等于总数则直接将查询结果返回
-		if(paramCount*selectParamSize<=total){	
-			cursor = collection.find(Filters.and(Filters.gte("datetime", params[0]),Filters.lte("datetime", params[1]))).iterator();
-			getResults(cursor,yearAndParam, params);	
+		if(paramCount*selectParamSize<=total){				
+			//getResults(cursor,yearAndParam, params);	
+			List<String> yearValue=new ArrayList<String>();
+			List<String> paramValue =  new ArrayList<String>();
+			FindIterable<Document> document_It = collection.find(Filters.and(Filters.gte("datetime", startDate),Filters.lte("datetime", endDate)));						
+			for (Document doc : document_It) {
+			    	if(doc.getString(params[2])!=null){	
+			    	yearValue.add(DateUtil.format(doc.getDate("datetime")));
+			        paramValue.add(doc.getString(params[2]));	
+			    	}		    
+			}
+		    yearAndParam.setParamValue(paramValue);
+		    yearAndParam.setYearValue(yearValue);
 			return yearAndParam;					
 		}
 		else{	//如果比每页显示总数大
@@ -283,24 +303,20 @@ public class MongodbUtil {
 			List<String> yearValue=new ArrayList<String>();
 			List<String> paramValue =  new ArrayList<String>();
 			if(threadOpen == 0){
-				try {					
-					int count = 0;
-				    while (cursor.hasNext()) {
-				    	Document doc = cursor.next();
-				    	if(count%getpoint==0){
-				    		if(doc.getString(params[2])!=null){	
-					    	yearValue.add(doc.getString("datetime"));
-					        paramValue.add(doc.getString(params[2]));
-				    		}
-				    	}		    	
-				        count++;
-				    }
-				    yearAndParam.setParamValue(paramValue);
-				    yearAndParam.setYearValue(yearValue);
-		 
-				} finally {
-				    cursor.close();
+				FindIterable<Document> document_It = collection.find(Filters.and(Filters.gte("datetime", startDate),Filters.lte("datetime", endDate)));						
+				int count_for = 0;
+				for (Document doc : document_It) {
+					if(count_for%getpoint==0){
+				    	if(doc.getString(params[2])!=null){	
+				    	yearValue.add(DateUtil.format(doc.getDate("datetime")));
+				        paramValue.add(doc.getString(params[2]));	
+				    	}		    
+					}
+					count_for++;
 				}
+				System.out.println(Thread.currentThread().getName()+".....装载完毕"+count_for);
+				yearAndParam.setYearValue(yearValue);
+			    yearAndParam.setParamValue(paramValue);
 				return yearAndParam;
 			}
 			if(threadOpen == 1){
@@ -319,7 +335,7 @@ public class MongodbUtil {
 				headThread.start();	
 				
 				for(;i<threadOpen;i++){
-					FindPointByYear yearThread =  new FindPointByYear(i+1,getpoint,resultMap, collection, (startYear+i)+"", params);					
+					FindPointByYear yearThread =  new FindPointByYear(i+1,getpoint,resultMap, collection, (startYear+i), params);					
 					allChridThread.add(yearThread);
 					yearThread.start();
 									
@@ -337,39 +353,37 @@ public class MongodbUtil {
 					e.printStackTrace();
 				} 
 			}			
-			for(int i=1;i<=threadOpen+1;i++){
-				
-				yearValue.addAll(i-1,resultMap.get(i).getYearValue());
-				paramValue.addAll(i-1, resultMap.get(i).getParamValue());
+			for(int i=1;i<=threadOpen+1;i++){	
+				yearValue.addAll(resultMap.get(i).getYearValue());
+				paramValue.addAll(resultMap.get(i).getParamValue());
 			}
 			 yearAndParam.setParamValue(paramValue);
-			 yearAndParam.setYearValue(yearValue);
-			
+			 yearAndParam.setYearValue(yearValue);			
 			return yearAndParam;
 		}			
 	}
 
-	private void getResults(MongoCursor<Document> cursor,YearAndParamDataDto yearAndParam,
-			String... params) {
-		try {
-			List<String> yearValue=new ArrayList<String>();
-			List<String> paramValue =  new ArrayList<String>();
-
-		    while (cursor.hasNext()) {
-		    	Document doc = cursor.next();
-		 
-		    	if(doc.getString(params[2])!=null){	
-		    	yearValue.add(doc.getString("datetime"));
-		        paramValue.add(doc.getString(params[2]));
-		    	}		    		
-		    }
-		    yearAndParam.setParamValue(paramValue);
-		    yearAndParam.setYearValue(yearValue);
- 
-		} finally {
-		    cursor.close();
-		}
-	}
+//	private void getResults(MongoCursor<Document> cursor,YearAndParamDataDto yearAndParam,
+//			String... params) {
+//		try {
+//			List<String> yearValue=new ArrayList<String>();
+//			List<String> paramValue =  new ArrayList<String>();
+//
+//		    while (cursor.hasNext()) {
+//		    	Document doc = cursor.next();
+//		 
+//		    	if(doc.getString(params[2])!=null){	
+//		    	yearValue.add(doc.getDate("datetime")+"");
+//		        paramValue.add(doc.getString(params[2]));
+//		    	}		    		
+//		    }
+//		    yearAndParam.setParamValue(paramValue);
+//		    yearAndParam.setYearValue(yearValue);
+// 
+//		} finally {
+//		    cursor.close();
+//		}
+//	}
 		
 	public List<String> getDateList(int selectParamSize,String ...params){
 		MongoCollection<Document> collection = db.getCollection("star2");

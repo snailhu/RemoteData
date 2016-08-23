@@ -131,15 +131,18 @@
 			<ul class="breadcrumb">
 				<li>
 					<i class="icon-home home-icon"></i>
+
 					<a href="${base}/conditionMonitoring">${nowSeries}系列</a>
 				</li>
 	
 				<li>
+
 					<a href="#">${nowStar}星</a>
+
 				</li>
-			</ul><!-- .breadcrumb -->				
-		</div><!-- 头部导航栏 -->
-			
+				<li class="active">飞轮</li>
+			</ul><!-- .breadcrumb -->	
+		</div>	
 		<div class="page-content">
 			<div class="page-header">
 				<div class="dateStyle">
@@ -214,7 +217,7 @@
 		isinitVal:false, //是否初始化时间
 		festival:false, //是否显示节日
 		isTime:true, //是否开启时间选择
-		minDate:"2014-09-19 00:00:00",//最小日期
+		//minDate:"2014-09-19 00:00:00",//最小日期
 		maxDate:jeDate.now(0), //设定最大日期为当前日期
 	});
 	jeDate({
@@ -223,7 +226,7 @@
 		isinitVal:false, //是否初始化时间
 		festival:false, //是否显示节日
 		isTime:true, //是否开启时间选择
-		minDate:"2014-09-19 00:00:00",//最小日期
+		//minDate:"2014-09-19 00:00:00",//最小日期
 		maxDate:jeDate.now(0), //设定最大日期为当前日期
 	});
 

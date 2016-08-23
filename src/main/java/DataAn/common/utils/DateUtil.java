@@ -3,6 +3,7 @@ package DataAn.common.utils;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -183,4 +184,9 @@ public class DateUtil {
 		return ts;
 	}
 
+	public static int getYear(Date date){		
+		Calendar c = Calendar.getInstance();
+		c.setTime(date);
+		return c.get(Calendar.YEAR);
+	}
 }

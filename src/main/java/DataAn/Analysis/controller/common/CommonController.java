@@ -10,7 +10,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -35,6 +34,7 @@ import DataAn.Analysis.dto.GroupMenu;
 import DataAn.Analysis.dto.ParamGroup;
 import DataAn.Analysis.dto.SingleParamDto;
 import DataAn.Analysis.dto.SeriesBtnMenu;
+import DataAn.Analysis.dto.YearAndParamDataDto;
 import DataAn.Util.EhCache;
 import DataAn.Util.JsonStringToObj;
 import DataAn.galaxyManager.domain.*;
@@ -51,8 +51,6 @@ public class CommonController {
 	@Resource
 	private IJ9Series_Star_Service j9Series_Star_Service;
 	
-	@Resource private IStarService starService;
-	
 	@RequestMapping(value = "/Index", method = { RequestMethod.GET })
 	public String goIndex(HttpServletRequest request, HttpServletResponse response) {
 		return "index";
@@ -68,14 +66,18 @@ public class CommonController {
 		return j9Series_Star_Service.getFlyWheelParameterList();
 //		return j9Series_Star_Service.getAllParameterListFromBeginDateToEndDate(beginDate, endDate);
 	}
+	
+	
 	@RequestMapping(value = "/showPanel", method = { RequestMethod.POST})
 	public void showPanel(
 			HttpServletRequest request,
 			HttpServletResponse response,
 			@RequestParam(value="JsonG",required = true) String JsonG) throws Exception {	
+		System.out.println("JsonG: " + JsonG);
 		Map<String, Class<SingleParamDto>> classMap = new HashMap<String, Class<SingleParamDto>>();
 		classMap.put("secectRow", SingleParamDto.class);
 		List<ParamGroup> pgs =JsonStringToObj.jsonArrayToListObject(JsonG,ParamGroup.class,classMap);
+		System.out.println(pgs);
 		EhCache ehCache = new EhCache(); 
 		ehCache.addToCache("AllJsonData", pgs);		
 	}
@@ -99,10 +101,13 @@ public class CommonController {
 	@ResponseBody
 	public List<String> getDate(
 			HttpServletRequest request,
-			HttpServletResponse response
+			HttpServletResponse response,
+			@RequestParam(value="start",required = true) String start,
+			@RequestParam(value="end",required = true) String end,
+			@RequestParam(value="paramSize",required = true) Integer paramSize
 			) throws Exception{
 			MongodbUtil mg = MongodbUtil.getInstance();
-			List<String> result = mg.getDateList("tesx");
+			List<String> result = mg.getDateList(paramSize,new String[]{start,end});
 			return result;
 		}
 	
@@ -118,11 +123,6 @@ public class CommonController {
 		List<ParamGroup> lPs = (List<ParamGroup>) ehCache.getCacheElement("AllJsonData");
 		List<GroupMenu> lgm = new ArrayList<GroupMenu>();
 		for(ParamGroup  pg :lPs){
-//			String text="";
-//			List<SingleParamDto> spds =  pg.getSecectRow();
-//			for(SingleParamDto sd :spds){
-//				text+=sd.getName();
-//			}
 			GroupMenu gm = new GroupMenu();
 			gm.setId(pg.getId()+"");
 			gm.setText((pg.getId()+1)+"组");
@@ -144,7 +144,6 @@ public class CommonController {
 		EhCache ehCache = new EhCache(); 
 		@SuppressWarnings("unchecked")
 		List<ParamGroup> lPs = (List<ParamGroup>) ehCache.getCacheElement("AllJsonData");
-//		List<String> params = new ArrayList<String>();
 		List<SingleParamDto> params = new ArrayList<SingleParamDto>();
 		Map<String,String> map = j9Series_Star_Service.getAllParameterList_simplyZh_and_en();
 		ModelAndView mv = new ModelAndView("/secondStyle/graphicShow");
@@ -157,7 +156,7 @@ public class CommonController {
 				}	
 				mv.addObject("beginDate", pg.getBeginDate());
 				mv.addObject("endDate", pg.getEndDate());
-				mv.addObject("params", params);
+				mv.addObject("params", params);			
 			}
 		}
 		return mv;
@@ -165,22 +164,17 @@ public class CommonController {
 		
 	@RequestMapping(value = "/getData", method = RequestMethod.GET)
 	@ResponseBody
-	public List<String> getData(
+	public YearAndParamDataDto getData(
 			HttpServletRequest request,
 			HttpServletResponse response,
 			@RequestParam(value="filename",required = true) String filename,
-			@RequestParam(value="start",required = false) String start,
-			@RequestParam(value="end",required = false) String end
+			@RequestParam(value="start",required = true) String start,
+			@RequestParam(value="end",required = true) String end,
+			@RequestParam(value="paramSize",required = true) Integer paramSize
 			) throws Exception{
-		MongodbUtil mg = MongodbUtil.getInstance();
-		if("".equals(start) || "".equals(start)){
-			List<String> result = mg.findAllByTie(filename);
-			return result ;	
-			
-		}else{				
-			List<String> result = mg.getDateList(new String[]{start,end,filename});
-			return result ;				
-		}
+		MongodbUtil mg = MongodbUtil.getInstance();	
+		YearAndParamDataDto result = mg.getDataList(paramSize,new String[]{start,end,filename});
+		return result ;						
 	}
 	
 	
@@ -216,7 +210,8 @@ public class CommonController {
 		return lseriesbtnMenu;
 	}
 	
-		//获取一个系列的所有卫星信息，用于生成卫星图片
+	//获取一个系列的所有卫星信息，用于生成卫星图片
+	@Resource private IStarService starService;
 		@RequestMapping(value = "/conditionMonitoring/getSatellites" ,method =RequestMethod.POST)
 		@ResponseBody
 		public List<StarDto> getSatellites(
@@ -226,19 +221,4 @@ public class CommonController {
 				List<StarDto> lstarinfor= starService.getStarsBySeriesId(seriesId);
 			return lstarinfor;
 		}
-
-		//点击卫星图片跳转到图表管理页面中相应的卫星页面
-		@RequestMapping(value = "/analysisData/{SeriesId}/{StarId}")
-		@ResponseBody 
-		public ModelAndView showFlyWheelOrGyroscope(
-					@PathVariable String SeriesId, 
-					@PathVariable String StarId
-					){
-			ModelAndView modelview = new ModelAndView("/secondStyle/dataAnalysis");			
-			//当前所在系列
-			modelview.addObject("nowSeries", SeriesId);
-			//当前所在星号
-			modelview.addObject("nowStar", StarId);
-			return modelview;
-		}	
 }

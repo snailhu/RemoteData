@@ -2,11 +2,11 @@ package DataAn.fileSystem.dto;
 
 import java.util.List;
 
-public class SaveCSVFileResult<T> {
+public class CSVFileDataResultDto<T> {
 
-	private String title;
-	private String cacheFilePath;
-	private List<T> datas;
+	private String title; //csv文件头部
+	private String cacheFilePath; //边读边存的时候使用
+	private List<T> datas; //csv文件内容
 	
 	public String getTitle() {
 		return title;

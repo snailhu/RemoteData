@@ -1,12 +1,19 @@
 package DataAn.mongo.client;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import org.bson.Document;
+import DataAn.common.utils.DataTypeUtil;
 import DataAn.common.utils.LogUtil;
 import DataAn.mongo.init.InitMongo;
+import com.mongodb.BasicDBObject;
+import com.mongodb.CommandResult;
+import com.mongodb.DB;
+import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
+import com.mongodb.ServerAddress;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
@@ -22,6 +29,8 @@ public class MongodbUtil {
 	
 	private static ConcurrentHashMap<String,MongoCollection<Document>> cols = new ConcurrentHashMap<String,MongoCollection<Document>>();
 		
+	private static volatile boolean isShard = false; //分片标示
+	
 	private volatile static MongodbUtil singleton = null;
 		
 	public static MongodbUtil getInstance() {
@@ -41,33 +50,51 @@ public class MongodbUtil {
 			LogUtil.getInstance().getLogger(MongodbUtil.class).debug("DataAn.mongo.client.MongodbUtil() - start "); //$NON-NLS-1$
 		}
 		if(mg == null){
-//			mg = new MongoClient(InitMongo.SERVER_HOST, InitMongo.SERVER_PORT);
-			mg = new MongoClient("localhost", 10000);
+			if (isShard && DataTypeUtil.isNotEmpty(InitMongo.SERVER_HOSTS)) {
+				System.out.println("-----启动集群分片数据库：{}" + InitMongo.SERVER_HOSTS);
+				LogUtil.getInstance().getLogger(this.getClass()).info("-----启动集群分片数据库：{}",InitMongo.SERVER_HOSTS);
+				List<ServerAddress> addresses = new ArrayList<ServerAddress>();
+				String[] list = InitMongo.SERVER_HOSTS.split(",");
+				for (String ip : list) {
+					ServerAddress address = new ServerAddress(ip, InitMongo.SERVER_PORT);
+					addresses.add(address);
+				}
+				mg = new MongoClient(addresses);
+			}else{
+				System.out.println("启动单机数据库：{}" + InitMongo.SERVER_HOST);
+				LogUtil.getInstance().getLogger(this.getClass()).info("启动单机数据库：{}",InitMongo.SERVER_HOST);
+				mg = new MongoClient(InitMongo.SERVER_HOST, InitMongo.SERVER_PORT);
+			}
 			dbs.put(InitMongo.DATABASE_TEST, getDB(InitMongo.DATABASE_TEST));
-			//dbs.put(InitMongo.DATABASE_FLYWHEEL, getDB(InitMongo.DATABASE_FLYWHEEL));
+			dbs.put(InitMongo.DATABASE_J9STAR2, getDB(InitMongo.DATABASE_J9STAR2));
+			//test
+//			mg = new MongoClient("127.0.0.1", 10000);
+//			dbs.put(InitMongo.DATABASE_TEST, getDB(InitMongo.DATABASE_TEST));
 		}
 	}
 	
 	/**
 	 * 创建分片数据库
 	 * createShardDB:
-	 * @author 
 	 * @param databaseName
 	 */
 	private void createShardDB(String databaseName) {
+		System.out.println("创建新的数据库{},并分片" + databaseName);
 		LogUtil.getInstance().getLogger(getClass()).info("创建新的数据库{},并分片",databaseName);
-		MongoDatabase admin = mg.getDatabase("admin");
-		Document doc = new Document();
-		doc.put("enablesharding", databaseName);
-		Document command = admin.runCommand(doc);
+//		MongoDatabase admin = mg.getDatabase("admin");
+//		Document doc = new Document();
+//		doc.put("enablesharding", databaseName);
+//		Document command = admin.runCommand(doc);
+		//基于DB 成功创建分片数据库
+		DB admin = mg.getDB("admin");
+		DBObject obj = new BasicDBObject();
+		obj.put("enablesharding", databaseName);
+		CommandResult command = admin.command(obj);
 		LogUtil.getInstance().getLogger(getClass()).info("分片结果{}",command);
 	}
 
 	/**
-	 * 
 	 * dropDB:(删除数据库). 
-	 *
-	 * @author 
 	 * @param databaseName
 	 * @return
 	 */
@@ -83,9 +110,24 @@ public class MongodbUtil {
 	}
 	
 	/**
+	 * getDB:(获取数据库). 
+	 * @param databaseName
+	 * @return
+	 */
+	public MongoDatabase getDB(String databaseName){
+		MongoDatabase db = dbs.get(databaseName);
+		if (db == null) {
+			if ((!this.isExistDB(databaseName)) && isShard) {
+				createShardDB(databaseName);
+			}
+			db = mg.getDatabase(databaseName);
+			dbs.put(databaseName, db);
+		}
+		return db;
+	}
+	
+	/**
 	 * 判断数据库是否存在
-	 *
-	 * @author 
 	 * @param databaseName
 	 * @return
 	 */
@@ -98,44 +140,38 @@ public class MongodbUtil {
 	}
 	
 	/**
-	 * getDB:(获取数据库). 
-	 * @author 
-	 * @param databaseName
-	 * @return
-	 */
-	public MongoDatabase getDB(String databaseName){
-		MongoDatabase db = dbs.get(databaseName);
-		if (db == null) {
-			if ((!mg.getDatabaseNames().contains(databaseName))) {
-				createShardDB(databaseName);
-			}
-			db = mg.getDatabase(databaseName);
-			dbs.put(databaseName, db);
-		}
-		return db;
-	}
-	
-	
-	/**
 	 * 创建表，并进行分片
 	 * createShardCollection:
-	 * @author 
 	 * @param databaseName
 	 * @param collectionName
 	 */
 	private void createShardCollection(String databaseName,String collectionName) {
+		System.out.println("创建新的表{}.{},并分片"+databaseName+collectionName);
 		LogUtil.getInstance().getLogger(getClass()).info("创建新的表{}.{},并分片",databaseName,collectionName);
-		MongoDatabase admin = mg.getDatabase("admin");
-		Document shard = new Document();
+//		MongoDatabase admin = mg.getDatabase("admin");
+//		Document shard = new Document();
+//		Document key = new Document();
+//		key.put("_id", "hashed");
+//		shard.put("shardcollection", databaseName+"."+collectionName);
+//		shard.put("key", key);
+//		Document command = admin.runCommand(shard);
+		//基于DB 成功创建分片数据库-集合
+		DB admin = mg.getDB("admin");
+		DBObject shard = new BasicDBObject();
+		DBObject key = new BasicDBObject();
+		//散列片键
+//		key.put("_id", "hashed");
+		//升序片键
+//		key.put("_id", 1);
+		key.put("datetime", 1);
 		shard.put("shardcollection", databaseName+"."+collectionName);
-		shard.put("key", "_id");
-		Document command = admin.runCommand(shard);
+		shard.put("key", key);
+		CommandResult command = admin.command(shard);
 		LogUtil.getInstance().getLogger(getClass()).info("分片结果{}",command);
 	}
 	
 	/**
 	 * getCollection:(获取表集合). 
-	 * @author 
 	 * @param databaseName
 	 * @param collectionName
 	 * @return
@@ -144,14 +180,16 @@ public class MongodbUtil {
 		MongoCollection<Document> dbCollection = cols.get(databaseName+collectionName);
 		if (dbCollection==null) {
 			MongoDatabase db = getDB(databaseName);
-			MongoIterable<String> collections = db.listCollectionNames();
+			//需要判断集合时候存在
+			MongoIterable<String> collectionNames = db.listCollectionNames();
 			boolean flag = false;
-			for (String collection : collections) {
+			for (String collection : collectionNames) {
 				if(collection.equals(collectionName)){
 					flag = true;
+					break;
 				}
 			}
-			if (flag) {
+			if (!flag && isShard) {
 				createShardCollection(databaseName, collectionName);
 			}
 			dbCollection = db.getCollection(collectionName);
@@ -161,10 +199,7 @@ public class MongodbUtil {
 	}
 	
 	/**
-	 * 
 	 * dropCollection:(删除表集合). 
-	 *
-	 * @author 
 	 * @param databaseName
 	 * @param collectionName
 	 * @return
@@ -195,7 +230,7 @@ public class MongodbUtil {
 	* @date 2016年7月6日
 	* @version 1.0
 	*/
-	public void insert(String databaseName,String collectionName, Map<String, Object> map){
+	public void insertOne(String databaseName,String collectionName, Map<String, Object> map){
 		MongoCollection<Document> collection = this.getCollection(databaseName, collectionName);
 		Document doc = new Document(map);
 		collection.insertOne(doc);
@@ -204,14 +239,14 @@ public class MongodbUtil {
 	/**
 	* @Title: insert
 	* @Description: 批量插入数据
-	* @param databaseName 数据库名称
-	* @param collectionName 集合名称
+	* @param databaseName 数据库名称 InitMongo.DATABASE_J9STAR2
+	* @param collectionName 集合名称 tb+年
 	* @param documents doc集合
 	* @author Shenwp
 	* @date 2016年7月6日
 	* @version 1.0
 	*/
-	public void insert(String databaseName,String collectionName, List<Document> documents){
+	public void insertMany(String databaseName,String collectionName, List<Document> documents){
 		MongoCollection<Document> collection = this.getCollection(databaseName, collectionName);
 		collection.insertMany(documents);
 	}
@@ -227,7 +262,7 @@ public class MongodbUtil {
 	* @date 2016年7月6日
 	* @version 1.0
 	*/
-	public void insert(String databaseName,String collectionName, String json){
+	public void insertOne(String databaseName,String collectionName, String json){
 		MongoCollection<Document> collection = this.getCollection(databaseName, collectionName);
 		Document doc = Document.parse(json);
 		collection.insertOne(doc);

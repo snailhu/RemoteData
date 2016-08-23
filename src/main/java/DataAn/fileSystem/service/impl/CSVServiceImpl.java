@@ -27,7 +27,7 @@ import org.springframework.stereotype.Service;
 
 import DataAn.common.config.Config;
 import DataAn.common.utils.DateUtil;
-import DataAn.fileSystem.dto.SaveCSVFileResult;
+import DataAn.fileSystem.dto.CSVFileDataResultDto;
 import DataAn.fileSystem.option.FlyWheelDataType;
 import DataAn.fileSystem.service.ICSVService;
 import DataAn.fileSystem.service.IJ9Series_Star_Service;
@@ -40,7 +40,7 @@ public class CSVServiceImpl implements ICSVService{
 	private IJ9Series_Star_Service j9SeriesStarService;
 	
 	@Override
-	public SaveCSVFileResult<Document> readCSVFileToDocAndSaveCacheFile(
+	public CSVFileDataResultDto<Document> readCSVFileToDocAndSaveCacheFile(
 			String fileName, InputStream in, String versions) throws Exception {
 		int totalNumber = 0;//标示全部
 		int delNumber = 4;//标示删除前后4行
@@ -128,7 +128,7 @@ public class CSVServiceImpl implements ICSVService{
 			writer.close();
 			reader.close();
 		}
-		SaveCSVFileResult<Document> result = new SaveCSVFileResult<Document>();
+		CSVFileDataResultDto<Document> result = new CSVFileDataResultDto<Document>();
 		result.setDatas(docList);
 		result.setCacheFilePath(csvTempFilePath);
 		result.setTitle(title);
@@ -136,7 +136,7 @@ public class CSVServiceImpl implements ICSVService{
 	}	
 	
 	@Override
-	public List<Document> readCSVFileToDoc(String filePath, String versions) throws Exception {
+	public CSVFileDataResultDto<Document> readCSVFileToDoc(String filePath, String versions) throws Exception {
 		InputStream in = null;
 		try {
 //			in = new FileInputStream(new File(filePath));
@@ -150,9 +150,9 @@ public class CSVServiceImpl implements ICSVService{
 	}
 
 	@Override
-	public List<Document> readCSVFileToDoc(InputStream in, String versions) throws Exception {
+	public CSVFileDataResultDto<Document> readCSVFileToDoc(InputStream in, String versions) throws Exception {
 
-		return this.readCSVFileToDoc_delFrontAndBack_arithmetic1(in, versions, 4, 0);
+		return this.readCSVFileToDoc_delFrontAndBack_arithmetic1(in, versions, 4, 50);
 		
 //		return this.readCSVFileToDoc_delFrontAndBack_arithmetic2(in, versions, 4, 50);
 		
@@ -163,8 +163,8 @@ public class CSVServiceImpl implements ICSVService{
 	}
 	
 	@Override
-	public List<Document> readCSVFileToDoc_delFrontAndBack_arithmetic1(
-			InputStream in, String versions, int delNumber, int totalNumber) throws Exception {
+	public CSVFileDataResultDto<Document> readCSVFileToDoc_delFrontAndBack_arithmetic1(
+			InputStream in, String versions, int delNumber, int totalNumber) throws Exception {		
 		List<Document> docList = new ArrayList<Document>();
 		//获取j9系列参数列表
 		Map<String,String> j9SeriesPatameterMap = j9SeriesStarService.getAllParameterList_allZh_and_en();
@@ -238,12 +238,10 @@ public class CSVServiceImpl implements ICSVService{
 				docList.add(tempList.get(i));
 			}
 		}
-		doc = new Document();
-		doc.append("versions", versions);
-		doc.append("status", 0);
-		doc.append("title", title);
-		docList.add(doc);
-		return docList;
+		CSVFileDataResultDto<Document> result = new CSVFileDataResultDto<Document>();
+		result.setDatas(docList);
+		result.setTitle(title);
+		return result;
 	}
 
 	@Override

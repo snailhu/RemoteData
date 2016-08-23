@@ -18,15 +18,10 @@ import java.util.Map;
 import java.util.Set;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
-
 import javax.annotation.Resource;
-
 import org.bson.Document;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import com.alibaba.fastjson.JSON;
-
 import DataAn.common.config.Config;
 import DataAn.common.pageModel.Pager;
 import DataAn.common.utils.DateUtil;
@@ -36,6 +31,7 @@ import DataAn.fileSystem.dao.IDateParametersDao;
 import DataAn.fileSystem.dao.IVirtualFileSystemDao;
 import DataAn.fileSystem.domain.DateParameters;
 import DataAn.fileSystem.domain.VirtualFileSystem;
+import DataAn.fileSystem.dto.CSVFileDataResultDto;
 import DataAn.fileSystem.dto.FileDto;
 import DataAn.fileSystem.dto.MongoFSDto;
 import DataAn.fileSystem.option.FileDataType;
@@ -46,6 +42,7 @@ import DataAn.fileSystem.service.IVirtualFileSystemService;
 import DataAn.mongo.db.MongodbUtil;
 import DataAn.mongo.fs.IDfsDb;
 import DataAn.mongo.fs.MongoDfsDb;
+import DataAn.mongo.service.IMongoService;
 import DataAn.mongo.zip.ZipCompressorByAnt;
 
 
@@ -58,6 +55,8 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 	private IDateParametersDao parametersDao;
 	@Resource
 	private ICSVService csvService;	
+	@Resource
+	private IMongoService mongoService;
 
 	@Override
 	@Transactional
@@ -72,7 +71,7 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 		String[] ss = strs[0].split("-");
 		String nowSeries = J9SeriesType.SERIES.getValue();
 		dataMap.put("series", nowSeries);
-		String nowStar = J9SeriesType.getJ9StarType(ss[1]).getValue();
+		String nowStar = J9SeriesType.getJ9SeriesType(ss[1]).getValue();
 		dataMap.put("star", nowStar);
 		String date = strs[1];
 		dataMap.put("date", date);
@@ -386,30 +385,32 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 //			}
 //		}
 		
-		MongodbUtil mg = MongodbUtil.getInstance();
-		String collectionName = J9SeriesType.getJ9StarType(star).getName();
-		List<Document> docList = null;
-		try {
-			docList = csvService.readCSVFileToDoc(fileDto.getFilePath(),uuId);
-			mg.insert(collectionName , docList);
-//			int a =9/0;
-//			System.out.println(a);
-		} catch (Exception e) {
-//			e.printStackTrace();
-//			dfs.delete(uuId);
-			//删除mogodb记录 效率比较慢
-//			mg.deleteMany(collectionName, "versions", uuId);
-			//通过更新的方式设置状态为0
-			mg.update(collectionName, "versions", uuId);
+		CSVFileDataResultDto<Document> result = csvService.readCSVFileToDoc(fileDto.getFilePath(),uuId);
+		List<Document> docList = result.getDatas();
+//		MongodbUtil mg = MongodbUtil.getInstance();
+//		String collectionName = J9SeriesType.getJ9SeriesType(star).getName();
+//		try {
+//			mg.insert(collectionName , docList);
+////			int a =9/0;
+////			System.out.println(a);
+//		} catch (Exception e) {
+////			e.printStackTrace();
+////			dfs.delete(uuId);
+//			//删除mogodb记录 效率比较慢
+////			mg.deleteMany(collectionName, "versions", uuId);
+//			//通过更新的方式设置状态为0
+//			mg.update(collectionName, "versions", uuId);
+//			throw new Exception("csv 文件解析失败！！！");
+//		}
 		
-			throw new Exception("csv 文件解析失败！！！");
-		}
+		//保存csv文件数据
+		mongoService.saveCSVData(series, star, date, docList, uuId);
+		
 		//存储某一天的参数信息
 		if(docList != null && docList.size() > 0){
 			Document doc1 = docList.get(0);
 			String year_month_day = doc1.getString("year_month_day");
-			Document doc2 = docList.get(docList.size() - 1);
-			String title = doc2.getString("title");
+			String title = result.getTitle();
 			DateParameters dateParameters = new DateParameters();
 			dateParameters.setParameters(title);
 			dateParameters.setYear_month_day(year_month_day);
@@ -463,6 +464,7 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 		file.setParentId(monthDir.getId());
 		file.setYear_month_day(date);
 		file.setMongoFSUUId(uuId);
+		//保存缓存路径，以后通过定时任务上传
 		file.setCachePath(fileDto.getFilePath());
 		fileDao.add(file);
 		

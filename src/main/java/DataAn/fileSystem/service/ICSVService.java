@@ -6,7 +6,7 @@ import java.util.Map;
 
 import org.bson.Document;
 
-import DataAn.fileSystem.dto.SaveCSVFileResult;
+import DataAn.fileSystem.dto.CSVFileDataResultDto;
 
 /**
 * Title: ICSVService
@@ -27,7 +27,7 @@ public interface ICSVService {
 	* @date 2016年8月19日
 	* @version 1.0
 	*/
-	public SaveCSVFileResult<Document> readCSVFileToDocAndSaveCacheFile(String fileName, InputStream in, String versions) throws Exception;
+	public CSVFileDataResultDto<Document> readCSVFileToDocAndSaveCacheFile(String fileName, InputStream in, String versions) throws Exception;
 	
 	/**
 	* @Title: readCSVFileToDoc
@@ -40,7 +40,7 @@ public interface ICSVService {
 	* @date 2016年7月8日
 	* @version 1.0
 	*/
-	public List<Document> readCSVFileToDoc(String filePath, String versions) throws Exception;
+	public CSVFileDataResultDto<Document> readCSVFileToDoc(String filePath, String versions) throws Exception;
 	
 	/**
 	* @Title: readCSVFileToDoc
@@ -53,7 +53,7 @@ public interface ICSVService {
 	* @date 2016年7月8日
 	* @version 1.0
 	*/
-	public List<Document> readCSVFileToDoc(InputStream in, String versions) throws Exception;
+	public CSVFileDataResultDto<Document> readCSVFileToDoc(InputStream in, String versions) throws Exception;
 	
 	/**
 	* Description: 通过算法1 删除前后记录
@@ -67,7 +67,7 @@ public interface ICSVService {
 	* @date 2016年7月29日
 	* @version 1.0
 	*/
-	public List<Document> readCSVFileToDoc_delFrontAndBack_arithmetic1(InputStream in, String versions, int delNumber, int totalNumber) throws Exception;
+	public CSVFileDataResultDto<Document> readCSVFileToDoc_delFrontAndBack_arithmetic1(InputStream in, String versions, int delNumber, int totalNumber) throws Exception;
 	
 	/**
 	* Description: 通过算法2 删除前后记录

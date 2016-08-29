@@ -221,4 +221,18 @@ public class CommonController {
 				List<StarDto> lstarinfor= starService.getStarsBySeriesId(seriesId);
 			return lstarinfor;
 		}
+	//点击卫星图片跳转到图表管理页面中相应的卫星页面
+			@RequestMapping(value = "/analysisData/{SeriesId}/{StarId}")
+			@ResponseBody 
+			public ModelAndView showFlyWheelOrGyroscope(
+						@PathVariable String SeriesId, 
+						@PathVariable String StarId
+						){
+				ModelAndView modelview = new ModelAndView("/secondStyle/dataAnalysis");			
+				//当前所在系列
+				modelview.addObject("nowSeries", SeriesId);
+				//当前所在星号
+				modelview.addObject("nowStar", StarId);
+				return modelview;
+			}	
 }

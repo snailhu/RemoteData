@@ -41,8 +41,7 @@ function intsatellite(seriesId) {
      		 		currentdate =formatDate(currenttime);
      		 		var begintime=item.beginDate;
         		 	//begindate = formatDate(begintime)
-        		 	var begindate =begintime.substring(0,10);
-        		    
+        		 	var begindate =begintime.substring(0,10);        		    
         		 	var starinformationObj = {};
         		 	starinformationObj.id=item.id;
         		    starinformationObj.name=item.name;
@@ -54,7 +53,8 @@ function intsatellite(seriesId) {
 		            div.attr('class','imagediv')
 		            var a = $('<a></a>');
 		            //a.attr('href','analysisData/j9/01');
-		            a.attr('href','analysisData/j9/'+item.name);
+		            //a.attr('href','analysisData/j9/'+item.name);
+		            a.attr('href','analysisData');
 		            var img = $('<img/>');
 		            var span = $('<span></span>');
 		            span.text(item.name);

@@ -254,7 +254,7 @@
 		 
 		 
 		 $('#change-search-box').click();
-		 initTemplateTree()
+		 initTemplateTree();
 		 intTemplateList();
 	});
 		
@@ -376,7 +376,7 @@
                   rowObject.min=rowindex[i].min;
                   var yname = rowindex[i].yname;
                   if(yname=='Y2'){
-                  //这里统一一下（Y1轴的话用大写的‘Y1’,Y2用大写的‘Y2’）
+                  //这里统一一下（Y1轴的话用大写的‘Y1’,Y2轴用大写的‘Y2’）
                 	  rowObject.yname=1;
                   }else{
 	                  rowObject.yname=0;
@@ -448,7 +448,14 @@
         		'templateNmae':templateNmae_dialog,
         		'templateDescription':templateDescription_dialog,
         		'JsonParams':JSON.stringify(paramarray)        	
+        	},
+        	function(data){
+        		//添加模板后刷新常用模板
+        		initTemplateTree();
+        		//添加模板后刷新模板下拉框
+        		intTemplateList(); 
         	})
+        	      	
         }
 
         //删除已经生成的分组
@@ -478,6 +485,7 @@
         //初始化选择模板下拉框
        	function intTemplateList(){
 	            var url_templatelist = "getTemplateList";
+	            //var url_templatelist = "getTemplateList";
 	            var source_templatelist =
 	            {
 	                datatype: "json",
@@ -628,6 +636,7 @@
 	                              $("#id_templateTreeGrid").jqxTreeGrid('deleteRow', rowKey);   
 	                            }
 	                            updateButtons('delete');
+	                            intTemplateList();
 	                        }
 	                    });
 	                },              	
@@ -638,7 +647,8 @@
 	                  { text: '最大值',   dataField: 'max', width: 200 },
 	                  { text: '最小值',    dataField: 'min', width: 160 },
 	                  { text: 'Y轴',     dataField: 'yname', width:200, columnType:'custom',
-	                  	cellsRenderer: function (row, column, value, rowData) {if(value=="添加到分组") {return "<input type='button' value='删除模板'></input>"}}, 
+	                  	//cellsRenderer: function (row, column, value, rowData) {if(value=="添加到分组") {return "<input type='button' value='删除模板'></input>"}},
+	                  	cellsRenderer: function (row, column, value, rowData) {if(value=="添加到分组") {return ""}}, 
 	                  	createEditor: function (row, cellValue, editor, cellText, width, height) {
 						  var source = ["y1", "y2"];
 	                      editor.jqxDropDownList({autoDropDownHeight: true, source: source, width: '100%', height: '100%' });		 

@@ -132,12 +132,12 @@
 				<li>
 					<i class="icon-home home-icon"></i>
 
-					<a href="${base}/conditionMonitoring">${nowSeries}系列</a>
+					<a href="${base}/conditionMonitoring">${nowSeries}</a>
 				</li>
 	
 				<li>
 
-					<a href="#">${nowStar}星</a>
+					<a href="#">${nowStar}</a>
 
 				</li>
 				<li class="active">飞轮</li>
@@ -484,7 +484,7 @@
                 
         //初始化选择模板下拉框
        	function intTemplateList(){
-	            var url_templatelist = "getTemplateList";
+	            var url_templatelist = "${base}/getTemplateList";
 	            //var url_templatelist = "getTemplateList";
 	            var source_templatelist =
 	            {

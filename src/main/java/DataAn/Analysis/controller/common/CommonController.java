@@ -1,5 +1,6 @@
 package DataAn.Analysis.controller.common;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -228,11 +229,22 @@ public class CommonController {
 						@PathVariable String SeriesId, 
 						@PathVariable String StarId
 						){
-				ModelAndView modelview = new ModelAndView("/secondStyle/dataAnalysis");			
+				ModelAndView modelview = new ModelAndView("/secondStyle/dataAnalysis");	
+				String nowSeriesId=null;
+				String nowStar=null;
+				try {
+					nowSeriesId = new String(SeriesId.getBytes("ISO-8859-1"),"UTF-8");
+					nowStar = new String(StarId.getBytes("ISO-8859-1"),"UTF-8");					 
+				} catch (UnsupportedEncodingException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+				SeriesDto  nowSeries = seriesService.getSeriesDto(Long.parseLong(nowSeriesId));
 				//当前所在系列
-				modelview.addObject("nowSeries", SeriesId);
+				modelview.addObject("nowSeries", nowSeries.getName());
 				//当前所在星号
-				modelview.addObject("nowStar", StarId);
+				modelview.addObject("nowStar", nowStar);
 				return modelview;
 			}	
 }

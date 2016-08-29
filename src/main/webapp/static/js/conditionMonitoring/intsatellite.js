@@ -53,8 +53,8 @@ function intsatellite(seriesId) {
 		            div.attr('class','imagediv')
 		            var a = $('<a></a>');
 		            //a.attr('href','analysisData/j9/01');
-		            //a.attr('href','analysisData/j9/'+item.name);
-		            a.attr('href','analysisData');
+		            a.attr('href','analysisData/'+seriesId+'/'+item.name);
+		            //a.attr('href','analysisData');
 		            var img = $('<img/>');
 		            var span = $('<span></span>');
 		            span.text(item.name);

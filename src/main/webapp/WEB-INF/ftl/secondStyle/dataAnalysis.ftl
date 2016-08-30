@@ -1,17 +1,21 @@
 <@override name="content_left">
-	<div class="sidebar" id="sidebar">	
-	    <div class="sidebar-collapse" id="sidebar-collapse">
-	        <i class="icon-double-angle-left" data-icon1="icon-double-angle-left" data-icon2="icon-double-angle-right"></i>
-	    	<ul id="left_con" class="nav nav-list">
-		    	<li><a href="#"> <i class="glyphicon glyphicon-certificate"></i> <span
-					class="menu-text"> 飞轮 </span>
-				</a></li>
-	
-				<li><a href="#"> <i class="glyphicon glyphicon-certificate"></i> <span
-					class="menu-text"> 陀螺 </span>
-				</a></li>
-			<ul>
-	    </div>	
+	<div class="sidebar" id="sidebar">		    
+	    <ul class="nav nav-list">
+	    	<li>
+				<a href="javascript:void(0);" >
+					<i class="glyphicon glyphicon-certificate"></i>
+					<span class="menu-text"> 飞轮 </span>
+				</a>
+			</li>
+			
+			<li>
+				<a href="javascript:void(0);" >
+					<i class="icon-list-alt"></i>
+					<span class="menu-text"> 陀螺 </span>
+				</a>
+			</li>
+	    </ul>
+	    	
 	</div>
 </@override>
 <@override name="content_right">	
@@ -131,16 +135,16 @@
 			<ul class="breadcrumb">
 				<li>
 					<i class="icon-home home-icon"></i>
-
 					<a href="${base}/conditionMonitoring">${nowSeries}</a>
 				</li>
 	
 				<li>
-
 					<a href="#">${nowStar}</a>
-
 				</li>
-				<li class="active">飞轮</li>
+				
+				<li class="active"  value="">
+					<a href="#" id="SatelliteComponents"></a>
+				</li>
 			</ul><!-- .breadcrumb -->	
 		</div>	
 		<div class="page-content">

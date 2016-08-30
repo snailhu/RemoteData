@@ -75,7 +75,7 @@ public class VirtualFileSystemServiceTest {
 	@Test
 	public void saveFiles() throws Exception{
 		long begin = System.currentTimeMillis();
-		String sPath = "D:\\temp\\data\\2016\\1-6";
+		String sPath = "E:\\data\\2011\\1";
 		if (!sPath.endsWith(File.separator)) {
 			sPath = sPath + File.separator;
 		}

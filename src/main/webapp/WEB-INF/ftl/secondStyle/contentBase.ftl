@@ -68,11 +68,11 @@ a, a:focus, a:hover, a:active, button, button:hover {
 		</div>
 		<div class="navbar-collapse collapse" >
 			<ul class="nav navbar-nav navbar-right">
-				<li><a href="Index" style="color: #9d9d9d;;font-size: 18px;line-height: 1.8;">网站首页</a></li>
+				<li><a href="${base}/Index" style="color: #9d9d9d;;font-size: 18px;line-height: 1.8;">网站首页</a></li>
 				<li><a href="#" style="color: #9d9d9d;;font-size: 18px;line-height: 1.8;">报告管理</a></li>
-				<li><a href="admin/file/index" style="color: #9d9d9d;;font-size: 18px;line-height: 1.8;">文件管理</a></li>
-				<li><a href="analysisData" style="color: #9d9d9d;;font-size: 18px;line-height: 1.8;">图表管理</a></li>
-				<li><a href="admin/galaxy/index" style="color: #9d9d9d;;font-size: 18px;line-height: 1.8;">星系管理</a></li>
+				<li><a href="/admin/file/index" style="color: #9d9d9d;;font-size: 18px;line-height: 1.8;">文件管理</a></li>
+				<li><a href="${base}/analysisData" style="color: #9d9d9d;;font-size: 18px;line-height: 1.8;">图表管理</a></li>
+				<li><a href="${base}/admin/galaxy/index" style="color: #9d9d9d;;font-size: 18px;line-height: 1.8;">星系管理</a></li>
 			</ul>
 		</div>
 	</div>

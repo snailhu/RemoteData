@@ -2,20 +2,20 @@
 	<div class="sidebar" id="sidebar">		    
 	    <ul class="nav nav-list">
 	    	<li>
-				<a href="javascript:void(0);" >
+				<a href="javascript:void(0);" onclick="$('#SatelliteComponents').html('飞轮');">
 					<i class="glyphicon glyphicon-certificate"></i>
 					<span class="menu-text"> 飞轮 </span>
 				</a>
 			</li>
 			
 			<li>
-				<a href="javascript:void(0);" >
-					<i class="icon-list-alt"></i>
+				<a href="javascript:void(0);" onclick="$('#SatelliteComponents').html('陀螺');">
+					<i class="glyphicon glyphicon-certificate"></i>
 					<span class="menu-text"> 陀螺 </span>
 				</a>
 			</li>
 	    </ul>
-	    	
+	    	    	
 	</div>
 </@override>
 <@override name="content_right">	
@@ -133,17 +133,18 @@
 				try{ace.settings.check('breadcrumbs' , 'fixed')}catch(e){}
 			</script>
 			<ul class="breadcrumb">
-				<li>
-					<i class="icon-home home-icon"></i>
-					<a href="${base}/conditionMonitoring">${nowSeries}</a>
+				<li>					
+					<a href="${base}/conditionMonitoring"><i class="icon-home home-icon"></i></a>
+					<span class="menu-text">${nowSeries}</span>
 				</li>
 	
 				<li>
-					<a href="#">${nowStar}</a>
+					<a href="javascript:void(0);"  onclick="this.setAttribute('disabled','disabled')"></a>
+					<span class="menu-text">${nowStar}</span>
 				</li>
 				
 				<li class="active"  value="">
-					<a href="#" id="SatelliteComponents"></a>
+					<span class="menu-text" id="SatelliteComponents"></span>					
 				</li>
 			</ul><!-- .breadcrumb -->	
 		</div>	
@@ -301,7 +302,7 @@
 	             { text: 'Y轴', dataField:'yname',width:200,columnType:'template',
 					createEditor: function (row, cellValue, editor, cellText, width, height) {
 					  var source = ["Y1", "Y2"];
-					  editor.jqxDropDownList({autoDropDownHeight: true, placeHolder:'请设置Y轴', source: source, width: '100%', height: '100%' });		 
+					  editor.jqxDropDownList({selectedIndex: 0,autoDropDownHeight: true, placeHolder:'请设置Y轴', source: source, width: '100%', height: '100%' });		 
 					},
 					initEditor: function (row, cellValue, editor, cellText, width, height) {
 						editor.jqxDropDownList('selectItem', cellValue);
@@ -373,20 +374,22 @@
           if(rowindex.length>0){        	
               for(i=0;i<rowindex.length;i++){
               	var rowObject={}
-                  var value = rowindex[i].name;
-                  rowObject.id=rowindex[i].id
-                  rowObject.name=rowindex[i].name;
-                  rowObject.max=rowindex[i].max;
-                  rowObject.min=rowindex[i].min;
-                  var yname = rowindex[i].yname;
-                  if(yname=='Y2'){
-                  //这里统一一下（Y1轴的话用大写的‘Y1’,Y2轴用大写的‘Y2’）
-                	  rowObject.yname=1;
-                  }else{
-	                  rowObject.yname=0;
-                  }
-                  selectRow.push( rowObject);
-                  stringName+=value+",";
+                  var parentId = rowindex[i].parentId;
+                  if(parentId != 0){
+	                  var value = rowindex[i].name;
+	                  rowObject.id=rowindex[i].id
+	                  rowObject.name=rowindex[i].name;
+	                  rowObject.max=rowindex[i].max;
+	                  rowObject.min=rowindex[i].min;
+	                  var yname = rowindex[i].yname;
+	                  if(yname=='Y2'){
+	                  //这里统一一下（Y1轴的话用大写的‘Y1’,Y2用大写的‘Y2’）
+	                	  rowObject.yname=1;
+	                  }else{
+		                  rowObject.yname=0;
+	                  }
+	                  selectRow.push( rowObject);
+	                  stringName+=value+",";
               }
            groupObject.id=j
            groupObject.secectRow = selectRow;

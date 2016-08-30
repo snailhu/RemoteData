@@ -37,12 +37,16 @@ public class TmplParamController {
 		List<TemplateParameterDto> list = templparamService.getAllTemplate();
 		return list;
 	}
+	
+	//在没有指定卫星系列、卫星型号的情况下(网址中没有系列、星)
 	@RequestMapping("/getTemplateList")
 	@ResponseBody
 	public List<LineGraphTemplateDto> getTemplateList(){
 		List<LineGraphTemplateDto> list = linegraphTemplateSrtvice.getTemplateList();
 		return list;
 	}
+	
+	//指定了系列、星的情况下获取模板列表
 	
 	@RequestMapping(value = "/saveTotemplate", method = RequestMethod.POST)
 	@ResponseBody
@@ -70,12 +74,12 @@ public class TmplParamController {
 		} catch (Exception e) {
 			//e.printStackTrace();
 			jsonMsg.setSuccess(false);
-			jsonMsg.setMsg("删除系列出错！");
+			jsonMsg.setMsg("删除模板出错！");
 			jsonMsg.setObj(e.getMessage());
 			//return jsonMsg;
 		}
 		jsonMsg.setSuccess(true);
-		jsonMsg.setMsg("删除系列成功！");
+		jsonMsg.setMsg("删除模板成功！");
 	    //return jsonMsg;
 	}
 	

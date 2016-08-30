@@ -1,6 +1,7 @@
 package DataAn.mongo.db;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -46,24 +47,50 @@ public class FindPointByYearEnd extends Thread{
 	@Override
 	public void run() {
 		// TODO Auto-generated method stub
-		super.run();
-		Date endDate = DateUtil.format(params[1]);
-		String year_end = (DateUtil.getYear(endDate))+"";
+		super.run();		
+		Calendar date2 = Calendar.getInstance();
+		date2.setTime(DateUtil.format(params[1]));
+		Date endDate = date2.getTime();
+		int year_end = (DateUtil.getYear(endDate));
+		Calendar date1 = Calendar.getInstance();
+		date1.set(year_end, 0, 0, 0, 0, 0);
+		Date year_end_n = date1.getTime();
 		//paramCount = (float)50;		
-		long paramCount = collection.count(Filters.and(Filters.lte("year", year_end),Filters.gte("datetime", params[1])));
-		System.out.println(DateUtil.getYear(endDate)+"数据总数："+paramCount);
+//		long paramCount = collection.count(Filters.and(Filters.gte("datetime", year_end_n),Filters.lte("datetime", endDate)));
+//		System.out.println(DateUtil.getYear(endDate)+"数据总数："+paramCount);
 		//获取所有的结果集合
-		FindIterable<Document> document_It = collection.find(Filters.and(Filters.and(Filters.gte("year", year_end),Filters.lte("datetime", params[1]))));
+		FindIterable<Document> document_It = collection.find(Filters.and(Filters.and(Filters.gte("datetime", year_end_n),Filters.lte("datetime", endDate))));
 		
 		if(document_It!=null){			
 			// cursor = document_It.iterator();
-			YearAndParamDataDto yearAndParam = new YearAndParamDataDto();
-			getResults(document_It.iterator(), yearAndParam,params);	
+			YearAndParamDataDto yearAndParam = new YearAndParamDataDto();			
+			List<String> yearValue=new ArrayList<String>();
+			List<String> paramValue =  new ArrayList<String>();
+			int count_for = 0;
+			long start = System.currentTimeMillis();
+			System.out.println(start);						
+			for (Document doc : document_It) {
+				if(count_for%getPoint==0){
+			    //	if(doc.getString(params[2])!=null){	
+			    	yearValue.add(DateUtil.format(doc.getDate("datetime")));
+			        paramValue.add(doc.getString(params[2]));	
+			    //	}		    
+				}
+				count_for++;
+			}
+			System.out.println(Thread.currentThread().getName()+".....装载完毕"+count_for);
+			long end = System.currentTimeMillis() ;
+			System.out.println(end);
+			System.out.println(end-start);
+		    yearAndParam.setParamValue(paramValue);
+		    yearAndParam.setYearValue(yearValue);	
+			//getResults(document_It.iterator(), yearAndParam,params);	
 
 			try {
 				resultMap.put(series, yearAndParam);
 				System.out.println(Thread.currentThread().getName()+"endYear.....执行完毕");
 				System.out.println(Thread.currentThread().getName()+"....."+year_end);
+				this.interrupt();
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -72,32 +99,33 @@ public class FindPointByYearEnd extends Thread{
 		
 	}
 	
-	private void getResults(MongoCursor<Document> cursor,YearAndParamDataDto yearAndParam,
-			String... params) {
-		try {
-			List<String> yearValue=new ArrayList<String>();
-			List<String> paramValue =  new ArrayList<String>();
-		//	int count=0;
-			System.out.println(Thread.currentThread().getName()+".....执行装载");
-			long count =0;
-		    while (cursor.hasNext()) {		    	
-		    	if(count%getPoint==0){
-		    		Document doc = cursor.next();
-			    	if(doc.getString(params[2])!=null){	
-			    	yearValue.add(doc.getString("datetime"));
-			        paramValue.add(doc.getString(params[2]));	
-			    	}		    	
-		    	}		    	
-		       count++;
-		    }
-		    System.out.println(Thread.currentThread().getName()+".....装载完毕");
-		    yearAndParam.setParamValue(paramValue);
-		    yearAndParam.setYearValue(yearValue);
-	 
-		} finally {
-		    cursor.close();
-		}
-	}
+//	private void getResults(MongoCursor<Document> cursor,YearAndParamDataDto yearAndParam,
+//			String... params) {
+//		try {
+//			List<String> yearValue=new ArrayList<String>();
+//			List<String> paramValue =  new ArrayList<String>();
+//		//	int count=0;
+//			System.out.println(Thread.currentThread().getName()+".....执行装载");
+//			long count =0;
+//		    while (cursor.hasNext()) {		    	
+//		    	if(count%getPoint==0){
+//		    		Document doc = cursor.next();
+//			    	if(doc.getString(params[2])!=null){	
+//			    	yearValue.add(doc.getDate("datetime")+"");
+//			        paramValue.add(doc.getString(params[2]));	
+//			    	}		    	
+//		    	}		    	
+//		       count++;
+//		    }
+//		    System.out.println(Thread.currentThread().getName()+".....装载完毕"+count);
+//		    System.out.println(Thread.currentThread().getName()+".....装载完毕");
+//		    yearAndParam.setParamValue(paramValue);
+//		    yearAndParam.setYearValue(yearValue);
+//	 
+//		} finally {
+//		    cursor.close();
+//		}
+//	}
 	
 	
 	

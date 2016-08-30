@@ -1,17 +1,21 @@
 <@override name="content_left">
-	<div class="sidebar" id="sidebar">	
-	    <div class="sidebar-collapse" id="sidebar-collapse">
-	        <i class="icon-double-angle-left" data-icon1="icon-double-angle-left" data-icon2="icon-double-angle-right"></i>
-	    	<ul id="left_con" class="nav nav-list">
-		    	<li><a href="#"> <i class="glyphicon glyphicon-certificate"></i> <span
-					class="menu-text"> 飞轮 </span>
-				</a></li>
-	
-				<li><a href="#"> <i class="glyphicon glyphicon-certificate"></i> <span
-					class="menu-text"> 陀螺 </span>
-				</a></li>
-			<ul>
-	    </div>	
+	<div class="sidebar" id="sidebar">		    
+	    <ul class="nav nav-list">
+	    	<li>
+				<a href="javascript:void(0);" onclick="$('#SatelliteComponents').html('飞轮');">
+					<i class="glyphicon glyphicon-certificate"></i>
+					<span class="menu-text"> 飞轮 </span>
+				</a>
+			</li>
+			
+			<li>
+				<a href="javascript:void(0);" onclick="$('#SatelliteComponents').html('陀螺');">
+					<i class="glyphicon glyphicon-certificate"></i>
+					<span class="menu-text"> 陀螺 </span>
+				</a>
+			</li>
+	    </ul>
+	    	    	
 	</div>
 </@override>
 <@override name="content_right">	
@@ -129,18 +133,19 @@
 				try{ace.settings.check('breadcrumbs' , 'fixed')}catch(e){}
 			</script>
 			<ul class="breadcrumb">
-				<li>
-					<i class="icon-home home-icon"></i>
-
-					<a href="${base}/conditionMonitoring">${nowSeries}系列</a>
+				<li>					
+					<a href="${base}/conditionMonitoring"><i class="icon-home home-icon"></i></a>
+					<span class="menu-text">${nowSeries}</span>
 				</li>
 	
 				<li>
-
-					<a href="#">${nowStar}星</a>
-
+					<a href="javascript:void(0);"  onclick="this.setAttribute('disabled','disabled')"></a>
+					<span class="menu-text">${nowStar}</span>
 				</li>
-				<li class="active">飞轮</li>
+				
+				<li class="active"  value="">
+					<span class="menu-text" id="SatelliteComponents"></span>					
+				</li>
 			</ul><!-- .breadcrumb -->	
 		</div>	
 		<div class="page-content">
@@ -254,7 +259,7 @@
 		 
 		 
 		 $('#change-search-box').click();
-		 initTemplateTree()
+		 initTemplateTree();
 		 intTemplateList();
 	});
 		
@@ -385,7 +390,6 @@
 	                  }
 	                  selectRow.push( rowObject);
 	                  stringName+=value+",";
-                  }
               }
            groupObject.id=j
            groupObject.secectRow = selectRow;
@@ -451,7 +455,14 @@
         		'templateNmae':templateNmae_dialog,
         		'templateDescription':templateDescription_dialog,
         		'JsonParams':JSON.stringify(paramarray)        	
+        	},
+        	function(data){
+        		//添加模板后刷新常用模板
+        		initTemplateTree();
+        		//添加模板后刷新模板下拉框
+        		intTemplateList(); 
         	})
+        	      	
         }
 
         //删除已经生成的分组
@@ -480,7 +491,8 @@
                 
         //初始化选择模板下拉框
        	function intTemplateList(){
-	            var url_templatelist = "getTemplateList";
+	            var url_templatelist = "${base}/getTemplateList";
+	            //var url_templatelist = "getTemplateList";
 	            var source_templatelist =
 	            {
 	                datatype: "json",
@@ -631,6 +643,7 @@
 	                              $("#id_templateTreeGrid").jqxTreeGrid('deleteRow', rowKey);   
 	                            }
 	                            updateButtons('delete');
+	                            intTemplateList();
 	                        }
 	                    });
 	                },              	
@@ -641,7 +654,8 @@
 	                  { text: '最大值',   dataField: 'max', width: 200 },
 	                  { text: '最小值',    dataField: 'min', width: 160 },
 	                  { text: 'Y轴',     dataField: 'yname', width:200, columnType:'custom',
-	                  	cellsRenderer: function (row, column, value, rowData) {if(value=="添加到分组") {return "<input type='button' value='删除模板'></input>"}}, 
+	                  	//cellsRenderer: function (row, column, value, rowData) {if(value=="添加到分组") {return "<input type='button' value='删除模板'></input>"}},
+	                  	cellsRenderer: function (row, column, value, rowData) {if(value=="添加到分组") {return ""}}, 
 	                  	createEditor: function (row, cellValue, editor, cellText, width, height) {
 						  var source = ["y1", "y2"];
 	                      editor.jqxDropDownList({autoDropDownHeight: true, source: source, width: '100%', height: '100%' });		 

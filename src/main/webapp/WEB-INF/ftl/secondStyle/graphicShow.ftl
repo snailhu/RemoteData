@@ -169,6 +169,7 @@
 		</#if>
         
          var options = {
+       //  color:['green'],
             tooltip: {
                 trigger: 'axis',   
            //      formatter: function (params) {
@@ -194,6 +195,8 @@
                     saveAsImage: {}
                 }
             },
+
+            
             xAxis: {
             	// axisLabel: {					
 				//	rotate: 10
@@ -230,6 +233,13 @@
 	                name: n.name,
 	                smooth:true,
 	                yAxisIndex: n.y,
+	                lineStyle:{
+                    	normal:{
+                    		color:'dark',
+                    		width:2,
+
+                    	}
+                    },
 	                data: data["paramValue"]
 	            };
 	            seriesCounter += 1;

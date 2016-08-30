@@ -18,7 +18,7 @@ import com.mongodb.client.model.Filters;
 
 public class FindPointByYear extends Thread{
 	
-	private String year;
+	private Integer year;
 	
 	private HashMap<Integer,YearAndParamDataDto> resultMap;
 	
@@ -32,7 +32,7 @@ public class FindPointByYear extends Thread{
 	private String[] params;
 	public FindPointByYear(
 			Integer series,long getPoint,HashMap<Integer,YearAndParamDataDto> resultMap,
-			MongoCollection<Document> collection, String year,String ...params)  
+			MongoCollection<Document> collection, Integer year,String ...params)  
     {  
 		this.collection=collection;
 		this.resultMap=resultMap;
@@ -58,7 +58,23 @@ public class FindPointByYear extends Thread{
 		if(document_It!=null ){
 			 // cursor = document_It.iterator();
 			YearAndParamDataDto yearAndParam = new YearAndParamDataDto();
-			getResults(document_It.iterator(), yearAndParam,params);	
+//			getResults(document_It.iterator(), yearAndParam,params);	
+			List<String> yearValue=new ArrayList<String>();
+			List<String> paramValue =  new ArrayList<String>();
+			int count_for = 0;
+			for (Document doc : document_It) {
+				if(count_for%getPoint==0){
+			    	//if(doc.getString(params[2])!=null){	
+			    	yearValue.add(DateUtil.format(doc.getDate("datetime")));
+			        paramValue.add(doc.getString(params[2]));	
+			    //	}		    
+				}
+			//	System.out.println(count_for);
+				count_for++;
+			}
+			System.out.println(Thread.currentThread().getName()+".....装载完毕"+count_for);
+		    yearAndParam.setParamValue(paramValue);
+		    yearAndParam.setYearValue(yearValue);	
 			try {
 				resultMap.put(series, yearAndParam);
 				System.out.println(Thread.currentThread().getName()+"year.....执行完毕");
@@ -72,32 +88,33 @@ public class FindPointByYear extends Thread{
 	
 	}
 	
-	private void getResults(MongoCursor<Document> cursor,YearAndParamDataDto yearAndParam,
-			String... params) {
-		try {
-			List<String> yearValue=new ArrayList<String>();
-			List<String> paramValue =  new ArrayList<String>();
-		//	int count=0;
-			System.out.println(Thread.currentThread().getName()+".....执行装载");
-			long count =0;
-		    while (cursor.hasNext()) {		    	
-		    	if(count%getPoint==0){
-		    		Document doc = cursor.next();
-			    	if(doc.getString(params[2])!=null){	
-			    	yearValue.add(doc.getString("datetime"));
-			        paramValue.add(doc.getString(params[2]));	
-			    	}		    	
-		    	}		    	
-		       count++;
-		    }
-		    System.out.println(Thread.currentThread().getName()+".....装载完毕");
-		    yearAndParam.setParamValue(paramValue);
-		    yearAndParam.setYearValue(yearValue);
-	 
-		} finally {
-		    cursor.close();
-		}
-	}
+//	private void getResults(MongoCursor<Document> cursor,YearAndParamDataDto yearAndParam,
+//			String... params) {
+//		try {
+//			List<String> yearValue=new ArrayList<String>();
+//			List<String> paramValue =  new ArrayList<String>();
+//		//	int count=0;
+//			System.out.println(Thread.currentThread().getName()+".....执行装载");
+//			long count =0;
+//		    while (cursor.hasNext()) {		    	
+//		    	if(count%getPoint==0){
+//		    		Document doc = cursor.next();
+//			    	if(doc.getString(params[2])!=null){	
+//			    	yearValue.add(doc.getDate("datetime")+"");
+//			        paramValue.add(doc.getString(params[2]));	
+//			    	}		    	
+//		    	}		    	
+//		       count++;
+//		    }
+//		    System.out.println(Thread.currentThread().getName()+".....装载完毕"+count);
+//		    System.out.println(Thread.currentThread().getName()+".....装载完毕");
+//		    yearAndParam.setParamValue(paramValue);
+//		    yearAndParam.setYearValue(yearValue);
+//	 
+//		} finally {
+//		    cursor.close();
+//		}
+//	}
 	
 		
 	public MongoCollection<Document> getCollection() {
@@ -141,12 +158,13 @@ public class FindPointByYear extends Thread{
 		this.getPoint = getPoint;
 	}
 
-	public String getYear() {
+	public Integer getYear() {
 		return year;
 	}
 
-	public void setYear(String year) {
+	public void setYear(Integer year) {
 		this.year = year;
 	}
+
 	
 }

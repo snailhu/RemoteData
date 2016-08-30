@@ -297,7 +297,7 @@
 	             { text: 'Y轴', dataField:'yname',width:200,columnType:'template',
 					createEditor: function (row, cellValue, editor, cellText, width, height) {
 					  var source = ["Y1", "Y2"];
-					  editor.jqxDropDownList({autoDropDownHeight: true, placeHolder:'请设置Y轴', source: source, width: '100%', height: '100%' });		 
+					  editor.jqxDropDownList({selectedIndex: 0,autoDropDownHeight: true, placeHolder:'请设置Y轴', source: source, width: '100%', height: '100%' });		 
 					},
 					initEditor: function (row, cellValue, editor, cellText, width, height) {
 						editor.jqxDropDownList('selectItem', cellValue);
@@ -369,20 +369,23 @@
           if(rowindex.length>0){        	
               for(i=0;i<rowindex.length;i++){
               	var rowObject={}
-                  var value = rowindex[i].name;
-                  rowObject.id=rowindex[i].id
-                  rowObject.name=rowindex[i].name;
-                  rowObject.max=rowindex[i].max;
-                  rowObject.min=rowindex[i].min;
-                  var yname = rowindex[i].yname;
-                  if(yname=='Y2'){
-                  //这里统一一下（Y1轴的话用大写的‘Y1’,Y2用大写的‘Y2’）
-                	  rowObject.yname=1;
-                  }else{
-	                  rowObject.yname=0;
+                  var parentId = rowindex[i].parentId;
+                  if(parentId != 0){
+	                  var value = rowindex[i].name;
+	                  rowObject.id=rowindex[i].id
+	                  rowObject.name=rowindex[i].name;
+	                  rowObject.max=rowindex[i].max;
+	                  rowObject.min=rowindex[i].min;
+	                  var yname = rowindex[i].yname;
+	                  if(yname=='Y2'){
+	                  //这里统一一下（Y1轴的话用大写的‘Y1’,Y2用大写的‘Y2’）
+	                	  rowObject.yname=1;
+	                  }else{
+		                  rowObject.yname=0;
+	                  }
+	                  selectRow.push( rowObject);
+	                  stringName+=value+",";
                   }
-                  selectRow.push( rowObject);
-                  stringName+=value+",";
               }
            groupObject.id=j
            groupObject.secectRow = selectRow;

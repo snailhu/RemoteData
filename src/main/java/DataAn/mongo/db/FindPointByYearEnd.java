@@ -56,8 +56,8 @@ public class FindPointByYearEnd extends Thread{
 		date1.set(year_end, 0, 0, 0, 0, 0);
 		Date year_end_n = date1.getTime();
 		//paramCount = (float)50;		
-		long paramCount = collection.count(Filters.and(Filters.gte("datetime", year_end_n),Filters.lte("datetime", endDate)));
-		System.out.println(DateUtil.getYear(endDate)+"数据总数："+paramCount);
+//		long paramCount = collection.count(Filters.and(Filters.gte("datetime", year_end_n),Filters.lte("datetime", endDate)));
+//		System.out.println(DateUtil.getYear(endDate)+"数据总数："+paramCount);
 		//获取所有的结果集合
 		FindIterable<Document> document_It = collection.find(Filters.and(Filters.and(Filters.gte("datetime", year_end_n),Filters.lte("datetime", endDate))));
 		
@@ -67,6 +67,8 @@ public class FindPointByYearEnd extends Thread{
 			List<String> yearValue=new ArrayList<String>();
 			List<String> paramValue =  new ArrayList<String>();
 			int count_for = 0;
+			long start = System.currentTimeMillis();
+			System.out.println(start);						
 			for (Document doc : document_It) {
 				if(count_for%getPoint==0){
 			    //	if(doc.getString(params[2])!=null){	
@@ -77,6 +79,9 @@ public class FindPointByYearEnd extends Thread{
 				count_for++;
 			}
 			System.out.println(Thread.currentThread().getName()+".....装载完毕"+count_for);
+			long end = System.currentTimeMillis() ;
+			System.out.println(end);
+			System.out.println(end-start);
 		    yearAndParam.setParamValue(paramValue);
 		    yearAndParam.setYearValue(yearValue);	
 			//getResults(document_It.iterator(), yearAndParam,params);	
@@ -85,6 +90,7 @@ public class FindPointByYearEnd extends Thread{
 				resultMap.put(series, yearAndParam);
 				System.out.println(Thread.currentThread().getName()+"endYear.....执行完毕");
 				System.out.println(Thread.currentThread().getName()+"....."+year_end);
+				this.interrupt();
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

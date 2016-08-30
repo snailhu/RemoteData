@@ -67,6 +67,8 @@ public class FindPointByYearHead extends Thread {
 			List<String> yearValue=new ArrayList<String>();
 			List<String> paramValue =  new ArrayList<String>();
 			int count_for = 0;
+			long start = System.currentTimeMillis();
+			System.out.println(start);			
 			for (Document doc : document_It) {
 				if(count_for%getPoint==0){
 			    //	if(doc.getString(params[2])!=null){	
@@ -77,6 +79,9 @@ public class FindPointByYearHead extends Thread {
 				count_for++;
 			}
 			System.out.println(Thread.currentThread().getName()+".....装载完毕"+count_for);
+			long end = System.currentTimeMillis() ;
+			System.out.println(end);
+			System.out.println(end-start);
 		    yearAndParam.setParamValue(paramValue);
 		    yearAndParam.setYearValue(yearValue);	
 			try {
@@ -84,6 +89,7 @@ public class FindPointByYearHead extends Thread {
 				resultMap.put(1, yearAndParam);
 				System.out.println(Thread.currentThread().getName()+"HeadYear.....执行完毕");
 				System.out.println(Thread.currentThread().getName()+"....."+DateUtil.getYear(startDate));
+				this.interrupt();
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

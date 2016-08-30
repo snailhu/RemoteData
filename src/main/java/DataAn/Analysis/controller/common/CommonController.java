@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -27,6 +30,8 @@ import DataAn.mongo.db.MongodbUtil;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import redis.clients.jedis.Jedis;
+
 import com.alibaba.fastjson.JSON;
 
 import DataAn.Analysis.dto.AllJsonData;
@@ -35,6 +40,8 @@ import DataAn.Analysis.dto.ParamGroup;
 import DataAn.Analysis.dto.SingleParamDto;
 import DataAn.Analysis.dto.SeriesBtnMenu;
 import DataAn.Analysis.dto.YearAndParamDataDto;
+import DataAn.Analysis.redis.RedisPoolUtil;
+import DataAn.Analysis.redis.RedisUtil;
 import DataAn.Util.EhCache;
 import DataAn.Util.JsonStringToObj;
 import DataAn.galaxyManager.domain.*;
@@ -97,19 +104,19 @@ public class CommonController {
 	
 
 	
-	@RequestMapping(value = "/getDate", method = RequestMethod.GET)
-	@ResponseBody
-	public List<String> getDate(
-			HttpServletRequest request,
-			HttpServletResponse response,
-			@RequestParam(value="start",required = true) String start,
-			@RequestParam(value="end",required = true) String end,
-			@RequestParam(value="paramSize",required = true) Integer paramSize
-			) throws Exception{
-			MongodbUtil mg = MongodbUtil.getInstance();
-			List<String> result = mg.getDateList(paramSize,new String[]{start,end});
-			return result;
-		}
+//	@RequestMapping(value = "/getDate", method = RequestMethod.GET)
+//	@ResponseBody
+//	public List<String> getDate(
+//			HttpServletRequest request,
+//			HttpServletResponse response,
+//			@RequestParam(value="start",required = true) String start,
+//			@RequestParam(value="end",required = true) String end,
+//			@RequestParam(value="paramSize",required = true) Integer paramSize
+//			) throws Exception{
+//			MongodbUtil mg = MongodbUtil.getInstance();
+//			List<String> result = mg.getDateList(paramSize,new String[]{start,end});
+//			return result;
+//		}
 	
 	
 	@RequestMapping(value = "/getMenus", method = RequestMethod.GET)
@@ -167,13 +174,31 @@ public class CommonController {
 	public YearAndParamDataDto getData(
 			HttpServletRequest request,
 			HttpServletResponse response,
-			@RequestParam(value="filename",required = true) String filename,
+			@RequestParam(value="filename",required = true) final String filename,
 			@RequestParam(value="start",required = true) String start,
 			@RequestParam(value="end",required = true) String end,
 			@RequestParam(value="paramSize",required = true) Integer paramSize
 			) throws Exception{
+		final String key = start+end;
+		Jedis jedis = RedisPoolUtil.buildJedisPool().getResource(); 
+		if(jedis.exists((key+"year"+filename).getBytes()) && jedis.exists((key+"param"+filename).getBytes())){
+			List<String> year_list = RedisPoolUtil.getList(key+"year"+filename);
+			List<String> parm_list = RedisPoolUtil.getList(key+"param"+filename);
+			YearAndParamDataDto result =  new YearAndParamDataDto();
+			result.setParamValue(parm_list);
+			result.setYearValue(year_list);
+			return result;	
+		}
 		MongodbUtil mg = MongodbUtil.getInstance();	
-		YearAndParamDataDto result = mg.getDataList(paramSize,new String[]{start,end,filename});
+		final YearAndParamDataDto result = mg.getDataList(paramSize,new String[]{start,end,filename});				
+		ThreadPoolExecutor executor = new ThreadPoolExecutor(5, 10, 200, TimeUnit.SECONDS,
+        new ArrayBlockingQueue<Runnable>(5));
+		executor.execute(new Runnable() {
+	            public void run() {
+	            	RedisPoolUtil.saveList(key+"year"+filename, result.getYearValue());
+	        		RedisPoolUtil.saveList(key+"param"+filename, result.getParamValue());				
+	            }
+	        });
 		return result;						
 	}
 	

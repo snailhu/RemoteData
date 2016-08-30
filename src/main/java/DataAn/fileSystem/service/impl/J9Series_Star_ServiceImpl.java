@@ -253,6 +253,7 @@ public class J9Series_Star_ServiceImpl implements IJ9Series_Star_Service{
 					child.setParentId(parentId);
 					child.setName(flyWheelData); //设置中文
 					child.setValue(map.get(flyWheelData)); //设置英文
+					child.setYname("Y1");
 					children.add(child);
 					count ++;
 				}

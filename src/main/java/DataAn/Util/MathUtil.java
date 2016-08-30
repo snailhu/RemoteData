@@ -42,7 +42,7 @@ public class MathUtil {
 		
 		System.out.print((endDate.getTime() - startDate.getTime())/(1000*60*60*24));
 		System.out.print((endDate.getDate() - startDate.getDate()));
-		
+		String a = "abc";
 	}
 	
 	

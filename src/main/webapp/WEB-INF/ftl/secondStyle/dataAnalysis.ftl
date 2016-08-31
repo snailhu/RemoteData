@@ -300,6 +300,7 @@
 	             { text: '最大值', dataField: 'max', width: 200 },
 	             { text: '最小值', dataField: 'min', width: 160 },
 	             { text: 'Y轴', dataField:'yname',width:200,columnType:'template',
+	             	cellsRenderer: function (row, column, value, rowData) {if(value=="0") {return "Y1"};if(value=="1"){return "Y2"}},
 					createEditor: function (row, cellValue, editor, cellText, width, height) {
 					  var source = ["Y1", "Y2"];
 					  editor.jqxDropDownList({selectedIndex: 0,autoDropDownHeight: true, placeHolder:'请设置Y轴', source: source, width: '100%', height: '100%' });		 
@@ -383,13 +384,14 @@
 	                  rowObject.min=rowindex[i].min;
 	                  var yname = rowindex[i].yname;
 	                  if(yname=='Y2'){
-	                  //这里统一一下（Y1轴的话用大写的‘Y1’,Y2用大写的‘Y2’）
+	                  //这里统一一下（Y1轴的话用大写的‘Y1’,Y2轴用大写的‘Y2’）
 	                	  rowObject.yname=1;
 	                  }else{
 		                  rowObject.yname=0;
 	                  }
 	                  selectRow.push( rowObject);
 	                  stringName+=value+",";
+              }
               }
            groupObject.id=j
            groupObject.secectRow = selectRow;
@@ -655,9 +657,9 @@
 	                  { text: '最小值',    dataField: 'min', width: 160 },
 	                  { text: 'Y轴',     dataField: 'yname', width:200, columnType:'custom',
 	                  	//cellsRenderer: function (row, column, value, rowData) {if(value=="添加到分组") {return "<input type='button' value='删除模板'></input>"}},
-	                  	cellsRenderer: function (row, column, value, rowData) {if(value=="添加到分组") {return ""}}, 
+	                  	cellsRenderer: function (row, column, value, rowData) { if(value=="0") {return "Y1";} else if(value=="1"){return "Y2"} else{ return "";}}, 
 	                  	createEditor: function (row, cellValue, editor, cellText, width, height) {
-						  var source = ["y1", "y2"];
+						  var source = ["Y1", "Y2"];
 	                      editor.jqxDropDownList({autoDropDownHeight: true, source: source, width: '100%', height: '100%' });		 
 						},
 						initEditor: function (row, cellValue, editor, cellText, width, height) {

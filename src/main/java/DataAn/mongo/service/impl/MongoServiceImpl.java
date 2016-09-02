@@ -1,9 +1,12 @@
 package DataAn.mongo.service.impl;
 
 import java.util.List;
+
 import org.bson.Document;
 import org.springframework.stereotype.Service;
+
 import com.mongodb.client.MongoCursor;
+
 import DataAn.common.utils.DateUtil;
 import DataAn.fileSystem.option.J9SeriesType;
 import DataAn.mongo.client.MongodbUtil;
@@ -24,12 +27,13 @@ public class MongoServiceImpl implements IMongoService{
 	}
 
 	@Override
-	public void saveCSVData(String series, String star, String date,
+	public void saveCSVData(String series, String star,String paramType, String date,
 			List<Document> documents, String versions) throws Exception {
-//		String databaseName = InitMongo.getDataBaseNameBySeriesAndStar(series, star);
-		String databaseName = InitMongo.DATABASE_TEST;
+		String databaseName = InitMongo.getDataBaseNameBySeriesAndStar(series, star);
+//		String databaseName = InitMongo.DATABASE_TEST;
 		String collectionName = DateUtil.formatString(date, "yyyy-MM-dd", "yyyy");
-		collectionName = "tb" + collectionName;
+		//collectionName = "tb" + collectionName;
+		collectionName = paramType + collectionName;
 		try {
 			mg.insertMany(databaseName, collectionName, documents);
 		} catch (Exception e) {

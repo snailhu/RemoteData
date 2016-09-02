@@ -4,58 +4,69 @@ import java.util.List;
 
 /**
  * 分页对象
- * @author Administrator
- *
- * @param <T>
  */
 public class Pager<T> {
-	/**
-	 * 分页的大小
-	 */
-	private int size;
-	/**
-	 * 分页的起始页
-	 */
-	private int offset;
-	/**
-	 * 分页的总页数
-	 */
-	private int page_count;
-	/**
-	 * 当前页数
-	 */	
-	private int current_page;
-	/**
-	 * 总记录数
-	 */
-	private long total;
-	/**
-	 * 分页的数据
-	 */
+	/** 分页的大小 */
+	private int pageSize;
+	/** 分页的起始页*/
+	private int pageIndex;
+	/** 总记录数 */
+	private long totalCount;
+	//总页数
+    private Long totalPages;
+	/** 分页的数据 */
 	private List<T> datas;
 	
-	public int getSize() {
-		return size;
+	
+	public Pager() {
+		super();
 	}
-	public void setSize(int size) {
-		this.size = size;
+
+	public Pager(int pageSize, int pageIndex, long totalCount, List<T> datas) {
+		super();
+		this.pageSize = pageSize;
+		this.pageIndex = pageIndex;
+		this.totalCount = totalCount;
+		this.totalPages = totalCount/pageSize;
+    	if (totalCount%pageSize>0) {
+			this.totalPages++;
+		}
+		this.datas = datas;
 	}
-	public int getOffset() {
-		return offset;
+	
+	public int getPageSize() {
+		return pageSize;
 	}
-	public void setOffset(int offset) {
-		this.offset = offset;
+	public void setPageSize(int pageSize) {
+		this.pageSize = pageSize;
 	}
-	public long getTotal() {
-		return total;
+	public int getPageIndex() {
+		return pageIndex;
 	}
-	public void setTotal(long total) {
-		this.total = total;
+	public void setPageIndex(int pageIndex) {
+		this.pageIndex = pageIndex;
 	}
+	public long getTotalCount() {
+		return totalCount;
+	}
+	public void setTotalCount(long totalCount) {
+		this.totalCount = totalCount;
+	}
+	
+	public Long getTotalPages() {
+		return totalPages;
+	}
+
+	public void setTotalPages(Long totalPages) {
+		this.totalPages = totalPages;
+	}
+
 	public List<T> getDatas() {
 		return datas;
 	}
 	public void setDatas(List<T> datas) {
 		this.datas = datas;
 	}
+	
+	
 }

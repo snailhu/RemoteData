@@ -34,6 +34,6 @@ public class MongoDfsDbTest {
 	@Test
 	public void downLoad() throws Exception{
 		String id = "2ad4350b06394d618c8bb736dec2732a";
-		fs.downLoad(id, "d:/temp/");
+		fs.downLoadToLocal(id, "d:/temp/");
 	}
 }

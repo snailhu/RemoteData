@@ -123,7 +123,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <!-- 		</div> -->
 		<div class="page-content" id="page-content">
 			<div class="page-header" style="padding-bottom: 10px; /**margin: -5px 0px 5px;*/">
-				<h1>${nowSeries}-${nowStar}星文件管理</h1>
+				<h1>${nowSeries}系列-${nowStar}星-${nowParameterTypeName}文件管理</h1>
 			</div>
 			
 			<!-- /.page-header -->
@@ -238,6 +238,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	  var nowSeries = '${nowSeries}';
 	  var nowStar = '${nowStar}';
 	  var nowDirId = '${nowDirId}';
+	  var nowParamType = '${nowParameterTypeValue}';
 	  if(nowSeries == ''){
 		nowSeries = 'j9';
 	  }
@@ -247,7 +248,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	  if(nowDirId == ''){
 		nowDirId = 0;		  
 	  }
-	  url='<%=request.getContextPath()%>/admin/file/getList/'+nowSeries+'/'+nowStar+'/'+nowDirId+'/';
+	  if(nowParamType == ''){
+		  nowParamType = 'flywheel';		  
+	  }
+	  url='<%=request.getContextPath()%>/admin/file/getList/'+nowSeries+'/'+nowStar+'/'+nowParamType+'/'+nowDirId+'/';
 	  $(function () {
 	      fsGrid = $('#fsList').datagrid({
 	          url: url,
@@ -294,20 +298,15 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	    	  $("[name='form-fileType-checkbox']:checked").each(function(){
 	    		  fileTypes.push($(this).val());
 	    	  });
-// 	    	  console.log('beginTime:' + beginTime);
-// 	    	  console.log('endTime:' + endTime);
-// 	    	  console.log('fileTypes:'+fileTypes.join(','));	
-// 	    	  console.log('series:'+nowSeries);
-// 	    	  console.log('star:'+nowStar);
-// 	    	  console.log('dirId:'+nowDirId);
 	    	  fsGrid.datagrid('load', {
 				  series: nowSeries,
 				  star: nowStar,
+				  paramType: nowParamType,
 				  dirId: nowDirId,
 				  beginTime: beginTime,
 				  endTime: endTime,
 				  fileTypes:fileTypes.join(',')
-		              });
+		        });
 		  });
 	  });
 	
@@ -317,6 +316,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		  fsGrid.datagrid('load', {
 			  series: nowSeries,
 			  star: nowStar,
+			  paramType: nowParamType,
 			  dirId: dirId
 	              });
 		  var fileCatalog = $('#fileCatalog');
@@ -362,7 +362,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		  var ids = [];
 		  var rows = fsGrid.datagrid('getSelections');
 	      if (rows.length > 0) {
-// 	    	  alert(rows.length);
 	    	  if (rows.length == 1) {
 	    		  if(rows[0].type == 'dir'){
 	    			  $.messager.confirm('提示', '确定要下载整个目录吗？', function (r) {

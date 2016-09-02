@@ -17,7 +17,7 @@ import DataAn.Util.EhCache;
 import DataAn.common.utils.DateUtil;
 import DataAn.fileSystem.dao.IDateParametersDao;
 import DataAn.fileSystem.domain.DateParameters;
-import DataAn.fileSystem.option.J9Series_Star_ParameterGroupType;
+import DataAn.fileSystem.option.J9Series_Star_ParameterType;
 import DataAn.fileSystem.service.IJ9Series_Star_Service;
 import DataAn.mongo.db.MongodbUtil;
 
@@ -71,7 +71,7 @@ public class J9Series_Star_ServiceImpl implements IJ9Series_Star_Service{
 					simplyZh_and_enMap.put(parameter.split(":")[1] + "-时间不连续", map.get(parameter));
 				}
 			}
-			List<String> flyWheelDataTypes = J9Series_Star_ParameterGroupType.getFlywheelTypeOnParams();
+			List<String> flyWheelDataTypes = J9Series_Star_ParameterType.getFlywheelTypeOnParams();
 			return this.getFlyWheelOrTopParameterList(simplyZh_and_enMap,flyWheelDataTypes);
 		}
 		return null;
@@ -83,8 +83,8 @@ public class J9Series_Star_ServiceImpl implements IJ9Series_Star_Service{
 		List<ConstraintDto> list = (List<ConstraintDto>) ehCache.getCacheElement("flyWheelParameterList");
 		if(list == null || list.size() == 0){
 //			System.out.println("getFlyWheelParameterList cache is null");
-			String type = J9Series_Star_ParameterGroupType.FLYWHEEL.getName();
-			List<String> flyWheelDataTypes = J9Series_Star_ParameterGroupType.getFlywheelTypeOnName();
+			String type = J9Series_Star_ParameterType.FLYWHEEL.getName();
+			List<String> flyWheelDataTypes = J9Series_Star_ParameterType.getFlywheelTypeOnName();
 			Map<String,String> map = this.getAllParameterList_simplyZh_and_en(this.getAllParameterList_allZh_and_enByOption(type,flyWheelDataTypes));
 			list = this.getFlyWheelOrTopParameterList(map,flyWheelDataTypes);	
 			ehCache.addToCache("flyWheelParameterList", list);
@@ -98,10 +98,10 @@ public class J9Series_Star_ServiceImpl implements IJ9Series_Star_Service{
 		List<ConstraintDto> list = (List<ConstraintDto>) ehCache.getCacheElement("topParameterList");
 		if(list == null || list.size() == 0){
 //			System.out.println("getTopParameterList cache is null");
-			String type = J9Series_Star_ParameterGroupType.TOP.getName();
-			List<String> params = J9Series_Star_ParameterGroupType.getTopTypeOnName();
+			String type = J9Series_Star_ParameterType.TOP.getName();
+			List<String> params = J9Series_Star_ParameterType.getTopTypeOnName();
 			Map<String,String> map = this.getAllParameterList_simplyZh_and_en(this.getAllParameterList_allZh_and_enByOption(type,params));
-			List<String> topDataTypes = J9Series_Star_ParameterGroupType.getTopTypeOnName();
+			List<String> topDataTypes = J9Series_Star_ParameterType.getTopTypeOnName();
 			list = this.getFlyWheelOrTopParameterList(map,topDataTypes);			
 			ehCache.addToCache("topParameterList", list);
 		}

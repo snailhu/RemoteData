@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.text.DecimalFormat;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -19,6 +20,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import DataAn.common.pageModel.Pager;
 import DataAn.fileSystem.domain.VirtualFileSystem;
 import DataAn.fileSystem.dto.FileDto;
+import DataAn.fileSystem.option.J9Series_Star_ParameterType;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -39,43 +41,9 @@ public class VirtualFileSystemServiceTest {
 	}
 	
 	@Test
-	public void saveFilesThread() throws Exception{
-		String sPath = "D:\\temp\\data\\2016\\1-6";
-		if (!sPath.endsWith(File.separator)) {
-			sPath = sPath + File.separator;
-		}
-		File dirFile = new File(sPath);
-		if (dirFile.exists() && dirFile.isDirectory()) {
-			File[] files = dirFile.listFiles();
-			for (final File file : files) {
-				new Thread(new Runnable(){
-					@Override
-					public void run() {
-						long begin = System.currentTimeMillis();
-						try {
-							Map<String, FileDto> map = new HashMap<String,FileDto>();
-							FileDto csvFileDto = new FileDto();
-							File csvFile = new File(file.getAbsolutePath());
-							InputStream csvInput = new FileInputStream(csvFile);
-							csvFileDto.setFileName(csvFile.getName());
-							csvFileDto.setFileSize(csvFile.length());
-							csvFileDto.setIn(csvInput);
-							map.put("csv", csvFileDto);			
-							fileService.saveFile(map);
-						} catch (Exception e) {
-							e.printStackTrace();
-						}				
-						long end = System.currentTimeMillis();
-						Thread current = Thread.currentThread();  
-						System.out.println(current.getName() + "-time: " + (end - begin));
-					}}).start();
-			}
-		}
-	}
-	@Test
 	public void saveFiles() throws Exception{
 		long begin = System.currentTimeMillis();
-		String sPath = "E:\\data\\2011\\1";
+		String sPath = "D:\\temp\\data\\2016\\1-6";
 		if (!sPath.endsWith(File.separator)) {
 			sPath = sPath + File.separator;
 		}
@@ -93,13 +61,17 @@ public class VirtualFileSystemServiceTest {
 	
 	public void saveFile(String csv,String dat) throws Exception{
 		Map<String, FileDto> map = new HashMap<String,FileDto>();
+		DecimalFormat df = new DecimalFormat("#.00");
 		if(csv != null && !csv.equals("")){
 			FileDto csvFileDto = new FileDto();
 			File csvFile = new File(csv);
 			InputStream csvInput = new FileInputStream(csvFile);
 			csvFileDto.setFileName(csvFile.getName());
-			csvFileDto.setFileSize(csvFile.length());
+			double size = csvFile.length() / 1024 /1024;
+			String strSize = df.format(size);
+			csvFileDto.setFileSize(Float.parseFloat(strSize));
 			csvFileDto.setIn(csvInput);
+			csvFileDto.setParameterType("flywheel");
 			map.put("csv", csvFileDto);			
 		}
 		if(dat != null && !dat.equals("")){
@@ -107,8 +79,11 @@ public class VirtualFileSystemServiceTest {
 			File datFile = new File(dat);
 			InputStream datInput = new FileInputStream(datFile);
 			datFileDto.setFileName(datFile.getName());
-			datFileDto.setFileSize(datFile.length());
+			double size = datFile.length() / 1024 /1024;
+			String strSize = df.format(size);
+			datFileDto.setFileSize(Float.parseFloat(strSize));
 			datFileDto.setIn(datInput);
+			datFileDto.setParameterType("top");
 			map.put("dat", datFileDto);			
 		}
 		fileService.saveFile(map);
@@ -156,7 +131,8 @@ public class VirtualFileSystemServiceTest {
 		String beginTime = "";
 		String endTime = "";
 		String dataTypes = "";
-		Pager pager = fileService.getMongoFSList(pageIndex, pageSize, series, star, dirId, beginTime, endTime, dataTypes);
+		String paramType = J9Series_Star_ParameterType.FLYWHEEL.getValue();
+		Pager pager = fileService.getMongoFSList(pageIndex, pageSize, series, star, paramType, dirId, beginTime, endTime, dataTypes);
 		List<VirtualFileSystem> list =pager.getRows();
 		for (VirtualFileSystem fs : list) {
 			System.out.println(fs);

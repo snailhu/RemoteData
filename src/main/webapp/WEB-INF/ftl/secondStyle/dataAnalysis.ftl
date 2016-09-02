@@ -375,6 +375,7 @@
               for(i=0;i<rowindex.length;i++){
               	var rowObject={}
                   var parentId = rowindex[i].parentId;
+              	  console.log("parentId: " + parentId);
                   if(parentId != 0){
 	                  var value = rowindex[i].name;
 	                  rowObject.id=rowindex[i].id
@@ -390,6 +391,7 @@
 	                  }
 	                  selectRow.push( rowObject);
 	                  stringName+=value+",";
+                  }
               }
            groupObject.id=j
            groupObject.secectRow = selectRow;

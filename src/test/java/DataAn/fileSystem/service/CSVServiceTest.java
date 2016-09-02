@@ -32,7 +32,7 @@ import DataAn.Analysis.dto.ConstraintDto;
 import DataAn.common.utils.DateUtil;
 import DataAn.common.utils.UUIDGeneratorUtil;
 import DataAn.fileSystem.dto.CSVFileDataResultDto;
-import DataAn.fileSystem.option.J9Series_Star_ParameterGroupType;
+import DataAn.fileSystem.option.J9Series_Star_ParameterType;
 import DataAn.fileSystem.service.impl.CSVServiceImpl;
 import DataAn.mongo.db.MongodbUtil;
 
@@ -115,73 +115,33 @@ public class CSVServiceTest {
 		System.out.println("time: " + (end - begin));
 	}
 	
-	@Test
-	public void readCSVFileOfJsonToDoc(){
-		long begin = System.currentTimeMillis();
-		try {
-			List<Document> list = csvService.readCSVFileOfJsonToDoc(filePath);
-			System.out.println("size: " + list.size());
-			for (Document document : list) {
-				System.out.println(document);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		long end = System.currentTimeMillis();
-		System.out.println("time: " + (end - begin));
-	}
-	
-	@Test
-	public void readCSVFile(){
-		long begin = System.currentTimeMillis();
-		try {
-			List<Map<String,String>> list = csvService.readCSVFile(filePath);
-			System.out.println(JSON.toJSONString(list));
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		long end = System.currentTimeMillis();
-		System.out.println("time: " + (end - begin));
-	}
-	@Test
-	public void readCSVFileToJson(){
-		long begin = System.currentTimeMillis();
-		try {
-			String json = csvService.readCSVFileOfJson(filePath);
-			System.out.println(json);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		long end = System.currentTimeMillis();
-		System.out.println("time: " + (end - begin));
-	}
-	
 //	@Test
 	public void testWriteCSVByJavacsv(int year,int month,int day) throws Exception{
-		String type = J9Series_Star_ParameterGroupType.FLYWHEEL.getName();
-		//"电流","转速","温度","指令","供电状态","角动量"
-		List<String> params = J9Series_Star_ParameterGroupType.getFlywheelTypeOnParams();
-		Map<String,String> map =  j9Series_Star_Service.getAllParameterList_allZh_and_enByOption(type,params);
+		String type = J9Series_Star_ParameterType.TOP.getName();
+		//飞轮-->"电流","转速","温度","指令","供电状态","角动量"
+		List<String> params = J9Series_Star_ParameterType.getFlywheelTypeOnParams();
+		Map<String,String> map =  j9Series_Star_Service.getAllParameterList_allZh_and_enByOption(type,null);
 		Set<String> keys = map.keySet();
 		List<String> titleList = new ArrayList<String>();
 		titleList.add("时间");
 		int count = 1;
 		for (String key: keys) {
 			//让参数动态变化
-			if(day<15){
-				if(count > (day + 3)){
-					titleList.add(key);				
-				}				
-			}else{
-				if(count > (day - 3)){
-					titleList.add(key);				
-				}
-			}
+//			if(day<15){
+//				if(count > (day + 3)){
+//					titleList.add(key);				
+//				}				
+//			}else{
+//				if(count > (day - 3)){
+//					titleList.add(key);				
+//				}
+//			}
+			titleList.add(key);
 			count++;
 		}
 		
 //		String outputFile = "C:\\j9-02--2016-01-10.csv";
-		String dirPath = "E:\\data\\"+year+"\\"+month;
+		String dirPath = "E:\\data\\top\\"+year+"\\"+month;
 		File dir = new File(dirPath);
 		if(!dir.exists()){
 			dir.mkdirs();
@@ -219,8 +179,10 @@ public class CSVServiceTest {
 			tempDate = new Date(time);
 			csvOutput.write(DateUtil.format(tempDate, format));
 			for (int i = 1; i < titleList.size(); i++) {
-				Double data = 5 * i + Math.random() * Math.random() * 10;
-				
+				Double data = Math.random() * Math.random() * 1000;
+				if(data < 100){
+					data += 100;
+				}
 				csvOutput.write(df.format(data));					
 			}
 			csvOutput.endRecord();

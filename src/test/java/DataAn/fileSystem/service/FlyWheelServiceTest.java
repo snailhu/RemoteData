@@ -6,7 +6,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import DataAn.Analysis.dto.ConstraintDto;
-import DataAn.fileSystem.option.J9Series_Star_ParameterGroupType;
+import DataAn.fileSystem.option.J9Series_Star_ParameterType;
 import DataAn.fileSystem.service.impl.FlyWheelServiceImpl;
 
 public class FlyWheelServiceTest {

@@ -2,8 +2,6 @@ package DataAn.common.dao;
 
 /**
  * 用来传递列表对象的ThreadLocal数据
- * @author Administrator
- *
  */
 public class SystemContext {
 	/**

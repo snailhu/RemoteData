@@ -9,12 +9,17 @@ import java.util.List;
  * @author Shewp
  * @date 2016年7月26日
  */
-public enum J9Series_Star_ParameterGroupType {
+public enum J9Series_Star_ParameterType {
 	
 	/**飞轮*/
 	FLYWHEEL {
 		public String getName() {
 			return "飞轮";
+		}
+
+		@Override
+		public String getValue() {
+			return "flywheel";
 		}
 	},
 	/**陀螺*/
@@ -22,9 +27,28 @@ public enum J9Series_Star_ParameterGroupType {
 		public String getName() {
 			return "陀螺";
 		}
+
+		@Override
+		public String getValue() {
+			return "top";
+		}
 	};
 	public abstract String getName();
 	
+	public abstract String getValue();
+	
+	public static J9Series_Star_ParameterType getJ9SeriesStarParameterType(String type) {
+		switch (type) {
+		case "flywheel":
+			return J9Series_Star_ParameterType.FLYWHEEL;
+			
+		case "top":
+			return J9Series_Star_ParameterType.TOP;
+			
+		default:
+			return null;
+		}
+	}
 	/**
 	* Description: 获取飞轮数据类型 通过名称分类
 	* @return  

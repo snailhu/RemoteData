@@ -33,6 +33,7 @@ import DataAn.common.pageModel.JsonMessage;
 import DataAn.common.pageModel.Pager;
 import DataAn.fileSystem.dto.FileDto;
 import DataAn.fileSystem.dto.MongoFSDto;
+import DataAn.fileSystem.option.J9Series_Star_ParameterType;
 import DataAn.fileSystem.service.IVirtualFileSystemService;
 
 @Controller
@@ -44,39 +45,46 @@ public class FileController {
 	
 	@RequestMapping("/index")
 	public String mongoFSIndex(Model model) {
-		System.out.println("come in mongoFSIndex");
 		//当前所在系列
 		model.addAttribute("nowSeries", "j9");
 		//当前所在星号
 		model.addAttribute("nowStar", "02");
+		//当前所在参数名称
+		model.addAttribute("nowParameterTypeValue", J9Series_Star_ParameterType.FLYWHEEL.getValue());
+		model.addAttribute("nowParameterTypeName", J9Series_Star_ParameterType.FLYWHEEL.getName());
 		//当前所在目录
 		model.addAttribute("nowDirId", 0);
 		return "/admin/mongoFs/index";
 	}
 	
-	@RequestMapping("/index/{series}/{star}/{dirId}/")
+	@RequestMapping("/index/{series}/{star}/{paramType}/{dirId}/")
 	public String mongoFSIndex(@PathVariable String series, 
 							   @PathVariable String star, 
+							   @PathVariable String paramType,
 							   @PathVariable long dirId,Model model) {
 		//当前所在系列
 		model.addAttribute("nowSeries", series);
 		//当前所在星号
 		model.addAttribute("nowStar", star);
+		//当前所在参数名称
+		model.addAttribute("nowParameterTypeValue", paramType);
+		model.addAttribute("nowParameterTypeName", J9Series_Star_ParameterType.getJ9SeriesStarParameterType(paramType).getName());
 		//当前所在目录
 		model.addAttribute("nowDirId", dirId);
 		return "admin/mongoFs/index";
 	}
 	
-	@RequestMapping(value = "getList/{series}/{star}/{dirId}/", method = RequestMethod.POST)
+	@RequestMapping(value = "getList/{series}/{star}/{paramType}/{dirId}/", method = RequestMethod.POST)
 	@ResponseBody
 	public EasyuiDataGridJson getMongoFSList(@PathVariable String series, 
 			   								 @PathVariable String star,
+			   								 @PathVariable String paramType,
 			   								 @PathVariable long dirId ,
-			   								 HttpServletRequest request) {
-//		System.out.println("come in getMongoFSList..");
+			   								 HttpServletRequest request,HttpServletResponse response) {
 		EasyuiDataGridJson json = new EasyuiDataGridJson();
 		String strSeries = request.getParameter("series");
 		String strStar = request.getParameter("star");
+		String strParamType = request.getParameter("paramType");
 		String strDirId = request.getParameter("dirId");
 		String strPage = request.getParameter("page");
 		String strRows= request.getParameter("rows");
@@ -91,6 +99,9 @@ public class FileController {
 		if (StringUtils.isNotBlank(strStar)) {
 			star = strStar;
 		}
+		if (StringUtils.isNotBlank(strParamType)) {
+			paramType = strParamType;
+		}
 		if (StringUtils.isNotBlank(strDirId)) {
 			dirId = Long.parseLong(strDirId);
 		}
@@ -100,34 +111,35 @@ public class FileController {
 		if (StringUtils.isNotBlank(strRows)) {
 			rows = Integer.parseInt(strRows);
 		}
+//		System.out.println("come in getMongoFSList..");
 //		System.out.println("strPage: " + strPage);
 //		System.out.println("strRows: " + strRows);
 //		System.out.println("strDirId: " + strDirId);
+//		System.out.println("strParamType: " + strParamType);
 //		System.out.println("page: " + page);
 //		System.out.println("rows: " + rows);
 //		System.out.println("series: " + series);
 //		System.out.println("star: " + star);
+//		System.out.println("paramType: " + paramType);
 //		System.out.println("dirId: " + dirId);
 //		System.out.println("beginTime: " + beginTime);
 //		System.out.println("endTime: " + endTime);
 //		System.out.println("fileTypes: " + fileTypes);
 		Pager<MongoFSDto> pager = null;
 		if(StringUtils.isNotBlank(beginTime) || StringUtils.isNotBlank(endTime) || StringUtils.isNotBlank(fileTypes)){
-			pager = fileService.getMongoFSList(page, rows, series, star, dirId, beginTime, endTime, fileTypes);			
+			pager = fileService.getMongoFSList(page, rows, series, star, paramType, dirId, beginTime, endTime, fileTypes);			
 		}else{
-			pager = fileService.getMongoFSList(page, rows, series, star, dirId);			
+			pager = fileService.getMongoFSList(page, rows, series, star, paramType, dirId);			
 		}
 		json.setRows(pager.getRows());
 		json.setTotal(pager.getTotalCount());	
-		System.out.println("totalCount: " + pager.getTotalCount());
-		System.out.println();
 		return json;
 	}
 	
 	@RequestMapping(value = "getParentCatalog", method = RequestMethod.POST)
 	@ResponseBody
 	public JsonMessage getParentCatalog(long dirId){
-		System.out.println("come in getParentCatalog...");
+//		System.out.println("come in getParentCatalog...");
 //		System.out.println("dirId: " + dirId);
 		JsonMessage msg = new JsonMessage();
 		String json = fileService.getParentFSCatalog(dirId);
@@ -183,7 +195,8 @@ public class FileController {
 //			@RequestParam(value = "dirId", required = true) long dirId,
 //			@RequestParam(value = "files[]", required = false) List<MultipartFile> files
 			@RequestParam(value = "datFile", required = false) MultipartFile datFile,
-			@RequestParam(value = "csvFile", required = false) MultipartFile csvFile
+			@RequestParam(value = "csvFile", required = false) MultipartFile csvFile,
+			@RequestParam(value = "paramType", required = true) String paramType
 			) throws Exception {
 		System.out.println("come in uploadFiles...");
 //		JsonMessage jsonMsg = new JsonMessage();
@@ -204,6 +217,7 @@ public class FileController {
 		System.out.println("getOriginalFilename: " + csvFile.getOriginalFilename());
 		System.out.println("getContentType: " + csvFile.getContentType());
 		System.out.println("getSize: " + csvFile.getSize());
+		System.out.println("paramType: " + paramType);
 		
 		long begin = System.currentTimeMillis();
 		final Map<String, FileDto> map = new HashMap<String,FileDto>();
@@ -215,6 +229,7 @@ public class FileController {
 			String strSize = df.format(size);
 			csvFileDto.setFileSize(Float.parseFloat(strSize));
 			csvFileDto.setIn(csvFile.getInputStream());
+			csvFileDto.setParameterType(paramType);
 			map.put("csv", csvFileDto);			
 		}
 		if(datFile.getSize() != 0){

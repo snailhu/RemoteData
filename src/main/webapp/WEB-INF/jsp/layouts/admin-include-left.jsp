@@ -144,40 +144,100 @@
 					</a>
 					<ul class="submenu">
 						<li>
-							<a href="admin/file/index/j9/01/0/">
-								<i class="icon-leaf"></i>
-								I号星
+							<a href="#" class="dropdown-toggle">
+								<i class="icon-double-angle-right"></i>I号星
+		                        <b class="arrow icon-angle-down"></b>
 							</a>
+							<ul class="submenu">
+		                        <li>
+		                            <a href="admin/file/index/j9/01/flywheel/0/">
+		                                <i class="icon-leaf"></i> 飞轮
+		                            </a>
+		                        </li>
+		                          <li>
+		                            <a href="admin/file/index/j9/01/top/0/">
+		                                <i class="icon-leaf"></i>陀螺
+		                            </a>
+		                        </li>
+		                    </ul>
 						</li>
 						<li>
-							<a href="admin/file/index/j9/02/0/">
-								<i class="icon-leaf"></i>
-								II号星
+							<a href="#" class="dropdown-toggle">
+								<i class="icon-double-angle-right"></i>II号星
+		                        <b class="arrow icon-angle-down"></b>
 							</a>
+							<ul class="submenu">
+		                        <li>
+		                            <a href="admin/file/index/j9/02/flywheel/0/">
+		                                <i class="icon-leaf"></i> 飞轮
+		                            </a>
+		                        </li>
+		                          <li>
+		                            <a href="admin/file/index/j9/02/top/0/">
+		                                <i class="icon-leaf"></i>陀螺
+		                            </a>
+		                        </li>
+		                    </ul>
 						</li>
 						<li>
-							<a href="admin/file/index/j9/03/0/">
-								<i class="icon-leaf"></i>
-								III号星
+							<a href="#" class="dropdown-toggle">
+								<i class="icon-double-angle-right"></i>III号星
+		                        <b class="arrow icon-angle-down"></b>
 							</a>
+							<ul class="submenu">
+		                        <li>
+		                            <a href="admin/file/index/j9/03/flywheel/0/">
+		                                <i class="icon-leaf"></i> 飞轮
+		                            </a>
+		                        </li>
+		                          <li>
+		                            <a href="admin/file/index/j9/03/top/0/">
+		                                <i class="icon-leaf"></i>陀螺
+		                            </a>
+		                        </li>
+		                    </ul>
 						</li>
 						<li>
-							<a href="admin/file/index/j9/04/0/">
-								<i class="icon-leaf"></i>
-								IV号星
+							<a href="#" class="dropdown-toggle">
+								<i class="icon-double-angle-right"></i>IV号星
+		                        <b class="arrow icon-angle-down"></b>
 							</a>
+							<ul class="submenu">
+		                        <li>
+		                            <a href="admin/file/index/j9/04/flywheel/0/">
+		                                <i class="icon-leaf"></i> 飞轮
+		                            </a>
+		                        </li>
+		                          <li>
+		                            <a href="admin/file/index/j9/04/top/0/">
+		                                <i class="icon-leaf"></i>陀螺
+		                            </a>
+		                        </li>
+		                    </ul>
 						</li>
 						<li>
-							<a href="admin/file/index/j9/05/0/">
-								<i class="icon-leaf"></i>
-								V号星
+							<a href="#" class="dropdown-toggle">
+								<i class="icon-double-angle-right"></i>V号星
+		                        <b class="arrow icon-angle-down"></b>
 							</a>
+							<ul class="submenu">
+		                        <li>
+		                            <a href="admin/file/index/j9/05/flywheel/0/">
+		                                <i class="icon-leaf"></i> 飞轮
+		                            </a>
+		                        </li>
+		                          <li>
+		                            <a href="admin/file/index/j9/05/top/0/">
+		                                <i class="icon-leaf"></i>陀螺
+		                            </a>
+		                        </li>
+		                    </ul>
 						</li>
 					</ul>
 				</li>
 			</ul>
 		</li>
-		<li>
+<!-- 		<li>
 			<a href="#" class="dropdown-toggle"> <i class="icon-list"></i>
 				<span class="menu-text"> 图表管理</span>
 				<b class="arrow icon-angle-down"></b>
@@ -287,7 +347,7 @@
 					</ul>
 				</li>
 			</ul>
-		</li>
+		</li> -->
    </ul><!-- /.nav-list -->
 
 	<div class="sidebar-collapse" id="sidebar-collapse">

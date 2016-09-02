@@ -276,7 +276,7 @@ input[type=text]::-webkit-focus-inner {
 										</div>
 									</div>
 								</div>
-								<div class="space-4"></div>
+								<div class="space-8"></div>
 								<div class="form-group">
 									<label class="col-sm-3 control-label no-padding-right"> CSV文件:  </label>
 									<div class="col-sm-8">
@@ -287,10 +287,26 @@ input[type=text]::-webkit-focus-inner {
 										</div>
 									</div>
 								</div>
+								<div class="space-8"></div>
+								<div class="form-group">
+									<label class="col-sm-3 control-label no-padding-right">文件类型:</label>
+									<div class="col-sm-8">
+										<label>
+											<input name="paramType" type="radio" class="ace" value="flywheel" checked="true"/>
+											<span class="lbl"> 飞轮</span>
+										</label>
+										&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+										<label>
+											<input name="paramType" type="radio" class="ace" value="top"/>
+											<span class="lbl"> 陀螺</span>
+										</label>
+									</div>
+								</div>
+								<div class="space-8"></div>
 								<div style="margin-left: 300px;">
 									<span id="returnMsg"></span>
 								</div>
-								<div class="space-20"></div>
+								<div class="space-12"></div>
 								<div class="form-group">
 		                           <div class="col-sm-8" style="float: right;">
 				                        <button type="button" id="submit-fileupload" class="btn btn-primary start">
@@ -384,7 +400,7 @@ input[type=text]::-webkit-focus-inner {
 				$.post("${pageContext.request.contextPath}/admin/file/existFile", { fileName: fileName},function(data){
 					//console.log("flag: " + data.success);
 					if (data.success) {
-						$("#returnMsg").html("<img src='${pageContext.request.contextPath}/static/imgs/error.png'/><font color='red'>文件已存在</font>");
+						$("#returnMsg").html("<img src='${pageContext.request.contextPath}/static/imgs/error.png'/><font color='red'>csv文件已存在</font>");
 					}else{
 						$("#fileupload").submit();
 					}

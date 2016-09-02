@@ -28,6 +28,10 @@ public class DateParameters {
 	@Column(name = "id", unique = true, nullable = false)
 	private Long id;
 	
+	//参数 如: flywheel、top
+	@Column(name = "parameterType", nullable = false, length = 32)
+	private String parameterType;
+		
 	@Column(name = "year_month_day", nullable = false, length = 32)
 	private String year_month_day;
 	
@@ -43,6 +47,14 @@ public class DateParameters {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public String getParameterType() {
+		return parameterType;
+	}
+
+	public void setParameterType(String parameterType) {
+		this.parameterType = parameterType;
 	}
 
 	public String getYear_month_day() {

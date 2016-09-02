@@ -16,7 +16,7 @@ import DataAn.Analysis.dto.ConstraintDto;
 import DataAn.Util.EhCache;
 import DataAn.common.utils.DateUtil;
 import DataAn.common.utils.LogUtil;
-import DataAn.fileSystem.option.J9Series_Star_ParameterGroupType;
+import DataAn.fileSystem.option.J9Series_Star_ParameterType;
 import DataAn.fileSystem.service.impl.J9Series_Star_ServiceImpl;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -116,9 +116,9 @@ public class J9Series_Star_ServiceTest {
 
 	@Test
 	public void getAllParameterList_allZh_and_enByOption() throws Exception{
-		String type = J9Series_Star_ParameterGroupType.TOP.getName();
+		String type = J9Series_Star_ParameterType.TOP.getName();
 		//"电流","转速","温度","指令","供电状态","角动量"
-		List<String> params = J9Series_Star_ParameterGroupType.getFlywheelTypeOnParams();
+		List<String> params = J9Series_Star_ParameterType.getFlywheelTypeOnParams();
 		Map<String,String> map =  service.getAllParameterList_allZh_and_enByOption(type,null);
 		Set<String> keys = map.keySet();
 		for (String key : keys) {

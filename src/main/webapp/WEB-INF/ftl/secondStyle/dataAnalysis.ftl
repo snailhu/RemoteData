@@ -2,21 +2,30 @@
 	<div class="sidebar" id="sidebar">		    
 	    <ul class="nav nav-list">
 	    	<li>
-				<a href="javascript:void(0);" onclick="$('#SatelliteComponents').html('飞轮');">
+				<a href="javascript:void(0);" onclick="getSatelliteComponents('flywheel')">
 					<i class="glyphicon glyphicon-certificate"></i>
 					<span class="menu-text"> 飞轮 </span>
 				</a>
 			</li>
-			
 			<li>
-				<a href="javascript:void(0);" onclick="$('#SatelliteComponents').html('陀螺');">
+				<a href="javascript:void(0);" onclick="getSatelliteComponents('top')">
 					<i class="glyphicon glyphicon-certificate"></i>
 					<span class="menu-text"> 陀螺 </span>
 				</a>
 			</li>
 	    </ul>
-	    	    	
 	</div>
+<script type="text/javascript">
+	function getSatelliteComponents(type){
+		if(type == 'flywheel'){
+			$('#SatelliteComponents').html('飞轮');
+			$('#SatelliteComponents').attr('name','flywheel');			
+		}else{
+			$('#SatelliteComponents').html('陀螺');
+			$('#SatelliteComponents').attr('name','top');	
+		}
+	}
+</script>
 </@override>
 <@override name="content_right">	
 	<link rel="stylesheet" href="${base}/static/jqwidgets/styles/jqx.base.css" type="text/css" />
@@ -144,7 +153,7 @@
 				</li>
 				
 				<li class="active"  value="">
-					<span class="menu-text" id="SatelliteComponents"></span>					
+					<span class="menu-text" id="SatelliteComponents" name="flywheel">飞轮</span>					
 				</li>
 			</ul><!-- .breadcrumb -->	
 		</div>	
@@ -243,7 +252,8 @@
 		 $("#jqxButton-getParameters").click( function ()  {    
 		 	var beginDate = $("#dateStart").val();
 		 	var endDate = $("#dateEnd").val();
-            var url = "${base}/getConstraint?beginDate="+beginDate+"&endDate="+endDate;
+		 	var type = $('#SatelliteComponents').attr('name');
+            var url = "${base}/getConstraint?beginDate="+beginDate+"&endDate="+endDate+"&type="+type;
             updateParamTree(url);
 		 });
 		 
@@ -295,11 +305,11 @@
            theme: 'energyblue',
            hierarchicalCheckboxes: true,              	
            columns: [
-	             { text: '参数名称',  dataField: 'name',editable: false, width: 200 },
+	             { text: '参数名称',  dataField: 'name',editable: false, width: 300 },
 	             { text: 'ID',  dataField: 'id',editable: false, width:200, hidden: true },
-	             { text: '最大值', dataField: 'max', width: 200 },
-	             { text: '最小值', dataField: 'min', width: 160 },
-	             { text: 'Y轴', dataField:'yname',width:200,columnType:'template',
+	             { text: '最大值', dataField: 'max', width: 150 },
+	             { text: '最小值', dataField: 'min', width: 150 },
+	             { text: 'Y轴', dataField:'yname',width:150,columnType:'template',
 	             	cellsRenderer: function (row, column, value, rowData) {if(value=="0") {return "Y1"};if(value=="1"){return "Y2"}},
 					createEditor: function (row, cellValue, editor, cellText, width, height) {
 					  var source = ["Y1", "Y2"];

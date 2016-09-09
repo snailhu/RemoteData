@@ -17,16 +17,16 @@ implements IDateParametersDao{
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<DateParameters> selectByYear_month_day(String beginDate,
-			String endDate) {
-		String hql = "from DateParameters dp where 1=1";
+	public List<DateParameters> selectByYear_month_dayAndParameterType(String beginDate,
+			String endDate, String parameterType) {
+		String hql = "from DateParameters dp where dp.parameterType=:parameterType";
 		if(StringUtils.isNotBlank(beginDate)){
 			hql += " and dp.year_month_day >= :beginDate";
 		}
 		if(StringUtils.isNotBlank(endDate)){
 			hql += " and dp.year_month_day <= :endDate";
 		}
-		Query query = this.getSession().createQuery(hql);
+		Query query = this.getSession().createQuery(hql).setParameter("parameterType", parameterType);
 		if(StringUtils.isNotBlank(beginDate)){
 			query.setParameter("beginDate", beginDate);
 		}

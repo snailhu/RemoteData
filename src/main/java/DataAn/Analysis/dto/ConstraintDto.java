@@ -71,7 +71,6 @@ public class ConstraintDto {
 	}
 	@Override
 	public String toString() {
-		System.out.println("执行到Constrain Dto的重载tostring函数");
 		return "ConstraintDto [id=" + id + ", parentId=" + parentId + ", name="
 				+ name + ", value=" + value + ", max=" + max + ", min=" + min
 				+ ",yname="+yname+", children=" + children + "]";

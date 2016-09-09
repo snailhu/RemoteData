@@ -36,7 +36,8 @@ public class J9Series_Star_ServiceTest {
 	@Test
 	public void getAllParameterListFromBeginDateToEndDate() throws Exception{
 		//  "10/08/2015", "10/01/2016"
-		List<ConstraintDto> list = service.getAllParameterListFromBeginDateToEndDate("02/05/2015","03/05/2015");
+		String type = J9Series_Star_ParameterType.TOP.getValue();
+		List<ConstraintDto> list = service.getAllParameterList(null,null,type);
 		for (ConstraintDto constraintDto : list) {
 			System.out.println(constraintDto);
 		}

@@ -24,7 +24,7 @@ public interface IJ9Series_Star_Service {
 	* @date 2016年9月2日
 	* @version 1.0
 	*/
-	public List<ConstraintDto> getAllParameterListFromBeginDateToEndDate(String beginDate,String endDate) throws Exception;
+	public List<ConstraintDto> getAllParameterList(String beginDate,String endDate,String type) throws Exception;
 	
 	/**
 	* Description: 获取飞轮类型的参数列表

@@ -10,6 +10,7 @@ import java.util.Set;
 
 import javax.annotation.Resource;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import DataAn.Analysis.dto.ConstraintDto;
@@ -29,26 +30,24 @@ public class J9Series_Star_ServiceImpl implements IJ9Series_Star_Service{
 	private IDateParametersDao parametersDao;
 	
 	@Override
-	public List<ConstraintDto> getAllParameterListFromBeginDateToEndDate(
-			String beginDate, String endDate) throws Exception {
-//		MongodbUtil mg = MongodbUtil.getInstance();
-//		Set<String> exclueSet = new HashSet<String>();
-//		exclueSet.add("_id");
-//		exclueSet.add("year");
-//		exclueSet.add("year_month");
-//		exclueSet.add("year_month_day");
-//		exclueSet.add("datetime");
-		beginDate = DateUtil.formatString(beginDate, "dd/MM/yyyy", "yyyy-MM-dd");
-		endDate = DateUtil.formatString(endDate, "dd/MM/yyyy", "yyyy-MM-dd");
-		List<DateParameters> dpList = parametersDao.selectByYear_month_day(beginDate, endDate);
+	public List<ConstraintDto> getAllParameterList(
+			String beginDate, String endDate,String type) throws Exception {
+
+		if (StringUtils.isNotBlank(beginDate)) {
+			beginDate = DateUtil.formatString(beginDate, "yyyy-MM-dd HH:mm:ss", "yyyy-MM-dd");			
+		}
+		if (StringUtils.isNotBlank(endDate)) {
+			endDate = DateUtil.formatString(endDate, "yyyy-MM-dd HH:mm:ss", "yyyy-MM-dd");			
+		}
+//		if (StringUtils.isNotBlank(type)) {
+//			type = J9Series_Star_ParameterType.FLYWHEEL.getValue();
+//		}
+		List<DateParameters> dpList = parametersDao.selectByYear_month_dayAndParameterType(beginDate, endDate,type);
 		if(dpList != null && dpList.size() > 0){
-//			System.out.println("dblist size: " + dpList.size());
 			Map<String,Integer> tempMap = new HashMap<String,Integer>();
 			Integer count = null;
-//			Set<String> inclueSet = new HashSet<String>();
 			for (DateParameters dp : dpList) {
 				String[] items = dp.getParameters().split(",");
-//				System.out.println("params size: " + items.length);
 				for (String item : items) {
 					if(!item.equals("时间")){
 //						inclueSet.add(item);
@@ -65,14 +64,20 @@ public class J9Series_Star_ServiceImpl implements IJ9Series_Star_Service{
 			Map<String,String> simplyZh_and_enMap = new HashMap<String,String>();
 			Set<String> keys = tempMap.keySet();
 			for (String parameter : keys) {
-				if(tempMap.get(parameter) == dpList.size()){
-					simplyZh_and_enMap.put(parameter.split(":")[1], map.get(parameter));					
-				}else{
-					simplyZh_and_enMap.put(parameter.split(":")[1] + "-时间不连续", map.get(parameter));
-				}
+//				if(tempMap.get(parameter) == dpList.size()){
+//					simplyZh_and_enMap.put(parameter.split(":")[1], map.get(parameter));					
+//				}else{
+//					simplyZh_and_enMap.put(parameter.split(":")[1] + "-时间不连续", map.get(parameter));
+//				}
+				simplyZh_and_enMap.put(parameter.split(":")[1], map.get(parameter));
 			}
-			List<String> flyWheelDataTypes = J9Series_Star_ParameterType.getFlywheelTypeOnParams();
-			return this.getFlyWheelOrTopParameterList(simplyZh_and_enMap,flyWheelDataTypes);
+			List<String> dataTypes = null;
+			if(type.equals(J9Series_Star_ParameterType.FLYWHEEL.getValue())){
+				dataTypes = J9Series_Star_ParameterType.getFlywheelTypeOnParams();
+			}else{
+				dataTypes = J9Series_Star_ParameterType.getTopTypeOnName();
+			}
+			return this.getFlyWheelOrTopParameterList(simplyZh_and_enMap,dataTypes);
 		}
 		return null;
 	}

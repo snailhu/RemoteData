@@ -29,7 +29,7 @@ public class MongodbUtil {
 	
 	private static ConcurrentHashMap<String,MongoCollection<Document>> cols = new ConcurrentHashMap<String,MongoCollection<Document>>();
 		
-	private static volatile boolean isShard = false; //分片标示
+	private static volatile boolean isShard = true; //分片标示
 	
 	private volatile static MongodbUtil singleton = null;
 		
@@ -56,17 +56,17 @@ public class MongodbUtil {
 				List<ServerAddress> addresses = new ArrayList<ServerAddress>();
 				String[] list = InitMongo.SERVER_HOSTS.split(",");
 				for (String ip : list) {
-					ServerAddress address = new ServerAddress(ip, InitMongo.SERVER_PORT);
+					ServerAddress address = new ServerAddress(ip, InitMongo.DB_SERVER_PORT);
 					addresses.add(address);
 				}
 				mg = new MongoClient(addresses);
 			}else{
-				System.out.println("启动单机数据库：{}" + InitMongo.SERVER_HOST);
-				LogUtil.getInstance().getLogger(this.getClass()).info("启动单机数据库：{}",InitMongo.SERVER_HOST);
-				mg = new MongoClient(InitMongo.SERVER_HOST, InitMongo.SERVER_PORT);
+				System.out.println("启动数据库：{}" + InitMongo.DB_SERVER_HOST);
+				LogUtil.getInstance().getLogger(this.getClass()).info("启动数据库：{}",InitMongo.DB_SERVER_HOST);
+				mg = new MongoClient(InitMongo.DB_SERVER_HOST, InitMongo.DB_SERVER_PORT);
 			}
-			dbs.put(InitMongo.DATABASE_TEST, getDB(InitMongo.DATABASE_TEST));
-			dbs.put(InitMongo.DATABASE_J9STAR2, getDB(InitMongo.DATABASE_J9STAR2));
+			//dbs.put(InitMongo.DATABASE_TEST, getDB(InitMongo.DATABASE_TEST));
+			dbs.put(InitMongo.DB_J9STAR2, getDB(InitMongo.DB_J9STAR2));
 			//test
 //			mg = new MongoClient("127.0.0.1", 10000);
 //			dbs.put(InitMongo.DATABASE_TEST, getDB(InitMongo.DATABASE_TEST));
@@ -146,7 +146,7 @@ public class MongodbUtil {
 	 * @param collectionName
 	 */
 	private void createShardCollection(String databaseName,String collectionName) {
-		System.out.println("创建新的表{}.{},并分片"+databaseName+collectionName);
+		System.out.println("创建新的表{}.{},并分片"+databaseName+"."+collectionName);
 		LogUtil.getInstance().getLogger(getClass()).info("创建新的表{}.{},并分片",databaseName,collectionName);
 //		MongoDatabase admin = mg.getDatabase("admin");
 //		Document shard = new Document();
@@ -296,7 +296,7 @@ public class MongodbUtil {
 //                "$mul", new Document("hotness", 2)));
 	}
 	
-	public void updateBy(String databaseName, String collectionName, String beginDate, String endDate) {
+	public void updateByDate(String databaseName, String collectionName, String beginDate, String endDate) {
 		MongoCollection<Document> collection = this.getCollection(databaseName, collectionName);
 		collection.updateMany(
 							Filters.and(Filters.gte("datetime", beginDate),

@@ -8,26 +8,20 @@ import java.util.Map;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
-
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-
 import DataAn.Analysis.dto.ConstraintDto;
 import DataAn.common.pageModel.Pager;
-import DataAn.fileSystem.option.FlyWheelDataType;
-import DataAn.fileSystem.service.IFlyWheelService;
 import DataAn.fileSystem.service.IJ9Series_Star_Service;
 import DataAn.galaxyManager.dao.ISeriesDao;
 import DataAn.galaxyManager.domain.Series;
 import DataAn.mongo.db.MongodbUtil;
-
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 

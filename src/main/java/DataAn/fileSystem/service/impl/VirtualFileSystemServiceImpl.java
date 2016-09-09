@@ -79,7 +79,7 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 		String nowStar = J9SeriesType.getJ9SeriesType(ss[1]).getValue();
 		dataMap.put("star", nowStar);
 		String date = strs[1];
-		dataMap.put("date", date);
+		dataMap.put("date", DateUtil.formatString(date, "yyyy-MM-dd", "yyyy-MM-dd"));
 		String year = DateUtil.formatString(date, "yyyy-MM-dd", "yyyy");
 		dataMap.put("year", year);
 		String month = DateUtil.formatString(date, "yyyy-MM-dd", "MM");
@@ -375,22 +375,22 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 //		String day = dataMap.get("day");
 		
 		//保存csv 原文件				
-//		IDfsDb dfs = MongoDfsDb.getInstance();
-//		BufferedInputStream bis = null;
-//		try {
-//			bis = new BufferedInputStream(new FileInputStream(fileDto.getFilePath()));  
-//			String databaseName = InitMongo.getFSBDNameBySeriesAndStar(series, star);
-//			dfs.upload(databaseName, fileDto.getFileName(), uuId, bis);
-//		} catch(Exception e){
-////			e.printStackTrace();
-//			//删除上传csv原文件
-//			dfs.delete(uuId);
-//			throw new Exception("csv 文件上传失败！！！");
-//		}finally {
-//			if(bis != null){
-//				bis.close();
-//			}
-//		}
+		IDfsDb dfs = MongoDfsDb.getInstance();
+		BufferedInputStream bis = null;
+		try {
+			bis = new BufferedInputStream(new FileInputStream(fileDto.getFilePath()));  
+			String databaseName = InitMongo.getFSBDNameBySeriesAndStar(series, star);
+			dfs.upload(databaseName, fileDto.getFileName(), uuId, bis);
+		} catch(Exception e){
+//			e.printStackTrace();
+			//删除上传csv原文件
+			dfs.delete(uuId);
+			throw new Exception("csv 文件上传失败！！！");
+		}finally {
+			if(bis != null){
+				bis.close();
+			}
+		}
 		
 		CSVFileDataResultDto<Document> result = csvService.readCSVFileToDoc(fileDto.getFilePath(),uuId);
 		List<Document> docList = result.getDatas();
@@ -415,13 +415,11 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 		
 		//存储某一天的参数信息
 		if(docList != null && docList.size() > 0){
-			Document doc1 = docList.get(0);
-			String year_month_day = doc1.getString("year_month_day");
 			String title = result.getTitle();
 			DateParameters dateParameters = new DateParameters();
 			dateParameters.setParameterType(parameterType);
 			dateParameters.setParameters(title);
-			dateParameters.setYear_month_day(year_month_day);
+			dateParameters.setYear_month_day(date);
 			parametersDao.add(dateParameters);
 		}
 		
@@ -479,9 +477,9 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 		file.setParentId(monthDir.getId());
 		file.setYear_month_day(date);
 		file.setMongoFSUUId(uuId);
-		//保存缓存路径，以后通过定时任务上传
-		file.setCachePath(fileDto.getFilePath());
 		file.setParameterType(parameterType);
+		//保存缓存路径，以后通过定时任务上传
+		//file.setCachePath(fileDto.getFilePath());
 		fileDao.add(file);
 		
 

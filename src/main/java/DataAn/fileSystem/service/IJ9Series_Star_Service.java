@@ -14,6 +14,16 @@ import DataAn.Analysis.dto.ConstraintDto;
 public interface IJ9Series_Star_Service {
 	
 	
+	/**
+	* Description: 获取某个时间段的所有参数信息
+	* @param beginDate
+	* @param endDate
+	* @return
+	* @throws Exception
+	* @author Shenwp
+	* @date 2016年9月2日
+	* @version 1.0
+	*/
 	public List<ConstraintDto> getAllParameterListFromBeginDateToEndDate(String beginDate,String endDate) throws Exception;
 	
 	/**

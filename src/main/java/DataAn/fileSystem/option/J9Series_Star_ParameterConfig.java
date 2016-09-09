@@ -1,5 +1,11 @@
 package DataAn.fileSystem.option;
 
+/**
+* Title: J9Series_Star_ParameterConfig
+* @Description: j9系列 星星的参数信息
+* @author  Shewp
+* @date 2016年9月2日
+*/
 public class J9Series_Star_ParameterConfig {
 	
 	public String datetime = "时间";

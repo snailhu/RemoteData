@@ -13,45 +13,55 @@ public class InitMongo {
 	private static final String config="mongoDB.properties";
 	
 	private static final String charset="utf-8";
+	
 	/**
 	 * 获取配置文件参数
 	 * */
-	/** mongodb服务IP*/
-	public static final String SERVER_HOST = PropertiesUtil.getProperties(config, charset).getProperty("mongodb.ip");
-
-	/** mongodb服务端口*/
-	public static final int SERVER_PORT = Integer.parseInt(PropertiesUtil.getProperties(config, charset).getProperty("mongodb.port"));
+	/** mongodb单机测试服务IP*/
+	public static final String TEST_SERVER_HOST = PropertiesUtil.getProperties(config, charset).getProperty("test.mongodb.ip");
+	/** mongodb单机测试服务端口*/
+	public static final int TEST_SERVER_PORT = Integer.parseInt(PropertiesUtil.getProperties(config, charset).getProperty("test.mongodb.port"));
 	
-	/** 测试数据库 database_test*/
-	public static final String DATABASE_TEST = PropertiesUtil.getProperties(config, charset).getProperty("database.test");
+	/** mongodb数据服务IP*/
+	public static final String DB_SERVER_HOST = PropertiesUtil.getProperties(config, charset).getProperty("db.mongodb.ip");
+	/** mongodb数据服务端口*/
+	public static final int DB_SERVER_PORT = Integer.parseInt(PropertiesUtil.getProperties(config, charset).getProperty("db.mongodb.port"));
 	
-	/** mongodb服务IP 集群*/
-	public static final String SERVER_HOSTS = PropertiesUtil.getProperties(config, charset).getProperty("mongodb.ips");
+	/** mongodb文件服务IP*/
+	public static final String FS_SERVER_HOST = PropertiesUtil.getProperties(config, charset).getProperty("fs.mongodb.ip");
+	/** mongodb文件服务端口*/
+	public static final int FS_SERVER_PORT = Integer.parseInt(PropertiesUtil.getProperties(config, charset).getProperty("fs.mongodb.port"));
 	
 	/** j9系列 01星数据库*/
-	public static final String DATABASE_J9STAR1 = getDataBaseNameBySeriesAndStar(SeriesType.J9_SERIES.getName(), J9SeriesType.STRA1.getValue());
+	public static final String DB_J9STAR1 = getDataBaseNameBySeriesAndStar(SeriesType.J9_SERIES.getName(), J9SeriesType.STRA1.getValue());
 	/** j9系列 01星文件库*/
 	public static final String FS_J9STAR1 = getFSBDNameBySeriesAndStar(SeriesType.J9_SERIES.getName(), J9SeriesType.STRA1.getValue());
 	
 	/** j9系列 02星数据库*/
-	public static final String DATABASE_J9STAR2 = getDataBaseNameBySeriesAndStar(SeriesType.J9_SERIES.getName(), J9SeriesType.STRA2.getValue());
+	public static final String DB_J9STAR2 = getDataBaseNameBySeriesAndStar(SeriesType.J9_SERIES.getName(), J9SeriesType.STRA2.getValue());
 	/** j9系列 02星文件库*/
 	public static final String FS_J9STAR2 = getFSBDNameBySeriesAndStar(SeriesType.J9_SERIES.getName(), J9SeriesType.STRA2.getValue());
 
 	/** j9系列 03星数据库*/
-	public static final String DATABASE_J9STAR3 = getDataBaseNameBySeriesAndStar(SeriesType.J9_SERIES.getName(), J9SeriesType.STRA3.getValue());
+	public static final String DB_J9STAR3 = getDataBaseNameBySeriesAndStar(SeriesType.J9_SERIES.getName(), J9SeriesType.STRA3.getValue());
 	/** j9系列 03星文件库*/
 	public static final String FS_J9STAR3 = getFSBDNameBySeriesAndStar(SeriesType.J9_SERIES.getName(), J9SeriesType.STRA3.getValue());
 
 	/** j9系列 04星数据库*/
-	public static final String DATABASE_J9STAR4 = getDataBaseNameBySeriesAndStar(SeriesType.J9_SERIES.getName(), J9SeriesType.STRA4.getValue());
+	public static final String DB_J9STAR4 = getDataBaseNameBySeriesAndStar(SeriesType.J9_SERIES.getName(), J9SeriesType.STRA4.getValue());
 	/** j9系列 04星文件库*/
 	public static final String FS_J9STAR4 = getFSBDNameBySeriesAndStar(SeriesType.J9_SERIES.getName(), J9SeriesType.STRA4.getValue());
 
 	/** j9系列 05星数据库*/
-	public static final String DATABASE_J9STAR5 = getDataBaseNameBySeriesAndStar(SeriesType.J9_SERIES.getName(), J9SeriesType.STRA5.getValue());
+	public static final String DB_J9STAR5 = getDataBaseNameBySeriesAndStar(SeriesType.J9_SERIES.getName(), J9SeriesType.STRA5.getValue());
 	/** j9系列 05星文件库*/
 	public static final String FS_J9STAR5 = getFSBDNameBySeriesAndStar(SeriesType.J9_SERIES.getName(), J9SeriesType.STRA5.getValue());
+	
+	/** mongodb服务IP 集群*/
+	public static final String SERVER_HOSTS = PropertiesUtil.getProperties(config, charset).getProperty("mongodb.ips");
+	
+	/** 测试数据库 database_test*/
+	public static final String DATABASE_TEST = PropertiesUtil.getProperties(config, charset).getProperty("database.test");
 	
 	/**
 	* Description: 通过系列和星名称获取当前数据库名称

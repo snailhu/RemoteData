@@ -15,6 +15,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import DataAn.common.utils.UUIDGeneratorUtil;
 import DataAn.fileSystem.dto.CSVFileDataResultDto;
 import DataAn.fileSystem.option.J9SeriesType;
+import DataAn.fileSystem.option.J9Series_Star_ParameterType;
 import DataAn.fileSystem.option.SeriesType;
 import DataAn.fileSystem.service.ICSVService;
 import DataAn.mongo.service.IMongoService;
@@ -35,10 +36,11 @@ public class MongoServiceTest {
 		String uuId = UUIDGeneratorUtil.getUUID();
 		String series = SeriesType.J9_SERIES.getName();
 		String star = J9SeriesType.STRA2.getValue();
+		String paramType = J9Series_Star_ParameterType.FLYWHEEL.getValue();
 		String date= "2016-01-10";
 		CSVFileDataResultDto<Document> result= csvService.readCSVFileToDoc(filePath,uuId);
 		List<Document> list = result.getDatas();
-		mongoService.saveCSVData(series, star, date, list);
+		mongoService.saveCSVData(series, star, paramType, date, list, uuId);
 		long end = System.currentTimeMillis();
 		System.out.println("time: " + (end - begin));
 	}

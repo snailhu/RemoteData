@@ -5,7 +5,7 @@ import java.util.List;
 
 /**
  * Title: J9Series_Star_ParameterGroupType
- * @Description: j9系列 星星的参数组数据类型
+ * @Description: j9系列 星星的参数组
  * @author Shewp
  * @date 2016年7月26日
  */

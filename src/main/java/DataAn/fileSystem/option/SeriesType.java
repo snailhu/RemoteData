@@ -1,5 +1,11 @@
 package DataAn.fileSystem.option;
 
+/**
+* Title: SeriesType
+* @Description: 系列类型
+* @author  Shewp
+* @date 2016年9月2日
+*/
 public enum SeriesType {
 
 	/**j9系列*/

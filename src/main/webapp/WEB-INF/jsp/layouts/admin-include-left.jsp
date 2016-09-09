@@ -237,6 +237,24 @@
 				</li>
 			</ul>
 		</li>
+		<li>
+			<a href="#" class="dropdown-toggle"> <i class="icon-list"></i>
+				<span class="menu-text"> 系统管理</span>
+				<b class="arrow icon-angle-down"></b>
+			</a>
+			<ul class="submenu">
+				<li><a href="${pageContext.request.contextPath}/admin/user/index"> <i class="icon-double-angle-right"></i> 用户管理
+					</a></li>
+<!-- 				<li><a href="${pageContext.request.contextPath}/admin/department/index"> <i class="icon-double-angle-right"></i> 部门管理 -->
+<!-- 					</a></li> -->
+				<li><a href="${pageContext.request.contextPath}/admin/role/index"> <i class="icon-double-angle-right"></i> 角色管理
+					</a></li>
+				<li><a href="${pageContext.request.contextPath}/admin/permission/index"> <i class="icon-double-angle-right"></i> 权限管理
+					</a></li>
+<!-- 				<li><a href="javascript:void(0)"> <i class="icon-double-angle-right"></i> 日志管理 -->
+<!-- 					</a></li> -->
+			</ul>
+		</li>
 <!-- 		<li>
 			<a href="#" class="dropdown-toggle"> <i class="icon-list"></i>
 				<span class="menu-text"> 图表管理</span>

@@ -20,27 +20,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<link href="<%=request.getContextPath()%>/static/content/css/default.css" rel="stylesheet" type="text/css"/>
 	<script src="<%=request.getContextPath()%>/static/content/js/outlook2.js" type="text/javascript"></script>
   	<script src="<%=request.getContextPath()%>/static/content/jQuery-AjaxFileUpload/jquery.ajaxfileupload.js" type="text/javascript"></script>
-    
-<!--     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/assets/css/jquery-ui-1.10.3.custom.min.css" /> -->
-<!-- 	<link rel="stylesheet" href="${pageContext.request.contextPath}/static/assets/css/chosen.css" /> -->
-<!-- 	<link rel="stylesheet" href="${pageContext.request.contextPath}/static/assets/css/datepicker.css" /> -->
-<!-- 	<link rel="stylesheet" href="${pageContext.request.contextPath}/static/assets/css/bootstrap-timepicker.css" /> -->
-<!-- 	<link rel="stylesheet" href="${pageContext.request.contextPath}/static/assets/css/daterangepicker.css" /> -->
-<!-- 	<link rel="stylesheet" href="${pageContext.request.contextPath}/static/assets/css/colorpicker.css" /> -->
-<!-- 	<script src="${pageContext.request.contextPath}/static/assets/js/jquery-ui-1.10.3.custom.min.js"></script> -->
-<!-- 	<script src="${pageContext.request.contextPath}/static/assets/js/jquery.ui.touch-punch.min.js"></script> -->
-<!-- 	<script src="${pageContext.request.contextPath}/static/assets/js/chosen.jquery.min.js"></script> -->
-<!-- 	<script src="${pageContext.request.contextPath}/static/assets/js/fuelux/fuelux.spinner.min.js"></script> -->
-<!-- 	<script src="${pageContext.request.contextPath}/static/assets/js/date-time/bootstrap-datepicker.min.js"></script> -->
-<!-- 	<script src="${pageContext.request.contextPath}/static/assets/js/date-time/bootstrap-timepicker.min.js"></script> -->
-<!-- 	<script src="${pageContext.request.contextPath}/static/assets/js/date-time/moment.min.js"></script> -->
-<!-- 	<script src="${pageContext.request.contextPath}/static/assets/js/date-time/daterangepicker.min.js"></script> -->
-<!-- 	<script src="${pageContext.request.contextPath}/static/assets/js/bootstrap-colorpicker.min.js"></script> -->
-<!-- 	<script src="${pageContext.request.contextPath}/static/assets/js/jquery.knob.min.js"></script> -->
-<!-- 	<script src="${pageContext.request.contextPath}/static/assets/js/jquery.autosize.min.js"></script> -->
-<!-- 	<script src="${pageContext.request.contextPath}/static/assets/js/jquery.inputlimiter.1.3.1.min.js"></script> -->
-<!-- 	<script src="${pageContext.request.contextPath}/static/assets/js/jquery.maskedinput.min.js"></script> -->
-<!-- 	<script src="${pageContext.request.contextPath}/static/assets/js/bootstrap-tag.min.js"></script> -->
+	<!-- 时间选择器 -->
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/static/content/jQueryCalendar/calendar.css">
 	<script src="${pageContext.request.contextPath}/static/content/jQueryCalendar/calendar.js"></script> 
 	
@@ -121,7 +101,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <!-- 			</div> -->
 				<!--#nav-search -->
 <!-- 		</div> -->
-		<div class="page-content" id="page-content">
+		<div class="page-content">
 			<div class="page-header" style="padding-bottom: 10px; /**margin: -5px 0px 5px;*/">
 				<h1>${nowSeries}系列-${nowStar}星-${nowParameterTypeName}文件管理</h1>
 			</div>

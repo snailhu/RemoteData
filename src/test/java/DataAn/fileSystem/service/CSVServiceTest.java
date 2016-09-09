@@ -117,10 +117,10 @@ public class CSVServiceTest {
 	
 //	@Test
 	public void testWriteCSVByJavacsv(int year,int month,int day) throws Exception{
-		String type = J9Series_Star_ParameterType.TOP.getName();
+		String type = J9Series_Star_ParameterType.FLYWHEEL.getName();
 		//飞轮-->"电流","转速","温度","指令","供电状态","角动量"
 		List<String> params = J9Series_Star_ParameterType.getFlywheelTypeOnParams();
-		Map<String,String> map =  j9Series_Star_Service.getAllParameterList_allZh_and_enByOption(type,null);
+		Map<String,String> map =  j9Series_Star_Service.getAllParameterList_allZh_and_enByOption(type,params);
 		Set<String> keys = map.keySet();
 		List<String> titleList = new ArrayList<String>();
 		titleList.add("时间");
@@ -139,22 +139,23 @@ public class CSVServiceTest {
 			titleList.add(key);
 			count++;
 		}
-		
-//		String outputFile = "C:\\j9-02--2016-01-10.csv";
-		String dirPath = "E:\\data\\top\\"+year+"\\"+month;
-		File dir = new File(dirPath);
-		if(!dir.exists()){
-			dir.mkdirs();
-		}
+		//目录
+		String dirPath = "E:\\data\\flywheel\\" + year + "\\" + "-0" + month;
+		//文件路径
 		String outputFile = dirPath +"\\" +"j9-02--" + year +"-0" + month +"-0" + day +".csv";
 		if(month > 9){
-			outputFile = dirPath +"\\" +"j9-02--" + year +"-" + month + "-" + day +".csv";
+			dirPath = "E:\\data\\flywheel\\" + year + "\\" + month;
+			outputFile = dirPath +"\\" +"j9-02--" + year +"-" + month + "-0" + day +".csv";
 		}
 		if(day > 9){
 			outputFile = dirPath +"\\" +"j9-02--" + year +"-0" + month +"-" + day +".csv";
 		}
 		if(month > 9 && day > 9){
 			outputFile = dirPath +"\\" +"j9-02--" + year +"-" + month +"-" + day +".csv";
+		}
+		File dir = new File(dirPath);
+		if(!dir.exists()){
+			dir.mkdirs();
 		}
 //		File file = new File(outputFile);
 //		OutputStream outputStream = new FileOutputStream(file,true);
@@ -179,7 +180,7 @@ public class CSVServiceTest {
 			tempDate = new Date(time);
 			csvOutput.write(DateUtil.format(tempDate, format));
 			for (int i = 1; i < titleList.size(); i++) {
-				Double data = Math.random() * Math.random() * 1000;
+				Double data = i * year / 100 + Math.random() * Math.random() * (month + day) * 10;
 				if(data < 100){
 					data += 100;
 				}
@@ -189,15 +190,15 @@ public class CSVServiceTest {
 			time = time + 1000;
 		}
 		csvOutput.close();
-		
+		System.out.println("file: " + outputFile);
 	}
 	
 	@Test
 	public void testWriteCSVByJavacsvList() throws Exception{
 		long begin = System.currentTimeMillis();
-		for (int year = 2010; year <= 2015; year++) {
-			for (int month = 1; month <= 3; month++) {
-				for (int day = 1; day <= 5; day++) {
+		for (int year = 2010; year <= 2012; year++) {
+			for (int month = 1; month <= 12; month++) {
+				for (int day = 1; day <= 10; day++) {
 					this.testWriteCSVByJavacsv(year,month,day);		
 				}							
 			}

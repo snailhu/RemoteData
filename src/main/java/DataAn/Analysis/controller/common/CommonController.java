@@ -8,49 +8,33 @@ import java.util.Map;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
-
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-
 import DataAn.Analysis.dto.ConstraintDto;
 import DataAn.common.pageModel.Pager;
-import DataAn.fileSystem.option.FlyWheelDataType;
-import DataAn.fileSystem.service.IFlyWheelService;
 import DataAn.fileSystem.service.IJ9Series_Star_Service;
-import DataAn.galaxyManager.dao.ISeriesDao;
-import DataAn.galaxyManager.domain.Series;
 import DataAn.mongo.db.MongodbUtil;
-
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
-
 import redis.clients.jedis.Jedis;
-
-import com.alibaba.fastjson.JSON;
-
-import DataAn.Analysis.dto.AllJsonData;
 import DataAn.Analysis.dto.GroupMenu;
 import DataAn.Analysis.dto.ParamGroup;
 import DataAn.Analysis.dto.SingleParamDto;
 import DataAn.Analysis.dto.SeriesBtnMenu;
 import DataAn.Analysis.dto.YearAndParamDataDto;
 import DataAn.Analysis.redis.RedisPoolUtil;
-import DataAn.Analysis.redis.RedisUtil;
 import DataAn.Util.EhCache;
 import DataAn.Util.JsonStringToObj;
-import DataAn.galaxyManager.domain.*;
 import DataAn.galaxyManager.dto.SeriesDto;
 import DataAn.galaxyManager.dto.StarDto;
 import DataAn.galaxyManager.service.ISeriesService;
 import DataAn.galaxyManager.service.IStarService;
-import DataAn.galaxyManager.service.impl.SeriesServiceImpl;
 
 
 @Controller
@@ -66,13 +50,14 @@ public class CommonController {
 	
 	@RequestMapping(value = "/getConstraint", method = RequestMethod.GET)
 	@ResponseBody
-	public List<ConstraintDto> getConstraint(String beginDate,String endDate) throws Exception{
+	public List<ConstraintDto> getConstraint(String beginDate,String endDate,String type) throws Exception{
 		
-//		System.out.println("beginDate； " + beginDate);
-//		System.out.println("endDate: " + endDate);
+		System.out.println("beginDate； " + beginDate);
+		System.out.println("endDate: " + endDate);
+		System.out.println("type: " + type);
 		//test
-		return j9Series_Star_Service.getFlyWheelParameterList();
-//		return j9Series_Star_Service.getAllParameterListFromBeginDateToEndDate(beginDate, endDate);
+	//	return j9Series_Star_Service.getFlyWheelParameterList();
+		return j9Series_Star_Service.getAllParameterList(beginDate, endDate ,type);
 	}
 	
 	

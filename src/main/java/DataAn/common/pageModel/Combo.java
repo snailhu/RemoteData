@@ -31,5 +31,11 @@ public class Combo {
 	public void setSelected(boolean selected) {
 		this.selected = selected;
 	}
+
+	@Override
+	public String toString() {
+		return "Combo [text=" + text + ", value=" + value + ", selected="
+				+ selected + "]";
+	}
 	
 }

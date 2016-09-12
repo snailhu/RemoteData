@@ -5,16 +5,21 @@ import java.util.List;
 
 /**
  * Title: J9Series_Star_ParameterGroupType
- * @Description: j9系列 星星的参数组数据类型
+ * @Description: j9系列 星星的参数组
  * @author Shewp
  * @date 2016年7月26日
  */
-public enum J9Series_Star_ParameterGroupType {
+public enum J9Series_Star_ParameterType {
 	
 	/**飞轮*/
 	FLYWHEEL {
 		public String getName() {
 			return "飞轮";
+		}
+
+		@Override
+		public String getValue() {
+			return "flywheel";
 		}
 	},
 	/**陀螺*/
@@ -22,9 +27,28 @@ public enum J9Series_Star_ParameterGroupType {
 		public String getName() {
 			return "陀螺";
 		}
+
+		@Override
+		public String getValue() {
+			return "top";
+		}
 	};
 	public abstract String getName();
 	
+	public abstract String getValue();
+	
+	public static J9Series_Star_ParameterType getJ9SeriesStarParameterType(String type) {
+		switch (type) {
+		case "flywheel":
+			return J9Series_Star_ParameterType.FLYWHEEL;
+			
+		case "top":
+			return J9Series_Star_ParameterType.TOP;
+			
+		default:
+			return null;
+		}
+	}
 	/**
 	* Description: 获取飞轮数据类型 通过名称分类
 	* @return  
@@ -70,6 +94,12 @@ public enum J9Series_Star_ParameterGroupType {
 	*/
 	public static List<String> getTopTypeOnName() {
 		List<String> list = new ArrayList<String>();
+		list.add("角速度");
+		list.add("角速率");
+		list.add("温度");
+		list.add("指令");
+		list.add("供电状态");
+		list.add("角动量");
 		return list;
 	}
 

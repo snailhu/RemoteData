@@ -9,6 +9,7 @@ public class FileDto {
 	private String updateDate; //文件更新时间
 	private InputStream in; // 上传-下载
 	private String filePath; //文件批量下载时用到
+	private String parameterType;
 	
 	public String getFileName() {
 		return fileName;
@@ -40,10 +41,17 @@ public class FileDto {
 	public void setFilePath(String filePath) {
 		this.filePath = filePath;
 	}
+	public String getParameterType() {
+		return parameterType;
+	}
+	public void setParameterType(String parameterType) {
+		this.parameterType = parameterType;
+	}
 	@Override
 	public String toString() {
 		return "FileDto [fileName=" + fileName + ", fileSize=" + fileSize
-				+ ", updateDate=" + updateDate + ", filePath=" + filePath + "]";
+				+ ", updateDate=" + updateDate + ", filePath=" + filePath
+				+ ", parameterType=" + parameterType + "]";
 	}
 	
 	

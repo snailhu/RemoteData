@@ -19,29 +19,7 @@
 	</div>
 </@override>
 <@override name="content_right">	
-	<link rel="stylesheet" href="${base}/static/jqwidgets/styles/jqx.base.css" type="text/css" />
-	<link rel="stylesheet" href="${base}/static/jqwidgets/styles/jqx.energyblue.css" type="text/css" />
 	<link rel="stylesheet" href="${base}/static/content/css/default.css"  type="text/css"/>	
-    
-    <script type="text/javascript" src="${base}/static/jqwidgets/jqxcore.js"></script>
-    <script type="text/javascript" src="${base}/static/jqwidgets/jqxdatetimeinput.js"></script>
-    <script type="text/javascript" src="${base}/static/jqwidgets/jqxcalendar.js"></script>
-    <script type="text/javascript" src="${base}/static/jqwidgets/jqxtooltip.js"></script>
-    <script type="text/javascript" src="${base}/static/jqwidgets/globalization/globalize.js"></script>
-    <script type="text/javascript" src="${base}/static/jqwidgets/jqxdata.js"></script>
-    <script type="text/javascript" src="${base}/static/jqwidgets/jqxbuttons.js"></script>
-    <script type="text/javascript" src="${base}/static/jqwidgets/jqxscrollbar.js"></script>
-    <script type="text/javascript" src="${base}/static/jqwidgets/jqxmenu.js"></script>
-    <script type="text/javascript" src="${base}/static/jqwidgets/jqxcheckbox.js"></script>
-    <script type="text/javascript" src="${base}/static/jqwidgets/jqxlistbox.js"></script>
-    <script type="text/javascript" src="${base}/static/jqwidgets/jqxdropdownlist.js"></script>
- 
-    <script type="text/javascript" src="${base}/static/scripts/demos.js"></script>  
-    <script type="text/javascript" src="${base}/static/jqwidgets/jqxdatatable.js"></script>
-    <script type="text/javascript" src="${base}/static/jqwidgets/jqxtreegrid.js"></script>     
-
-    <script type="text/javascript" src="${base}/static/jqwidgets/jqxbuttons.js"></script>
-
 	<link type="text/css" rel="stylesheet" href="${base}/static/content/jeDate/jedate/skin/jedate.css">
     <script type="text/javascript" src="${base}/static/content/jeDate/jedate/jedate.js"></script>
    			        
@@ -66,10 +44,26 @@
 				</li>
 			</ul><!-- .breadcrumb -->	
 		</div>
-			
+
 		<div class="page-content">
-			${content}
+			<div class="row" style="margin:0px !important">
+			<div class="col-xs-12">		
+				<div>${content}</div>
+			</div>
+			</div>	
 		</div>
+		
 	</div>
+	
+	<script type="text/javascript">
+	//解决body元素冲突
+	$(function() {
+			$('body').eq(0).removeClass("b1 b2");
+			//$(.b1).removeClass();
+			//$('body').setAttribute("class","c");
+		 });
+		 
+	</script>
+
 </@override>	
 <@extends name="/secondStyle/contentBase.ftl"/>

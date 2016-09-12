@@ -8,27 +8,20 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
 import java.io.OutputStreamWriter;
-import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
 import javax.annotation.Resource;
-
 import org.bson.Document;
 import org.springframework.stereotype.Service;
-
 import DataAn.common.config.Config;
 import DataAn.common.utils.DateUtil;
 import DataAn.fileSystem.dto.CSVFileDataResultDto;
-import DataAn.fileSystem.option.FlyWheelDataType;
 import DataAn.fileSystem.service.ICSVService;
 import DataAn.fileSystem.service.IJ9Series_Star_Service;
 
@@ -162,8 +155,19 @@ public class CSVServiceImpl implements ICSVService{
 //		return this.readCSVFileToDoc_delOneSecondItems(in, versions,0);
 	}
 	
-	@Override
-	public CSVFileDataResultDto<Document> readCSVFileToDoc_delFrontAndBack_arithmetic1(
+	/**
+	* Description: 通过算法1 删除前后记录
+	* @param in 输入流
+	* @param versions 标志某一次上传的一个版本号 方便数据库事务会滚 可以是UUID
+	* @param delNumber 删除前后记录数
+	* @param totalNumber 获取总记录数 0为全部
+	* @return
+	* @throws Exception
+	* @author Shenwp
+	* @date 2016年7月29日
+	* @version 1.0
+	*/
+	protected CSVFileDataResultDto<Document> readCSVFileToDoc_delFrontAndBack_arithmetic1(
 			InputStream in, String versions, int delNumber, int totalNumber) throws Exception {		
 		List<Document> docList = new ArrayList<Document>();
 		//获取j9系列参数列表
@@ -183,10 +187,11 @@ public class CSVServiceImpl implements ICSVService{
 		List<Document> tempList = new ArrayList<Document>();
 		//存储无效点 索引值
 		Set<Integer> delDateSet = new HashSet<Integer>();
+		//格式化时间处理类
+		Calendar cal = Calendar.getInstance();
 		int year = 0;
 		int month = 0;
 		int day = 0;
-		Calendar cal = Calendar.getInstance();
 		while ((line = reader.readLine()) != null) {
 			if(totalNumber !=0 && count == totalNumber){
 				break;
@@ -196,16 +201,23 @@ public class CSVServiceImpl implements ICSVService{
 			String[] items = line.split(",");
 			date = items[0].trim();
 			Date dateTime = DateUtil.format(date, "yyyy年MM月dd日HH时mm分ss秒");
-			cal.setTime(dateTime);
-			year = cal.get(Calendar.YEAR);
-			month = cal.get(Calendar.MONTH) + 1;
-			day = cal.get(Calendar.DATE);
+			
+//			cal.setTime(dateTime);
+//			year = cal.get(Calendar.YEAR);
+//			month = cal.get(Calendar.MONTH) + 1;
+//			day = cal.get(Calendar.DATE);
+//			doc.append("versions", versions);
+//			doc.append("status", 1);
+//			doc.append("year", year);
+//			doc.append("year_month", year + "-" + month);
+//			doc.append("year_month_day", year + "-" + month + "-" + day);
+			
 			doc.append("versions", versions);
 			doc.append("status", 1);
-			doc.append("year", year);
-			doc.append("year_month", year + "-" + month);
-			doc.append("year_month_day", year + "-" + month + "-" + day);
-//			doc.append(FlyWheelDataType.getFlyWheelDataTypeByZh(array[0]).getName(), DateUtil.formatString(date, "yyyy-MM-dd HH-mm-ss"));
+			doc.append("year", DateUtil.format(dateTime, "yyyy"));
+			doc.append("year_month", DateUtil.format(dateTime, "yyyy-MM"));
+			doc.append("year_month_day", DateUtil.format(dateTime, "yyyy-MM-dd"));
+			
 			//doc.append(j9SeriesPatameterMap.get(array[0]), DateUtil.formatString(date, "yyyy-MM-dd HH:mm:ss"));
 			doc.append(j9SeriesPatameterMap.get(array[0]), dateTime);
 			for (int i = 1; i < items.length; i++) {
@@ -214,7 +226,6 @@ public class CSVServiceImpl implements ICSVService{
 					flag = true;
 					break;
 				}else{
-//					doc.append(FlyWheelDataType.getFlyWheelDataTypeByZh(array[i]).getName().toLowerCase(), colData);
 					doc.append(j9SeriesPatameterMap.get(array[i]), colData);
 				}
 			}
@@ -238,14 +249,26 @@ public class CSVServiceImpl implements ICSVService{
 				docList.add(tempList.get(i));
 			}
 		}
+		//返回读取文件结果集
 		CSVFileDataResultDto<Document> result = new CSVFileDataResultDto<Document>();
 		result.setDatas(docList);
 		result.setTitle(title);
 		return result;
 	}
 
-	@Override
-	public List<Document> readCSVFileToDoc_delFrontAndBack_arithmetic2(
+	/**
+	* Description: 通过算法2 删除前后记录
+	* @param in 输入流
+	* @param versions 标志某一次上传的一个版本号 方便数据库事务会滚 可以是UUID
+	* @param delNumber 删除前后记录数
+	* @param totalNumber 获取总记录数 0为全部
+	* @return
+	* @throws Exception
+	* @author Shenwp
+	* @date 2016年7月29日
+	* @version 1.0
+	*/
+	protected CSVFileDataResultDto<Document> readCSVFileToDoc_delFrontAndBack_arithmetic2(
 			InputStream in, String versions,int delNumber, int totalNumber) throws Exception {
 		List<Document> docList = new ArrayList<Document>();
 		//获取j9系列参数列表
@@ -264,6 +287,11 @@ public class CSVServiceImpl implements ICSVService{
 		boolean flag = false; //判断是否存在 # 标示
 		//临时存储集合
 		List<Document> tempList = new ArrayList<Document>();
+		//格式化时间处理类
+		Calendar cal = Calendar.getInstance();
+		int year = 0;
+		int month = 0;
+		int day = 0;
 		while ((line = reader.readLine()) != null) {
 			if(totalNumber !=0 && count == totalNumber){
 				break;
@@ -272,32 +300,38 @@ public class CSVServiceImpl implements ICSVService{
 			//CSV格式文件为逗号分隔符文件，这里根据逗号切分
 			String[] items = line.split(",");
 			date = items[0].trim();
+			
+			Date dateTime = DateUtil.format(date, "yyyy年MM月dd日HH时mm分ss秒");
+//			cal.setTime(dateTime);
+//			year = cal.get(Calendar.YEAR);
+//			month = cal.get(Calendar.MONTH) + 1;
+//			day = cal.get(Calendar.DATE);
+//			doc.append("versions", versions);
+//			doc.append("status", 1);
+//			doc.append("year", year);
+//			doc.append("year_month", year + "-" + month);
+//			doc.append("year_month_day", year + "-" + month + "-" + day);
+			
 			doc.append("versions", versions);
 			doc.append("status", 1);
-			doc.append("year", DateUtil.formatString(date, "yyyy"));
-			doc.append("year_month", DateUtil.formatString(date, "yyyy-MM"));
-			doc.append("year_month_day", DateUtil.formatString(date, "yyyy-MM-dd"));
-//			doc.append(FlyWheelDataType.getFlyWheelDataTypeByZh(array[0]).getName(), DateUtil.formatString(date, "yyyy-MM-dd HH-mm-ss"));
-//			doc.append(j9SeriesPatameterMap.get(array[0]), DateUtil.formatString(date, "yyyy-MM-dd HH-mm-ss"));
-			for (int i = 0; i < items.length; i++) {
+			doc.append("year", DateUtil.format(dateTime, "yyyy"));
+			doc.append("year_month", DateUtil.format(dateTime, "yyyy-MM"));
+			doc.append("year_month_day", DateUtil.format(dateTime, "yyyy-MM-dd"));
+			
+			//doc.append(j9SeriesPatameterMap.get(array[0]), DateUtil.formatString(date, "yyyy-MM-dd HH:mm:ss"));
+			doc.append(j9SeriesPatameterMap.get(array[0]), dateTime);
+			for (int i = 1; i < items.length; i++) {
 				colData = items[i].trim();
 				if(colData.indexOf("#") >= 0){
 					flag = true;
 					break;
 				}else{
-//					doc.append(FlyWheelDataType.getFlyWheelDataTypeByZh(array[i]).getName().toLowerCase(), colData);
 					doc.append(j9SeriesPatameterMap.get(array[i]), colData);
 				}
 			}
 			//存在无效点
 			if(flag){
-				flagCount = count + delNumber;
-//				//如果这一行记录存在无效点 则保存这一行记录的前后四行
-//				for (int i = (count - delNumber); i <= (count + delNumber); i++) {
-//					if(i >= 0){
-//						delDateSet.add(i);												
-//					}
-//				}					
+				flagCount = count + delNumber;				
 			}
 			tempList.add(doc);
 			int i = count - delNumber;
@@ -313,11 +347,25 @@ public class CSVServiceImpl implements ICSVService{
 				docList.add(tempList.get(i));
 			}
 		}
-		return docList;
+		//返回读取文件结果集
+		CSVFileDataResultDto<Document> result = new CSVFileDataResultDto<Document>();
+		result.setDatas(docList);
+		result.setTitle(title);
+		return result;
 	}
 
-	@Override
-	public List<Document> readCSVFileToDoc_delOneItem(InputStream in,String versions, int totalNumber) throws Exception {
+	/**
+	* Description: 删除某一条无效值
+	* @param in 输入流
+	* @param versions 标志某一次上传的一个版本号 方便数据库事务会滚 可以是UUID
+	* @param totalNumber 获取总记录数 0为全部
+	* @return
+	* @throws Exception
+	* @author Shenwp
+	* @date 2016年7月29日
+	* @version 1.0
+	*/
+	protected CSVFileDataResultDto<Document> readCSVFileToDoc_delOneItem(InputStream in,String versions, int totalNumber) throws Exception {
 		List<Document> docList = new ArrayList<Document>();
 		//获取j9系列参数列表
 		Map<String,String> j9SeriesPatameterMap = j9SeriesStarService.getAllParameterList_allZh_and_en();
@@ -332,6 +380,11 @@ public class CSVServiceImpl implements ICSVService{
 		int count = 0;
 		String colData = "";
 		boolean flag = false; //判断是否存在 # 标示
+		//格式化时间处理类
+		Calendar cal = Calendar.getInstance();
+		int year = 0;
+		int month = 0;
+		int day = 0;
 		while ((line = reader.readLine()) != null) {
 			if(totalNumber !=0 && count == totalNumber){
 				break;
@@ -341,20 +394,24 @@ public class CSVServiceImpl implements ICSVService{
 			//CSV格式文件为逗号分隔符文件，这里根据逗号切分
 			String[] items = line.split(",");
 			date = items[0].trim();
+			Date dateTime = DateUtil.format(date, "yyyy年MM月dd日HH时mm分ss秒");
+			cal.setTime(dateTime);
+			year = cal.get(Calendar.YEAR);
+			month = cal.get(Calendar.MONTH) + 1;
+			day = cal.get(Calendar.DATE);
 			doc.append("versions", versions);
 			doc.append("status", 1);
-			doc.append("year", DateUtil.formatString(date, "yyyy"));
-			doc.append("year_month", DateUtil.formatString(date, "yyyy-MM"));
-			doc.append("year_month_day", DateUtil.formatString(date, "yyyy-MM-dd"));
-//			doc.append(FlyWheelDataType.getFlyWheelDataTypeByZh(array[0]).getName(), DateUtil.formatString(date, "yyyy-MM-dd HH-mm-ss"));
-//			doc.append(j9SeriesPatameterMap.get(array[0]), DateUtil.formatString(date, "yyyy-MM-dd HH-mm-ss"));
-			for (int i = 0; i < items.length; i++) {
+			doc.append("year", year);
+			doc.append("year_month", year + "-" + month);
+			doc.append("year_month_day", year + "-" + month + "-" + day);
+			//doc.append(j9SeriesPatameterMap.get(array[0]), DateUtil.formatString(date, "yyyy-MM-dd HH:mm:ss"));
+			doc.append(j9SeriesPatameterMap.get(array[0]), dateTime);
+			for (int i = 1; i < items.length; i++) {
 				colData = items[i].trim();
 				if(colData.indexOf("#") >= 0){
 					flag = true;
 					break;
 				}else{
-//					doc.append(FlyWheelDataType.getFlyWheelDataTypeByZh(array[i]).getName().toLowerCase(), colData);
 					doc.append(j9SeriesPatameterMap.get(array[i]), colData);
 				}
 			}
@@ -364,12 +421,25 @@ public class CSVServiceImpl implements ICSVService{
 			}
 			flag = false;
 		}
-
-		return docList;
+		//返回读取文件结果集
+		CSVFileDataResultDto<Document> result = new CSVFileDataResultDto<Document>();
+		result.setDatas(docList);
+		result.setTitle(title);
+		return result;
 	}
 
-	@Override
-	public List<Document> readCSVFileToDoc_delOneSecondItems(InputStream in,String versions, int totalNumber) throws Exception {
+	/**
+	* Description: 删除某一秒无效值
+	* @param in 输入流
+	* @param versions 标志某一次上传的一个版本号 方便数据库事务会滚 可以是UUID
+	* @param totalNumber 获取总记录数 0为全部
+	* @return
+	* @throws Exception
+	* @author Shenwp
+	* @date 2016年7月29日
+	* @version 1.0
+	*/
+	public CSVFileDataResultDto<Document> readCSVFileToDoc_delOneSecondItems(InputStream in,String versions, int totalNumber) throws Exception {
 		List<Document> docList = new ArrayList<Document>();
 		//获取j9系列参数列表
 		Map<String,String> j9SeriesPatameterMap = j9SeriesStarService.getAllParameterList_allZh_and_en();
@@ -386,6 +456,11 @@ public class CSVServiceImpl implements ICSVService{
 		boolean flag = false; //判断是否存在 # 标示
 		Set<String> datetime = new HashSet<String>();
 		List<Document> tempList = new ArrayList<Document>();
+		//格式化时间处理类
+		Calendar cal = Calendar.getInstance();
+		int year = 0;
+		int month = 0;
+		int day = 0;
 		while ((line = reader.readLine()) != null) {
 			if(totalNumber !=0 && count == totalNumber){
 				break;
@@ -395,20 +470,24 @@ public class CSVServiceImpl implements ICSVService{
 			//CSV格式文件为逗号分隔符文件，这里根据逗号切分
 			String[] items = line.split(",");
 			date = items[0].trim();
+			Date dateTime = DateUtil.format(date, "yyyy年MM月dd日HH时mm分ss秒");
+			cal.setTime(dateTime);
+			year = cal.get(Calendar.YEAR);
+			month = cal.get(Calendar.MONTH) + 1;
+			day = cal.get(Calendar.DATE);
 			doc.append("versions", versions);
 			doc.append("status", 1);
-			doc.append("year", DateUtil.formatString(date, "yyyy"));
-			doc.append("year_month", DateUtil.formatString(date, "yyyy-MM"));
-			doc.append("year_month_day", DateUtil.formatString(date, "yyyy-MM-dd"));
-//			doc.append(FlyWheelDataType.getFlyWheelDataTypeByZh(array[0]).getName(), DateUtil.formatString(date, "yyyy-MM-dd HH-mm-ss"));
-//			doc.append(j9SeriesPatameterMap.get(array[0]), DateUtil.formatString(date, "yyyy-MM-dd HH-mm-ss"));
-			for (int i = 0; i < items.length; i++) {
+			doc.append("year", year);
+			doc.append("year_month", year + "-" + month);
+			doc.append("year_month_day", year + "-" + month + "-" + day);
+			//doc.append(j9SeriesPatameterMap.get(array[0]), DateUtil.formatString(date, "yyyy-MM-dd HH:mm:ss"));
+			doc.append(j9SeriesPatameterMap.get(array[0]), dateTime);
+			for (int i = 1; i < items.length; i++) {
 				colData = items[i].trim();
 				if(colData.indexOf("#") >= 0){
 					flag = true;
 					break;
 				}else{
-//					doc.append(FlyWheelDataType.getFlyWheelDataTypeByZh(array[i]).getName().toLowerCase(), colData);
 					doc.append(j9SeriesPatameterMap.get(array[i]), colData);
 				}
 			}
@@ -427,145 +506,11 @@ public class CSVServiceImpl implements ICSVService{
 				docList.add(document);
 			}
 		}
-		return docList;
+		//返回读取文件结果集
+		CSVFileDataResultDto<Document> result = new CSVFileDataResultDto<Document>();
+		result.setDatas(docList);
+		result.setTitle(title);
+		return result;
 	}
-	@Override
-	public List<Document> readCSVFileOfJsonToDoc(String filePath) throws Exception {
-		File file = new File(filePath);
-		InputStream in = new FileInputStream(file);
-		return this.readCSVFileOfJsonToDoc(in);
-	}
-
-	@Override
-	public List<Document> readCSVFileOfJsonToDoc(InputStream in)throws Exception {
-		List<Document> docList = new ArrayList<Document>();
-		InputStreamReader inputStreamReader = new InputStreamReader(in, "gb2312");
-		BufferedReader reader = new BufferedReader(inputStreamReader);// 换成你的文件名
-		String title = reader.readLine();// 第一行信息，为标题信息，不用,如果需要，注释掉
-		//CSV格式文件为逗号分隔符文件，这里根据逗号切分
-		String[] array = title.split(",");
-		String line = null;
-		String date = "";
-		String resultJson = "";
-		int count = 0;
-		while ((line = reader.readLine()) != null) {
-			if(count  == 3){
-				break;
-			}
-			count ++;
-			//CSV格式文件为逗号分隔符文件，这里根据逗号切分
-			String[] items = line.split(",");
-			date = items[0];
-			resultJson = resultJson + "{";
-			resultJson =  resultJson + "\"year\":" + "\"" + DateUtil.formatString(date, "yyyy") + "\","; 
-			resultJson =  resultJson + "\"year_month\":" + "\"" + DateUtil.formatString(date, "yyyy-MM") + "\","; 
-			resultJson =  resultJson + "\"year_month_day\":" + "\"" + DateUtil.formatString(date, "yyyy-MM-dd") + "\","; 
-			//items.length
-			int length = 3;
-			for (int i = 0; i < length; i++) {
-				if((i + 1) == length){
-					resultJson =  resultJson + "\""+ FlyWheelDataType.getFlyWheelDataTypeByZh(array[i]).getName() +"\":" + "\"" +items[i].trim() + "\""; 							
-				}else{
-					resultJson =  resultJson + "\""+ FlyWheelDataType.getFlyWheelDataTypeByZh(array[i]).getName() +"\":" + "\"" +items[i].trim() + "\","; 							
-				}
-			}
-			resultJson =  resultJson + "},";
-			docList.add(Document.parse(resultJson));
-			resultJson = "";
-		}
-		return docList;
-	}
-	
-	@Override
-	public List<Map<String, String>> readCSVFile(String filePath) throws Exception {
-		File file = new File(filePath);
-		InputStream in = new FileInputStream(file);
-		return this.readCSVFile(in);
-	}
-
-	@Override
-	public List<Map<String, String>> readCSVFile(InputStream in) throws Exception {
-		List<Map<String,String>> list = new ArrayList<Map<String,String>>();
-		InputStreamReader inputStreamReader = new InputStreamReader(in, "gb2312");
-		BufferedReader reader = new BufferedReader(inputStreamReader);// 换成你的文件名
-		String title = reader.readLine();// 第一行信息，为标题信息，不用,如果需要，注释掉
-		//CSV格式文件为逗号分隔符文件，这里根据逗号切分
-		String[] array = title.split(",");
-		String line = null;
-		Map<String,String> map = null;
-		String date = "";
-		int count = 0;
-		while ((line = reader.readLine()) != null) {
-			if(count  == 3){
-				break;
-			}
-			count ++;
-			map = new HashMap<String,String>();
-			//CSV格式文件为逗号分隔符文件，这里根据逗号切分
-			String[] items = line.split(",");
-			date = items[0];
-//			map.put("year", DateUtil.formatString(date, "yyyy"));
-//			map.put("year_month", DateUtil.formatString(date, "yyyy-MM"));
-			map.put("yyyy-MM-dd-HH-mm-ss", DateUtil.formatString(date, "yyyy-MM-dd-HH-mm-ss"));
-			//items.length;
-			for (int i = 0; i < 3; i++) {
-				map.put(FlyWheelDataType.getFlyWheelDataTypeByZh(array[i]).getName(), items[i].trim());
-			}
-			list.add(map);
-		}
-		return list;
-	}
-
-	@Override
-	public String readCSVFileOfJson(String filePath) throws Exception {
-		File file = new File(filePath);
-		InputStream in = new FileInputStream(file);
-		return this.readCSVFileOfJson(in);
-	}
-	
-	@Override
-	public String readCSVFileOfJson(InputStream in)  throws Exception {
-		InputStreamReader inputStreamReader = new InputStreamReader(in, "gb2312");
-		BufferedReader reader = new BufferedReader(inputStreamReader);// 换成你的文件名
-		String title = reader.readLine();// 第一行信息，为标题信息，不用,如果需要，注释掉
-		//CSV格式文件为逗号分隔符文件，这里根据逗号切分
-		String[] array = title.split(",");
-		String line = null;
-		String date = "";
-		String resultJson = "";
-		StringBuilder sb = new StringBuilder();
-		sb.append("[");
-		int count = 0;
-		while ((line = reader.readLine()) != null) {
-			if(count  == 3){
-				break;
-			}
-			count ++;
-			//CSV格式文件为逗号分隔符文件，这里根据逗号切分
-			String[] items = line.split(",");
-			date = items[0];
-			resultJson = resultJson + "{";
-			resultJson =  resultJson + "\"year\":" + "\"" + DateUtil.formatString(date, "yyyy") + "\","; 
-			resultJson =  resultJson + "\"year_month\":" + "\"" + DateUtil.formatString(date, "yyyy-MM") + "\","; 
-			resultJson =  resultJson + "\"year_month_day\":" + "\"" + DateUtil.formatString(date, "yyyy-MM-dd") + "\","; 
-			//items.length
-			int length = 3;
-			for (int i = 0; i < length; i++) {
-				if((i + 1) == length){
-					resultJson =  resultJson + "\""+ FlyWheelDataType.getFlyWheelDataTypeByZh(array[i]).getName() +"\":" + "\"" +items[i].trim() + "\""; 							
-				}else{
-					resultJson =  resultJson + "\""+ FlyWheelDataType.getFlyWheelDataTypeByZh(array[i]).getName() +"\":" + "\"" +items[i].trim() + "\","; 							
-				}
-			}
-			resultJson =  resultJson + "},";
-			sb.append(resultJson);
-			resultJson = "";
-		}
-		sb.deleteCharAt(sb.lastIndexOf(","));
-		sb.append("]");
-		return sb.toString();
-	}
-
-
 
 }

@@ -13,16 +13,16 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 @Entity
-@Table(name = "t_log")
-public class Log implements java.io.Serializable{
+@Table(name = "t_audit")
+public class Audit implements java.io.Serializable{
 
 	/** serialVersionUID*/
 	private static final long serialVersionUID = 1L;
 	
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
-	@Column(name = "logId", unique = true, nullable = false)
-	private long logId;
+	@Column(name = "auditId", unique = true, nullable = false)
+	private long auditId;
 	@Column(name = "userName", length = 32)
 	private String userName;
 	@Column(name = "userIp", length = 15)
@@ -33,13 +33,14 @@ public class Log implements java.io.Serializable{
 	private String content;
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "createDate", nullable = true)
-	private Date createDate;
+	private Date createDate = new Date();
 	
-	public long getLogId() {
-		return logId;
+
+	public long getAuditId() {
+		return auditId;
 	}
-	public void setLogId(long logId) {
-		this.logId = logId;
+	public void setAuditId(long auditId) {
+		this.auditId = auditId;
 	}
 	public String getUserName() {
 		return userName;
@@ -71,9 +72,5 @@ public class Log implements java.io.Serializable{
 	public void setCreateDate(Date createDate) {
 		this.createDate = createDate;
 	}
-	public static long getSerialversionuid() {
-		return serialVersionUID;
-	}
-
 	
 }

@@ -2,8 +2,10 @@ package DataAn.sys.service.impl;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.annotation.Resource;
@@ -12,18 +14,26 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.alibaba.fastjson.JSON;
+
 import DataAn.common.dao.Pager;
 import DataAn.common.utils.DateUtil;
 import DataAn.common.utils.UUIDGeneratorUtil;
+import DataAn.sys.dao.IAuthDao;
 import DataAn.sys.dao.IDepartmentUserDao;
+import DataAn.sys.dao.IRoleAuthDao;
 import DataAn.sys.dao.IRoleDao;
 import DataAn.sys.dao.IUserDao;
 import DataAn.sys.dao.IUserRoleDao;
+import DataAn.sys.domain.Auth;
 import DataAn.sys.domain.DepartmentUser;
 import DataAn.sys.domain.Role;
+import DataAn.sys.domain.RoleAuth;
 import DataAn.sys.domain.User;
 import DataAn.sys.domain.UserRole;
 import DataAn.sys.domain.UserRoleId;
+import DataAn.sys.dto.ActiveUserDto;
+import DataAn.sys.dto.SysPermissionDto;
 import DataAn.sys.dto.UserDto;
 import DataAn.sys.service.IUserService;
 
@@ -37,6 +47,10 @@ public class UserServiceimpl implements IUserService{
 	private IUserRoleDao userRoleDao;
 	@Resource
 	private IRoleDao roleDao;
+	@Resource
+	private IRoleAuthDao roleAuthDao;
+	@Resource
+	private IAuthDao authDao;
 	@Resource
 	private IDepartmentUserDao departmentUserDao;
 	
@@ -105,7 +119,9 @@ public class UserServiceimpl implements IUserService{
 		user.setGender(userDto.getGender());
 		user.setUpdateUser(userDto.getUpdateUser());
 		user.setUpdateDate(new Date());
-		user.setVersion(user.getVersion() + 1);
+		if(user.getVersion() != null){
+			user.setVersion(user.getVersion() + 1);			
+		}
 		userDao.update(user);
 	}
 	
@@ -127,6 +143,24 @@ public class UserServiceimpl implements IUserService{
 		return null;
 	}
 
+	@Override
+	public ActiveUserDto getActiveUserByName(String userName) {
+		ActiveUserDto acticeUser = new ActiveUserDto();
+		User user = userDao.getUserByName(userName);
+		if(user != null){
+			acticeUser.setId(user.getUserId());
+			acticeUser.setUserName(user.getUserName());	
+			acticeUser.setPassWord(user.getPassWord());
+			Map<String,String> map = this.getPermissionMenus(user.getUserId());
+			acticeUser.setPermissionItems(map);
+			String json = JSON.toJSONString(map);
+			acticeUser.setPermissionItemsJSON(json);
+			return acticeUser;
+		}
+		return null;
+	}
+
+	
 	@Override
 	public Pager<UserDto> getUserList(int pageIndex, int pageSize, String userName,
 			String createdateStart, String createdateEnd,
@@ -197,8 +231,46 @@ public class UserServiceimpl implements IUserService{
 		return null;
 	}
 
+	private Map<String,List<SysPermissionDto>> getMenus(long userId){
+		Map<String,List<SysPermissionDto>> map = new HashMap<String,List<SysPermissionDto>>();
+		UserRole ur = userRoleDao.selectByUserId(userId);
+		if(ur != null){
+			List<RoleAuth> raList = roleAuthDao.selectByRoleId(ur.getId().getRoleId());
+			if(raList != null && raList.size() > 0){
+				List<Long> authIds = new ArrayList<Long>();
+				for (RoleAuth ra : raList) {
+					authIds.add(ra.getId().getAuthId());
+				}
+				List<Auth> authList = authDao.selectByAuthIds(authIds);
+				if(authList != null && authList.size() > 0){
+					
+				}
+			}
+		}
+		return map;
+	}
 
-	
-	
-
+	private Map<String,String> getPermissionMenus(long userId){
+		Map<String,String> map = new HashMap<String,String>();
+		UserRole ur = userRoleDao.selectByUserId(userId);
+		if(ur != null){
+			List<RoleAuth> raList = roleAuthDao.selectByRoleId(ur.getId().getRoleId());
+			if(raList != null && raList.size() > 0){
+				List<Long> authIds = new ArrayList<Long>();
+				for (RoleAuth ra : raList) {
+					authIds.add(ra.getId().getAuthId());
+				}
+				List<Auth> authList = authDao.selectByAuthIds(authIds);
+				if(authList != null && authList.size() > 0){
+					for (Auth auth : authList) {
+						map.put(auth.getCode(), auth.getCode());
+					}
+				}
+			}
+		}
+//		map.put("flywheel", "flywheel");
+//		map.put("top", "top");
+//		map.put("userManager", "userManager");
+		return map;
+	}
 }

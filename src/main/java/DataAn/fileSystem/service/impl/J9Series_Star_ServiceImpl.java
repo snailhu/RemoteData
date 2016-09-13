@@ -25,7 +25,7 @@ import DataAn.mongo.db.MongodbUtil;
 @Service
 public class J9Series_Star_ServiceImpl implements IJ9Series_Star_Service{
 
-	private EhCache ehCache = new EhCache("j9seriesConfig");
+	private EhCache ehCache = null;//new EhCache("j9seriesConfig");
 	@Resource
 	private IDateParametersDao parametersDao;
 	

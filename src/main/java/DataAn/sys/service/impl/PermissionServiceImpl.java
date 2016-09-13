@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import DataAn.common.dao.Pager;
 import DataAn.common.pageModel.EasyuiTreeNode;
 import DataAn.common.utils.DateUtil;
+import DataAn.fileSystem.option.J9Series_Star_ParameterType;
 import DataAn.sys.dao.IAuthDao;
 import DataAn.sys.dao.IRoleAuthDao;
 import DataAn.sys.domain.Auth;
@@ -30,6 +31,58 @@ public class PermissionServiceImpl implements IPermissionService{
 	private IAuthDao authDao;
 	@Resource
 	private IRoleAuthDao roleAuthDao;
+	
+	@Override
+	public void initPermission() {
+		List<Auth> list = authDao.findAll();
+		if(list == null || list.size() == 0){
+			//权限组
+			Auth sysAuth = new Auth();
+			sysAuth.setAuthName("sysPermission");
+			sysAuth.setCreateDate(new Date());
+			sysAuth.setUpdateDate(sysAuth.getCreateDate());
+			sysAuth.setDescription("系统权限");
+			sysAuth.setVersion(1);
+			sysAuth.setStatus("1");
+			authDao.add(sysAuth);
+			//权限项
+			list = new ArrayList<Auth>();
+			//飞轮数据管理
+			Auth flywheelAuth = new Auth();
+			flywheelAuth.setAuth(sysAuth);
+			flywheelAuth.setAuthName(J9Series_Star_ParameterType.FLYWHEEL.getName());
+			flywheelAuth.setCode(J9Series_Star_ParameterType.FLYWHEEL.getValue());
+			flywheelAuth.setCreateDate(new Date());
+			flywheelAuth.setUpdateDate(flywheelAuth.getCreateDate());
+			flywheelAuth.setDescription(J9Series_Star_ParameterType.FLYWHEEL.getName() + "权限项");
+			flywheelAuth.setVersion(1);
+			flywheelAuth.setStatus("1");
+			list.add(flywheelAuth);
+			//陀螺数据管理
+			Auth topAuth = new Auth();
+			topAuth.setAuth(sysAuth);
+			topAuth.setAuthName(J9Series_Star_ParameterType.TOP.getName());
+			topAuth.setCode(J9Series_Star_ParameterType.TOP.getValue());
+			topAuth.setCreateDate(new Date());
+			topAuth.setUpdateDate(topAuth.getCreateDate());
+			topAuth.setDescription(J9Series_Star_ParameterType.TOP.getName() + "权限项");
+			topAuth.setVersion(1);
+			topAuth.setStatus("1");
+			list.add(topAuth);
+			//用户数据管理
+			Auth userAuth = new Auth();
+			userAuth.setAuth(sysAuth);
+			userAuth.setAuthName("用户数据管理");
+			topAuth.setCode("userManager");
+			userAuth.setCreateDate(new Date());
+			userAuth.setUpdateDate(userAuth.getCreateDate());
+			userAuth.setDescription("用户数据管理权限项");
+			userAuth.setVersion(1);
+			userAuth.setStatus("1");
+			list.add(userAuth);
+			authDao.add(list);			
+		}
+	}
 	
 	@Override
 	@Transactional
@@ -235,4 +288,5 @@ public class PermissionServiceImpl implements IPermissionService{
 		}
 		return null;
 	}
+
 }

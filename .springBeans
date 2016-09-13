@@ -7,10 +7,11 @@
 	</configSuffixes>
 	<enableImports><![CDATA[false]]></enableImports>
 	<configs>
+		<config>src/main/resources/applicationContext-cache.xml</config>
+		<config>src/main/resources/springMVC-views.xml</config>
+		<config>src/main/resources/springMVC.xml</config>
 	</configs>
 	<autoconfigs>
-		<config>src/main/resources/applicationContext.xml</config>
-		<config>src/main/resources/applicationContext-springMVC.xml</config>
 		<config>src/main/resources/applicationContext-hibernate.xml</config>
 	</autoconfigs>
 	<configSets>

@@ -47,6 +47,7 @@ import DataAn.mongo.db.MongodbUtil;
 import DataAn.mongo.fs.IDfsDb;
 import DataAn.mongo.fs.MongoDfsDb;
 import DataAn.mongo.init.InitMongo;
+import DataAn.mongo.service.IMongoGridFSService;
 import DataAn.mongo.service.IMongoService;
 import DataAn.mongo.zip.ZipCompressorByAnt;
 
@@ -62,7 +63,7 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 	private ICSVService csvService;	
 	@Resource
 	private IMongoService mongoService;
-
+	
 	@Override
 	@Transactional
 	public void saveFile(Map<String, FileDto> map) throws Exception {
@@ -171,7 +172,8 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 		}else{
 			//从mongofs中获取数据流
 			IDfsDb dfs = MongoDfsDb.getInstance();
-			fileDto.setIn(dfs.downLoadToStream(file.getMongoFSUUId()));			
+			String databaseName = InitMongo.getFSBDNameBySeriesAndStar(file.getSeries(), file.getStar());
+			fileDto.setIn(dfs.downLoadToStream(databaseName, file.getMongoFSUUId()));	
 		}
 		return fileDto;
 	}
@@ -195,7 +197,8 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 				if(file.getCachePath() != null && !file.getCachePath().equals("")){
 					FileUtil.copyFile(file.getCachePath(), mogodbFilePath, true);
 				}else{
-					dfs.downLoadToLocal(file.getMongoFSUUId(),mogodbFilePath);										
+					String databaseName = InitMongo.getFSBDNameBySeriesAndStar(file.getSeries(), file.getStar());
+					dfs.downLoadToLocal(databaseName,file.getMongoFSUUId(),mogodbFilePath);										
 				}
 			}
 		}
@@ -222,7 +225,8 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 					if(childFile.getCachePath() != null && !childFile.getCachePath().equals("")){
 						FileUtil.copyFile(childFile.getCachePath(), path, true);
 					}else{
-						dfs.downLoadToLocal(childFile.getMongoFSUUId(),path);											
+						String databaseName = InitMongo.getFSBDNameBySeriesAndStar(childFile.getSeries(), childFile.getStar());
+						dfs.downLoadToLocal(databaseName,childFile.getMongoFSUUId(),path);											
 					}
 				}
 			}
@@ -374,7 +378,7 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 		String month = dataMap.get("month");
 //		String day = dataMap.get("day");
 		
-		//保存csv 原文件				
+		//保存csv 原文件	--部署后定时任务做			
 		IDfsDb dfs = MongoDfsDb.getInstance();
 		BufferedInputStream bis = null;
 		try {
@@ -382,7 +386,6 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 			String databaseName = InitMongo.getFSBDNameBySeriesAndStar(series, star);
 			dfs.upload(databaseName, fileDto.getFileName(), uuId, bis);
 		} catch(Exception e){
-//			e.printStackTrace();
 			//删除上传csv原文件
 			dfs.delete(uuId);
 			throw new Exception("csv 文件上传失败！！！");
@@ -394,6 +397,7 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 		
 		CSVFileDataResultDto<Document> result = csvService.readCSVFileToDoc(fileDto.getFilePath(),uuId);
 		List<Document> docList = result.getDatas();
+		
 //		MongodbUtil mg = MongodbUtil.getInstance();
 //		String collectionName = J9SeriesType.getJ9SeriesType(star).getName();
 //		try {
@@ -410,11 +414,11 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 //			throw new Exception("csv 文件解析失败！！！");
 //		}
 		
-		//保存csv文件数据
-		mongoService.saveCSVData(series, star,parameterType, date, docList, uuId);
-		
-		//存储某一天的参数信息
+		//数据不为空
 		if(docList != null && docList.size() > 0){
+			//保存csv文件数据
+			mongoService.saveCSVData(series, star,parameterType, date, docList, uuId);
+			//存储某一天的参数信息
 			String title = result.getTitle();
 			DateParameters dateParameters = new DateParameters();
 			dateParameters.setParameterType(parameterType);

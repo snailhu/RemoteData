@@ -11,6 +11,8 @@ public interface IUserRoleDao extends IBaseDao<UserRole>{
 
 	public abstract void deleteByUserId(long userId);
 
+	public abstract UserRole selectByUserId(long userId);
+	
 	public abstract Role selectRoleByUserId(long userId);
 
 	public abstract User selectUserByRoleName(String roleName);

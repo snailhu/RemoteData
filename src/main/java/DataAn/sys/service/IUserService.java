@@ -2,6 +2,7 @@ package DataAn.sys.service;
 
 import DataAn.common.dao.Pager;
 import DataAn.sys.domain.User;
+import DataAn.sys.dto.ActiveUserDto;
 import DataAn.sys.dto.UserDto;
 
 
@@ -19,6 +20,8 @@ public interface IUserService {
 	public abstract UserDto getUserByUserId(long userId);
 
 	public abstract UserDto getUserByName(String userName);
+	
+	public abstract ActiveUserDto getActiveUserByName(String userName);
 	
 	public abstract Pager<UserDto> getUserList(int pageIndex, int pageSize, String userName,
 			  String createdateStart, String createdateEnd,

@@ -9,6 +9,8 @@ import DataAn.sys.dto.PermissionItemDto;
 
 public interface IPermissionService {
 
+	public void initPermission();
+	
 	void savePermissionGroup(PermissionGroupDto permissionGroup);
 
 	void savePermissionItem(PermissionItemDto permissionItem);

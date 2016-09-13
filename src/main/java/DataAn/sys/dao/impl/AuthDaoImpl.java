@@ -28,6 +28,13 @@ implements IAuthDao{
 
 	@SuppressWarnings("unchecked")
 	@Override
+	public List<Auth> selectByAuthIds(List<Long> ids) {
+		String hql = "from Auth a where a.authId in (:ids)";
+		return this.getSession().createQuery(hql).setParameterList("ids", ids).list();
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
 	public Auth selectByCode(String code) {
 		String hql = "from Auth a where a.code=?";
 		List<Auth> list = this.getSession().createQuery(hql).setParameter(0, code).list();
@@ -78,5 +85,7 @@ implements IAuthDao{
 			return this.getSession().createQuery(hql).setParameter(0, parentAuthId).list();				
 		}
 	}
+
+
 
 }

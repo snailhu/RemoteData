@@ -1,13 +1,13 @@
 <@override name="content_left">
 	<div class="sidebar" id="sidebar">		    
 	    <ul class="nav nav-list">
-	    	<li>
+	    	<li class="flywheel-li" style="display: none;">
 				<a href="javascript:void(0);" onclick="getSatelliteComponents('flywheel')">
 					<i class="glyphicon glyphicon-certificate"></i>
 					<span class="menu-text"> 飞轮 </span>
 				</a>
 			</li>
-			<li>
+			<li class="top-li" style="display: none;">
 				<a href="javascript:void(0);" onclick="getSatelliteComponents('top')">
 					<i class="glyphicon glyphicon-certificate"></i>
 					<span class="menu-text"> 陀螺 </span>
@@ -25,6 +25,20 @@
 			$('#SatelliteComponents').attr('name','top');	
 		}
 	}
+	$(function () {
+		var activeUser = '${activeUser}';
+		if(activeUser != ''){
+			var permissionItemsJSON = '${activeUser.permissionItemsJSON}';
+			var map = $.parseJSON(permissionItemsJSON); 
+			console.log('permissionItemsJSON: ' + map.flywheel);
+			if(map.flywheel == 'flywheel'){
+				$(".flywheel-li").show();
+			}
+			if(map.top == 'top'){
+				$(".top-li").show();
+			}
+		}
+	});
 </script>
 </@override>
 <@override name="content_right">	
@@ -153,7 +167,7 @@
 				</li>
 				
 				<li class="active"  value="">
-					<span class="menu-text" id="SatelliteComponents" name="flywheel">飞轮</span>					
+					<span class="menu-text" id="SatelliteComponents" name="${nowParameterTypeValue}">${nowParameterTypeName}</span>					
 				</li>
 			</ul><!-- .breadcrumb -->	
 		</div>	

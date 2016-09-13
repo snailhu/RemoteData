@@ -50,6 +50,13 @@ public class BaseDaoImpl<T> implements IBaseDao<T> {
 	}
 
 	@Override
+	public void add(List<T> list) {
+		for (T t : list) {
+			getSession().save(t);
+		}
+	}
+	
+	@Override
 	public void update(T t) {
 		getSession().update(t);
 		
@@ -229,4 +236,5 @@ public class BaseDaoImpl<T> implements IBaseDao<T> {
 			return (long) this.getSession().createQuery(hql).setParameter(0, value).uniqueResult();
 		}
 	}
+
 }

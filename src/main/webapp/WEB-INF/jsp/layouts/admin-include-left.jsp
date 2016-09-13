@@ -1,12 +1,34 @@
 <%@ page language="java" pageEncoding="UTF-8"%>
 
 <div class="sidebar" id="sidebar">
-<!-- 	<script type="text/javascript">
+ 	<script type="text/javascript">
 		try {
 			ace.settings.check('sidebar', 'fixed')
 		} catch (e) {
 		}
-	</script> -->
+		var activeUser = '${activeUser}';
+		$(function () {
+			$(".flywheel-li").hide();
+			$(".top-li").hide();
+			$("#sysPermission-li").hide();
+			if(activeUser != ''){
+				var permissionItemsJSON = '${activeUser.permissionItemsJSON}';
+				var map = $.parseJSON(permissionItemsJSON); 
+// 				console.log('flywheel: ' + map.flywheel);
+// 				console.log('top: ' + map.top);
+// 				console.log('userManager: ' + map.userManager);
+				if(map.flywheel == 'flywheel'){
+					$(".flywheel-li").show();
+				}
+				if(map.top == 'top'){
+					$(".top-li").show();
+				}
+				if(map.userManager == 'userManager'){
+					$("#sysPermission-li").show();
+				}
+			}
+		});
+	</script> 
 
 <!--  
 	<div class="sidebar-shortcuts" id="sidebar-shortcuts">
@@ -123,9 +145,11 @@
 	-->
 	<!-- /.nav-list -->
 	<ul id="left_con" class="nav nav-list">
-	    <li><a href="admin/file/toUploadFile"> <i class="icon-dashboard"></i> <span
+	    <li>
+	    	<a href="admin/file/toUploadFile"> <i class="icon-dashboard"></i> <span
 				class="menu-text"> 文件上传 </span>
-		</a></li>
+			</a>
+		</li>
 		<li>
 			<a href="#" class="dropdown-toggle"> <i class="icon-list"></i>
 				<span class="menu-text"> 文件管理</span>
@@ -149,12 +173,12 @@
 		                        <b class="arrow icon-angle-down"></b>
 							</a>
 							<ul class="submenu">
-		                        <li>
+		                        <li class="flywheel-li">
 		                            <a href="admin/file/index/j9/01/flywheel/0/">
 		                                <i class="icon-leaf"></i> 飞轮
 		                            </a>
 		                        </li>
-		                          <li>
+		                        <li class="top-li">
 		                            <a href="admin/file/index/j9/01/top/0/">
 		                                <i class="icon-leaf"></i>陀螺
 		                            </a>
@@ -167,12 +191,12 @@
 		                        <b class="arrow icon-angle-down"></b>
 							</a>
 							<ul class="submenu">
-		                        <li>
+		                        <li class="flywheel-li">
 		                            <a href="admin/file/index/j9/02/flywheel/0/">
 		                                <i class="icon-leaf"></i> 飞轮
 		                            </a>
 		                        </li>
-		                          <li>
+		                        <li class="top-li">
 		                            <a href="admin/file/index/j9/02/top/0/">
 		                                <i class="icon-leaf"></i>陀螺
 		                            </a>
@@ -185,12 +209,12 @@
 		                        <b class="arrow icon-angle-down"></b>
 							</a>
 							<ul class="submenu">
-		                        <li>
+		                        <li class="flywheel-li">
 		                            <a href="admin/file/index/j9/03/flywheel/0/">
 		                                <i class="icon-leaf"></i> 飞轮
 		                            </a>
 		                        </li>
-		                          <li>
+		                          <li class="top-li">
 		                            <a href="admin/file/index/j9/03/top/0/">
 		                                <i class="icon-leaf"></i>陀螺
 		                            </a>
@@ -203,12 +227,12 @@
 		                        <b class="arrow icon-angle-down"></b>
 							</a>
 							<ul class="submenu">
-		                        <li>
+		                        <li class="flywheel-li">
 		                            <a href="admin/file/index/j9/04/flywheel/0/">
 		                                <i class="icon-leaf"></i> 飞轮
 		                            </a>
 		                        </li>
-		                          <li>
+		                          <li class="top-li">
 		                            <a href="admin/file/index/j9/04/top/0/">
 		                                <i class="icon-leaf"></i>陀螺
 		                            </a>
@@ -221,12 +245,12 @@
 		                        <b class="arrow icon-angle-down"></b>
 							</a>
 							<ul class="submenu">
-		                        <li>
+		                        <li class="flywheel-li">
 		                            <a href="admin/file/index/j9/05/flywheel/0/">
 		                                <i class="icon-leaf"></i> 飞轮
 		                            </a>
 		                        </li>
-		                          <li>
+		                          <li class="top-li">
 		                            <a href="admin/file/index/j9/05/top/0/">
 		                                <i class="icon-leaf"></i>陀螺
 		                            </a>
@@ -237,7 +261,7 @@
 				</li>
 			</ul>
 		</li>
-		<li>
+		<li  id="sysPermission-li">
 			<a href="#" class="dropdown-toggle"> <i class="icon-list"></i>
 				<span class="menu-text"> 系统管理</span>
 				<b class="arrow icon-angle-down"></b>

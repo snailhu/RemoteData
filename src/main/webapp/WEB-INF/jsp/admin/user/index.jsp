@@ -516,9 +516,10 @@ p, span, b, div {
 			        <h4 class="modal-title" id="editUserRoleModalLabel">编辑角色：</h4>
 			      </div>
 			      <div class="modal-body">
-			      	<form id="editUserInfoForm" class="form-horizontal" role="form" style="margin: 0px;">
+			      	<form id="editUserRoleForm" class="form-horizontal" role="form" style="margin: 0px;">
 			      		<div class="form-group">
 					      	<div class="col-sm-9">
+					      		<input type="hidden" id="editUserRole-userId">
 								<input id="roleList" name="roleId" style="width: 300px;height: 35px"/>
 							</div>
 						</div>
@@ -527,7 +528,7 @@ p, span, b, div {
 			      <div class="modal-footer">
 			      	<div class="col-lg-4 col-lg-offset-5">
 				        <button type="button" class="btn btn-default" data-dismiss="modal" id="reset_editUserRole">关闭</button>
-				        <button type="button" class="btn btn-primary" data-dismiss="modal" id="submit_editUserRole">确定</button>
+				        <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="submit_editUserRole()">确定</button>
                     </div>
 			      </div>
 			    </div>
@@ -618,9 +619,9 @@ jeDate({
                     field: 'userRole',
                     title: '个人角色',
                     width: 100,
-                    formatter: function (value, row, index) {
-                        return "<a href=\"javascript:doEditRole('" + row.id + "');\"" + " title='个人角色'>"+ row.userRole +"</a>";
-                    }
+//                     formatter: function (value, row, index) {
+//                         return "<a href=\"javascript:doEditRole('" + row.id + "');\"" + " title='个人角色'>"+ row.userRole +"</a>";
+//                     }
                 }
                 ]],
 
@@ -644,6 +645,12 @@ jeDate({
                         editUser();
                     }
                 }, '-', {
+                    text: '编辑权限',
+                    iconCls: 'icon-edit',
+                    handler: function () {
+                    	doEditRole();
+                    }
+                }, '-', {
                     text: '取消选中',
                     iconCls: 'icon-undo',
                     handler: function () {
@@ -661,17 +668,42 @@ jeDate({
         }
 
         // 编辑个人角色
-        function doEditRole(userId) {
-    		$("#roleList").combobox({
-			    url:'${pageContext.request.contextPath}/admin/role/getRoleComboData?userId='+userId,
-			    valueField:'value',
-			    textField:'text'
-			}); 
-        	//弹出编辑角色
-    		$('#editUserRoleModal').modal('show');
-    		$('#submit_editUserRole').click(function(){
-    			var roleId = $("#roleList").combobox('getValue');
-    			if(roleId != null && roleId != 0){
+        function doEditRole() {
+        	var rows = userGrid.datagrid('getSelections');
+			if (rows.length > 0) {
+				if (rows.length == 1) {
+		    		var userId = rows[0].id;
+		    		$("#permissionTree").empty();					
+		        	//弹出编辑角色
+		    		$('#editUserRoleModal').modal('show');
+		    		userGrid.datagrid('unselectAll');
+		    		$("#editUserRole-userId").attr("value",userId);
+		    		$("#roleList").combobox({
+					    url:'${pageContext.request.contextPath}/admin/role/getRoleComboData?userId='+userId,
+					    valueField:'value',
+					    textField:'text'
+					}); 
+		    		
+		    		
+				} else {
+					var names = [];
+					for ( var i = 0; i < rows.length; i++) {
+						names.push(rows[i].userName);
+					}
+					top.showMsg("提示", '只能选择一个用户进行编辑权限！您已经选择了【' + names.join(',')
+							+ '】' + rows.length + '个用户');
+				}
+			} else {
+				top.showMsg("提示", "请选择要编辑权限的用户！");
+			}
+        }
+       function submit_editUserRole(){
+//     	   $('#submit_editUserRole').click(function(){
+    		   
+//   			});
+			var userId = $("#editUserRole-userId").attr("value");
+   			var roleId = $("#roleList").combobox('getValue');
+   			if(roleId != null && roleId != 0){
 	    			$.ajax({
 						url : '${pageContext.request.contextPath}/admin/user/editRole',
 						data : {
@@ -689,10 +721,8 @@ jeDate({
 							}
 						}
 					});
-    			}
-    		});
-        }
-       
+   			}
+       }
 
 		//快速搜索按钮
 		function doSubmit(url) {

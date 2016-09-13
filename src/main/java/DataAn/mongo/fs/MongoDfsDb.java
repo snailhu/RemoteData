@@ -181,7 +181,7 @@ public class MongoDfsDb implements IDfsDb{
 	@Override
 	public boolean downLoadToLocal(String databaseName, String mongoFSUUId,
 			String localPath) throws Exception {
-		GridFS gridFS = this.getGridFS(InitMongo.FS_J9STAR2);
+		GridFS gridFS = this.getGridFS(databaseName);
 		// 查找条件
 		DBObject query = new BasicDBObject();
 		query.put("uuId", mongoFSUUId);

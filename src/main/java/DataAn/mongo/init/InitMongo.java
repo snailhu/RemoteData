@@ -18,19 +18,19 @@ public class InitMongo {
 	 * 获取配置文件参数
 	 * */
 	/** mongodb单机测试服务IP*/
-	public static final String TEST_SERVER_HOST = PropertiesUtil.getProperties(config, charset).getProperty("test.mongodb.ip");
+	public static final String TEST_SERVER_HOST = PropertiesUtil.getProperties(config, charset).getProperty("test.mongodb.ip").trim();
 	/** mongodb单机测试服务端口*/
-	public static final int TEST_SERVER_PORT = Integer.parseInt(PropertiesUtil.getProperties(config, charset).getProperty("test.mongodb.port"));
+	public static final int TEST_SERVER_PORT = Integer.parseInt(PropertiesUtil.getProperties(config, charset).getProperty("test.mongodb.port").trim());
 	
 	/** mongodb数据服务IP*/
-	public static final String DB_SERVER_HOST = PropertiesUtil.getProperties(config, charset).getProperty("db.mongodb.ip");
+	public static final String DB_SERVER_HOST = PropertiesUtil.getProperties(config, charset).getProperty("db.mongodb.ip").trim();
 	/** mongodb数据服务端口*/
-	public static final int DB_SERVER_PORT = Integer.parseInt(PropertiesUtil.getProperties(config, charset).getProperty("db.mongodb.port"));
+	public static final int DB_SERVER_PORT = Integer.parseInt(PropertiesUtil.getProperties(config, charset).getProperty("db.mongodb.port").trim());
 	
 	/** mongodb文件服务IP*/
-	public static final String FS_SERVER_HOST = PropertiesUtil.getProperties(config, charset).getProperty("fs.mongodb.ip");
+	public static final String FS_SERVER_HOST = PropertiesUtil.getProperties(config, charset).getProperty("fs.mongodb.ip").trim();
 	/** mongodb文件服务端口*/
-	public static final int FS_SERVER_PORT = Integer.parseInt(PropertiesUtil.getProperties(config, charset).getProperty("fs.mongodb.port"));
+	public static final int FS_SERVER_PORT = Integer.parseInt(PropertiesUtil.getProperties(config, charset).getProperty("fs.mongodb.port").trim());
 	
 	/** j9系列 01星数据库*/
 	public static final String DB_J9STAR1 = getDataBaseNameBySeriesAndStar(SeriesType.J9_SERIES.getName(), J9SeriesType.STRA1.getValue());

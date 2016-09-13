@@ -70,10 +70,14 @@
 	        <li><a href="/Account/Register" id="registerLink">注册</a></li>
 	        <li style="position:relative; top:15px"> |</li>
 	        -->
-	        <#if userName??>
+	        <#if activeUser??>
 	        	<li>
 					<a href="javascript:void(0)" id="loginLink">
-							欢迎光临,${userName}
+							欢迎光临,${activeUser.userName}
+					</a>
+				</li>
+				<li style='position:relative; top:15px'>
+					<a style='margin-top: -15px;' href='${base}/loginOut' id='loginOutLink'> |&nbsp; 注销 
 					</a>
 				</li>
 	        <#else>

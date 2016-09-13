@@ -1,12 +1,14 @@
 package DataAn.sys.dto;
 
-public class LogDto {
+public class AuditIdDto {
 	
-	private String userName;
+	private String userName; //用户名
 	
-	private String createDate;
+	private String createDate; //时间
 	
-	private String Content;
+	private String Content; //内容
+	
+	private String userIp; //客户端IP
 
 	public String getUserName() {
 		return userName;
@@ -30,6 +32,14 @@ public class LogDto {
 
 	public void setContent(String content) {
 		Content = content;
+	}
+
+	public String getUserIp() {
+		return userIp;
+	}
+
+	public void setUserIp(String userIp) {
+		this.userIp = userIp;
 	}
 
 	

@@ -18,9 +18,12 @@
 <meta http-equiv="description" content="This is my page">
 
 <%@include file="/WEB-INF/jsp/layouts/admin-include-public.jsp"%>
+<script src="<%=request.getContextPath()%>/static/content/js/outlook2.js" type="text/javascript"></script>
+
 <!--
 	<link rel="stylesheet" type="text/css" href="styles.css">
 	-->
+
 <style type="text/css">
 .row {
 	margin-right: -12px;
@@ -30,19 +33,12 @@
 </style>
 <script type="text/javascript">
 	$(function() {
+
 		$("#uname").blur(function() {
 			$("#returnMsg").empty();
 		});
-		$("#uname").blur(function() {
-			//$("#vuname").removeClass();
-			// $("#vuname").addClass("icon-ok-sign");
-			//$("#vuname").addClass("icon-remove-sign");
-			//$("#vuname").html("<img src='${base}/static/img/error.png'/>");
-		});
 		$("#upassword").blur(function() {
 			$("#vpassword").removeClass();
-			// $("#vpassword").addClass("icon-ok");
-			//$("#vpassword").html("<img src='${base}/static/img/error.png'/>");
 		});
 		$("#submitForm").click(function() {
 			chekUser();
@@ -66,16 +62,18 @@
 				}
 			}
 		}
+		
 	});
 	$(document).ready(function() {
 		var loginFlag = '${loginFlag}';
 		if (loginFlag == -1) {
-			$("#returnMsg").html("<img src='${pageContext.request.contextPath}/static/img/error.png'/><font color='red'>请输入正确的用户</font>");
+			$("#returnMsg").html("<img src='${pageContext.request.contextPath}/static/imgs/error.png'/><font color='red'>请输入正确的用户</font>");
 		}
 		if (loginFlag == 1) {
-			$("#returnMsg").html("<img src='${pageContext.request.contextPath}/static/img/error.png'/><font color='red'>请输入正确的密码</font>");
+			$("#returnMsg").html("<img src='${pageContext.request.contextPath}/static/imgs/error.png'/><font color='red'>请输入正确的密码</font>");
 		}
 	});
+	
 </script>
 </head>
 <body class="login-layout" style="overflow: hidden;">
@@ -101,41 +99,37 @@
 										</h4>
 										<div class="space-6"></div>
 										<form id="loginForm" action="login" method="post">
-											<fieldset>
-												<label class="block clearfix"> <span
-													class="block input-icon input-icon-right"> <input
-														type="text" class="form-control" id="uname"
-														name="username" value="${username}" placeholder="用户名" />
-														<i class="icon-user" id="vuname"></i>
+											<label class="block clearfix">
+												<span class="block input-icon input-icon-right"> 
+													<input type="text" class="form-control" id="uname" name="username"
+													value="${username}" placeholder="用户名" /> 
+													<i class="icon-user" id="vuname"></i>
 												</span>
-												</label>
-												<div class="space"></div>
-												<label class="block clearfix"> <span
-													class="block input-icon input-icon-right"> <input
-														type="password" class="form-control" id="upassword"
-														name="password" value="${upassword}" placeholder="密码" />
-														<i class="icon-lock" id="vpassword"></i>
+											</label>
+											<div class="space"></div>
+											<label class="block clearfix"> 
+												<span class="block input-icon input-icon-right"> 
+													<input type="password" class="form-control" id="upassword"
+													name="password" value="${upassword}" placeholder="密码" /> 
+													<i class="icon-lock" id="vpassword"></i>
 												</span>
+											</label>
+											<div>
+												<span id="returnMsg"></span>
+											</div>
+											<div class="space"></div>
+											<div class="clearfix">
+												<!--  
+												<label class="inline"> <input type="checkbox"
+													class="ace" name="rememberMe" value="1" /> <span
+													class="lbl">记住我</span>
 												</label>
-												<div>
-													<span id="returnMsg"></span>
-												</div>
-												<div class="space"></div>
-												<div class="clearfix">
-													<!--  
-													<label class="inline"> <input type="checkbox"
-														class="ace" name="rememberMe" value="1" /> <span
-														class="lbl">记住我</span>
-													</label>
-													-->
-													<button type="button"
-														class="width-35 pull-right btn btn-sm btn-primary"
-														id="submitForm">
-														<i class="icon-key"></i> 登录
-													</button>
-												</div>
-												<div class="space-4"></div>
-											</fieldset>
+												-->
+												<button type="button" class="width-35 pull-right btn btn-sm btn-primary" id="submitForm">
+													<i class="icon-key"></i> 登录
+												</button>
+											</div>
+											<div class="space-4"></div>
 										</form>
 									</div>
 									<!-- /widget-main -->

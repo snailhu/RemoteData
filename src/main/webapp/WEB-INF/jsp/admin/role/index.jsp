@@ -126,11 +126,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						<button class="easyui-linkbutton" iconcls="icon-add" plain="true" style="float: left;" 
 							data-toggle="modal" data-target="#addRoleModal">创建</button>
 						<div class="datagrid-btn-separator"></div>
+						<button class="easyui-linkbutton" iconcls="icon-remove" plain="true" style="float: left;"
+							onclick="deleteRole();">删除</button>
+						<div class="datagrid-btn-separator"></div>
 						<button class="easyui-linkbutton" iconcls="icon-edit" plain="true" style="float: left;"
 							onclick="editRole();">编辑</button>
 						<div class="datagrid-btn-separator"></div>
-						<button class="easyui-linkbutton" iconcls="icon-remove" plain="true" style="float: left;"
-							onclick="deleteRole();">删除</button>
+						<button class="easyui-linkbutton" iconcls="icon-edit" plain="true" style="float: left;"
+							onclick="doEditPermission();">编辑权限</button>
 						<div class="datagrid-btn-separator"></div>
 						<button class="easyui-linkbutton" iconcls="icon-undo" plain="true" style="float: left;"
 							onclick="roleGrid.datagrid('unselectAll');">取消选中</button>
@@ -219,7 +222,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			        <h4 class="modal-title" id="editRolePermissionModalLabel">编辑角色：</h4>
 			      </div>
 			      <div class="modal-body">
-					<ul id="permissionTree" fit="true"></ul>
+			      	<div id="permissionTree-div">
+						<ul id="permissionTree" fit="true"></ul>
+			      	</div>
 			      </div>
 			      <div class="modal-footer">
 			      	<div class="col-lg-4 col-lg-offset-5">
@@ -272,57 +277,75 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	              field: 'createDate',
 	              title: '创建时间',
 	              width: 120
-	          }
-	          , {
-	              field: 'editPermission',
-	              title: '编辑权限',
-	              width: 80,
-	              formatter: function (value, row, index) {
-	                  return "<a href=\"javascript:doEditPermission('" + row.id +  "');\"" + " title='编辑权限'>编辑权限</a>";
-	              }
-	          }
+	          }, 
+// 	          {
+// 	              field: 'editPermission',
+// 	              title: '编辑权限',
+// 	              width: 80,
+// 	              formatter: function (value, row, index) {
+// 	                  return "<a href=\"javascript:doEditPermission('" + row.id +  "');\"" + " title='编辑权限'>编辑权限</a>";
+// 	              }
+// 	          }
 	          ]]
 	      });
 	
 	  });
 	
-	  function doEditPermission(roleId) {
-		var permissionTree;
-		//弹出编辑权限
-		$('#editRolePermissionModal').modal('show');
-		permissionTree = $("#permissionTree").tree({
-            url: '${pageContext.request.contextPath}/admin/permission/getTree?roleId=' + roleId,
-            checkbox: true,
-        });
-		$('#submit_editRolePermission').click(function(){
-			var nodes = $("#permissionTree").tree('getChecked');
-        	if (nodes.length > 0) {
-        		var permissionItemId = '';
-    			for(var i = 0; i < nodes.length; i++){
-    				if (permissionItemId != '') permissionItemId += ',';
-    				permissionItemId += nodes[i].id;
-    			}
-    			$.ajax({
-    				url: '${pageContext.request.contextPath}/admin/role/editRolePermission',
-    				data : {
-    					roleId : roleId,
-    					permissionItemId : permissionItemId
-    				},
-    				cache: false,
-    				dataType: "json",
-    				success: function(data) {
-						if (data.success) {
-						    top.showMsg('提示', data.msg);
-						}
-						else {
-						    top.showMsg('警告', map.msg);
-						}
-    				}
-    			});
-        	} else {
-				top.showMsg("提示", "请选择要关联的权限！");
-			}
-		});
+	  function doEditPermission() {
+		var rows = roleGrid.datagrid('getSelections');
+	    if (rows.length > 0) {
+	          if (rows.length == 1) {
+	        	roleId = rows[0].id;
+	        	var permissionTree;
+	      		$("#permissionTree").empty();
+	      		roleGrid.datagrid('unselectAll');
+	      		//弹出编辑权限
+	      		$('#editRolePermissionModal').modal('show');
+	      		permissionTree = $("#permissionTree").tree({
+	                  url: '${pageContext.request.contextPath}/admin/permission/getTree?roleId=' + roleId,
+	                  checkbox: true,
+	              });
+	      		$('#submit_editRolePermission').click(function(){
+	      			
+	      			var nodes = $("#permissionTree").tree('getChecked');
+	              	if (nodes.length > 0) {
+	              		var permissionItemId = '';
+	          			for(var i = 0; i < nodes.length; i++){
+	          				if (permissionItemId != '') permissionItemId += ',';
+	          				permissionItemId += nodes[i].id;
+	          			}
+	          			$.ajax({
+	          				url: '${pageContext.request.contextPath}/admin/role/editRolePermission',
+	          				data : {
+	          					roleId : roleId,
+	          					permissionItemId : permissionItemId
+	          				},
+	          				cache: false,
+	          				dataType: "json",
+	          				success: function(data) {
+	      						if (data.success) {
+	      						    top.showMsg('提示', data.msg);
+	      						}
+	      						else {
+	      						    top.showMsg('警告', map.msg);
+	      						}
+	          				}
+	          			});
+	              	} else {
+	      				top.showMsg("提示", "请选择要关联的权限！");
+	      			}
+	      		});
+	          }else {
+	              var names = [];
+	              for (var i = 0; i < rows.length; i++) {
+	                  names.push(rows[i].name);
+	              }
+	              top.showMsg("提示", '只能选择一个角色进行编辑权限！您已经选择了【'+names.join(',')+'】'+rows.length+'个角色');
+	          }
+	    }else {
+	        top.showMsg("提示", "请选择要编辑权限的记录！");
+	    }
+		
 	  }
 	 
 	  //创建系统角色

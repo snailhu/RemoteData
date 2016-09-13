@@ -12,6 +12,8 @@ public interface IAuthDao extends IBaseDao<Auth>{
 	
 	public void deleteByParentAuthId(Long parentAuthId);
 	
+	public List<Auth> selectByAuthIds(List<Long> ids);
+	
 	public Auth selectByCode(String code);
 	
 	public Pager<Auth> selectByParentAuthIdIsNullByOrder(String order, int pageIndex, int pageSize);

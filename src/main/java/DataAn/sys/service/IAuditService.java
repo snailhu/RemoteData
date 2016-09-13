@@ -1,7 +1,7 @@
 package DataAn.sys.service;
 
 import DataAn.common.dao.Pager;
-import DataAn.sys.dto.LogDto;
+import DataAn.sys.dto.AuditIdDto;
 
 
 /**
@@ -12,8 +12,8 @@ import DataAn.sys.dto.LogDto;
 */
 public interface IAuditService {
 
-	public abstract void saveLog(LogDto logModel);
+	public abstract void saveLog(AuditIdDto logDto);
 	
-	Pager<LogDto> getLogList(int pageIndex, int pageSize, String userName, 
+	Pager<AuditIdDto> getLogList(int pageIndex, int pageSize, String userName, 
 			String content,String operationTimeStart, String operationTimeEnd);
 }

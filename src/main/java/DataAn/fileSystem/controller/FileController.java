@@ -16,6 +16,7 @@ import java.util.zip.ZipOutputStream;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
@@ -35,6 +36,7 @@ import DataAn.fileSystem.dto.FileDto;
 import DataAn.fileSystem.dto.MongoFSDto;
 import DataAn.fileSystem.option.J9Series_Star_ParameterType;
 import DataAn.fileSystem.service.IVirtualFileSystemService;
+import DataAn.sys.dto.ActiveUserDto;
 
 @Controller
 @RequestMapping("/admin/file")
@@ -44,14 +46,29 @@ public class FileController {
 	private IVirtualFileSystemService fileService;
 	
 	@RequestMapping("/index")
-	public String mongoFSIndex(Model model) {
+	public String mongoFSIndex(Model model,HttpServletRequest request,HttpServletResponse response) {
+//		System.out.println("mongoFSIndex..");
 		//当前所在系列
 		model.addAttribute("nowSeries", "j9");
 		//当前所在星号
 		model.addAttribute("nowStar", "02");
+		
+		HttpSession session = request.getSession();
+		ActiveUserDto acticeUser = (ActiveUserDto) session.getAttribute("activeUser");
+		String flywheel = J9Series_Star_ParameterType.FLYWHEEL.getValue();
+		String type = acticeUser.getPermissionItems().get(flywheel);
+		String value = "";
+		String name = "";
+		if (StringUtils.isNotBlank(type)) {
+			value = J9Series_Star_ParameterType.getJ9SeriesStarParameterType(type).getValue();
+			name = J9Series_Star_ParameterType.getJ9SeriesStarParameterType(type).getName();
+		}else{
+			value = J9Series_Star_ParameterType.TOP.getValue();
+			name = J9Series_Star_ParameterType.TOP.getName();
+		}
 		//当前所在参数名称
-		model.addAttribute("nowParameterTypeValue", J9Series_Star_ParameterType.FLYWHEEL.getValue());
-		model.addAttribute("nowParameterTypeName", J9Series_Star_ParameterType.FLYWHEEL.getName());
+		model.addAttribute("nowParameterTypeValue", value);
+		model.addAttribute("nowParameterTypeName", name);			
 		//当前所在目录
 		model.addAttribute("nowDirId", 0);
 		return "/admin/mongoFs/index";

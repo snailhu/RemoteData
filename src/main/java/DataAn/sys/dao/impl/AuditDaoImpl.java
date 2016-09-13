@@ -9,16 +9,16 @@ import org.springframework.stereotype.Repository;
 import DataAn.common.dao.BaseDaoImpl;
 import DataAn.common.dao.Pager;
 import DataAn.common.utils.DateUtil;
-import DataAn.sys.dao.ILogDao;
-import DataAn.sys.domain.Log;
+import DataAn.sys.dao.IAuditDao;
+import DataAn.sys.domain.Audit;
 
 @Repository
-public class LogDaoImpl extends BaseDaoImpl<Log>
-implements ILogDao{
+public class AuditDaoImpl extends BaseDaoImpl<Audit>
+implements IAuditDao{
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public Pager<Log> selectByOption(int pageIndex, int pageSize,
+	public Pager<Audit> selectByOption(int pageIndex, int pageSize,
 			String userName, String content, String operationTimeStart,String operationTimeEnd, String order) {
 		String hql = "from Log log where 1=1";
 		String countHql = "select count(*) from Log log where 1=1";
@@ -74,7 +74,7 @@ implements ILogDao{
 		query.setMaxResults(pageSize);
 		//设置起点
 		query.setFirstResult(pageSize * (pageIndex - 1));
-		Pager<Log> pager = new Pager<Log>(pageIndex, pageSize, totalCount, query.list());
+		Pager<Audit> pager = new Pager<Audit>(pageIndex, pageSize, totalCount, query.list());
 		return pager;
 	}
 }

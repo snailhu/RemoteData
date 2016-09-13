@@ -143,12 +143,13 @@ public class RoleServiceImpl implements IRoleService {
 		for (Auth a : authList) {
 			roleAuthIds.add(a.getAuthId());
 		}
-		for (String  permissionId : permissionItemArray) {
+		for (String  StrPermissionId : permissionItemArray) {
+			Long permissionId = Long.parseLong(StrPermissionId);
 			//只保存权限项，不用保存权限组
 			if(!roleAuthIds.contains(permissionId)){
 				RoleAuth roleAuth = new RoleAuth();
 				RoleAuthId id = new RoleAuthId();
-				id.setAuthId(Long.parseLong(permissionId));
+				id.setAuthId(permissionId);
 				id.setRoleId(roleId);
 				roleAuth.setId(id);
 				roleAuth.setRoleAuthId(UUIDGeneratorUtil.getUUID());

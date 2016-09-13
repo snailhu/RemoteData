@@ -187,11 +187,6 @@ public class CSVServiceImpl implements ICSVService{
 		List<Document> tempList = new ArrayList<Document>();
 		//存储无效点 索引值
 		Set<Integer> delDateSet = new HashSet<Integer>();
-		//格式化时间处理类
-		Calendar cal = Calendar.getInstance();
-		int year = 0;
-		int month = 0;
-		int day = 0;
 		while ((line = reader.readLine()) != null) {
 			if(totalNumber !=0 && count == totalNumber){
 				break;
@@ -201,16 +196,6 @@ public class CSVServiceImpl implements ICSVService{
 			String[] items = line.split(",");
 			date = items[0].trim();
 			Date dateTime = DateUtil.format(date, "yyyy年MM月dd日HH时mm分ss秒");
-			
-//			cal.setTime(dateTime);
-//			year = cal.get(Calendar.YEAR);
-//			month = cal.get(Calendar.MONTH) + 1;
-//			day = cal.get(Calendar.DATE);
-//			doc.append("versions", versions);
-//			doc.append("status", 1);
-//			doc.append("year", year);
-//			doc.append("year_month", year + "-" + month);
-//			doc.append("year_month_day", year + "-" + month + "-" + day);
 			
 			doc.append("versions", versions);
 			doc.append("status", 1);
@@ -287,11 +272,6 @@ public class CSVServiceImpl implements ICSVService{
 		boolean flag = false; //判断是否存在 # 标示
 		//临时存储集合
 		List<Document> tempList = new ArrayList<Document>();
-		//格式化时间处理类
-		Calendar cal = Calendar.getInstance();
-		int year = 0;
-		int month = 0;
-		int day = 0;
 		while ((line = reader.readLine()) != null) {
 			if(totalNumber !=0 && count == totalNumber){
 				break;
@@ -302,15 +282,6 @@ public class CSVServiceImpl implements ICSVService{
 			date = items[0].trim();
 			
 			Date dateTime = DateUtil.format(date, "yyyy年MM月dd日HH时mm分ss秒");
-//			cal.setTime(dateTime);
-//			year = cal.get(Calendar.YEAR);
-//			month = cal.get(Calendar.MONTH) + 1;
-//			day = cal.get(Calendar.DATE);
-//			doc.append("versions", versions);
-//			doc.append("status", 1);
-//			doc.append("year", year);
-//			doc.append("year_month", year + "-" + month);
-//			doc.append("year_month_day", year + "-" + month + "-" + day);
 			
 			doc.append("versions", versions);
 			doc.append("status", 1);
@@ -380,11 +351,6 @@ public class CSVServiceImpl implements ICSVService{
 		int count = 0;
 		String colData = "";
 		boolean flag = false; //判断是否存在 # 标示
-		//格式化时间处理类
-		Calendar cal = Calendar.getInstance();
-		int year = 0;
-		int month = 0;
-		int day = 0;
 		while ((line = reader.readLine()) != null) {
 			if(totalNumber !=0 && count == totalNumber){
 				break;
@@ -395,15 +361,13 @@ public class CSVServiceImpl implements ICSVService{
 			String[] items = line.split(",");
 			date = items[0].trim();
 			Date dateTime = DateUtil.format(date, "yyyy年MM月dd日HH时mm分ss秒");
-			cal.setTime(dateTime);
-			year = cal.get(Calendar.YEAR);
-			month = cal.get(Calendar.MONTH) + 1;
-			day = cal.get(Calendar.DATE);
+			
 			doc.append("versions", versions);
 			doc.append("status", 1);
-			doc.append("year", year);
-			doc.append("year_month", year + "-" + month);
-			doc.append("year_month_day", year + "-" + month + "-" + day);
+			doc.append("year", DateUtil.format(dateTime, "yyyy"));
+			doc.append("year_month", DateUtil.format(dateTime, "yyyy-MM"));
+			doc.append("year_month_day", DateUtil.format(dateTime, "yyyy-MM-dd"));
+			
 			//doc.append(j9SeriesPatameterMap.get(array[0]), DateUtil.formatString(date, "yyyy-MM-dd HH:mm:ss"));
 			doc.append(j9SeriesPatameterMap.get(array[0]), dateTime);
 			for (int i = 1; i < items.length; i++) {
@@ -456,11 +420,6 @@ public class CSVServiceImpl implements ICSVService{
 		boolean flag = false; //判断是否存在 # 标示
 		Set<String> datetime = new HashSet<String>();
 		List<Document> tempList = new ArrayList<Document>();
-		//格式化时间处理类
-		Calendar cal = Calendar.getInstance();
-		int year = 0;
-		int month = 0;
-		int day = 0;
 		while ((line = reader.readLine()) != null) {
 			if(totalNumber !=0 && count == totalNumber){
 				break;
@@ -471,15 +430,13 @@ public class CSVServiceImpl implements ICSVService{
 			String[] items = line.split(",");
 			date = items[0].trim();
 			Date dateTime = DateUtil.format(date, "yyyy年MM月dd日HH时mm分ss秒");
-			cal.setTime(dateTime);
-			year = cal.get(Calendar.YEAR);
-			month = cal.get(Calendar.MONTH) + 1;
-			day = cal.get(Calendar.DATE);
+			
 			doc.append("versions", versions);
 			doc.append("status", 1);
-			doc.append("year", year);
-			doc.append("year_month", year + "-" + month);
-			doc.append("year_month_day", year + "-" + month + "-" + day);
+			doc.append("year", DateUtil.format(dateTime, "yyyy"));
+			doc.append("year_month", DateUtil.format(dateTime, "yyyy-MM"));
+			doc.append("year_month_day", DateUtil.format(dateTime, "yyyy-MM-dd"));
+			
 			//doc.append(j9SeriesPatameterMap.get(array[0]), DateUtil.formatString(date, "yyyy-MM-dd HH:mm:ss"));
 			doc.append(j9SeriesPatameterMap.get(array[0]), dateTime);
 			for (int i = 1; i < items.length; i++) {

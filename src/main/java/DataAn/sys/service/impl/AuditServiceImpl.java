@@ -1,16 +1,16 @@
 package DataAn.sys.service.impl;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import DataAn.common.dao.Pager;
 import DataAn.common.utils.DateUtil;
-import DataAn.sys.dao.ILogDao;
+import DataAn.sys.dao.IAuditDao;
 import DataAn.sys.dao.IUserDao;
-import DataAn.sys.domain.Log;
-import DataAn.sys.dto.LogDto;
+import DataAn.sys.domain.Audit;
+import DataAn.sys.dto.AuditIdDto;
 import DataAn.sys.service.IAuditService;
 
 
@@ -19,38 +19,40 @@ import DataAn.sys.service.IAuditService;
 public class AuditServiceImpl implements IAuditService{
 
 	@Autowired
-	private ILogDao logDao;
+	private IAuditDao auditDao;
 	@Autowired
 	private IUserDao userDao;
+	
 	@Override
-	public void saveLog(LogDto logModel) {
-		
-		Log log = new Log();
-		log.setUserName(logModel.getUserName());
-		log.setCreateDate(new Date());
-		log.setContent(logModel.getContent());
-		logDao.add(log);
+	@Transactional
+	public void saveLog(AuditIdDto auditDto) {
+		Audit log = new Audit();
+		log.setUserName(auditDto.getUserName());
+		log.setContent(auditDto.getContent());
+		log.setUserIp(auditDto.getUserIp());
+		auditDao.add(log);
 	}
 	@Override
-	public Pager<LogDto> getLogList(int pageIndex, int pageSize, String userName,
+	public Pager<AuditIdDto> getLogList(int pageIndex, int pageSize, String userName,
 			String content, String operationTimeStart, String operationTimeEnd) {
-		List<LogDto> logModelList = new ArrayList<LogDto>();
-		Pager<Log> logPager = logDao.selectByOption(pageIndex, pageSize, userName, content, operationTimeStart, operationTimeEnd, "createDate");
-		List<Log> logList = logPager.getDatas();
-		if(logList != null && logList.size() > 0){
-			for (Log log : logList) {
-				logModelList.add(this.pojoToDto(log));
+		List<AuditIdDto> auditDtoList = new ArrayList<AuditIdDto>();
+		Pager<Audit> auditPager = auditDao.selectByOption(pageIndex, pageSize, userName, content, operationTimeStart, operationTimeEnd, "createDate");
+		List<Audit> auditList = auditPager.getDatas();
+		if(auditList != null && auditList.size() > 0){
+			for (Audit audit : auditList) {
+				auditDtoList.add(this.pojoToDto(audit));
 			}
 		}
-		Pager<LogDto> pager = new Pager<LogDto>(pageIndex, pageSize, logPager.getTotalCount(), logModelList);
+		Pager<AuditIdDto> pager = new Pager<AuditIdDto>(pageIndex, pageSize, auditPager.getTotalCount(), auditDtoList);
 		return pager;			
 	}
 	
-	private LogDto pojoToDto(Log log){
-		LogDto logModel = new LogDto();
-		logModel.setUserName(log.getUserName());
-		logModel.setContent(log.getContent());
-		logModel.setCreateDate(DateUtil.format(log.getCreateDate()));
-		return logModel;
+	private AuditIdDto pojoToDto(Audit log){
+		AuditIdDto auditDto = new AuditIdDto();
+		auditDto.setUserName(log.getUserName());
+		auditDto.setContent(log.getContent());
+		auditDto.setCreateDate(DateUtil.format(log.getCreateDate()));
+		auditDto.setUserIp(log.getUserIp());
+		return auditDto;
 	}
 }

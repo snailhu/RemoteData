@@ -22,6 +22,15 @@ implements IUserRoleDao{
 	}
 
 	@Override
+	public UserRole selectByUserId(long userId) {
+		List<UserRole> userRoleList = this.findByParam("id.userId", userId);
+		if(userRoleList != null && userRoleList.size() > 0){
+			return userRoleList.get(0);
+		}
+		return null;
+	}
+
+	@Override
 	public Role selectRoleByUserId(long userId) {
 		List<UserRole> userRoleList = this.findByParam("id.userId", userId);
 		if(userRoleList != null && userRoleList.size() > 0){
@@ -40,6 +49,5 @@ implements IUserRoleDao{
 		}
 		return null;
 	}
-
 	
 }

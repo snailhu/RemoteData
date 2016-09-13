@@ -1,5 +1,6 @@
 package DataAn.sys.controller;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -139,9 +140,9 @@ public class RoleController  extends BaseController{
 	public JsonMessage editPermission(@RequestParam(value = "roleId", required = true)long roleId, 
 									  @RequestParam(value = "permissionItemId", required = true)String permissionItemId)
 	{
-		System.out.println("come in editPermission...");
+		System.out.println("come in editPermission..." + new Date());
 		System.out.println("permissionItemId: " + permissionItemId);
-		System.out.println("roleId" + roleId);
+		System.out.println("roleId: " + roleId);
 		String[] rolePermissionItemArray = permissionItemId.split(",");
 		JsonMessage jsonMsg = new JsonMessage();
 		if(rolePermissionItemArray.length == 0){

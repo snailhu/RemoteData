@@ -3,10 +3,10 @@ package DataAn.sys.dao;
 
 import DataAn.common.dao.IBaseDao;
 import DataAn.common.dao.Pager;
-import DataAn.sys.domain.Log;
+import DataAn.sys.domain.Audit;
 
-public interface ILogDao extends IBaseDao<Log>{
+public interface IAuditDao extends IBaseDao<Audit>{
 
-	public Pager<Log> selectByOption(int pageIndex, int pageSize, String userName,
+	public Pager<Audit> selectByOption(int pageIndex, int pageSize, String userName,
 			String content, String operationTimeStart, String operationTimeEnd,String order);
 }

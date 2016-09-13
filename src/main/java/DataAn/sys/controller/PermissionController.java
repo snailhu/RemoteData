@@ -207,15 +207,15 @@ public class PermissionController {
 		System.out.println("come in getTree");
 		System.out.println("roleId: " + roleId);
 		List<EasyuiTreeNode> treeNodes = permissionService.getTree(roleId);
-		for (EasyuiTreeNode node : treeNodes) {
-			System.out.println(node.toString());
-			if(node.getChildren() != null){
-				for (EasyuiTreeNode children : node.getChildren()) {
-					System.out.println(children.toString());
-					
-				}
-			}
-		}
+//		for (EasyuiTreeNode node : treeNodes) {
+//			System.out.println(node.toString());
+//			if(node.getChildren() != null){
+//				for (EasyuiTreeNode children : node.getChildren()) {
+//					System.out.println(children.toString());
+//					
+//				}
+//			}
+//		}
 		return treeNodes;
 	}
 }

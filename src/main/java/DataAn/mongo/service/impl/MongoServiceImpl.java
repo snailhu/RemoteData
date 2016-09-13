@@ -25,13 +25,12 @@ public class MongoServiceImpl implements IMongoService{
 		String databaseName = InitMongo.getDataBaseNameBySeriesAndStar(series, star);
 //		String databaseName = InitMongo.DATABASE_TEST;
 		String collectionName = DateUtil.formatString(date, "yyyy-MM-dd", "yyyy");
-		//collectionName = "tb" + collectionName;
 		collectionName = paramType + collectionName;
 		try {
 			//设置同一时间段的数据的状态为0
-//			String beginDate = documents.get(0).getString("datetime");
-//			String endDate = documents.get(documents.size() - 1).getString("datetime");
-//			mg.updateByDate(databaseName, collectionName, beginDate, endDate);
+			String beginDate = documents.get(0).getString("datetime");
+			String endDate = documents.get(documents.size() - 1).getString("datetime");
+			mg.updateByDate(databaseName, collectionName, beginDate, endDate);
 			
 			mg.insertMany(databaseName, collectionName, documents);
 		} catch (Exception e) {

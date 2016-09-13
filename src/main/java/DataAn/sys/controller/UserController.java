@@ -17,7 +17,7 @@ import DataAn.common.dao.Pager;
 import DataAn.common.pageModel.EasyuiDataGridJson;
 import DataAn.common.pageModel.JsonMessage;
 import DataAn.sys.dto.DepartmentDto;
-import DataAn.sys.dto.LogDto;
+import DataAn.sys.dto.AuditIdDto;
 import DataAn.sys.dto.UserDto;
 import DataAn.sys.service.IAuditService;
 import DataAn.sys.service.IDepartmentService;

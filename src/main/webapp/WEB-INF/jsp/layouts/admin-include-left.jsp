@@ -1,5 +1,16 @@
 <%@ page language="java" pageEncoding="UTF-8"%>
-
+<style>
+.nav-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    margin-left: -40px;
+}
+.nav-list>li .submenu>li {
+    margin-left: -10px;
+    position: relative;
+}
+</style>
 <div class="sidebar" id="sidebar">
  	<script type="text/javascript">
 		try {

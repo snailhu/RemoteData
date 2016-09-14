@@ -123,7 +123,7 @@
                     <h4>系统管理<br /></h4>
                 </div>
                 <br />
-                <a href="#">
+                <a href="${base}/admin/user/index">
                     <h4>
                         <img class="img-circle" src="${base}/static/images/manage.png" />
                         <br /><br />

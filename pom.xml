@@ -91,7 +91,6 @@
 		    <version>0.1</version>
 		</dependency>
 		
-		
 		<!-- jackson -->
 		<dependency>
 			<groupId>org.codehaus.jackson</groupId>

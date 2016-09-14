@@ -73,7 +73,7 @@ public class PermissionServiceImpl implements IPermissionService{
 			Auth userAuth = new Auth();
 			userAuth.setAuth(sysAuth);
 			userAuth.setAuthName("用户数据管理");
-			topAuth.setCode("userManager");
+			userAuth.setCode("userManager");
 			userAuth.setCreateDate(new Date());
 			userAuth.setUpdateDate(userAuth.getCreateDate());
 			userAuth.setDescription("用户数据管理权限项");

@@ -188,7 +188,7 @@
 	body{
 		background:#FFFFFF;
 		}	
-	.container{position:relative;width:1000px;height:700px; margin:0 auto;z-index:1}
+	.container{position:relative;width:1000px;height:700px; margin:0 auto;z-index:0}
 	.dot{ position:absolute;width:20px;height:20px;background:#F00;}
 	.container img {
 		position:absolute;
@@ -203,7 +203,7 @@
 	.imagediv{position:absolute;width:293px;height:144px;z-index:2}
 	.imagediv span{font-size:16px;color:red;position:absolute;left:0px;top:0px;padding:0px;margin:0px}
 	.background{position:absolute; width:100%; height:100%; z-index:-1}
-	.seriesbutton{position:absolute;width:1000px;height:200px; margin:0 auto;z-index:1}
+	.seriesbutton{position:absolute;width:1000px;height:50px; margin:0 auto;z-index:1}
 </style>
 </head>
 <body>

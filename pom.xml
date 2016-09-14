@@ -14,6 +14,7 @@
 	<spring.version>4.0.0.RELEASE</spring.version>  
 	<cxf.version>2.3.1</cxf.version>
 	<mongodb.version>3.2.2</mongodb.version>
+	<poi-version>3.8-beta5</poi-version>
   </properties>
 
   <dependencies> 
@@ -65,10 +66,32 @@
 			<version>3.9</version>
 		</dependency>
 		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi-scratchpad</artifactId>
+			<version>3.9</version>
+		</dependency>
+		<dependency>
 			<groupId>org.apache.xmlbeans</groupId>
 			<artifactId>xmlbeans</artifactId>
 			<version>2.4.0</version>
 		</dependency>
+		<!-- aspose  Word插件-->
+		<!--  
+		<dependency>
+		    <groupId>com.local.aspose</groupId>
+		    <artifactId>aspose</artifactId>
+		    <version>15.9.0</version>
+		    <scope>system</scope>scope>
+		    <systemPath>C:\Aspose\aspose-words-15.9.0-jdk16.jar</systemPath>
+		</dependency>
+		-->
+		<dependency>
+		    <groupId>com.aspose.word</groupId>
+		    <artifactId>word</artifactId>
+		    <version>0.1</version>
+		</dependency>
+		
+		
 		<!-- jackson -->
 		<dependency>
 			<groupId>org.codehaus.jackson</groupId>

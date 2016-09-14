@@ -188,10 +188,6 @@
                         <a href="index.html"><img id="logo-footer" class="footer-logo" src="/Content/images/login.png" alt=""></a>
                         <ul class="list-unstyled link-list">
                             <li><a href="http://www.iflve.com/map.html">苏州工业园区若水路388号纳米大学科技园E幢E1701 (215123) </a><i class="fa fa-angle-right"></i></li>
-                            <li><a href="http://www.iflve.com/cooperative.html">商务合作：804401624@QQ.COM</a><i class="fa fa-angle-right"></i></li>
-                            <li>简历投递邮箱：492821076@qq.com<i class="fa fa-angle-right"></i></li>
-                            <li>7x24小时服务专线:<br/><span style="font-size:32px;color:#4e5eff">0871-65228007</span><i class="fa fa-angle-right"></i></li>
-                           
                         </ul>
                        
                         
@@ -201,12 +197,7 @@
                     <div class="col-md-3 md-margin-bottom-40">
                         <div class="headline"><h2 class="heading-sm">苏州同元合作站点</h2></div>
                         <ul class="list-unstyled link-list">
-                            <li><a href="/Home/Index">MeiYinSoft首页</a><i class="glyphicon glyphicon-align-right"></i></li>
-                            <li><a href="http://www.iflve.com">iflve首页</a><i class="glyphicon glyphicon-align-right"></i></li>
-                            <li><a href="http://www.iflve.com/web.html">网站开发 </a><i class="glyphicon glyphicon-align-right"></i></li>
-                            <li><a href="http://www.iflve.com/app.html">APP开发 </a><i class="glyphicon glyphicon-align-right"></i></li>
-                            <li><a href="/Home/Contact">苏州软件团队</a><i class="glyphicon glyphicon-align-right"></i></li>
-                            <li><a href="/Home/Iflve">苏州软件价格相关资讯</a><i class="glyphicon glyphicon-align-right"></i></li>
+                            <li><a href="/Home/Index">同元 首页</a><i class="glyphicon glyphicon-align-right"></i></li>
                         </ul>
                     </div>
                     <!-- End Link List -->
@@ -216,11 +207,6 @@
                             <div class="headline"><h2 class="heading-sm">同元F计划</h2></div>
                             <ul class="list-unstyled link-list">
                                 <li><a href="#">移动生活圈构想</a><i class="glyphicon glyphicon-align-right"></i></li>
-                                <li><a href="#">融资、投资、贷款整体项目构想</a><i class="glyphicon glyphicon-align-right"></i></li>
-                                <li><a href="#">企业分销系统构想 </a><i class="glyphicon glyphicon-align-right"></i></li>
-                                <li><a href="#">O2O移动电商构想 </a><i class="glyphicon glyphicon-align-right"></i></li>
-                                <li><a href="#">美银大数据营销构想</a><i class="glyphicon glyphicon-align-right"></i></li>
-                                <li><a href="#">美银软件云计算</a><i class="glyphicon glyphicon-align-right"></i></li>
                             </ul>
                         </div>
                     </div>
@@ -229,11 +215,7 @@
                     <div class="col-md-3 md-margin-bottom-40">
                         <div class="headline"><h2 class="heading-sm">联系我们</h2></div>
                         <address class="md-margin-bottom-40">
-                            <i class="fa fa-home"></i>微信公众号：meiyinsoft <br>
-                            <i class="fa fa-phone"></i>或者点击<a style="color:#4e5eff" href="/Home/Contact">此处</a>扫描 <br>
-                            <i class="fa fa-globe"></i>官方网站: <a href="http://www.meiyinsoft.com">http://www.tongyuan.cc/</a> <br>
-                            <i class="fa fa-envelope"></i>合作网站: <a href="http://www.iflve.com">http://www.tongyuan.cc/</a>
-                            <br/><img src="/Content/images/qrcode120.jpg" />
+                            <i class="fa fa-home"></i>微信公众号： <br>
                         </address>
                         <!-- Social Links -->
                                                              

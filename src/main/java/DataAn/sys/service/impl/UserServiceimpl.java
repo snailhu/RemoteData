@@ -146,6 +146,20 @@ public class UserServiceimpl implements IUserService{
 	@Override
 	public ActiveUserDto getActiveUserByName(String userName) {
 		ActiveUserDto acticeUser = new ActiveUserDto();
+		//设置超级管理员
+		if(userName.equals("admin")){
+			acticeUser.setId(0);
+			acticeUser.setUserName("admin");	
+			acticeUser.setPassWord("admin");
+			Map<String,String> map =  new HashMap<String,String>();
+			map.put("flywheel", "flywheel");
+			map.put("top", "top");
+			map.put("userManager", "userManager");
+			acticeUser.setPermissionItems(map);
+			String json = JSON.toJSONString(map);
+			acticeUser.setPermissionItemsJSON(json);
+			return acticeUser;
+		}
 		User user = userDao.getUserByName(userName);
 		if(user != null){
 			acticeUser.setId(user.getUserId());
@@ -268,9 +282,6 @@ public class UserServiceimpl implements IUserService{
 				}
 			}
 		}
-//		map.put("flywheel", "flywheel");
-//		map.put("top", "top");
-//		map.put("userManager", "userManager");
 		return map;
 	}
 }

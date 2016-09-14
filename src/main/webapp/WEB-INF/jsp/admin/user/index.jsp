@@ -96,10 +96,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	/*     padding-left: 20px; */
 }
 
-p, span, b, div {
-	text-align: center;
-}
-
 .icon-remove {
 	background: url('') no-repeat center center;
 }
@@ -141,12 +137,7 @@ p, span, b, div {
     padding-top: 2px;
     margin-bottom: 0px;
 }
-.cancel{
 
-}
-.start{
-
-}
 </style>
 <script type="text/javascript">
 	$(function() {
@@ -352,17 +343,17 @@ p, span, b, div {
 									</div>
 									<div class="space-4"></div>
 									<div class="form-group">
-										<label class="col-sm-3 control-label no-padding-right" for="search-beginTime"> 创建开始时间 </label>
+										<label class="col-sm-3 control-label no-padding-right" for="search-createdatetimeStart"> 创建开始时间 </label>
 										<div class="col-sm-9">
-											<input type="text" id="search-beginTime" name="beginTime" placeholder="创建开始时间" class="col-xs-10 col-sm-5" />
+											<input type="text" id="search-createdatetimeStart" name="createdatetimeStart" placeholder="创建开始时间" class="col-xs-10 col-sm-5" />
 											<div id="getBeginTime"></div>
 										</div>
 									</div>
 									<div class="space-4"></div>
 									<div class="form-group">
-										<label class="col-sm-3 control-label no-padding-right" for="search-endTime"> 创建结束时间 </label>
+										<label class="col-sm-3 control-label no-padding-right" for="search-createdatetimeEnd"> 创建结束时间 </label>
 										<div class="col-sm-9">
-											<input type="text" id="search-endTime" name="endTime" placeholder="创建结束时间" class="col-xs-10 col-sm-5" />
+											<input type="text" id="search-createdatetimeEnd" name="createdatetimeEnd" placeholder="创建结束时间" class="col-xs-10 col-sm-5" />
 											<div id="getEndTime"></div>
 										</div>
 									</div>
@@ -546,7 +537,7 @@ p, span, b, div {
 	</div><!-- /.main-content -->
 <script type="text/javascript">
 jeDate({
-	dateCell:"#search-beginTime",//直接显示日期层的容器，可以是ID  CLASS
+	dateCell:"#search-createdatetimeStart",//直接显示日期层的容器，可以是ID  CLASS
 	format:"YYYY-MM-DD hh:mm:ss",//日期格式
 	isinitVal:false, //是否初始化时间
 	festival:false, //是否显示节日
@@ -555,7 +546,7 @@ jeDate({
 	maxDate:jeDate.now(0), //设定最大日期为当前日期
 });
 jeDate({
-	dateCell:"#search-endTime",//直接显示日期层的容器，可以是ID  CLASS
+	dateCell:"#search-createdatetimeEnd",//直接显示日期层的容器，可以是ID  CLASS
 	format:"YYYY-MM-DD hh:mm:ss",//日期格式
 	isinitVal:false, //是否初始化时间
 	festival:false, //是否显示节日
@@ -619,9 +610,9 @@ jeDate({
                     field: 'userRole',
                     title: '个人角色',
                     width: 100,
-//                     formatter: function (value, row, index) {
-//                         return "<a href=\"javascript:doEditRole('" + row.id + "');\"" + " title='个人角色'>"+ row.userRole +"</a>";
-//                     }
+                    formatter: function (value, row, index) {
+                        return "<a href=\"javascript:doEditRole('" + row.id + "');\"" + " title='个人角色'>"+ row.userRole +"</a>";
+                    }
                 }
                 ]],
 
@@ -645,12 +636,6 @@ jeDate({
                         editUser();
                     }
                 }, '-', {
-                    text: '编辑权限',
-                    iconCls: 'icon-edit',
-                    handler: function () {
-                    	doEditRole();
-                    }
-                }, '-', {
                     text: '取消选中',
                     iconCls: 'icon-undo',
                     handler: function () {
@@ -668,39 +653,19 @@ jeDate({
         }
 
         // 编辑个人角色
-        function doEditRole() {
-        	var rows = userGrid.datagrid('getSelections');
-			if (rows.length > 0) {
-				if (rows.length == 1) {
-		    		var userId = rows[0].id;
-		    		$("#permissionTree").empty();					
-		        	//弹出编辑角色
-		    		$('#editUserRoleModal').modal('show');
-		    		userGrid.datagrid('unselectAll');
-		    		$("#editUserRole-userId").attr("value",userId);
-		    		$("#roleList").combobox({
-					    url:'${pageContext.request.contextPath}/admin/role/getRoleComboData?userId='+userId,
-					    valueField:'value',
-					    textField:'text'
-					}); 
-		    		
-		    		
-				} else {
-					var names = [];
-					for ( var i = 0; i < rows.length; i++) {
-						names.push(rows[i].userName);
-					}
-					top.showMsg("提示", '只能选择一个用户进行编辑权限！您已经选择了【' + names.join(',')
-							+ '】' + rows.length + '个用户');
-				}
-			} else {
-				top.showMsg("提示", "请选择要编辑权限的用户！");
-			}
+        function doEditRole(userId) {
+    		$("#permissionTree").empty();					
+    		userGrid.datagrid('unselectAll');
+        	//弹出编辑角色
+    		$('#editUserRoleModal').modal('show');
+    		$("#editUserRole-userId").attr("value",userId);
+    		$("#roleList").combobox({
+			    url:'${pageContext.request.contextPath}/admin/role/getRoleComboData?userId='+userId,
+			    valueField:'value',
+			    textField:'text'
+			}); 
         }
        function submit_editUserRole(){
-//     	   $('#submit_editUserRole').click(function(){
-    		   
-//   			});
 			var userId = $("#editUserRole-userId").attr("value");
    			var roleId = $("#roleList").combobox('getValue');
    			if(roleId != null && roleId != 0){
@@ -725,8 +690,8 @@ jeDate({
        }
 
 		//快速搜索按钮
-		function doSubmit(url) {
-			var node = $('#deptTree').tree('getSelected');
+		$('#btn-search').click(function(){
+		   var node = $('#deptTree').tree('getSelected');
            var orgIds=[];
            if(node){
              var children = deptTree.tree('getChildren', node.target);
@@ -736,19 +701,20 @@ jeDate({
 				 orgIds.push(children[i].id);
               }
             }
+           	var name = $('#search-userName').val();
+           	var createdatetimeStart = $('#search-createdatetimeStart').val();
+           	var createdatetimeEnd = $('#search-createdatetimeEnd').val();
+           	var updatedatetimeStart = $('#search-updatedatetimeStart').val();
+           	var updatedatetimeEnd = $('#search-updatedatetimeEnd').val();
 			userGrid.datagrid('load', {
-				name : $('#name').val(),
-				createdatetimeStart : $('#createdatetimeStart').datetimebox(
-						'getValue'),
-				createdatetimeEnd : $('#createdatetimeEnd').datetimebox(
-						'getValue'),
-				modifydatetimeStart : $('#modifydatetimeStart').datetimebox(
-						'getValue'),
-				modifydatetimeEnd : $('#modifydatetimeEnd').datetimebox(
-						'getValue'),
+				name : name,
+				createdatetimeStart : createdatetimeStart,
+				createdatetimeEnd : createdatetimeEnd,
+				updatedatetimeStart : updatedatetimeStart,
+				updatedatetimeEnd : updatedatetimeEnd,
 				orgIds:orgIds.join(',')
 			});
-		}
+		});
 		//创建用户
 		function createUser() {
 			//弹出创建用户

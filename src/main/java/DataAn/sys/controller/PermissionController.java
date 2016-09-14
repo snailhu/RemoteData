@@ -39,9 +39,9 @@ public class PermissionController {
 	@RequestMapping(value = "/getPermissionGroups", method = RequestMethod.POST)
 	@ResponseBody
 	public EasyuiDataGridJson getPermissionGroups(int page, int rows) {
-		System.out.println("getPermissionGroups..");
-		System.out.println("pageIndex: " + page);
-		System.out.println("pageSize: " + rows);
+//		System.out.println("getPermissionGroups..");
+//		System.out.println("pageIndex: " + page);
+//		System.out.println("pageSize: " + rows);
 		EasyuiDataGridJson json = new EasyuiDataGridJson();
 		Pager<PermissionGroupDto> pager = permissionService.getAllPermissionGroupList(page, rows);
 		json.setRows(pager.getDatas());
@@ -62,11 +62,13 @@ public class PermissionController {
 	@ResponseBody
 	public JsonMessage createPermissionGroup(@RequestParam(value = "name", required = true) String name,
 											 @RequestParam(value = "description", required = false) String description){
+		PermissionGroupDto permissionGroup = new PermissionGroupDto();
+		permissionGroup.setName(name);
+		permissionGroup.setDescription(description);
+//		System.out.println("come in createPermissionGroup....");
+//		System.out.println(permissionGroup);
 		JsonMessage jsonMsg = new JsonMessage();
 		try {
-			PermissionGroupDto permissionGroup = new PermissionGroupDto();
-			permissionGroup.setName(name);
-			permissionGroup.setDescription(description);
 			permissionService.savePermissionGroup(permissionGroup);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -83,14 +85,15 @@ public class PermissionController {
 	@ResponseBody
 	public JsonMessage editPermissionGroup(@RequestParam(value = "id", required = true) long id,
 			  							   @RequestParam(value = "name", required = true) String name,
-			  							   @RequestParam(value = "description", required = false) String description)
-	{
+			  							   @RequestParam(value = "description", required = false) String description){
+		PermissionGroupDto permissionGroup = new PermissionGroupDto();
+		permissionGroup.setId(id);
+		permissionGroup.setName(name);
+		permissionGroup.setDescription(description);
+//		System.out.println("come in editPermissionGroup....");
+//		System.out.println(permissionGroup);
 		JsonMessage jsonMsg = new JsonMessage();
 		try {
-			PermissionGroupDto permissionGroup = new PermissionGroupDto();
-			permissionGroup.setId(id);
-			permissionGroup.setName(name);
-			permissionGroup.setDescription(description);
 			permissionService.update(permissionGroup);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -133,18 +136,15 @@ public class PermissionController {
 								  @RequestParam(value = "displayName", required = true) String displayName,
 								  @RequestParam(value = "code", required = true) String code,
 								  @RequestParam(value = "description", required = false) String description){
-		System.out.println("come in createPermissionItem..");
-		System.out.println("permissionGroupId: " + permissionGroupId);
-		System.out.println("displayName: " + displayName);
-		System.out.println("code: " + code);
-		System.out.println("description: " + description);
+		PermissionItemDto permissionItem = new PermissionItemDto();
+		permissionItem.setPermissionGroupId(permissionGroupId);
+		permissionItem.setDisplayName(displayName);
+		permissionItem.setCode(code);
+		permissionItem.setDescription(description);
+//		System.out.println("come in createPermissionItem..");
+//		System.out.println(permissionItem);
 		JsonMessage jsonMsg = new JsonMessage();
 		try {
-			PermissionItemDto permissionItem = new PermissionItemDto();
-			permissionItem.setPermissionGroupId(permissionGroupId);
-			permissionItem.setDisplayName(displayName);
-			permissionItem.setCode(code);
-			permissionItem.setDescription(description);
 			permissionService.savePermissionItem(permissionItem);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -164,13 +164,15 @@ public class PermissionController {
 								  @RequestParam(value = "displayName", required = true) String displayName,
 								  @RequestParam(value = "code", required = true) String code,
 								  @RequestParam(value = "description", required = false) String description){
+		PermissionItemDto permissionItem = new PermissionItemDto();
+		permissionItem.setId(id);
+		permissionItem.setDisplayName(displayName);
+		permissionItem.setCode(code);
+		permissionItem.setDescription(description);
+//		System.out.println("come in editPermissionItem..");
+//		System.out.println(permissionItem);
 		JsonMessage jsonMsg = new JsonMessage();
 		try {
-			PermissionItemDto permissionItem = new PermissionItemDto();
-			permissionItem.setId(id);
-			permissionItem.setDisplayName(displayName);
-			permissionItem.setCode(code);
-			permissionItem.setDescription(description);
 			permissionService.update(permissionItem);
 		} catch (Exception e) {
 			e.printStackTrace();

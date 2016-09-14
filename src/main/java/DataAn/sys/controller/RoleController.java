@@ -4,6 +4,8 @@ import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -40,9 +42,9 @@ public class RoleController  extends BaseController{
 	@RequestMapping(value = "/getList", method = RequestMethod.POST)
 	@ResponseBody
 	public EasyuiDataGridJson getRoleList(int page, int rows) {
-		System.out.println("getRoleList..");
-		System.out.println("pageIndex: " + page);
-		System.out.println("pageSize: " + rows);
+//		System.out.println("getRoleList..");
+//		System.out.println("pageIndex: " + page);
+//		System.out.println("pageSize: " + rows);
 		EasyuiDataGridJson json = new EasyuiDataGridJson();
 		Pager<RoleDto> pager = roleService.getRoleList(page, rows);
 		json.setRows(pager.getDatas());
@@ -54,12 +56,9 @@ public class RoleController  extends BaseController{
 	 */
 	@RequestMapping(value="/createRole")
 	@ResponseBody
-	public JsonMessage createRole(@RequestParam(value = "name", required = true) String name,
-			 @RequestParam(value = "description", required = false) String description)
-	{
-		RoleDto role = new RoleDto();
-		role.setName(name);
-		role.setDescription(description);
+	public JsonMessage createRole(RoleDto role,HttpServletRequest request,HttpServletResponse response){
+//		System.out.println("come in createRole");
+//		System.out.println(role);
 		JsonMessage jsonMsg = new JsonMessage();
 //		boolean flag = roleService.existRole(role);
 //		if(flag){
@@ -69,8 +68,6 @@ public class RoleController  extends BaseController{
 //			jsonMsg.setObj(null);
 //			return jsonMsg;
 //		}
-		System.out.println("come in createRole");
-		System.out.println(role);
 		try {
 			roleService.save(role);
 		} catch (Exception e) {
@@ -84,16 +81,17 @@ public class RoleController  extends BaseController{
 		jsonMsg.setMsg("创建系统角色成功！");
 	    return jsonMsg;
 	}
-	@RequestMapping(value="/editRole")
+	@RequestMapping(value="/editRole", method = RequestMethod.POST)
 	@ResponseBody
 	public JsonMessage editRole(@RequestParam(value = "id", required = true) long id,
 			  					@RequestParam(value = "name", required = true) String name,
-			  					@RequestParam(value = "description", required = false) String description)
-	{
+			  					@RequestParam(value = "description", required = false) String description){
 		RoleDto role = new RoleDto();
 		role.setId(id);
 		role.setName(name);
 		role.setDescription(description);
+//		System.out.println("come in editRole");
+//		System.out.println(role);
 		JsonMessage jsonMsg = new JsonMessage();
 //		boolean flag = roleService.existRole(role);
 //		if(flag){
@@ -138,11 +136,10 @@ public class RoleController  extends BaseController{
 	@RequestMapping("/editRolePermission")
 	@ResponseBody
 	public JsonMessage editPermission(@RequestParam(value = "roleId", required = true)long roleId, 
-									  @RequestParam(value = "permissionItemId", required = true)String permissionItemId)
-	{
-		System.out.println("come in editPermission..." + new Date());
-		System.out.println("permissionItemId: " + permissionItemId);
-		System.out.println("roleId: " + roleId);
+									  @RequestParam(value = "permissionItemId", required = true)String permissionItemId){
+//		System.out.println("come in editPermission..." + new Date());
+//		System.out.println("permissionItemId: " + permissionItemId);
+//		System.out.println("roleId: " + roleId);
 		String[] rolePermissionItemArray = permissionItemId.split(",");
 		JsonMessage jsonMsg = new JsonMessage();
 		if(rolePermissionItemArray.length == 0){
@@ -167,8 +164,8 @@ public class RoleController  extends BaseController{
 	@RequestMapping("/getRoleComboData")
 	@ResponseBody
 	public List<Combo> getRoleComboData(long userId) {
-		System.out.println("getRoleComboData..");
-		System.out.println("userId: " + userId);
+//		System.out.println("getRoleComboData..");
+//		System.out.println("userId: " + userId);
 		List<Combo> list = roleService.getRoleComboData(userId);
 //		for (Combo combo : list) {
 //			System.out.println(combo);

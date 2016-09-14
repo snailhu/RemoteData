@@ -53,8 +53,8 @@ public class UserController extends BaseController{
 		String userName = request.getParameter("name");
 		String createdateStart = request.getParameter("createdatetimeStart");
 		String createdateEnd = request.getParameter("createdatetimeEnd");
-		String updatedateStart = request.getParameter("modifydatetimeStart");
-		String updatedateEnd = request.getParameter("modifydatetimeEnd");
+		String updatedateStart = request.getParameter("updatedatetimeStart");
+		String updatedateEnd = request.getParameter("updatedatetimeEnd");
 		String orgIds = request.getParameter("orgIds");
 		String[] deptIds = null;
 		if (StringUtils.isNotBlank(orgIds)) {

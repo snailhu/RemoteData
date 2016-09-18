@@ -18,23 +18,25 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 	@Override
 	public boolean preHandle(HttpServletRequest request,
 		HttpServletResponse response, Object handler) throws Exception {
-//		System.out.println("come in longinInterceptor");
+		System.out.println("come in longinInterceptor");
 //		String localAddr = request.getLocalAddr();//获取WEB服务器的IP地址
 //		String localName = request.getLocalName();//获取WEB服务器的主机名
 //		String contextPath = request.getContextPath();
 //		String serverName = request.getServerName();
 //		String servletPath = request.getServletPath();
 //		int serverPort = request.getServerPort();
-//		String url = request.getRequestURL().toString();
+		String url = request.getRequestURL().toString();
+		String uri = request.getRequestURI();
 //		System.out.println("localAddr: " + localAddr);
 //		System.out.println("localName: " + localName);
 //		System.out.println("contextPath: " + contextPath);
 //		System.out.println("serverName: " + serverName);
 //		System.out.println("servletPath: " + servletPath);
 //		System.out.println("serverPort: " + serverPort);
-//		System.out.println("url: " + url);
+		System.out.println("url: " + url);
+		System.out.println("uri: " + uri);
 //		System.out.println(new Date());
-//		System.out.println();
+		System.out.println();
 		
 		//得到请求servletPath 路径
 		String servletPath = request.getServletPath();

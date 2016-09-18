@@ -368,7 +368,6 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 	
 	private void saveFileOfCSV(FileDto fileDto, Map<String,String> dataMap) throws Exception{
 		
-		
 		String uuId = dataMap.get("versions");
 		String series = dataMap.get("series");
 		String star = dataMap.get("star");
@@ -396,23 +395,7 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 		}
 		
 		CSVFileDataResultDto<Document> result = csvService.readCSVFileToDoc(fileDto.getFilePath(),uuId);
-		List<Document> docList = result.getDatas();
-		
-//		MongodbUtil mg = MongodbUtil.getInstance();
-//		String collectionName = J9SeriesType.getJ9SeriesType(star).getName();
-//		try {
-//			mg.insert(collectionName , docList);
-////			int a =9/0;
-////			System.out.println(a);
-//		} catch (Exception e) {
-////			e.printStackTrace();
-////			dfs.delete(uuId);
-//			//删除mogodb记录 效率比较慢
-////			mg.deleteMany(collectionName, "versions", uuId);
-//			//通过更新的方式设置状态为0
-//			mg.update(collectionName, "versions", uuId);
-//			throw new Exception("csv 文件解析失败！！！");
-//		}
+		List<Document> docList = result.getDatas();		
 		
 		//数据不为空
 		if(docList != null && docList.size() > 0){
@@ -489,19 +472,6 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 
 	}
 	
-//	private void saveDataOfCSVInMongoDB(InputStream csvInput, String nowStar, String versions) throws Exception{
-//		MongodbUtil mg = MongodbUtil.getInstance();
-//		List<Document> docList = csvService.readCSVFileToDoc(csvInput,versions);
-//		String collectionName = J9SeriesType.getJ9StarType(nowStar).getName();
-//		mg.insert(collectionName , docList);
-//	}
-//	private void saveDataOfCSVInMongoDB(String csvPath, String nowStar, String versions) throws Exception{
-//		MongodbUtil mg = MongodbUtil.getInstance();
-//		List<Document> docList = csvService.readCSVFileToDoc(csvPath,versions);
-//		String collectionName = J9SeriesType.getJ9StarType(nowStar).getName();
-//		mg.insert(collectionName , docList);
-//	}
-	
 	private void saveFileOfDAT(FileDto fileDto, Map<String,String> dataMap){
 		
 		
@@ -567,7 +537,6 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 		file.setMongoFSUUId(uuId);
 		fileDao.add(file);
 		
-
 	}
 
 

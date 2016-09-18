@@ -178,17 +178,23 @@
 		<property name="defaultEncoding" value="UTF-8" />
 		<!--max size: 1000M -->
 		<property name="maxUploadSize" value="1048576000" />
-	</bean>	
-	
-    <!-- 匹配的是url路径， 如果不配置或/**,将拦截所有的Controller --> 	    
+	</bean>
+
+	<!-- 匹配的是url路径， 如果不配置或/**,将拦截所有的Controller -->
 	<mvc:interceptors>
-	    <mvc:interceptor>    
-	        <mvc:mapping path="/**" /> 
-	        <mvc:exclude-mapping path="/login" />  
-	        <mvc:exclude-mapping path="/static/**" />   
-	        <bean class="DataAn.common.interceptor.LoginInterceptor"></bean>   	        
-	    </mvc:interceptor>  
-    </mvc:interceptors> 	
-    <!-- 当设置多个拦截器时，先按顺序调用preHandle方法，然后逆序调用每个拦截器的postHandle和afterCompletion方法 -->  
+		<mvc:interceptor>
+			<mvc:mapping path="/**" />
+			<mvc:exclude-mapping path="/login" />
+			<mvc:exclude-mapping path="/static/**" />
+			<bean class="DataAn.common.interceptor.LoginInterceptor"></bean>
+		</mvc:interceptor>
+		<mvc:interceptor>
+			<mvc:mapping path="/admin/user/**" />
+			<mvc:mapping path="/admin/role/**" />
+			<mvc:mapping path="/admin/permission/**" />
+			<bean class="DataAn.common.interceptor.PermissionInterceptor"></bean>
+		</mvc:interceptor>
+	</mvc:interceptors>
+	<!-- 当设置多个拦截器时，先按顺序调用preHandle方法，然后逆序调用每个拦截器的postHandle和afterCompletion方法 -->  
 		     			
 </beans>

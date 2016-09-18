@@ -3,19 +3,15 @@ package DataAn.common.controller;
 import java.io.IOException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
-
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-
 import DataAn.sys.dto.ActiveUserDto;
-import DataAn.sys.dto.UserDto;
 import DataAn.sys.service.IUserService;
 
 
@@ -33,7 +29,7 @@ public class LoginController {
 		if(acticeUser != null ){
 			return "redirect:/Index";
 		}
-		return "/admin/login/index";
+		return "/admin/account/login";
 	}
 	
 	@RequestMapping(value = "/login", method = { RequestMethod.POST })
@@ -53,11 +49,11 @@ public class LoginController {
 				return "redirect:/Index";
 			}else{
 				request.setAttribute("loginFlag",1);
-				return "/admin/login/index";
+				return "/admin/account/login";
 			}
 		}else{
 			request.setAttribute("loginFlag", -1);
-			return "/admin/login/index";
+			return "/admin/account/login";
 		}
 	}
 	@RequestMapping(value = "/loginOut", method = { RequestMethod.GET })
@@ -65,5 +61,11 @@ public class LoginController {
 		HttpSession session = request.getSession();
 		session.invalidate();
 		return "redirect:/login";
+	}
+	
+	@RequestMapping(value = "/refuse", method = { RequestMethod.GET })
+	public String refuse(HttpServletResponse response,HttpServletRequest request) {
+		
+		return "/admin/account/refuse";
 	}
 }

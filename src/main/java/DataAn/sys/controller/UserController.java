@@ -3,21 +3,16 @@ package DataAn.sys.controller;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.WebRequest;
-
 import DataAn.common.controller.BaseController;
 import DataAn.common.dao.Pager;
 import DataAn.common.pageModel.EasyuiDataGridJson;
 import DataAn.common.pageModel.JsonMessage;
-import DataAn.sys.dto.DepartmentDto;
-import DataAn.sys.dto.AuditIdDto;
 import DataAn.sys.dto.UserDto;
 import DataAn.sys.service.IAuditService;
 import DataAn.sys.service.IDepartmentService;

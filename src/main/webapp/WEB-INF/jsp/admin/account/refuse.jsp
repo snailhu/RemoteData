@@ -1,7 +1,7 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%
-	String path = request.getContextPath();
-	String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/";
+String path = request.getContextPath();
+String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 %>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
@@ -9,7 +9,7 @@
 <head>
 <base href="<%=basePath%>">
 
-<title>My JSP 'index.jsp' starting page</title>
+<title>My JSP 'refuse.jsp' starting page</title>
 
 <meta http-equiv="pragma" content="no-cache">
 <meta http-equiv="cache-control" content="no-cache">
@@ -19,6 +19,7 @@
 <!--
 	<link rel="stylesheet" type="text/css" href="styles.css">
 	-->
+
 </head>
 
 <body>
@@ -46,13 +47,13 @@
 		<!-- 		</div> -->
 		<div class="page-content">
 			<div class="page-header">
-				<h1>欢迎</h1>
+				<h1>拒绝访问</h1>
 			</div>
 			<!-- /.page-header -->
 			<div class="row">
 				<div class="col-xs-12">
 					<!-- PAGE CONTENT BEGINS -->
-					
+					无权访问！
 					<!-- PAGE CONTENT ENDS -->
 				</div>
 				<!-- /.col -->
@@ -62,11 +63,11 @@
 		<!-- /.page-content -->
 	</div>
 	<!-- /.main-content -->
-	
-<script type="text/javascript">
-$(function () {
-	
-});
-</script>
+
+	<script type="text/javascript">
+		$(function() {
+
+		});
+	</script>
 </body>
 </html>

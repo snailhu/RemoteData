@@ -22,8 +22,8 @@ public class PermissionInterceptor implements HandlerInterceptor{
 			HttpServletResponse response, Object handler) throws Exception {
 		//得到请求的url
 		String uri = request.getRequestURI();
-		System.out.println("PermissionInterceptor...");
-		System.out.println("uri: " + uri);
+//		System.out.println("PermissionInterceptor...");
+//		System.out.println("uri: " + uri);
 		//获取session
 		HttpSession session = request.getSession();
 		ActiveUserDto activeUser = (ActiveUserDto) session.getAttribute("activeUser");

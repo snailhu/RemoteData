@@ -8,18 +8,6 @@ package DataAn.fileSystem.option;
 */
 public enum J9SeriesType {
 
-	/**系列*/
-	SERIES {
-		@Override
-		public String getName() {
-			return "j9";
-		}
-
-		@Override
-		public String getValue() {
-			return "j9";
-		}
-	},
 	/**星1*/
 	STRA1 {
 		@Override

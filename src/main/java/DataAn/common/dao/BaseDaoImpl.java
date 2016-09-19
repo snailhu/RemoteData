@@ -50,6 +50,13 @@ public class BaseDaoImpl<T> implements IBaseDao<T> {
 	}
 
 	@Override
+	public void add(List<T> list) {
+		for (T t : list) {
+			getSession().save(t);
+		}
+	}
+	
+	@Override
 	public void update(T t) {
 		getSession().update(t);
 		
@@ -158,8 +165,8 @@ public class BaseDaoImpl<T> implements IBaseDao<T> {
 		Integer pageOffset = SystemContext.getPageOffset();
 		if(pageOffset==null||pageOffset<0) pageOffset = 0;
 		if(pageSize==null||pageSize<0) pageSize = 15;
-		pages.setOffset(pageOffset);
-		pages.setSize(pageSize);
+		pages.setPageIndex(pageOffset);
+		pages.setPageSize(pageSize);
 		query.setFirstResult(pageOffset).setMaxResults(pageSize);
 	}
 	
@@ -188,7 +195,7 @@ public class BaseDaoImpl<T> implements IBaseDao<T> {
 		List<T> datas = query.list();
 		pages.setDatas(datas);
 		long total = (Long)cquery.uniqueResult();
-		pages.setTotal(total);
+		pages.setTotalCount(total);
 		return pages;
 	}
 
@@ -229,4 +236,5 @@ public class BaseDaoImpl<T> implements IBaseDao<T> {
 			return (long) this.getSession().createQuery(hql).setParameter(0, value).uniqueResult();
 		}
 	}
+
 }

@@ -17,6 +17,8 @@ public interface IBaseDao<T> {
 	 * @return
 	 */
 	public T add(T t);
+	
+	public void add(List<T> list);
 	/**
 	 * 更新对象
 	 * @param t

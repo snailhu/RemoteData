@@ -53,9 +53,19 @@ a, a:focus, a:hover, a:active, button, button:hover {
 <div class="navbar navbar-inverse  navbar-static-top">
 	<div class="container topxx" style="font-size:12px">
 		<ul class="nav navbar-nav navbar-right pull-right">
-			<li><a href="/Account/Register" id="registerLink">注册</a></li>
-			<li style="position:relative; top:15px">|</li>
-			<li><a href="/Account/Login" id="loginLink">登录</a></li>
+			<!--
+	        <li><a href="/Account/Register" id="registerLink">注册</a></li>
+	        <li style="position:relative; top:15px"> |</li>
+	        -->
+	        <#if userName??>
+	        	<li>
+					<a href="javascript:void(0)" id="loginLink">
+							欢迎光临,${userName}
+					</a>
+				</li>
+	        <#else>
+		        <li><a href="login" id="loginLink">登录</a></li>
+	        </#if>
 		</ul>
 	</div>
 	<div class="container">
@@ -69,10 +79,11 @@ a, a:focus, a:hover, a:active, button, button:hover {
 		</div>
 		<div class="navbar-collapse collapse" >
 			<ul class="nav navbar-nav navbar-right">
-				<li><a href="Index" style="color: #9d9d9d;;font-size: 18px;line-height: 1.8;">网站首页</a></li>
-				<li><a href="admin/file/toUploadFile" style="color: #9d9d9d;;font-size: 18px;line-height: 1.8;">文件上传</a></li>
-				<li><a href="admin/file/index" style="color: #9d9d9d;;font-size: 18px;line-height: 1.8;">文件管理</a></li>
-				<li><a href="analysisData" style="color: #9d9d9d;;font-size: 18px;line-height: 1.8;">图表管理</a></li>
+				<li><a href="${base}/Index" style="color: #9d9d9d;;font-size: 18px;line-height: 1.8;">网站首页</a></li>
+				<li><a href="${base}/#" style="color: #9d9d9d;;font-size: 18px;line-height: 1.8;">报告管理</a></li>
+				<li><a href="${base}/admin/file/index" style="color: #9d9d9d;;font-size: 18px;line-height: 1.8;">文件管理</a></li>
+				<li><a href="${base}/conditionMonitoring" style="color: #9d9d9d;;font-size: 18px;line-height: 1.8;">数据分析</a></li>
+				<li><a href="${base}/admin/galaxy/index" style="color: #9d9d9d;;font-size: 18px;line-height: 1.8;">星系管理</a></li>
 			</ul>
 		</div>
 	</div>

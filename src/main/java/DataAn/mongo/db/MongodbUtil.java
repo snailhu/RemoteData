@@ -71,17 +71,17 @@ public class MongodbUtil{
 				List<ServerAddress> addresses = new ArrayList<ServerAddress>();
 				String[] list = InitMongo.SERVER_HOSTS.split(",");
 				for (String ip : list) {
-					ServerAddress address = new ServerAddress(ip, InitMongo.SERVER_PORT);
+					ServerAddress address = new ServerAddress(ip, InitMongo.DB_SERVER_PORT);
 					addresses.add(address);
 				}
 				mg = new MongoClient(addresses);
 			}else{
-				System.out.println("启动单机数据库：{}" + InitMongo.SERVER_HOST);
-				LogUtil.getInstance().getLogger(this.getClass()).info("启动单机数据库：{}",InitMongo.SERVER_HOST);
-				mg = new MongoClient(InitMongo.SERVER_HOST, InitMongo.SERVER_PORT);
+				System.out.println("启动单机数据库：{}" + InitMongo.DB_SERVER_HOST);
+				LogUtil.getInstance().getLogger(this.getClass()).info("启动单机数据库：{}",InitMongo.DB_SERVER_HOST);
+				mg = new MongoClient(InitMongo.DB_SERVER_HOST, InitMongo.DB_SERVER_PORT);
 			}
 			dbs.put(InitMongo.DATABASE_TEST, getDB(InitMongo.DATABASE_TEST));
-			dbs.put(InitMongo.DATABASE_J9STAR2, getDB(InitMongo.DATABASE_J9STAR2));
+			dbs.put(InitMongo.DB_J9STAR2, getDB(InitMongo.DB_J9STAR2));
 			//test
 //			mg = new MongoClient("127.0.0.1", 10000);
 //			dbs.put(InitMongo.DATABASE_TEST, getDB(InitMongo.DATABASE_TEST));

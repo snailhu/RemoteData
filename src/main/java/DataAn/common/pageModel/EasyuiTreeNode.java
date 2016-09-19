@@ -5,7 +5,7 @@ import java.util.Map;
 
 public class EasyuiTreeNode implements java.io.Serializable {
 
-	private int id;
+	private long id;
 	private String text;
 	private String iconCls;
 	private Boolean checked = false;
@@ -13,11 +13,11 @@ public class EasyuiTreeNode implements java.io.Serializable {
 	private List<EasyuiTreeNode> children;
 	private String state = "open";
 
-	public int getId() {
+	public long getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 

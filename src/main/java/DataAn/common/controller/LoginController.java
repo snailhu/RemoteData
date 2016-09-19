@@ -3,21 +3,25 @@ package DataAn.common.controller;
 import java.io.IOException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+<<<<<<< HEAD
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+=======
+>>>>>>> b7e74bff812569a8e376c31d6c117c8a442c878a
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import DataAn.sys.dto.ActiveUserDto;
+import DataAn.sys.service.IUserService;
 
 import DataAn.log.domain.SystemLog;
 import DataAn.log.service.SystemLogService;
@@ -26,44 +30,42 @@ import DataAn.log.service.SystemLogService;
 @Controller
 public class LoginController {
 
+<<<<<<< HEAD
 //	@Resource
 //	private IUserService userService;
 	
 	@Resource 
 	private SystemLogService systemLogService;
+=======
+	@Resource
+	private IUserService userService;
+>>>>>>> b7e74bff812569a8e376c31d6c117c8a442c878a
 		
 	@RequestMapping(value = "/login", method = { RequestMethod.GET })
-	public String login(
-			HttpServletResponse response,
-			HttpServletRequest request) throws IOException {
-//		HttpSession session = request.getSession();
-//		Object obj = session.getAttribute("user");
-//		if(obj ==null || "".equals(obj.toString())){			
-//			return "/";
-//		}else{
-//		}
-		return "/admin/login/index";
+	public String login(HttpServletResponse response,HttpServletRequest request) 
+			throws IOException {
+		HttpSession session = request.getSession();
+		ActiveUserDto acticeUser = (ActiveUserDto) session.getAttribute("activeUser");
+		if(acticeUser != null ){
+			return "redirect:/Index";
+		}
+		return "/admin/account/login";
 	}
 	
 	@RequestMapping(value = "/login", method = { RequestMethod.POST })
 	public String loginPost(
-			HttpServletResponse response,
-			HttpServletRequest request,
 			@RequestParam(value="username",required = true) String username,
 			@RequestParam(value="password",required =true) String password,
-			@RequestParam(value="rememberMe",required =false) String rememberMe
-			) throws InvalidKeyException, NoSuchAlgorithmException {
-		System.out.println("username: " + username);
-		System.out.println("password: " + password);
-		System.out.println("rememberMe: " + rememberMe);
-		Map<String,String> map = new HashMap<String,String>();
-		map.put("shenwp", "shenwp");
-		map.put("admin", "admin");
-		map.put("root", "root");
-		Set<String> set = map.keySet();
-		if(set.contains(username)){
-			if(password.equals(map.get(username))){
+			HttpServletResponse response,HttpServletRequest request) 
+			throws InvalidKeyException, NoSuchAlgorithmException {
+//		System.out.println("login...");
+//		System.out.println("username: " + username);
+//		System.out.println("password: " + password);
+		ActiveUserDto acticeUser = userService.getActiveUserByName(username);
+		if(acticeUser != null){
+			if(password.equals(acticeUser.getPassWord())){
 				HttpSession session = request.getSession();
+<<<<<<< HEAD
 //				session.setAttribute("user", user);
 				session.setAttribute("userName", username);
 				String ip  =  request.getHeader( " x-forwarded-for " );  
@@ -84,56 +86,29 @@ public class LoginController {
 //				String loginTime = dateFormat.format( now ); 
 				slog.setLoginTime(loginTime);
 				systemLogService.saveObject(slog);
+=======
+				session.setAttribute("activeUser", acticeUser);
+>>>>>>> b7e74bff812569a8e376c31d6c117c8a442c878a
 				return "redirect:/Index";
 			}else{
 				request.setAttribute("loginFlag",1);
-				return "/admin/login/index";
+				return "/admin/account/login";
 			}
 		}else{
 			request.setAttribute("loginFlag", -1);
-			return "/admin/login/index";
+			return "/admin/account/login";
 		}
-//		User user = userService.getUserByName(username);
-//		if(user != null){
-////			String EncryptedPassword =PBKDF2SHA256.getEncryptedPassword(password, user.getSalt());
-//			if(user != null && password.equals(user.getPassword())){
-//				
-////				if(rememberMe != null && "1".equals(rememberMe)){
-////					Cookie userCookie = new Cookie("userInfo",username + "==" + password);
-////					
-////					int seconds=60*60;  
-////					userCookie.setMaxAge(seconds);
-////					response.addCookie(userCookie);
-////				}else{
-////					Cookie[] cookies = request.getCookies(); 
-////					if(cookies != null && cookies.length > 0){
-////						for(Cookie cookie : cookies){
-////							String cookieName = cookie.getName();
-////							if("userInfo".equals(cookieName)){
-////								Cookie new_cookie = new Cookie(cookieName, null); 
-////								new_cookie.setMaxAge(0);
-////								response.addCookie(new_cookie);  								
-////							}
-////						}	
-////					}	
-////				}
-//				
-//				HttpSession session = request.getSession();
-//				session.setAttribute("user", user);
-//				session.setAttribute("userName", user.getUserName());
-//			}else{
-//				request.setAttribute("loginFlag",1);
-////				return "redirect:/admin/index";
-//			}
-//		}else{
-//			request.setAttribute("loginFlag", -1);
-////			return "/";
-//		}
 	}
 	@RequestMapping(value = "/loginOut", method = { RequestMethod.GET })
 	public String loginOut(HttpServletResponse response,HttpServletRequest request) {
 		HttpSession session = request.getSession();
 		session.invalidate();
-		return "redirect:/admin/index";
+		return "redirect:/login";
+	}
+	
+	@RequestMapping(value = "/refuse", method = { RequestMethod.GET })
+	public String refuse(HttpServletResponse response,HttpServletRequest request) {
+		
+		return "/admin/account/refuse";
 	}
 }

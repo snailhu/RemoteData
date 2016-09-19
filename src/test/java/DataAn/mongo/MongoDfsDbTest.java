@@ -18,6 +18,7 @@ public class MongoDfsDbTest {
 	public void init(){
 		fs = MongoDfsDb.getInstance();
 	}
+	
 	@Test
 	public void showList(){
 		fs.showList();
@@ -33,7 +34,7 @@ public class MongoDfsDbTest {
 	
 	@Test
 	public void downLoad() throws Exception{
-		String id = "2ad4350b06394d618c8bb736dec2732a";
-		fs.downLoad(id, "d:/temp/");
+		String id = "b36d97d617c241878abedb812ad1697e";
+		fs.downLoadToLocal(id, "d:/temp/");
 	}
 }

@@ -46,10 +46,14 @@ a, a:focus, a:hover, a:active, button, button:hover {
 	        <li><a href="/Account/Register" id="registerLink">注册</a></li>
 	        <li style="position:relative; top:15px"> |</li>
 	        -->
-	        <#if userName??>
+	       <#if activeUser??>
 	        	<li>
 					<a href="javascript:void(0)" id="loginLink">
-							欢迎光临,${userName}
+							欢迎光临,${activeUser.userName}
+					</a>
+				</li>
+				<li style='position:relative; top:15px'>
+					<a style='margin-top: -15px;' href='${base}/loginOut' id='loginOutLink'>|&nbsp; 注销 
 					</a>
 				</li>
 	        <#else>
@@ -69,9 +73,9 @@ a, a:focus, a:hover, a:active, button, button:hover {
 		<div class="navbar-collapse collapse" >
 			<ul class="nav navbar-nav navbar-right">
 				<li><a href="${base}/Index" style="color: #9d9d9d;;font-size: 18px;line-height: 1.8;">网站首页</a></li>
-				<li><a href="${base}/#" style="color: #9d9d9d;;font-size: 18px;line-height: 1.8;">报告管理</a></li>
+				<li><a href="${base}/createReport" style="color: #9d9d9d;;font-size: 18px;line-height: 1.8;">报告管理</a></li>
 				<li><a href="${base}/admin/file/index" style="color: #9d9d9d;;font-size: 18px;line-height: 1.8;">文件管理</a></li>
-				<li><a href="${base}/analysisData" style="color: #9d9d9d;;font-size: 18px;line-height: 1.8;">数据分析</a></li>
+				<li><a href="${base}/conditionMonitoring" style="color: #9d9d9d;;font-size: 18px;line-height: 1.8;">数据分析</a></li>
 				<li><a href="${base}/admin/galaxy/index" style="color: #9d9d9d;;font-size: 18px;line-height: 1.8;">星系管理</a></li>
 			</ul>
 		</div>

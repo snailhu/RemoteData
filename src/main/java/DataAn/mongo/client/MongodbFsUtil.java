@@ -32,7 +32,7 @@ public class MongodbFsUtil {
 			LogUtil.getInstance().getLogger(MongodbUtil.class).debug("DataAn.mongo.client.MongodbFsUtil() - start "); //$NON-NLS-1$
 		}
 		// 1.建立一个Mongo的数据库连接对象
-		Mongo connection = new Mongo(InitMongo.SERVER_HOST,InitMongo.SERVER_PORT);
+		Mongo connection = new Mongo(InitMongo.DB_SERVER_HOST,InitMongo.DB_SERVER_PORT);
 		// 2.创建相关数据库的连接
 		DB db_test = connection.getDB(InitMongo.DATABASE_TEST);
 		dbs.put(InitMongo.DATABASE_TEST, new GridFS(db_test));

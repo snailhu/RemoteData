@@ -12,7 +12,9 @@ import java.util.concurrent.TimeUnit;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,39 +23,40 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import DataAn.Analysis.dto.ConstraintDto;
 import DataAn.common.pageModel.Pager;
-import DataAn.fileSystem.option.FlyWheelDataType;
-import DataAn.fileSystem.service.IFlyWheelService;
+import DataAn.fileSystem.option.J9Series_Star_ParameterType;
 import DataAn.fileSystem.service.IJ9Series_Star_Service;
+<<<<<<< HEAD
 import DataAn.galaxyManager.dao.ISeriesDao;
 import DataAn.galaxyManager.domain.Series;
 
 
 
+=======
+import DataAn.mongo.db.MongodbUtil;
+import DataAn.sys.dto.ActiveUserDto;
+>>>>>>> b7e74bff812569a8e376c31d6c117c8a442c878a
 
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import redis.clients.jedis.Jedis;
-
-import com.alibaba.fastjson.JSON;
-
-import DataAn.Analysis.dto.AllJsonData;
 import DataAn.Analysis.dto.GroupMenu;
 import DataAn.Analysis.dto.ParamGroup;
 import DataAn.Analysis.dto.SingleParamDto;
 import DataAn.Analysis.dto.SeriesBtnMenu;
 import DataAn.Analysis.dto.YearAndParamDataDto;
 import DataAn.Analysis.redis.RedisPoolUtil;
-import DataAn.Analysis.redis.RedisUtil;
 import DataAn.Util.EhCache;
 import DataAn.Util.JsonStringToObj;
-import DataAn.galaxyManager.domain.*;
 import DataAn.galaxyManager.dto.SeriesDto;
 import DataAn.galaxyManager.dto.StarDto;
 import DataAn.galaxyManager.service.ISeriesService;
 import DataAn.galaxyManager.service.IStarService;
+<<<<<<< HEAD
 import DataAn.galaxyManager.service.impl.SeriesServiceImpl;
 import DataAn.mongo.db.MongoService;
+=======
+>>>>>>> b7e74bff812569a8e376c31d6c117c8a442c878a
 
 
 @Controller
@@ -72,13 +75,14 @@ public class CommonController {
 	
 	@RequestMapping(value = "/getConstraint", method = RequestMethod.GET)
 	@ResponseBody
-	public List<ConstraintDto> getConstraint(String beginDate,String endDate) throws Exception{
+	public List<ConstraintDto> getConstraint(String beginDate,String endDate,String type) throws Exception{
 		
-//		System.out.println("beginDate； " + beginDate);
-//		System.out.println("endDate: " + endDate);
+		System.out.println("beginDate； " + beginDate);
+		System.out.println("endDate: " + endDate);
+		System.out.println("type: " + type);
 		//test
-		return j9Series_Star_Service.getFlyWheelParameterList();
-//		return j9Series_Star_Service.getAllParameterListFromBeginDateToEndDate(beginDate, endDate);
+	//	return j9Series_Star_Service.getFlyWheelParameterList();
+		return j9Series_Star_Service.getAllParameterList(beginDate, endDate ,type);
 	}
 	
 	
@@ -243,38 +247,55 @@ public class CommonController {
 	
 	//获取一个系列的所有卫星信息，用于生成卫星图片
 	@Resource private IStarService starService;
-		@RequestMapping(value = "/conditionMonitoring/getSatellites" ,method =RequestMethod.POST)
-		@ResponseBody
-		public List<StarDto> getSatellites(
-				@RequestParam(value = "seriesId", required = true) long seriesId,
-				HttpServletRequest request, 
-				HttpServletResponse response) throws Exception{			
-				List<StarDto> lstarinfor= starService.getStarsBySeriesId(seriesId);
-			return lstarinfor;
-		}
+	@RequestMapping(value = "/conditionMonitoring/getSatellites" ,method =RequestMethod.POST)
+	@ResponseBody
+	public List<StarDto> getSatellites(
+			@RequestParam(value = "seriesId", required = true) long seriesId,
+			HttpServletRequest request, 
+			HttpServletResponse response) throws Exception{			
+			List<StarDto> lstarinfor= starService.getStarsBySeriesId(seriesId);
+		return lstarinfor;
+	}
 	//点击卫星图片跳转到图表管理页面中相应的卫星页面
-			@RequestMapping(value = "/analysisData/{SeriesId}/{StarId}")
-			@ResponseBody 
-			public ModelAndView showFlyWheelOrGyroscope(
-						@PathVariable String SeriesId, 
-						@PathVariable String StarId
-						){
-				ModelAndView modelview = new ModelAndView("/secondStyle/dataAnalysis");	
-				String nowSeriesId=null;
-				String nowStar=null;
-				try {
-					nowSeriesId = new String(SeriesId.getBytes("ISO-8859-1"),"UTF-8");
-					nowStar = new String(StarId.getBytes("ISO-8859-1"),"UTF-8");					 
-				} catch (UnsupportedEncodingException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				
-				SeriesDto  nowSeries = seriesService.getSeriesDto(Long.parseLong(nowSeriesId));
-				//当前所在系列
-				modelview.addObject("nowSeries", nowSeries.getName());
-				//当前所在星号
-				modelview.addObject("nowStar", nowStar);
-				return modelview;
-			}	
+	@RequestMapping(value = "/analysisData/{SeriesId}/{StarId}")
+	@ResponseBody 
+	public ModelAndView showFlyWheelOrGyroscope(
+				@PathVariable String SeriesId, 
+				@PathVariable String StarId,
+				HttpServletRequest request,HttpServletResponse response
+				){
+		ModelAndView modelview = new ModelAndView("/secondStyle/dataAnalysis");	
+		String nowSeriesId=null;
+		String nowStar=null;
+		try {
+			nowSeriesId = new String(SeriesId.getBytes("ISO-8859-1"),"UTF-8");
+			nowStar = new String(StarId.getBytes("ISO-8859-1"),"UTF-8");					 
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+		SeriesDto  nowSeries = seriesService.getSeriesDto(Long.parseLong(nowSeriesId));
+		//当前所在系列
+		modelview.addObject("nowSeries", nowSeries.getName());
+		//当前所在星号
+		modelview.addObject("nowStar", nowStar);
+		
+		HttpSession session = request.getSession();
+		ActiveUserDto acticeUser = (ActiveUserDto) session.getAttribute("activeUser");
+		String flywheel = J9Series_Star_ParameterType.FLYWHEEL.getValue();
+		String type = acticeUser.getPermissionItems().get(flywheel);
+		String value = "";
+		String name = "";
+		if (StringUtils.isNotBlank(type)) {
+			value = J9Series_Star_ParameterType.getJ9SeriesStarParameterType(type).getValue();
+			name = J9Series_Star_ParameterType.getJ9SeriesStarParameterType(type).getName();
+		}else{
+			value = J9Series_Star_ParameterType.TOP.getValue();
+			name = J9Series_Star_ParameterType.TOP.getName();
+		}
+		//当前所在参数名称
+		modelview.addObject("nowParameterTypeValue", value);
+		modelview.addObject("nowParameterTypeName", name);
+		
+		return modelview;
+	}	
 }

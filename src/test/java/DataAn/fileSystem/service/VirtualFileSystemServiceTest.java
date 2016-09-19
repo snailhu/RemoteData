@@ -3,7 +3,9 @@ package DataAn.fileSystem.service;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
+import java.text.DecimalFormat;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -19,6 +21,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import DataAn.common.pageModel.Pager;
 import DataAn.fileSystem.domain.VirtualFileSystem;
 import DataAn.fileSystem.dto.FileDto;
+import DataAn.fileSystem.option.J9Series_Star_ParameterType;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -29,53 +32,19 @@ public class VirtualFileSystemServiceTest {
 	private IVirtualFileSystemService fileService;
 	
 	@Test
-	public void isExistFile(){
-		String str = "C:\\fakepath\\XX9(02)--20150109(公开).DAT";
-		str = str.replace("\\", "/");
-		String[] strs = str.split("/");
-		System.out.println(strs[strs.length-1]);
-		boolean flag = fileService.isExistFile(strs[strs.length-1]);
-		System.out.println(flag);
+	public void isExistFile() throws IOException{
+		String sPath = "C:\\fakepath\\XX9(02)--20150109(公开).DAT";
+//		sPath = sPath.replace("\\", "/");
+//		String[] strs = sPath.split("/");
+//		System.out.println(strs[strs.length-1]);
+		//boolean flag = fileService.isExistFile(strs[strs.length-1]);
+		//System.out.println(flag);
 	}
 	
 	@Test
-	public void saveFilesThread() throws Exception{
-		String sPath = "D:\\temp\\data\\2016\\1-6";
-		if (!sPath.endsWith(File.separator)) {
-			sPath = sPath + File.separator;
-		}
-		File dirFile = new File(sPath);
-		if (dirFile.exists() && dirFile.isDirectory()) {
-			File[] files = dirFile.listFiles();
-			for (final File file : files) {
-				new Thread(new Runnable(){
-					@Override
-					public void run() {
-						long begin = System.currentTimeMillis();
-						try {
-							Map<String, FileDto> map = new HashMap<String,FileDto>();
-							FileDto csvFileDto = new FileDto();
-							File csvFile = new File(file.getAbsolutePath());
-							InputStream csvInput = new FileInputStream(csvFile);
-							csvFileDto.setFileName(csvFile.getName());
-							csvFileDto.setFileSize(csvFile.length());
-							csvFileDto.setIn(csvInput);
-							map.put("csv", csvFileDto);			
-							fileService.saveFile(map);
-						} catch (Exception e) {
-							e.printStackTrace();
-						}				
-						long end = System.currentTimeMillis();
-						Thread current = Thread.currentThread();  
-						System.out.println(current.getName() + "-time: " + (end - begin));
-					}}).start();
-			}
-		}
-	}
-	@Test
 	public void saveFiles() throws Exception{
 		long begin = System.currentTimeMillis();
-		String sPath = "E:\\data\\2011\\1";
+		String sPath = "E:\\data\\top\\2012";
 		if (!sPath.endsWith(File.separator)) {
 			sPath = sPath + File.separator;
 		}
@@ -83,40 +52,27 @@ public class VirtualFileSystemServiceTest {
 		if (dirFile.exists() && dirFile.isDirectory()) {
 			File[] files = dirFile.listFiles();
 			for (File file : files) {
-				System.out.println(file.getAbsolutePath());
-				this.saveFile(file.getAbsolutePath(), null);
+				if(file.isFile()){
+					if(file.getName().endsWith(".csv")){
+						System.out.println("csvPath: " + file.getAbsolutePath());
+						this.saveFile(file.getAbsolutePath(), null);											
+					}else{
+						System.out.println("datPath: " + file.getAbsolutePath());
+						this.saveFile(null, file.getAbsolutePath());
+					}
+				}else{
+					this.saveDirectory(file.getAbsolutePath());
+				}
 			}
 		}
 		long end = System.currentTimeMillis();
 		System.out.println("time: " + (end - begin));
 	}
-	
-	public void saveFile(String csv,String dat) throws Exception{
-		Map<String, FileDto> map = new HashMap<String,FileDto>();
-		if(csv != null && !csv.equals("")){
-			FileDto csvFileDto = new FileDto();
-			File csvFile = new File(csv);
-			InputStream csvInput = new FileInputStream(csvFile);
-			csvFileDto.setFileName(csvFile.getName());
-			csvFileDto.setFileSize(csvFile.length());
-			csvFileDto.setIn(csvInput);
-			map.put("csv", csvFileDto);			
-		}
-		if(dat != null && !dat.equals("")){
-			FileDto datFileDto = new FileDto();
-			File datFile = new File(dat);
-			InputStream datInput = new FileInputStream(datFile);
-			datFileDto.setFileName(datFile.getName());
-			datFileDto.setFileSize(datFile.length());
-			datFileDto.setIn(datInput);
-			map.put("dat", datFileDto);			
-		}
-		fileService.saveFile(map);
-	}
+
 	@Test
 	public void saveFile() throws Exception{
 		long begin = System.currentTimeMillis();
-		String csv = "D:\\temp\\data\\2016\\7\\j9-02--2016-07-02.csv";
+		String csv = "E:\\data\\top\\2010\\1\\j9-02--2010-01-01.csv";
 //		String dat = "C:\\XX9(02)--20150817(公开).DAT";
 		this.saveFile(csv, null);
 		long end = System.currentTimeMillis();
@@ -156,10 +112,65 @@ public class VirtualFileSystemServiceTest {
 		String beginTime = "";
 		String endTime = "";
 		String dataTypes = "";
-		Pager pager = fileService.getMongoFSList(pageIndex, pageSize, series, star, dirId, beginTime, endTime, dataTypes);
+		String paramType = J9Series_Star_ParameterType.FLYWHEEL.getValue();
+		Pager pager = fileService.getMongoFSList(pageIndex, pageSize, series, star, paramType, dirId, beginTime, endTime, dataTypes);
 		List<VirtualFileSystem> list =pager.getRows();
 		for (VirtualFileSystem fs : list) {
 			System.out.println(fs);
 		}
+	}
+	
+	private void saveDirectory(String sPath) throws Exception{
+		if (!sPath.endsWith(File.separator)) {
+			sPath = sPath + File.separator;
+		}
+		File dirFile = new File(sPath);
+		if (dirFile.exists() && dirFile.isDirectory()) {
+			File[] files = dirFile.listFiles();
+			for (File file : files) {
+				if(file.isFile()){
+					if(file.getName().endsWith(".csv")){
+						System.out.println("csvPath: " + file.getAbsolutePath());
+						this.saveFile(file.getAbsolutePath(), null);											
+					}else{
+						System.out.println("datPath: " + file.getAbsolutePath());
+						this.saveFile(null, file.getAbsolutePath());
+					}					
+				}else{
+					this.saveDirectory(file.getAbsolutePath());
+				}
+			}
+		}
+	}
+	
+	private void saveFile(String csvPath,String datPath) throws Exception{
+		Map<String, FileDto> map = new HashMap<String,FileDto>();
+		DecimalFormat df = new DecimalFormat("#.00");
+		String parameterType = J9Series_Star_ParameterType.TOP.getValue();
+		if(csvPath != null && !csvPath.equals("")){
+			FileDto csvFileDto = new FileDto();
+			File csvFile = new File(csvPath);
+			InputStream csvInput = new FileInputStream(csvFile);
+			csvFileDto.setFileName(csvFile.getName());
+			double size = csvFile.length() / 1024 /1024;
+			String strSize = df.format(size);
+			csvFileDto.setFileSize(Float.parseFloat(strSize));
+			csvFileDto.setIn(csvInput);
+			csvFileDto.setParameterType(parameterType);
+			map.put("csv", csvFileDto);			
+		}
+		if(datPath != null && !datPath.equals("")){
+			FileDto datFileDto = new FileDto();
+			File datFile = new File(datPath);
+			InputStream datInput = new FileInputStream(datFile);
+			datFileDto.setFileName(datFile.getName());
+			double size = datFile.length() / 1024 /1024;
+			String strSize = df.format(size);
+			datFileDto.setFileSize(Float.parseFloat(strSize));
+			datFileDto.setIn(datInput);
+			datFileDto.setParameterType(parameterType);
+			map.put("dat", datFileDto);			
+		}
+		fileService.saveFile(map);
 	}
 }

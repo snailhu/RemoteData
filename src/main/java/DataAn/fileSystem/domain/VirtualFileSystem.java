@@ -32,23 +32,27 @@ public class VirtualFileSystem {
 	@Column(name = "id", unique = true, nullable = false)
 	private Long id;
 	
+	@Column(name = "parentId", nullable = true)
+	private Long parentId;
+	
+	@Column(name = "fileName", nullable = false, length = 64)
+	private String fileName;
+	
 	//系列 如：j9
-	@Column(name = "series", nullable = false)
+	@Column(name = "series", nullable = false, length = 16)
 	private String series;
 	
 	//星 如: 02
-	@Column(name = "star", nullable = false)
+	@Column(name = "star", nullable = false, length = 16)
 	private String star;
+	
+	//参数 如: flywheel、top
+	@Column(name = "parameterType", nullable = false, length = 32)
+	private String parameterType;
 	
 	@Enumerated(EnumType.STRING)
 	@Column(name = "dataType", nullable = true, length = 16)
 	private FileDataType dataType;
-	
-	@Column(name = "parentId", nullable = true)
-	private Long parentId;
-	
-	@Column(name = "fileName", nullable = false)
-	private String fileName;
 	
 	@Enumerated(EnumType.STRING)
 	@Column(name = "fileType", nullable = true, length = 16)
@@ -98,6 +102,14 @@ public class VirtualFileSystem {
 
 	public void setStar(String star) {
 		this.star = star;
+	}
+
+	public String getParameterType() {
+		return parameterType;
+	}
+
+	public void setParameterType(String parameterType) {
+		this.parameterType = parameterType;
 	}
 
 	public FileDataType getDataType() {

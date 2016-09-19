@@ -10,7 +10,7 @@ import DataAn.galaxyManager.dto.SeriesDto;
 * @date 2016年7月27日
 */
 public interface ISeriesService {
-
+	
 	public void saveSeries(SeriesDto dto);
 	
 	public void deleteSeries(String seriesIds);
@@ -21,4 +21,5 @@ public interface ISeriesService {
 	
 	public SeriesDto getSeriesDto(long seriesId);
 
+	public void initSeries();
 }

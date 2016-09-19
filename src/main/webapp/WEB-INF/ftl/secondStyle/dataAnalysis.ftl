@@ -1,22 +1,45 @@
 <@override name="content_left">
 	<div class="sidebar" id="sidebar">		    
 	    <ul class="nav nav-list">
-	    	<li>
-				<a href="javascript:void(0);" onclick="$('#SatelliteComponents').html('飞轮');">
+	    	<li class="flywheel-li" style="display: none;">
+				<a href="javascript:void(0);" onclick="getSatelliteComponents('flywheel')">
 					<i class="glyphicon glyphicon-certificate"></i>
 					<span class="menu-text"> 飞轮 </span>
 				</a>
 			</li>
-			
-			<li>
-				<a href="javascript:void(0);" onclick="$('#SatelliteComponents').html('陀螺');">
+			<li class="top-li" style="display: none;">
+				<a href="javascript:void(0);" onclick="getSatelliteComponents('top')">
 					<i class="glyphicon glyphicon-certificate"></i>
 					<span class="menu-text"> 陀螺 </span>
 				</a>
 			</li>
 	    </ul>
-	    	    	
 	</div>
+<script type="text/javascript">
+	function getSatelliteComponents(type){
+		if(type == 'flywheel'){
+			$('#SatelliteComponents').html('飞轮');
+			$('#SatelliteComponents').attr('name','flywheel');			
+		}else{
+			$('#SatelliteComponents').html('陀螺');
+			$('#SatelliteComponents').attr('name','top');	
+		}
+	}
+	$(function () {
+		var activeUser = '${activeUser}';
+		if(activeUser != ''){
+			var permissionItemsJSON = '${activeUser.permissionItemsJSON}';
+			var map = $.parseJSON(permissionItemsJSON); 
+			console.log('permissionItemsJSON: ' + map.flywheel);
+			if(map.flywheel == 'flywheel'){
+				$(".flywheel-li").show();
+			}
+			if(map.top == 'top'){
+				$(".top-li").show();
+			}
+		}
+	});
+</script>
 </@override>
 <@override name="content_right">	
 	<link rel="stylesheet" href="${base}/static/jqwidgets/styles/jqx.base.css" type="text/css" />
@@ -144,7 +167,7 @@
 				</li>
 				
 				<li class="active"  value="">
-					<span class="menu-text" id="SatelliteComponents"></span>					
+					<span class="menu-text" id="SatelliteComponents" name="${nowParameterTypeValue}">${nowParameterTypeName}</span>					
 				</li>
 			</ul><!-- .breadcrumb -->	
 		</div>	
@@ -243,7 +266,8 @@
 		 $("#jqxButton-getParameters").click( function ()  {    
 		 	var beginDate = $("#dateStart").val();
 		 	var endDate = $("#dateEnd").val();
-            var url = "${base}/getConstraint?beginDate="+beginDate+"&endDate="+endDate;
+		 	var type = $('#SatelliteComponents').attr('name');
+            var url = "${base}/getConstraint?beginDate="+beginDate+"&endDate="+endDate+"&type="+type;
             updateParamTree(url);
 		 });
 		 
@@ -295,11 +319,12 @@
            theme: 'energyblue',
            hierarchicalCheckboxes: true,              	
            columns: [
-	             { text: '参数名称',  dataField: 'name',editable: false, width: 200 },
+	             { text: '参数名称',  dataField: 'name',editable: false, width: 300 },
 	             { text: 'ID',  dataField: 'id',editable: false, width:200, hidden: true },
-	             { text: '最大值', dataField: 'max', width: 200 },
-	             { text: '最小值', dataField: 'min', width: 160 },
-	             { text: 'Y轴', dataField:'yname',width:200,columnType:'template',
+	             { text: '最大值', dataField: 'max', width: 150 },
+	             { text: '最小值', dataField: 'min', width: 150 },
+	             { text: 'Y轴', dataField:'yname',width:150,columnType:'template',
+	             	cellsRenderer: function (row, column, value, rowData) {if(value=="0") {return "Y1"};if(value=="1"){return "Y2"}},
 					createEditor: function (row, cellValue, editor, cellText, width, height) {
 					  var source = ["Y1", "Y2"];
 					  editor.jqxDropDownList({selectedIndex: 0,autoDropDownHeight: true, placeHolder:'请设置Y轴', source: source, width: '100%', height: '100%' });		 
@@ -375,6 +400,7 @@
               for(i=0;i<rowindex.length;i++){
               	var rowObject={}
                   var parentId = rowindex[i].parentId;
+              	  console.log("parentId: " + parentId);
                   if(parentId != 0){
 	                  var value = rowindex[i].name;
 	                  rowObject.id=rowindex[i].id
@@ -383,14 +409,18 @@
 	                  rowObject.min=rowindex[i].min;
 	                  var yname = rowindex[i].yname;
 	                  if(yname=='Y2'){
-	                  //这里统一一下（Y1轴的话用大写的‘Y1’,Y2用大写的‘Y2’）
+	                  //这里统一一下（Y1轴的话用大写的‘Y1’,Y2轴用大写的‘Y2’）
 	                	  rowObject.yname=1;
 	                  }else{
 		                  rowObject.yname=0;
 	                  }
 	                  selectRow.push( rowObject);
 	                  stringName+=value+",";
+<<<<<<< HEAD
 	              }
+=======
+                  }
+>>>>>>> b7e74bff812569a8e376c31d6c117c8a442c878a
               }
            groupObject.id=j
            groupObject.secectRow = selectRow;
@@ -656,9 +686,9 @@
 	                  { text: '最小值',    dataField: 'min', width: 160 },
 	                  { text: 'Y轴',     dataField: 'yname', width:200, columnType:'custom',
 	                  	//cellsRenderer: function (row, column, value, rowData) {if(value=="添加到分组") {return "<input type='button' value='删除模板'></input>"}},
-	                  	cellsRenderer: function (row, column, value, rowData) {if(value=="添加到分组") {return ""}}, 
+	                  	cellsRenderer: function (row, column, value, rowData) { if(value=="0") {return "Y1";} else if(value=="1"){return "Y2"} else{ return "";}}, 
 	                  	createEditor: function (row, cellValue, editor, cellText, width, height) {
-						  var source = ["y1", "y2"];
+						  var source = ["Y1", "Y2"];
 	                      editor.jqxDropDownList({autoDropDownHeight: true, source: source, width: '100%', height: '100%' });		 
 						},
 						initEditor: function (row, cellValue, editor, cellText, width, height) {

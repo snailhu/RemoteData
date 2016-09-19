@@ -21,11 +21,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	
 	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/static/content/sweetalert/dist/sweetalert.css">
 	<script src="${pageContext.request.contextPath}/static/content/sweetalert/dist/sweetalert.min.js"></script>
-	<!--     <link rel="stylesheet" href="<%=request.getContextPath()%>/static/content/bootstrapValidator/vendor/bootstrap/css/bootstrap.css"/> -->
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/content/bootstrapValidator/dist/css/bootstrapValidator.css"/>
-    <script type="text/javascript" src="${pageContext.request.contextPath}/static/content/bootstrapValidator/vendor/bootstrap/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="${pageContext.request.contextPath}/static/content/bootstrapValidator/dist/js/bootstrapValidator.js"></script>
-  <style type="text/css">
+<style type="text/css">
   .form-horizontal .has-feedback .form-control-feedback {
     top: 0;
     right: 15px;
@@ -276,7 +272,7 @@ input[type=text]::-webkit-focus-inner {
 										</div>
 									</div>
 								</div>
-								<div class="space-4"></div>
+								<div class="space-8"></div>
 								<div class="form-group">
 									<label class="col-sm-3 control-label no-padding-right"> CSV文件:  </label>
 									<div class="col-sm-8">
@@ -287,10 +283,26 @@ input[type=text]::-webkit-focus-inner {
 										</div>
 									</div>
 								</div>
+								<div class="space-8"></div>
+								<div class="form-group">
+									<label class="col-sm-3 control-label no-padding-right">文件类型:</label>
+									<div class="col-sm-8">
+										<label>
+											<input name="paramType" type="radio" class="ace" value="flywheel" checked="true"/>
+											<span class="lbl"> 飞轮</span>
+										</label>
+										&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+										<label>
+											<input name="paramType" type="radio" class="ace" value="top"/>
+											<span class="lbl"> 陀螺</span>
+										</label>
+									</div>
+								</div>
+								<div class="space-8"></div>
 								<div style="margin-left: 300px;">
 									<span id="returnMsg"></span>
 								</div>
-								<div class="space-20"></div>
+								<div class="space-12"></div>
 								<div class="form-group">
 		                           <div class="col-sm-8" style="float: right;">
 				                        <button type="button" id="submit-fileupload" class="btn btn-primary start">
@@ -326,82 +338,67 @@ input[type=text]::-webkit-focus-inner {
 				$(this).parents(".uploader").find(".filename").val("No file selected...");
 			}
 		});
-  		$('#fileupload11').bootstrapValidator({
-//          live: 'disabled',
-          message: 'This value is not valid',
-          feedbackIcons: {
-              valid: 'glyphicon glyphicon-ok',
-              invalid: 'glyphicon glyphicon-remove',
-              validating: 'glyphicon glyphicon-refresh'
-          },
-          fields: {
-        	  datFile: {
-                  message: 'dat文件名输入不合法',
-                  validators: {
-//                       notEmpty: {
-//                           message: 'dat文件不能为空'
-//                       },
-                      
-                  }
-              },
-              csvFile: {
-                  validators: {
-                	  message: 'csv文件名输入不合法',
-                      notEmpty: {
-                          message: 'csv文件不能为空'
-                      },
-                      regexp: {
-                          regexp: /j9-0[1-9]--([0-9]{3}[1-9]|[0-9]{2}[1-9][0-9]{1}|[0-9]{1}[1-9][0-9]{2}|[1-9][0-9]{3})-(((0[13578]|1[02])-(0[1-9]|[12][0-9]|3[01]))|((0[469]|11)-(0[1-9]|[12][0-9]|30))|(02-(0[1-9]|[1][0-9]|2[0-8]))).csv/,
-                          message: 'csv文件名输入不合法'
-                      },
-//                       callback: {
-//                     	  message: '文件已存在',
-//                           callback: function(value, validator) {
-// 							 $.post("${pageContext.request.contextPath}/admin/file/existFile", { fileName: value},function(data){
-// 								console.log("flag: " + data.success);
-// 								if (data.success) {
-// 									$("#returnMsg").html("<img src='${pageContext.request.contextPath}/static/imgs/error.png'/><font color='red'>文件已存在</font>");
-// 									return false;
-// 								}else{
-// 									return true;
-// 								}
-// 							 });
-//                           }
-//                       }
-                  }
-              },
-          }
-      });
   		
 	$('#submit-fileupload').click(function() {
-        
         var fileName = $('#csvFile').val();
         if(fileName.length == 0){
         	$("#returnMsg").html("<img src='${pageContext.request.contextPath}/static/imgs/error.png'/><font color='red'>csv文件不能为空</font>");
         }else{
         	var regexp = /j9-0[1-9]--([0-9]{3}[1-9]|[0-9]{2}[1-9][0-9]{1}|[0-9]{1}[1-9][0-9]{2}|[1-9][0-9]{3})-(((0[13578]|1[02])-(0[1-9]|[12][0-9]|3[01]))|((0[469]|11)-(0[1-9]|[12][0-9]|30))|(02-(0[1-9]|[1][0-9]|2[0-8]))).csv/;
         	if(regexp.test(fileName)){
-				$.post("${pageContext.request.contextPath}/admin/file/existFile", { fileName: fileName},function(data){
-					//console.log("flag: " + data.success);
-					if (data.success) {
-						$("#returnMsg").html("<img src='${pageContext.request.contextPath}/static/imgs/error.png'/><font color='red'>文件已存在</font>");
-					}else{
-						$("#fileupload").submit();
-					}
-				});
+        		var activeUser = '${activeUser}';
+        		if(activeUser != null){
+    				var permissionItemsJSON = '${activeUser.permissionItemsJSON}';
+    				var type=$('input:radio[name="paramType"]:checked').val();
+    				//console.log('type: ' + type);
+    				var obj = eval("(" + permissionItemsJSON + ")");
+    				var flag = false;
+    				$.each(obj, function (n, value) { 
+    					if(value == type){
+    						//console.log(n + ' : ' + value);
+    						flag = true;
+    					}
+    				});
+    				if(flag){
+	   	 				$.post("${pageContext.request.contextPath}/admin/file/existFile", { fileName: fileName},function(data){
+	    					console.log("flag: " + data.success);
+	    					if (data.success) {
+	    						$("#returnMsg").html("<img src='${pageContext.request.contextPath}/static/imgs/error.png'/><font color='red'>csv文件已存在</font>");
+	    					}else{
+	    						swal({
+	    							title : "你是否确定上传?",
+	    							text : fileName,
+	    							type : "warning",
+	    							showCancelButton : true,
+	    							confirmButtonColor : "#DD6B55",
+	    							confirmButtonText : "上传!",
+	    							cancelButtonText : "取消!",
+	    							closeOnConfirm : false,
+	    							closeOnCancel : false
+	    						},
+	    						function(isConfirm) {
+	    							if (isConfirm) {
+	    								$("#fileupload").submit();
+	    							} else {
+	    								swal("取消上传", "","error");
+	    							}
+	    						});
+	    					}
+	    				});
+    				}else{
+    					swal("无上传权限！");
+    				}
+    			}
         	}else{
         		$("#returnMsg").html("<img src='${pageContext.request.contextPath}/static/imgs/error.png'/><font color='red'>csv文件名输入不合法</font>");
         	}
         }
-        
     });
 	$("#csvFile").blur(function() {
 		$("#returnMsg").empty();
 	});
-	
     $('#resetBtn').click(function() {
     	$("#returnMsg").empty();
-//         $('#fileupload').data('bootstrapValidator').resetForm(true);
     });	
   });
   </script>

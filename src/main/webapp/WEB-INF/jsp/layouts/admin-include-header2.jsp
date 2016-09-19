@@ -34,11 +34,12 @@ a, a:focus, a:hover, a:active, button, button:hover {
 }
 </style>
 <script type="text/javascript">
-var userName = '${userName}';
+var activeUser = '${activeUser}';
 $(function () {
-	if(userName != ''){
+	if(activeUser != ''){
 		$('#login-nav').empty();
-		$('#login-nav').append("<li> <a href='javascript:void(0)' id='loginLink'> 欢迎光临,${userName} </a> </li>");
+		$('#login-nav').append("<li> <a href='javascript:void(0)' id='loginLink'> 欢迎光临,${activeUser.userName} </a> </li>");
+		$('#login-nav').append("<li style='position:relative; top:15px'><a style='margin-top: -15px;' href='${pageContext.request.contextPath}/loginOut' id='loginOutLink'> |&nbsp; 注销 </a></li>");
 	}
 });
 </script>
@@ -61,11 +62,11 @@ $(function () {
 		</div>
 		<div class="navbar-collapse collapse" >
 			<ul class="nav navbar-nav navbar-right">
-				<li><a href="Index" style="color: #9d9d9d;;font-size: 18px;line-height: 1.8;">网站首页</a></li>
-				<li><a href="#" style="color: #9d9d9d;;font-size: 18px;line-height: 1.8;">报告管理</a></li>
-				<li><a href="admin/file/index" style="color: #9d9d9d;;font-size: 18px;line-height: 1.8;">文件管理</a></li>
-				<li><a href="analysisData" style="color: #9d9d9d;;font-size: 18px;line-height: 1.8;">图表管理</a></li>
-				<li><a href="admin/galaxy/index" style="color: #9d9d9d;;font-size: 18px;line-height: 1.8;">星系管理</a></li>
+				<li><a href="${pageContext.request.contextPath}/Index" style="color: #9d9d9d;;font-size: 18px;line-height: 1.8;">网站首页</a></li>
+				<li><a href="${pageContext.request.contextPath}/#" style="color: #9d9d9d;;font-size: 18px;line-height: 1.8;">报告管理</a></li>
+				<li><a href="${pageContext.request.contextPath}/admin/file/index" style="color: #9d9d9d;;font-size: 18px;line-height: 1.8;">文件管理</a></li>
+				<li><a href="${pageContext.request.contextPath}/conditionMonitoring" style="color: #9d9d9d;;font-size: 18px;line-height: 1.8;">数据分析</a></li>
+				<li><a href="${pageContext.request.contextPath}/admin/galaxy/index" style="color: #9d9d9d;;font-size: 18px;line-height: 1.8;">星系管理</a></li>
 			</ul>
 		</div>
 	</div>

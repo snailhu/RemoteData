@@ -65,5 +65,5 @@ public class LineTmplServiceImpl implements ILineTmplService {
 		//linetmpdao.delete(templateIds);
 		//System.out.println("删除模板");
 	}
-
+	
 }

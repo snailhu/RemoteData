@@ -26,7 +26,9 @@ import DataAn.fileSystem.service.IFlyWheelService;
 import DataAn.fileSystem.service.IJ9Series_Star_Service;
 import DataAn.galaxyManager.dao.ISeriesDao;
 import DataAn.galaxyManager.domain.Series;
-import DataAn.mongo.db.MongodbUtil;
+
+
+
 
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
@@ -51,6 +53,7 @@ import DataAn.galaxyManager.dto.StarDto;
 import DataAn.galaxyManager.service.ISeriesService;
 import DataAn.galaxyManager.service.IStarService;
 import DataAn.galaxyManager.service.impl.SeriesServiceImpl;
+import DataAn.mongo.db.MongoService;
 
 
 @Controller
@@ -58,6 +61,9 @@ public class CommonController {
 
 	@Resource
 	private IJ9Series_Star_Service j9Series_Star_Service;
+	
+	@Resource 
+	private MongoService mongoService;
 	
 	@RequestMapping(value = "/Index", method = { RequestMethod.GET })
 	public String goIndex(HttpServletRequest request, HttpServletResponse response) {
@@ -181,17 +187,16 @@ public class CommonController {
 			@RequestParam(value="paramSize",required = true) Integer paramSize
 			) throws Exception{
 		final String key = start+end;
-		Jedis jedis = RedisPoolUtil.buildJedisPool().getResource(); 
-		if(jedis.exists((key+"year"+filename).getBytes()) && jedis.exists((key+"param"+filename).getBytes())){
-			List<String> year_list = RedisPoolUtil.getList(key+"year"+filename);
-			List<String> parm_list = RedisPoolUtil.getList(key+"param"+filename);
-			YearAndParamDataDto result =  new YearAndParamDataDto();
-			result.setParamValue(parm_list);
-			result.setYearValue(year_list);
-			return result;	
-		}
-		MongodbUtil mg = MongodbUtil.getInstance();	
-		final YearAndParamDataDto result = mg.getDataList(paramSize,new String[]{start,end,filename});				
+	  	Jedis jedis = RedisPoolUtil.buildJedisPool().getResource(); 
+				if(jedis.exists((key+"year"+filename).getBytes()) && jedis.exists((key+"param"+filename).getBytes())){
+					List<String> year_list = RedisPoolUtil.getList(key+"year"+filename);
+					List<String> parm_list = RedisPoolUtil.getList(key+"param"+filename);
+					YearAndParamDataDto result =  new YearAndParamDataDto();
+					result.setParamValue(parm_list);
+					result.setYearValue(year_list);	
+					return result;	
+				}   
+		final YearAndParamDataDto result = mongoService.getList(paramSize,new String[]{start,end,filename});				
 		ThreadPoolExecutor executor = new ThreadPoolExecutor(5, 10, 200, TimeUnit.SECONDS,
         new ArrayBlockingQueue<Runnable>(5));
 		executor.execute(new Runnable() {
@@ -201,7 +206,7 @@ public class CommonController {
 	            }
 	        });
 		return result;						
-	}
+	}	
 	
 	
 	@RequestMapping(value = "/showtab", method = RequestMethod.GET)

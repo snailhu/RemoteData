@@ -12,16 +12,14 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 import org.bson.Document;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import DataAn.Analysis.dto.YearAndParamDataDto;
 import DataAn.common.utils.DataTypeUtil;
 import DataAn.common.utils.DateUtil;
 import DataAn.common.utils.LogUtil;
 import DataAn.mongo.init.InitMongo;
-
-
-
-
 
 import com.mongodb.BasicDBObject;
 import com.mongodb.CommandResult;
@@ -38,7 +36,7 @@ import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.Updates;
 
 
-public class MongodbUtil {
+public class MongodbUtil{
 
 	private MongoClient mg = null;
 	
@@ -231,111 +229,15 @@ public class MongodbUtil {
 		dbCollection.drop();
 	}
 	
-	public void getIndex(String databaseName,String collectionName){
-		MongoCollection<Document> collection = this.getCollection(databaseName, collectionName);
-		for (final Document index : collection.listIndexes()) {
-			System.out.println(index.toJson());
-		}
-	}
+//	public void getIndex(String databaseName,String collectionName){
+//		MongoCollection<Document> collection = this.getCollection(databaseName, collectionName);
+//		for (final Document index : collection.listIndexes()) {
+//			System.out.println(index.toJson());
+//		}
+//	}
 
-	/**
-	* @Title: insert
-	* @Description: 为相应的集合添加数据
-	* @param databaseName 数据库名称
-	* @param collectionName 集合名称
-	* @author Shenwp
-	* @date 2016年7月6日
-	* @version 1.0
-	*/
-	public void insertOne(String databaseName,String collectionName, Map<String, Object> map){
-		MongoCollection<Document> collection = this.getCollection(databaseName, collectionName);
-		Document doc = new Document(map);
-		collection.insertOne(doc);
-	}
-
-	/**
-	* @Title: insert
-	* @Description: 批量插入数据
-	* @param databaseName 数据库名称 InitMongo.DATABASE_J9STAR2
-	* @param collectionName 集合名称 tb+年
-	* @param documents doc集合
-	* @author Shenwp
-	* @date 2016年7月6日
-	* @version 1.0
-	*/
-	public void insertMany(String databaseName,String collectionName, List<Document> documents){
-		MongoCollection<Document> collection = this.getCollection(databaseName, collectionName);
-		collection.insertMany(documents);
-	}
 	
-	
-	/**
-	* @Title: insert
-	* @Description: 添加一个Json格式的数据类型
-	* @param databaseName 数据库名称
-	* @param collectionName 集合名称
-	* @param json 单个json格式数据
-	* @author Shenwp
-	* @date 2016年7月6日
-	* @version 1.0
-	*/
-	public void insertOne(String databaseName,String collectionName, String json){
-		MongoCollection<Document> collection = this.getCollection(databaseName, collectionName);
-		Document doc = Document.parse(json);
-		collection.insertOne(doc);
-	}
-
-	public void deleteMany(String databaseName, String collectionName,String key,Object value){
-		MongoCollection<Document> collection = this.getCollection(databaseName, collectionName);
-		// key == value
-		collection.deleteMany(Filters.eq(key, value));
-	}
-	
-	/**
-	* Description: 将某一行的状态标志为0
-	* @param databaseName 数据库名称
-	* @param collectionName 集合名称
-	* @param key uuId
-	* @param value
-	* @author Shenwp
-	* @date 2016年8月2日
-	* @version 1.0
-	*/
-	public void update(String databaseName, String collectionName,String key,String value){
-		MongoCollection<Document> collection = this.getCollection(databaseName, collectionName);
-		collection.updateMany(Filters.eq(key, value), Updates.set("status", 0));
-		// 更新。若包含companyid属性，则热度加10后更新
-//        collection.updateOne(
-//                Filters.eq(key, value),
-//                new Document("$inc", new Document("status", 1)));
-        // 批量更新。所有包含hotness属性的其hotness值乘以2
-//        collection.updateMany(Filters.exists("hotness"), new Document(
-//                "$mul", new Document("hotness", 2)));
-	}
-	
-	public void updateBy(String databaseName, String collectionName, String beginDate, String endDate) {
-		MongoCollection<Document> collection = this.getCollection(databaseName, collectionName);
-		collection.updateMany(
-							Filters.and(Filters.gte("datetime", beginDate),
-										Filters.lte("datetime", endDate)),
-							Updates.set("status", 0));
-	}
-
-
-	public Document findFirst(String databaseName, String collectionName){
-		MongoCollection<Document> collection = this.getCollection(databaseName, collectionName);
-		Document doc = collection.find().first();
-		return doc;
-	}
-	
-	public Document findFirstByYear_month_day(String databaseName, String collectionName,String date){
-		MongoCollection<Document> collection = this.getCollection(databaseName, collectionName);
-		Document doc = collection.find(Filters.eq("year_month_day", date)).first();
-		return doc;
-	}
-	//根据日期 获取某个参数在改时间段内的总的点数
-
-	public YearAndParamDataDto getDataList(int selectParamSize,String ...params) throws InterruptedException{
+	public YearAndParamDataDto getList2(int selectParamSize,String ...params) throws InterruptedException{
 		MongoCollection<Document> collection = this.getCollection(InitMongo.DATABASE_TEST, "star2");		
 		//string 类型的时间转换成日期
 		Calendar date1 = Calendar.getInstance();
@@ -469,49 +371,4 @@ public class MongodbUtil {
 		}			
 	}
 
-//	private void getResults(MongoCursor<Document> cursor,YearAndParamDataDto yearAndParam,
-//			String... params) {
-//		try {
-//			List<String> yearValue=new ArrayList<String>();
-//			List<String> paramValue =  new ArrayList<String>();
-//
-//		    while (cursor.hasNext()) {
-//		    	Document doc = cursor.next();
-//		 
-//		    	if(doc.getString(params[2])!=null){	
-//		    	yearValue.add(doc.getDate("datetime")+"");
-//		        paramValue.add(doc.getString(params[2]));
-//		    	}		    		
-//		    }
-//		    yearAndParam.setParamValue(paramValue);
-//		    yearAndParam.setYearValue(yearValue);
-// 
-//		} finally {
-//		    cursor.close();
-//		}
-//	}
-		
-//	public List<String> getDateList(int selectParamSize,String ...params){
-//		MongoCollection<Document> collection = db.getCollection("star2");
-//	//	MongoCursor<Document> cursor = collection.find().iterator();
-//		MongoCursor<Document> cursor = collection.find(Filters.eq("year_month_day", "2016-10-10")).iterator();
-//		try {
-//			List<String> paramValue =  new ArrayList<String>();
-////			HashMap<String,List<String>> paramMap = new HashMap<String,List<String>>();
-//			int count=0;
-//		    while (cursor.hasNext()) {	
-//		    	if(count>=10000){break;}
-//		    	Document doc = cursor.next();
-//		    //	DateUtil.formatString("2015年08月10日00时15分01秒","yyyy-MM-dd HH:mm:ss")
-//		    	//String value = DateUtil.formatString(doc.getString("datetime"),"yyyy-MM-dd HH:mm:ss");
-//		    	String value = doc.getString("datetime");
-//		    	//String value = doc.getString("flywheel_b_power_plus_5V");	        
-//	            paramValue.add(value);	
-//	           count++;
-//		    }
-//		    return paramValue;  
-//		} finally {
-//		    cursor.close();
-//		}		
-//	}			
 }

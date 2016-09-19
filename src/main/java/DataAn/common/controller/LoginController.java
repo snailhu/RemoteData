@@ -3,12 +3,13 @@ package DataAn.common.controller;
 import java.io.IOException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
 import javax.annotation.Resource;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -18,12 +19,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import DataAn.log.domain.SystemLog;
+import DataAn.log.service.SystemLogService;
+
 
 @Controller
 public class LoginController {
 
 //	@Resource
 //	private IUserService userService;
+	
+	@Resource 
+	private SystemLogService systemLogService;
 		
 	@RequestMapping(value = "/login", method = { RequestMethod.GET })
 	public String login(
@@ -59,6 +66,24 @@ public class LoginController {
 				HttpSession session = request.getSession();
 //				session.setAttribute("user", user);
 				session.setAttribute("userName", username);
+				String ip  =  request.getHeader( " x-forwarded-for " );  
+			       if (ip  ==   null   ||  ip.length()  ==   0   ||   " unknown " .equalsIgnoreCase(ip))  {  
+			          ip  =  request.getHeader( " Proxy-Client-IP " );  
+			      }   
+			       if (ip  ==   null   ||  ip.length()  ==   0   ||   " unknown " .equalsIgnoreCase(ip))  {  
+			          ip  =  request.getHeader( " WL-Proxy-Client-IP " );  
+			      }   
+			       if (ip  ==   null   ||  ip.length()  ==   0   ||   " unknown " .equalsIgnoreCase(ip))  {  
+			         ip  =  request.getRemoteAddr();  
+			     }   			       
+				SystemLog slog =  new SystemLog();
+				slog.setLoginIp(ip);				
+				slog.setUserName(username);
+				Date loginTime = new Date(); 
+//				SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");//可以方便地修改日期格式
+//				String loginTime = dateFormat.format( now ); 
+				slog.setLoginTime(loginTime);
+				systemLogService.saveObject(slog);
 				return "redirect:/Index";
 			}else{
 				request.setAttribute("loginFlag",1);

@@ -390,6 +390,7 @@
 	                  }
 	                  selectRow.push( rowObject);
 	                  stringName+=value+",";
+	              }
               }
            groupObject.id=j
            groupObject.secectRow = selectRow;

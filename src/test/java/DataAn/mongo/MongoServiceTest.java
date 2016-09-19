@@ -9,6 +9,8 @@ import org.bson.Document;
 import org.bson.types.ObjectId;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.BeanFactory;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -24,6 +26,7 @@ public class MongoServiceTest {
 
 	@Resource
 	private IMongoService mongoService;
+	
 	@Resource
 	private ICSVService csvService;
 	private String filePath = "D:\\temp\\data\\2016\\1-6\\j9-02--2016-01-10.csv";
@@ -64,4 +67,6 @@ public class MongoServiceTest {
 	public void find(){
 		mongoService.find();
 	}
+	
+	
 }

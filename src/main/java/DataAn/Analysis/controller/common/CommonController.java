@@ -25,16 +25,13 @@ import DataAn.Analysis.dto.ConstraintDto;
 import DataAn.common.pageModel.Pager;
 import DataAn.fileSystem.option.J9Series_Star_ParameterType;
 import DataAn.fileSystem.service.IJ9Series_Star_Service;
-<<<<<<< HEAD
+
 import DataAn.galaxyManager.dao.ISeriesDao;
 import DataAn.galaxyManager.domain.Series;
 
-
-
-=======
 import DataAn.mongo.db.MongodbUtil;
 import DataAn.sys.dto.ActiveUserDto;
->>>>>>> b7e74bff812569a8e376c31d6c117c8a442c878a
+
 
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
@@ -52,11 +49,8 @@ import DataAn.galaxyManager.dto.SeriesDto;
 import DataAn.galaxyManager.dto.StarDto;
 import DataAn.galaxyManager.service.ISeriesService;
 import DataAn.galaxyManager.service.IStarService;
-<<<<<<< HEAD
-import DataAn.galaxyManager.service.impl.SeriesServiceImpl;
+
 import DataAn.mongo.db.MongoService;
-=======
->>>>>>> b7e74bff812569a8e376c31d6c117c8a442c878a
 
 
 @Controller

@@ -76,15 +76,6 @@
 			<version>2.4.0</version>
 		</dependency>
 		<!-- aspose  Word插件-->
-		<!--  
-		<dependency>
-		    <groupId>com.local.aspose</groupId>
-		    <artifactId>aspose</artifactId>
-		    <version>15.9.0</version>
-		    <scope>system</scope>scope>
-		    <systemPath>C:\Aspose\aspose-words-15.9.0-jdk16.jar</systemPath>
-		</dependency>
-		-->
 		<dependency>
 		    <groupId>com.aspose.word</groupId>
 		    <artifactId>word</artifactId>

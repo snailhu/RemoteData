@@ -32,14 +32,12 @@
 	<context:component-scan base-package="DataAn.fileSystem.controller"/>
 	<context:component-scan base-package="DataAn.galaxyManager.controller"/>
 	<context:component-scan base-package="DataAn.linegraph.controller"/>
-<<<<<<< HEAD:src/main/resources/applicationContext-springMVC-views.xml
 	<context:component-scan base-package="DataAn.log.controller"/>
 	
 	<aop:aspectj-autoproxy proxy-target-class="true" />
-=======
 	<context:component-scan base-package="DataAn.wordManager.controller"/>
 	<context:component-scan base-package="DataAn.sys.controller"/>
->>>>>>> b7e74bff812569a8e376c31d6c117c8a442c878a:src/main/resources/springMVC-views.xml
+
 	<!-- 处理器映射器和适配器，可以使用mvc注解驱动 -->
     <mvc:annotation-driven/> 
     <mvc:default-servlet-handler />

@@ -3,15 +3,9 @@ package DataAn.common.controller;
 import java.io.IOException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
-<<<<<<< HEAD
-import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
 
-=======
->>>>>>> b7e74bff812569a8e376c31d6c117c8a442c878a
+
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -30,16 +24,16 @@ import DataAn.log.service.SystemLogService;
 @Controller
 public class LoginController {
 
-<<<<<<< HEAD
+
 //	@Resource
 //	private IUserService userService;
 	
 	@Resource 
 	private SystemLogService systemLogService;
-=======
+
 	@Resource
 	private IUserService userService;
->>>>>>> b7e74bff812569a8e376c31d6c117c8a442c878a
+
 		
 	@RequestMapping(value = "/login", method = { RequestMethod.GET })
 	public String login(HttpServletResponse response,HttpServletRequest request) 
@@ -65,7 +59,6 @@ public class LoginController {
 		if(acticeUser != null){
 			if(password.equals(acticeUser.getPassWord())){
 				HttpSession session = request.getSession();
-<<<<<<< HEAD
 //				session.setAttribute("user", user);
 				session.setAttribute("userName", username);
 				String ip  =  request.getHeader( " x-forwarded-for " );  
@@ -86,9 +79,8 @@ public class LoginController {
 //				String loginTime = dateFormat.format( now ); 
 				slog.setLoginTime(loginTime);
 				systemLogService.saveObject(slog);
-=======
 				session.setAttribute("activeUser", acticeUser);
->>>>>>> b7e74bff812569a8e376c31d6c117c8a442c878a
+
 				return "redirect:/Index";
 			}else{
 				request.setAttribute("loginFlag",1);

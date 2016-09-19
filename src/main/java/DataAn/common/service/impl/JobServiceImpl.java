@@ -34,7 +34,7 @@ public class JobServiceImpl implements IJobService{
 //		System.out.println(" JobServiceImpl DelMongoDBValueJob date:" + new Date().toString());
 		String databaseName = InitMongo.DB_J9STAR2;
 		MongodbUtil mg = MongodbUtil.getInstance();
-		mg.deleteMany(databaseName, "star2", "status", 0);
+		//mg.deleteMany(databaseName, "star2", "status", 0);
 	}
 
 	//每月20号的晚上23点执行此方法

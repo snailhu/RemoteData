@@ -416,11 +416,8 @@
 	                  }
 	                  selectRow.push( rowObject);
 	                  stringName+=value+",";
-<<<<<<< HEAD
 	              }
-=======
-                  }
->>>>>>> b7e74bff812569a8e376c31d6c117c8a442c878a
+
               }
            groupObject.id=j
            groupObject.secectRow = selectRow;

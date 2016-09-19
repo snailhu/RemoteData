@@ -9,7 +9,7 @@
 			</li>
 
 			<li>
-				<a href="javascript:void(0);" onclick="$('#SatelliteComponents').html('陀螺');">
+				<a href="${base}/admin/user/index" onclick="$('#SatelliteComponents').html('陀螺');">
 					<i class="glyphicon glyphicon-certificate"></i>
 					<span class="menu-text"> 权限管理 </span>
 				</a>

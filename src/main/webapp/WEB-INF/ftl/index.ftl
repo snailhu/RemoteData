@@ -123,11 +123,7 @@
                     <h4>系统管理<br /></h4>
                 </div>
                 <br />
-<<<<<<< HEAD
                 <a href="admin/systemLog">
-=======
-                <a href="${base}/admin/user/index">
->>>>>>> b7e74bff812569a8e376c31d6c117c8a442c878a
                     <h4>
                         <img class="img-circle" src="${base}/static/images/manage.png" />
                         <br /><br />

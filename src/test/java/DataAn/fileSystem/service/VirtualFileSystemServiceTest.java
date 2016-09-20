@@ -25,7 +25,7 @@ import DataAn.fileSystem.option.J9Series_Star_ParameterType;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:applicationContext-hibernate.xml","classpath:applicationContext.xml"})
+@ContextConfiguration(locations = {"classpath:applicationContext-hibernate.xml","classpath:applicationContext-cache.xml"})
 public class VirtualFileSystemServiceTest {
 
 	@Resource

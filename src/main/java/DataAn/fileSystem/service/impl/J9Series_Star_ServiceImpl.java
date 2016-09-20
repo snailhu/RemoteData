@@ -3,16 +3,12 @@ package DataAn.fileSystem.service.impl;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
 import javax.annotation.Resource;
-
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
-
 import DataAn.Analysis.dto.ConstraintDto;
 import DataAn.Util.EhCache;
 import DataAn.common.utils.DateUtil;
@@ -20,12 +16,11 @@ import DataAn.fileSystem.dao.IDateParametersDao;
 import DataAn.fileSystem.domain.DateParameters;
 import DataAn.fileSystem.option.J9Series_Star_ParameterType;
 import DataAn.fileSystem.service.IJ9Series_Star_Service;
-import DataAn.mongo.db.MongodbUtil;
 
 @Service
 public class J9Series_Star_ServiceImpl implements IJ9Series_Star_Service{
 
-	private EhCache ehCache = null;//new EhCache("j9seriesConfig");
+	private EhCache ehCache = new EhCache("j9seriesConfig");
 	@Resource
 	private IDateParametersDao parametersDao;
 	

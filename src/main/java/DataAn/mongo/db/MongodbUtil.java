@@ -5,16 +5,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
-
 import org.bson.Document;
-import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
-
 import DataAn.Analysis.dto.YearAndParamDataDto;
 import DataAn.common.utils.DataTypeUtil;
 import DataAn.common.utils.DateUtil;

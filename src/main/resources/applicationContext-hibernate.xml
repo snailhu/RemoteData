@@ -39,7 +39,8 @@
 		<property name="dataSource" ref="masterDataSource" />
 		<!-- 设置Spring取那个包中查找相应的实体类 -->
 		<property name="packagesToScan">
-			<value>DataAn.fileSystem.domain,DataAn.galaxyManager.domain,DataAn.linegraph.domain,DataAn.sys.domain</value>
+			<!--<value>DataAn.fileSystem.domain,DataAn.galaxyManager.domain,DataAn.linegraph.domain,DataAn.sys.domain,DataAn.log.domain</value>-->
+			<value>DataAn.*.domain</value>
 		</property>
 		<property name="hibernateProperties">
 			<!-- <value> hibernate.dialect=org.hibernate.dialect.HSQLDialect </value> -->

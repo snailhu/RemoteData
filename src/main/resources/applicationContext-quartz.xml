@@ -16,30 +16,9 @@
 						http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-3.0.xsd" default-autowire="byName">
 		
 	<context:component-scan base-package="DataAn.*" />
-		
-	<!-- 开启aop注解方式 
-	<bean id="redisAop" class="DataAn.Analysis.aop.RedisAop"/>           
-     	
-    <aop:config>
-        <aop:aspect id="security" ref="redisAop">
-            <aop:pointcut id="allgetMethod" expression="execution(* DataAn.mongo.db.impl.MongoServiceAopImpl.get*(..))"/>
-            <aop:around method="getData" pointcut-ref="allgetMethod"/>
-        </aop:aspect>
-    </aop:config>   -->	
-
-
 	<!-- 开启aop注解方式 -->	
 	<aop:aspectj-autoproxy></aop:aspectj-autoproxy>
 
-	
-	<!-- bean id="dataSourceAdvice" class="GridCP.dbOperation.DataSourceAdvice" />  
-    <aop:config>  
-        <aop:advisor  
-            pointcut="execution(* GridCP.core.service..*Service.*(..))"  
-            advice-ref="dataSourceAdvice" />  
-    </aop:config>  -->   
-    
-    
     <!-- 工作的bean -->
 <!-- 	<bean id="DelMongoDBValueJob" class="DataAn.common.job.DelMongoDBValueJob" />  -->
 	<!-- job的配置开始 -->

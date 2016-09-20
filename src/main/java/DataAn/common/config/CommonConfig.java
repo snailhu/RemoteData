@@ -5,7 +5,7 @@ import java.io.File;
 import DataAn.common.utils.PropertiesUtil;
 import DataAn.common.utils.UUIDGeneratorUtil;
 
-public class Config {
+public class CommonConfig {
 
 	/**
 	 * 配置文件地址

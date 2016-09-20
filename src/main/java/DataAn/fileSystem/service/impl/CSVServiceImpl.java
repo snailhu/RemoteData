@@ -12,14 +12,18 @@ import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
 import javax.annotation.Resource;
+
 import org.bson.Document;
 import org.springframework.stereotype.Service;
-import DataAn.common.config.Config;
+
+import DataAn.common.config.CommonConfig;
 import DataAn.common.utils.DateUtil;
 import DataAn.fileSystem.dto.CSVFileDataResultDto;
 import DataAn.fileSystem.service.ICSVService;
@@ -38,7 +42,7 @@ public class CSVServiceImpl implements ICSVService{
 		int totalNumber = 0;//标示全部
 		int delNumber = 4;//标示删除前后4行
 		//保存csv临时文件
-		String csvTempFilePath = Config.getUplodCachePath() + File.separator + versions;
+		String csvTempFilePath = CommonConfig.getUplodCachePath() + File.separator + versions;
 		File parentDir = new File(csvTempFilePath);
 		if (!parentDir.exists()) {
 			parentDir.mkdirs();
@@ -227,20 +231,141 @@ public class CSVServiceImpl implements ICSVService{
 			count ++;
 			flag = false;
 		}
-		//删除前后四行
-//		System.out.println("delete size: " + delDateSet.size());
+		count = 1; //初始化计数器
+		long time = 0;
+		Date datetime_1s = tempList.get(0).getDate("datetime");
+		List<Document> docList_1s = new ArrayList<Document>();
+		Date datetime_5s = tempList.get(0).getDate("datetime");
+		List<Document> docList_5s = new ArrayList<Document>();
+		Date datetime_15s = tempList.get(0).getDate("datetime");
+		List<Document> docList_15s = new ArrayList<Document>();
+		Date datetime_30s = tempList.get(0).getDate("datetime");
+		List<Document> docList_30s = new ArrayList<Document>();
+		Date datetime_1m = tempList.get(0).getDate("datetime");
+		List<Document> docList_1m = new ArrayList<Document>();
+		Date datetime_5m = tempList.get(0).getDate("datetime");
+		List<Document> docList_5m = new ArrayList<Document>();
+		Date datetime_15m = tempList.get(0).getDate("datetime");
+		List<Document> docList_15m = new ArrayList<Document>();
+		Date datetime_30m = tempList.get(0).getDate("datetime");
+		List<Document> docList_30m = new ArrayList<Document>();
+		Date datetime_1h = tempList.get(0).getDate("datetime");
+		List<Document> docList_1h = new ArrayList<Document>();
+		Date datetime_6h = tempList.get(0).getDate("datetime");
+		List<Document> docList_6h = new ArrayList<Document>();
+		Date datetime_12h = tempList.get(0).getDate("datetime");
+		List<Document> docList_12h = new ArrayList<Document>();
+		List<Document> docList_1d = new ArrayList<Document>();
+		//排除无效点保存
+		long time0 = tempList.get(0).getDate("datetime").getTime();
 		for (int i = 0; i < tempList.size(); i++) {
 			if(!delDateSet.contains(i)){
-				docList.add(tempList.get(i));
+				doc = tempList.get(i);
+				docList.add(doc);
+				//获取时间区间
+				time = (doc.getDate("datetime").getTime() - time0) / 1000;
+				if(time % 1 == 0){
+					if(datetime_1s.compareTo(doc.getDate("datetime")) != 0){
+						datetime_1s = doc.getDate("datetime");						
+						docList_1s.add(doc);
+					}
+				}
+				if(time % 5 == 0){
+					if(datetime_5s.compareTo(doc.getDate("datetime")) != 0){
+						datetime_5s = doc.getDate("datetime");						
+						docList_5s.add(doc);
+					}
+				}
+				if(time % 15 == 0){
+					if(datetime_15s.compareTo(doc.getDate("datetime")) != 0){
+						datetime_15s = doc.getDate("datetime");						
+						docList_15s.add(doc);
+					}
+				}
+				if(time % 30 == 0){
+					if(datetime_30s.compareTo(doc.getDate("datetime")) != 0){
+						datetime_30s = doc.getDate("datetime");						
+						docList_30s.add(doc);
+					}
+				}
+				if(time % 60 == 0){
+					if(datetime_1m.compareTo(doc.getDate("datetime")) != 0){
+						datetime_1m = doc.getDate("datetime");						
+						docList_1m.add(doc);
+					}
+				}
+				if(time % (5 * 60) == 0){
+					if(datetime_5m.compareTo(doc.getDate("datetime")) != 0){
+						datetime_5m = doc.getDate("datetime");						
+						docList_5m.add(doc);
+					}
+				}
+				if(time % (15 * 60) == 0){
+					if(datetime_15m.compareTo(doc.getDate("datetime")) != 0){
+						datetime_15m = doc.getDate("datetime");						
+						docList_15m.add(doc);
+					}
+				}
+				if(time % (30 * 60) == 0){
+					if(datetime_30m.compareTo(doc.getDate("datetime")) != 0){
+						datetime_30m = doc.getDate("datetime");						
+						docList_30m.add(doc);
+					}
+				}
+				if(time % (60 * 60) == 0){
+					if(datetime_1h.compareTo(doc.getDate("datetime")) != 0){
+						datetime_1h = doc.getDate("datetime");						
+						docList_1h.add(doc);
+					}
+				}
+				if(time % (6 * 60 * 60) == 0){
+					if(datetime_6h.compareTo(doc.getDate("datetime")) != 0){
+						datetime_6h = doc.getDate("datetime");						
+						docList_6h.add(doc);
+					}
+				}
+				if(time % (12 * 60 * 60) == 0){
+					if(datetime_12h.compareTo(doc.getDate("datetime")) != 0){
+						datetime_12h = doc.getDate("datetime");						
+						docList_12h.add(doc);
+					}
+				}
 			}
 		}
+		docList_1d.add(tempList.get(0));
+		
 		//返回读取文件结果集
 		CSVFileDataResultDto<Document> result = new CSVFileDataResultDto<Document>();
 		result.setDatas(docList);
 		result.setTitle(title);
+		
+		Map<String,List<Document>> map = new HashMap<String,List<Document>>();
+		map.put("1s", docList);
+		map.put("5s", docList_5s);
+		map.put("15s", docList_15s);
+		map.put("30s", docList_30s);
+		map.put("1m", docList_1m);
+		map.put("5m", docList_5m);
+		map.put("15m", docList_15m);
+		map.put("30m", docList_30m);
+		map.put("1h", docList_1h);
+		map.put("6h", docList_6h);
+		map.put("12h", docList_12h);
+		map.put("1d", docList_1d);
+		result.setMap(map);
 		return result;
 	}
 
+	protected double getMax(double data1,double data2){
+		if(data1 >= data2)
+			return data1;
+		return data2;
+	}
+	protected double getMin(double data1,double data2){
+		if(data1 <= data2)
+			return data1;
+		return data2;
+	}
 	/**
 	* Description: 通过算法2 删除前后记录
 	* @param in 输入流

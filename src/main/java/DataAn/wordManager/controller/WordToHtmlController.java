@@ -40,13 +40,15 @@ import DataAn.wordManager.domain.Doc;
 
 @Controller
 public class WordToHtmlController {	
-	private static final String path = OptionConfig.getWebPath();
+	
 	
 	@RequestMapping(value = { "/secondStyle/wordshow" }, method = { RequestMethod.GET })
 	public ModelAndView doc2html(
 			@RequestParam(value = "file", required = true)  final String file,
 			HttpServletRequest request, HttpServletResponse response) throws Exception,
 			FactoryConfigurationError {		
+		//web 路径
+		String path = OptionConfig.getWebPath();
 		String file_name=URLDecoder.decode(file, "UTF-8");//解码   解为中文
 		String fileName= new String(file.getBytes("ISO-8859-1"),"UTF-8"); 
 		

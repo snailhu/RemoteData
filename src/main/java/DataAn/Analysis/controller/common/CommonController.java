@@ -145,7 +145,7 @@ public class CommonController {
 		return lgm;
 	}
 	
-	
+	//获取 参数组	
 	@RequestMapping(value = "/showGraphic/{id}", method = RequestMethod.GET)
 	@ResponseBody
 	public ModelAndView showGraphic(
@@ -173,36 +173,36 @@ public class CommonController {
 		}
 		return mv;
 	}
-		
+	
+	//绘制参数图形是获取数据
 	@RequestMapping(value = "/getData", method = RequestMethod.GET)
 	@ResponseBody
 	public YearAndParamDataDto getData(
 			HttpServletRequest request,
 			HttpServletResponse response,
-			@RequestParam(value="filename",required = true) final String filename,
+			@RequestParam(value="filename",required = true) String filename,
 			@RequestParam(value="start",required = true) String start,
 			@RequestParam(value="end",required = true) String end,
 			@RequestParam(value="paramSize",required = true) Integer paramSize
 			) throws Exception{
-		final String key = start+end;
-	  	Jedis jedis = RedisPoolUtil.buildJedisPool().getResource(); 
-				if(jedis.exists((key+"year"+filename).getBytes()) && jedis.exists((key+"param"+filename).getBytes())){
-					List<String> year_list = RedisPoolUtil.getList(key+"year"+filename);
-					List<String> parm_list = RedisPoolUtil.getList(key+"param"+filename);
-					YearAndParamDataDto result =  new YearAndParamDataDto();
-					result.setParamValue(parm_list);
-					result.setYearValue(year_list);	
-					return result;	
-				}   
-		final YearAndParamDataDto result = mongoService.getList(paramSize,new String[]{start,end,filename});				
-		ThreadPoolExecutor executor = new ThreadPoolExecutor(5, 10, 200, TimeUnit.SECONDS,
-        new ArrayBlockingQueue<Runnable>(5));
-		executor.execute(new Runnable() {
-	            public void run() {
-	            	RedisPoolUtil.saveList(key+"year"+filename, result.getYearValue());
-	        		RedisPoolUtil.saveList(key+"param"+filename, result.getParamValue());				
-	            }
-	        });
+		//String key = start+end;
+//	  	Jedis jedis = RedisPoolUtil.buildJedisPool().getResource(); 
+//				if(jedis.exists((key+"year"+filename).getBytes()) && jedis.exists((key+"param"+filename).getBytes())){
+//					List<String> year_list = RedisPoolUtil.getList(key+"year"+filename);
+//					List<String> parm_list = RedisPoolUtil.getList(key+"param"+filename);
+//					YearAndParamDataDto result =  new YearAndParamDataDto();
+//					result.setParamValue(parm_list);
+//					result.setYearValue(year_list);	
+//					return result;	
+//				}   
+	 YearAndParamDataDto result = mongoService.getList(paramSize,new String[]{start,end,filename});				
+//		ThreadPoolExecutor executor = new ThreadPoolExecutor(5, 10, 200, TimeUnit.SECONDS,new ArrayBlockingQueue<Runnable>(5));
+//		executor.execute(new Runnable() {
+//	            public void run() {
+//	            	RedisPoolUtil.saveList(key+"year"+filename, result.getYearValue());
+//	        		RedisPoolUtil.saveList(key+"param"+filename, result.getParamValue());				
+//	            }
+//	        });
 		return result;						
 	}	
 	

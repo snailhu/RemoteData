@@ -9,7 +9,7 @@ import javax.annotation.Resource;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import DataAn.common.config.Config;
+import DataAn.common.config.CommonConfig;
 import DataAn.common.service.IJobService;
 import DataAn.common.utils.FileUtil;
 import DataAn.fileSystem.dao.IVirtualFileSystemDao;
@@ -43,7 +43,7 @@ public class JobServiceImpl implements IJobService{
 	public void delCacheFileJob() {
 		List<VirtualFileSystem> list = fileDao.selectByFileTypeIsFileAndCachePathISNotNull();
 		if(list == null || list.size() == 0){
-			String sPath = Config.getCachePath();
+			String sPath = CommonConfig.getCachePath();
 			FileUtil.deleteDirectory(sPath,false);			
 		}
 	}

@@ -2,7 +2,7 @@ package DataAn.mongo;
 
 import org.junit.Test;
 
-import DataAn.common.config.Config;
+import DataAn.common.config.CommonConfig;
 import DataAn.mongo.init.InitMongo;
 
 public class InitMongoTest {

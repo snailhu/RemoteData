@@ -31,7 +31,10 @@ public class SystemLogController {
 	public String goSystem(
 			HttpServletResponse response,
 			HttpServletRequest request
-			){				
+			){	
+		
+		
+		
 		return "/secondStyle/system" ;				
 	}
 	
@@ -48,6 +51,8 @@ public class SystemLogController {
 			sDto.setLoginIp(sl.getLoginIp());
 			sDto.setLoginTime(changeDateStyle(sl.getLoginTime()));
 			sDto.setUserName(sl.getUserName());
+			sDto.setLogoutTime("");
+			sDto.setOperateJob("");
 			sLDtos.add(sDto);
 		}
 		return sLDtos;				

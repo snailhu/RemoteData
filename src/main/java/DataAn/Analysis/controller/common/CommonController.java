@@ -25,12 +25,12 @@ import DataAn.Analysis.dto.ConstraintDto;
 import DataAn.common.pageModel.Pager;
 import DataAn.fileSystem.option.J9Series_Star_ParameterType;
 import DataAn.fileSystem.service.IJ9Series_Star_Service;
-
 import DataAn.galaxyManager.dao.ISeriesDao;
 import DataAn.galaxyManager.domain.Series;
-
 import DataAn.mongo.db.MongodbUtil;
 import DataAn.sys.dto.ActiveUserDto;
+
+
 
 
 import org.springframework.web.bind.annotation.RequestParam;
@@ -38,6 +38,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import redis.clients.jedis.Jedis;
 import DataAn.Analysis.dto.GroupMenu;
+import DataAn.Analysis.dto.ParamAttributeDto;
+import DataAn.Analysis.dto.ParamBatchDto;
 import DataAn.Analysis.dto.ParamGroup;
 import DataAn.Analysis.dto.SingleParamDto;
 import DataAn.Analysis.dto.SeriesBtnMenu;
@@ -49,7 +51,6 @@ import DataAn.galaxyManager.dto.SeriesDto;
 import DataAn.galaxyManager.dto.StarDto;
 import DataAn.galaxyManager.service.ISeriesService;
 import DataAn.galaxyManager.service.IStarService;
-
 import DataAn.mongo.db.MongoService;
 
 
@@ -168,6 +169,9 @@ public class CommonController {
 				}	
 				mv.addObject("beginDate", pg.getBeginDate());
 				mv.addObject("endDate", pg.getEndDate());
+				mv.addObject("nowSeries",pg.getNowSeries());
+				mv.addObject("nowStar", pg.getNowStar());
+				mv.addObject("component", pg.getComponent());
 				mv.addObject("params", params);			
 			}
 		}
@@ -175,15 +179,18 @@ public class CommonController {
 	}
 	
 	//绘制参数图形是获取数据
-	@RequestMapping(value = "/getData", method = RequestMethod.GET)
+	@RequestMapping(value = "/getData", method = RequestMethod.POST)
 	@ResponseBody
-	public YearAndParamDataDto getData(
+	public Map<String,YearAndParamDataDto> getData(
 			HttpServletRequest request,
 			HttpServletResponse response,
-			@RequestParam(value="filename",required = true) String filename,
-			@RequestParam(value="start",required = true) String start,
-			@RequestParam(value="end",required = true) String end,
-			@RequestParam(value="paramSize",required = true) Integer paramSize
+//			@RequestParam(value="paramNames",required = true) Object paramNames,
+//			@RequestParam(value="start",required = true) String start,
+//			@RequestParam(value="end",required = true) String end,
+//			@RequestParam(value="paramSize",required = true) Integer paramSize,
+//			@RequestParam(value="nowSeries",required = true) String nowSeries,
+//			@RequestParam(value="nowStar",required = true) String nowStar,
+			@RequestParam(value="paramObject",required = true) String paramObject
 			) throws Exception{
 		//String key = start+end;
 //	  	Jedis jedis = RedisPoolUtil.buildJedisPool().getResource(); 
@@ -195,7 +202,12 @@ public class CommonController {
 //					result.setYearValue(year_list);	
 //					return result;	
 //				}   
-	 YearAndParamDataDto result = mongoService.getList(paramSize,new String[]{start,end,filename});				
+	System.out.println("paramObject: " + paramObject);
+	Map<String, Class<ParamAttributeDto>> classMap = new HashMap<String, Class<ParamAttributeDto>>();
+	classMap.put("paramAttribute", ParamAttributeDto.class);
+	ParamBatchDto pbd =JsonStringToObj.jsonToObject(paramObject,ParamBatchDto.class,classMap);
+	System.out.println(pbd);
+	 //YearAndParamDataDto result = mongoService.getList(paramSize,new String[]{start,end,paramNames,nowSeries,nowStar,component});				
 //		ThreadPoolExecutor executor = new ThreadPoolExecutor(5, 10, 200, TimeUnit.SECONDS,new ArrayBlockingQueue<Runnable>(5));
 //		executor.execute(new Runnable() {
 //	            public void run() {
@@ -203,7 +215,25 @@ public class CommonController {
 //	        		RedisPoolUtil.saveList(key+"param"+filename, result.getParamValue());				
 //	            }
 //	        });
-		return result;						
+	HashMap<String,YearAndParamDataDto> ydtos = new HashMap<String,YearAndParamDataDto>();
+	YearAndParamDataDto ydto = new YearAndParamDataDto();
+	List<String> paramV = new ArrayList<String>();
+	List<String> yearV =  new ArrayList<String>();
+	paramV.add("2.5");
+	yearV.add("2015-02-03");
+	ydto.setParamValue(paramV);
+	ydto.setYearValue(yearV);
+	ydtos.put("dianliu", ydto);
+	YearAndParamDataDto ydto1 = new YearAndParamDataDto();
+	List<String> paramV1 = new ArrayList<String>();
+	List<String> yearV1 =  new ArrayList<String>();
+	paramV1.add("2.6");
+	yearV1.add("2016-02-03");
+	ydto1.setParamValue(paramV1);
+	ydto1.setYearValue(yearV1);
+	ydtos.put("dianliu11", ydto1);
+	
+		return ydtos ;						
 	}	
 	
 	

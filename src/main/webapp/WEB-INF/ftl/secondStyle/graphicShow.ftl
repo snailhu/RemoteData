@@ -146,7 +146,8 @@
 		maxDate:'${endDate}', //设定最大日期为当前日期
 	});
 
-    $(function(){   			
+    $(function(){   
+    	var paramObject={};			
     	var myChart = echarts.init(document.getElementById('main'));
     	var seriesOptions = []
     	var pSeriesOptions = []
@@ -224,33 +225,79 @@
             }],
             series: []
         };    	     	
-   	    	   
-        $.each(names, function (i, n) {       
-	        $.getJSON('${base}/getData?start=${beginDate}&end=${endDate}&paramSize='+paramSize+'&filename=' + n.value, function (data) {	
-	         //   console.log(data)
-	            seriesOptions[i] = {
-	            	type: 'line',
-	                name: n.name,
-	                smooth:true,
-	                yAxisIndex: n.y,
-	                lineStyle:{
-                    	normal:{
-                    		color:'dark',
-                    		width:2,
-
-                    	}
-                    },
-	                data: data["paramValue"]
-	            };
-	            seriesCounter += 1;
-	            if (seriesCounter === names.length) {
-	            	pSeriesOptions = seriesOptions
+   
+   		//将一组中的所有参数组装为object
+   		paramObject.nowSeries='${nowSeries}';
+   		paramObject.nowStar='${nowStar}';
+   		paramObject.component='${component}';
+   		paramObject.startTime='${beginDate}';
+   		paramObject.endTime='${endDate}';
+   		paramObject.paramAttribute=names;
+ 
+   		  		
+     	//一次性组装所有参数的x和y值
+   		$.ajax({
+             url: '${base}/getData',
+             type: 'POST',
+             dataType: 'json',
+             timeout: 1000,
+             cache: false,
+             data: {'paramObject':JSON.stringify(paramObject)},
+              //成功执行方法
+             success: function(data){
+             	//  var json = eval(data);
+             	  var i=0
+             	  for(var param in data){
+             	  	seriesOptions[i+1] = {
+			            	type: 'line',
+			                name: param,
+			                smooth:true,
+			               // yAxisIndex: n.y,
+			                lineStyle:{
+		                    	normal:{
+		                    		color:'dark',
+		                    		width:2,		
+		                    	}
+		                    },
+			                data: data[param].paramValue;
+			            };
+			            date =  data[param].yearValue;
+             	  }
+             	  	pSeriesOptions = seriesOptions
 	            	options.series = eval(seriesOptions);
-	            	pDate=date=options.xAxis.data = data["yearValue"];	            
-	                myChart.setOption(options);	                
-	            }
-	        });
-    	});   
+	            	pDate=options.xAxis.data = date;
+	                myChart.setOption(options);
+             	 // 	console.log(json);
+             }
+         })
+
+     
+   		//单个组装参数的x和y值
+    //    $.each(names, function (i, n) {       
+	//        $.getJSON('${base}/getData?nowSeries=${nowSeries}&nowStar=${nowStar}&component=${component}&start=${beginDate}&end=${endDate}&paramSize='+paramSize+'&filename=' + n.value, function (data) {	
+	         //   console.log(data)
+	 //           seriesOptions[i] = {
+	 //           	type: 'line',
+	 //               name: n.name,
+	 //               smooth:true,
+	 //               yAxisIndex: n.y,
+	  //              lineStyle:{
+      //              	normal:{
+       //             		color:'dark',
+     //               		width:2,
+        //            	}
+       //             },
+	    //            data: data["paramValue"]
+	   //         };
+	   //         seriesCounter += 1;
+	   //         if (seriesCounter === names.length) {
+	   //         	pSeriesOptions = seriesOptions
+	   //         	options.series = eval(seriesOptions);
+	    //        	pDate=date=options.xAxis.data = data["yearValue"];	            
+	    //            myChart.setOption(options);	                
+	    //        }
+	 //       });
+    //	});   
        	
        	$("#getData").click(function(){
        		var startDate =  $('#dateStart').val();

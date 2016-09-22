@@ -97,4 +97,8 @@ public class DefaultRepo implements Repo {
 	}
 	
 	
+	public void setRepos(List<? extends Repo> repos) {
+		this.repos = repos;
+	}
+	
 }

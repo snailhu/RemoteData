@@ -5,9 +5,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -19,39 +16,31 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-
-import DataAn.Analysis.dto.ConstraintDto;
-import DataAn.common.pageModel.Pager;
-import DataAn.fileSystem.option.J9Series_Star_ParameterType;
-import DataAn.fileSystem.service.IJ9Series_Star_Service;
-import DataAn.galaxyManager.dao.ISeriesDao;
-import DataAn.galaxyManager.domain.Series;
-import DataAn.mongo.db.MongodbUtil;
-import DataAn.sys.dto.ActiveUserDto;
-
-
-
-
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import redis.clients.jedis.Jedis;
+import DataAn.Analysis.dto.ConstraintDto;
 import DataAn.Analysis.dto.GroupMenu;
 import DataAn.Analysis.dto.ParamAttributeDto;
 import DataAn.Analysis.dto.ParamBatchDto;
 import DataAn.Analysis.dto.ParamGroup;
-import DataAn.Analysis.dto.SingleParamDto;
 import DataAn.Analysis.dto.SeriesBtnMenu;
+import DataAn.Analysis.dto.SingleParamDto;
 import DataAn.Analysis.dto.YearAndParamDataDto;
-import DataAn.Analysis.redis.RedisPoolUtil;
 import DataAn.Util.EhCache;
 import DataAn.Util.JsonStringToObj;
+import DataAn.common.pageModel.Pager;
+import DataAn.fileSystem.option.J9Series_Star_ParameterType;
+import DataAn.fileSystem.service.IJ9Series_Star_Service;
 import DataAn.galaxyManager.dto.SeriesDto;
 import DataAn.galaxyManager.dto.StarDto;
 import DataAn.galaxyManager.service.ISeriesService;
 import DataAn.galaxyManager.service.IStarService;
 import DataAn.mongo.db.MongoService;
+import DataAn.routing.RequestConfig;
+import DataAn.routing.RoutingService;
+import DataAn.sys.dto.ActiveUserDto;
 
 
 @Controller
@@ -215,25 +204,25 @@ public class CommonController {
 //	        		RedisPoolUtil.saveList(key+"param"+filename, result.getParamValue());				
 //	            }
 //	        });
-	HashMap<String,YearAndParamDataDto> ydtos = new HashMap<String,YearAndParamDataDto>();
-	YearAndParamDataDto ydto = new YearAndParamDataDto();
-	List<String> paramV = new ArrayList<String>();
-	List<String> yearV =  new ArrayList<String>();
-	paramV.add("2.5");
-	yearV.add("2015-02-03");
-	ydto.setParamValue(paramV);
-	ydto.setYearValue(yearV);
-	ydtos.put("dianliu", ydto);
-	YearAndParamDataDto ydto1 = new YearAndParamDataDto();
-	List<String> paramV1 = new ArrayList<String>();
-	List<String> yearV1 =  new ArrayList<String>();
-	paramV1.add("2.6");
-	yearV1.add("2016-02-03");
-	ydto1.setParamValue(paramV1);
-	ydto1.setYearValue(yearV1);
-	ydtos.put("dianliu11", ydto1);
+
+	RoutingService routingService=new RoutingService();
+	RequestConfig requestConfig=new RequestConfig();
+	requestConfig.setPropertyCount(pbd.getParamAttribute().size());
+	String[] properties=new String[pbd.getParamAttribute().size()];
+	int i=0;
+	for(ParamAttributeDto paramAttributeDto: pbd.getParamAttribute()){
+		properties[i++]=paramAttributeDto.getValue();
+	}
+	requestConfig.setProperties(properties);
+	requestConfig.setSeries(pbd.getNowSeries());
+	requestConfig.setStar(pbd.getNowStar());
+	requestConfig.setDevice(pbd.getComponent());
+	requestConfig.setTimeStart(pbd.getStartTime());
+	requestConfig.setTimeEnd(pbd.getEndTime());
 	
-		return ydtos ;						
+	Map<String, YearAndParamDataDto> result = routingService.getData(requestConfig);	
+	
+	return result;			
 	}	
 	
 	

@@ -1,13 +1,10 @@
 package DataAn.fileSystem.service.impl;
 
 import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -18,13 +15,10 @@ import java.util.Map;
 import java.util.Set;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
-
 import javax.annotation.Resource;
-
 import org.bson.Document;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import DataAn.common.config.CommonConfig;
 import DataAn.common.pageModel.Pager;
 import DataAn.common.utils.DateUtil;
@@ -43,11 +37,9 @@ import DataAn.fileSystem.option.J9SeriesType;
 import DataAn.fileSystem.option.SeriesType;
 import DataAn.fileSystem.service.ICSVService;
 import DataAn.fileSystem.service.IVirtualFileSystemService;
-import DataAn.mongo.db.MongodbUtil;
 import DataAn.mongo.fs.IDfsDb;
 import DataAn.mongo.fs.MongoDfsDb;
 import DataAn.mongo.init.InitMongo;
-import DataAn.mongo.service.IMongoGridFSService;
 import DataAn.mongo.service.IMongoService;
 import DataAn.mongo.zip.ZipCompressorByAnt;
 
@@ -490,7 +482,8 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 		
 		//保存dat文件
 		IDfsDb dfs = MongoDfsDb.getInstance();
-		dfs.upload(fileDto.getFileName(), uuId, fileDto.getIn());
+		String databaseName = InitMongo.getFSBDNameBySeriesAndStar(series, star);
+		dfs.upload(databaseName,fileDto.getFileName(), uuId, fileDto.getIn());
 
 		//查找dat的文件夹是否存在
 		VirtualFileSystem datDir = fileDao.selectByParentIdisNullAndFileName("dat");

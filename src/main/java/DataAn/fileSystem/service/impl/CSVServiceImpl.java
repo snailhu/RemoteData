@@ -231,8 +231,6 @@ public class CSVServiceImpl implements ICSVService{
 			count ++;
 			flag = false;
 		}
-		count = 1; //初始化计数器
-		long time = 0;
 		Date datetime_1s = tempList.get(0).getDate("datetime");
 		List<Document> docList_1s = new ArrayList<Document>();
 		Date datetime_5s = tempList.get(0).getDate("datetime");
@@ -255,13 +253,16 @@ public class CSVServiceImpl implements ICSVService{
 		List<Document> docList_6h = new ArrayList<Document>();
 		Date datetime_12h = tempList.get(0).getDate("datetime");
 		List<Document> docList_12h = new ArrayList<Document>();
+		Date datetime_1d = tempList.get(0).getDate("datetime");
 		List<Document> docList_1d = new ArrayList<Document>();
-		//排除无效点保存
+		long time = 0;
 		long time0 = tempList.get(0).getDate("datetime").getTime();
 		for (int i = 0; i < tempList.size(); i++) {
+			//排除无效点保存
 			if(!delDateSet.contains(i)){
 				doc = tempList.get(i);
 				docList.add(doc);
+				
 				//获取时间区间
 				time = (doc.getDate("datetime").getTime() - time0) / 1000;
 				if(time % 1 == 0){
@@ -330,9 +331,14 @@ public class CSVServiceImpl implements ICSVService{
 						docList_12h.add(doc);
 					}
 				}
+				if(time % (24 * 60 * 60) == 0){
+					if(datetime_1d.compareTo(doc.getDate("datetime")) != 0){
+						datetime_1d = doc.getDate("datetime");						
+						docList_1d.add(doc);
+					}
+				}
 			}
 		}
-		docList_1d.add(tempList.get(0));
 		
 		//返回读取文件结果集
 		CSVFileDataResultDto<Document> result = new CSVFileDataResultDto<Document>();

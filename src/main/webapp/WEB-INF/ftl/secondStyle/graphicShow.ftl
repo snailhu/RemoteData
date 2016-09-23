@@ -240,15 +240,16 @@
              url: '${base}/getData',
              type: 'POST',
              dataType: 'json',
-             timeout: 1000,
+             timeout: 100000,
              cache: false,
              data: {'paramObject':JSON.stringify(paramObject)},
               //成功执行方法
              success: function(data){
              	//  var json = eval(data);
              	  var i=0
+             	  debugger;
              	  for(var param in data){
-             	  	seriesOptions[i+1] = {
+             	  	seriesOptions[i++] = {
 			            	type: 'line',
 			                name: param,
 			                smooth:true,
@@ -259,7 +260,7 @@
 		                    		width:2,		
 		                    	}
 		                    },
-			                data: data[param].paramValue;
+			                data: data[param].paramValue
 			            };
 			            date =  data[param].yearValue;
              	  }

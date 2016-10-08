@@ -15,6 +15,11 @@ public class ParamGroup {
 	
 	private String endDate;
 	
+	private String nowSeries;
+	
+	private String nowStar;	
+	private String component;
+	
 	private List<SingleParamDto> secectRow;
 	
 	
@@ -72,6 +77,30 @@ public class ParamGroup {
 
 	public void setEndDate(String endDate) {
 		this.endDate = endDate;
+	}
+		
+	public String getNowSeries() {
+		return nowSeries;
+	}
+
+	public void setNowSeries(String nowSeries) {
+		this.nowSeries = nowSeries;
+	}
+	
+	public String getNowStar() {
+		return nowStar;
+	}
+
+	public void setNowStar(String nowStar) {
+		this.nowStar = nowStar;
+	}
+
+	public String getComponent() {
+		return component;
+	}
+
+	public void setComponent(String component) {
+		this.component = component;
 	}
 
 	@Override

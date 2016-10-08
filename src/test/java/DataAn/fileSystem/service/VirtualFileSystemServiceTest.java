@@ -72,7 +72,7 @@ public class VirtualFileSystemServiceTest {
 	@Test
 	public void saveFile() throws Exception{
 		long begin = System.currentTimeMillis();
-		String csv = "E:\\data\\top\\2010\\1\\j9-02--2010-01-01.csv";
+		String csv = "D:\\temp\\data\\2015\\1\\j9-02--2015-01-01.csv";
 //		String dat = "C:\\XX9(02)--20150817(公开).DAT";
 		this.saveFile(csv, null);
 		long end = System.currentTimeMillis();
@@ -146,7 +146,7 @@ public class VirtualFileSystemServiceTest {
 	private void saveFile(String csvPath,String datPath) throws Exception{
 		Map<String, FileDto> map = new HashMap<String,FileDto>();
 		DecimalFormat df = new DecimalFormat("#.00");
-		String parameterType = J9Series_Star_ParameterType.TOP.getValue();
+		String parameterType = J9Series_Star_ParameterType.FLYWHEEL.getValue();
 		if(csvPath != null && !csvPath.equals("")){
 			FileDto csvFileDto = new FileDto();
 			File csvFile = new File(csvPath);

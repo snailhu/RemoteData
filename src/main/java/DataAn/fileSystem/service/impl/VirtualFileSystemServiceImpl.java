@@ -25,7 +25,7 @@ import org.bson.Document;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import DataAn.common.config.Config;
+import DataAn.common.config.CommonConfig;
 import DataAn.common.pageModel.Pager;
 import DataAn.common.utils.DateUtil;
 import DataAn.common.utils.FileUtil;
@@ -93,7 +93,7 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 		dataMap.put("versions", versions);
 		
 		//保存csv临时文件
-		String csvTempFilePath = Config.getUplodCachePath() + File.separator + versions;
+		String csvTempFilePath = CommonConfig.getUplodCachePath() + File.separator + versions;
 		FileUtil.saveFile(csvTempFilePath, fileName, csvFileDto.getIn());
 		csvTempFilePath = csvTempFilePath + File.separator + fileName;
 		csvFileDto.setFilePath(csvTempFilePath);
@@ -183,7 +183,7 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 	public FileDto downloadFiles(String ids) throws Exception {
 		FileDto fileDto = new FileDto();
 		String[] arrayIds = ids.split(",");
-		String mogodbFilePath = Config.getDownloadCachePath();
+		String mogodbFilePath = CommonConfig.getDownloadCachePath();
 		VirtualFileSystem file = null;
 		IDfsDb dfs = MongoDfsDb.getInstance();
 		for (String id : arrayIds) {
@@ -203,7 +203,7 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 			}
 		}
 		String zipFileName = DateUtil.format(new Date(),"yyyy-MM-dd-HH-mm-ss") + ".zip";
-		String zipPath = Config.getZipCachePath() + File.separator + zipFileName;
+		String zipPath = CommonConfig.getZipCachePath() + File.separator + zipFileName;
 		ZipCompressorByAnt zca = new ZipCompressorByAnt(zipPath);  
 	    zca.compressExe(mogodbFilePath);  
 		fileDto.setFileName(zipFileName);
@@ -246,7 +246,7 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 		InputStream input = null;
 		try {
 			String zipFileName = DateUtil.format(new Date(),"yyyy-MM-dd-HH-mm-ss") + ".zip";
-			String zipPath = Config.getZipCachePath() + File.separator + zipFileName;
+			String zipPath = CommonConfig.getZipCachePath() + File.separator + zipFileName;
 			zipOut = new ZipOutputStream(new FileOutputStream(new File(zipPath)));
 			IDfsDb dfs = MongoDfsDb.getInstance();
 			for (VirtualFileSystem file : fileList) {
@@ -397,13 +397,18 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 		CSVFileDataResultDto<Document> result = csvService.readCSVFileToDoc(fileDto.getFilePath(),uuId);
 		List<Document> docList = result.getDatas();		
 		
+		//test 等级
+		mongoService.saveCSVData(series, star, parameterType, date, result.getMap(), uuId);
+		
 		//数据不为空
 		if(docList != null && docList.size() > 0){
 			//保存csv文件数据
-			mongoService.saveCSVData(series, star,parameterType, date, docList, uuId);
+			//mongoService.saveCSVData(series, star,parameterType, date, docList, uuId);
 			//存储某一天的参数信息
 			String title = result.getTitle();
 			DateParameters dateParameters = new DateParameters();
+			dateParameters.setSeries(series);
+			dateParameters.setStar(star);
 			dateParameters.setParameterType(parameterType);
 			dateParameters.setParameters(title);
 			dateParameters.setYear_month_day(date);

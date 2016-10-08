@@ -57,8 +57,7 @@ public class MongoServiceAopImpl implements MongoService {
 
 		//查出来的数据总量
 	//	paramCount =  collection.count(Filters.and(Filters.gte("datetime", startDate),Filters.lte("datetime", endDate)));
-		//获取所有的结果集合
-	
+		//获取所有的结果集合	
 		//	FindIterable<Document> a= collection.find(Filters.and(Filters.gte("datetime", params[0]),Filters.lte("datetime", params[1]))).batchSize(20);	
 		
 		//设置每页可显示的最多点数
@@ -117,8 +116,7 @@ public class MongoServiceAopImpl implements MongoService {
 				 
 				FindPointByYearHead  headThread = new FindPointByYearHead(1,getpoint,resultMap, collection, params);
 				allChridThread.add(headThread);
-				headThread.start();
-				
+				headThread.start();				
 				
 				FindPointByYearEnd  endThread =  new FindPointByYearEnd(2,getpoint,resultMap, collection, params);
 				allChridThread.add(endThread);
@@ -162,6 +160,13 @@ public class MongoServiceAopImpl implements MongoService {
 			 yearAndParam.setYearValue(yearValue);			
 			return yearAndParam;
 		}			
+	}
+
+	@Override
+	public YearAndParamDataDto getListByTimeBatch(int selectParamSize,
+			String... params) throws InterruptedException {
+		
+		return null;
 	}
 }
 

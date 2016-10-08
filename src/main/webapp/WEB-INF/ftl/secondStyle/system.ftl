@@ -80,12 +80,13 @@
 					<div id='dateEnd-div'>
 						<input class="datainp" id="dateEnd" type="text" placeholder="请选择" readonly>
 					</div>
-					<div style="margin-left:320px;margin-top:-25px" id='jqxButton-getParameters'>获取参数</div>
+					<button  class="btn btn-primary" style="margin-left:320px;margin-top:-25px" id='jqxButton-getParameters'>搜索</button>
 				</div>
 				<div style="clear:both"></div>
 			</div>
 		</div><!-- /.page-content -->
-
+		<div id="jqxgrid">
+        </div>
 	</div><!-- /.main-content -->
 
 <script type="text/javascript">
@@ -110,7 +111,7 @@
 </script>
  <script type="text/javascript">
         $(document).ready(function () {
-            var url = "admin/showSystemLog";
+            var url = "showSystemLog";
             // prepare the data
             var source =
             {
@@ -120,10 +121,10 @@
                     { name: 'loginTime',  type: 'String' },
                     { name: 'logOutTime', type: 'string' },
                     { name: 'loginIp', type: 'string' },
-                    { name: 'operations', type: 'string' },
-                    { name: 'role', type: 'string' }
+                    { name: 'operateJob', type: 'string' }
+                  //  { name: 'role', type: 'string' }
                 ],     
-                id: 'id',
+                id: 'UserId',
                 url: url,
                 pager: function (pagenum, pagesize, oldpagenum) {
                     // callback called when a page or page size is changed.
@@ -145,8 +146,8 @@
                   { text: '登录时间', datafield: 'loginTime', width: 230, cellsformat: 'D' },
                   { text: '登出时间', datafield: 'logOutTime', width: 130, cellsformat: 'F2', cellsalign: 'right' },
                   { text: '登录ip', datafield: 'loginIp', width: 350 },
-                  { text: '操作', datafield: 'operations', width: 100 },
-                  { text: '角色', datafield: 'role', width: 100 }
+                  { text: '操作', datafield: 'operateJob', width: 100 }
+                //  { text: '角色', datafield: 'role', width: 100 }
                 ]
             });
        

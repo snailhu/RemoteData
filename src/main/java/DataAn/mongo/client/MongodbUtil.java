@@ -296,7 +296,7 @@ public class MongodbUtil {
 //                "$mul", new Document("hotness", 2)));
 	}
 	
-	public void updateByDate(String databaseName, String collectionName, String beginDate, String endDate) {
+	public void updateByDate(String databaseName, String collectionName, Object beginDate, Object endDate) {
 		MongoCollection<Document> collection = this.getCollection(databaseName, collectionName);
 		collection.updateMany(
 							Filters.and(Filters.gte("datetime", beginDate),

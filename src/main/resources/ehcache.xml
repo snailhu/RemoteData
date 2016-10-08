@@ -18,7 +18,7 @@
             />  	
 	<cache name="ehcache" maxElementsInMemory="50000"
 		maxElementsOnDisk="60000" eternal="false" overflowToDisk="true"
-		diskSpoolBufferSizeMB="20" timeToIdleSeconds="300" timeToLiveSeconds="600"
+		diskSpoolBufferSizeMB="20" timeToIdleSeconds="300" timeToLiveSeconds="0"
 		memoryStoreEvictionPolicy="LFU" />
 
 	<cache name="captcha" maxElementsInMemory="10000"

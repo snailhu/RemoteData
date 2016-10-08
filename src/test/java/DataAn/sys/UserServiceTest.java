@@ -11,7 +11,7 @@ import DataAn.sys.dto.PermissionGroupDto;
 import DataAn.sys.service.IPermissionService;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath*:/applicationContext-*.xml"})
+@ContextConfiguration(locations = {"classpath:applicationContext-hibernate.xml","classpath:applicationContext-cache.xml","classpath:applicationContext-quartz.xml"})
 public class UserServiceTest {
 
 	@Resource

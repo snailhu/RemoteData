@@ -6,17 +6,20 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Date;
 
 
+
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+
 import DataAn.sys.dto.ActiveUserDto;
 import DataAn.sys.service.IUserService;
-
+import DataAn.common.utils.GetIpUtil;
 import DataAn.log.domain.SystemLog;
 import DataAn.log.service.SystemLogService;
 
@@ -51,7 +54,7 @@ public class LoginController {
 			@RequestParam(value="username",required = true) String username,
 			@RequestParam(value="password",required =true) String password,
 			HttpServletResponse response,HttpServletRequest request) 
-			throws InvalidKeyException, NoSuchAlgorithmException {
+			throws InvalidKeyException, NoSuchAlgorithmException, IOException {
 //		System.out.println("login...");
 //		System.out.println("username: " + username);
 //		System.out.println("password: " + password);
@@ -61,16 +64,7 @@ public class LoginController {
 				HttpSession session = request.getSession();
 //				session.setAttribute("user", user);
 				session.setAttribute("userName", username);
-				String ip  =  request.getHeader( " x-forwarded-for " );  
-			       if (ip  ==   null   ||  ip.length()  ==   0   ||   " unknown " .equalsIgnoreCase(ip))  {  
-			          ip  =  request.getHeader( " Proxy-Client-IP " );  
-			      }   
-			       if (ip  ==   null   ||  ip.length()  ==   0   ||   " unknown " .equalsIgnoreCase(ip))  {  
-			          ip  =  request.getHeader( " WL-Proxy-Client-IP " );  
-			      }   
-			       if (ip  ==   null   ||  ip.length()  ==   0   ||   " unknown " .equalsIgnoreCase(ip))  {  
-			         ip  =  request.getRemoteAddr();  
-			     }   			       
+				String ip  =  GetIpUtil.getIpAddress(request);       
 				SystemLog slog =  new SystemLog();
 				slog.setLoginIp(ip);				
 				slog.setUserName(username);
@@ -103,4 +97,5 @@ public class LoginController {
 		
 		return "/admin/account/refuse";
 	}
+			  	  	
 }

@@ -429,6 +429,9 @@
 			//设置每一组的开始和结束时间
 			groupObject.beginDate = beginDate;
 			groupObject.endDate = endDate;
+			groupObject.nowSeries = "${nowSeries}";
+			groupObject.nowStar ="${nowStar}";
+			groupObject.component = $('#SatelliteComponents').attr('name');	
            //在已分组列表上添加“删除”和“保存为模板”按钮
             var btn_savemodel="<button type='button' class='close' onclick='saveToLineTemplate(this)'><span aria-hidden='true'>保存为模板   </span></button>";
 			//var btn_savetotemplate_id = "btn_savetotemplate_id_"+j;

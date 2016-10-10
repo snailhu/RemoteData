@@ -1,1 +1,11 @@
+.settings/
+*/settings/
+*/.settings/
+*/target/
+.classpath
+*.classpath
+*.component
+.component
+.project
+*.project
 /target/

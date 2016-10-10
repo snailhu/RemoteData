@@ -43,5 +43,8 @@ public interface IMongoService {
 	public void updateCSVDataByVersions(String series, String star, String paramType,
 			String date, String versions);
 
+	public void updateCSVDataByVersions(String series, String star, String paramType,
+			String versions);
+	
 	public void find();
 }

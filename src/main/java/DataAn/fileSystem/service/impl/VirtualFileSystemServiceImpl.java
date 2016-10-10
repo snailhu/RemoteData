@@ -44,7 +44,7 @@ import DataAn.mongo.service.IMongoService;
 import DataAn.mongo.zip.ZipCompressorByAnt;
 
 
-@Service
+@Service("virtualFileSystemServiceImpl")
 public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 
 	@Resource
@@ -58,7 +58,7 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 	
 	@Override
 	@Transactional
-	public void saveFile(Map<String, FileDto> map) throws Exception {
+	public String saveFile(Map<String, FileDto> map) throws Exception {
 		
 		//获取map中的csv文件
 		FileDto csvFileDto = map.get("csv");
@@ -83,7 +83,7 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 		
 		String versions = UUIDGeneratorUtil.getUUID();
 		dataMap.put("versions", versions);
-		
+				
 		//保存csv临时文件
 		String csvTempFilePath = CommonConfig.getUplodCachePath() + File.separator + versions;
 		FileUtil.saveFile(csvTempFilePath, fileName, csvFileDto.getIn());
@@ -99,7 +99,8 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 			// 保存 *.DAT文件
 			this.saveFileOfDAT(datFile, dataMap);
 		}
-		
+				
+		return versions;
 	}
 	
 	@Override
@@ -107,45 +108,39 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 	public void deleteFile(String ids) {
 		String[] arrayIds = ids.split(",");
 		VirtualFileSystem file = null;
-		Set<String> uuIds = new HashSet<String>();
+		
 		for (String id : arrayIds) {
 			String[] items = id.split("/");
 			//遍历目录写文件
 			if("dir".equals(items[1])){
 				VirtualFileSystem dir = fileDao.get(Long.parseLong(items[0]));
-				uuIds.addAll(this.deleteFile(dir));
+				this.deleteFile(dir);
 			}else{
 				file = fileDao.get(Long.parseLong(items[0]));
-				uuIds.add(file.getMongoFSUUId());
-//				fileDao.delete(file);
+				this.deleteFile(file);
 			}
 		}
-		//删除mongodb的文件和标志记录状态
-//		IDfsDb dfs = MongoDfsDb.getInstance();
-//		MongodbUtil mg = MongodbUtil.getInstance();
-//		String collectionName = "";
-		for (String uuId : uuIds) {
-			if(uuId != null && !uuId.equals("")){
-				System.out.println(uuId);				
-				//dfs.delete(uuId);
-				//通过更新的方式设置状态为0
-//				mg.update(collectionName, "versions", uuId);
-			}
-		}
+		
 	}
-	private Set<String> deleteFile(VirtualFileSystem dir) {
-		Set<String> uuIds = new HashSet<String>();
-		List<VirtualFileSystem> fileList = fileDao.findByParam("parentId", dir.getId());
-		if(fileList != null && fileList.size() > 0){
-			for (VirtualFileSystem childFile : fileList) {
-				if(childFile.getFileType().getName().equals("dir")){
-					uuIds.addAll(this.deleteFile(childFile));				
+	private void deleteFile(VirtualFileSystem file) {
+		if(file.getFileType().getName().equals("dir")){
+			List<VirtualFileSystem> fileList = fileDao.findByParam("parentId", file.getId());
+			if(fileList != null && fileList.size() > 0){
+				for (VirtualFileSystem childFile : fileList) {
+					this.deleteFile(childFile);				
 				}
-				uuIds.add(childFile.getMongoFSUUId());
-				//fileDao.delete(childFile);
 			}
+		}else{
+			fileDao.delete(file);
+			//删除mongodb的文件和标志记录状态
+			IDfsDb dfs = MongoDfsDb.getInstance();
+			//根据星系获取数据库名称
+			String databaseName = InitMongo.getFSBDNameBySeriesAndStar(file.getSeries(), file.getStar());
+			//删除文件数据记录
+			dfs.delete(databaseName,file.getMongoFSUUId());
+			//更新记录状态
+			mongoService.updateCSVDataByVersions(file.getSeries(), file.getStar(), file.getParameterType(), file.getMongoFSUUId());
 		}
-		return uuIds;
 	}
 	
 	@Override
@@ -386,26 +381,36 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 			}
 		}
 		
-		CSVFileDataResultDto<Document> result = csvService.readCSVFileToDoc(fileDto.getFilePath(),uuId);
-		List<Document> docList = result.getDatas();		
+//		CSVFileDataResultDto<Document> result = csvService.readCSVFileToDoc(fileDto.getFilePath(),uuId);
+//		List<Document> docList = result.getDatas();		
+//		//数据不为空
+//		if(docList != null && docList.size() > 0){
+//			//test 等级
+//			mongoService.saveCSVData(series, star, parameterType, date, result.getMap(), uuId);
+//			//保存csv文件数据
+//			//mongoService.saveCSVData(series, star,parameterType, date, docList, uuId);
+//			//存储某一天的参数信息
+//			String title = result.getTitle();
+//			DateParameters dateParameters = new DateParameters();
+//			dateParameters.setSeries(series);
+//			dateParameters.setStar(star);
+//			dateParameters.setParameterType(parameterType);
+//			dateParameters.setParameters(title);
+//			dateParameters.setYear_month_day(date);
+//			parametersDao.add(dateParameters);
+//		}
 		
-		//test 等级
-		mongoService.saveCSVData(series, star, parameterType, date, result.getMap(), uuId);
-		
-		//数据不为空
-		if(docList != null && docList.size() > 0){
-			//保存csv文件数据
-			//mongoService.saveCSVData(series, star,parameterType, date, docList, uuId);
-			//存储某一天的参数信息
-			String title = result.getTitle();
-			DateParameters dateParameters = new DateParameters();
-			dateParameters.setSeries(series);
-			dateParameters.setStar(star);
-			dateParameters.setParameterType(parameterType);
-			dateParameters.setParameters(title);
-			dateParameters.setYear_month_day(date);
-			parametersDao.add(dateParameters);
-		}
+		//获取参数信息保存
+		CSVFileDataResultDto<Document> result = csvService.readCSVFileToDocAndgetTitle(fileDto.getFilePath());
+		//存储某一天的参数信息
+		String title = result.getTitle();
+		DateParameters dateParameters = new DateParameters();
+		dateParameters.setSeries(series);
+		dateParameters.setStar(star);
+		dateParameters.setParameterType(parameterType);
+		dateParameters.setParameters(title);
+		dateParameters.setYear_month_day(date);
+		parametersDao.add(dateParameters);
 		
 		//查找csv的文件夹是否存在
 //		VirtualFileSystem csvDir = fileDao.selectByParentIdisNullAndFileName("csv");
@@ -466,11 +471,9 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 		//file.setCachePath(fileDto.getFilePath());
 		fileDao.add(file);
 		
-
 	}
 	
 	private void saveFileOfDAT(FileDto fileDto, Map<String,String> dataMap){
-		
 		
 		String uuId = dataMap.get("versions");
 		String series = dataMap.get("series");

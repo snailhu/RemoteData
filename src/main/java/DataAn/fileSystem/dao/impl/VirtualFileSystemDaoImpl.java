@@ -19,6 +19,19 @@ import DataAn.fileSystem.option.FileType;
 public class VirtualFileSystemDaoImpl extends BaseDaoImpl<VirtualFileSystem>
 implements IVirtualFileSystemDao{
 
+	@SuppressWarnings("unchecked")
+	@Override
+	public VirtualFileSystem selectByFileTypeIsFileAndMongoFSUUId(String uuId) {
+		String hql = "from VirtualFileSystem fs where fs.fileType=:fileType and fs.mongoFSUUId=:uuId";
+		List<VirtualFileSystem> list= this.getSession()
+										  .createQuery(hql).setParameter("fileType", FileType.FILE)
+										  .setParameter("uuId", uuId).list();
+		if(list != null && list.size() > 0){
+			return list.get(0);
+		}
+		return null;
+	}
+
 	
 	@SuppressWarnings("unchecked")
 	@Override
@@ -200,5 +213,6 @@ implements IVirtualFileSystemDao{
 		Query query = this.getSession().createQuery(hql).setParameter("fileType", FileType.FILE);
 		return query.list();
 	}
+
 
 }

@@ -128,20 +128,7 @@ public class FileController {
 		if (StringUtils.isNotBlank(strRows)) {
 			rows = Integer.parseInt(strRows);
 		}
-//		System.out.println("come in getMongoFSList..");
-//		System.out.println("strPage: " + strPage);
-//		System.out.println("strRows: " + strRows);
-//		System.out.println("strDirId: " + strDirId);
-//		System.out.println("strParamType: " + strParamType);
-//		System.out.println("page: " + page);
-//		System.out.println("rows: " + rows);
-//		System.out.println("series: " + series);
-//		System.out.println("star: " + star);
-//		System.out.println("paramType: " + paramType);
-//		System.out.println("dirId: " + dirId);
-//		System.out.println("beginTime: " + beginTime);
-//		System.out.println("endTime: " + endTime);
-//		System.out.println("fileTypes: " + fileTypes);
+
 		Pager<MongoFSDto> pager = null;
 		if(StringUtils.isNotBlank(beginTime) || StringUtils.isNotBlank(endTime) || StringUtils.isNotBlank(fileTypes)){
 			pager = fileService.getMongoFSList(page, rows, series, star, paramType, dirId, beginTime, endTime, fileTypes);			
@@ -156,11 +143,8 @@ public class FileController {
 	@RequestMapping(value = "getParentCatalog", method = RequestMethod.POST)
 	@ResponseBody
 	public JsonMessage getParentCatalog(long dirId){
-//		System.out.println("come in getParentCatalog...");
-//		System.out.println("dirId: " + dirId);
 		JsonMessage msg = new JsonMessage();
 		String json = fileService.getParentFSCatalog(dirId);
-//		System.out.println("json: " + json);
 		msg.setSuccess(true);
 		msg.setObj(json);
 		return msg;
@@ -168,20 +152,16 @@ public class FileController {
 	//返回上传文件界面
 	@RequestMapping("/toUploadFile")
 	public String uploadHome() {
-//		System.out.println("come in uploadHome");
 		return "admin/mongoFs/uploadFile";
 	}
 	
 	@RequestMapping(value = "existFile", method = RequestMethod.POST)
 	@ResponseBody
 	public JsonMessage existFile(String fileName){
-		System.out.println("come in existFile..");
-		System.out.println("fileName: " + fileName);
 		JsonMessage msg = new JsonMessage();
 		fileName = fileName.replace("\\", "/");
 		String[] strs = fileName.split("/");
 		boolean flag = fileService.isExistFile(strs[strs.length-1]);
-		System.out.println("isExist: " + flag);
 		msg.setSuccess(flag);
 		return msg;
 	}
@@ -216,14 +196,6 @@ public class FileController {
 			@RequestParam(value = "paramType", required = true) String paramType
 			) throws Exception {
 		System.out.println("come in uploadFiles...");
-//		JsonMessage jsonMsg = new JsonMessage();
-//		System.out.println("dirId: " + dirId);
-//		for (MultipartFile file : files) {
-//		System.out.println("getName: " + file.getName());
-//		System.out.println("getOriginalFilename: " + file.getOriginalFilename());
-//		System.out.println("getContentType: " + file.getContentType());
-//		System.out.println("getSize: " + file.getSize());		
-//		}
 		System.out.println("datFile...");
 		System.out.println("getName: " + datFile.getName());
 		System.out.println("getOriginalFilename: " + datFile.getOriginalFilename());
@@ -410,7 +382,7 @@ public class FileController {
 		System.out.println("itemIds: " + itemIds);
 		JsonMessage jsonMsg = new JsonMessage();
 		try {
-//			fileService.deleteFile(itemIds);
+			fileService.deleteFile(itemIds);
 			jsonMsg.setSuccess(true);
 			jsonMsg.setMsg("删除成功！");
 		} catch (Exception e) {

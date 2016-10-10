@@ -64,7 +64,7 @@ public class CSVServiceImpl implements ICSVService{
 	@Override
 	public CSVFileDataResultDto<Document> readCSVFileToDoc(InputStream in, String versions) throws Exception {
 
-		return this.readCSVFileToDoc_delFrontAndBack_arithmetic1(in, versions, 4, 50);
+		return this.readCSVFileToDoc_delFrontAndBack_arithmetic1(in, versions, 4, 0);
 		
 //		return this.readCSVFileToDoc_delFrontAndBack_arithmetic2(in, versions, 4, 50);
 		

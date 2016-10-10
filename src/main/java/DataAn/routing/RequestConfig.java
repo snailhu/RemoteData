@@ -28,7 +28,10 @@ public class RequestConfig implements Serializable {
 	
 	private String timeEnd;
 	
-	private long propertyCount;
+	/**
+	 * value same as {@link #properties.length}
+	 */
+	private int propertyCount;
 
 	public String getDevice() {
 		return device;
@@ -78,12 +81,13 @@ public class RequestConfig implements Serializable {
 		this.star = star;
 	}
 
-	public long getPropertyCount() {
+	public int getPropertyCount() {
 		return propertyCount;
 	}
 
-	public void setPropertyCount(long propertyCount) {
+	public void setPropertyCount(int propertyCount) {
 		this.propertyCount = propertyCount;
 	}
+
 	
 }

@@ -24,5 +24,10 @@ public interface Repo extends Serializable {
 	 */
 	String collection();
 	
+	int index();
+	
+	Repo ahead();
+	
+	Repo next();
 	
 }

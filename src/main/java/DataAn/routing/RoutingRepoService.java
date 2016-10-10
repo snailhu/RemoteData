@@ -1,22 +1,29 @@
 package DataAn.routing;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
+import DataAn.Util.JsonStringToObj;
 import DataAn.common.utils.DateUtil;
 
 public class RoutingRepoService {
 	
-	ConfigurationGetter configurationGetter=new ConfigurationGetter();
+	public static RoutingRepoService get(){
+		return new RoutingRepoService();
+	}
 	
-	private long period(RequestConfig requestConfig){
+	private long period(RequestConfig requestConfig,Configuration configuration){
 		try {
 			Date timeEnd=DateUtil.format(requestConfig.getTimeEnd());
 			Date timeStart=DateUtil.format(requestConfig.getTimeStart());
-			Configuration configuration=configurationGetter.getConfiguration();
-			long propertyNum=requestConfig.getPropertyCount();
-			long needPoint=configuration.getCanvasPointNum()/propertyNum;
+			int propertyNum=requestConfig.getPropertyCount();
+			int needPoint=configuration.getCanvasPointNum()/propertyNum;
+			configuration.setExpectedPerPointNum(needPoint);
 			long period=(timeEnd.getTime()-timeStart.getTime())/needPoint;
 			return period;
 		} catch (Exception e) {
@@ -24,9 +31,9 @@ public class RoutingRepoService {
 		}
 	}
 	
-	public Repo getExpectedRepo(RequestConfig requestConfig){
-		long period=period(requestConfig);
-		List<Repo> repos=getAllRepos();
+	public Repo getExpectedRepo(RequestConfig requestConfig,Configuration configuration){
+		long period=period(requestConfig,configuration);
+		List<? extends Repo> repos=getAllRepos(requestConfig.getProperties()[0]);
 		Repo expectedOne=null;
 		Repo left=null;
 		Repo right=null;
@@ -60,80 +67,38 @@ public class RoutingRepoService {
 	 * 
 	 * @return sorted repos.
 	 */
-	public List<Repo> getAllRepos(){
-		return new ArrayList<Repo>(){
-			{
-				add(new Repo() {
-					
-					@Override
-					public long period() {
-						return 5*1000;
-					}
-					
-					@Override
-					public String name() {
-						return "5s";
-					}
-					@Override
-					public String database() {
-						return "db_j9_star2";
-					}
-					@Override
-					public String collection() {
-						return "flywheel5s";
-					}
-				});
-				
-				add(new Repo() {
-					
-					@Override
-					public long period() {
-						return 30*1000;
-					}
-					
-					@Override
-					public String name() {
-						return "30s";
-					}
-					
-					@Override
-					public String database() {
-						return "db_j9_star2";
-					}
-					@Override
-					public String collection() {
-						return "flywheel30s";
-					}
-				});
-				
-				add(new Repo() {
-					
-					@Override
-					public long period() {
-						return 5*60*1000;
-					}
-					
-					@Override
-					public String name() {
-						return "5min";
-					}
-					
-					@Override
-					public String database() {
-						return "db_j9_star2";
-					}
-					@Override
-					public String collection() {
-						return "flywheel30m";
-					}
-				});
+	public List<? extends Repo> getAllRepos(String property){
+		try{
+			String string=new String(getBytes(Repo.class.getResourceAsStream("repo.json")),"utf-8");
+			List<DefaultRepo> repos= JsonStringToObj.jsonArrayToListObject(string, DefaultRepo.class, new HashMap());
+			for(int i=0;i<repos.size();i++){
+				repos.get(i).setIndex(i);
+				repos.get(i).setRepos(repos);
 			}
-			
-			
-		};
+			return repos;
+		}catch(Exception e){
+		}
+		return new ArrayList();
 	}
 	
+	public Repo getTargetRepo(String property,int index){
+		return getAllRepos(property).get(index);
+	}
 	
+	public static byte[] getBytes(InputStream input) {
+	    ByteArrayOutputStream output = new ByteArrayOutputStream();
+	    byte[] buffer = new byte[4096];
+	    int n = 0;
+	    try {
+			while (-1 != (n = input.read(buffer))) {
+			    output.write(buffer, 0, n);
+			}
+			output.flush();
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+	    return output.toByteArray();
+	}
 	
 	
 	

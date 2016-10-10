@@ -37,97 +37,12 @@ public class CSVServiceImpl implements ICSVService{
 	private IJ9Series_Star_Service j9SeriesStarService;
 	
 	@Override
-	public CSVFileDataResultDto<Document> readCSVFileToDocAndSaveCacheFile(
-			String fileName, InputStream in, String versions) throws Exception {
-		int totalNumber = 0;//标示全部
-		int delNumber = 4;//标示删除前后4行
-		//保存csv临时文件
-		String csvTempFilePath = CommonConfig.getUplodCachePath() + File.separator + versions;
-		File parentDir = new File(csvTempFilePath);
-		if (!parentDir.exists()) {
-			parentDir.mkdirs();
-		}
-		csvTempFilePath = csvTempFilePath + File.separator + fileName;
-		BufferedWriter  writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(new File(csvTempFilePath)), "gb2312"));
-		
-		//文件内容List
-		List<Document> docList = new ArrayList<Document>();
-		//获取j9系列参数列表
-		Map<String,String> j9SeriesPatameterMap = j9SeriesStarService.getAllParameterList_allZh_and_en();
-		BufferedReader reader = new BufferedReader(new InputStreamReader(in, "gb2312"));// 换成你的文件名
-		String title = "";
-		try {
-			title = reader.readLine();// 第一行信息，为标题信息，不用,如果需要，注释掉
-			//写入第一行
-			writer.write(title);
-			writer.newLine();
-			
-			//CSV格式文件为逗号分隔符文件，这里根据逗号切分
-			String[] array = title.split(",");
-			String line = null;
-			Document doc = null;
-			String date = "";
-			int count = 0;
-			int flagCount = 0;
-			String colData = "";
-			boolean flag = false; //判断是否存在 # 标示
-			//临时存储集合
-			List<Document> tempList = new ArrayList<Document>();
-			while ((line = reader.readLine()) != null) {
-				if(totalNumber !=0 && count == totalNumber){
-					break;
-				}
-				//写入第n行
-				writer.write(line);
-				writer.newLine();
-				
-				doc = new Document();
-				//CSV格式文件为逗号分隔符文件，这里根据逗号切分
-				String[] items = line.split(",");
-				date = items[0].trim();
-				doc.append("versions", versions);
-				doc.append("status", 1);
-				doc.append("year", DateUtil.formatString(date, "yyyy"));
-				doc.append("year_month", DateUtil.formatString(date, "yyyy-MM"));
-				doc.append("year_month_day", DateUtil.formatString(date, "yyyy-MM-dd"));
-//			doc.append(FlyWheelDataType.getFlyWheelDataTypeByZh(array[0]).getName(), DateUtil.formatString(date, "yyyy-MM-dd HH-mm-ss"));
-				doc.append(j9SeriesPatameterMap.get(array[0]), DateUtil.formatString(date, "yyyy-MM-dd HH:mm:ss"));
-				for (int i = 1; i < items.length; i++) {
-					colData = items[i].trim();
-					if(colData.indexOf("#") >= 0){
-						flag = true;
-						break;
-					}else{
-//					doc.append(FlyWheelDataType.getFlyWheelDataTypeByZh(array[i]).getName().toLowerCase(), colData);
-						doc.append(j9SeriesPatameterMap.get(array[i]), colData);
-					}
-				}
-				//存在无效点
-				if(flag){
-					flagCount = count + delNumber;					
-				}
-				tempList.add(doc);
-				int i = count - delNumber;
-				if(i > flagCount){
-					docList.add(tempList.get(i));
-				}
-				count ++;
-				flag = false;
-			}
-			//后面还存在数据
-			if(flagCount < count){
-				for (int i = (count - delNumber); i < count; i++) {
-					docList.add(tempList.get(i));
-				}
-			}
-		} finally {
-			writer.flush();
-			writer.close();
-			reader.close();
-		}
+	public CSVFileDataResultDto<Document> readCSVFileToDocAndgetTitle(String filePath) throws Exception {
+		InputStream in = new BufferedInputStream(new FileInputStream(new File(filePath)));
+		InputStreamReader inputStreamReader = new InputStreamReader(in, "gb2312");
+		BufferedReader reader = new BufferedReader(inputStreamReader);// 换成你的文件名
+		String title = reader.readLine();// 第一行信息，为标题信息，不用,如果需要，注释掉
 		CSVFileDataResultDto<Document> result = new CSVFileDataResultDto<Document>();
-		result.setDatas(docList);
-		result.setCacheFilePath(csvTempFilePath);
 		result.setTitle(title);
 		return result;
 	}	
@@ -231,8 +146,6 @@ public class CSVServiceImpl implements ICSVService{
 			count ++;
 			flag = false;
 		}
-		count = 1; //初始化计数器
-		long time = 0;
 		Date datetime_1s = tempList.get(0).getDate("datetime");
 		List<Document> docList_1s = new ArrayList<Document>();
 		Date datetime_5s = tempList.get(0).getDate("datetime");
@@ -255,13 +168,16 @@ public class CSVServiceImpl implements ICSVService{
 		List<Document> docList_6h = new ArrayList<Document>();
 		Date datetime_12h = tempList.get(0).getDate("datetime");
 		List<Document> docList_12h = new ArrayList<Document>();
+		Date datetime_1d = tempList.get(0).getDate("datetime");
 		List<Document> docList_1d = new ArrayList<Document>();
-		//排除无效点保存
+		long time = 0;
 		long time0 = tempList.get(0).getDate("datetime").getTime();
 		for (int i = 0; i < tempList.size(); i++) {
+			//排除无效点保存
 			if(!delDateSet.contains(i)){
 				doc = tempList.get(i);
 				docList.add(doc);
+				
 				//获取时间区间
 				time = (doc.getDate("datetime").getTime() - time0) / 1000;
 				if(time % 1 == 0){
@@ -330,9 +246,14 @@ public class CSVServiceImpl implements ICSVService{
 						docList_12h.add(doc);
 					}
 				}
+				if(time % (24 * 60 * 60) == 0){
+					if(datetime_1d.compareTo(doc.getDate("datetime")) != 0){
+						datetime_1d = doc.getDate("datetime");						
+						docList_1d.add(doc);
+					}
+				}
 			}
 		}
-		docList_1d.add(tempList.get(0));
 		
 		//返回读取文件结果集
 		CSVFileDataResultDto<Document> result = new CSVFileDataResultDto<Document>();

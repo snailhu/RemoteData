@@ -35,6 +35,9 @@ import DataAn.fileSystem.dto.CSVFileDataResultDto;
 import DataAn.fileSystem.option.J9Series_Star_ParameterType;
 import DataAn.fileSystem.service.impl.CSVServiceImpl;
 import DataAn.mongo.db.MongodbUtil;
+import DataAn.mongo.fs.IDfsDb;
+import DataAn.mongo.fs.MongoDfsDb;
+import DataAn.mongo.init.InitMongo;
 
 import com.alibaba.fastjson.JSON;
 import com.csvreader.CsvWriter;
@@ -76,16 +79,10 @@ public class CSVServiceTest {
 	}
 	
 	@Test
-	public void readCSVFileToDocAndSaveCacheFile(){
+	public void readCSVFileToDocAndgetTitle(){
 		long begin = System.currentTimeMillis();
-		InputStream in = null;
 		try {
-			String uuId = UUIDGeneratorUtil.getUUID();
-			in = new BufferedInputStream(new FileInputStream(new File(filePath)));
-			CSVFileDataResultDto<Document> result = csvService.readCSVFileToDocAndSaveCacheFile("j9-02--2015-05-10.csv", in, uuId);
-			List<Document> list = result.getDatas();
-			System.out.println("size: " + list.size());
-			System.out.println(result.getCacheFilePath());
+			CSVFileDataResultDto<Document> result = csvService.readCSVFileToDocAndgetTitle(filePath);
 			System.out.println(result.getTitle());
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -100,6 +97,8 @@ public class CSVServiceTest {
 
 		String uuId = UUIDGeneratorUtil.getUUID();
 		CSVFileDataResultDto<Document> result= csvService.readCSVFileToDoc(filePath,uuId);
+//		IDfsDb fs = MongoDfsDb.getInstance();
+//		CSVFileDataResultDto<Document> result= csvService.readCSVFileToDoc(fs.downLoadToStream(InitMongo.FS_J9STAR2, "48d504d0612d46819956979cc5c2e37c"),uuId);
 		List<Document> list = result.getDatas();
 		System.out.println("size: " + list.size());
 //		System.out.println(list.get(list.size() - 1));
@@ -109,34 +108,34 @@ public class CSVServiceTest {
 //			System.out.println(document);
 //		}
 		Map<String,List<Document>> map = result.getMap();
-		Set<String> keys = map.keySet();
-		for (String key : keys) {
-			System.out.println(key + ".." + map.get(key).size());
-		}
-//		List<Document> docList_1s = map.get("1s");
-//		System.out.println("1s..." + docList_1s.size());
-//		List<Document> docList_5s = map.get("5s");
-//		System.out.println("5s..." + docList_5s.size());
-//		List<Document> docList_15s = map.get("15s");
-//		System.out.println("15s..." + docList_15s.size());
-//		List<Document> docList_30s = map.get("30s");
-//		System.out.println("30s..." + docList_30s.size());
-//		List<Document> docList_1m = map.get("1m");
-//		System.out.println("1m..." + docList_1m.size());
-//		List<Document> docList_5m = map.get("5m");
-//		System.out.println("5m..." + docList_5m.size());
-//		List<Document> docList_15m = map.get("15m");
-//		System.out.println("15m..." + docList_15m.size());
-//		List<Document> docList_30m = map.get("30m");
-//		System.out.println("30m..." + docList_30m.size());
-//		List<Document> docList_1h = map.get("1h");
-//		System.out.println("1h..." + docList_1h.size());
-//		List<Document> docList_6h = map.get("6h");
-//		System.out.println("6h..." + docList_6h.size());
-//		List<Document> docList_12h = map.get("12h");
-//		System.out.println("12h..." + docList_12h.size());
-//		List<Document> docList_1d = map.get("1d");
-//		System.out.println("1d..." + docList_1d.size());
+//		Set<String> keys = map.keySet();
+//		for (String key : keys) {
+//			System.out.println(key + ".." + map.get(key).size());
+//		}
+		List<Document> docList_1s = map.get("1s");
+		System.out.println("1s..." + docList_1s.size());
+		List<Document> docList_5s = map.get("5s");
+		System.out.println("5s..." + docList_5s.size());
+		List<Document> docList_15s = map.get("15s");
+		System.out.println("15s..." + docList_15s.size());
+		List<Document> docList_30s = map.get("30s");
+		System.out.println("30s..." + docList_30s.size());
+		List<Document> docList_1m = map.get("1m");
+		System.out.println("1m..." + docList_1m.size());
+		List<Document> docList_5m = map.get("5m");
+		System.out.println("5m..." + docList_5m.size());
+		List<Document> docList_15m = map.get("15m");
+		System.out.println("15m..." + docList_15m.size());
+		List<Document> docList_30m = map.get("30m");
+		System.out.println("30m..." + docList_30m.size());
+		List<Document> docList_1h = map.get("1h");
+		System.out.println("1h..." + docList_1h.size());
+		List<Document> docList_6h = map.get("6h");
+		System.out.println("6h..." + docList_6h.size());
+		List<Document> docList_12h = map.get("12h");
+		System.out.println("12h..." + docList_12h.size());
+		List<Document> docList_1d = map.get("1d");
+		System.out.println("1d..." + docList_1d.size());
 
 		long end = System.currentTimeMillis();
 		System.out.println("time: " + (end - begin));

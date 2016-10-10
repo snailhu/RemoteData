@@ -8,6 +8,8 @@ import DataAn.fileSystem.domain.VirtualFileSystem;
 
 public interface IVirtualFileSystemDao extends IBaseDao<VirtualFileSystem> {
 
+	public VirtualFileSystem selectByFileTypeIsFileAndMongoFSUUId(String uuId);
+	
 	public VirtualFileSystem selectByFileName(String fileName);
 
 	public VirtualFileSystem selectByParentIdisNullAndFileName(String fileName);

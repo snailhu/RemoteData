@@ -23,7 +23,7 @@ public interface ICSVService {
 	* @date 2016年8月19日
 	* @version 1.0
 	*/
-	public CSVFileDataResultDto<Document> readCSVFileToDocAndSaveCacheFile(String fileName, InputStream in, String versions) throws Exception;
+	public CSVFileDataResultDto<Document> readCSVFileToDocAndgetTitle(String filePath) throws Exception;
 	
 	/**
 	* @Title: readCSVFileToDoc

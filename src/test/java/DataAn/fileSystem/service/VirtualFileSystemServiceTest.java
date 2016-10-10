@@ -21,6 +21,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import DataAn.common.pageModel.Pager;
 import DataAn.fileSystem.domain.VirtualFileSystem;
 import DataAn.fileSystem.dto.FileDto;
+import DataAn.fileSystem.dto.MongoFSDto;
 import DataAn.fileSystem.option.J9Series_Star_ParameterType;
 
 
@@ -54,10 +55,8 @@ public class VirtualFileSystemServiceTest {
 			for (File file : files) {
 				if(file.isFile()){
 					if(file.getName().endsWith(".csv")){
-						System.out.println("csvPath: " + file.getAbsolutePath());
 						this.saveFile(file.getAbsolutePath(), null);											
 					}else{
-						System.out.println("datPath: " + file.getAbsolutePath());
 						this.saveFile(null, file.getAbsolutePath());
 					}
 				}else{
@@ -72,11 +71,11 @@ public class VirtualFileSystemServiceTest {
 	@Test
 	public void saveFile() throws Exception{
 		long begin = System.currentTimeMillis();
-		String csv = "D:\\temp\\data\\2015\\1\\j9-02--2015-01-01.csv";
+		String csv = "D:\\temp\\data\\2015\\1\\j9-02--2015-01-03.csv";
 //		String dat = "C:\\XX9(02)--20150817(公开).DAT";
 		this.saveFile(csv, null);
 		long end = System.currentTimeMillis();
-		System.out.println((end - begin));
+		System.out.println("保存文件： " + (end - begin) );
 	}
 	
 	@Test
@@ -113,9 +112,9 @@ public class VirtualFileSystemServiceTest {
 		String endTime = "";
 		String dataTypes = "";
 		String paramType = J9Series_Star_ParameterType.FLYWHEEL.getValue();
-		Pager pager = fileService.getMongoFSList(pageIndex, pageSize, series, star, paramType, dirId, beginTime, endTime, dataTypes);
-		List<VirtualFileSystem> list =pager.getRows();
-		for (VirtualFileSystem fs : list) {
+		Pager<MongoFSDto> pager = fileService.getMongoFSList(pageIndex, pageSize, series, star, paramType, dirId, beginTime, endTime, dataTypes);
+		List<MongoFSDto> list =pager.getRows();
+		for (MongoFSDto fs : list) {
 			System.out.println(fs);
 		}
 	}
@@ -130,10 +129,8 @@ public class VirtualFileSystemServiceTest {
 			for (File file : files) {
 				if(file.isFile()){
 					if(file.getName().endsWith(".csv")){
-						System.out.println("csvPath: " + file.getAbsolutePath());
 						this.saveFile(file.getAbsolutePath(), null);											
 					}else{
-						System.out.println("datPath: " + file.getAbsolutePath());
 						this.saveFile(null, file.getAbsolutePath());
 					}					
 				}else{
@@ -148,6 +145,7 @@ public class VirtualFileSystemServiceTest {
 		DecimalFormat df = new DecimalFormat("#.00");
 		String parameterType = J9Series_Star_ParameterType.FLYWHEEL.getValue();
 		if(csvPath != null && !csvPath.equals("")){
+			System.out.println("csvPath: " + csvPath);
 			FileDto csvFileDto = new FileDto();
 			File csvFile = new File(csvPath);
 			InputStream csvInput = new FileInputStream(csvFile);
@@ -160,6 +158,7 @@ public class VirtualFileSystemServiceTest {
 			map.put("csv", csvFileDto);			
 		}
 		if(datPath != null && !datPath.equals("")){
+			System.out.println("datPath: " + datPath);
 			FileDto datFileDto = new FileDto();
 			File datFile = new File(datPath);
 			InputStream datInput = new FileInputStream(datFile);

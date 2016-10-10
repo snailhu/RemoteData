@@ -1,8 +1,14 @@
 package DataAn.common;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
 
 import org.junit.Test;
+
 import DataAn.common.config.CommonConfig;
 
 public class ConfigTest {
@@ -25,9 +31,31 @@ public class ConfigTest {
 		System.out.println(tempDate.compareTo(tempDate));
 	}
 	
+//	@Test
+//	public void test3() throws Exception{
+//		new Thread(new Runnable(){
+//			@Override
+//			public void run() {
+//				try {
+//					ConfigTest test = new ConfigTest();
+//					test.print();
+//				} catch (Exception e) {
+//					e.printStackTrace();
+//				}				
+//			}}).start();
+//		
+//	}
+	
 	@Test
-	public void test3(){
-	
+	public void print() throws Exception{
+		List<String> list = new ArrayList<String>();
+		list.add("a");
+		list.add("b");
+		list.add("c");
+		list.add("d");
+		List<String> list1 = list.subList(1, list.size());
+		for (String str : list1) {
+			System.out.println(str);
+		}
 	}
-	
 }

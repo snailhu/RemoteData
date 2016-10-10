@@ -61,7 +61,7 @@ public class MongodbUtil {
 				}
 				mg = new MongoClient(addresses);
 			}else{
-				System.out.println("启动数据库：{}" + InitMongo.DB_SERVER_HOST);
+				System.out.println("启动数据存储数据库：{}" + InitMongo.DB_SERVER_HOST);
 				LogUtil.getInstance().getLogger(this.getClass()).info("启动数据库：{}",InitMongo.DB_SERVER_HOST);
 				mg = new MongoClient(InitMongo.DB_SERVER_HOST, InitMongo.DB_SERVER_PORT);
 			}
@@ -146,7 +146,7 @@ public class MongodbUtil {
 	 * @param collectionName
 	 */
 	private void createShardCollection(String databaseName,String collectionName) {
-		System.out.println("创建新的表{}.{},并分片"+databaseName+"."+collectionName);
+		System.out.println("数据存储创建新的表{}.{},并分片"+databaseName+"."+collectionName);
 		LogUtil.getInstance().getLogger(getClass()).info("创建新的表{}.{},并分片",databaseName,collectionName);
 //		MongoDatabase admin = mg.getDatabase("admin");
 //		Document shard = new Document();

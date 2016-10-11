@@ -11,6 +11,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Vector;
+
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.StandardChartTheme;
@@ -43,6 +44,8 @@ import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.general.DefaultPieDataset;
 import org.jfree.data.time.Day;
 import org.jfree.data.time.TimeSeries;
+import org.jfree.data.xy.XYSeries;
+import org.jfree.data.xy.XYSeriesCollection;
 import org.jfree.ui.RectangleInsets;
 import org.jfree.ui.TextAnchor;
 
@@ -68,8 +71,8 @@ public class ChartUtils {
 			new Color(255, 204, 102) };// 颜色
 	
 	public static Color[] Y_COLORS = { Color.GREEN,
-		Color.BLUE, Color.BLACK,
-		Color.YELLOW, Color.GRAY};// 颜色
+		Color.BLUE, Color.CYAN, Color.ORANGE,
+		Color.YELLOW, Color.GRAY, Color.RED, Color.PINK};// 颜色
 	
 	static {
 		setChartTheme();
@@ -146,7 +149,7 @@ public class ChartUtils {
 		chart.getLegend().setFrame(new BlockBorder(Color.WHITE));
 
 	}
-
+	
 	/**
 	 * 创建类别数据集合
 	 */
@@ -459,9 +462,9 @@ public class ChartUtils {
 		ValueAxis axis = plot.getRangeAxis();
 		axis.setAxisLinePaint(lineColor);// Y坐标轴颜色
 		axis.setTickMarkPaint(lineColor);// Y坐标轴标记|竖线颜色
-		// 隐藏Y刻度
-		axis.setAxisLineVisible(false);
-		axis.setTickMarksVisible(false);
+		// 显示Y刻度
+		axis.setAxisLineVisible(true);
+		axis.setTickMarksVisible(true);
 		// Y轴网格线条
 		plot.setRangeGridlinePaint(new Color(192, 192, 192));
 		plot.setRangeGridlineStroke(new BasicStroke(1));

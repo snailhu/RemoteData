@@ -1,13 +1,10 @@
 package DataAn.jfreechart.service.impl;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.Vector;
-
 import org.jfree.chart.ChartUtilities;
 import org.jfree.chart.JFreeChart;
 import org.springframework.stereotype.Service;
-
 import DataAn.common.config.CommonConfig;
 import DataAn.jfreechart.chart.ChartFactory;
 import DataAn.jfreechart.chart.Serie;
@@ -20,7 +17,8 @@ public class JfreechartServiceImpl implements IJfreechartServcie{
 	public String createLineChart(String title,
 			String categoryAxisLabel, String valueAxisLabel,
 			Vector<Serie> series, Vector<String> categories) throws Exception {
-		JFreeChart chart = ChartFactory.createLineChartOneY(title,
+		
+		JFreeChart chart = ChartFactory.createLineChartDoubleY(title,
 				categoryAxisLabel, valueAxisLabel, series, categories);
 		
 		String cachePath = CommonConfig.getChartCachePath();

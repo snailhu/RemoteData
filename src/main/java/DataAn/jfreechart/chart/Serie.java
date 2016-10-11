@@ -18,6 +18,7 @@ public class Serie implements Serializable {
 	private String name;// 名字
 	private Vector<Object> data;// 数据值
 	
+	private boolean isY2Axis = false; //此系列是否是Y2轴 ，默认为false
 	
 	public Serie() {
 
@@ -67,6 +68,14 @@ public class Serie implements Serializable {
 
 	public void setData(Vector<Object> data) {
 		this.data = data;
+	}
+
+	public boolean isY2Axis() {
+		return isY2Axis;
+	}
+
+	public void setY2Axis(boolean isY2Axis) {
+		this.isY2Axis = isY2Axis;
 	}
 
 }

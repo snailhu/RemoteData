@@ -2,11 +2,11 @@ package DataAn.jfreechart.chart;
 
 import java.awt.Color;
 import java.util.Vector;
-
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.NumberAxis;
 import org.jfree.chart.block.BlockBorder;
 import org.jfree.chart.plot.CategoryPlot;
+import org.jfree.chart.renderer.category.LineAndShapeRenderer;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.general.DefaultPieDataset;
 import org.jfree.ui.RectangleEdge;
@@ -18,41 +18,106 @@ import org.jfree.ui.RectangleEdge;
  */
 public class ChartFactory {
 	
-	public static JFreeChart createLineChartManyY(String title,
+	public static JFreeChart createLineChartDoubleY(String title,
 			String categoryAxisLabel, String valueAxisLabel,
 			Vector<Serie> series, Vector<String> categories) {
-		Serie serie0 = series.get(0);
-		// 1：创建数据集合
-		DefaultCategoryDataset dataset = ChartUtils.createDefaultCategoryDataset(serie0, categories);
-		JFreeChart chart = org.jfree.chart.ChartFactory.createLineChart(title,
-				categoryAxisLabel, valueAxisLabel, dataset);
+		Vector<Serie> series1 = new Vector<Serie>();
+		Vector<Serie> series2 = new Vector<Serie>();
 		
-		CategoryPlot plot = chart.getCategoryPlot();
-		if(series.size() > 1){
-			for (int i = 1; i < series.size(); i++) {
-				// 添加第2个Y轴
-				NumberAxis axis2 = new NumberAxis("Second Axis");
-				// -- 修改第2个Y轴的显示效果
-				axis2.setAxisLinePaint(Color.BLUE);
-				axis2.setLabelPaint(Color.BLUE);
-				axis2.setTickLabelPaint(Color.BLUE);
-				
-				dataset = ChartUtils.createDefaultCategoryDataset(series.get(i), categories);
-				
-				plot.setRangeAxis(1, axis2);
-				plot.setDataset(1, dataset);
-				plot.mapDatasetToRangeAxis(1, 1);
+		for (Serie serie : series) {
+			//数据分类
+			if(serie.isY2Axis()){
+				series2.add(serie);
+			}else{
+				series1.add(serie);
 			}
 		}
+		
+		// 1：创建数据集合
+		DefaultCategoryDataset dataset1 = ChartUtils.createDefaultCategoryDataset(series1, categories);
+		
+		JFreeChart chart = org.jfree.chart.ChartFactory.createLineChart(title,
+				categoryAxisLabel, valueAxisLabel, dataset1);
+		
 		// 3:设置抗锯齿，防止字体显示不清楚
 		ChartUtils.setAntiAlias(chart);// 抗锯齿
 		// 4:对柱子进行渲染[[采用不同渲染]]
-		ChartUtils.setLineRender(chart.getCategoryPlot(), false, true);//
+		ChartUtils.setLineRender(chart.getCategoryPlot(), false, false);//
 		// 5:对其他部分进行渲染
 		ChartUtils.setXAixs(chart.getCategoryPlot());// X坐标轴渲染
 		ChartUtils.setYAixs(chart.getCategoryPlot());// Y坐标轴渲染
 		// 设置标注无边框
 		chart.getLegend().setFrame(new BlockBorder(Color.WHITE));
+		
+		if(series2.size() > 1){
+			CategoryPlot plot = chart.getCategoryPlot();
+			DefaultCategoryDataset dataset2 = ChartUtils.createDefaultCategoryDataset(series2, categories);
+			// 添加第2个Y轴
+			NumberAxis axis2 = new NumberAxis(" Second Axis");
+			// -- 修改第2个Y轴的显示效果
+			axis2.setAxisLinePaint(Color.BLUE);
+			axis2.setLabelPaint(Color.BLUE);
+			axis2.setTickLabelPaint(Color.BLUE);
+			// 显示Y刻度
+			axis2.setAxisLineVisible(true);
+			axis2.setTickMarksVisible(true);
+			
+			plot.setRangeAxis(1, axis2);
+			plot.setDataset(1, dataset2);
+			plot.mapDatasetToRangeAxis(1, 1);
+			
+			plot.getRangeAxis(1).setUpperMargin(0.1);// 设置顶部Y坐标轴间距,防止数据无法显示
+			plot.getRangeAxis(1).setLowerMargin(0.1);// 设置底部Y坐标轴间距
+			
+			LineAndShapeRenderer renderer1 =  new LineAndShapeRenderer();
+			//renderer1.setSeriesPaint(0, ChartUtils.Y_COLORS[0]);
+			renderer1.setBaseShapesVisible(false);// 数据点绘制形状
+			plot.setRenderer(1, renderer1);
+		}
+		
+		return chart;
+	}
+	public static JFreeChart createLineChartManyY(String title,
+			String categoryAxisLabel, String valueAxisLabel,
+			Vector<Serie> series, Vector<String> categories) {
+		
+		Serie serie0 = series.get(0);
+		// 1：创建数据集合
+		DefaultCategoryDataset dataset = ChartUtils.createDefaultCategoryDataset(serie0, categories);
+		
+		JFreeChart chart = org.jfree.chart.ChartFactory.createLineChart(title,
+				categoryAxisLabel, valueAxisLabel, dataset);
+		
+		// 3:设置抗锯齿，防止字体显示不清楚
+		ChartUtils.setAntiAlias(chart);// 抗锯齿
+		// 4:对柱子进行渲染[[采用不同渲染]]
+		ChartUtils.setLineRender(chart.getCategoryPlot(), false, false);//
+		// 5:对其他部分进行渲染
+		ChartUtils.setXAixs(chart.getCategoryPlot());// X坐标轴渲染
+		ChartUtils.setYAixs(chart.getCategoryPlot());// Y坐标轴渲染
+		// 设置标注无边框
+		chart.getLegend().setFrame(new BlockBorder(Color.WHITE));
+		
+		if(series.size() > 1){
+			CategoryPlot plot = chart.getCategoryPlot();
+			for (int i = 1; i < series.size(); i++) {
+				DefaultCategoryDataset dataset1 = ChartUtils.createDefaultCategoryDataset(series.get(i), categories);
+				// 添加第i+1个Y轴
+				NumberAxis axis2 = new NumberAxis((i + 1) + "Axis");
+				// -- 修改第i+1个Y轴的显示效果
+				axis2.setAxisLinePaint(ChartUtils.Y_COLORS[i]);
+				axis2.setLabelPaint(ChartUtils.Y_COLORS[i]);
+				axis2.setTickLabelPaint(ChartUtils.Y_COLORS[i]);
+				plot.setRangeAxis(i, axis2);
+				plot.setDataset(i, dataset1);
+				plot.mapDatasetToRangeAxis(2, 1);
+				LineAndShapeRenderer renderer1 =  new LineAndShapeRenderer();
+				renderer1.setSeriesPaint(0, ChartUtils.Y_COLORS[i]);
+				renderer1.setBaseShapesVisible(false);// 数据点绘制形状
+				plot.setRenderer(i, renderer1);
+			}
+			
+		}
 		
 		return chart;
 	}

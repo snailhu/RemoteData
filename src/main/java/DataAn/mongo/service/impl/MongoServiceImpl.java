@@ -18,7 +18,8 @@ import DataAn.mongo.service.IMongoService;
 @Service
 public class MongoServiceImpl implements IMongoService{
 
-	private MongodbUtil mg = MongodbUtil.getInstance();
+	//TODO
+	private MongodbUtil mg = null;//MongodbUtil.getInstance();
 
 	@Override
 	public void saveCSVData(String series, String star,String paramType, String date,

@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.aspose.words.Document;
 import com.aspose.words.SaveFormat;
+import com.aspose.words.SaveOutputParameters;
 
 import DataAn.wordManager.config.OptionConfig;
 import DataAn.wordManager.service.IFlyWheelReoportService;
@@ -31,7 +32,8 @@ public class FlyWheelReportServiceImpl implements IFlyWheelReoportService {
         //2 填充数据源  
         doc.getMailMerge().executeWithRegions(new MapMailMergeDataSource(getMapList(imagePath), "Employees"));  
 		//3生成报告
-        doc.save(OptionConfig.getWebPath() + "\\report\\飞轮报告1.doc", SaveFormat.DOC); 
+       doc.save(OptionConfig.getWebPath() + "\\report\\飞轮报告1.doc", SaveFormat.DOC); 
+      
 	}
 	
 	private List<Map<String, Object>> getMapList(String imagePath) throws Exception {  

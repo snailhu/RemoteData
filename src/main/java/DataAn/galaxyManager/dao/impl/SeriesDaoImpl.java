@@ -10,4 +10,9 @@ import DataAn.galaxyManager.domain.Series;
 public class SeriesDaoImpl extends BaseDaoImpl<Series>
 implements ISeriesDao{
 
+	@Override
+	public String getSeriesName(String seriesId) {
+		String hql = "select s.name from Series s where s.id= ? ";
+		return  (String)getSession().createQuery(hql).setParameter(0, Long.parseLong(seriesId)).uniqueResult();
+	}
 }

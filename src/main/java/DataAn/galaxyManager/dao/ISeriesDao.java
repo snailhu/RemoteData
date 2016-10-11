@@ -5,4 +5,6 @@ import DataAn.galaxyManager.domain.Series;
 
 public interface ISeriesDao extends IBaseDao<Series>{
 
+	String getSeriesName(String seriesId);
+
 }

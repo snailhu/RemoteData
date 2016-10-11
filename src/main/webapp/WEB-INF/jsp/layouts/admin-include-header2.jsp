@@ -63,7 +63,7 @@ $(function () {
 		<div class="navbar-collapse collapse" >
 			<ul class="nav navbar-nav navbar-right">
 				<li><a href="${pageContext.request.contextPath}/Index" style="color: #9d9d9d;;font-size: 18px;line-height: 1.8;">网站首页</a></li>
-				<li><a href="${pageContext.request.contextPath}/#" style="color: #9d9d9d;;font-size: 18px;line-height: 1.8;">报告管理</a></li>
+				<li><a href="${pageContext.request.contextPath}/report/index" style="color: #9d9d9d;;font-size: 18px;line-height: 1.8;">报告管理</a></li>
 				<li><a href="${pageContext.request.contextPath}/admin/file/index" style="color: #9d9d9d;;font-size: 18px;line-height: 1.8;">文件管理</a></li>
 				<li><a href="${pageContext.request.contextPath}/conditionMonitoring" style="color: #9d9d9d;;font-size: 18px;line-height: 1.8;">数据分析</a></li>
 				<li><a href="${pageContext.request.contextPath}/admin/galaxy/index" style="color: #9d9d9d;;font-size: 18px;line-height: 1.8;">星系管理</a></li>

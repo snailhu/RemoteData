@@ -22,7 +22,7 @@ import DataAn.log.service.SystemLogService;
 @Controller
 @RequestMapping("/admin")
 public class SystemLogController {
-	
+	 
 	@Resource 
 	private SystemLogService systemLogService;
 	

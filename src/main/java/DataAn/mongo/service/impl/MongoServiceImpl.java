@@ -21,7 +21,6 @@ public class MongoServiceImpl implements IMongoService{
 	//TODO
 	private MongodbUtil mg = null;//MongodbUtil.getInstance();
 
-
 	@Override
 	public void saveCSVData(String series, String star,String paramType, String date,
 			List<Document> documents, String versions) throws Exception {
@@ -30,12 +29,14 @@ public class MongoServiceImpl implements IMongoService{
 		String collectionName = DateUtil.formatString(date, "yyyy-MM-dd", "yyyy");
 		collectionName = paramType + collectionName;
 		try {
-			//设置同一时间段的数据的状态为0
-			Date beginDate = documents.get(0).getDate("datetime");
-			Date endDate = documents.get(documents.size() - 1).getDate("datetime");
-			mg.updateByDate(databaseName, collectionName, beginDate, endDate);
-			
-			mg.insertMany(databaseName, collectionName, documents);
+			if(documents != null && documents.size() > 0){
+				//设置同一时间段的数据的状态为0
+				Date beginDate = documents.get(0).getDate("datetime");
+				Date endDate = documents.get(documents.size() - 1).getDate("datetime");
+				mg.updateByDate(databaseName, collectionName, beginDate, endDate);
+				
+				mg.insertMany(databaseName, collectionName, documents);					
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			mg.update(databaseName, collectionName, "versions", versions);
@@ -50,15 +51,25 @@ public class MongoServiceImpl implements IMongoService{
 		String databaseName = InitMongo.getDataBaseNameBySeriesAndStar(series, star);
 		Set<String> keys = map.keySet();
 		for (String key : keys) {
+			
 			String collectionName = paramType + key;
 			List<Document> documents = map.get(key);
-			//设置同一时间段的数据的状态为0
-			Date beginDate = documents.get(0).getDate("datetime");
-			Date endDate = documents.get(documents.size() - 1).getDate("datetime");
-			mg.updateByDate(databaseName, collectionName, beginDate, endDate);
-			
-			mg.insertMany(databaseName, collectionName, documents);
-			
+			if(documents != null && documents.size() > 0){
+//				long begin = System.currentTimeMillis();
+				
+				//设置同一时间段的数据的状态为0
+				Date beginDate = documents.get(0).getDate("datetime");
+				Date endDate = documents.get(documents.size() - 1).getDate("datetime");
+				mg.updateByDate(databaseName, collectionName, beginDate, endDate);
+				//保存数据到mongodb中
+				mg.insertMany(databaseName, collectionName, documents);
+				
+//				long end = System.currentTimeMillis();
+//				System.out.println("保存数据在： " + databaseName + "." + collectionName);
+//				System.out.println("耗时： " + (end - begin) );
+				
+//				Thread.sleep(10000);
+			}
 		}
 		
 	}
@@ -73,6 +84,14 @@ public class MongoServiceImpl implements IMongoService{
 	}
 	
 	@Override
+	public void updateCSVDataByVersions(String series, String star,
+			String paramType, String versions) {
+		String databaseName = InitMongo.getDataBaseNameBySeriesAndStar(series, star);
+		String collectionName =  paramType;
+		mg.update(databaseName, collectionName, "versions", versions);
+	}
+	
+	@Override
 	public void find() {
 		String databaseName = InitMongo.DB_J9STAR2;
 		String collectionName = "tb2016";
@@ -83,6 +102,8 @@ public class MongoServiceImpl implements IMongoService{
 			System.out.println(DateUtil.format(doc.getDate("datetime")));
 		}
 	}
+
+
 
 
 

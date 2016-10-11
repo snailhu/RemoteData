@@ -161,6 +161,13 @@ public class MongoServiceAopImpl implements MongoService {
 			return yearAndParam;
 		}			
 	}
+
+	@Override
+	public YearAndParamDataDto getListByTimeBatch(int selectParamSize,
+			String... params) throws InterruptedException {
+		
+		return null;
+	}
 }
 
 

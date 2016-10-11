@@ -18,8 +18,7 @@ import DataAn.mongo.service.IMongoService;
 @Service
 public class MongoServiceImpl implements IMongoService{
 
-	//TODO
-	private MongodbUtil mg = null;//MongodbUtil.getInstance();
+	private MongodbUtil mg = MongodbUtil.getInstance();
 
 	@Override
 	public void saveCSVData(String series, String star,String paramType, String date,
@@ -101,6 +100,15 @@ public class MongoServiceImpl implements IMongoService{
 			Document doc = cursor.next();
 			System.out.println(DateUtil.format(doc.getDate("datetime")));
 		}
+	}
+
+	@Override
+	public MongoCursor<Document> findByYear_month_day(String series,
+			String star, String paramType, String date) {
+		String databaseName = InitMongo.getDataBaseNameBySeriesAndStar(series, star);
+		String collectionName =  paramType;
+		
+		return mg.find(databaseName, collectionName, "year_month_day", date);
 	}
 
 

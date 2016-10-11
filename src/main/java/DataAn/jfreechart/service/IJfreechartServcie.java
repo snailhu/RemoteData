@@ -1,12 +1,30 @@
 package DataAn.jfreechart.service;
 
+import java.util.Map;
 import java.util.Vector;
-
 import DataAn.jfreechart.chart.Serie;
 
 
 public interface IJfreechartServcie {
 
+	
+	/**
+	* Description: 生成一张图片，只有一个y轴
+	* @param series 系列 j9
+	* @param star 星 01、02、03...
+	* @param paramType flywheel、top
+	* @param date 某一天：2015-01-01
+	* @param params 参数： 英文-中文
+	* @return 图片路径
+	* @throws Exception
+	* @author Shenwp
+	* @date 2016年10月11日
+	* @version 1.0
+	*/
+	public String createLineChart(String series,
+			String star, String paramType, String date,
+			Map<String,String> params) throws Exception;
+	
 	/**
 	* Description: 生成一张图片，只有一个y轴
 	* @param title 图片标题

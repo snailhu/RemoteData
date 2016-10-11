@@ -1,5 +1,7 @@
 package DataAn.jfreechart;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Vector;
 
 import javax.annotation.Resource;
@@ -9,6 +11,8 @@ import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import DataAn.fileSystem.option.J9SeriesType;
+import DataAn.fileSystem.option.SeriesType;
 import DataAn.jfreechart.chart.Serie;
 import DataAn.jfreechart.service.IJfreechartServcie;
 
@@ -18,6 +22,23 @@ public class JfreechartServcieTest {
 
 	@Resource
 	private IJfreechartServcie jfreechartServcie;
+	
+	
+	
+	@Test
+	public void createLineChart2() throws Exception{
+		String series = SeriesType.J9_SERIES.getValue();
+		String star = J9SeriesType.STRA2.getValue();
+		String paramType = "flywheel1s";
+		String date = "2015-01-01";
+		Map<String, String> params = new HashMap<String,String>();
+		params.put("sequence_16025", "飞轮a电机电流(16025)");
+		params.put("sequence_16026", "飞轮a电源+5V(16026)");
+		params.put("sequence_16028", "飞轮b电源+5V(16028)");
+		params.put("sequence_16107", "飞轮A转速(16107)");
+		String chartPaht = jfreechartServcie.createLineChart(series, star, paramType, date, params);
+		System.out.println(chartPaht);
+	}
 	
 	@Test
 	public void createLineChart() throws Exception{
@@ -58,4 +79,5 @@ public class JfreechartServcieTest {
 		String chartPaht = jfreechartServcie.createLineChart(title, categoryAxisLabel, valueAxisLabel, series, categoriesV);
 		System.out.println(chartPaht);
 	}
+	
 }

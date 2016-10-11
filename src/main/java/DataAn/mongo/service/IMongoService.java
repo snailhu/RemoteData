@@ -5,6 +5,8 @@ import java.util.Map;
 
 import org.bson.Document;
 
+import com.mongodb.client.MongoCursor;
+
 public interface IMongoService {
 
 
@@ -47,4 +49,7 @@ public interface IMongoService {
 			String versions);
 	
 	public void find();
+	
+	public MongoCursor<Document> findByYear_month_day(String series,
+			String star, String paramType, String date);
 }

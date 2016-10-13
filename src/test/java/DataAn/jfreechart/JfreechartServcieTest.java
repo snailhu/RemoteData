@@ -14,6 +14,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import DataAn.fileSystem.option.J9SeriesType;
 import DataAn.fileSystem.option.SeriesType;
 import DataAn.jfreechart.chart.Serie;
+import DataAn.jfreechart.dto.LineChartDto;
 import DataAn.jfreechart.service.IJfreechartServcie;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -36,8 +37,8 @@ public class JfreechartServcieTest {
 		params.put("sequence_16026", "飞轮a电源+5V(16026)");
 		params.put("sequence_16028", "飞轮b电源+5V(16028)");
 		params.put("sequence_16107", "飞轮A转速(16107)");
-		String chartPaht = jfreechartServcie.createLineChart(series, star, paramType, date, params);
-		System.out.println(chartPaht);
+		LineChartDto lineChartDto = jfreechartServcie.createLineChart(series, star, paramType, date, params);
+		System.out.println(lineChartDto);
 	}
 	
 	@Test

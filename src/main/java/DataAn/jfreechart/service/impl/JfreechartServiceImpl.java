@@ -19,6 +19,7 @@ import DataAn.common.config.CommonConfig;
 import DataAn.common.utils.DateUtil;
 import DataAn.jfreechart.chart.ChartFactory;
 import DataAn.jfreechart.chart.Serie;
+import DataAn.jfreechart.dto.LineChartDto;
 import DataAn.jfreechart.service.IJfreechartServcie;
 import DataAn.mongo.service.IMongoService;
 
@@ -29,41 +30,58 @@ public class JfreechartServiceImpl implements IJfreechartServcie{
 	private IMongoService mongoService;
 	
 	@Override
-	public String createLineChart(String series, String star, String paramType,
+	public LineChartDto createLineChart(String series, String star, String paramType,
 			String date, Map<String,String> params) throws Exception {
 		//多条线数据
 		Vector<Serie> lines = new Vector<Serie>();
 		//x轴数据
 		Vector<String> categories = new Vector<String>();
 		
-		Map<String,Vector<Object>> map = new HashMap<String,Vector<Object>>();
+		Map<String,Vector<Object>> lineMap = new HashMap<String,Vector<Object>>();
+		Map<String,Double> minMap = new HashMap<String,Double>();
+		Map<String,Double> maxMap = new HashMap<String,Double>();
 		Vector<Object> lineList = null;
+		Double min = null;
+		Double max = null;
 		Set<String> en_params = params.keySet();
 		MongoCursor<Document> cursor = mongoService.findByYear_month_day(series, star, paramType, date);
 		Document doc = null;
-//		int count = 0;
+		int count = 1;
 		while(cursor.hasNext()){
 			
-//			count ++;
-//			if(count == 1000)
-//				break;
+			count ++;
+			if(count == 1000)
+				break;
 			
 			doc = cursor.next();
 			categories.add(DateUtil.format(doc.getDate("datetime")));
 			for (String key : en_params) {
-				lineList = map.get(key);
+				lineList = lineMap.get(key);
 				if(lineList == null){
 					lineList = new Vector<Object>();
 				}
 				lineList.add(doc.get(key));
-				map.put(key,lineList);
+				lineMap.put(key,lineList);
+				//获取最小值
+				min = minMap.get(key);
+				if(min == null){
+					min = Double.parseDouble(doc.getString(key));
+				}
+				minMap.put(key, this.getMin(min, Double.parseDouble(doc.getString(key))));
+				//获取最大值
+				max = maxMap.get(key);
+				if(max == null){
+					max = Double.parseDouble(doc.getString(key));
+				}
+				maxMap.put(key, this.getMax(max, Double.parseDouble(doc.getString(key))));
 			}
 		}
+		
 		Serie line = null;
 		for (String key : en_params) {
 			line = new Serie();
 			line.setName(params.get(key));
-			line.setData(map.get(key));
+			line.setData(lineMap.get(key));
 			lines.add(line);
 		}
 		
@@ -85,7 +103,11 @@ public class JfreechartServiceImpl implements IJfreechartServcie{
 		int height = 420;
 		//ChartUtilities.saveChartAsJPEG(file, chart, width, height);
 		ChartUtilities.saveChartAsPNG(file, chart, width, height);
-		return file.getAbsolutePath();
+		LineChartDto lineChartDto = new LineChartDto();
+		lineChartDto.setChartPath(file.getAbsolutePath());
+		lineChartDto.setMinMap(minMap);
+		lineChartDto.setMaxMap(maxMap);
+		return lineChartDto;
 	}
 	
 	@Override
@@ -111,6 +133,15 @@ public class JfreechartServiceImpl implements IJfreechartServcie{
 	}
 
 
-
+	protected double getMax(double data1,double data2){
+		if(data1 >= data2)
+			return data1;
+		return data2;
+	}
+	protected double getMin(double data1,double data2){
+		if(data1 <= data2)
+			return data1;
+		return data2;
+	}
 	
 }

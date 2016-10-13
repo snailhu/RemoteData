@@ -2,7 +2,9 @@ package DataAn.jfreechart.service;
 
 import java.util.Map;
 import java.util.Vector;
+
 import DataAn.jfreechart.chart.Serie;
+import DataAn.jfreechart.dto.LineChartDto;
 
 
 public interface IJfreechartServcie {
@@ -21,7 +23,7 @@ public interface IJfreechartServcie {
 	* @date 2016年10月11日
 	* @version 1.0
 	*/
-	public String createLineChart(String series,
+	public LineChartDto createLineChart(String series,
 			String star, String paramType, String date,
 			Map<String,String> params) throws Exception;
 	

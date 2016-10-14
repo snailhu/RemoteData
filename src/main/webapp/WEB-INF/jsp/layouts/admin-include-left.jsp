@@ -395,6 +395,32 @@
 <!-- 					</a></li> -->
 			</ul>
 		</li>
+		<li  id="status-li">
+			<a href="#" class="dropdown-toggle"> <i class="icon-list"></i>
+				<span class="menu-text"> 状态跟踪</span>
+				<b class="arrow icon-angle-down"></b>
+			</a>
+			<ul class="submenu">
+				<li><a href="${pageContext.request.contextPath}/admin/status/startingIndex"> <i class="icon-double-angle-right"></i> 进行中
+					</a></li>
+				<li><a href="${pageContext.request.contextPath}/admin/status/endIndex"> <i class="icon-double-angle-right"></i> 已完成
+					</a></li>
+			</ul>
+		</li>
+		<li  id="prewarning-li">
+			<a href="#" class="dropdown-toggle"> <i class="icon-list"></i>
+				<span class="menu-text"> 预警管理</span>
+				<b class="arrow icon-angle-down"></b>
+			</a>
+			<ul class="submenu">
+				<li><a href="${pageContext.request.contextPath}/admin/prewarning/warnvalueIndex"> <i class="icon-double-angle-right"></i> 特殊工况参数配置
+					</a></li>
+				<li><a href="${pageContext.request.contextPath}/admin/prewarning/errorvalueIndex"> <i class="icon-double-angle-right"></i> 异常参数配置
+					</a></li>
+				<li><a href="${pageContext.request.contextPath}/admin/prewarning/logIndex"> <i class="icon-double-angle-right"></i> 预警查询
+					</a></li>
+			</ul>
+		</li>
 <!-- 		<li>
 			<a href="#" class="dropdown-toggle"> <i class="icon-list"></i>
 				<span class="menu-text"> 图表管理</span>

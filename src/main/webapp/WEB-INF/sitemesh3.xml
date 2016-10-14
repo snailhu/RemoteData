@@ -9,6 +9,8 @@
 	<mapping path="/report/index" decorator="/WEB-INF/jsp/layouts/admin-home.jsp" />
 	<mapping path="/starParam/index" decorator="/WEB-INF/jsp/layouts/admin-home.jsp" />
 	<mapping path="/refuse" decorator="/WEB-INF/jsp/layouts/admin-home.jsp" />
+	<mapping path="/admin/prewarning/*" decorator="/WEB-INF/jsp/layouts/admin-home.jsp" />
+	<mapping path="/admin/status/*" decorator="/WEB-INF/jsp/layouts/admin-home.jsp" />
 	
 	<!-- 指明满足“/exclude.jsp*”的页面，将被排除，不被装饰 -->
 <!--  	<mapping path="/admin/role/toCreateRole" exclue="true" />  -->

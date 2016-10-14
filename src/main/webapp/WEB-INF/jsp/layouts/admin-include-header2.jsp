@@ -35,10 +35,12 @@ a, a:focus, a:hover, a:active, button, button:hover {
 </style>
 <script type="text/javascript">
 var activeUser = '${activeUser}';
+var warnCount = ${warnCount};
 $(function () {
 	if(activeUser != ''){
 		$('#login-nav').empty();
 		$('#login-nav').append("<li> <a href='javascript:void(0)' id='loginLink'> 欢迎光临,${activeUser.userName} </a> </li>");
+		$('#login-nav').append("<li><a href='${pageContext.request.contextPath}/admin/prewarning/logIndex?hadRead=0' id='prewarning'>您有"+warnCount+"条未读预警信息</a></li>");
 		$('#login-nav').append("<li style='position:relative; top:15px'><a style='margin-top: -15px;' href='${pageContext.request.contextPath}/loginOut' id='loginOutLink'> |&nbsp; 注销 </a></li>");
 	}
 });

@@ -1,7 +1,9 @@
 package DataAn.fileSystem.service.impl;
 
 import java.util.List;
+
 import javax.annotation.Resource;
+
 import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.AfterThrowing;
@@ -9,6 +11,8 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
 import org.bson.Document;
+import org.springframework.stereotype.Component;
+
 import DataAn.fileSystem.dao.IDateParametersDao;
 import DataAn.fileSystem.dao.IVirtualFileSystemDao;
 import DataAn.fileSystem.domain.DateParameters;
@@ -18,6 +22,7 @@ import DataAn.fileSystem.service.ICSVService;
 import DataAn.mongo.service.IMongoService;
 
 @Aspect
+@Component
 public class SaveFileHelper {
 
 	@Resource
@@ -29,7 +34,7 @@ public class SaveFileHelper {
 	@Resource
 	private IMongoService mongoService;
 
-	@Pointcut("execution(* DataAn22.fileSystem.service.*.saveFile(..))")
+	@Pointcut("execution(* DataAn.fileSystem.service.*.saveFile(..))")
 	private void pointCutMethod() {
 
 	}
@@ -63,8 +68,7 @@ public class SaveFileHelper {
 
 		long begin = System.currentTimeMillis();
 
-		VirtualFileSystem fs = fileDao
-				.selectByFileTypeIsFileAndMongoFSUUId(uuId);
+		VirtualFileSystem fs = fileDao.selectByFileTypeIsFileAndMongoFSUUId(uuId);
 		System.out.println(fs);
 		if (fs != null) {
 			// IDfsDb dfs = MongoDfsDb.getInstance();
@@ -78,14 +82,12 @@ public class SaveFileHelper {
 			// final CSVFileDataResultDto<Document> result =
 			// csvService.readCSVFileToDoc(dfs.downLoadToStream(databaseName,
 			// uuId),uuId);
-			CSVFileDataResultDto<Document> result = csvService
-					.readCSVFileToDoc(fs.getCachePath(), uuId);
+			CSVFileDataResultDto<Document> result = csvService.readCSVFileToDoc(fs.getCachePath(), uuId);
 			List<Document> docList = result.getDatas();
 			// 数据不为空
 			if (docList != null && docList.size() > 0) {
 				// 保存csv文件数据
-				// mongoService.saveCSVData(series, star,parameterType, date,
-				// docList, uuId);
+				mongoService.saveCSVData(series, star,parameterType, date,docList, uuId);
 				// 存储某一天的参数信息
 				String title = result.getTitle();
 				DateParameters dateParameters = new DateParameters();
@@ -97,12 +99,11 @@ public class SaveFileHelper {
 				parametersDao.add(dateParameters);
 			}
 			// 更新临时文件存储目录
-			fs.setCachePath(null);
-			fileDao.update(fs);
+			//fs.setCachePath(null);
+			//fileDao.update(fs);
 
 			// test 等级
-			mongoService.saveCSVData(series, star, parameterType, date,
-					result.getMap(), uuId);
+			//mongoService.saveCSVData(series, star, parameterType, date,result.getMap(), uuId);
 
 			long end = System.currentTimeMillis();
 			System.out.println("保存数据： " + (end - begin));

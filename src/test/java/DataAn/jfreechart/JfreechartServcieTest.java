@@ -30,13 +30,17 @@ public class JfreechartServcieTest {
 	public void createLineChart2() throws Exception{
 		String series = SeriesType.J9_SERIES.getValue();
 		String star = J9SeriesType.STRA2.getValue();
-		String paramType = "flywheel1s";
-		String date = "2015-01-01";
+		String paramType = "flywheel2016";
+		String date = "2016-02-01";
 		Map<String, String> params = new HashMap<String,String>();
-		params.put("sequence_16025", "飞轮a电机电流(16025)");
-		params.put("sequence_16026", "飞轮a电源+5V(16026)");
-		params.put("sequence_16028", "飞轮b电源+5V(16028)");
-		params.put("sequence_16107", "飞轮A转速(16107)");
+//		params.put("sequence_16025", "飞轮a电机电流(16025)");
+//		params.put("sequence_16026", "飞轮a电源+5V(16026)");
+//		params.put("sequence_16028", "飞轮b电源+5V(16028)");
+//		params.put("sequence_16107", "飞轮A转速(16107)");
+		params.put("sequence_00815", "飞轮温度Xa(00815)");
+		params.put("sequence_00817", "飞轮温度Ya(00817)");
+		params.put("sequence_00819", "飞轮温度Za(00819)");
+		params.put("sequence_00821", "飞轮温度Xb(00821)");
 		LineChartDto lineChartDto = jfreechartServcie.createLineChart(series, star, paramType, date, params);
 		System.out.println(lineChartDto);
 	}

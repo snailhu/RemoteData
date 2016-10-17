@@ -23,7 +23,7 @@ import DataAn.fileSystem.service.ICSVService;
 import DataAn.mongo.service.IMongoService;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:applicationContext-hibernate.xml","classpath:applicationContext.xml"})
+@ContextConfiguration(locations = {"classpath:applicationContext-hibernate.xml","classpath:applicationContext-cache.xml"})
 public class MongoServiceTest {
 
 	@Resource
@@ -31,7 +31,7 @@ public class MongoServiceTest {
 	
 	@Resource
 	private ICSVService csvService;
-	private String filePath = "D:\\temp\\data\\2016\\1-6\\j9-02--2016-01-10.csv";
+	private String filePath = "c:\\j9-02--2016-02-01.csv";
 	
 	@Test
 	public void saveCSVData() throws Exception{
@@ -43,7 +43,10 @@ public class MongoServiceTest {
 		String date= "2016-01-10";
 		CSVFileDataResultDto<Document> result= csvService.readCSVFileToDoc(filePath,uuId);
 		List<Document> list = result.getDatas();
-		mongoService.saveCSVData(series, star, paramType, date, list, uuId);
+		for (Document document : list) {
+			System.out.println(document);
+		}
+	//	mongoService.saveCSVData(series, star, paramType, date, list, uuId);
 		long end = System.currentTimeMillis();
 		System.out.println("time: " + (end - begin));
 	}

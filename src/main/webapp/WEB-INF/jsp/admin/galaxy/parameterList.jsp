@@ -9,7 +9,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   <head>
     <base href="<%=basePath%>">
     
-    <title>My JSP 'index.jsp' starting page</title>
+    <title>My JSP 'parameterList.jsp' starting page</title>
     
 	<meta http-equiv="pragma" content="no-cache">
 	<meta http-equiv="cache-control" content="no-cache">
@@ -130,65 +130,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     margin-bottom: 0px;
 }
 </style>
-<script type="text/javascript">
-$(function() {
-	//创建角色表单验证
-	$('#addRoleInfoForm').bootstrapValidator({
-		message : '这个值不能为空！',
-		feedbackIcons : {
-			valid : 'glyphicon glyphicon-ok',
-			invalid : 'glyphicon glyphicon-remove',
-			validating : 'glyphicon glyphicon-refresh'
-		},
-		fields : {
-			name : {
-				message : '角色名不能为空',
-				validators : {
-					notEmpty : {
-						message : '角色名不能为空'
-					},
-				}
-			},
-			description : {
-          	  message: '',
-            }
-		}
-	});
-	$('#reset_addRoleInfo').click(function() {
-		$('#addRoleInfoForm').data('bootstrapValidator').resetForm(true);
-	});
-	//编辑角色表单验证
-	$('#editRoleInfoForm').bootstrapValidator({
-		message : '这个值不能为空！',
-		feedbackIcons : {
-			valid : 'glyphicon glyphicon-ok',
-			invalid : 'glyphicon glyphicon-remove',
-			validating : 'glyphicon glyphicon-refresh'
-		},
-		fields : {
-			name : {
-				message : '角色名不能为空',
-				validators : {
-					notEmpty : {
-						message : '角色名不能为空'
-					},
-				}
-			},
-			description : {
-          	  message: '',
-            }
-		}
-	});
-	$('#reset_editRoleInfo').click(function() {
-		$('#editRoleInfoForm').data('bootstrapValidator').resetForm(true);
-	});
-});
-</script>
   </head>
   
   <body>
-  
-    <div class="main-content">
+	<div class="main-content">
 <!-- 		<div class="breadcrumbs" id="breadcrumbs"> -->
 <!-- 			<script type="text/javascript"> -->
 <!-- 				try { -->
@@ -212,7 +157,7 @@ $(function() {
 <!-- 		</div> -->
 		<div class="page-content">
 			<div class="page-header">
-				<h1>角色管理</h1>
+				<h1>遥测节点</h1>
 			</div>
 			<!-- /.page-header -->
 			<div id="content" region="center" style="overflow: hidden">
@@ -345,7 +290,7 @@ $(function() {
 	
 	<script type="text/javascript">
 	  var roleGrid;
-	  var url='<%=request.getContextPath()%>/admin/role/getList';
+	  var url='<%=request.getContextPath()%>/admin/parameter/getList';
 	  $(function () {
 	      roleGrid = $('#roleList').datagrid({
 	          url: url,
@@ -569,6 +514,6 @@ $(function() {
 	      roleGrid.datagrid('reload');
 	  }
 	</script>	
+	
   </body>
-
 </html>

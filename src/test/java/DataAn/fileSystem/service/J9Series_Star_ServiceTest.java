@@ -108,10 +108,11 @@ public class J9Series_Star_ServiceTest {
 	public void getAllParameterList_allZh_and_en() throws Exception{
 		Map<String,String> map =  service.getAllParameterList_allZh_and_en();
 		Set<String> keys = map.keySet();
-		for (String key : keys) {
-			System.out.println(key + " : " + map.get(key));
-		}
+//		for (String key : keys) {
+//			System.out.println(key + " : " + map.get(key));
+//		}
 		System.out.println(keys.size());
+		System.out.println(map.get("接收地方时"));
 	}
 	
 

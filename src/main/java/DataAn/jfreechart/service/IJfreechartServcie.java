@@ -17,7 +17,7 @@ public interface IJfreechartServcie {
 	* @param paramType flywheel、top
 	* @param date 某一天：2015-01-01
 	* @param params 参数： 英文-中文
-	* @return 图片路径
+	* @return 
 	* @throws Exception
 	* @author Shenwp
 	* @date 2016年10月11日
@@ -25,6 +25,15 @@ public interface IJfreechartServcie {
 	*/
 	public LineChartDto createLineChart(String series,
 			String star, String paramType, String date,
+			Map<String,String> params) throws Exception;
+	
+	/**
+	* Description: 生成一年中第几个星期的图片
+	* @param week_of_year 一年中第几个星期
+	* @return
+	*/
+	public LineChartDto createLineChart(String series,
+			String star, String paramType, int week_of_year,
 			Map<String,String> params) throws Exception;
 	
 	/**

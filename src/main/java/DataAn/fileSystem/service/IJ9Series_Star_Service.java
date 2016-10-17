@@ -37,6 +37,14 @@ public interface IJ9Series_Star_Service {
 	public List<ConstraintDto> getFlyWheelParameterList() throws Exception;
 	
 	/**
+	* Description: 通过参数的英文返回参数的类型
+	* @param param_en 参数英文值
+	* @return
+	* @throws Exception
+	*/
+	public String getFlyWheelParameterType(String param_en) throws Exception;
+	
+	/**
 	* Description: 获取陀螺类型的参数列表
 	* @return 
 	* @throws Exception

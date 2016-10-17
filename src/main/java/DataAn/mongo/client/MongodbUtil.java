@@ -61,7 +61,7 @@ public class MongodbUtil {
 				}
 				mg = new MongoClient(addresses);
 			}else{
-				System.out.println("启动数据存储数据库：{}" + InitMongo.DB_SERVER_HOST);
+				System.out.println("启动数据存储数据库：{}" + InitMongo.DB_SERVER_HOST + ":" +InitMongo.DB_SERVER_PORT);
 				LogUtil.getInstance().getLogger(this.getClass()).info("启动数据库：{}",InitMongo.DB_SERVER_HOST);
 				mg = new MongoClient(InitMongo.DB_SERVER_HOST, InitMongo.DB_SERVER_PORT);
 			}
@@ -318,7 +318,7 @@ public class MongodbUtil {
 		return cursor;
 	}
 	
-	public MongoCursor<Document> find(String databaseName,String collectionName, String key, String value){
+	public MongoCursor<Document> find(String databaseName,String collectionName, String key, Object value){
 		MongoCollection<Document> collection = this.getCollection(databaseName, collectionName);
 		
 		return collection.find(Filters.eq(key, value)).iterator();

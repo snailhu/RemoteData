@@ -22,7 +22,7 @@ import DataAn.fileSystem.service.ICSVService;
 import DataAn.mongo.service.IMongoService;
 
 @Aspect
-@Component
+//@Component
 public class SaveFileHelper {
 
 	@Resource
@@ -34,7 +34,7 @@ public class SaveFileHelper {
 	@Resource
 	private IMongoService mongoService;
 
-	@Pointcut("execution(* DataAn.fileSystem.service.*.saveFile(..))")
+	@Pointcut("execution(* DataAn22.fileSystem.service.*.saveFile(..))")
 	private void pointCutMethod() {
 
 	}

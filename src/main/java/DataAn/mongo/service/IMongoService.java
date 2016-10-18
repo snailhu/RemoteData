@@ -1,5 +1,6 @@
 package DataAn.mongo.service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -55,4 +56,7 @@ public interface IMongoService {
 	
 	public MongoCursor<Document> findByWeek_of_year(String series,
 			String star, String paramType, int week_of_year);
+	
+	public MongoCursor<Document> findByDate(String series,
+			String star, String paramType, Date beginDate, Date endDate);
 }

@@ -130,11 +130,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     padding: 0;
 /*     line-height: 24px; */
 }
-.form-group {
-    margin-bottom: 0px;
-}
-.form-group>label[class*="col-"] {
-    padding-top: 2px;
+.form-horizontal {
     margin-bottom: 0px;
 }
 
@@ -389,9 +385,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					<div class="modal-content">
 						<form id="addUserInfoForm" class="form-horizontal" role="form" style="margin: 0px;">
 							<div class="modal-header">
-								<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-									<span aria-hidden="true">&times;</span>
-								</button>
+<!-- 								<button type="button" class="close" data-dismiss="modal" aria-label="Close"> -->
+<!-- 									<span aria-hidden="true">&times;</span> -->
+<!-- 								</button> -->
 								<h4 class="modal-title" id="addUserModalLabel">用户信息</h4>
 							</div>
 							<div class="modal-body">
@@ -747,9 +743,8 @@ jeDate({
 				                 top.$.messager.alert('温馨提示', '由于网络或服务器太忙，提交失败，请重试！');
 				             }
 				         });
-				$('#addUserInfoForm').data('bootstrapValidator').resetForm(true);
 			});
-		
+			$('#addUserInfoForm').data('bootstrapValidator').resetForm(true);
 		}
 		//删除用户
 		function deleteUser() {

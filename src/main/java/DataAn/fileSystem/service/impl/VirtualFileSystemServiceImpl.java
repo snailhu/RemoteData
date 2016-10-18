@@ -399,16 +399,16 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 //		}
 		
 		//获取参数信息保存
-//		CSVFileDataResultDto<Document> result = csvService.readCSVFileToDocAndgetTitle(fileDto.getFilePath());
-//		//存储某一天的参数信息
-//		String title = result.getTitle();
-//		DateParameters dateParameters = new DateParameters();
-//		dateParameters.setSeries(series);
-//		dateParameters.setStar(star);
-//		dateParameters.setParameterType(parameterType);
-//		dateParameters.setParameters(title);
-//		dateParameters.setYear_month_day(date);
-//		parametersDao.add(dateParameters);
+		CSVFileDataResultDto<Document> result = csvService.readCSVFileToDocAndgetTitle(fileDto.getFilePath());
+		//存储某一天的参数信息
+		String title = result.getTitle();
+		DateParameters dateParameters = new DateParameters();
+		dateParameters.setSeries(series);
+		dateParameters.setStar(star);
+		dateParameters.setParameterType(parameterType);
+		dateParameters.setParameters(title);
+		dateParameters.setYear_month_day(date);
+		parametersDao.add(dateParameters);
 		
 		//查找csv的文件夹是否存在
 //		VirtualFileSystem csvDir = fileDao.selectByParentIdisNullAndFileName("csv");
@@ -466,7 +466,7 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 		file.setMongoFSUUId(uuId);
 		file.setParameterType(parameterType);
 		//保存缓存路径，以后通过定时任务上传
-		file.setCachePath(fileDto.getFilePath());
+//		file.setCachePath(fileDto.getFilePath());
 		fileDao.add(file);
 		
 	}

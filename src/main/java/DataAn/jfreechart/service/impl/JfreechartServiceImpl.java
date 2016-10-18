@@ -27,6 +27,7 @@ import DataAn.common.utils.DateUtil;
 import DataAn.jfreechart.chart.ChartFactory;
 import DataAn.jfreechart.chart.ChartUtils;
 import DataAn.jfreechart.chart.Serie;
+import DataAn.jfreechart.dto.ConstraintDto;
 import DataAn.jfreechart.dto.LineChartDto;
 import DataAn.jfreechart.service.IJfreechartServcie;
 import DataAn.mongo.service.IMongoService;
@@ -38,19 +39,14 @@ public class JfreechartServiceImpl implements IJfreechartServcie{
 	private IMongoService mongoService;
 	
 	@Override
-	public LineChartDto createLineChart(String series, String star, String paramType,
-			String date, Map<String,String> params) throws Exception {
+	public LineChartDto createLineChart(String series,String star, String paramType, 
+			Date beginDate, Date endDate, List<ConstraintDto> constraintList) throws Exception{
 		
-		return this.createTimeSeriesChart2(series, star, paramType, date, params, 0);
+		
+		
+		return this.createTimeSeriesChart(series, star, paramType, beginDate, endDate, constraintList, 0);
 	}
 	
-	@Override
-	public LineChartDto createLineChart(String series, String star,
-			String paramType, int week_of_year, Map<String, String> params)
-			throws Exception {
-		// TODO Auto-generated method stub
-		return null;
-	}
 	
 	@Override
 	public String createLineChart(String title,
@@ -155,90 +151,16 @@ public class JfreechartServiceImpl implements IJfreechartServcie{
 		return lineChartDto;
 	}
 	
+
 	protected LineChartDto createTimeSeriesChart(String series, String star, String paramType,
-			String date, Map<String,String> params, int totalNumber) throws Exception {
+			Date beginDate, Date endDate, List<ConstraintDto> constraintList, int totalNumber) throws Exception {
 		
-		//多条线数据
-		Map<String,Vector<Object[]>> lineMap = new HashMap<String,Vector<Object[]>>();
-		Map<String,Double> minMap = new HashMap<String,Double>();
-		Map<String,Double> maxMap = new HashMap<String,Double>();
-		Vector<Object[]> lineList = null;
-		Double min = null;
-		Double max = null;
-		Set<String> en_params = params.keySet();
-		MongoCursor<Document> cursor = mongoService.findByWeek_of_year(series, star, paramType, 6);
-		Document doc = null;
-		int count = 0;
-		while(cursor.hasNext()){
-			//设置总数
-			if(totalNumber !=0 && count == totalNumber){
-				break;
-			}
-			count ++;
-			
-			doc = cursor.next();
-			String datetime = DateUtil.format(doc.getDate("datetime"));
-			for (String key : en_params) {
-				lineList = lineMap.get(key);
-				if(lineList == null){
-					lineList = new Vector<Object[]>();
-				}
-				Object[] value = {datetime, doc.get(key)};
-				lineList.add(value);
-				lineMap.put(key,lineList);
-				//获取最小值
-				min = minMap.get(key);
-				if(min == null){
-					min = Double.parseDouble(doc.getString(key));
-				}
-				minMap.put(key, this.getMin(min, Double.parseDouble(doc.getString(key))));
-				//获取最大值
-				max = maxMap.get(key);
-				if(max == null){
-					max = Double.parseDouble(doc.getString(key));
-				}
-				maxMap.put(key, this.getMax(max, Double.parseDouble(doc.getString(key))));
-			}
-		}
-		//多条线图表数据
-		TimeSeriesCollection dataset = new TimeSeriesCollection();
-		for (String key : en_params) {
-			System.out.println(params.get(key) + " : " + lineMap.get(key).size());
-			TimeSeries timeSeries = ChartUtils.createTimeseries(params.get(key),lineMap.get(key));
-			dataset.addSeries(timeSeries);
-		}
-		String title = "";
-		String categoryAxisLabel = "";
-		String valueAxisLabel = "";
-		
-		System.out.println("0 " + dataset.getItemCount(0));
-        System.out.println("1 " + dataset.getItemCount(1));
-        System.out.println("2 " + dataset.getItemCount(2));
-        System.out.println("3 " + dataset.getItemCount(3));
-        
-		JFreeChart chart = ChartFactory.createTimeSeriesChart(title, categoryAxisLabel, valueAxisLabel, dataset);
-		
-		String cachePath = CommonConfig.getChartCachePath();
-		File parentDir = new File(cachePath);
-		if (!parentDir.exists()) {
-			parentDir.mkdirs();
+		Map<String,String> params = new HashMap<String,String>();
+		for (ConstraintDto constraintDto : constraintList) {
+			params.put(constraintDto.getValue(), constraintDto.getName());
 		}
 		
-		File file = new File(cachePath,"lineChart.png");
-		int width = 1024;
-		int height = 620;
-		//ChartUtilities.saveChartAsJPEG(file, chart, width, height);
-		ChartUtilities.saveChartAsPNG(file, chart, width, height);
-		LineChartDto lineChartDto = new LineChartDto();
-		lineChartDto.setChartPath(file.getAbsolutePath());
-		lineChartDto.setMinMap(minMap);
-		lineChartDto.setMaxMap(maxMap);
-		return lineChartDto;
-	}
-	protected LineChartDto createTimeSeriesChart2(String series, String star, String paramType,
-			String date, Map<String,String> params, int totalNumber) throws Exception {
-		
-		MongoCursor<Document> cursor = mongoService.findByWeek_of_year(series, star, paramType, 6);
+		MongoCursor<Document> cursor = mongoService.findByDate(series, star, paramType, beginDate, endDate);
 		Document doc = null;
 		int count = 0;
 		Set<Date> dateSet = new HashSet<Date>();

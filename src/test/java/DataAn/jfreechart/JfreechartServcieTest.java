@@ -41,7 +41,7 @@ public class JfreechartServcieTest {
 		params.put("sequence_00817", "飞轮温度Ya(00817)");
 		params.put("sequence_00819", "飞轮温度Za(00819)");
 		params.put("sequence_00821", "飞轮温度Xb(00821)");
-		LineChartDto lineChartDto = jfreechartServcie.createLineChart(series, star, paramType, date, params);
+		LineChartDto lineChartDto = jfreechartServcie.createLineChart(series, star, paramType, null, null, null);
 		System.out.println(lineChartDto);
 	}
 	

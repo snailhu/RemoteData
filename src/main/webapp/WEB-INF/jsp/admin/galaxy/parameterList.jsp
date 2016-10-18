@@ -255,29 +255,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					</div>
 				</div>
 			</div>
-			<!-- 编辑角色权限 -->
-			<div class="modal fade" id="editRolePermissionModal" tabindex="-1" role="dialog" aria-labelledby="editRolePermissionModalLabel"  >
-			  <div class="modal-dialog" role="document" style="margin:55px -300px">
-			    <div class="modal-content">
-			      <div class="modal-header">
-			        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-			        <h4 class="modal-title" id="editRolePermissionModalLabel">编辑角色：</h4>
-			      </div>
-			      <div class="modal-body">
-			      	<div id="permissionTree-div">
-			      		<input type="hidden" id="editRolePermission-roleId">
-						<ul id="permissionTree" fit="true"></ul>
-			      	</div>
-			      </div>
-			      <div class="modal-footer">
-			      	<div class="col-lg-4 col-lg-offset-5">
-				        <button type="button" class="btn btn-default" data-dismiss="modal" id="reset_editRolePermission">关闭</button>
-				        <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="submit_editRolePermission()">确定</button>
-                    </div>
-			      </div>
-			    </div>
-			  </div>
-			</div>
 			
 			<div class="row">
 				<div class="col-xs-12">
@@ -309,73 +286,20 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	              checkbox: true
 	          }, {
 	              field: 'name',
-	              title: '角色名',
+	              title: '参数名',
 	              width: 120,
 	              sortable: true
 	          }]],
 	          columns: [[{
-	              field: 'description',
-	              title: '描述',
+	              field: 'code',
+	              title: '参数码',
 	              width: 200
-	          }, {
-	              field: 'createDate',
-	              title: '创建时间',
-	              width: 120
 	          }, 
-	          {
-	              field: 'editPermission',
-	              title: '编辑权限',
-	              width: 80,
-	              formatter: function (value, row, index) {
-	                  return "<a href=\"javascript:doEditPermission('" + row.id +  "');\"" + " title='编辑权限'>编辑权限</a>";
-	              }
-	          }
 	          ]]
 	      });
-	
 	  });
-	//编辑角色权限
-	function doEditPermission(roleId) {
-  		$("#permissionTree").empty();
-  		roleGrid.datagrid('unselectAll');
-  		//弹出编辑权限
-  		$('#editRolePermissionModal').modal('show');
-  		$("#editRolePermission-roleId").attr("value",roleId);
-  		$("#permissionTree").tree({
-              url: '${pageContext.request.contextPath}/admin/permission/getTree?roleId=' + roleId,
-              checkbox: true,
-       });
-	}
-	function submit_editRolePermission(){
-		var roleId = $("#editRolePermission-roleId").attr("value");
-		var nodes = $("#permissionTree").tree('getChecked');
-       	if (nodes.length > 0) {
-       		var permissionItemId = '';
-   			for(var i = 0; i < nodes.length; i++){
-   				if (permissionItemId != '') permissionItemId += ',';
-   				permissionItemId += nodes[i].id;
-   			}
-   			$.ajax({
-   				url: '${pageContext.request.contextPath}/admin/role/editRolePermission',
-   				data : {
-   					roleId : roleId,
-   					permissionItemId : permissionItemId
-   				},
-   				cache: false,
-   				dataType: "json",
-   				success: function(data) {
-					if (data.success) {
-					    top.showMsg('提示', data.msg);
-					}
-					else {
-					    top.showMsg('警告', map.msg);
-					}
-   				}
-   			});
-       	} else {
-			top.showMsg("提示", "请选择要关联的权限！");
-		}
-	}
+	
+	
 	//创建系统角色
 	$('#submit_addRoleInfo').click(function(){
 		var isValid = $('#addRoleInfoForm').data('bootstrapValidator').isValid();

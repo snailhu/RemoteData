@@ -77,8 +77,8 @@ public enum J9Series_Star_ParameterType {
 	*/
 	public static List<String> getFlywheelTypeOnParams() {
 		List<String> list = new ArrayList<String>();
-		list.add("电流");
 		list.add("转速");
+		list.add("电流");
 		list.add("温度");
 		list.add("指令");
 		list.add("供电状态");

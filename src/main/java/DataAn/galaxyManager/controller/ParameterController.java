@@ -6,12 +6,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-
 import DataAn.common.dao.Pager;
 import DataAn.common.pageModel.EasyuiDataGridJson;
 import DataAn.galaxyManager.dto.ParameterDto;
 import DataAn.galaxyManager.service.IParameterService;
-import DataAn.sys.dto.RoleDto;
 
 @Controller
 @RequestMapping("/admin/parameter")

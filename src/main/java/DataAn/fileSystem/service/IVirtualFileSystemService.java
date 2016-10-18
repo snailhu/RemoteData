@@ -10,7 +10,7 @@ import DataAn.fileSystem.dto.MongoFSDto;
 * Title: IVirtualFileSystemService
 * @Description: 虚拟文件目录信息服务类
 * @author  Shewp
-* @date 2016年7月28日
+* @date 2016年7月28日  
 */
 public interface IVirtualFileSystemService {
 
@@ -24,7 +24,7 @@ public interface IVirtualFileSystemService {
 	* @date 2016年7月8日
 	* @version 1.0
 	*/
-	public void saveFile(Map<String,FileDto> map) throws Exception;
+	public String saveFile(Map<String,FileDto> map) throws Exception;
 	
 	/**
 	* Description: 删除一个或多个文件和目录

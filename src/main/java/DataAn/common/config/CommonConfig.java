@@ -43,4 +43,9 @@ public class CommonConfig {
 		return uploadCachePath;
 	}
 	
+	public static String getChartCachePath() {
+		String uploadCachePath = getCachePath() + File.separator + "chart" 
+												+ File.separator + UUIDGeneratorUtil.getUUID();
+		return uploadCachePath;
+	}
 }

@@ -50,7 +50,7 @@ public class MongoDfsDb implements IDfsDb{
 		if (LogUtil.getInstance().getLogger(MongodbUtil.class).isDebugEnabled()) {
 			LogUtil.getInstance().getLogger(MongodbUtil.class).debug("MongoDfsDb() - start "); //$NON-NLS-1$
 		}
-		System.out.println("启动单机存储文件数据库：{}" + InitMongo.DB_SERVER_HOST);
+		System.out.println("启动文件存储数据库：{}" + InitMongo.DB_SERVER_HOST + ":" + InitMongo.FS_SERVER_PORT);
 		LogUtil.getInstance().getLogger(this.getClass()).info("启动单机存储文件数据库：{}",InitMongo.DB_SERVER_HOST);
 		mg = new MongoClient(InitMongo.FS_SERVER_HOST, InitMongo.FS_SERVER_PORT);
 		

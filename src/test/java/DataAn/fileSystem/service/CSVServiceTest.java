@@ -35,6 +35,9 @@ import DataAn.fileSystem.dto.CSVFileDataResultDto;
 import DataAn.fileSystem.option.J9Series_Star_ParameterType;
 import DataAn.fileSystem.service.impl.CSVServiceImpl;
 import DataAn.mongo.db.MongodbUtil;
+import DataAn.mongo.fs.IDfsDb;
+import DataAn.mongo.fs.MongoDfsDb;
+import DataAn.mongo.init.InitMongo;
 
 import com.alibaba.fastjson.JSON;
 import com.csvreader.CsvWriter;
@@ -51,11 +54,11 @@ public class CSVServiceTest {
 	
 	
 	
-//	private String filePath = "C:\\j9-02--2015-08-17.csv";
+	private String filePath = "C:\\j9-02--2016-02-01.csv";
 	
 //	private String filePath = "C:\\excel_result\\数管分系统.csv";
 	
-	private String filePath = "D:\\temp\\data\\2015\\1\\j9-02--2015-01-01.csv";
+//	private String filePath = "D:\\temp\\data\\2015\\1\\j9-02--2015-01-01.csv";
 	
 	@Test
 	public void test(){
@@ -76,16 +79,10 @@ public class CSVServiceTest {
 	}
 	
 	@Test
-	public void readCSVFileToDocAndSaveCacheFile(){
+	public void readCSVFileToDocAndgetTitle(){
 		long begin = System.currentTimeMillis();
-		InputStream in = null;
 		try {
-			String uuId = UUIDGeneratorUtil.getUUID();
-			in = new BufferedInputStream(new FileInputStream(new File(filePath)));
-			CSVFileDataResultDto<Document> result = csvService.readCSVFileToDocAndSaveCacheFile("j9-02--2015-05-10.csv", in, uuId);
-			List<Document> list = result.getDatas();
-			System.out.println("size: " + list.size());
-			System.out.println(result.getCacheFilePath());
+			CSVFileDataResultDto<Document> result = csvService.readCSVFileToDocAndgetTitle(filePath);
 			System.out.println(result.getTitle());
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -100,6 +97,8 @@ public class CSVServiceTest {
 
 		String uuId = UUIDGeneratorUtil.getUUID();
 		CSVFileDataResultDto<Document> result= csvService.readCSVFileToDoc(filePath,uuId);
+//		IDfsDb fs = MongoDfsDb.getInstance();
+//		CSVFileDataResultDto<Document> result= csvService.readCSVFileToDoc(fs.downLoadToStream(InitMongo.FS_J9STAR2, "48d504d0612d46819956979cc5c2e37c"),uuId);
 		List<Document> list = result.getDatas();
 		System.out.println("size: " + list.size());
 //		System.out.println(list.get(list.size() - 1));
@@ -108,11 +107,8 @@ public class CSVServiceTest {
 //		for (Document document : list) {
 //			System.out.println(document);
 //		}
-		Map<String,List<Document>> map = result.getMap();
-		Set<String> keys = map.keySet();
-		for (String key : keys) {
-			System.out.println(key + ".." + map.get(key).size());
-		}
+		
+//		Map<String,List<Document>> map = result.getMap();
 //		List<Document> docList_1s = map.get("1s");
 //		System.out.println("1s..." + docList_1s.size());
 //		List<Document> docList_5s = map.get("5s");

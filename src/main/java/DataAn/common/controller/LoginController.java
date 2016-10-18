@@ -22,6 +22,8 @@ import DataAn.sys.service.IUserService;
 import DataAn.common.utils.GetIpUtil;
 import DataAn.log.domain.SystemLog;
 import DataAn.log.service.SystemLogService;
+import DataAn.prewarning.service.IPrewarningService;
+import DataAn.prewarning.service.impl.PrewarningServiceImpl;
 
 
 @Controller
@@ -36,6 +38,9 @@ public class LoginController {
 
 	@Resource
 	private IUserService userService;
+	
+	@Resource
+	private IPrewarningService prewarningService;
 
 		
 	@RequestMapping(value = "/login", method = { RequestMethod.GET })
@@ -62,6 +67,14 @@ public class LoginController {
 		if(acticeUser != null){
 			if(password.equals(acticeUser.getPassWord())){
 				HttpSession session = request.getSession();
+				Long warnCount = 0l;
+				try {
+					warnCount = prewarningService.getNotReadCount("", "", "", "");
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				session.setAttribute("warnCount", warnCount);
 //				session.setAttribute("user", user);
 				session.setAttribute("userName", username);
 				String ip  =  GetIpUtil.getIpAddress(request);       

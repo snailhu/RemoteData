@@ -64,6 +64,7 @@ public enum J9Series_Star_ParameterType {
 		list.add("飞轮d");
 		list.add("飞轮e");
 		list.add("飞轮f");
+		list.add("飞轮");
 		return list;
 	}
 	

@@ -65,8 +65,8 @@ public class InitMongo {
 	
 	/**
 	* Description: 通过系列和星名称获取当前数据库名称
-	* @param series J9SeriesType.SERIES.getName()
-	* @param star J9SeriesType.STRA1.getName()
+	* @param series SeriesType.J9_SERIES.getValue() .. j9
+	* @param star J9SeriesType.STRA1.getValue() .. 01、02
 	* @return
 	* @author Shenwp
 	* @date 2016年8月23日

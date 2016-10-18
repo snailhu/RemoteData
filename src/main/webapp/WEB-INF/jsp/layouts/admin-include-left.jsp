@@ -65,7 +65,7 @@
 				class="menu-text"> 欢迎页面 </span>
 		</a></li>
 
-		<li><a href="admin/file/toUploadFile"> <i class="icon-dashboard"></i> <span
+		<li><a href="report/toUploadFile"> <i class="icon-dashboard"></i> <span
 				class="menu-text"> 文件上传 </span>
 		</a></li>
 		<li>
@@ -86,31 +86,31 @@
 					</a>
 					<ul class="submenu">
 						<li>
-							<a href="admin/file/index/j9/01/0/">
+							<a href="report/index/j9/01/0/">
 								<i class="icon-leaf"></i>
 								第一颗星
 							</a>
 						</li>
 						<li>
-							<a href="admin/file/index/j9/02/0/">
+							<a href="report/index/j9/02/0/">
 								<i class="icon-leaf"></i>
 								第二颗星
 							</a>
 						</li>
 						<li>
-							<a href="admin/file/index/j9/03/0/">
+							<a href="report/index/j9/03/0/">
 								<i class="icon-leaf"></i>
 								第三颗星
 							</a>
 						</li>
 						<li>
-							<a href="admin/file/index/j9/04/0/">
+							<a href="report/index/j9/04/0/">
 								<i class="icon-leaf"></i>
 								第四颗星
 							</a>
 						</li>
 						<li>
-							<a href="admin/file/index/j9/05/0/">
+							<a href="report/index/j9/05/0/">
 								<i class="icon-leaf"></i>
 								第五颗星
 							</a>
@@ -148,7 +148,7 @@
 	<!-- /.nav-list -->
 	<ul id="left_con" class="nav nav-list">
 	    <li>
-	    	<a href="admin/file/toUploadFile"> <i class="icon-dashboard"></i> <span
+	    	<a href="report/toUploadFile"> <i class="icon-dashboard"></i> <span
 				class="menu-text"> 文件上传 </span>
 			</a>
 		</li>
@@ -176,12 +176,12 @@
 							</a>
 							<ul class="submenu">
 		                        <li class="flywheel-li">
-		                            <a href="admin/file/index/j9/01/flywheel/0/">
+		                            <a href="report/index/j9/01/flywheel/0/">
 		                                <i class="icon-leaf"></i> 飞轮
 		                            </a>
 		                        </li>
 		                        <li class="top-li">
-		                            <a href="admin/file/index/j9/01/top/0/">
+		                            <a href="report/index/j9/01/top/0/">
 		                                <i class="icon-leaf"></i>陀螺
 		                            </a>
 		                        </li>
@@ -194,12 +194,12 @@
 							</a>
 							<ul class="submenu">
 		                        <li class="flywheel-li">
-		                            <a href="admin/file/index/j9/02/flywheel/0/">
+		                            <a href="report/index/j9/02/flywheel/0/">
 		                                <i class="icon-leaf"></i> 飞轮
 		                            </a>
 		                        </li>
 		                        <li class="top-li">
-		                            <a href="admin/file/index/j9/02/top/0/">
+		                            <a href="report/index/j9/02/top/0/">
 		                                <i class="icon-leaf"></i>陀螺
 		                            </a>
 		                        </li>
@@ -212,12 +212,12 @@
 							</a>
 							<ul class="submenu">
 		                        <li class="flywheel-li">
-		                            <a href="admin/file/index/j9/03/flywheel/0/">
+		                            <a href="report/index/j9/03/flywheel/0/">
 		                                <i class="icon-leaf"></i> 飞轮
 		                            </a>
 		                        </li>
 		                          <li class="top-li">
-		                            <a href="admin/file/index/j9/03/top/0/">
+		                            <a href="report/index/j9/03/top/0/">
 		                                <i class="icon-leaf"></i>陀螺
 		                            </a>
 		                        </li>
@@ -230,12 +230,12 @@
 							</a>
 							<ul class="submenu">
 		                        <li class="flywheel-li">
-		                            <a href="admin/file/index/j9/04/flywheel/0/">
+		                            <a href="report/index/j9/04/flywheel/0/">
 		                                <i class="icon-leaf"></i> 飞轮
 		                            </a>
 		                        </li>
 		                          <li class="top-li">
-		                            <a href="admin/file/index/j9/04/top/0/">
+		                            <a href="report/index/j9/04/top/0/">
 		                                <i class="icon-leaf"></i>陀螺
 		                            </a>
 		                        </li>
@@ -248,12 +248,12 @@
 							</a>
 							<ul class="submenu">
 		                        <li class="flywheel-li">
-		                            <a href="admin/file/index/j9/05/flywheel/0/">
+		                            <a href="report/index/j9/05/flywheel/0/">
 		                                <i class="icon-leaf"></i> 飞轮
 		                            </a>
 		                        </li>
 		                          <li class="top-li">
-		                            <a href="admin/file/index/j9/05/top/0/">
+		                            <a href="report/index/j9/05/top/0/">
 		                                <i class="icon-leaf"></i>陀螺
 		                            </a>
 		                        </li>
@@ -263,6 +263,120 @@
 				</li>
 			</ul>
 		</li>
+		
+		<li>
+			<a href="#" class="dropdown-toggle"> <i class="icon-list"></i>
+				<span class="menu-text"> 报告管理</span>
+				<b class="arrow icon-angle-down"></b>
+			</a>
+			<ul class="submenu">
+				<li>
+					<a href="javascript:void(0)"> <i class="icon-double-angle-right"></i> 其他系列
+					</a>
+				</li>
+				<li>
+					<a href="#" class="dropdown-toggle">
+						<i class="icon-double-angle-right"></i>
+						j9系列
+						<b class="arrow icon-angle-down"></b>
+					</a>
+					<ul class="submenu">
+						<li>
+							<a href="#" class="dropdown-toggle">
+								<i class="icon-double-angle-right"></i>I号星
+		                        <b class="arrow icon-angle-down"></b>
+							</a>
+							<ul class="submenu">
+		                        <li class="flywheel-li">
+		                            <a href="report/index/j9/01/flywheel/0/">
+		                                <i class="icon-leaf"></i> 飞轮
+		                            </a>
+		                        </li>
+		                        <li class="top-li">
+		                            <a href="report/index/j9/01/top/0/">
+		                                <i class="icon-leaf"></i>陀螺
+		                            </a>
+		                        </li>
+		                    </ul>
+						</li>
+						<li>
+							<a href="#" class="dropdown-toggle">
+								<i class="icon-double-angle-right"></i>II号星
+		                        <b class="arrow icon-angle-down"></b>
+							</a>
+							<ul class="submenu">
+		                        <li class="flywheel-li">
+		                            <a href="report/index/j9/02/flywheel/0/">
+		                                <i class="icon-leaf"></i> 飞轮
+		                            </a>
+		                        </li>
+		                        <li class="top-li">
+		                            <a href="report/index/j9/02/top/0/">
+		                                <i class="icon-leaf"></i>陀螺
+		                            </a>
+		                        </li>
+		                    </ul>
+						</li>
+						<li>
+							<a href="#" class="dropdown-toggle">
+								<i class="icon-double-angle-right"></i>III号星
+		                        <b class="arrow icon-angle-down"></b>
+							</a>
+							<ul class="submenu">
+		                        <li class="flywheel-li">
+		                            <a href="report/index/j9/03/flywheel/0/">
+		                                <i class="icon-leaf"></i> 飞轮
+		                            </a>
+		                        </li>
+		                          <li class="top-li">
+		                            <a href="report/index/j9/03/top/0/">
+		                                <i class="icon-leaf"></i>陀螺
+		                            </a>
+		                        </li>
+		                    </ul>
+						</li>
+						<li>
+							<a href="#" class="dropdown-toggle">
+								<i class="icon-double-angle-right"></i>IV号星
+		                        <b class="arrow icon-angle-down"></b>
+							</a>
+							<ul class="submenu">
+		                        <li class="flywheel-li">
+		                            <a href="report/index/j9/04/flywheel/0/">
+		                                <i class="icon-leaf"></i> 飞轮
+		                            </a>
+		                        </li>
+		                          <li class="top-li">
+		                            <a href="report/index/j9/04/top/0/">
+		                                <i class="icon-leaf"></i>陀螺
+		                            </a>
+		                        </li>
+		                    </ul>
+						</li>
+						<li>
+							<a href="#" class="dropdown-toggle">
+								<i class="icon-double-angle-right"></i>V号星
+		                        <b class="arrow icon-angle-down"></b>
+							</a>
+							<ul class="submenu">
+		                        <li class="flywheel-li">
+		                            <a href="report/index/j9/05/flywheel/0/">
+		                                <i class="icon-leaf"></i> 飞轮
+		                            </a>
+		                        </li>
+		                          <li class="top-li">
+		                            <a href="report/index/j9/05/top/0/">
+		                                <i class="icon-leaf"></i>陀螺
+		                            </a>
+		                        </li>
+		                    </ul>
+						</li>
+					</ul>
+				</li>
+			</ul>
+		</li>
+		
+		
 		<li  id="sysPermission-li">
 			<a href="#" class="dropdown-toggle"> <i class="icon-list"></i>
 				<span class="menu-text"> 系统管理</span>
@@ -279,6 +393,32 @@
 					</a></li>
 <!-- 				<li><a href="javascript:void(0)"> <i class="icon-double-angle-right"></i> 日志管理 -->
 <!-- 					</a></li> -->
+			</ul>
+		</li>
+		<li  id="status-li">
+			<a href="#" class="dropdown-toggle"> <i class="icon-list"></i>
+				<span class="menu-text"> 状态跟踪</span>
+				<b class="arrow icon-angle-down"></b>
+			</a>
+			<ul class="submenu">
+				<li><a href="${pageContext.request.contextPath}/admin/status/startingIndex"> <i class="icon-double-angle-right"></i> 进行中
+					</a></li>
+				<li><a href="${pageContext.request.contextPath}/admin/status/endIndex"> <i class="icon-double-angle-right"></i> 已完成
+					</a></li>
+			</ul>
+		</li>
+		<li  id="prewarning-li">
+			<a href="#" class="dropdown-toggle"> <i class="icon-list"></i>
+				<span class="menu-text"> 预警管理</span>
+				<b class="arrow icon-angle-down"></b>
+			</a>
+			<ul class="submenu">
+				<li><a href="${pageContext.request.contextPath}/admin/prewarning/warnvalueIndex"> <i class="icon-double-angle-right"></i> 特殊工况参数配置
+					</a></li>
+				<li><a href="${pageContext.request.contextPath}/admin/prewarning/errorvalueIndex"> <i class="icon-double-angle-right"></i> 异常参数配置
+					</a></li>
+				<li><a href="${pageContext.request.contextPath}/admin/prewarning/logIndex"> <i class="icon-double-angle-right"></i> 预警查询
+					</a></li>
 			</ul>
 		</li>
 <!-- 		<li>

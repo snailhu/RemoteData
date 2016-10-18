@@ -108,16 +108,17 @@ public class J9Series_Star_ServiceTest {
 	public void getAllParameterList_allZh_and_en() throws Exception{
 		Map<String,String> map =  service.getAllParameterList_allZh_and_en();
 		Set<String> keys = map.keySet();
-		for (String key : keys) {
-			System.out.println(key + " : " + map.get(key));
-		}
+//		for (String key : keys) {
+//			System.out.println(key + " : " + map.get(key));
+//		}
 		System.out.println(keys.size());
+		System.out.println(map.get("接收地方时"));
 	}
 	
 
 	@Test
 	public void getAllParameterList_allZh_and_enByOption() throws Exception{
-		String type = J9Series_Star_ParameterType.TOP.getName();
+		String type = J9Series_Star_ParameterType.FLYWHEEL.getName();
 		//"电流","转速","温度","指令","供电状态","角动量"
 		List<String> params = J9Series_Star_ParameterType.getFlywheelTypeOnParams();
 		Map<String,String> map =  service.getAllParameterList_allZh_and_enByOption(type,null);

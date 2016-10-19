@@ -29,6 +29,9 @@ public class WarningLog implements java.io.Serializable {
 	@Column(name = "series", nullable = true)
 	private Long series; // 星系
 
+	@Column(name = "star", nullable = true)
+	private Long star; // 星
+
 	@Column(name = "parameter", nullable = true)
 	private String parameter; // 参数
 
@@ -49,6 +52,14 @@ public class WarningLog implements java.io.Serializable {
 
 	@Column(name = "createDate", nullable = true)
 	private Date createDate;
+
+	public Long getStar() {
+		return star;
+	}
+
+	public void setStar(Long star) {
+		this.star = star;
+	}
 
 	public Date getCreateDate() {
 		return createDate;

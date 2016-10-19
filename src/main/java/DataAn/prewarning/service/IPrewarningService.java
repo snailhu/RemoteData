@@ -24,8 +24,8 @@ public interface IPrewarningService {
 
 	public void deleteWarningValue(long valueId) throws Exception;
 
-	public Pager<QueryValueDTO> pageQueryWarningValue(int pageIndex, int pageSize, String series, String parameter,
-			String parameterType, String warningType) throws Exception;
+	public Pager<QueryValueDTO> pageQueryWarningValue(int pageIndex, int pageSize, String series, String star,
+			String parameter, String parameterType, String warningType) throws Exception;
 
 	public WarningValue getWarningValueById(long valueId) throws Exception;
 
@@ -35,19 +35,20 @@ public interface IPrewarningService {
 
 	public void deleteWarningLog(long logId) throws Exception;
 
-	public Pager<QueryLogDTO> pageQueryWarningLog(int pageIndex, int pageSize, String series, String parameterType,
-			String createdatetimeStart, String createdatetimeEnd, String warningType, String hadRead) throws Exception;
+	public Pager<QueryLogDTO> pageQueryWarningLog(int pageIndex, int pageSize, String series, String star,
+			String parameterType, String createdatetimeStart, String createdatetimeEnd, String warningType,
+			String hadRead) throws Exception;
 
 	public WarningLog getWarningLogById(long logId) throws Exception;
 
-	public Long getNotReadCount(String series, String parameterType, String parameter, String warningType)
+	public Long getNotReadCount(String series, String star, String parameterType, String parameter, String warningType)
 			throws Exception;
 
-	public SelectOptionDTO getSelectOption(String paramaterType) throws Exception;
+	public SelectOptionDTO getSelectOption(String series, String paramaterType) throws Exception;
 
-	public boolean cherkWarningValue(String series, String parameter, String parameterType, String warningType)
-			throws Exception;
+	public boolean cherkWarningValue(String series, String star, String parameter, String parameterType,
+			String warningType) throws Exception;
 
-	public List<WarningValue> getWarningValueByParams(String series, String parameter, String parameterType,
-			String warningType);
+	public List<WarningValue> getWarningValueByParams(String series, String star, String parameter,
+			String parameterType, String warningType);
 }

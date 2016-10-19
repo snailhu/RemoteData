@@ -199,6 +199,17 @@
 									<div class="space-4"></div>
 									<div class="form-group">
 										<label class="col-sm-3 control-label no-padding-right"
+											for="search-star"> 星</label>
+										<div class="col-sm-9">
+											<select class="col-xs-10 col-sm-5" id="search-star"
+												name="star">
+												<option value="">--请选择--</option>
+											</select>
+										</div>
+									</div>
+									<div class="space-4"></div>
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right"
 											for="search-parameterType"> 设备 </label>
 										<div class="col-sm-9">
 											<select class="col-xs-10 col-sm-5" id="search-parameterType"
@@ -332,6 +343,10 @@ jeDate({
 									field : 'series',
 									title : '星系',
 									width : 100,
+								},{
+									field : 'star',
+									title : '星',
+									width : 100,
 								}, {
 									field : 'parameterType',
 									title : '设备',
@@ -364,6 +379,22 @@ jeDate({
 							});
 
 		});
+        
+        $("#search-series").change(function(){
+		 	var seriesId = $('#search-series').val();	
+		 	  $.get('<%=request.getContextPath()%>/starParam/getStarList', {'seriesId':seriesId},  function (res) {
+				  if(res.result == "true") {
+					  $('#search-star').find("option").remove();
+					 $('#search-star').append("<option value=''>--请选择--</option>"); 
+	            	  $.each(res.data.data ,function(){
+							$('#search-star').append("<option value='"+ this.id+"'>"+ this.description +"</option>"); 
+						});
+	              }
+	              else {
+	            	  top.showMsg('提示', res.msg);
+	              }
+	          });	
+		});
 
 		function reloadDataGrid() {
 			logGrid.datagrid('clearChecked');
@@ -373,12 +404,14 @@ jeDate({
 		//快速搜索按钮
 		$('#btn-search').click(function() {
 			var series = $('#search-series').val();
+			var star = $('#search-star').val();
 			var parameterType = $('#search-parameterType').val();
 			var warningType = $('#search-warningType').val();
 			var createdatetimeStart = $('#search-createdatetimeStart').val();
 			var createdatetimeEnd = $('#search-createdatetimeEnd').val();
 			logGrid.datagrid('load', {
 				series : series,
+				star : star,
 				parameterType : parameterType,
 				warningType : warningType,
 				createdatetimeStart : createdatetimeStart,

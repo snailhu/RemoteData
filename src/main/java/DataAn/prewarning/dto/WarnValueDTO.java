@@ -13,6 +13,8 @@ public class WarnValueDTO implements java.io.Serializable {
 
 	private Long series; // 星系
 
+	private Long star; // 星
+
 	private String parameter; // 参数
 
 	private String parameterType; // 参数类型
@@ -24,6 +26,14 @@ public class WarnValueDTO implements java.io.Serializable {
 	private Integer timeZone; // 时间跨度（单位min）
 
 	private Integer limitTimes; // 限定次数
+
+	public Long getStar() {
+		return star;
+	}
+
+	public void setStar(Long star) {
+		this.star = star;
+	}
 
 	public Long getValueId() {
 		return valueId;

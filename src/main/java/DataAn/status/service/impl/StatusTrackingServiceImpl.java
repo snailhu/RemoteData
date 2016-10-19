@@ -1,6 +1,7 @@
 package DataAn.status.service.impl;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -27,17 +28,27 @@ public class StatusTrackingServiceImpl implements IStatusTrackingService {
 		statusTracking.setFileName(statusTrackingDTO.getFileName());
 		statusTracking.setStatusType(statusTrackingDTO.getStatusType());
 		statusTracking.setUserType(statusTrackingDTO.getUserType());
+		statusTracking.setCreateDate(new Date());
 		statusTrackingDao.add(statusTracking);
 	}
 
 	@Override
 	public void updateStatusTracking(StatusTrackingDTO statusTrackingDTO) throws Exception {
-		StatusTracking statusTracking = statusTrackingDao.get(statusTrackingDTO.getTrackingId());
-		statusTracking.setFileName(statusTrackingDTO.getFileName());
-		statusTracking.setStatusType(statusTrackingDTO.getStatusType());
-		statusTracking.setTrackingId(statusTrackingDTO.getTrackingId());
-		statusTracking.setUserType(statusTrackingDTO.getUserType());
-		statusTrackingDao.add(statusTracking);
+		// 判断是否已存在
+		String fileName = statusTrackingDTO.getFileName();
+		String userType = statusTrackingDTO.getUserType();
+		boolean checkStatusTracking = statusTrackingDao.checkStatusTrackingByParams(fileName, userType);
+		if (checkStatusTracking) {
+			// 存在则更新
+			StatusTracking statusTracking = statusTrackingDao.getStatusTrackingByParams(fileName, userType);
+			statusTracking.setFileName(statusTrackingDTO.getFileName());
+			statusTracking.setStatusType(statusTrackingDTO.getStatusType());
+			statusTracking.setUserType(statusTrackingDTO.getUserType());
+			statusTrackingDao.update(statusTracking);
+		} else {
+			// 不存在则新增
+			addStatusTracking(statusTrackingDTO);
+		}
 	}
 
 	@Override

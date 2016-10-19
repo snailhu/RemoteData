@@ -50,10 +50,10 @@ public class PrewarningController extends BaseController {
 
 	@RequestMapping(value = "/getParamList")
 	@ResponseBody
-	public SelectOptionDTO getParamList(HttpServletRequest request, String parameterType) {
+	public SelectOptionDTO getParamList(HttpServletRequest request, String series, String parameterType) {
 		SelectOptionDTO selectOptionDTO = null;
 		try {
-			selectOptionDTO = prewarningService.getSelectOption(parameterType);
+			selectOptionDTO = prewarningService.getSelectOption(series, parameterType);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -67,6 +67,7 @@ public class PrewarningController extends BaseController {
 	public EasyuiDataGridJson getValueList(int page, int rows, WebRequest request) {
 		EasyuiDataGridJson json = new EasyuiDataGridJson();
 		String series = request.getParameter("series");
+		String star = request.getParameter("star");
 		String parameter = request.getParameter("parameter");
 		String parameterType = request.getParameter("parameterType");
 		String warningType = request.getParameter("warningType");
@@ -74,12 +75,14 @@ public class PrewarningController extends BaseController {
 		System.out.println("pageIndex: " + page);
 		System.out.println("pageSize: " + rows);
 		System.out.println("series: " + series);
+		System.out.println("star: " + star);
 		System.out.println("parameter: " + parameter);
 		System.out.println("parameterType: " + parameterType);
 		System.out.println("warningType: " + warningType);
 		Pager<QueryValueDTO> pager = null;
 		try {
-			pager = prewarningService.pageQueryWarningValue(page, rows, series, parameter, parameterType, warningType);
+			pager = prewarningService.pageQueryWarningValue(page, rows, series, star, parameter, parameterType,
+					warningType);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -99,6 +102,7 @@ public class PrewarningController extends BaseController {
 	public EasyuiDataGridJson getLogList(int page, int rows, WebRequest request) {
 		EasyuiDataGridJson json = new EasyuiDataGridJson();
 		String series = request.getParameter("series");
+		String star = request.getParameter("star");
 		// String parameter = request.getParameter("parameter");
 		String parameterType = request.getParameter("parameterType");
 		String warningType = request.getParameter("warningType");
@@ -109,6 +113,7 @@ public class PrewarningController extends BaseController {
 		System.out.println("pageIndex: " + page);
 		System.out.println("pageSize: " + rows);
 		System.out.println("series: " + series);
+		System.out.println("star: " + star);
 		System.out.println("parameterType: " + parameterType);
 		System.out.println("createdatetimeStart: " + createdatetimeStart);
 		System.out.println("createdatetimeEnd: " + createdatetimeEnd);
@@ -116,7 +121,7 @@ public class PrewarningController extends BaseController {
 		System.out.println("hadRead: " + hadRead);
 		Pager<QueryLogDTO> pager = null;
 		try {
-			pager = prewarningService.pageQueryWarningLog(page, rows, series, parameterType, createdatetimeStart,
+			pager = prewarningService.pageQueryWarningLog(page, rows, series, star, parameterType, createdatetimeStart,
 					createdatetimeEnd, warningType, hadRead);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -143,7 +148,7 @@ public class PrewarningController extends BaseController {
 		JsonMessage jsonMsg = new JsonMessage();
 		try {
 			boolean falg = prewarningService.cherkWarningValue(warnValue.getSeries().toString(),
-					warnValue.getParameter(), warnValue.getParameterType(), "0");
+					warnValue.getStar().toString(), warnValue.getParameter(), warnValue.getParameterType(), "0");
 			if (falg) {
 				jsonMsg.setSuccess(false);
 				jsonMsg.setMsg("参数已存在！");
@@ -173,7 +178,7 @@ public class PrewarningController extends BaseController {
 		JsonMessage jsonMsg = new JsonMessage();
 		try {
 			boolean falg = prewarningService.cherkWarningValue(errorValue.getSeries().toString(),
-					errorValue.getParameter(), errorValue.getParameterType(), "1");
+					errorValue.getStar().toString(), errorValue.getParameter(), errorValue.getParameterType(), "1");
 			if (falg) {
 				jsonMsg.setSuccess(false);
 				jsonMsg.setMsg("参数已存在！");

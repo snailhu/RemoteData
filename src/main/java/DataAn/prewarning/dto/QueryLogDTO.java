@@ -12,6 +12,8 @@ public class QueryLogDTO implements java.io.Serializable {
 
 	private String series; // 星系
 
+	private String star; // 星
+
 	private String parameter; // 参数
 
 	private String parameterType; // 设备
@@ -23,6 +25,14 @@ public class QueryLogDTO implements java.io.Serializable {
 	private String hadRead; // 是否已读（0未读，1已读）
 
 	private String timeValue; // 时间点
+
+	public String getStar() {
+		return star;
+	}
+
+	public void setStar(String star) {
+		this.star = star;
+	}
 
 	public Long getLogId() {
 		return logId;

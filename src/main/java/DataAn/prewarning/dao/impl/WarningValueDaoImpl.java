@@ -16,11 +16,14 @@ public class WarningValueDaoImpl extends BaseDaoImpl<WarningValue> implements IW
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public List<WarningValue> getWarningValueByParams(String series, String parameter, String parameterType,
-			String warningType) {
+	public List<WarningValue> getWarningValueByParams(String series, String star, String parameter,
+			String parameterType, String warningType) {
 		String hql = "from WarningValue where 1=1";
 		if (StringUtils.isNotBlank(series)) {
-			hql += " and series = '" + series + "'";
+			hql += " and series = " + series;
+		}
+		if (StringUtils.isNotBlank(star)) {
+			hql += " and star = " + star;
 		}
 		if (StringUtils.isNotBlank(parameter)) {
 			hql += " and parameter = '" + parameter + "'";
@@ -38,13 +41,17 @@ public class WarningValueDaoImpl extends BaseDaoImpl<WarningValue> implements IW
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public Pager<WarningValue> selectByOption(int pageIndex, int pageSize, String series, String parameter,
+	public Pager<WarningValue> selectByOption(int pageIndex, int pageSize, String series, String star, String parameter,
 			String parameterType, String warningType) {
 		String hql = "from WarningValue where 1=1";
 		String countHQL = "select count(*) from WarningValue where 1=1";
 		if (StringUtils.isNotBlank(series)) {
-			hql += " and series = '" + series + "'";
-			countHQL += " and series = '" + series + "'";
+			hql += " and series = " + series;
+			countHQL += " and series = " + series;
+		}
+		if (StringUtils.isNotBlank(star)) {
+			hql += " and star = " + star;
+			countHQL += " and star = " + star;
 		}
 		if (StringUtils.isNotBlank(parameter)) {
 			hql += " and parameter = '" + parameter + "'";
@@ -72,10 +79,14 @@ public class WarningValueDaoImpl extends BaseDaoImpl<WarningValue> implements IW
 	}
 
 	@Override
-	public boolean cherkWarningValue(String series, String parameter, String parameterType, String warningType) {
+	public boolean cherkWarningValue(String series, String star, String parameter, String parameterType,
+			String warningType) {
 		String hql = "select count(*) from WarningValue where 1=1";
 		if (StringUtils.isNotBlank(series)) {
-			hql += " and series = '" + series + "'";
+			hql += " and series = " + series;
+		}
+		if (StringUtils.isNotBlank(star)) {
+			hql += " and star = " + star;
 		}
 		if (StringUtils.isNotBlank(parameter)) {
 			hql += " and parameter = '" + parameter + "'";

@@ -6,9 +6,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
 import javax.annotation.Resource;
+
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
+
 import DataAn.Analysis.dto.ConstraintDto;
 import DataAn.Util.EhCache;
 import DataAn.common.utils.DateUtil;
@@ -68,7 +71,7 @@ public class J9Series_Star_ServiceImpl implements IJ9Series_Star_Service{
 			}
 			List<String> dataTypes = null;
 			if(type.equals(J9Series_Star_ParameterType.FLYWHEEL.getValue())){
-				dataTypes = J9Series_Star_ParameterType.getFlywheelTypeOnParams();
+				dataTypes = J9Series_Star_ParameterType.getFlywheelTypeOnName();
 			}else{
 				dataTypes = J9Series_Star_ParameterType.getTopTypeOnName();
 			}
@@ -92,6 +95,20 @@ public class J9Series_Star_ServiceImpl implements IJ9Series_Star_Service{
 		return list;
 	}
 
+	@Override
+	public String getFlyWheelParameterType(String param_en) throws Exception {
+		Map<String,String> map = this.getAllParameterList_en_and_simplyZh();
+		String param = map.get(param_en);
+		List<String> typeList = J9Series_Star_ParameterType.getFlywheelTypeOnParams();
+		for (String type : typeList) {
+			if(param.indexOf(type) > -1){
+				return type;
+			}
+		}
+		return null;
+	}
+
+	
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<ConstraintDto> getTopParameterList() throws Exception {
@@ -266,8 +283,5 @@ public class J9Series_Star_ServiceImpl implements IJ9Series_Star_Service{
 		}
 		return list;
 	}
-
-
-
 
 }

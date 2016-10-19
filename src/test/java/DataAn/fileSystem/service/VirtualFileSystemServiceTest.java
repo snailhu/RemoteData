@@ -40,6 +40,7 @@ public class VirtualFileSystemServiceTest {
 //		System.out.println(strs[strs.length-1]);
 		//boolean flag = fileService.isExistFile(strs[strs.length-1]);
 		//System.out.println(flag);
+		System.out.println(fileService);
 	}
 	
 	@Test
@@ -71,7 +72,7 @@ public class VirtualFileSystemServiceTest {
 	@Test
 	public void saveFile() throws Exception{
 		long begin = System.currentTimeMillis();
-		String csv = "D:\\temp\\data\\2015\\1\\j9-02--2015-01-03.csv";
+		String csv = "c:\\j9-02--2016-02-01.csv";
 //		String dat = "C:\\XX9(02)--20150817(公开).DAT";
 		this.saveFile(csv, null);
 		long end = System.currentTimeMillis();

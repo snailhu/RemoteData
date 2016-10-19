@@ -2,12 +2,10 @@ package DataAn.fileSystem.service;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.Map;
-
 import DataAn.common.utils.SpringUtil;
 import DataAn.fileSystem.dto.FileDto;
 import DataAn.fileSystem.option.J9Series_Star_ParameterType;
@@ -24,7 +22,7 @@ public class ServiceTest {
 	
 	public static void saveFile() throws Exception{
 		long begin = System.currentTimeMillis();
-		String csv = "D:\\temp\\data\\2015\\1\\j9-02--2015-01-02.csv";
+		String csv = "c:\\j9-02--2016-02-01.csv";
 //		String dat = "C:\\XX9(02)--20150817(公开).DAT";
 		saveFile(csv, null);
 		long end = System.currentTimeMillis();

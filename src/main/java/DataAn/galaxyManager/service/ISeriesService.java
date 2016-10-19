@@ -1,5 +1,8 @@
 package DataAn.galaxyManager.service;
 
+import java.util.List;
+
+import DataAn.common.pageModel.Combo;
 import DataAn.common.pageModel.Pager;
 import DataAn.galaxyManager.dto.SeriesDto;
 
@@ -22,4 +25,6 @@ public interface ISeriesService {
 	public SeriesDto getSeriesDto(long seriesId);
 
 	public void initSeries();
+
+	public List<Combo> getSeriesComboData(long seriesId);
 }

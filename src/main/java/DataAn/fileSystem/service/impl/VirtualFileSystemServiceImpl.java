@@ -9,10 +9,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 import javax.annotation.Resource;
@@ -468,7 +466,7 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 		file.setMongoFSUUId(uuId);
 		file.setParameterType(parameterType);
 		//保存缓存路径，以后通过定时任务上传
-		//file.setCachePath(fileDto.getFilePath());
+//		file.setCachePath(fileDto.getFilePath());
 		fileDao.add(file);
 		
 	}

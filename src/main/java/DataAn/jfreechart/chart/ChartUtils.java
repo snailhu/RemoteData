@@ -42,10 +42,9 @@ import org.jfree.chart.renderer.xy.XYBarRenderer;
 import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.general.DefaultPieDataset;
-import org.jfree.data.time.Day;
+import org.jfree.data.time.Millisecond;
+import org.jfree.data.time.Minute;
 import org.jfree.data.time.TimeSeries;
-import org.jfree.data.xy.XYSeries;
-import org.jfree.data.xy.XYSeriesCollection;
 import org.jfree.ui.RectangleInsets;
 import org.jfree.ui.TextAnchor;
 
@@ -249,7 +248,7 @@ public class ChartUtils {
 		TimeSeries timeseries = new TimeSeries(category);
 
 		if (dateValues != null) {
-			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 			for (Object[] objects : dateValues) {
 				Date date = null;
 				try {
@@ -259,8 +258,9 @@ public class ChartUtils {
 				String sValue = objects[1].toString();
 				double dValue = 0;
 				if (date != null && isNumber(sValue)) {
+					//System.out.println(date + " : " + sValue);
 					dValue = Double.parseDouble(sValue);
-					timeseries.add(new Day(date), dValue);
+					timeseries.addOrUpdate(new Millisecond(date), dValue);
 				}
 			}
 		}
@@ -268,6 +268,9 @@ public class ChartUtils {
 		return timeseries;
 	}
 
+	public static TimeSeries createTimeseries(String category) {
+		return new TimeSeries(category);
+	}
 	/**
 	 * 设置 折线图样式
 	 * 
@@ -325,16 +328,13 @@ public class ChartUtils {
 		xyplot.setNoDataMessage(NO_DATA_MSG);
 		xyplot.setInsets(new RectangleInsets(10, 10, 5, 10));
 
-		XYLineAndShapeRenderer xyRenderer = (XYLineAndShapeRenderer) xyplot
-				.getRenderer();
+		XYLineAndShapeRenderer xyRenderer = (XYLineAndShapeRenderer) xyplot.getRenderer();
 
-		xyRenderer
-				.setBaseItemLabelGenerator(new StandardXYItemLabelGenerator());
+		xyRenderer.setBaseItemLabelGenerator(new StandardXYItemLabelGenerator());
 		xyRenderer.setBaseShapesVisible(false);
 		if (isShowData) {
 			xyRenderer.setBaseItemLabelsVisible(true);
-			xyRenderer
-					.setBaseItemLabelGenerator(new StandardXYItemLabelGenerator());
+			xyRenderer.setBaseItemLabelGenerator(new StandardXYItemLabelGenerator());
 			xyRenderer.setBasePositiveItemLabelPosition(new ItemLabelPosition(
 					ItemLabelAnchor.OUTSIDE1, TextAnchor.BOTTOM_CENTER));// weizhi
 		}
@@ -350,7 +350,9 @@ public class ChartUtils {
 				"{1}:{2}", new SimpleDateFormat("yyyy-MM-dd"),
 				new DecimalFormat("0"));
 		xyRenderer.setBaseToolTipGenerator(xyTooltipGenerator);
-
+		
+		xyRenderer.setBaseShapesVisible(false);// 数据点绘制形状
+		
 		setXY_XAixs(xyplot);
 		setXY_YAixs(xyplot);
 
@@ -382,13 +384,11 @@ public class ChartUtils {
 		xyplot.setNoDataMessage(NO_DATA_MSG);
 
 		XYBarRenderer xyRenderer = new XYBarRenderer(0.1D);
-		xyRenderer
-				.setBaseItemLabelGenerator(new StandardXYItemLabelGenerator());
+		xyRenderer.setBaseItemLabelGenerator(new StandardXYItemLabelGenerator());
 
 		if (isShowDataLabels) {
 			xyRenderer.setBaseItemLabelsVisible(true);
-			xyRenderer
-					.setBaseItemLabelGenerator(new StandardXYItemLabelGenerator());
+			xyRenderer.setBaseItemLabelGenerator(new StandardXYItemLabelGenerator());
 		}
 
 		StandardXYToolTipGenerator xyTooltipGenerator = new StandardXYToolTipGenerator(
@@ -449,7 +449,6 @@ public class ChartUtils {
 		CategoryAxis domainAxis = plot.getDomainAxis();
 		domainAxis.setAxisLinePaint(lineColor);// X坐标轴颜色
 		domainAxis.setTickMarkPaint(lineColor);// X坐标轴标记|竖线颜色
-
 	}
 
 	/**
@@ -480,10 +479,11 @@ public class ChartUtils {
 	 * @param axis
 	 */
 	public static void setXY_XAixs(XYPlot plot) {
-		Color lineColor = new Color(31, 121, 170);
+		// 0 0 0 黑色  31, 121, 170
+		Color lineColor = new Color(0, 0, 0);
 		plot.getDomainAxis().setAxisLinePaint(lineColor);// X坐标轴颜色
 		plot.getDomainAxis().setTickMarkPaint(lineColor);// X坐标轴标记|竖线颜色
-
+		plot.getDomainAxis().setVerticalTickLabels(true);
 	}
 
 	/**
@@ -492,13 +492,14 @@ public class ChartUtils {
 	 * @param axis
 	 */
 	public static void setXY_YAixs(XYPlot plot) {
-		Color lineColor = new Color(192, 208, 224);
+		// 0 0 0 黑色
+		Color lineColor = new Color(0, 0, 0);
 		ValueAxis axis = plot.getRangeAxis();
-		axis.setAxisLinePaint(lineColor);// X坐标轴颜色
-		axis.setTickMarkPaint(lineColor);// X坐标轴标记|竖线颜色
-		// 隐藏Y刻度
-		axis.setAxisLineVisible(false);
-		axis.setTickMarksVisible(false);
+		axis.setAxisLinePaint(lineColor);// Y坐标轴颜色
+		axis.setTickMarkPaint(lineColor);// Y坐标轴标记|竖线颜色
+		// false隐藏Y刻度 true 显示
+ 		axis.setAxisLineVisible(true);
+		axis.setTickMarksVisible(true);
 		// Y轴网格线条
 		plot.setRangeGridlinePaint(new Color(192, 192, 192));
 		plot.setRangeGridlineStroke(new BasicStroke(1));

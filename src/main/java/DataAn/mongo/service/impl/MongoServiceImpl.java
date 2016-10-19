@@ -25,14 +25,13 @@ public class MongoServiceImpl implements IMongoService{
 			List<Document> documents, String versions) throws Exception {
 		String databaseName = InitMongo.getDataBaseNameBySeriesAndStar(series, star);
 //		String databaseName = InitMongo.DATABASE_TEST;
-		String collectionName = DateUtil.formatString(date, "yyyy-MM-dd", "yyyy");
-		collectionName = paramType + collectionName;
+		String collectionName = paramType;
 		try {
 			if(documents != null && documents.size() > 0){
 				//设置同一时间段的数据的状态为0
-				Date beginDate = documents.get(0).getDate("datetime");
-				Date endDate = documents.get(documents.size() - 1).getDate("datetime");
-				mg.updateByDate(databaseName, collectionName, beginDate, endDate);
+//				Date beginDate = documents.get(0).getDate("datetime");
+//				Date endDate = documents.get(documents.size() - 1).getDate("datetime");
+//				mg.updateByDate(databaseName, collectionName, beginDate, endDate);
 				
 				mg.insertMany(databaseName, collectionName, documents);					
 			}
@@ -109,6 +108,26 @@ public class MongoServiceImpl implements IMongoService{
 		String collectionName =  paramType;
 		
 		return mg.find(databaseName, collectionName, "year_month_day", date);
+		
+//		return mg.findAll(databaseName, collectionName);
+	}
+
+	@Override
+	public MongoCursor<Document> findByWeek_of_year(String series,
+			String star, String paramType, int week_of_year) {
+		String databaseName = InitMongo.getDataBaseNameBySeriesAndStar(series, star);
+		String collectionName =  paramType;
+		
+		return mg.find(databaseName, collectionName, "week_of_year", week_of_year);
+	}
+
+	@Override
+	public MongoCursor<Document> findByDate(String series, String star,
+			String paramType, Date beginDate, Date endDate) {
+		String databaseName = InitMongo.getDataBaseNameBySeriesAndStar(series, star);
+		String collectionName =  paramType;
+		
+		return mg.find(databaseName, collectionName, beginDate, endDate);
 	}
 
 

@@ -16,6 +16,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<meta http-equiv="expires" content="0">    
 	<meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
 	<meta http-equiv="description" content="This is my page">
+	
 	<jsp:include page="/WEB-INF/jsp/inc/include-easyUI.jsp"></jsp:include>
 	<!-- 弹出框 -->
 	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/static/content/sweetalert/dist/sweetalert.css">
@@ -26,7 +27,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<script type="text/javascript" src="${pageContext.request.contextPath}/static/content/js/validDate.js"></script>
 	<script type="text/javascript" src="${pageContext.request.contextPath}/static/content/jquery-easyui-datagridview/datagrid-detailview.js"></script>
 	
-		<!-- 表单验证 -->
+	<!-- 表单验证 -->
 	<!--     <link rel="stylesheet" href="<%=request.getContextPath()%>/static/content/bootstrapValidator/vendor/bootstrap/css/bootstrap.css"/> -->
     <link rel="stylesheet" href="<%=request.getContextPath()%>/static/content/bootstrapValidator/dist/css/bootstrapValidator.css"/>
     <script type="text/javascript" src="<%=request.getContextPath()%>/static/content/bootstrapValidator/vendor/bootstrap/js/bootstrap.min.js"></script>
@@ -121,11 +122,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     padding: 0;
 /*     line-height: 24px; */
 }
-.form-group {
-    margin-bottom: 0px;
-}
-.form-group>label[class*="col-"] {
-    padding-top: 2px;
+.form-horizontal {
     margin-bottom: 0px;
 }
 </style>
@@ -186,6 +183,7 @@ $(function() {
   </head>
   
   <body>
+  
     <div class="main-content">
 <!-- 		<div class="breadcrumbs" id="breadcrumbs"> -->
 <!-- 			<script type="text/javascript"> -->
@@ -340,6 +338,7 @@ $(function() {
 			</div><!-- /.row -->
 		</div><!-- /.page-content -->
 	</div><!-- /.main-content -->
+	
 	<script type="text/javascript">
 	  var roleGrid;
 	  var url='<%=request.getContextPath()%>/admin/role/getList';

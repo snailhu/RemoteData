@@ -10,6 +10,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import DataAn.common.pageModel.Combo;
 import DataAn.common.pageModel.Pager;
 import DataAn.common.utils.DateUtil;
 import DataAn.galaxyManager.dao.ISeriesDao;
@@ -135,6 +136,25 @@ public class SeriesServiceImpl implements ISeriesService{
 			list.add(star5);
 			starDao.add(list);
 		}
+	}
+
+	@Override
+	public List<Combo> getSeriesComboData(long seriesId) {
+		List<Combo> comboList = new ArrayList<Combo>();
+		List<Series> list = seriesDao.findAll();
+		if(list != null && list.size() > 0){
+			Combo combo = null;
+			for (Series series : list) {
+				combo = new Combo();
+				combo.setText(series.getName());
+				combo.setValue(series.getName());
+				if(series.getId() == seriesId){
+					combo.setSelected(true);
+				}
+				comboList.add(combo);
+			}
+		}
+		return comboList;
 	}
 
 

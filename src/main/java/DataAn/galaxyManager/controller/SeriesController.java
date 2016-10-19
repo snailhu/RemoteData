@@ -1,14 +1,14 @@
 package DataAn.galaxyManager.controller;
 
-import javax.annotation.Resource;
+import java.util.List;
 
+import javax.annotation.Resource;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.context.request.WebRequest;
-
+import DataAn.common.pageModel.Combo;
 import DataAn.common.pageModel.EasyuiDataGridJson;
 import DataAn.common.pageModel.JsonMessage;
 import DataAn.common.pageModel.Pager;
@@ -121,5 +121,16 @@ public class SeriesController {
 	    return jsonMsg;
 	}
 	
+	@RequestMapping("/getSeriesComboData")
+	@ResponseBody
+	public List<Combo> getSeriesComboData(long seriesId) {
+//		System.out.println("getSeriesComboData..");
+//		System.out.println("seriesId: " + seriesId);
+		List<Combo> list = seriesService.getSeriesComboData(seriesId);
+//		for (Combo combo : list) {
+//			System.out.println(combo);
+//		}
+		return list;
+	}
 
 }

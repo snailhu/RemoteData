@@ -187,7 +187,7 @@ public class JfreechartServiceImpl implements IJfreechartServcie{
 			tempDocList.add(doc);
 			tempMap.put(datetime, tempDocList);
 		}
-//		System.out.println("count: " + count);
+		System.out.println("count: " + count);
 		//多条线数据
 		Map<String,TimeSeries> lineMap = new HashMap<String,TimeSeries>();
 		Map<String,Double> minMap = new HashMap<String,Double>();
@@ -236,6 +236,7 @@ public class JfreechartServiceImpl implements IJfreechartServcie{
 			TimeSeriesCollection dataset = new TimeSeriesCollection();
 			for (ConstraintDto constraintDto : constraintList) {
 				dataset.addSeries(lineMap.get(constraintDto.getValue()));
+				System.out.println("constraintDto.getValue(): " + lineMap.get(constraintDto.getValue()).getItemCount());
 			}
 			
 			String title = "";

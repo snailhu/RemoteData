@@ -40,11 +40,11 @@ public class JfreechartServiceImpl implements IJfreechartServcie{
 	
 	@Override
 	public LineChartDto createLineChart(String series,String star, String paramType, 
-			Date beginDate, Date endDate, List<ConstraintDto> constraintList) throws Exception{
+			Date beginDate, Date endDate, Map<String,List<ConstraintDto>> constraintsMap) throws Exception{
 		
 		
 		
-		return this.createTimeSeriesChart(series, star, paramType, beginDate, endDate, constraintList, 0);
+		return this.createTimeSeriesChart(series, star, paramType, beginDate, endDate, constraintsMap, 0);
 	}
 	
 	
@@ -145,7 +145,7 @@ public class JfreechartServiceImpl implements IJfreechartServcie{
 		//ChartUtilities.saveChartAsJPEG(file, chart, width, height);
 		ChartUtilities.saveChartAsPNG(file, chart, width, height);
 		LineChartDto lineChartDto = new LineChartDto();
-		lineChartDto.setChartPath(file.getAbsolutePath());
+		//lineChartDto.setChartPath(file.getAbsolutePath());
 		lineChartDto.setMinMap(minMap);
 		lineChartDto.setMaxMap(maxMap);
 		return lineChartDto;
@@ -153,12 +153,12 @@ public class JfreechartServiceImpl implements IJfreechartServcie{
 	
 
 	protected LineChartDto createTimeSeriesChart(String series, String star, String paramType,
-			Date beginDate, Date endDate, List<ConstraintDto> constraintList, int totalNumber) throws Exception {
+			Date beginDate, Date endDate, Map<String,List<ConstraintDto>> constraintsMap, int totalNumber) throws Exception {
 		
 		Map<String,String> params = new HashMap<String,String>();
-		for (ConstraintDto constraintDto : constraintList) {
-			params.put(constraintDto.getValue(), constraintDto.getName());
-		}
+//		for (ConstraintDto constraintDto : constraintList) {
+//			params.put(constraintDto.getValue(), constraintDto.getName());
+//		}
 		
 		MongoCursor<Document> cursor = mongoService.findByDate(series, star, paramType, beginDate, endDate);
 		Document doc = null;
@@ -253,7 +253,7 @@ public class JfreechartServiceImpl implements IJfreechartServcie{
 		//ChartUtilities.saveChartAsJPEG(file, chart, width, height);
 		ChartUtilities.saveChartAsPNG(file, chart, width, height);
 		LineChartDto lineChartDto = new LineChartDto();
-		lineChartDto.setChartPath(file.getAbsolutePath());
+		//lineChartDto.setChartPath(file.getAbsolutePath());
 		lineChartDto.setMinMap(minMap);
 		lineChartDto.setMaxMap(maxMap);
 		return lineChartDto;

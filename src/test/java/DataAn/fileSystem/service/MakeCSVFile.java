@@ -16,7 +16,7 @@ public class MakeCSVFile {
 	@Test
 	public void test() throws Exception{
 		List<String> list = new ArrayList<String>();
-		File file = new File("C:\\result.csv");
+		File file = new File("C:\\feb-9-05.csv");
 		InputStream in = new FileInputStream(file);
 		InputStreamReader inputStreamReader = new InputStreamReader(in, "gb2312");
 		BufferedReader reader = new BufferedReader(inputStreamReader);// 换成你的文件名
@@ -25,6 +25,7 @@ public class MakeCSVFile {
 		while ((line = reader.readLine()) != null) {
 			list.add(line);
 		}
+		System.out.println("size: " + list.size());
 		for (int year = 2010; year <= 2012; year++) {
 			for (int month = 1; month <= 12; month++) {
 				this.writeCSV(list, year, month);		
@@ -35,11 +36,11 @@ public class MakeCSVFile {
 	protected void writeCSV(List<String> list, int year,int month) throws Exception {
 		String strMonth = "0" + month;
 		//目录
-		String dirPath = "E:\\data\\flywheel\\" + year + "\\" + "-0" + month;
+		String dirPath = "E:\\data\\flywheel\\" + year;
 		//文件路径
 		String outputFile = dirPath +"\\" +"j9-02--" + year +"-0" + month +"-01" +".csv";
 		if(month > 9){
-			dirPath = "E:\\data\\flywheel\\" + year + "\\" + month;
+			//dirPath = "E:\\data\\flywheel\\" + year + "\\" + month;
 			outputFile = dirPath +"\\" +"j9-02--" + year +"-" + month + "-01" +".csv";
 			strMonth = String.valueOf(month);
 		}
@@ -61,7 +62,7 @@ public class MakeCSVFile {
 			String datetime = array[0].replace("2016年", strYear).replace("02月", strMonth);
 			csvOutput.write(datetime);
 			for (int j = 1; j < array.length; j++) {
-				csvOutput.write(array[i]);
+				csvOutput.write(array[j]);
 			}
 			csvOutput.endRecord();
 		}

@@ -122,14 +122,69 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     padding: 0;
 /*     line-height: 24px; */
 }
-.form-group {
-    margin-bottom: 0px;
-}
-.form-group>label[class*="col-"] {
-    padding-top: 2px;
+.form-horizontal {
     margin-bottom: 0px;
 }
 </style>
+<script type="text/javascript">
+$(function() {
+    //创建参数验证
+    $('#addParamInfoForm').bootstrapValidator({
+        message : '这个值不能为空！',
+        feedbackIcons : {
+            valid : 'glyphicon glyphicon-ok',
+            invalid : 'glyphicon glyphicon-remove',
+            validating : 'glyphicon glyphicon-refresh'
+        },
+        fields : {
+        	series : {
+                message: '请选择一个系列',
+                validators : {
+                    notEmpty : {
+                        message : '请选择一个系列'
+                    },
+                }
+            },
+            name : {
+                message : '参数名不能为空',
+                validators : {
+                    notEmpty : {
+                        message : '参数名不能为空'
+                    },
+                }
+            },
+        }
+    });
+    $('#reset_addParamInfo').click(function() {
+        $('#addParamInfoForm').data('bootstrapValidator').resetForm(true);
+    });
+    //编辑角色表单验证
+    $('#editRoleInfoForm').bootstrapValidator({
+        message : '这个值不能为空！',
+        feedbackIcons : {
+            valid : 'glyphicon glyphicon-ok',
+            invalid : 'glyphicon glyphicon-remove',
+            validating : 'glyphicon glyphicon-refresh'
+        },
+        fields : {
+            name : {
+                message : '参数名不能为空',
+                validators : {
+                    notEmpty : {
+                        message : '参数名不能为空'
+                    },
+                }
+            },
+            description : {
+              message: '',
+            }
+        }
+    });
+    $('#reset_editRoleInfo').click(function() {
+        $('#editRoleInfoForm').data('bootstrapValidator').resetForm(true);
+    });
+});
+</script>
   </head>
   
   <body>
@@ -164,53 +219,53 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				<div id="toolbar" class="datagrid-toolbar" style="height: 28px;">
 					<div style="height: 28px;">
 						<button class="easyui-linkbutton" iconcls="icon-add" plain="true" style="float: left;" 
-							data-toggle="modal" data-target="#addRoleModal">创建</button>
+							data-toggle="modal" data-target="#addParamModal">创建</button>
 						<div class="datagrid-btn-separator"></div>
 						<button class="easyui-linkbutton" iconcls="icon-remove" plain="true" style="float: left;"
 							onclick="deleteRole();">删除</button>
 						<div class="datagrid-btn-separator"></div>
 						<button class="easyui-linkbutton" iconcls="icon-edit" plain="true" style="float: left;"
-							onclick="editRole();">编辑</button>
+							onclick="editParam();">编辑</button>
 						<div class="datagrid-btn-separator"></div>
 						<button class="easyui-linkbutton" iconcls="icon-undo" plain="true" style="float: left;"
-							onclick="roleGrid.datagrid('unselectAll');">取消选中</button>
+							onclick="paramGrid.datagrid('unselectAll');">取消选中</button>
 					</div>
 				</div>
 			</div>
 			<table id="roleList" width="100%" height="500px" border="false">
 			</table>
 			
-			<!-- 创建角色 -->
-			<div class="modal fade" id="addRoleModal" tabindex="-1" role="dialog" aria-labelledby="addRoleModalLabel"  >
+			<!-- 创建参数 -->
+			<div class="modal fade" id="addParamModal" tabindex="-1" role="dialog" aria-labelledby="addParamModalLabel"  >
 			  <div class="modal-dialog" role="document" style="margin:55px -300px">
 			    <div class="modal-content">
-					<form id="addRoleInfoForm" class="form-horizontal" role="form">
+					<form id="addParamInfoForm" class="form-horizontal" role="form">
 						<div class="modal-header">
 <!-- 							<button type="button" class="close" data-dismiss="modal" aria-label="Close"> -->
 <!-- 								<span aria-hidden="true">&times;</span> -->
 <!-- 							</button> -->
-							<h4 class="modal-title" id="addRoleModalLabel">系统角色信息</h4>
+							<h4 class="modal-title" id="addParamModalLabel">参数信息</h4>
 						</div>
 						<div class="modal-body">
+						    <div class="space-8"></div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label no-padding-right" for="add-param-series"> 系列： </label>
+                                <div class="col-sm-8">
+                                    <input name="series" id="add-param-series" class="form-control" style="width: 357px;height: 34px" placeholder="系列"/>
+                                </div>
+                            </div>
 							<div class="space-4"></div>
 							<div class="form-group">
-								<label class="col-sm-3 control-label no-padding-right" for="add-role-name"> 角色名称：</label>
+								<label class="col-sm-3 control-label no-padding-right" for="add-param-name"> 参数名称：</label>
 								<div class="col-sm-8">
-									<input type="text" name="name" id="add-role-name" placeholder="角色名称" class="form-control" />
-								</div>
-							</div>
-							<div class="space-8"></div>
-							<div class="form-group">
-								<label class="col-sm-3 control-label no-padding-right" for="add-role-description"> 角色描述： </label>
-								<div class="col-sm-8">
-									<textarea class="form-control" name="description" id="add-role-description" placeholder="角色描述"></textarea>
+									<input type="text" name="name" id="add-param-name" class="form-control" placeholder="参数名称"/>
 								</div>
 							</div>
 						</div>
 						<div class="modal-footer">
 							<div class="col-lg-4 col-lg-offset-5">
-								<button type="button" class="btn btn-default" data-dismiss="modal" id="reset_addRoleInfo">关闭</button>
-								<button type="submit" class="btn btn-primary" data-dismiss="modal" id="submit_addRoleInfo">确定</button>
+								<button type="button" class="btn btn-default" data-dismiss="modal" id="reset_addParamInfo">关闭</button>
+								<button type="submit" class="btn btn-primary" data-dismiss="modal" id="submit_addParamInfo">确定</button>
 							</div>
 						</div>
 					</form>
@@ -218,37 +273,37 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			  </div>
 			</div>
 			<!-- 编辑角色 -->
-			<div class="modal fade" id="editRoleModal" tabindex="-1" role="dialog" aria-labelledby="editRoleModalLabel">
+			<div class="modal fade" id="editParamModal" tabindex="-1" role="dialog" aria-labelledby="editParamModalLabel">
 				<div class="modal-dialog" role="document" style="margin:55px -300px">
 					<div class="modal-content">
-						<form id="editRoleInfoForm" class="form-horizontal" role="form">
+						<form id="editParamInfoForm" class="form-horizontal" role="form">
 							<div class="modal-header">
 <!-- 								<button type="button" class="close" data-dismiss="modal" aria-label="Close"> -->
 <!-- 									<span aria-hidden="true">&times;</span> -->
 <!-- 								</button> -->
-								<h4 class="modal-title" id="editRoleModalLabel">系统角色信息</h4>
+								<h4 class="modal-title" id="editParamModalLabel">参数信息</h4>
 							</div>
 							<div class="modal-body">
 								<input type="hidden" name="id" id="edit-role-id"/>
 								<div class="space-4"></div>
 								<div class="form-group">
-									<label class="col-sm-3 control-label no-padding-right" for="edit-role-name"> 角色名称：</label>
+									<label class="col-sm-3 control-label no-padding-right" for="edit-param-name"> 参数名称：</label>
 									<div class="col-sm-8">
-										<input type="text" name="name" id="edit-role-name" placeholder="角色名称" class="form-control" />
+										<input type="text" name="name" id="edit-param-name" placeholder="参数名称" class="form-control" />
 									</div>
 								</div>
 								<div class="space-8"></div>
 								<div class="form-group">
-									<label class="col-sm-3 control-label no-padding-right" for="edit-role-description"> 角色描述： </label>
+									<label class="col-sm-3 control-label no-padding-right" for="edit-param-description"> 参数描述： </label>
 									<div class="col-sm-8">
-										<textarea class="form-control" name="description" id="edit-role-description" placeholder="角色描述"></textarea>
+										<textarea class="form-control" name="description" id="edit-param-description" placeholder="参数描述"></textarea>
 									</div>
 								</div>
 							</div>
 							<div class="modal-footer">
 								<div class="col-lg-4 col-lg-offset-5">
-									<button type="button" class="btn btn-default" data-dismiss="modal" id="reset_editRoleInfo">关闭</button>
-									<button type="submit" class="btn btn-primary" data-dismiss="modal" id="submit_editRoleInfo">确定</button>
+									<button type="button" class="btn btn-default" data-dismiss="modal" id="reset_editParamInfo">关闭</button>
+									<button type="submit" class="btn btn-primary" data-dismiss="modal" id="submit_editParamInfo">确定</button>
 								</div>
 							</div>
 						</form>
@@ -266,10 +321,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	</div><!-- /.main-content -->
 	
 	<script type="text/javascript">
-	  var roleGrid;
+	  var paramGrid;
 	  var url='<%=request.getContextPath()%>/admin/parameter/getList';
 	  $(function () {
-	      roleGrid = $('#roleList').datagrid({
+	      paramGrid = $('#roleList').datagrid({
 	          url: url,
 	          title: '角色列表',
 	          rownumbers: true,
@@ -287,7 +342,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	          }, {
 	              field: 'name',
 	              title: '参数名',
-	              width: 120,
+	              width: 200,
 	              sortable: true
 	          }]],
 	          columns: [[{
@@ -299,13 +354,18 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	      });
 	  });
 	
+	$("#add-param-series").combobox({
+          url:'${pageContext.request.contextPath}/admin/series/getSeriesComboData?seriesId=0',
+          valueField:'value',
+          textField:'text'
+      }); 
 	
-	//创建系统角色
-	$('#submit_addRoleInfo').click(function(){
-		var isValid = $('#addRoleInfoForm').data('bootstrapValidator').isValid();
+	//创建参数
+	$('#submit_addParamInfo').click(function(){
+		var isValid = $('#addParamInfoForm').data('bootstrapValidator').isValid();
 		if(isValid){
-			var toUrl='${pageContext.request.contextPath}/admin/role/createRole';
-			var f = $('#addRoleInfoForm');
+			var toUrl='${pageContext.request.contextPath}/admin/parameter/createParam';
+			var f = $('#addParamInfoForm');
 			         f.form('submit', {
 			             url: toUrl,
 			             onsubmit: function () {
@@ -331,29 +391,27 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			                 top.$.messager.alert('温馨提示', '由于网络或服务器太忙，提交失败，请重试！');
 			             }
 			         });
-			$('#addRoleInfoForm').data('bootstrapValidator').resetForm(true);
 		}
+		$('#addParamInfoForm').data('bootstrapValidator').resetForm(true);
 	});
-	  //编辑系统角色
-	  function editRole(){
-	      var rows = roleGrid.datagrid('getSelections');
+	  //编辑参数信息
+	  function editParam(){
+	      var rows = paramGrid.datagrid('getSelections');
 	      if (rows.length > 0) {
 	          if (rows.length == 1) {
 	        	//赋值
 				var oldName = rows[0].name;
 				var oldDescription = rows[0].description;
-				$('#edit-role-name').val(oldName);
-				$('#edit-role-description').val(oldDescription);
+				$('#edit-param-name').val(oldName);
+				$('#edit-param-description').val(oldDescription);
 				//弹出编辑框
-				$('#editRoleModal').modal('show');
-				$('#submit_editRoleInfo').click(function(){
-					var isValid = $('#editRoleInfoForm').data('bootstrapValidator').isValid();
+				$('#editParamModal').modal('show');
+				$('#submit_editParamInfo').click(function(){
 					if(isValid){
-						var name = $('#edit-role-name').val();
-						var description = $('#edit-role-description').val();
-						if(oldName != name || oldDescription != description){
-							
-							$.post('${pageContext.request.contextPath}/admin/role/editRole', 
+						var name = $('#edit-param-name').val();
+						var description = $('#edit-param-description').val();
+						if(oldName != name){
+							$.post('${pageContext.request.contextPath}/admin/parameter/editParam', 
 									{
 										id : rows[0].id,
 										name : name,
@@ -372,6 +430,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						}else{
 							top.showMsg('提示', "权限组信息没有被修改！");
 						}
+						var isValid = $('#editParamInfoForm').data('bootstrapValidator').isValid();
 					}
 				});	               
 	          }else {
@@ -388,7 +447,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	  //删除系统角色
 	  function deleteRole() {
 	      var ids = [];
-	      var rows = roleGrid.datagrid('getSelections');
+	      var rows = paramGrid.datagrid('getSelections');
 	      if (rows.length>0) {
 	    	  	var names = [];
 				for ( var i = 0; i < rows.length; i++) {
@@ -434,8 +493,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	      }
 	  }
 	  function reloadDataGrid() {
-	      roleGrid.datagrid('unselectAll');
-	      roleGrid.datagrid('reload');
+	      paramGrid.datagrid('unselectAll');
+	      paramGrid.datagrid('reload');
 	  }
 	</script>	
 	

@@ -12,9 +12,31 @@ public class DataToDocDto {
 	
 	private String PhotoBLOB;
 	
+	private List<ProductDto> products;
+	
 	private List<ParamDto> params;
 	
 	private List<ParamImgDataDto> paramImgData;
+	
+	private List<ParamImgDataDto> paramImgDataAll;
+
+	
+	
+	public List<ParamImgDataDto> getParamImgDataAll() {
+		return paramImgDataAll;
+	}
+
+	public void setParamImgDataAll(List<ParamImgDataDto> paramImgDataAll) {
+		this.paramImgDataAll = paramImgDataAll;
+	}
+
+	public List<ParamDto> getParams() {
+		return params;
+	}
+
+	public void setParams(List<ParamDto> params) {
+		this.params = params;
+	}
 
 	public List<ParamImgDataDto> getParamImgData() {
 		return paramImgData;
@@ -56,11 +78,11 @@ public class DataToDocDto {
 		PhotoBLOB = photoBLOB;
 	}
 
-	public List<ParamDto> getParams() {
-		return params;
+	public List<ProductDto> getProducts() {
+		return products;
 	}
 
-	public void setParams(List<ParamDto> params) {
-		this.params = params;
+	public void setProducts(List<ProductDto> products) {
+		this.products = products;
 	}
 }

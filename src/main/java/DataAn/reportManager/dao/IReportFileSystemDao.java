@@ -23,14 +23,14 @@ public interface IReportFileSystemDao extends IBaseDao<ReportFileSystem> {
 	public List<ReportFileSystem> selectByParentIdisNullAndOrder(String order);
 
 	public Pager<ReportFileSystem> selectBySeriesAndStarAndParameterTypeAndParentIdisNullAndOrder(
-			String series, String star, String parameterType, String order, int pageIndex,
+			String series, String star, String partsType, String order, int pageIndex,
 			int pageSize);
 
 	public Pager<ReportFileSystem> selectBySeriesAndStarAndParameterTypeAndParentIdAndOrder(
-			String series, String star, String parameterType, long parentId, String order,
+			String series, String star, String partsType, long parentId, String order,
 			int pageIndex, int pageSize);
 
-	public Pager<ReportFileSystem> selectByOption(String series, String star, String parameterType,
+	public Pager<ReportFileSystem> selectByOption(String series, String star, String partsType,
 			long parentId, String beginTime, String endTime, String dataTypes,
 			String order, int pageIndex, int pageSize);
 

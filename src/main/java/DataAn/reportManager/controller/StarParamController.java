@@ -180,7 +180,7 @@ public class StarParamController  extends BaseController {
 	public ResultJSON getStarList(HttpServletRequest request,String seriesId) {
 		ResultJSON res = ResultJSON.getSuccessResultJSON();
 		try {
-			 List<Star> starList = starParamService.getStarList(Long.parseLong(seriesId)); 
+			 List<Star> starList = starParamService.getStarList(seriesId); 
 			 List<StarDto> starDtoList = new ArrayList<StarDto>();
 			 for (Star star : starList) {
 				 StarDto starDto = new StarDto();
@@ -194,7 +194,7 @@ public class StarParamController  extends BaseController {
 			 data.put("data", starDtoList);
 			 res.setData(data);
 		 } catch (Exception ex) {
-			 res.setMsg("查询星失败！");
+			 res.setMsg("下载失败！");
 			 res.setResult(CommonsConstant.RESULT_FALSE);
 		 }
 		 return res;

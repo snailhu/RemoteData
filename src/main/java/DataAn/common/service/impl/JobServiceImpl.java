@@ -1,16 +1,18 @@
 package DataAn.common.service.impl;
 
 import java.io.BufferedInputStream;
-import java.io.File;
 import java.io.FileInputStream;
-import java.util.Date;
 import java.util.List;
+
 import javax.annotation.Resource;
+
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import DataAn.common.config.CommonConfig;
 import DataAn.common.service.IJobService;
+import DataAn.common.utils.DateUtil;
 import DataAn.common.utils.FileUtil;
 import DataAn.fileSystem.dao.IVirtualFileSystemDao;
 import DataAn.fileSystem.domain.VirtualFileSystem;
@@ -18,12 +20,22 @@ import DataAn.mongo.db.MongodbUtil;
 import DataAn.mongo.fs.IDfsDb;
 import DataAn.mongo.fs.MongoDfsDb;
 import DataAn.mongo.init.InitMongo;
+import DataAn.reportManager.dao.IStarParamDao;
+import DataAn.reportManager.domain.StarParam;
+import DataAn.reportManager.service.IReoportService;
+import DataAn.wordManager.config.OptionConfig;
 
 @Service
 public class JobServiceImpl implements IJobService{
 
 	@Resource
 	private IVirtualFileSystemDao fileDao;
+	
+	@Resource
+	private IStarParamDao starParamDao;
+	
+	@Resource
+	private IReoportService reoportService;
 	
 	//test 没5秒执行一次
 //	@Scheduled(cron = "0/5 * * * * *")  
@@ -81,4 +93,27 @@ public class JobServiceImpl implements IJobService{
 		
 	}
 
+	//每天晚上1点执行此方法
+	@Scheduled(cron = "0 0 01 * * ?") 
+	@Override
+	public void createReport() throws Exception {
+		String imgUrl = OptionConfig.getWebPath() + "\\report\\wordtemplate\\satellite.jpg";  
+		String templateUrl = OptionConfig.getWebPath() + "\\report\\wordtemplate\\卫星状态报告.doc";
+		String templateName = "Employees";
+		
+		List<StarParam> starList = starParamDao.getStarParamByParts();
+		for (StarParam starParam : starList) {
+			String seriesId = starParam.getSeries();
+			String starId = starParam.getStar();
+			String partsType = starParam.getPartsType();
+			
+			String time = DateUtil.getBeforeDate();
+			String filename = seriesId+"_"+starId+"_"+partsType+"_"+time+".doc";
+			String docPath = OptionConfig.getWebPath() + "report\\"+filename;
+			
+			reoportService.createReport(time, filename, imgUrl, templateUrl, templateName, docPath, seriesId, starId, partsType);
+			reoportService.insertReportToDB(filename, docPath,seriesId,starId, partsType);
+			reoportService.removeDoc(docPath);
+		}
+	}
 }

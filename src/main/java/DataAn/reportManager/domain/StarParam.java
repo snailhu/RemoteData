@@ -40,14 +40,60 @@ public class StarParam {
 	@Column(name = "star", nullable = false, length = 16)
 	private String star;
 	
-	//参数 如: flywheel、top
+	//参数 如: 电流current、电压voltage、转速speed
 	@Column(name = "parameterType", nullable = false, length = 32)
 	private String parameterType;
+	
+	//参数 如: flywheel、top
+	@Column(name = "partsType", nullable = false, length = 32)
+	private String partsType;
+	
+	@Column(name = "effeMin", nullable = false, length = 32)
+	private double effeMin;
+	
+	@Column(name = "effeMax", nullable = false, length = 32)
+	private double effeMax;
+	
+	@Column(name = "productName", nullable = false, length = 64)
+	private String productName;
 	
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "createDate", nullable = true)
 	private Date createDate = new Date();
 	
+	
+	public String getProductName() {
+		return productName;
+	}
+
+	public void setProductName(String productName) {
+		this.productName = productName;
+	}
+
+	public double getEffeMin() {
+		return effeMin;
+	}
+
+	public void setEffeMin(double effeMin) {
+		this.effeMin = effeMin;
+	}
+
+	public double getEffeMax() {
+		return effeMax;
+	}
+
+	public void setEffeMax(double effeMax) {
+		this.effeMax = effeMax;
+	}
+
+	public String getPartsType() {
+		return partsType;
+	}
+
+	public void setPartsType(String partsType) {
+		this.partsType = partsType;
+	}
+
 	public Long getId() {
 		return id;
 	}

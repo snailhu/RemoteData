@@ -20,8 +20,8 @@ implements IStarDao{
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<Star> getStarList(long seriesId) {
-		String hql = "from Star star where star.series.id=?";
+	public List<Star> getStarList(String seriesId) {
+		String hql = "from Star star where star.series.name=?";
 		return this.getSession().createQuery(hql).setParameter(0, seriesId).list();
 	}
 

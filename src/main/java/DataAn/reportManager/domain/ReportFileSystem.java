@@ -42,8 +42,8 @@ public class ReportFileSystem {
 	private String star;
 	
 	//参数 如: flywheel、top
-	@Column(name = "parameterType", nullable = false, length = 32)
-	private String parameterType;
+	@Column(name = "partsType", nullable = false, length = 32)
+	private String partsType;
 	
 	@Enumerated(EnumType.STRING)
 	@Column(name = "dataType", nullable = true, length = 16)
@@ -132,12 +132,12 @@ public class ReportFileSystem {
 		this.star = star;
 	}
 
-	public String getParameterType() {
-		return parameterType;
+	public String getPartsType() {
+		return partsType;
 	}
 
-	public void setParameterType(String parameterType) {
-		this.parameterType = parameterType;
+	public void setPartsType(String partsType) {
+		this.partsType = partsType;
 	}
 
 	public ReportDataType getDataType() {

@@ -2,11 +2,22 @@ package DataAn.reportManager.dto;
 
 public class ParamDto {
 
+	private String productName;//参数名称
+	
 	private String paramName;//参数名称
 	
 	private String paramNumMax;//参数最大值
 	
 	private String paramNumMin;//参数最小值
+
+	
+	public String getProductName() {
+		return productName;
+	}
+
+	public void setProductName(String productName) {
+		this.productName = productName;
+	}
 
 	public String getParamName() {
 		return paramName;

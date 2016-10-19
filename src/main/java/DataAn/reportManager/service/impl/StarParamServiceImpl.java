@@ -2,9 +2,7 @@ package DataAn.reportManager.service.impl;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -55,21 +53,24 @@ public class StarParamServiceImpl implements IStarParamService {
 		starParamDto.setId(starParam.getId());
 		starParamDto.setParamCode(starParam.getParamCode());
 		starParamDto.setParamName(starParam.getParamName());
+		starParamDto.setEffeMin(starParam.getEffeMin());
+		starParamDto.setEffeMax(starParam.getEffeMax());
 		starParamDto.setParameterType(starParam.getParameterType());
-		starParamDto.setSeries(getSeriesName(starParam.getSeries()));
-		starParamDto.setStar(getStarName(starParam.getStar()));
+		starParamDto.setPartsType(starParam.getPartsType());
+		starParamDto.setSeries(starParam.getSeries());
+		starParamDto.setStar(starParam.getStar());
 		starParamDto.setCreater(starParam.getCreater());
 		starParamDto.setCreateDate(starParam.getCreateDate());
 		return starParamDto;
 	}
 
-	private String getStarName(String starId) {
+/*	private String getStarName(String starId) {
 		return starDao.getStarName(starId);
-	}
+	}*/
 
-	private String getSeriesName(String seriesId) {
+	/*private String getSeriesName(String seriesId) {
 		return seriesDao.getSeriesName(seriesId);
-	}
+	}*/
 
 	@Override
 	public void save(StarParamDto starParamDto) {
@@ -77,9 +78,12 @@ public class StarParamServiceImpl implements IStarParamService {
 		starParam.setCreater(starParamDto.getCreater());
 		starParam.setSeries(starParamDto.getSeries());
 		starParam.setStar(starParamDto.getStar());
-		starParam.setParameterType(starParamDto.getParameterType());
+		starParam.setPartsType(starParamDto.getPartsType());
+		starParam.setParameterType("电流");//TODO
 		starParam.setParamCode(starParamDto.getParamCode());
 		starParam.setParamName(starParamDto.getParamName());
+		starParam.setEffeMin(starParamDto.getEffeMin());
+		starParam.setEffeMax(starParamDto.getEffeMax());
 		starParam.setCreateDate(new Date());
 		starParamDao.add(starParam);
 	}
@@ -116,7 +120,7 @@ public class StarParamServiceImpl implements IStarParamService {
 	@Override
 	public void delete(String[] starParamIdArray) {
 		for (String starParamId : starParamIdArray) {
-			starParamDao.delete(Long.parseLong(starParamId));
+			starParamDao.delete(Long.parseLong(starParamId)); 
 		}
 	}
 
@@ -126,7 +130,12 @@ public class StarParamServiceImpl implements IStarParamService {
 	}
 
 	@Override
-	public List<Star> getStarList(long seriesId) {
+	public List<Star> getStarList(String seriesId) {
 		return starDao.getStarList(seriesId);
+	}
+
+	@Override
+	public List<StarParam> getStarParamForReport(String seriesId, String starId, String partsType) {
+		return starParamDao.getStarParamForReport(seriesId,starId,partsType);
 	}
 }

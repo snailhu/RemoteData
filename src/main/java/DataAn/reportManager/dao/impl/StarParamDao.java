@@ -1,6 +1,8 @@
 package DataAn.reportManager.dao.impl;
 
 
+import java.util.List;
+
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Query;
 import org.springframework.stereotype.Repository;
@@ -82,4 +84,42 @@ public class StarParamDao extends BaseDaoImpl<StarParam> implements IStarParamDa
 		}
 		return  totalCount == 0L ? Boolean.FALSE : Boolean.TRUE;
 	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<StarParam>  getStarParamForReport(String seriesId, String starId, String partsType) {
+		String hql = "from StarParam u where 1=1";
+		if(StringUtils.isNotBlank(seriesId)){
+			hql += " and u.series = :series";
+		}
+		if(StringUtils.isNotBlank(starId)){
+			hql += " and u.star = :star";
+		}
+		if(StringUtils.isNotBlank(partsType)){
+			hql += " and u.partsType = :partsType";
+		}
+		Query query = this.getSession().createQuery(hql);
+		if(StringUtils.isNotBlank(seriesId)){
+			query.setParameter("series", seriesId);
+		}
+		if(StringUtils.isNotBlank(starId)){
+			query.setParameter("star", starId);
+		}
+		if(StringUtils.isNotBlank(partsType)){
+			query.setParameter("partsType", partsType);
+		}
+		List<StarParam> starParamList =   query.list();
+		return starParamList;
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<StarParam>  getStarParamByParts() {
+		String hql = "select distinct  series,star,partsType from StarParam";
+		Query query = this.getSession().createQuery(hql);
+		List<StarParam> starParamList =   query.list();
+		return starParamList;
+	}
+	
+	
 }

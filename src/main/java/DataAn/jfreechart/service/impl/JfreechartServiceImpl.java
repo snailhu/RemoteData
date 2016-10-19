@@ -4,14 +4,12 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.Vector;
-
 import javax.annotation.Resource;
-
 import org.bson.Document;
 import org.jfree.chart.ChartUtilities;
 import org.jfree.chart.JFreeChart;
@@ -19,9 +17,7 @@ import org.jfree.data.time.Millisecond;
 import org.jfree.data.time.TimeSeries;
 import org.jfree.data.time.TimeSeriesCollection;
 import org.springframework.stereotype.Service;
-
 import com.mongodb.client.MongoCursor;
-
 import DataAn.common.config.CommonConfig;
 import DataAn.common.utils.DateUtil;
 import DataAn.jfreechart.chart.ChartFactory;
@@ -156,15 +152,24 @@ public class JfreechartServiceImpl implements IJfreechartServcie{
 			Date beginDate, Date endDate, Map<String,List<ConstraintDto>> constraintsMap, int totalNumber) throws Exception {
 		
 		Map<String,String> params = new HashMap<String,String>();
-//		for (ConstraintDto constraintDto : constraintList) {
-//			params.put(constraintDto.getValue(), constraintDto.getName());
-//		}
+		Map<String,Double> paramMin = new HashMap<String,Double>();
+		Map<String,Double> paramMax = new HashMap<String,Double>();
+		Set<String> constraintsKeys = constraintsMap.keySet();
+		for (String key : constraintsKeys) {
+			List<ConstraintDto> constraintList = constraintsMap.get(key);
+			for (ConstraintDto constraintDto : constraintList) {
+				if(!params.containsKey(key)){
+					params.put(constraintDto.getValue(), constraintDto.getName());
+					paramMin.put(constraintDto.getValue(), constraintDto.getMin());
+					paramMax.put(constraintDto.getValue(), constraintDto.getMax());					
+				}
+			}
+		}
 		
 		MongoCursor<Document> cursor = mongoService.findByDate(series, star, paramType, beginDate, endDate);
 		Document doc = null;
 		int count = 0;
-		Set<Date> dateSet = new HashSet<Date>();
-		Map<Date,List<Document>> tempMap = new HashMap<Date,List<Document>>();
+		Map<Date,List<Document>> tempMap = new LinkedHashMap<Date,List<Document>>();
 		List<Document> tempDocList = null;
 		while(cursor.hasNext()){
 			//设置总数
@@ -181,10 +186,8 @@ public class JfreechartServiceImpl implements IJfreechartServcie{
 			}
 			tempDocList.add(doc);
 			tempMap.put(datetime, tempDocList);
-			dateSet.add(datetime);
 		}
 //		System.out.println("count: " + count);
-//		System.out.println("dateSet: " + dateSet.size());
 		//多条线数据
 		Map<String,TimeSeries> lineMap = new HashMap<String,TimeSeries>();
 		Map<String,Double> minMap = new HashMap<String,Double>();
@@ -192,6 +195,7 @@ public class JfreechartServiceImpl implements IJfreechartServcie{
 		TimeSeries timeseries = null;
 		Double min = null;
 		Double max = null;
+		Set<Date> dateSet = tempMap.keySet();
 		Set<String> en_params = params.keySet();
 		for (Date datetime : dateSet) {
 			tempDocList = tempMap.get(datetime);
@@ -225,35 +229,36 @@ public class JfreechartServiceImpl implements IJfreechartServcie{
 			}
 		}
 		
-		//多条线图表数据
-		TimeSeriesCollection dataset = new TimeSeriesCollection();
-		for (String key : en_params) {
-			dataset.addSeries(lineMap.get(key));
+		Map<String,String> chartMap = new HashMap<String,String>();
+		for (String key : constraintsKeys) {
+			List<ConstraintDto> constraintList = constraintsMap.get(key);
+			//多条线图表数据
+			TimeSeriesCollection dataset = new TimeSeriesCollection();
+			for (ConstraintDto constraintDto : constraintList) {
+				dataset.addSeries(lineMap.get(constraintDto.getValue()));
+			}
+			
+			String title = "";
+			String categoryAxisLabel = "";
+			String valueAxisLabel = "";
+	        
+			JFreeChart chart = ChartFactory.createTimeSeriesChart(title, categoryAxisLabel, valueAxisLabel, dataset);
+			
+			String cachePath = CommonConfig.getChartCachePath();
+			File parentDir = new File(cachePath);
+			if (!parentDir.exists()) {
+				parentDir.mkdirs();
+			}
+			File file = new File(cachePath,"lineChart.png");
+			int width = 1024;
+			int height = 620;
+			//ChartUtilities.saveChartAsJPEG(file, chart, width, height);
+			ChartUtilities.saveChartAsPNG(file, chart, width, height);
+			chartMap.put(key, file.getAbsolutePath());
 		}
-		String title = "";
-		String categoryAxisLabel = "";
-		String valueAxisLabel = "";
 		
-//		System.out.println("0 " + dataset.getItemCount(0));
-//        System.out.println("1 " + dataset.getItemCount(1));
-//        System.out.println("2 " + dataset.getItemCount(2));
-//        System.out.println("3 " + dataset.getItemCount(3));
-        
-		JFreeChart chart = ChartFactory.createTimeSeriesChart(title, categoryAxisLabel, valueAxisLabel, dataset);
-		
-		String cachePath = CommonConfig.getChartCachePath();
-		File parentDir = new File(cachePath);
-		if (!parentDir.exists()) {
-			parentDir.mkdirs();
-		}
-		
-		File file = new File(cachePath,"lineChart.png");
-		int width = 1024;
-		int height = 620;
-		//ChartUtilities.saveChartAsJPEG(file, chart, width, height);
-		ChartUtilities.saveChartAsPNG(file, chart, width, height);
 		LineChartDto lineChartDto = new LineChartDto();
-		//lineChartDto.setChartPath(file.getAbsolutePath());
+		lineChartDto.setChartMap(chartMap);
 		lineChartDto.setMinMap(minMap);
 		lineChartDto.setMaxMap(maxMap);
 		return lineChartDto;

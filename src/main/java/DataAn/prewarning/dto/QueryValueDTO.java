@@ -13,6 +13,8 @@ public class QueryValueDTO implements java.io.Serializable {
 
 	private String series; // 星系
 
+	private String star; // 星
+
 	private String parameter; // 参数
 
 	private String parameterType; // 参数类型
@@ -26,6 +28,14 @@ public class QueryValueDTO implements java.io.Serializable {
 	private int limitTimes; // 限定次数
 
 	private String warningType; // 预警类型（0特殊工况，1异常）
+
+	public String getStar() {
+		return star;
+	}
+
+	public void setStar(String star) {
+		this.star = star;
+	}
 
 	public int getLimitTimes() {
 		return limitTimes;

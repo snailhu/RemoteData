@@ -14,11 +14,14 @@ import DataAn.prewarning.domain.WarningLog;
 public class WarningLogDaoImpl extends BaseDaoImpl<WarningLog> implements IWarningLogDao {
 
 	@Override
-	public List<WarningLog> getWarningLogByParams(String series, String parameterType, String parameter,
+	public List<WarningLog> getWarningLogByParams(String series, String star, String parameterType, String parameter,
 			String warningType, String hadRead) {
 		String hql = "from WarningLog where 1=1";
 		if (StringUtils.isNotBlank(series)) {
-			hql += " and series = '" + series + "'";
+			hql += " and series = " + series;
+		}
+		if (StringUtils.isNotBlank(star)) {
+			hql += " and star = " + star;
 		}
 		if (StringUtils.isNotBlank(parameter)) {
 			hql += " and parameter = '" + parameter + "'";
@@ -38,13 +41,18 @@ public class WarningLogDaoImpl extends BaseDaoImpl<WarningLog> implements IWarni
 	}
 
 	@Override
-	public Pager<WarningLog> selectByOption(int pageIndex, int pageSize, String series, String parameterType,
-			String createdatetimeStart, String createdatetimeEnd, String warningType, String hadRead) {
+	public Pager<WarningLog> selectByOption(int pageIndex, int pageSize, String series, String star,
+			String parameterType, String createdatetimeStart, String createdatetimeEnd, String warningType,
+			String hadRead) {
 		String hql = "from WarningLog where 1=1";
 		String countHQL = "select count(*) from WarningLog where 1=1";
 		if (StringUtils.isNotBlank(series)) {
-			hql += " and series = '" + series + "'";
-			countHQL += " and series = '" + series + "'";
+			hql += " and series = " + series;
+			countHQL += " and series = " + series;
+		}
+		if (StringUtils.isNotBlank(star)) {
+			hql += " and star = " + star;
+			countHQL += " and star = " + star;
 		}
 		if (StringUtils.isNotBlank(createdatetimeStart)) {
 			hql += " and timeValue >= '" + createdatetimeStart + "'";
@@ -80,10 +88,14 @@ public class WarningLogDaoImpl extends BaseDaoImpl<WarningLog> implements IWarni
 	}
 
 	@Override
-	public Long getNotReadCount(String series, String parameterType, String parameter, String warningType) {
+	public Long getNotReadCount(String series, String star, String parameterType, String parameter,
+			String warningType) {
 		String hql = "select count(*) from WarningLog where hadRead=0";
 		if (StringUtils.isNotBlank(series)) {
-			hql += " and series = '" + series + "'";
+			hql += " and series = " + series;
+		}
+		if (StringUtils.isNotBlank(star)) {
+			hql += " and star = " + star;
 		}
 		if (StringUtils.isNotBlank(parameter)) {
 			hql += " and parameter = '" + parameter + "'";

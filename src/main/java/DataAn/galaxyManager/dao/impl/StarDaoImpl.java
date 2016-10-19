@@ -9,8 +9,7 @@ import DataAn.galaxyManager.dao.IStarDao;
 import DataAn.galaxyManager.domain.Star;
 
 @Repository
-public class StarDaoImpl extends BaseDaoImpl<Star>
-implements IStarDao{
+public class StarDaoImpl extends BaseDaoImpl<Star> implements IStarDao {
 
 	@Override
 	public void deleteBySeriesId(long seriesId) {
@@ -28,8 +27,13 @@ implements IStarDao{
 	@Override
 	public String getStarName(String starId) {
 		String hql = "select star.name from Star star where star.id=?";
-		return (String)getSession().createQuery(hql).setParameter(0,  Long.parseLong(starId)).uniqueResult();
+		return (String) getSession().createQuery(hql).setParameter(0, Long.parseLong(starId)).uniqueResult();
 	}
 
-	
+	@Override
+	public String getStarIdByName(String starName) {
+		String hql = "select star.id from Star star where star.name=?";
+		return getSession().createQuery(hql).setParameter(0, starName).uniqueResult().toString();
+	}
+
 }

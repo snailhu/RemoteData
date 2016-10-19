@@ -1,15 +1,11 @@
 package DataAn.prewarning.dao;
 
-import java.util.List;
-
-import DataAn.common.dao.IBaseDao;
 import DataAn.common.dao.Pager;
 import DataAn.prewarning.domain.WarningLog;
 
-public interface IWarningLogDao extends IBaseDao<WarningLog> {
+public interface IWarningLogMongoDao {
 
-	public List<WarningLog> getWarningLogByParams(String series, String star, String parameterType, String parameter,
-			String warningType, String hadRead);
+	public void deleteWainingById(String logId);
 
 	public Pager<WarningLog> selectByOption(int pageIndex, int pageSize, String series, String star,
 			String parameterType, String createdatetimeStart, String createdatetimeEnd, String warningType,

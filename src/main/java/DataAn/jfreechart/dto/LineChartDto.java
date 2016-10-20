@@ -44,7 +44,10 @@ public class LineChartDto {
 		this.maxMap = maxMap;
 	}
 
-	
-	
+	@Override
+	public String toString() {
+		return "LineChartDto [chartMap=" + chartMap + ", minMap=" + minMap
+				+ ", maxMap=" + maxMap + "]";
+	}
 	
 }

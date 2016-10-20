@@ -29,6 +29,10 @@ public interface IJfreechartServcie {
 	*/
 	public LineChartDto createLineChart(String series,String star, String paramType, 
 			Date beginDate, Date endDate, Map<String,List<ConstraintDto>> constraintsMap) throws Exception;
+	
+	public LineChartDto createLineChartMock(String series,String star, String paramType, 
+			Date beginDate, Date endDate, Map<String,List<ConstraintDto>> constraintsMap) throws Exception;
+
 
 	
 	/**

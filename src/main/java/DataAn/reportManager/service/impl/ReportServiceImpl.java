@@ -39,6 +39,7 @@ import DataAn.common.utils.UUIDGeneratorUtil;
 import DataAn.fileSystem.dto.FileDto;
 import DataAn.fileSystem.dto.MongoFSDto;
 import DataAn.fileSystem.option.FileType;
+import DataAn.jfreechart.dto.ConstraintDto;
 import DataAn.jfreechart.dto.LineChartDto;
 import DataAn.jfreechart.service.IJfreechartServcie;
 import DataAn.mongo.db.MongodbUtil;
@@ -117,7 +118,7 @@ public class ReportServiceImpl implements IReoportService {
 		}
 		
 		
-		DataTable paramImgTab = new DataTable("paramImgTab");
+		/*DataTable paramImgTab = new DataTable("paramImgTab");
 		paramImgTab.getColumns().add(new DataColumn("parName"));
 		paramImgTab.getColumns().add(new DataColumn("parImg"));		
 		
@@ -134,7 +135,7 @@ public class ReportServiceImpl implements IReoportService {
 	        row_img.set("parImg",image);
 			paramImgTab.getRows().add(row_img);
 		}
-        
+        */
    /* 	DataTable paramAllImgTab = new DataTable("paramAllImgTab");
     	paramAllImgTab.getColumns().add(new DataColumn("parAllName"));
     	paramAllImgTab.getColumns().add(new DataColumn("parAllImg"));		
@@ -159,13 +160,14 @@ public class ReportServiceImpl implements IReoportService {
 		}
         
         dataSet.getTables().add(paramAllImgTab);*/
-        dataSet.getTables().add(paramImgTab);
+        /*dataSet.getTables().add(paramImgTab);*/
 		dataSet.getTables().add(product);
 		dataSet.getTables().add(param);
 		 
 		dataSet.getRelations().add(new DataRelation("paramListForProduct",product.getColumns().get("productName"), param.getColumns().get("productName"))); 
-		doc.getMailMerge().executeWithRegions(new MapMailMergeDataSource(getParamImgTab(data), "paramImgTab")); 
-		doc.getMailMerge().executeWithRegions(new MapMailMergeDataSource(getParamAllImgTab(data), "paramAllImgTab")); 
+		doc.getMailMerge().executeWithRegions(new MapMailMergeDataSource(getImgTab(data.getOneParamImg(),"parNameOne","parImgOne"), "firstImgTab")); 
+		doc.getMailMerge().executeWithRegions(new MapMailMergeDataSource(getImgTab(data.getTwoParamImg(),"parNameTwo","parImgTwo"), "twoImgTab")); 
+		doc.getMailMerge().executeWithRegions(new MapMailMergeDataSource(getImgTab(data.getThreeParamImg(),"parNameThree","parImgThree"), "thirdImgTab")); 
 		doc.getMailMerge().executeWithRegions(dataSet);
 		 //doc.getMailMerge().executeWithRegions(new MapMailMergeDataSource(getMapList(imgPath,data), templateName)); 
 		
@@ -177,40 +179,24 @@ public class ReportServiceImpl implements IReoportService {
 		//3生成报告
        doc.save(docPath, SaveFormat.DOC); 
 	} 
-	private List<Map<String, Object>> getParamImgTab(DataToDocDto data) throws Exception {  
+	private List<Map<String, Object>> getImgTab( List<ParamImgDataDto> paramImgDatas,String parName,String parImg ) throws Exception {  
 		   List<Map<String, Object>> dataList = new ArrayList<Map<String,Object>>();  
-	        List<ParamImgDataDto> paramImgDatas = data.getParamImgData();
 	        for (ParamImgDataDto param : paramImgDatas) {
-	        	   //读取一个二进制图片  
 		        FileInputStream fis = new FileInputStream(param.getParImg());  
 		        byte[] image = new byte[fis.available()];  
 		        fis.read(image);
 		        fis.close();  
 	        	
 	        	Map<String, Object> record = new HashMap<String, Object>();  
-	        	record.put("parName", param.getParName());
-	        	record.put("parImg",image);
+	        	record.put(parName, param.getParName());
+	        	record.put(parImg,image);
 	        	dataList.add(record);
 			}
 	        return dataList;  
 	}
-	private List<Map<String, Object>> getParamAllImgTab(DataToDocDto data) throws Exception {  
-		   List<Map<String, Object>> dataList = new ArrayList<Map<String,Object>>();  
-	        List<ParamImgDataDto> paramImgDatas = data.getParamImgDataAll();
-	        for (ParamImgDataDto param : paramImgDatas) {
-	        	   //读取一个二进制图片  
-		        FileInputStream fis = new FileInputStream(param.getParImg());  
-		        byte[] image = new byte[fis.available()];  
-		        fis.read(image);
-		        fis.close();  
-	        	
-	        	Map<String, Object> record = new HashMap<String, Object>();  
-	        	record.put("parAllName", param.getParName());
-	        	record.put("parAllImg",image);
-	        	dataList.add(record);
-			}
-	        return dataList;  
-	}
+	
+	
+	
 	
 	private List<Map<String, Object>> getMapList2(DataToDocDto data) throws Exception {  
 		   List<Map<String, Object>> dataList = new ArrayList<Map<String,Object>>();  
@@ -611,17 +597,11 @@ public class ReportServiceImpl implements IReoportService {
 		}
 	}
 	@Override
-	public void createReport(String nowDate, String filename, String imgUrl, String templateUrl, String templateName,
-			String docPath, String seriesId, String starId, String partsType) throws Exception {
-		/********************************导出报告到临时目录***********************************/
+	public void createReport(Date beginDate,Date endDate,  String filename, String imgUrl, String templateUrl, String templateName,
+			String docPath, String seriesId, String starId, String partsType) throws Exception { 
 		
 		List<StarParam> starParamList =  starParamService.getStarParamForReport(seriesId, starId, partsType);
-		
-		List<ParamImgDataDto> paramImgDatas = new ArrayList<ParamImgDataDto>();
-		
-		List<ParamImgDataDto> paramImgDataAll = new ArrayList<ParamImgDataDto>();
-		
-		List<ParamDto> params = new ArrayList<ParamDto>();
+	
 		DataToDocDto data = new DataToDocDto();
 		data.setHealthcondition("飞轮运行正常");
 		data.setParts("飞轮状态");
@@ -634,24 +614,131 @@ public class ReportServiceImpl implements IReoportService {
 			parList.add(p);
 		}
 		
+		Map<String,List<ConstraintDto>> constraintsMap = new HashMap<String,List<ConstraintDto>>();
+		List<StarParam> doubleList =  new  ArrayList<StarParam>();
 		
-		List<ParamForMongoDto> listPar = new ArrayList<ParamForMongoDto>();
-		
+		//封装一条线（温度、电压等）的参数值
+		List<StarParam> firstList =  new  ArrayList<StarParam>();
 		for (StarParam starParam : starParamList) {
-			if(!parList.contains(starParam)) {
-				ParamForMongoDto paramForMongoDto = new ParamForMongoDto();
-				paramForMongoDto.setKeyName(starParam.get);
-				
+			if(!parList.contains(starParam.getParameterType())) {
+				String key = starParam.getProductName()+starParam.getParameterType();
+				List<ConstraintDto> listSingle = new ArrayList<ConstraintDto>();
+				ConstraintDto constraintDto = new ConstraintDto();
+				constraintDto.setName(starParam.getParamName());
+				constraintDto.setValue(starParam.getParamCode());
+				constraintDto.setMax(starParam.getEffeMax());
+				constraintDto.setMin(starParam.getEffeMin());
+				listSingle.add(constraintDto);
+				constraintsMap.put(key, listSingle);
+				firstList.add(starParam);
+			} else {
+				doubleList.add(starParam);
 			}
-			
-			
+		}
+		//等到产品数  如飞轮A、飞轮B 
+		List<String> productType = new ArrayList<String>();
+		for (StarParam starParam : doubleList) {
+			if( !productType.contains(starParam.getProductName())) {
+				productType.add(starParam.getProductName());
+			}
+		}
+		//封装两条线（转速,电流）的参数值  如 飞轮A转速,电流   ；飞轮B转速,电流
+		for (String product : productType) {
+			List<ConstraintDto> productlist = new ArrayList<ConstraintDto>();
+			for (StarParam starParam : doubleList) {
+				if(product.equals(starParam.getProductName())) {
+					ConstraintDto constraintDto = new ConstraintDto();
+					constraintDto.setName(starParam.getParamName());
+					constraintDto.setValue(starParam.getParamCode());
+					constraintDto.setMax(starParam.getEffeMax());
+					constraintDto.setMin(starParam.getEffeMin());
+					productlist.add(constraintDto);
+				}
+			}
+			constraintsMap.put(product+paramStr, productlist);
+		}
+		
+		//等到参数类型  如转速、电流、温度、电压等
+		List<String> parameterType = new ArrayList<String>();
+		for (StarParam starParam : starParamList) {
+			if( !parameterType.contains(starParam.getParameterType())) {
+				parameterType.add(starParam.getParameterType());
+			}
+		}
+		
+		//封装同一参数类型下的多条线  如 在轨电流、在轨转速、在轨温度等
+		for (String string : parameterType) {
+			List<ConstraintDto> parameterTypelist = new ArrayList<ConstraintDto>();
+			for (StarParam starParam : starParamList) {
+				if(string.equals(starParam.getParameterType())) {
+					ConstraintDto constraintDto = new ConstraintDto();
+					constraintDto.setName(starParam.getParamName());
+					constraintDto.setValue(starParam.getParamCode());
+					constraintDto.setMax(starParam.getEffeMax());
+					constraintDto.setMin(starParam.getEffeMin());
+					parameterTypelist.add(constraintDto);
+				}
+			}
+			constraintsMap.put(string, parameterTypelist);
+		}
+		
+		//画图并返回参数
+		LineChartDto lineChartDto = jfreechartServcie.createLineChart(seriesId, starId, partsType, beginDate, endDate, constraintsMap);
+		
+		Map<String,Double> minMap = lineChartDto.getMinMap();//所以参数最小值Map
+		Map<String,Double> maxMap = lineChartDto.getMaxMap();//所以参数最大值Map
+		Map<String,String> chartMap = lineChartDto.getChartMap();//所以图片路径Map
+		
+		//封装参数列表list
+		List<ParamDto> params = new ArrayList<ParamDto>();
+		for (StarParam starParam : starParamList) {
+			ParamDto param = new ParamDto();
+			param.setParamName(starParam.getParamName());
+			param.setProductName(starParam.getProductName());
+			param.setParamNumMax(String.valueOf(maxMap.get(starParam.getParamCode())));
+			param.setParamNumMin(String.valueOf(minMap.get(starParam.getParamCode())));
+			params.add(param);
+		}
+		
+		//封装参数类型 图片list
+		List<ParamImgDataDto> threeParamImgList = new ArrayList<ParamImgDataDto>();
+		
+		for (String parName : parameterType) {
+			ParamImgDataDto paramImgData = new ParamImgDataDto();
+			paramImgData.setParName(parName);
+			paramImgData.setParImg(chartMap.get(parName));
+			threeParamImgList.add(paramImgData);
+		}
+		
+		//封装产品转速、电流 图片list
+		List<ParamImgDataDto> twoParamImgList = new ArrayList<ParamImgDataDto>();
+		
+		for (String product : productType) {
+			ParamImgDataDto paramImgData = new ParamImgDataDto();
+			paramImgData.setParName(product+paramStr);
+			paramImgData.setParImg(chartMap.get(product+paramStr));
+			twoParamImgList.add(paramImgData);
+		}
+		
+		//封装产品非转速、电流 图片list
+		List<ParamImgDataDto> oneParamImgList = new ArrayList<ParamImgDataDto>();
+		for (StarParam starParam : firstList) {
+			ParamImgDataDto paramImgData = new ParamImgDataDto();
+			paramImgData.setParName(starParam.getProductName()+starParam.getParamName());
+			paramImgData.setParImg(chartMap.get(starParam.getProductName()+starParam.getParamName()));
+			oneParamImgList.add(paramImgData);
+		}
+		//封装产品列表list
+		List<ProductDto> products = new ArrayList<ProductDto>();
+		for (String product : productType) {
+			ProductDto productDto = new ProductDto();
+			productDto.setProductName(product);
+			productDto.setMovableNum(8);//TODO 机动次数接口获取
+			products.add(productDto);
 		}
 		
 		
-		
-		
-		
-		for (StarParam starParam : starParamList) {
+	/*	for (StarParam starParam : starParamList) {
 			
 			ParamImgDataDto paramImgData = new ParamImgDataDto();
 			paramImgData.setParName(starParam.getProductName());
@@ -709,12 +796,13 @@ public class ReportServiceImpl implements IReoportService {
 			LineChartDto lineChartDto = jfreechartServcie.createLineChart(seriesId, starId, partsType, nowDate, par);
 			paramImgData.setParImg(lineChartDto.getChartPath());
 			paramImgDataAll.add(paramImgData);
-		}
+		}*/
 		data.setParams(params);
 		data.setProducts(products);
-		data.setParamImgData(paramImgDatas);
-		data.setParamImgDataAll(paramImgDataAll);
-
+		data.setOneParamImg(oneParamImgList); 
+		data.setTwoParamImg(twoParamImgList);
+		data.setThreeParamImg(threeParamImgList);
+		
 		reportDoc(filename, data, imgUrl, templateUrl, templateName, docPath);
 	}
 	

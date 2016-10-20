@@ -8,6 +8,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -185,17 +186,19 @@ public class ReportController {
 		}
 		return jsonMsg;
 	}
+	@SuppressWarnings("deprecation")
 	@RequestMapping(value = { "/createReport" })
-	public void  createReport(HttpServletResponse response,HttpServletRequest request,String seriesId,String starId,String partsType,String time) throws Exception {
+	public void  createReport(HttpServletResponse response,HttpServletRequest request,String seriesId,String starId,String partsType,String beginTime,String endTime) throws Exception {
 		
 			String imgUrl = OptionConfig.getWebPath() + "\\report\\wordtemplate\\satellite.jpg";  
 			String templateUrl = OptionConfig.getWebPath() + "\\report\\wordtemplate\\卫星状态报告.doc";
 			String templateName = "Employees";
 			
-			String filename = seriesId+"_"+starId+"_"+partsType+"_"+time+".doc";
+			String filename = seriesId+"_"+starId+"_"+partsType+".doc";
 			String docPath = OptionConfig.getWebPath() + "report\\"+filename;
-			
-			reoportService.createReport(time, filename, imgUrl, templateUrl, templateName, docPath, seriesId, starId, partsType);
+			Date beginDate = DateUtil.format(beginTime,"yyyy-MM-dd");
+			Date endDate =  DateUtil.format(endTime,"yyyy-MM-dd");
+			reoportService.createReport( beginDate, endDate, filename, imgUrl, templateUrl, templateName, docPath, seriesId, starId, partsType);
 			reoportService.downloadReport(response, docPath,filename);
 			reoportService.removeDoc(docPath);
 	}

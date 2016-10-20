@@ -272,7 +272,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 									<div class="col-sm-8">
 										<select name="partsType"  id="add-starParam-partsType" class="form-control " >
 				                           <option selected="selected" value = "flywheel">飞轮</option>
-				                           <option value = "flywheel">陀螺</option>
+				                           <option value = "top">陀螺</option>
 				                       </select>
 									</div>
 								</div>
@@ -349,7 +349,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 									<div class="col-sm-8">
 										<select name="partsType"  id="edit-starParam-partsType" class="form-control " >
 				                           <option selected="selected" value = "flywheel">飞轮</option>
-				                           <option value = "flywheel">陀螺</option>
+				                           <option value = "top">陀螺</option>
 				                       </select>
 									</div>
 								</div>

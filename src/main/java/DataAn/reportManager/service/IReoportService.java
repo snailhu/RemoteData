@@ -3,6 +3,7 @@ package DataAn.reportManager.service;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Date;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
@@ -38,8 +39,8 @@ public interface IReoportService {
 	
 	public void deleteFile(String ids);
 	
-	public void createReport(String nowDate, String filename, String imgUrl, String templateUrl, String templateName,
-			String docPath, String seriesId, String starId, String partsType) throws Exception;
+/*	public void createReport(String nowDate, String filename, String imgUrl, String templateUrl, String templateName,
+			String docPath, String seriesId, String starId, String partsType) throws Exception;*/
 	
 	public ReportFileSystem insertReportToDB(String filename, String docPath,String seriesId,String starId, String partsType)
 			throws FileNotFoundException, IOException;
@@ -48,4 +49,6 @@ public interface IReoportService {
 	
 	public void downloadReport(HttpServletResponse response, String docPath,String filename ) throws FileNotFoundException ;
 	
+	public void createReport(Date beginDate,Date endDate,  String filename, String imgUrl, String templateUrl, String templateName,
+			String docPath, String seriesId, String starId, String partsType) throws Exception;
 }

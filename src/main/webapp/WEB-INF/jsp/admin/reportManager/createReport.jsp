@@ -174,19 +174,28 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 										<label class="col-sm-3 control-label no-padding-right" for="form-partsType">部件：</label>
 										<div class="col-sm-4">
 											<select name="partsType"  id="form-partsType" class="form-control " >
-				                           		<option selected="selected" value = "飞轮">飞轮</option>
-				                           		<option value = "陀螺">陀螺</option>
+				                           		<option selected="selected" value = "flywheel">飞轮</option>
+				                           		<option value = "top">陀螺</option>
 				                       		</select>
 										</div>
 									</div>
 									<div class="space-1"></div>
 									<div class="form-group">
-										<label class="col-sm-3 control-label no-padding-right" for="form-Time"> 日期： </label>
+										<label class="col-sm-3 control-label no-padding-right" for="form-beginTime"> 开始日期： </label>
 										<div class="col-sm-4">
-											<input type="text" id="form-Time" name="time" placeholder="日期" class="col-xs-10 col-sm-5" />
-											<div id="getTime"></div>
+											<input type="text" id="form-beginTime" name="beginTime" placeholder="日期" class="col-xs-10 col-sm-5" />
+											<div id="getBeginTime"></div>
 										</div>
 									</div>
+									<div class="space-1"></div>
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="form-endTime"> 结束日期： </label>
+										<div class="col-sm-4">
+											<input type="text" id="form-endTime" name="endTime" placeholder="日期" class="col-xs-10 col-sm-5" />
+											<div id="getEndTime"></div>
+										</div>
+									</div>
+									
 									<div class="space-1"></div>
 									<div class="form-group">
 			                           <div class="col-lg-4 col-lg-offset-6">
@@ -212,8 +221,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <script type="text/javascript">
 
 $(function(){
-	  $('#getTime').calendar({
-	        trigger: '#form-Time',
+	  $('#getBeginTime').calendar({
+	        trigger: '#form-beginTime',
 	        zIndex: 999,
 			format: 'yyyy-mm-dd',
 	        onSelected: function (view, date, data) {
@@ -221,6 +230,17 @@ $(function(){
 	        onClose: function (view, date, data) {
 	        }
 	    });
+	  
+	  $('#getEndTime').calendar({
+	        trigger: '#form-endTime',
+	        zIndex: 999,
+			format: 'yyyy-mm-dd',
+	        onSelected: function (view, date, data) {
+	        },
+	        onClose: function (view, date, data) {
+	        }
+	    });
+	  
 
       $.get('<%=request.getContextPath()%>/starParam/getSeriesList', {}, function (res) {
 		  if(res.result == "true") {
@@ -263,9 +283,10 @@ $(function(){
 			var Qseries =  $('#form-series').val();
 			var Qstar = $('#form-star').val();
 			var QpartsType = $('#form-partsType').val();
-			var Qtime = $("#form-Time").val();
-         	var data = {'seriesId':Qseries,'starId':Qstar,'partsType':QpartsType,'time':Qtime};
-         	window.location.href="report/createReport?seriesId="+Qseries+"&starId="+Qstar+"&partsType="+QpartsType+"&time="+Qtime;
+			var QbeginTime = $("#form-beginTime").val();
+			var QendTime = $("#form-endTime").val();
+         	var data = {'seriesId':Qseries,'starId':Qstar,'partsType':QpartsType,'beginTime':QbeginTime,'endTime':QendTime};
+         	window.location.href="report/createReport?seriesId="+Qseries+"&starId="+Qstar+"&partsType="+QpartsType+"&beginTime="+QbeginTime+"&endTime="+QendTime;
          	
 		});
 	</script>	

@@ -110,8 +110,8 @@ public class JobServiceImpl implements IJobService{
 			String time = DateUtil.getBeforeDate();
 			String filename = seriesId+"_"+starId+"_"+partsType+"_"+time+".doc";
 			String docPath = OptionConfig.getWebPath() + "report\\"+filename;
-			
-			reoportService.createReport(time, filename, imgUrl, templateUrl, templateName, docPath, seriesId, starId, partsType);
+			//TODO
+			//reoportService.createReport(time, filename, imgUrl, templateUrl, templateName, docPath, seriesId, starId, partsType);
 			reoportService.insertReportToDB(filename, docPath,seriesId,starId, partsType);
 			reoportService.removeDoc(docPath);
 		}

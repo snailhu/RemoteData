@@ -67,7 +67,9 @@ public class CSVServiceImpl implements ICSVService{
 	@Override
 	public CSVFileDataResultDto<Document> readCSVFileToDoc(InputStream in, String versions) throws Exception {
 
-		return this.readCSVFileToDoc_delFrontAndBack_arithmetic1(in, versions, 4, 0);
+//		return this.readCSVFileToDoc_delFrontAndBack_arithmetic1(in, versions, 4, 0);
+		
+		return this.readCSVFileToDoc_delFrontAndBack_arithmetic1_grading(in, versions, 4, 0);
 		
 //		return this.readCSVFileToDoc_delFrontAndBack_arithmetic2(in, versions, 4, 50);
 		
@@ -271,16 +273,19 @@ public class CSVServiceImpl implements ICSVService{
 			//排除无效点保存
 			if(!delDateSet.contains(i)){
 				doc = tempList.get(i);
+				//原始数据集
 				docList.add(doc);
 				
 				//获取时间区间
 				time = (doc.getDate("datetime").getTime() - time0) / 1000;
-				if(time % 1 == 0){
-					if(datetime_1s.compareTo(doc.getDate("datetime")) != 0){
-						datetime_1s = doc.getDate("datetime");						
-						docList_1s.add(doc);
-					}
-				}
+				
+//				if(time % 1 == 0){ //1s使用原始数据集
+//					if(datetime_1s.compareTo(doc.getDate("datetime")) != 0){
+//						datetime_1s = doc.getDate("datetime");						
+//						docList_1s.add(doc);
+//					}
+//				}
+				
 				if(time % 5 == 0){
 					if(datetime_5s.compareTo(doc.getDate("datetime")) != 0){
 						datetime_5s = doc.getDate("datetime");						

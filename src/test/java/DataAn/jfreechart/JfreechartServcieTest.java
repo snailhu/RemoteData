@@ -77,6 +77,7 @@ public class JfreechartServcieTest {
 		System.out.println(lineChartDto);
 	}
 	
+	
 	@Test
 	public void createLineChart() throws Exception{
 		Vector<String> categoriesV = new Vector<String>();

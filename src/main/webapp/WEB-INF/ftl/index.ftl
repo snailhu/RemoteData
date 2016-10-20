@@ -99,6 +99,7 @@
 			<ul class="nav navbar-nav navbar-right">
 				<li><a href="${base}/Index" style="color: #9d9d9d;;font-size: 18px;line-height: 1.8;">网站首页</a></li>
 				<li><a href="${base}/report/index" style="color: #9d9d9d;;font-size: 18px;line-height: 1.8;">报告管理</a></li>
+				<li><a href="${base}/report/reportDownLoad" style="color: #9d9d9d;;font-size: 18px;line-height: 1.8;">报告下载</a></li>
 				<li><a href="${base}/starParam/index" style="color: #9d9d9d;;font-size: 18px;line-height: 1.8;">参数管理</a></li>
 				<li><a href="${base}/admin/file/index" style="color: #9d9d9d;;font-size: 18px;line-height: 1.8;">文件管理</a></li>
 				<li><a href="${base}/conditionMonitoring" style="color: #9d9d9d;;font-size: 18px;line-height: 1.8;">数据分析</a></li>

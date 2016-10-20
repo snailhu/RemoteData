@@ -3,9 +3,11 @@ package DataAn.reportManager.service.impl;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -24,33 +26,55 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.aspose.words.Document;
 import com.aspose.words.SaveFormat;
+import com.aspose.words.net.System.Data.DataColumn;
+import com.aspose.words.net.System.Data.DataRelation;
+import com.aspose.words.net.System.Data.DataRow;
+import com.aspose.words.net.System.Data.DataSet;
+import com.aspose.words.net.System.Data.DataTable;
 
-import DataAn.wordManager.util.MapMailMergeDataSource;
 import DataAn.common.config.CommonConfig;
 import DataAn.common.pageModel.Pager;
 import DataAn.common.utils.DateUtil;
+import DataAn.common.utils.UUIDGeneratorUtil;
 import DataAn.fileSystem.dto.FileDto;
 import DataAn.fileSystem.dto.MongoFSDto;
 import DataAn.fileSystem.option.FileType;
+import DataAn.jfreechart.dto.ConstraintDto;
+import DataAn.jfreechart.dto.LineChartDto;
+import DataAn.jfreechart.service.IJfreechartServcie;
 import DataAn.mongo.db.MongodbUtil;
 import DataAn.mongo.fs.IDfsDb;
 import DataAn.mongo.fs.MongoDfsDb;
+import DataAn.mongo.init.InitMongo;
 import DataAn.mongo.zip.ZipCompressorByAnt;
 import DataAn.reportManager.dao.IReportFileSystemDao;
 import DataAn.reportManager.domain.ReportFileSystem;
+import DataAn.reportManager.domain.StarParam;
 import DataAn.reportManager.dto.DataToDocDto;
 import DataAn.reportManager.dto.ParamDto;
+import DataAn.reportManager.dto.ParamForMongoDto;
 import DataAn.reportManager.dto.ParamImgDataDto;
+import DataAn.reportManager.dto.ProductDto;
 import DataAn.reportManager.dto.ReportFileDto;
 import DataAn.reportManager.option.ReportDataType;
 import DataAn.reportManager.service.IReoportService;
+import DataAn.reportManager.service.IStarParamService;
 import DataAn.wordManager.util.AsposeLicenseManage;
+import DataAn.wordManager.util.MapMailMergeDataSource;
 @Service
 public class ReportServiceImpl implements IReoportService {
 	
 	
 	@Resource
 	private IReportFileSystemDao fileDao;
+	
+	@Resource
+	private IStarParamService starParamService;
+	
+	@Resource
+	private IJfreechartServcie jfreechartServcie;
+	
+	
 	@Override
 	public void reportDoc(String filename, DataToDocDto data, String imgPath, String templateUrl, String templateName, String docPath)
 			throws Exception {
@@ -60,31 +84,119 @@ public class ReportServiceImpl implements IReoportService {
         }
     	//1 读取模板  
 		Document doc = new Document(templateUrl);  
+		
+		DataSet dataSet = new DataSet();
+		
+		DataTable product = new DataTable("productList");
+		product.getColumns().add(new DataColumn("productName"));
+		product.getColumns().add(new DataColumn("movableNum"));		
+		DataRow row_pro = null;
+		List<ProductDto> products = data.getProducts();
+		for (ProductDto productDto : products) {
+			row_pro = product.newRow();
+			row_pro.set("productName",productDto.getProductName());
+			row_pro.set("movableNum",productDto.getMovableNum());
+            product.getRows().add(row_pro);
+         }
+		
+		
+		 DataTable param = new DataTable("paramList");
+		 param.getColumns().add(new DataColumn("productName"));
+		 param.getColumns().add(new DataColumn("paramName"));
+		 param.getColumns().add(new DataColumn("paramNumMax"));
+		 param.getColumns().add(new DataColumn("paramNumMin"));
+		List<ParamDto> params =  data.getParams();
+		DataRow row_par = null;
+		
+		for (ParamDto paramDto : params) {
+			row_par = param.newRow();
+			row_par.set("productName",paramDto.getProductName());
+			row_par.set("paramName",paramDto.getParamName());
+			row_par.set("paramNumMax",paramDto.getParamNumMax());
+			row_par.set("paramNumMin",paramDto.getParamNumMin());
+			param.getRows().add(row_par);
+		}
+		
+		
+		/*DataTable paramImgTab = new DataTable("paramImgTab");
+		paramImgTab.getColumns().add(new DataColumn("parName"));
+		paramImgTab.getColumns().add(new DataColumn("parImg"));		
+		
+		List<ParamImgDataDto> paramImgDatas = data.getParamImgData();
+		DataRow row_img = null;
+        for (ParamImgDataDto paramImg : paramImgDatas) {
+	        FileInputStream fis = new FileInputStream(paramImg.getParImg());  
+	        byte[] image = new byte[fis.available()];  
+	        fis.read(image);
+	        fis.close();  
+	        
+	        row_img = paramImgTab.newRow();
+	        row_img.set("parName",paramImg.getParName());
+	        row_img.set("parImg",image);
+			paramImgTab.getRows().add(row_img);
+		}
+        */
+   /* 	DataTable paramAllImgTab = new DataTable("paramAllImgTab");
+    	paramAllImgTab.getColumns().add(new DataColumn("parAllName"));
+    	paramAllImgTab.getColumns().add(new DataColumn("parAllImg"));		
+        List<ParamImgDataDto> paramImgDataAall = data.getParamImgDataAll();
+		DataRow row_imgAll = null;
+        for (ParamImgDataDto paramImg : paramImgDataAall) {
+        	
+        	//paramImg.getParImg() TODO
+        	String imgUrl = OptionConfig.getWebPath() + "\\report\\wordtemplate\\satellite.jpg";  
+        	
+	        FileInputStream fis = new FileInputStream(imgUrl);  
+	        byte[] image = new byte[fis.available()];  
+	        fis.read(image);
+	        fis.close();  
+	        
+	        row_imgAll = paramAllImgTab.newRow();
+	        
+	        
+	        row_imgAll.set("parAllName",paramImg.getParName());
+	        row_imgAll.set("parAllImg",image);
+			paramAllImgTab.getRows().add(row_imgAll);
+		}
+        
+        dataSet.getTables().add(paramAllImgTab);*/
+        /*dataSet.getTables().add(paramImgTab);*/
+		dataSet.getTables().add(product);
+		dataSet.getTables().add(param);
+		 
+		dataSet.getRelations().add(new DataRelation("paramListForProduct",product.getColumns().get("productName"), param.getColumns().get("productName"))); 
+		doc.getMailMerge().executeWithRegions(new MapMailMergeDataSource(getImgTab(data.getOneParamImg(),"parNameOne","parImgOne"), "firstImgTab")); 
+		doc.getMailMerge().executeWithRegions(new MapMailMergeDataSource(getImgTab(data.getTwoParamImg(),"parNameTwo","parImgTwo"), "twoImgTab")); 
+		doc.getMailMerge().executeWithRegions(new MapMailMergeDataSource(getImgTab(data.getThreeParamImg(),"parNameThree","parImgThree"), "thirdImgTab")); 
+		doc.getMailMerge().executeWithRegions(dataSet);
+		 //doc.getMailMerge().executeWithRegions(new MapMailMergeDataSource(getMapList(imgPath,data), templateName)); 
+		
+		
+		
         //2 填充数据源  
-        doc.getMailMerge().executeWithRegions(new MapMailMergeDataSource(getMapList(imgPath,data), templateName)); 
-        doc.getMailMerge().executeWithRegions(new MapMailMergeDataSource(getMapList3(data), "paramImgTab")); 
-        doc.getMailMerge().executeWithRegions(new MapMailMergeDataSource(getMapList2(data), "paramTab")); 
+//        doc.getMailMerge().executeWithRegions(new MapMailMergeDataSource(getMapList3(data), "paramImgTab")); 
+//        doc.getMailMerge().executeWithRegions(new MapMailMergeDataSource(getMapList2(data), "paramTab")); 
 		//3生成报告
        doc.save(docPath, SaveFormat.DOC); 
 	} 
-	
-	private List<Map<String, Object>> getMapList3(DataToDocDto data) throws Exception {  
+	private List<Map<String, Object>> getImgTab( List<ParamImgDataDto> paramImgDatas,String parName,String parImg ) throws Exception {  
 		   List<Map<String, Object>> dataList = new ArrayList<Map<String,Object>>();  
-	        List<ParamImgDataDto> paramImgDatas = data.getParamImgData();
 	        for (ParamImgDataDto param : paramImgDatas) {
-	        	   //读取一个二进制图片  
 		        FileInputStream fis = new FileInputStream(param.getParImg());  
 		        byte[] image = new byte[fis.available()];  
 		        fis.read(image);
 		        fis.close();  
 	        	
 	        	Map<String, Object> record = new HashMap<String, Object>();  
-	        	record.put("parName", param.getParName());
-	        	record.put("parImg",image);
+	        	record.put(parName, param.getParName());
+	        	record.put(parImg,image);
 	        	dataList.add(record);
 			}
 	        return dataList;  
 	}
+	
+	
+	
 	
 	private List<Map<String, Object>> getMapList2(DataToDocDto data) throws Exception {  
 		   List<Map<String, Object>> dataList = new ArrayList<Map<String,Object>>();  
@@ -109,7 +221,7 @@ public class ReportServiceImpl implements IReoportService {
         fis.close();  
         
         Map<String, Object> record = new HashMap<String, Object>();  
-        record.put("reporttitle", data.getReporttitle());
+        record.put("reporttitle", "test");
         record.put("parts",data.getParts());
         record.put("healthcondition",data.getHealthcondition());           
         record.put("PhotoBLOB", image);
@@ -118,7 +230,7 @@ public class ReportServiceImpl implements IReoportService {
         return dataList;  
     }
 	@Override
-	public void saveReport(ReportFileDto reportFileDto, Map<String, String> dataMap) {
+	public ReportFileSystem saveReport(ReportFileDto reportFileDto, Map<String, String> dataMap) {
 		
 		String uuId = dataMap.get("versions");
 		String series = dataMap.get("series");
@@ -128,27 +240,27 @@ public class ReportServiceImpl implements IReoportService {
 		String month = dataMap.get("month");
 		String startTime = dataMap.get("startTime");
 		String endTime = dataMap.get("endTime");
-		String parameterType = dataMap.get("parameterType");
+		String partsType = dataMap.get("partsType");
 		String databaseName = dataMap.get("databaseName");
 		
 		saveDocToMongoDFs(reportFileDto, uuId,databaseName);
-		ReportFileSystem docDir = createDocDir(series, star, parameterType);
-		ReportFileSystem yearDir = createYearDir(series, star, year, parameterType, docDir);
-		ReportFileSystem monthDir = createMonthDir(series, star, year, month, parameterType, yearDir);
-		saveFile(reportFileDto, uuId, series, star, date, startTime, endTime, parameterType, monthDir);
+		ReportFileSystem docDir = createDocDir(series, star, partsType);
+		ReportFileSystem yearDir = createYearDir(series, star, year, partsType, docDir);
+		ReportFileSystem monthDir = createMonthDir(series, star, year, month, partsType, yearDir);
+		return saveFile(reportFileDto, uuId, series, star, date, startTime, endTime, partsType, monthDir);
 	}
 	private void saveDocToMongoDFs(ReportFileDto reportFileDto, String uuId,String databaseName) {
 		IDfsDb dfs = MongoDfsDb.getInstance();
 		dfs.upload(databaseName,reportFileDto.getFileName(), uuId, reportFileDto.getIn());
 	}
-	private void saveFile(ReportFileDto reportFileDto, String uuId, String series, String star, String date,
-			String startTime, String endTime, String parameterType, ReportFileSystem monthDir) {
+	private ReportFileSystem saveFile(ReportFileDto reportFileDto, String uuId, String series, String star, String date,
+			String startTime, String endTime, String partsType, ReportFileSystem monthDir) {
 		ReportFileSystem file = new ReportFileSystem();
 		file.setSeries(series);
 		file.setStar(star);
 		file.setStartTime(startTime);
 		file.setEndTime(endTime);
-		file.setParameterType(parameterType);
+		file.setPartsType(partsType);
 		file.setDataType(ReportDataType.DOC);
 		file.setFileName(reportFileDto.getFileName());
 		file.setFileSize(reportFileDto.getFileSize());
@@ -156,16 +268,16 @@ public class ReportServiceImpl implements IReoportService {
 		file.setParentId(monthDir.getId());
 		file.setYear_month_day(date);
 		file.setMongoFSUUId(uuId);
-		fileDao.add(file);
+		return fileDao.add(file);
 	}
-	private ReportFileSystem createMonthDir(String series, String star, String year, String month, String parameterType,
+	private ReportFileSystem createMonthDir(String series, String star, String year, String month, String partsType,
 			ReportFileSystem yearDir) {
 		ReportFileSystem monthDir = fileDao.selectByParentIdAndFileName(yearDir.getId(), month);
 		if(monthDir == null){
 			monthDir = new ReportFileSystem();
 			monthDir.setSeries(series);
 			monthDir.setStar(star);
-			monthDir.setParameterType(parameterType);
+			monthDir.setPartsType(partsType);
 			monthDir.setDataType(ReportDataType.DOC);
 			monthDir.setFileName(month);
 			monthDir.setFileType(FileType.DIR);
@@ -175,14 +287,14 @@ public class ReportServiceImpl implements IReoportService {
 		}
 		return monthDir;
 	}
-	private ReportFileSystem createYearDir(String series, String star, String year, String parameterType,
+	private ReportFileSystem createYearDir(String series, String star, String year, String partsType,
 			ReportFileSystem docDir) {
 		ReportFileSystem yearDir = fileDao.selectByParentIdAndFileName(docDir.getId(), year);
 		if(yearDir == null){
 			yearDir = new ReportFileSystem();
 			yearDir.setSeries(series);
 			yearDir.setStar(star);
-			yearDir.setParameterType(parameterType);
+			yearDir.setPartsType(partsType);
 			yearDir.setDataType(ReportDataType.DOC);
 			yearDir.setFileName(year);
 			yearDir.setFileType(FileType.DIR);
@@ -192,12 +304,12 @@ public class ReportServiceImpl implements IReoportService {
 		}
 		return yearDir;
 	}
-	private ReportFileSystem createDocDir(String series, String star, String parameterType) {
+	private ReportFileSystem createDocDir(String series, String star, String partsType) {
 		ReportFileSystem docDir = fileDao.selectByParentIdisNullAndFileName("doc");
 		if(docDir == null){
 			docDir = new ReportFileSystem();
 			docDir.setSeries(series);
-			docDir.setParameterType(parameterType);
+			docDir.setPartsType(partsType);
 			docDir.setStar(star);
 			docDir.setDataType(ReportDataType.DOC);
 			docDir.setFileName("doc");
@@ -382,9 +494,9 @@ public class ReportServiceImpl implements IReoportService {
 	
 	@Override
 	@Transactional(readOnly = true)
-	public Pager<MongoFSDto> getMongoFSList(int pageIndex, int pageSize, String series,String star, String parameterType, 
+	public Pager<MongoFSDto> getMongoFSList(int pageIndex, int pageSize, String series,String star, String partsType, 
 			long dirId, String beginTime, String endTime,String dataTypes) {
-		Pager<ReportFileSystem> pager = fileDao.selectByOption(series, star,parameterType, dirId, beginTime, endTime, dataTypes, "updateDate",pageIndex,pageSize);
+		Pager<ReportFileSystem> pager = fileDao.selectByOption(series, star,partsType, dirId, beginTime, endTime, dataTypes, "updateDate",pageIndex,pageSize);
 		return returnPager(pageIndex, pageSize, pager.getRows(),pager.getTotalCount());
 	}
 	private Pager<MongoFSDto> returnPager(int pageIndex, int pageSize, List<ReportFileSystem> fileList,long totalCount){
@@ -410,12 +522,12 @@ public class ReportServiceImpl implements IReoportService {
 	}
 	@Override
 	public Pager<MongoFSDto> getMongoFSList(int pageIndex, int pageSize, String series,
-			String star, String parameterType, long dirId) {
+			String star, String partsType, long dirId) {
 		Pager<ReportFileSystem> pager = null;
 		if(dirId == 0){
-			pager = fileDao.selectBySeriesAndStarAndParameterTypeAndParentIdisNullAndOrder(series, star, parameterType, "updateDate", pageIndex, pageSize);
+			pager = fileDao.selectBySeriesAndStarAndParameterTypeAndParentIdisNullAndOrder(series, star, partsType, "updateDate", pageIndex, pageSize);
 		}else{
-			pager = fileDao.selectBySeriesAndStarAndParameterTypeAndParentIdAndOrder(series, star, parameterType, dirId, "updateDate", pageIndex, pageSize);
+			pager = fileDao.selectBySeriesAndStarAndParameterTypeAndParentIdAndOrder(series, star, partsType, dirId, "updateDate", pageIndex, pageSize);
 		}
 		return this.returnPager(pageIndex, pageSize, pager.getRows(),pager.getTotalCount());
 	}
@@ -483,5 +595,263 @@ public class ReportServiceImpl implements IReoportService {
 				}
 			}
 		}
+	}
+	@Override
+	public void createReport(Date beginDate,Date endDate,  String filename, String imgUrl, String templateUrl, String templateName,
+			String docPath, String seriesId, String starId, String partsType) throws Exception { 
+		
+		List<StarParam> starParamList =  starParamService.getStarParamForReport(seriesId, starId, partsType);
+	
+		DataToDocDto data = new DataToDocDto();
+		data.setHealthcondition("飞轮运行正常");
+		data.setParts("飞轮状态");
+		data.setReporttitle("卫星状态");
+		
+		List<String> parList = new ArrayList<String>();
+		String paramStr = "转速,电流";
+		String[] parArr = paramStr.split(",");
+		for (String p : parArr) {
+			parList.add(p);
+		}
+		
+		Map<String,List<ConstraintDto>> constraintsMap = new HashMap<String,List<ConstraintDto>>();
+		List<StarParam> doubleList =  new  ArrayList<StarParam>();
+		
+		//封装一条线（温度、电压等）的参数值
+		List<StarParam> firstList =  new  ArrayList<StarParam>();
+		for (StarParam starParam : starParamList) {
+			if(!parList.contains(starParam.getParameterType())) {
+				String key = starParam.getProductName()+starParam.getParameterType();
+				List<ConstraintDto> listSingle = new ArrayList<ConstraintDto>();
+				ConstraintDto constraintDto = new ConstraintDto();
+				constraintDto.setName(starParam.getParamName());
+				constraintDto.setValue(starParam.getParamCode());
+				constraintDto.setMax(starParam.getEffeMax());
+				constraintDto.setMin(starParam.getEffeMin());
+				listSingle.add(constraintDto);
+				constraintsMap.put(key, listSingle);
+				firstList.add(starParam);
+			} else {
+				doubleList.add(starParam);
+			}
+		}
+		//等到产品数  如飞轮A、飞轮B 
+		List<String> productType = new ArrayList<String>();
+		for (StarParam starParam : doubleList) {
+			if( !productType.contains(starParam.getProductName())) {
+				productType.add(starParam.getProductName());
+			}
+		}
+		//封装两条线（转速,电流）的参数值  如 飞轮A转速,电流   ；飞轮B转速,电流
+		for (String product : productType) {
+			List<ConstraintDto> productlist = new ArrayList<ConstraintDto>();
+			for (StarParam starParam : doubleList) {
+				if(product.equals(starParam.getProductName())) {
+					ConstraintDto constraintDto = new ConstraintDto();
+					constraintDto.setName(starParam.getParamName());
+					constraintDto.setValue(starParam.getParamCode());
+					constraintDto.setMax(starParam.getEffeMax());
+					constraintDto.setMin(starParam.getEffeMin());
+					productlist.add(constraintDto);
+				}
+			}
+			constraintsMap.put(product+paramStr, productlist);
+		}
+		
+		//等到参数类型  如转速、电流、温度、电压等
+		List<String> parameterType = new ArrayList<String>();
+		for (StarParam starParam : starParamList) {
+			if( !parameterType.contains(starParam.getParameterType())) {
+				parameterType.add(starParam.getParameterType());
+			}
+		}
+		
+		//封装同一参数类型下的多条线  如 在轨电流、在轨转速、在轨温度等
+		for (String string : parameterType) {
+			List<ConstraintDto> parameterTypelist = new ArrayList<ConstraintDto>();
+			for (StarParam starParam : starParamList) {
+				if(string.equals(starParam.getParameterType())) {
+					ConstraintDto constraintDto = new ConstraintDto();
+					constraintDto.setName(starParam.getParamName());
+					constraintDto.setValue(starParam.getParamCode());
+					constraintDto.setMax(starParam.getEffeMax());
+					constraintDto.setMin(starParam.getEffeMin());
+					parameterTypelist.add(constraintDto);
+				}
+			}
+			constraintsMap.put(string, parameterTypelist);
+		}
+		
+		//画图并返回参数
+		LineChartDto lineChartDto = jfreechartServcie.createLineChartMock(seriesId, starId, partsType, beginDate, endDate, constraintsMap);
+		
+		Map<String,Double> minMap = lineChartDto.getMinMap();//所以参数最小值Map
+		Map<String,Double> maxMap = lineChartDto.getMaxMap();//所以参数最大值Map
+		Map<String,String> chartMap = lineChartDto.getChartMap();//所以图片路径Map
+		
+		//封装参数列表list
+		List<ParamDto> params = new ArrayList<ParamDto>();
+		for (StarParam starParam : starParamList) {
+			ParamDto param = new ParamDto();
+			param.setParamName(starParam.getParamName());
+			param.setProductName(starParam.getProductName());
+			param.setParamNumMax(String.valueOf(maxMap.get(starParam.getParamCode())));
+			param.setParamNumMin(String.valueOf(minMap.get(starParam.getParamCode())));
+			params.add(param);
+		}
+		
+		//封装参数类型 图片list
+		List<ParamImgDataDto> threeParamImgList = new ArrayList<ParamImgDataDto>();
+		
+		for (String parName : parameterType) {
+			ParamImgDataDto paramImgData = new ParamImgDataDto();
+			paramImgData.setParName(parName);
+			paramImgData.setParImg(chartMap.get(parName));
+			threeParamImgList.add(paramImgData);
+		}
+		
+		//封装产品转速、电流 图片list
+		List<ParamImgDataDto> twoParamImgList = new ArrayList<ParamImgDataDto>();
+		
+		for (String product : productType) {
+			ParamImgDataDto paramImgData = new ParamImgDataDto();
+			paramImgData.setParName(product+paramStr);
+			paramImgData.setParImg(chartMap.get(product+paramStr));
+			twoParamImgList.add(paramImgData);
+		}
+		
+		//封装产品非转速、电流 图片list
+		List<ParamImgDataDto> oneParamImgList = new ArrayList<ParamImgDataDto>();
+		for (StarParam starParam : firstList) {
+			ParamImgDataDto paramImgData = new ParamImgDataDto();
+			paramImgData.setParName(starParam.getProductName()+starParam.getParamName());
+			paramImgData.setParImg(chartMap.get(starParam.getProductName()+starParam.getParamName()));
+			oneParamImgList.add(paramImgData);
+		}
+		//封装产品列表list
+		List<ProductDto> products = new ArrayList<ProductDto>();
+		for (String product : productType) {
+			ProductDto productDto = new ProductDto();
+			productDto.setProductName(product);
+			productDto.setMovableNum(8);//TODO 机动次数接口获取
+			products.add(productDto);
+		}
+		
+		
+	/*	for (StarParam starParam : starParamList) {
+			
+			ParamImgDataDto paramImgData = new ParamImgDataDto();
+			paramImgData.setParName(starParam.getProductName());
+			
+			Map<String,String> par = new HashMap<String,String>();
+			
+			par.put(starParam.getParamCode(), starParam.getParamName());
+			
+			LineChartDto lineChartDto = jfreechartServcie.createLineChart(seriesId, starId, partsType, nowDate, par);
+			paramImgData.setParImg(lineChartDto.getChartPath());
+			paramImgDatas.add(paramImgData);
+			
+			ParamDto param = new ParamDto();
+			param.setParamName(starParam.getParamName());
+			param.setProductName(starParam.getProductName());
+			param.setParamNumMax(String.valueOf(lineChartDto.getMaxMap().get(starParam.getParamCode())));
+			param.setParamNumMin(String.valueOf(lineChartDto.getMinMap().get(starParam.getParamCode())));
+			params.add(param);
+			
+		}
+		List<String> proStr = new ArrayList<String>();
+		for (StarParam starParam : starParamList) {
+			if( !proStr.contains(starParam.getProductName())) {
+				proStr.add(starParam.getProductName());
+			}
+		}
+		
+		List<ProductDto> products = new ArrayList<ProductDto>();
+		for (String product : proStr) {
+			ProductDto productDto = new ProductDto();
+			productDto.setProductName(product);
+			productDto.setMovableNum(8);//TODO 机动次数接口获取
+			products.add(productDto);
+		}
+		
+		
+		//循环获取参数类型
+		List<String> partype = new ArrayList<String>();
+		for (StarParam starParam : starParamList) {
+			if( !partype.contains(starParam.getParameterType())) {
+				partype.add(starParam.getParameterType());
+			}
+		}
+		
+		//循环画组合图片
+		for (int j = 0; j < partype.size(); j++) {
+			ParamImgDataDto paramImgData = new ParamImgDataDto();
+			paramImgData.setParName(partype.get(j));
+			Map<String,String> par = new HashMap<String,String>();
+			for (int i = 0; i < starParamList.size(); i++) {
+					if(partype.get(j).equals(starParamList.get(i).getParameterType())) {
+						par.put(starParamList.get(i).getParamCode(), starParamList.get(i).getParamName());
+					}
+			}
+			LineChartDto lineChartDto = jfreechartServcie.createLineChart(seriesId, starId, partsType, nowDate, par);
+			paramImgData.setParImg(lineChartDto.getChartPath());
+			paramImgDataAll.add(paramImgData);
+		}*/
+		data.setParams(params);
+		data.setProducts(products);
+		data.setOneParamImg(oneParamImgList); 
+		data.setTwoParamImg(twoParamImgList);
+		data.setThreeParamImg(threeParamImgList);
+		
+		reportDoc(filename, data, imgUrl, templateUrl, templateName, docPath);
+	}
+	
+	
+	@Override
+	public ReportFileSystem insertReportToDB(String filename, String docPath,String seriesId,String starId, String partsType)
+			throws FileNotFoundException, IOException {
+		/********************************保存报告到db***********************************/
+		Map<String,String> dataMap = new HashMap<String,String>();
+		dataMap.put("series", seriesId);
+		dataMap.put("star", starId);
+		String date = DateUtil.getNowTime("yyyy-MM-dd");
+		dataMap.put("date", DateUtil.formatString(date, "yyyy-MM-dd", "yyyy-MM-dd"));
+		String year = DateUtil.formatString(date, "yyyy-MM-dd", "yyyy");
+		dataMap.put("year", year);
+		String month = DateUtil.formatString(date, "yyyy-MM-dd", "MM");
+		dataMap.put("month", month);
+		String versions = UUIDGeneratorUtil.getUUID();
+		dataMap.put("versions", versions);
+		dataMap.put("startTime", DateUtil.getBeforeDate()+" 00:00:00");
+		dataMap.put("endTime", date+" 00:00:00");
+		dataMap.put("partsType",partsType);
+		dataMap.put("databaseName",InitMongo.DATABASE_TEST); 
+		
+		InputStream input = new FileInputStream(docPath);
+		
+		ReportFileDto reportFileDto = new ReportFileDto();
+		DecimalFormat df = new DecimalFormat("#.00");
+		reportFileDto.setFileName(filename);
+		double size = input.available() / 1024 /1024;
+		String strSize = df.format(size);
+		reportFileDto.setFileSize(Float.parseFloat(strSize));
+		reportFileDto.setIn(input);
+		
+		ReportFileSystem reportFileSystem = saveReport(reportFileDto, dataMap);
+		
+		input.close();
+		return reportFileSystem;
+	}
+	@Override
+	public void removeDoc(String docPath) {
+		File file = new File(docPath);
+		if (file.exists()) {
+		    file.delete();
+		}
+	}
+	@Override
+	public void downloadReport(HttpServletResponse response, String docPath,String filename ) throws FileNotFoundException {
+		InputStream inputStream = new FileInputStream(docPath);
+		downLoadReportForDis(inputStream, filename, response);
 	}
 }

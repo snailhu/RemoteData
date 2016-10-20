@@ -33,4 +33,7 @@ public interface IJobService {
 	 * @throws Exception 
 	*/
 	public void saveFileOfCSV() throws Exception;
+	
+	//每日定时生成报告
+	public void createReport() throws Exception ;
 }

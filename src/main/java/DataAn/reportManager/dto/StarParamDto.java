@@ -2,6 +2,7 @@ package DataAn.reportManager.dto;
 
 import java.util.Date;
 
+
 public class StarParamDto {
 
 	private Long id;
@@ -17,10 +18,50 @@ public class StarParamDto {
 	private String star;
 	
 	private String parameterType;
+		
+	private String partsType;
+	
+	private double effeMin;
+	
+	private double effeMax;
 	
 	private Date createDate = new Date();
 	
 	
+	private String products;
+	
+	public String getProducts() {
+		return products;
+	}
+
+	public void setProducts(String products) {
+		this.products = products;
+	}
+
+	public double getEffeMin() {
+		return effeMin;
+	}
+
+	public void setEffeMin(double effeMin) {
+		this.effeMin = effeMin;
+	}
+
+	public double getEffeMax() {
+		return effeMax;
+	}
+
+	public void setEffeMax(double effeMax) {
+		this.effeMax = effeMax;
+	}
+
+	public String getPartsType() {
+		return partsType;
+	}
+
+	public void setPartsType(String partsType) {
+		this.partsType = partsType;
+	}
+
 	public Long getId() {
 		return id;
 	}

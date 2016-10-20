@@ -353,7 +353,7 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 		return sb.toString();
 	}
 	
-	private void saveFileOfCSV(FileDto fileDto, Map<String,String> dataMap) throws Exception{
+	protected void saveFileOfCSV(FileDto fileDto, Map<String,String> dataMap) throws Exception{
 		
 		String uuId = dataMap.get("versions");
 		String series = dataMap.get("series");
@@ -463,6 +463,23 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 		String year = dataMap.get("year");
 		String month = dataMap.get("month");
 //		String day = dataMap.get("day");
+		
+		//保存csv 原文件				
+		IDfsDb dfs = MongoDfsDb.getInstance();
+		BufferedInputStream bis = null;
+		try {
+			bis = new BufferedInputStream(new FileInputStream(fileDto.getFilePath()));  
+			String databaseName = InitMongo.getFSBDNameBySeriesAndStar(series, star);
+			dfs.upload(databaseName, fileDto.getFileName(), uuId, bis);
+		} catch(Exception e){
+			//删除上传csv原文件
+			dfs.delete(uuId);
+			throw new Exception("csv 文件上传失败！！！");
+		}finally {
+			if(bis != null){
+				bis.close();
+			}
+		}
 		
 		CSVFileDataResultDto<Document> result = csvService.readCSVFileToDoc(fileDto.getFilePath(),uuId);
 		List<Document> docList = result.getDatas();		

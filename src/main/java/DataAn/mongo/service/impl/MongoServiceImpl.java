@@ -63,7 +63,7 @@ public class MongoServiceImpl implements IMongoService{
 				mg.insertMany(databaseName, collectionName, documents);
 				
 				long end = System.currentTimeMillis();
-				System.out.println("保存数据在： " + databaseName + "." + collectionName);
+				System.out.println("保存数据在： " + databaseName + "." + collectionName + " 记录： " + documents.size());
 				System.out.println("耗时： " + (end - begin) );
 				
 				Thread.sleep(10000);

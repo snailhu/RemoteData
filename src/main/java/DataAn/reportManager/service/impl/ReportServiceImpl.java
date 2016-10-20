@@ -683,7 +683,7 @@ public class ReportServiceImpl implements IReoportService {
 		}
 		
 		//画图并返回参数
-		LineChartDto lineChartDto = jfreechartServcie.createLineChart(seriesId, starId, partsType, beginDate, endDate, constraintsMap);
+		LineChartDto lineChartDto = jfreechartServcie.createLineChartMock(seriesId, starId, partsType, beginDate, endDate, constraintsMap);
 		
 		Map<String,Double> minMap = lineChartDto.getMinMap();//所以参数最小值Map
 		Map<String,Double> maxMap = lineChartDto.getMaxMap();//所以参数最大值Map

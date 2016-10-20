@@ -7,6 +7,7 @@ import org.hibernate.Query;
 import org.springframework.stereotype.Repository;
 
 import DataAn.common.dao.BaseDaoImpl;
+import DataAn.common.utils.DateUtil;
 import DataAn.fileSystem.dao.IDateParametersDao;
 import DataAn.fileSystem.domain.DateParameters;
 import DataAn.fileSystem.option.FileType;
@@ -28,9 +29,43 @@ implements IDateParametersDao{
 		}
 		Query query = this.getSession().createQuery(hql).setParameter("parameterType", parameterType);
 		if(StringUtils.isNotBlank(beginDate)){
+			beginDate = DateUtil.formatString(beginDate, "yyyy-MM-dd HH:mm:ss", "yyyy-MM-dd");	
 			query.setParameter("beginDate", beginDate);
 		}
 		if(StringUtils.isNotBlank(endDate)){
+			endDate = DateUtil.formatString(endDate, "yyyy-MM-dd HH:mm:ss", "yyyy-MM-dd");	
+			query.setParameter("endDate", endDate);
+		}
+		return query.list();
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<DateParameters> selectByYear_month_dayAndParameterType(
+			String beginDate, String endDate, String series, String star,
+			String parameterType) {
+		
+		String hql = "from DateParameters dp where dp.series=:series and "
+												+ "dp.star=:star and "
+												+ "dp.parameterType=:parameterType";
+		
+		if(StringUtils.isNotBlank(beginDate)){
+			hql += " and dp.year_month_day >= :beginDate";
+		}
+		if(StringUtils.isNotBlank(endDate)){
+			hql += " and dp.year_month_day <= :endDate";
+		}
+		Query query = this.getSession().createQuery(hql)
+										.setParameter("series", series)
+										.setParameter("star", star)
+										.setParameter("parameterType", parameterType);
+		
+		if(StringUtils.isNotBlank(beginDate)){
+			beginDate = DateUtil.formatString(beginDate, "yyyy-MM-dd HH:mm:ss", "yyyy-MM-dd");	
+			query.setParameter("beginDate", beginDate);
+		}
+		if(StringUtils.isNotBlank(endDate)){
+			endDate = DateUtil.formatString(endDate, "yyyy-MM-dd HH:mm:ss", "yyyy-MM-dd");	
 			query.setParameter("endDate", endDate);
 		}
 		return query.list();

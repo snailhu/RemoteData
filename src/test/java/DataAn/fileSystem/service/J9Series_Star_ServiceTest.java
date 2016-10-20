@@ -3,20 +3,17 @@ package DataAn.fileSystem.service;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
 import javax.annotation.Resource;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-
 import DataAn.Analysis.dto.ConstraintDto;
 import DataAn.Util.EhCache;
-import DataAn.common.utils.DateUtil;
-import DataAn.common.utils.LogUtil;
+import DataAn.fileSystem.option.J9SeriesType;
 import DataAn.fileSystem.option.J9Series_Star_ParameterType;
+import DataAn.fileSystem.option.SeriesType;
 import DataAn.fileSystem.service.impl.J9Series_Star_ServiceImpl;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -33,6 +30,16 @@ public class J9Series_Star_ServiceTest {
 //		new EhCache("j9seriesConfig");
 	}
 	
+	@Test
+	public void getAllParameterList() throws Exception{
+		String series = SeriesType.J9_SERIES.getName();
+		String star = J9SeriesType.STRA2.getValue();
+		String paramType = J9Series_Star_ParameterType.FLYWHEEL.getValue();
+		List<ConstraintDto> list = service.getAllParameterList(null, null, series, star, paramType);
+		for (ConstraintDto constraintDto : list) {
+			System.out.println(constraintDto);
+		}
+	}
 	@Test
 	public void getAllParameterListFromBeginDateToEndDate() throws Exception{
 		//  "10/08/2015", "10/01/2016"

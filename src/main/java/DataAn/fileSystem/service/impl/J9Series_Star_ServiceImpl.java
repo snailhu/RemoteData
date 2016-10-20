@@ -3,22 +3,22 @@ package DataAn.fileSystem.service.impl;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import javax.annotation.Resource;
 
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import DataAn.Analysis.dto.ConstraintDto;
 import DataAn.Util.EhCache;
-import DataAn.common.utils.DateUtil;
 import DataAn.fileSystem.dao.IDateParametersDao;
 import DataAn.fileSystem.domain.DateParameters;
 import DataAn.fileSystem.option.J9Series_Star_ParameterType;
 import DataAn.fileSystem.service.IJ9Series_Star_Service;
+import DataAn.galaxyManager.service.IParameterService;
 
 @Service
 public class J9Series_Star_ServiceImpl implements IJ9Series_Star_Service{
@@ -26,17 +26,13 @@ public class J9Series_Star_ServiceImpl implements IJ9Series_Star_Service{
 	private EhCache ehCache = new EhCache("j9seriesConfig");
 	@Resource
 	private IDateParametersDao parametersDao;
+	@Resource
+	private IParameterService paramService;
 	
 	@Override
 	public List<ConstraintDto> getAllParameterList(
 			String beginDate, String endDate,String type) throws Exception {
 
-		if (StringUtils.isNotBlank(beginDate)) {
-			beginDate = DateUtil.formatString(beginDate, "yyyy-MM-dd HH:mm:ss", "yyyy-MM-dd");			
-		}
-		if (StringUtils.isNotBlank(endDate)) {
-			endDate = DateUtil.formatString(endDate, "yyyy-MM-dd HH:mm:ss", "yyyy-MM-dd");			
-		}
 //		if (StringUtils.isNotBlank(type)) {
 //			type = J9Series_Star_ParameterType.FLYWHEEL.getValue();
 //		}
@@ -79,7 +75,39 @@ public class J9Series_Star_ServiceImpl implements IJ9Series_Star_Service{
 		}
 		return null;
 	}
-	
+
+	@Override
+	public List<ConstraintDto> getAllParameterList(String beginDate,String endDate, 
+			String series, String star, String paramType)throws Exception {
+		List<DateParameters> dpList = parametersDao.selectByYear_month_dayAndParameterType(beginDate,endDate,series,star,paramType);
+		if(dpList != null && dpList.size() > 0){
+			Set<String> paramSet = new HashSet<String>();
+			for (DateParameters dp : dpList) {
+				String[] items = dp.getParameters().split(",");
+				for (String item : items) {
+					if(!item.equals("时间") && !item.equals("接收地方时")){
+						paramSet.add(item);
+					}
+				}
+			}
+			Map<String,String> simplyZh_and_enMap = new HashMap<String,String>();
+			String param_en = "";
+			for (String param_zh : paramSet) {
+				param_en = paramService.getParameter_en_by_allZh(series, star, param_zh);
+				simplyZh_and_enMap.put(param_zh.split(":")[1], param_en);
+			}
+			List<String> dataTypes = null;
+			if(paramType.equals(J9Series_Star_ParameterType.FLYWHEEL.getValue())){
+				dataTypes = J9Series_Star_ParameterType.getFlywheelTypeOnName2();
+			}else{
+				dataTypes = J9Series_Star_ParameterType.getTopTypeOnName();
+			}
+			return this.getFlyWheelOrTopParameterList(simplyZh_and_enMap,dataTypes);
+		}
+				
+		return null;
+	}
+
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<ConstraintDto> getFlyWheelParameterList() throws Exception {
@@ -264,7 +292,7 @@ public class J9Series_Star_ServiceImpl implements IJ9Series_Star_Service{
 			for (String flyWheelData : flyWheelDatas) {
 				// 采集数据107:飞轮A转速(16107) == 采集数据107:飞轮a转速(16107) 大小写一样
 				sameFlyWheelData = flyWheelData.toLowerCase();
-				if(sameFlyWheelData.indexOf(dataType) != -1){
+				if(flyWheelData.indexOf(dataType) != -1){
 					child = new ConstraintDto();
 					child.setId(count);
 					child.setParentId(parentId);

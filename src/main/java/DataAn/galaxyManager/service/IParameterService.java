@@ -14,7 +14,7 @@ public interface IParameterService {
 	
 	public Pager<ParameterDto> getParameterList(int pageIndex, int pageSize);
 
-	public String getParameterList_en_by_allZh(String series, String star, String param_zh);
+	public String getParameter_en_by_allZh(String series, String star, String param_zh);
 	
-	public String getParameterList_allZh_by_en(String series, String star, String param_en);
+	public String getParameter_allZh_by_en(String series, String star, String param_en);
 }

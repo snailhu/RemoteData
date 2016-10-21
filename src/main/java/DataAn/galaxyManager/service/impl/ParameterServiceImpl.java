@@ -44,6 +44,8 @@ public class ParameterServiceImpl implements IParameterService{
 			param.setName(param_zh);
 			param.setCode(code);
 		}
+//		parameterList_allZh_and_en.put(param.getName(), param.getCode());
+//		parameterList_en_and_allZh.put(param.getCode(), param.getName());
 		return parameterDao.add(param);
 	}
 	
@@ -84,7 +86,7 @@ public class ParameterServiceImpl implements IParameterService{
 	}
 
 	@Override
-	public String getParameterList_en_by_allZh(String series, String star,
+	public String getParameter_en_by_allZh(String series, String star,
 			String param_zh) {
 		//先从Map集合里面查找
 		String param_en = parameterList_allZh_and_en.get(param_zh);
@@ -102,19 +104,19 @@ public class ParameterServiceImpl implements IParameterService{
 	}
 
 	@Override
-	public String getParameterList_allZh_by_en(String series, String star,
+	public String getParameter_allZh_by_en(String series, String star,
 			String param_en) {
 		//先从Map集合里面查找
 		String param_zh = parameterList_en_and_allZh.get(param_en);
-		if(param_en == null){
+		if(param_zh == null || param_zh.equals("")){
 			//Map集合里面没有再从数据库中查找
 			Parameter param = parameterDao.selectBySeriesAndCode(series, param_en);
 			if(param != null){
+				parameterList_en_and_allZh.put(param.getCode(), param.getName());
 				param_zh = param.getName();
-				parameterList_en_and_allZh.put(param_en, param_zh);
 			}
 		}
-		return null;
+		return param_zh;
 	}
 
 

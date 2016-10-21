@@ -35,7 +35,7 @@ public class JfreechartServcieTest {
 	public void createLineChart2() throws Exception{
 		String series = SeriesType.J9_SERIES.getValue();
 		String star = J9SeriesType.STRA2.getValue();
-		String paramType = "flywheel2016";
+		String paramType = "flywheel";
 		
 		Map<String, String> params = new HashMap<String,String>();
 //		params.put("sequence_16025", "飞轮a电机电流(16025)");

@@ -89,7 +89,9 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 		csvFileDto.setFilePath(csvTempFilePath);
 		
 		// 保存 *.csv文件
-		this.saveFileOfCSV(csvFileDto, dataMap);
+		//this.saveFileOfCSV(csvFileDto, dataMap);
+		//测试分级数据存储
+		this.saveFileOfCSVMock(csvFileDto, dataMap);
 		
 		//获取map中的csv文件
 		FileDto datFile = map.get("dat");
@@ -351,7 +353,7 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 		return sb.toString();
 	}
 	
-	private void saveFileOfCSV(FileDto fileDto, Map<String,String> dataMap) throws Exception{
+	protected void saveFileOfCSV(FileDto fileDto, Map<String,String> dataMap) throws Exception{
 		
 		String uuId = dataMap.get("versions");
 		String series = dataMap.get("series");
@@ -379,25 +381,6 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 			}
 		}
 		
-//		CSVFileDataResultDto<Document> result = csvService.readCSVFileToDoc(fileDto.getFilePath(),uuId);
-//		List<Document> docList = result.getDatas();		
-//		//数据不为空
-//		if(docList != null && docList.size() > 0){
-//			//test 等级
-//			mongoService.saveCSVData(series, star, parameterType, date, result.getMap(), uuId);
-//			//保存csv文件数据
-//			//mongoService.saveCSVData(series, star,parameterType, date, docList, uuId);
-//			//存储某一天的参数信息
-//			String title = result.getTitle();
-//			DateParameters dateParameters = new DateParameters();
-//			dateParameters.setSeries(series);
-//			dateParameters.setStar(star);
-//			dateParameters.setParameterType(parameterType);
-//			dateParameters.setParameters(title);
-//			dateParameters.setYear_month_day(date);
-//			parametersDao.add(dateParameters);
-//		}
-		
 		//获取参数信息保存
 		CSVFileDataResultDto<Document> result = csvService.readCSVFileToDocAndgetTitle(fileDto.getFilePath());
 		//存储某一天的参数信息
@@ -409,6 +392,113 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 		dateParameters.setParameters(title);
 		dateParameters.setYear_month_day(date);
 		parametersDao.add(dateParameters);
+		
+		//查找csv的文件夹是否存在
+//		VirtualFileSystem csvDir = fileDao.selectByParentIdisNullAndFileName("csv");
+		VirtualFileSystem csvDir = fileDao.selectByParentIdAndFileNameAndParameterType(0, "csv", parameterType);
+		if(csvDir == null){
+			csvDir = new VirtualFileSystem();
+			csvDir.setSeries(series);
+			csvDir.setStar(star);
+			csvDir.setDataType(FileDataType.CSV);
+			csvDir.setFileName("csv");
+			csvDir.setFileType(FileType.DIR);
+			csvDir.setParameterType(parameterType);
+			csvDir = fileDao.add(csvDir);
+		}
+		//查找年份的文件夹是否存在
+//		VirtualFileSystem yearDir = fileDao.selectByParentIdAndFileName(csvDir.getId(), year);
+		VirtualFileSystem yearDir = fileDao.selectByParentIdAndFileNameAndParameterType(csvDir.getId(), year, parameterType);
+		if(yearDir == null){
+			yearDir = new VirtualFileSystem();
+			yearDir.setSeries(series);
+			yearDir.setStar(star);
+			yearDir.setDataType(FileDataType.CSV);
+			yearDir.setFileName(year);
+			yearDir.setFileType(FileType.DIR);
+			yearDir.setYear_month_day(year);
+			yearDir.setParentId(csvDir.getId());
+			yearDir.setParameterType(parameterType);
+			yearDir = fileDao.add(yearDir);
+		}
+		//查找月份的文件夹是否存在
+//		VirtualFileSystem monthDir = fileDao.selectByParentIdAndFileName(yearDir.getId(), month);
+		VirtualFileSystem monthDir = fileDao.selectByParentIdAndFileNameAndParameterType(yearDir.getId(), month, parameterType);
+		if(monthDir == null){
+			monthDir = new VirtualFileSystem();
+			monthDir.setSeries(series);
+			monthDir.setStar(star);
+			monthDir.setDataType(FileDataType.CSV);
+			monthDir.setFileName(month);
+			monthDir.setFileType(FileType.DIR);
+			monthDir.setYear_month_day(year + "-" + month);
+			monthDir.setParentId(yearDir.getId());
+			monthDir.setParameterType(parameterType);
+			monthDir = fileDao.add(monthDir);
+		}
+		//保存文件记录
+		VirtualFileSystem file = new VirtualFileSystem();
+		file.setSeries(series);
+		file.setStar(star);
+		file.setDataType(FileDataType.CSV);
+		file.setFileName(fileDto.getFileName());
+		file.setFileSize(fileDto.getFileSize());
+		file.setFileType(FileType.FILE);
+		file.setParentId(monthDir.getId());
+		file.setYear_month_day(date);
+		file.setMongoFSUUId(uuId);
+		file.setParameterType(parameterType);
+		//保存缓存路径，以后通过定时任务上传
+//		file.setCachePath(fileDto.getFilePath());
+		fileDao.add(file);
+		
+	}
+	
+	protected void saveFileOfCSVMock(FileDto fileDto, Map<String,String> dataMap) throws Exception{
+		String uuId = dataMap.get("versions");
+		String series = dataMap.get("series");
+		String star = dataMap.get("star");
+		String parameterType = fileDto.getParameterType();
+		String date = dataMap.get("date");
+		String year = dataMap.get("year");
+		String month = dataMap.get("month");
+//		String day = dataMap.get("day");
+		
+		//保存csv 原文件				
+		IDfsDb dfs = MongoDfsDb.getInstance();
+		BufferedInputStream bis = null;
+		try {
+			bis = new BufferedInputStream(new FileInputStream(fileDto.getFilePath()));  
+			String databaseName = InitMongo.getFSBDNameBySeriesAndStar(series, star);
+			dfs.upload(databaseName, fileDto.getFileName(), uuId, bis);
+		} catch(Exception e){
+			//删除上传csv原文件
+			dfs.delete(uuId);
+			throw new Exception("csv 文件上传失败！！！");
+		}finally {
+			if(bis != null){
+				bis.close();
+			}
+		}
+		
+		CSVFileDataResultDto<Document> result = csvService.readCSVFileToDoc(fileDto.getFilePath(),uuId);
+		List<Document> docList = result.getDatas();		
+		//数据不为空
+		if(docList != null && docList.size() > 0){
+			//test 等级
+			mongoService.saveCSVData(series, star, parameterType, date, result.getMap(), uuId);
+			//保存csv文件数据
+			//mongoService.saveCSVData(series, star,parameterType, date, docList, uuId);
+			//存储某一天的参数信息
+			String title = result.getTitle();
+			DateParameters dateParameters = new DateParameters();
+			dateParameters.setSeries(series);
+			dateParameters.setStar(star);
+			dateParameters.setParameterType(parameterType);
+			dateParameters.setParameters(title);
+			dateParameters.setYear_month_day(date);
+			parametersDao.add(dateParameters);
+		}
 		
 		//查找csv的文件夹是否存在
 //		VirtualFileSystem csvDir = fileDao.selectByParentIdisNullAndFileName("csv");
@@ -537,6 +627,7 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 		fileDao.add(file);
 		
 	}
+
 
 
 }

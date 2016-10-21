@@ -31,7 +31,9 @@ import DataAn.Analysis.dto.YearAndParamDataDto;
 import DataAn.Util.EhCache;
 import DataAn.Util.JsonStringToObj;
 import DataAn.common.pageModel.Pager;
+import DataAn.fileSystem.option.J9SeriesType;
 import DataAn.fileSystem.option.J9Series_Star_ParameterType;
+import DataAn.fileSystem.option.SeriesType;
 import DataAn.fileSystem.service.IJ9Series_Star_Service;
 import DataAn.galaxyManager.dto.SeriesDto;
 import DataAn.galaxyManager.dto.StarDto;
@@ -66,7 +68,10 @@ public class CommonController {
 		System.out.println("type: " + type);
 		//test
 	//	return j9Series_Star_Service.getFlyWheelParameterList();
-		return j9Series_Star_Service.getAllParameterList(beginDate, endDate ,type);
+		String series = SeriesType.J9_SERIES.getName();
+		String star = J9SeriesType.STRA2.getValue();
+		String paramType = J9Series_Star_ParameterType.FLYWHEEL.getValue();
+		return j9Series_Star_Service.getAllParameterList(beginDate, endDate, series, star, paramType);
 	}
 	
 	

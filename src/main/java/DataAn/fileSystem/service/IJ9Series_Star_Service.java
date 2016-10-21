@@ -43,10 +43,18 @@ public interface IJ9Series_Star_Service {
 	/**
 	* Description: 通过参数的英文返回参数的类型
 	* @param param_en 参数英文值
-	* @return
+	* @return   "电流","转速","温度","指令","供电状态","角动量"
 	* @throws Exception
 	*/
 	public String getFlyWheelParameterType(String param_en) throws Exception;
+	
+	/**
+	* Description: 通过参数的英文返回飞轮名称
+	* @param param_en 参数英文值
+	* @return   Xa、Ya、Za、Xb、Yb、Zb
+	* @throws Exception
+	*/
+	public String getFlyWheelName(String param_en) throws Exception;
 	
 	/**
 	* Description: 获取陀螺类型的参数列表

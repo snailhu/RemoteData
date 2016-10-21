@@ -33,6 +33,7 @@ public class SeriesServiceImpl implements ISeriesService{
 	public void saveSeries(SeriesDto dto) {
 		Series series = new Series();
 		series.setName(dto.getName());
+		series.setCode(dto.getCode());
 		series.setDescription(dto.getDescription());
 		seriesDao.add(series);
 		
@@ -56,11 +57,13 @@ public class SeriesServiceImpl implements ISeriesService{
 		if(StringUtils.isNotBlank(dto.getName())){
 			series.setName(dto.getName());			
 		}
+		if(StringUtils.isNotBlank(dto.getCode())){
+			series.setCode(dto.getCode());			
+		}
 		if(StringUtils.isNotBlank(dto.getDescription())){
 			series.setDescription(dto.getDescription());
 		}
-		seriesDao.add(series);
-		
+		seriesDao.update(series);
 	}
 	
 	@Override
@@ -74,6 +77,7 @@ public class SeriesServiceImpl implements ISeriesService{
 				dto = new SeriesDto();
 				dto.setId(series.getId());
 				dto.setName(series.getName());
+				dto.setCode(series.getCode());
 				dto.setCreateDate(DateUtil.format(series.getCreateDate()));
 				dto.setDescription(series.getDescription());
 				seriesDtoList.add(dto);
@@ -90,6 +94,7 @@ public class SeriesServiceImpl implements ISeriesService{
 		SeriesDto dto = new SeriesDto();
 		dto.setId(series.getId());
 		dto.setName(series.getName());
+		dto.setCode(series.getCode());
 		dto.setCreateDate(DateUtil.format(series.getCreateDate()));
 		dto.setDescription(series.getDescription());
 		return dto;
@@ -101,36 +106,42 @@ public class SeriesServiceImpl implements ISeriesService{
 		if(seriesList == null || seriesList.size() == 0){
 			Series series = new Series();
 			series.setName("j9");
+			series.setCode("j9");
 			series.setDescription("j9系列");
 			seriesDao.add(series);
 			List<Star> list = new ArrayList<Star>();
 			Star star1 = new Star();
 			star1.setSeries(series);
 			star1.setName("01");
+			star1.setCode("01");
 			star1.setDescription("01星");
 			star1.setStartRunDate(new Date());
 			list.add(star1);
 			Star star2 = new Star();
 			star2.setSeries(series);
 			star2.setName("02");
+			star2.setCode("02");
 			star2.setDescription("02星");
 			star2.setStartRunDate(new Date());
 			list.add(star2);
 			Star star3 = new Star();
 			star3.setSeries(series);
 			star3.setName("03");
+			star3.setCode("03");
 			star3.setDescription("03星");
 			star3.setStartRunDate(new Date());
 			list.add(star3);
 			Star star4 = new Star();
 			star4.setSeries(series);
 			star4.setName("04");
+			star4.setCode("04");
 			star4.setDescription("04星");
 			star4.setStartRunDate(new Date());
 			list.add(star4);
 			Star star5 = new Star();
 			star5.setSeries(series);
 			star5.setName("05");
+			star5.setCode("05");
 			star5.setDescription("05星");
 			star5.setStartRunDate(new Date());
 			list.add(star5);

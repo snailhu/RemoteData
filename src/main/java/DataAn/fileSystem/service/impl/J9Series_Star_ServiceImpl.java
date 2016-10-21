@@ -136,6 +136,19 @@ public class J9Series_Star_ServiceImpl implements IJ9Series_Star_Service{
 		return null;
 	}
 
+	@Override
+	public String getFlyWheelName(String param_en) throws Exception {
+		Map<String,String> map = this.getAllParameterList_en_and_simplyZh();
+		String param = map.get(param_en);
+		List<String> typeList = J9Series_Star_ParameterType.getFlywheelTypeOnName2();
+		for (String type : typeList) {
+			if(param.indexOf(type) > -1){
+				return type;
+			}
+		}
+		return null;
+	}
+
 	
 	@SuppressWarnings("unchecked")
 	@Override
@@ -164,7 +177,7 @@ public class J9Series_Star_ServiceImpl implements IJ9Series_Star_Service{
 			Map<String,String> map2 =  this.getAllParameterList_allZh_and_en();
 			Set<String> keys = map2.keySet();
 			for (String key : keys) {
-				if(!key.equals("时间")){
+				if(!key.equals("时间") && !key.equals("接收地方时")){
 					map.put(map2.get(key), key.split(":")[1]);					
 				}
 			}

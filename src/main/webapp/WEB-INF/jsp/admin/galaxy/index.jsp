@@ -127,7 +127,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   <script type="text/javascript">
   	$(function(){
   		$('#addSeriesInfoForm').bootstrapValidator({
-//          live: 'disabled',
           message: 'This value is not valid',
           feedbackIcons: {
               valid: 'glyphicon glyphicon-ok',
@@ -144,10 +143,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                   }
               },
               code: {
-                  message: '系列码不能为空',
+                  message: '系列编码不能为空',
                   validators: {
                       notEmpty: {
-                          message: '系列码不能为空'
+                          message: '系列编码不能为空'
                       }
                   }
               },
@@ -160,7 +159,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	    $('#addSeriesInfoForm').data('bootstrapValidator').resetForm(true);
 	});	
   	$('#editSeriesInfoForm').bootstrapValidator({
-//          live: 'disabled',
           message: 'This value is not valid',
           feedbackIcons: {
               valid: 'glyphicon glyphicon-ok',
@@ -177,10 +175,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                   }
               },
               code: {
-                  message: '系列码不能为空',
+                  message: '系列编码不能为空',
                   validators: {
                       notEmpty: {
-                          message: '系列码不能为空'
+                          message: '系列编码不能为空'
                       }
                   }
               },
@@ -193,7 +191,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	    $('#editSeriesInfoForm').data('bootstrapValidator').resetForm(true);
 	});	
   	$('#addStarInfoForm').bootstrapValidator({
-//      live: 'disabled',
       message: 'This value is not valid',
       feedbackIcons: {
           valid: 'glyphicon glyphicon-ok',
@@ -206,6 +203,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
               validators: {
                   notEmpty: {
                       message: '星名称不能为空'
+                  }
+              }
+          },
+          code: {
+              message: '星编码不能为空',
+              validators: {
+                  notEmpty: {
+                      message: '星编码不能为空'
                   }
               }
           },
@@ -225,11 +230,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
           }
       }
   	});  
-  	$('#add-star-close').click(function() {
+  	$('#close_addStarInfo').click(function() {
 	    $('#addStarInfoForm').data('bootstrapValidator').resetForm(true);
 	});	
     $('#editStarInfoForm').bootstrapValidator({
-//        live: 'disabled',
         message: 'This value is not valid',
         feedbackIcons: {
             valid: 'glyphicon glyphicon-ok',
@@ -258,7 +262,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
             }
         }
     });  	
-    $('#edit-star-close').click(function() {
+    $('#close_editStarInfo').click(function() {
 	    $('#editStarInfoForm').data('bootstrapValidator').resetForm(true);
 	});	
     
@@ -315,13 +319,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					</div>
 				</div>
 			</div>
-			<table id="galaxyList" fit="true" border="false" height="400px">
+			<table id="galaxyList" fit="false" border="false" height="400px">
 				<thead>
 					<tr>
 						<th field="ck" checkbox="true"></th>
 						<th field="name" width="80">名称</th>
-						<th field="description" width="200" align="center">描述</th>
-						<th field="createDate" width="120" align="center">创建日期</th>
+						<th field="code" width="80">编码</th>
+						<th field="description" width="120" align="center">描述</th>
+						<th field="createDate" width="100" align="center">创建日期</th>
 					</tr>
 				</thead>
 			</table>
@@ -347,9 +352,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								</div>
 								<div class="space-4"></div>
 								<div class="form-group">
-									<label class="col-sm-3 control-label no-padding-right" for="add-series-code"> 系列码:</label>
+									<label class="col-sm-3 control-label no-padding-right" for="add-series-code"> 系列编码:</label>
 									<div class="col-sm-8">
-										<input type="text" name="code" id="add-series-code" placeholder="系列码" class="form-control" />
+										<input type="text" name="code" id="add-series-code" placeholder="系列编码" class="form-control" />
 									</div>
 								</div>
 								<div class="space-8"></div>
@@ -417,90 +422,109 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				</div>
 			</div>
 			<!-- 添加一颗星 -->
-			<div class="modal fade" id="addStarInfoModal" tabindex="-1" role="dialog" aria-labelledby="addStarInfoModalLabel"  >
-			  <div class="modal-dialog" role="document" style="margin:55px -300px">
-			    <div class="modal-content">
-			      <div class="modal-header">
-			        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-			        <h4 class="modal-title" id="addStarInfoModalLabel">添加星</h4>
-			      </div>
-			      <div class="modal-body">
-					<form id="addStarInfoForm" class="form-horizontal" role="form">
-						<div class="space-4"></div>
-						<div class="form-group">
-							<label class="col-sm-3 control-label no-padding-right" for="add-star-name"> 星名称:</label>
-							<div class="col-sm-8">
-								<input type="text" name="name" id="add-star-name" placeholder="星名称" class="form-control" />
+			<div class="modal fade" id="addStarInfoModal" tabindex="-1"
+				role="dialog" aria-labelledby="addStarInfoModalLabel">
+				<div class="modal-dialog" role="document" style="margin:55px -300px">
+					<div class="modal-content">
+						<form id="addStarInfoForm" class="form-horizontal" role="form">
+							<div class="modal-header">
+<!-- 								<button type="button" class="close" data-dismiss="modal" aria-label="Close"> -->
+<!-- 									<span aria-hidden="true">&times;</span> -->
+<!-- 								</button> -->
+								<h4 class="modal-title" id="addStarInfoModalLabel">添加星</h4>
 							</div>
-						</div>
-						<div class="space-8"></div>
-						<div class="form-group">
-							<label class="col-sm-3 control-label no-padding-right" for="add-star-beginDate"> 开始运行时间:</label>
-							<div class="col-sm-8">
-								<input type="text" class="form-control input-mask-date" name="beginDate" id="add-star-beginDate" placeholder="yyyy-MM-dd HH:mm:ss">
+							<div class="modal-body">
+								<div class="space-4"></div>
+								<div class="form-group">
+									<label class="col-sm-3 control-label no-padding-right" for="add-star-name"> 星名称:</label>
+									<div class="col-sm-8">
+										<input type="text" name="name" id="add-star-name" placeholder="星名称" class="form-control" />
+									</div>
+								</div>
+								<div class="space-8"></div>
+								<div class="form-group">
+									<label class="col-sm-3 control-label no-padding-right" for="add-star-code"> 星编码:</label>
+									<div class="col-sm-8">
+										<input type="text" name="code" id="add-star-code" placeholder="星编码" class="form-control" />
+									</div>
+								</div>
+								<div class="space-8"></div>
+								<div class="form-group">
+									<label class="col-sm-3 control-label no-padding-right" for="add-star-beginDate"> 开始运行时间:</label>
+									<div class="col-sm-8">
+										<input type="text" class="form-control input-mask-date" name="beginDate" id="add-star-beginDate"
+											placeholder="yyyy-MM-dd HH:mm:ss">
+									</div>
+								</div>
+								<div class="space-8"></div>
+								<div class="form-group">
+									<label class="col-sm-3 control-label no-padding-right" for="add-star-description"> 星描述： </label>
+									<div class="col-sm-8">
+										<textarea class="form-control" name="description" id="add-star-description" placeholder="星描述"></textarea>
+									</div>
+								</div>
 							</div>
-						</div>
-						<div class="space-8"></div>
-						<div class="form-group">
-							<label class="col-sm-3 control-label no-padding-right" for="add-star-description"> 星描述： </label>
-							<div class="col-sm-8">
-								<textarea class="form-control" name="description" id="add-star-description" placeholder="星描述"></textarea>
+							<div class="modal-footer">
+								<div class="col-lg-4 col-lg-offset-5">
+									<button type="button" class="btn btn-default" data-dismiss="modal" id="close_addStarInfo">关闭</button>
+									<button type="submit" class="btn btn-primary" data-dismiss="modal" id="submit_addStarInfo">确定</button>
+								</div>
 							</div>
-						</div>
-					</form>
-			      </div>
-			      <div class="modal-footer">
-			      	<div class="col-lg-4 col-lg-offset-5">
-				        <button type="button" class="btn btn-default" data-dismiss="modal" id="add-star-close">关闭</button>
-				        <button type="button" class="btn btn-primary" data-dismiss="modal" id="submit_addStarInfo">确定</button>
-                    </div>
-			      </div>
-			    </div>
-			  </div>
+						</form>
+					</div>
+				</div>
 			</div>
 			<!-- 编辑一颗星 -->
-			<div class="modal fade" id="editStarInfoModal" tabindex="-1" role="dialog" aria-labelledby="editStarInfoModalLabel"  >
-			  <div class="modal-dialog" role="document" style="margin:55px -300px">
-			    <div class="modal-content">
-			      <div class="modal-header">
-			        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-			        <h4 class="modal-title" id="editStarInfoModalLabel">添加星</h4>
-			      </div>
-			      <div class="modal-body">
-					<form id="editStarInfoForm" class="form-horizontal" role="form">
-						<div class="space-4"></div>
-						<div class="form-group">
-							<label class="col-sm-3 control-label no-padding-right" for="edit-star-name"> 星名称:</label>
-							<div class="col-sm-8">
-								<input type="text" name="name" id="edit-star-name" placeholder="星名称" class="form-control" />
+			<div class="modal fade" id="editStarInfoModal" tabindex="-1" role="dialog" aria-labelledby="editStarInfoModalLabel">
+				<div class="modal-dialog" role="document" style="margin:55px -300px">
+					<div class="modal-content">
+						<form id="editStarInfoForm" class="form-horizontal" role="form">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+									<span aria-hidden="true">&times;</span>
+								</button>
+								<h4 class="modal-title" id="editStarInfoModalLabel">添加星</h4>
 							</div>
-						</div>
-						<div class="space-8"></div>
-						<div class="form-group">
-							<label class="col-sm-3 control-label no-padding-right" for="edit-star-beginDate"> 开始运行时间:</label>
-							<div class="col-sm-8">
-								<input type="text" class="form-control input-mask-date" name="beginDate" id="edit-star-beginDate" placeholder="yyyy-MM-dd HH:mm:ss">
+							<div class="modal-body">
+								<div class="space-4"></div>
+								<div class="form-group">
+									<label class="col-sm-3 control-label no-padding-right" for="edit-star-name"> 星名称:</label>
+									<div class="col-sm-8">
+										<input type="text" name="name" id="edit-star-name" placeholder="星名称" class="form-control" />
+									</div>
+								</div>
+								<div class="space-8"></div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label no-padding-right" for="edit-star-code"> 星编码:</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" name="code" id="edit-star-code" placeholder="星编码" class="form-control" />
+                                    </div>
+                                </div>
+								<div class="space-8"></div>
+								<div class="form-group">
+									<label class="col-sm-3 control-label no-padding-right" for="edit-star-beginDate"> 开始运行时间:</label>
+									<div class="col-sm-8">
+										<input type="text" class="form-control input-mask-date" name="beginDate" id="edit-star-beginDate"
+											placeholder="yyyy-MM-dd HH:mm:ss">
+									</div>
+								</div>
+								<div class="space-8"></div>
+								<div class="form-group">
+									<label class="col-sm-3 control-label no-padding-right" for="edit-star-description"> 星描述： </label>
+									<div class="col-sm-8">
+										<textarea class="form-control" name="description" id="edit-star-description" placeholder="星描述"></textarea>
+									</div>
+								</div>
 							</div>
-						</div>
-						<div class="space-8"></div>
-						<div class="form-group">
-							<label class="col-sm-3 control-label no-padding-right" for="edit-star-description"> 星描述： </label>
-							<div class="col-sm-8">
-								<textarea class="form-control" name="description" id="edit-star-description" placeholder="星描述"></textarea>
+							<div class="modal-footer">
+								<div class="col-lg-4 col-lg-offset-5">
+									<button type="button" class="btn btn-default" data-dismiss="modal" id="close_editStarInfo">关闭</button>
+									<button type="submit" class="btn btn-primary" data-dismiss="modal" id="submit_editStarInfo">确定</button>
+								</div>
 							</div>
-						</div>
-					</form>
-			      </div>
-			      <div class="modal-footer">
-			      	<div class="col-lg-4 col-lg-offset-5">
-<!--                         <button type="submit" class="btn btn-primary" name="signup" value="Sign up">提交</button> -->
-<!--                         <button type="button" class="btn btn-info" id="resetBtn">重置表单</button> -->
-				        <button type="button" class="btn btn-default" id="edit-star-close" data-dismiss="modal">关闭</button>
-				        <button type="button" class="btn btn-primary" data-dismiss="modal" id="submit_editStarInfo">确定</button>
-                    </div>
-			      </div>
-			    </div>
-			  </div>
+						</form>
+					</div>
+				</div>
 			</div>
 			<!-- /.page-header -->
 			<div class="row">
@@ -629,9 +653,8 @@ $(function() {
 		var name = $('#add-series-name').val();
 		var code = $('#add-series-code').val();
 		var description = $('#add-series-description').val();
-		$('#add-series-name').val("");
-		$('#add-series-description').val("");
-		if(name != "" && code != ""){
+		var isValid = $('#addSeriesInfoForm').data('bootstrapValidator').isValid();
+		if(isValid){
 			$.ajax({
 				url : '${pageContext.request.contextPath}/admin/series/createSeries',
 				data : {
@@ -652,6 +675,7 @@ $(function() {
 				}
 			});
 		}
+		$('#addSeriesInfoForm').data('bootstrapValidator').resetForm(true);
 	}	
 	//编辑系列信息
 	function editSeries(){
@@ -660,37 +684,45 @@ $(function() {
 			if (rows.length == 1) {
 				//赋值
 				var oldName = rows[0].name;
+				var oldCode = rows[0].code;
 				var oldDescription = rows[0].description;
 				$('#edit-series-name').val(oldName);
+				$('#edit-series-code').val(oldCode);
 				$('#edit-series-description').val(oldDescription);
 				//弹出编辑框
 				$('#editSeriesInfoModal').modal('show');
 				$('#submit_editSeriesInfo').click(function(){
 					var name = $('#edit-series-name').val();
+					var code = $('#edit-series-code').val();
 					var description = $('#edit-series-description').val();
-					if(oldName != name || oldDescription != description){
-						$.ajax({
-							url : '${pageContext.request.contextPath}/admin/series/editSeries',
-							data : {
-								id : rows[0].id,
-								name : name,
-								description : description
-							},
-							cache : false,
-							dataType : "json",
-							success : function(data) {
-								if (data.success) {
-									galaxyGrid.datagrid("unselectAll");
-									galaxyGrid.datagrid('reload');
-									top.showMsg('提示', data.msg);
-								} else {
-									top.alertMsg('警告', data.msg);
-								}
-							}
-						});
-					}else{
-						top.showMsg('提示', "系列信息没有被修改！");
+					var isValid = $('#editSeriesInfoForm').data('bootstrapValidator').isValid();
+					if(isValid){
+						if(name != oldName || code != oldCode || description != oldDescription){
+	                        $.ajax({
+	                            url : '${pageContext.request.contextPath}/admin/series/editSeries',
+	                            data : {
+	                                id : rows[0].id,
+	                                name : name,
+	                                code : code,
+	                                description : description
+	                            },
+	                            cache : false,
+	                            dataType : "json",
+	                            success : function(data) {
+	                                if (data.success) {
+	                                    galaxyGrid.datagrid("unselectAll");
+	                                    galaxyGrid.datagrid('reload');
+	                                    top.showMsg('提示', data.msg);
+	                                } else {
+	                                    top.alertMsg('警告', data.msg);
+	                                }
+	                            }
+	                        });
+	                    }else{
+	                        top.showMsg('提示', "系列信息没有被修改！");
+	                    }
 					}
+					$('#editSeriesInfoForm').data('bootstrapValidator').resetForm(true);
 				});
 			}else{
 				top.showMsg("提示", "只能编辑一列！");
@@ -758,12 +790,11 @@ $(function() {
  		$('#addStarInfoModal').modal('show');
  		$('#submit_addStarInfo').click(function(){
 			var name = $('#add-star-name').val();
+			var code = $('#add-star-code').val();
 			var beginDate = $('#add-star-beginDate').val();
 			var description = $('#add-star-description').val();
-			$('#add-star-name').val("");
-			$('#add-star-description').val("");
-			$('#add-star-beginDate').val("");
-			if(name != ""){
+			var isValid = $('#addStarInfoForm').data('bootstrapValidator').isValid();
+			if(isValid){
 				$.ajax({
 					url : '${pageContext.request.contextPath}/admin/star/createStar',
 					data : {
@@ -784,6 +815,7 @@ $(function() {
 					}
 				});
 			}
+			$('#addStarInfoForm').data('bootstrapValidator').resetForm(true);
  		});
 	}
 	function editStarInfo(datagridId, starId) {
@@ -800,29 +832,33 @@ $(function() {
 			var name = $('#edit-star-name').val();
 			var beginDate = $('#edit-star-beginDate').val();
 			var description = $('#edit-star-description').val();
-			if(oldName != name || oldDescription != description || oldBeginDate != oldBeginDate){
-				$.ajax({
-					url : '${pageContext.request.contextPath}/admin/star/editStar',
-					data : {
-						id : starId,
-						name : name,
-						beginDate : beginDate,
-						description : description
-					},
-					cache : false,
-					dataType : "json",
-					success : function(data) {
-						if (data.success) {
-							reloadDatagrid(datagridId);
-							top.showMsg('提示', data.msg);
-						} else {
-							top.alertMsg('警告', data.msg);
+			var isValid = $('#editStarInfoForm').data('bootstrapValidator').isValid();
+			if(isValid){
+				if(oldName != name || oldDescription != description || oldBeginDate != oldBeginDate){
+					$.ajax({
+						url : '${pageContext.request.contextPath}/admin/star/editStar',
+						data : {
+							id : starId,
+							name : name,
+							beginDate : beginDate,
+							description : description
+						},
+						cache : false,
+						dataType : "json",
+						success : function(data) {
+							if (data.success) {
+								reloadDatagrid(datagridId);
+								top.showMsg('提示', data.msg);
+							} else {
+								top.alertMsg('警告', data.msg);
+							}
 						}
-					}
-				});
-			}else{
-				top.showMsg('提示', "星信息没有被修改！");
+					});
+				}else{
+					top.showMsg('提示', "星信息没有被修改！");
+				}
 			}
+			$('#editStarInfoForm').data('bootstrapValidator').resetForm(true);
  		});
 
 	}

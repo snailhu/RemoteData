@@ -6,6 +6,8 @@ public class StarDto {
 	
 	private String name;
 	
+	private String code;
+	
 	private String description;
 	
 	private String beginDate;
@@ -26,6 +28,14 @@ public class StarDto {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public String getCode() {
+		return code;
+	}
+
+	public void setCode(String code) {
+		this.code = code;
 	}
 
 	public String getDescription() {

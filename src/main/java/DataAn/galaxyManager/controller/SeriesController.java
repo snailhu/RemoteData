@@ -1,7 +1,6 @@
 package DataAn.galaxyManager.controller;
 
 import java.util.List;
-
 import javax.annotation.Resource;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -45,15 +44,14 @@ public class SeriesController {
 	public JsonMessage createSeries(@RequestParam(value = "name", required = true) String name,
 									@RequestParam(value = "code", required = true) String code,
 									@RequestParam(value = "description", required = false) String description){
+		SeriesDto dto = new SeriesDto();
+		dto.setName(name);
+		dto.setCode(code);
+		dto.setDescription(description);
+		System.out.println("come in createSeries..");
+		System.out.println(dto);
 		JsonMessage jsonMsg = new JsonMessage();
 		try {
-//			System.out.println("come in createSeries..");
-//			System.out.println("name: " + name);
-//			System.out.println("description: " + description);
-//			System.out.println();
-			SeriesDto dto = new SeriesDto();
-			dto.setName(name);
-			dto.setDescription(description);
 			seriesService.saveSeries(dto);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -79,15 +77,13 @@ public class SeriesController {
 								  @RequestParam(value = "name", required = true) String name,
 								  @RequestParam(value = "code", required = true) String code,
 								  @RequestParam(value = "description", required = false) String description){
-//			System.out.println("come in editSeries...");
-//			System.out.println("id: " + id);
-//			System.out.println("name: " + name);
-//			System.out.println("description: " + description);
-//			System.out.println();
 		SeriesDto dto = new SeriesDto();
 		dto.setId(id);
 		dto.setName(name);
+		dto.setCode(code);
 		dto.setDescription(description);
+		System.out.println("come in editSeries...");
+		System.out.println(dto);
 		
 		JsonMessage jsonMsg = new JsonMessage();
 		try {
@@ -106,11 +102,11 @@ public class SeriesController {
 	@RequestMapping(value="/deleteSeries", method = RequestMethod.POST)
 	@ResponseBody
 	public JsonMessage deleteSeries(@RequestParam(value = "seriesIds", required = true) String seriesIds){
+		System.out.println("come in deleteSeries..");
+		System.out.println("seriesIds: " + seriesIds);
+		System.out.println();
 		JsonMessage jsonMsg = new JsonMessage();
 		try {
-//			System.out.println("come in deleteSeries..");
-//			System.out.println("seriesIds: " + seriesIds);
-//			System.out.println();
 			seriesService.deleteSeries(seriesIds);
 		} catch (Exception e) {
 			e.printStackTrace();

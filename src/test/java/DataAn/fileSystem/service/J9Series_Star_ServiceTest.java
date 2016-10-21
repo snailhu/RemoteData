@@ -3,12 +3,15 @@ package DataAn.fileSystem.service;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
 import javax.annotation.Resource;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
 import DataAn.Analysis.dto.ConstraintDto;
 import DataAn.Util.EhCache;
 import DataAn.fileSystem.option.J9SeriesType;
@@ -30,6 +33,12 @@ public class J9Series_Star_ServiceTest {
 //		new EhCache("j9seriesConfig");
 	}
 	
+	@Test
+	public void getFlyWheelName() throws Exception{
+		String param_en = "sequence_00814";
+		System.out.println(service.getFlyWheelName(param_en));
+		System.out.println(service.getFlyWheelParameterType(param_en));
+	}
 	@Test
 	public void getAllParameterList() throws Exception{
 		String series = SeriesType.J9_SERIES.getName();

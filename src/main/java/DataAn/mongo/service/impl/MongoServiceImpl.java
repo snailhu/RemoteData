@@ -133,8 +133,11 @@ public class MongoServiceImpl implements IMongoService{
 		return mg.find(databaseName, collectionName, beginDate, endDate);
 	}
 
-
-
-
+	@Override
+	public long findMovableNumByParamCode(String series, String star, String collectionName, String paramName,
+			Date beginDate, Date endDate) {
+		String databaseName = InitMongo.getDataBaseNameBySeriesAndStar(series, star);
+		return mg.countByDate(databaseName, collectionName, beginDate, endDate, "paramName", paramName);
+	}
 
 }

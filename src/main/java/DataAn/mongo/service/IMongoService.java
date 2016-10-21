@@ -61,4 +61,7 @@ public interface IMongoService {
 	
 	public MongoCursor<Document> findByDate(String series,
 			String star, String paramType, Date beginDate, Date endDate);
+	
+	public long findMovableNumByParamCode(String series,String star , 
+			String collectionName, String paramCode,Date beginDate, Date endDate);
 }

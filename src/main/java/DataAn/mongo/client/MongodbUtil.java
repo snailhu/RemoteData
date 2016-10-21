@@ -330,8 +330,15 @@ public class MongodbUtil {
 	
 	public MongoCursor<Document> find(String databaseName,String collectionName,Date beginDate, Date endDate){
 		MongoCollection<Document> collection = this.getCollection(databaseName, collectionName);
-		
 		return collection.find(Filters.and(Filters.gte("datetime", beginDate),
 							   Filters.lte("datetime", endDate))).iterator();
+	}
+	
+	public long countByDate(String databaseName,String collectionName,
+			Date beginDate, Date endDate,String fieldName,String value ){
+		MongoCollection<Document> collection = this.getCollection(databaseName, collectionName);
+		return collection.count(Filters.and(Filters.gte("datetime", beginDate),
+							   				Filters.lte("datetime", endDate),
+							   				Filters.eq(fieldName, value)));
 	}
 }

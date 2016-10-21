@@ -31,13 +31,15 @@ public interface IPrewarningService {
 
 	public void addWarningLog(WarningLogDTO warningLogDTO) throws Exception;
 
+	public void addWarningLogFromMongo() throws Exception;
+
 	public void updateWarningLog(WarningLogDTO warningLogDTO) throws Exception;
 
-	public void deleteWarningLog(long logId) throws Exception;
+	public void deleteWarningLog(String logId) throws Exception;
 
 	public Pager<QueryLogDTO> pageQueryWarningLog(int pageIndex, int pageSize, String series, String star,
-			String parameterType, String createdatetimeStart, String createdatetimeEnd, String warningType,
-			String hadRead) throws Exception;
+			String parameterType, String parameter, String createdatetimeStart, String createdatetimeEnd,
+			String warningType, String hadRead) throws Exception;
 
 	public WarningLog getWarningLogById(long logId) throws Exception;
 

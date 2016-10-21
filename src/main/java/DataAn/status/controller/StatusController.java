@@ -20,7 +20,6 @@ import DataAn.common.pageModel.EasyuiDataGridJson;
 import DataAn.common.pageModel.JsonMessage;
 import DataAn.status.dto.StatusTrackingDTO;
 import DataAn.status.dto.StatusYstepDTO;
-import DataAn.status.option.StatusTrackingType;
 import DataAn.status.service.IStatusTrackingService;
 
 @Controller
@@ -55,7 +54,7 @@ public class StatusController {
 	public EasyuiDataGridJson getStatusList(int page, int rows, WebRequest request) {
 		EasyuiDataGridJson json = new EasyuiDataGridJson();
 		String userType = "";
-		String statusType = StatusTrackingType.END.getValue();
+		String statusType = request.getParameter("statusType");
 		String fileName = request.getParameter("fileName");
 		String createdateStart = request.getParameter("createdatetimeStart");
 		String createdateEnd = request.getParameter("createdatetimeEnd");

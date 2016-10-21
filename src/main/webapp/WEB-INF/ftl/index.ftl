@@ -76,7 +76,7 @@
 							欢迎光临,${activeUser.userName}
 					</a>
 				</li>
-				<li><a href="${pageContext.request.contextPath}/admin/prewarning/logIndex?hadRead=0" id="prewarning">您有${warnCount}条未读预警信息</a></li>
+				<li><a href="${base}/admin/prewarning/logIndex?hadReadFlag=0" id="prewarning">您有${warnCount}条未读预警信息</a></li>
 				<li style='position:relative; top:15px'>
 					<a style='margin-top: -15px;' href='${base}/loginOut' id='loginOutLink'> |&nbsp; 注销 
 					</a>

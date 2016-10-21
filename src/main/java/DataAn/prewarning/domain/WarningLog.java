@@ -1,12 +1,9 @@
 package DataAn.prewarning.domain;
 
-import static javax.persistence.GenerationType.IDENTITY;
-
 import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -22,9 +19,8 @@ public class WarningLog implements java.io.Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy = IDENTITY)
-	@Column(name = "logId", unique = true, nullable = false)
-	private Long logId; // 记录Id
+	@Column(name = "logId", nullable = false)
+	private String logId; // 记录Id
 
 	@Column(name = "series", nullable = true)
 	private Long series; // 星系
@@ -93,11 +89,11 @@ public class WarningLog implements java.io.Serializable {
 		this.parameterType = parameterType;
 	}
 
-	public Long getLogId() {
+	public String getLogId() {
 		return logId;
 	}
 
-	public void setLogId(Long logId) {
+	public void setLogId(String logId) {
 		this.logId = logId;
 	}
 

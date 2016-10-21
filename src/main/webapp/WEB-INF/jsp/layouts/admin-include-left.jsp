@@ -332,7 +332,7 @@
 			<ul class="submenu">
 				<li><a href="${pageContext.request.contextPath}/admin/status/startingIndex"> <i class="icon-double-angle-right"></i> 进行中
 					</a></li>
-				<li><a href="${pageContext.request.contextPath}/admin/status/endIndex"> <i class="icon-double-angle-right"></i> 已完成
+				<li><a href="${pageContext.request.contextPath}/admin/status/endIndex"> <i class="icon-double-angle-right"></i> 已结束
 					</a></li>
 			</ul>
 		</li>
@@ -346,7 +346,7 @@
 					</a></li>
 				<li><a href="${pageContext.request.contextPath}/admin/prewarning/errorvalueIndex"> <i class="icon-double-angle-right"></i> 异常参数配置
 					</a></li>
-				<li><a href="${pageContext.request.contextPath}/admin/prewarning/logIndex"> <i class="icon-double-angle-right"></i> 预警查询
+				<li><a href="${pageContext.request.contextPath}/admin/prewarning/logIndex?hadReadFlag=1"> <i class="icon-double-angle-right"></i> 预警查询
 					</a></li>
 			</ul>
 		</li>

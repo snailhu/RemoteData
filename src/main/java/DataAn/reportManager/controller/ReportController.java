@@ -38,6 +38,7 @@ import DataAn.galaxyManager.dto.StarDto;
 import DataAn.jfreechart.dto.LineChartDto;
 import DataAn.jfreechart.service.IJfreechartServcie;
 import DataAn.mongo.init.InitMongo;
+import DataAn.reportManager.dao.IStarParamDao;
 import DataAn.reportManager.domain.ReportFileSystem;
 import DataAn.reportManager.domain.StarParam;
 import DataAn.reportManager.dto.DataToDocDto;
@@ -64,7 +65,8 @@ public class ReportController {
 	@Resource
 	private IJfreechartServcie jfreechartServcie;
 	
-	
+	@Resource
+	private IStarParamDao starParamDao;
 	
 	@RequestMapping("/index")
 	public String reportIndex(Model model,HttpServletRequest request,HttpServletResponse response) {
@@ -186,110 +188,46 @@ public class ReportController {
 		}
 		return jsonMsg;
 	}
-	@SuppressWarnings("deprecation")
 	@RequestMapping(value = { "/createReport" })
 	public void  createReport(HttpServletResponse response,HttpServletRequest request,String seriesId,String starId,String partsType,String beginTime,String endTime) throws Exception {
 		
 			String imgUrl = OptionConfig.getWebPath() + "\\report\\wordtemplate\\satellite.jpg";  
 			String templateUrl = OptionConfig.getWebPath() + "\\report\\wordtemplate\\卫星状态报告.doc";
-			String templateName = "Employees";
+			String time = DateUtil.getNowTime("yyyy-MM-dd");
 			
-			String filename = seriesId+"_"+starId+"_"+partsType+".doc";
+			String filename = seriesId+"_"+starId+"_"+partsType+"_"+time+".doc";
 			String docPath = OptionConfig.getWebPath() + "report\\"+filename;
-			Date beginDate = DateUtil.format(beginTime,"yyyy-MM-dd");
-			Date endDate =  DateUtil.format(endTime,"yyyy-MM-dd");
-			reoportService.createReport( beginDate, endDate, filename, imgUrl, templateUrl, templateName, docPath, seriesId, starId, partsType);
+			Date beginDate = DateUtil.format(beginTime,"yyyy-MM-dd HH:mm:ss");
+			Date endDate =  DateUtil.format(endTime,"yyyy-MM-dd HH:mm:ss");
+			reoportService.createReport( beginDate, endDate, filename, imgUrl, templateUrl, docPath, seriesId, starId, partsType);
 			reoportService.downloadReport(response, docPath,filename);
 			reoportService.removeDoc(docPath);
 	}
 	@RequestMapping(value = { "/createReportTest" })
 public void createReprotTest() throws Exception{
-		
+
 		String imgUrl = OptionConfig.getWebPath() + "\\report\\wordtemplate\\satellite.jpg";  
-		String templateUrl = OptionConfig.getWebPath() + "\\report\\wordtemplate\\卫星状态报告1.doc";
-		String templateName = "Employees";
+		String templateUrl = OptionConfig.getWebPath() + "\\report\\wordtemplate\\卫星状态报告.doc";
 		
-		String seriesId = "j9";
-		String starId = "02";
-		String partsType = "flywheel";
-		String time = DateUtil.getBeforeDate();
-		
-		String filename = seriesId+"_"+starId+"_"+partsType+"_"+time+".doc";
-		String docPath = OptionConfig.getWebPath() + "report\\"+filename;
-		
-		DataToDocDto data = new DataToDocDto();
-		
-		
-		List<ParamDto> params = new ArrayList<ParamDto>();
-		ParamDto paramDto1 = new ParamDto();
-		paramDto1.setParamName("电流");
-		paramDto1.setProductName("飞轮a");
-		paramDto1.setParamNumMin("2");
-		paramDto1.setParamNumMax("5");
-		
-		
-		ParamDto paramDto2 = new ParamDto();
-		paramDto2.setParamName("电压");
-		paramDto2.setProductName("飞轮a");
-		paramDto2.setParamNumMin("10");
-		paramDto2.setParamNumMax("22");
-		
-		ParamDto paramDto3 = new ParamDto();
-		paramDto3.setParamName("转速");
-		paramDto3.setProductName("飞轮a");
-		paramDto3.setParamNumMin("25");
-		paramDto3.setParamNumMax("60");
-		
-		ParamDto paramDto4 = new ParamDto();
-		paramDto4.setParamName("电流");
-		paramDto4.setProductName("飞轮b");
-		paramDto4.setParamNumMin("3");
-		paramDto4.setParamNumMax("6");
-		
-		
-		ParamDto paramDto5 = new ParamDto();
-		paramDto5.setParamName("电压");
-		paramDto5.setProductName("飞轮b");
-		paramDto5.setParamNumMin("12");
-		paramDto5.setParamNumMax("31");
-		
-		ParamDto paramDto6 = new ParamDto();
-		paramDto6.setParamName("转速");
-		paramDto6.setProductName("飞轮b");
-		paramDto6.setParamNumMin("22");
-		paramDto6.setParamNumMax("62");
-		ParamDto paramDto7 = new ParamDto();
-		paramDto7.setParamName("电压");
-		paramDto7.setProductName("飞轮b");
-		paramDto7.setParamNumMin("10");
-		paramDto7.setParamNumMax("20");
-		params.add(paramDto1);
-		params.add(paramDto2);
-		params.add(paramDto3);
-		params.add(paramDto4);
-		params.add(paramDto5);
-		params.add(paramDto6);
-		params.add(paramDto7);
-		
-		List<ProductDto> products = new ArrayList<ProductDto>();
-		
-		ProductDto productDto1 = new ProductDto();
-		productDto1.setProductName("飞轮a");
-		productDto1.setMovableNum(8);
-		
-		ProductDto productDto2 = new ProductDto();
-		productDto2.setProductName("飞轮b");
-		productDto2.setMovableNum(10);
-		products.add(productDto1);
-		products.add(productDto2);
-		
-		data.setParams(params);
-		data.setProducts(products);
-		
-		reoportService.reportDoc(filename, data, imgUrl, templateUrl, templateName, docPath);
-		
+		List<StarParam> starList = starParamDao.getStarParamByParts();
+		for (StarParam starParam : starList) {
+			String seriesId = starParam.getSeries();
+			String starId = starParam.getStar();
+			String partsType = starParam.getPartsType();
+			
+			String starTime = DateUtil.getYesterdayTime();
+			String endTime =DateUtil.getLastWeekTime();
+			String time = DateUtil.getNowTime("yyyy-MM-dd");
+			
+			Date beginDate = DateUtil.format(starTime,"yyyy-MM-dd HH:mm:ss");
+			Date endDate =  DateUtil.format(endTime,"yyyy-MM-dd HH:mm:ss");
+			
+			String databaseName = InitMongo.DATABASE_TEST;
+			String filename = seriesId+"_"+starId+"_"+partsType+"_"+time+".doc";
+			String docPath = OptionConfig.getWebPath() + "report\\"+filename;
+			reoportService.createReport(beginDate, endDate, filename, imgUrl, templateUrl, docPath, seriesId, starId, partsType);
+			reoportService.insertReportToDB(filename, docPath,seriesId,starId, partsType,starTime,endTime,databaseName);
+			reoportService.removeDoc(docPath);
+		}
 	}
-	
-	
-	
 }

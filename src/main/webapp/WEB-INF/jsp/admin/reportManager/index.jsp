@@ -24,6 +24,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/static/content/jQueryCalendar/calendar.css">
 	<script src="${pageContext.request.contextPath}/static/content/jQueryCalendar/calendar.js"></script> 
 	
+	    <link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/static/content/jeDate/jedate/skin/jedate.css">
+    <script type="text/javascript" src="${pageContext.request.contextPath}/static/content/jeDate/jedate/jedate.js"></script>
+	
   <style type="text/css">
   .widget-toolbar>a {
     font-size: 36px;
@@ -41,41 +44,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 }
 
   </style>
-  <script type="text/javascript">
-  $(function(){
-	  $('#getBeginTime').calendar({
-	        trigger: '#form-beginTime',
-	        zIndex: 999,
-			format: 'yyyy-mm-dd',
-	        onSelected: function (view, date, data) {
-// 	            console.log('event: onSelected')
-	        },
-	        onClose: function (view, date, data) {
-// 	            console.log('event: onClose')
-// 	            console.log('view:' + view)
-// 	            console.log('date:' + date)
-// 	            console.log('data:' + (data || 'None'));
-	        }
-	    });
-	  $('#getEndTime').calendar({
-	        trigger: '#form-endTime',
-	        zIndex: 999,
-			format: 'yyyy-mm-dd',
-	        onSelected: function (view, date, data) {
-// 	            console.log('event: onSelected')
-	        },
-	        onClose: function (view, date, data) {
-// 	            console.log('event: onClose')
-// 	            console.log('view:' + view)
-// 	            console.log('date:' + date)
-// 	            console.log('data:' + (data || 'None'));
-	        }
-	    });
-	  $('#change-search-box').click();
-  })
-  </script>
   </head>
-  
   <body>
     <div class="main-content" id="main-content">
 <!-- 		<div class="breadcrumbs" id="breadcrumbs"> -->
@@ -127,16 +96,18 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 									<div class="form-group">
 										<label class="col-sm-3 control-label no-padding-right" for="form-beginTime"> 开始时间 </label>
 										<div class="col-sm-9">
-											<input type="text" id="form-beginTime" name="beginTime" placeholder="开始时间" class="col-xs-10 col-sm-5" />
-											<div id="getBeginTime"></div>
+											<input class="datainp" id="form-beginTime"   name="beginTime" type="text" placeholder="请选择" readonly>
+											<!-- <input type="text" id="form-beginTime" name="beginTime" placeholder="开始时间" class="col-xs-10 col-sm-5" />
+											<div id="getBeginTime"></div> -->
 										</div>
 									</div>
 									<div class="space-4"></div>
 									<div class="form-group">
 										<label class="col-sm-3 control-label no-padding-right" for="form-endTime"> 结束时间 </label>
 										<div class="col-sm-9">
-											<input type="text" id="form-endTime" name="endTime" placeholder="结束时间" class="col-xs-10 col-sm-5" />
-											<div id="getEndTime"></div>
+											<input class="datainp"  id="form-endTime" name="endTime"  type="text" placeholder="请选择" readonly>
+											<!-- <input type="text" id="form-endTime" name="endTime" placeholder="结束时间" class="col-xs-10 col-sm-5" />
+											<div id="getEndTime"></div> -->
 										</div>
 									</div>
 									<div class="space-1"></div>
@@ -223,6 +194,26 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	  }
 	  url='<%=request.getContextPath()%>/report/getList/'+nowSeries+'/'+nowStar+'/'+nowParamType+'/'+nowDirId+'/';
 	  $(function () {
+		  
+			jeDate({
+				dateCell:"#form-beginTime",//直接显示日期层的容器，可以是ID  CLASS
+				format:"YYYY-MM-DD hh:mm:ss",//日期格式
+				isinitVal:false, //是否初始化时间
+				festival:false, //是否显示节日
+				isTime:true, //是否开启时间选择
+				//minDate:"2014-09-19 00:00:00",//最小日期
+				maxDate:jeDate.now(0), //设定最大日期为当前日期
+			});
+			jeDate({
+				dateCell:"#form-endTime",//直接显示日期层的容器，可以是ID  CLASS
+				format:"YYYY-MM-DD hh:mm:ss",//日期格式
+				isinitVal:false, //是否初始化时间
+				festival:false, //是否显示节日
+				isTime:true, //是否开启时间选择
+				//minDate:"2014-09-19 00:00:00",//最小日期
+				maxDate:jeDate.now(0), //设定最大日期为当前日期
+			});
+			  $('#change-search-box').click();
 	      fsGrid = $('#fsList').datagrid({
 	          url: url,
 	          title: '文件列表',

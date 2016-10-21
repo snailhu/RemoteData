@@ -21,7 +21,7 @@ public class StatusTrackingDaoImpl extends BaseDaoImpl<StatusTracking> implement
 		if (StringUtils.isNotBlank(userType)) {
 			hql += " and userType = '" + userType + "'";
 		}
-		hql += "order by createDate";
+		hql += " order by createDate";
 		List<StatusTracking> statusTrackings = this.getSession().createQuery(hql).list();
 		return statusTrackings;
 	}

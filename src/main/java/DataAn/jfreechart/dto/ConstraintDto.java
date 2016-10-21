@@ -34,6 +34,11 @@ public class ConstraintDto {
 	public void setMin(double min) {
 		this.min = min;
 	}
+	@Override
+	public String toString() {
+		return "ConstraintDto [name=" + name + ", value=" + value + ", max="
+				+ max + ", min=" + min + "]";
+	}
 	
 	
 }

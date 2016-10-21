@@ -21,6 +21,7 @@ import DataAn.jfreechart.chart.Serie;
 import DataAn.jfreechart.dto.ConstraintDto;
 import DataAn.jfreechart.dto.LineChartDto;
 import DataAn.jfreechart.service.IJfreechartServcie;
+import DataAn.reportManager.service.IReoportService;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath:applicationContext-*.xml")
@@ -28,8 +29,8 @@ public class JfreechartServcieTest {
 
 	@Resource
 	private IJfreechartServcie jfreechartServcie;
-	
-	
+	@Resource
+	private IReoportService reoportService;
 	
 	@Test
 	public void createLineChart2() throws Exception{
@@ -77,7 +78,19 @@ public class JfreechartServcieTest {
 		System.out.println(lineChartDto);
 	}
 	
-	
+	@Test
+	public void test3() throws Exception{
+		String series = SeriesType.J9_SERIES.getValue();
+		String star = J9SeriesType.STRA2.getValue();
+		String paramType = "flywheel";
+		Map<String,List<ConstraintDto>> map = reoportService.getConstraintDtoList(series,star,paramType);
+		System.out.println(map);
+		Date beginDate = DateUtil.format("2010-02-01 00:00:00");
+		Date endDate = DateUtil.format("2010-02-07 00:00:00");
+		
+		LineChartDto lineChartDto = jfreechartServcie.createLineChart(series, star, paramType, beginDate, endDate, map);
+		System.out.println(lineChartDto);
+	}
 	@Test
 	public void createLineChart() throws Exception{
 		Vector<String> categoriesV = new Vector<String>();

@@ -200,7 +200,7 @@ public class JfreechartServiceImpl implements IJfreechartServcie {
 			tempDocList.add(doc);
 			tempMap.put(datetime, tempDocList);
 		}
-		System.out.println("count: " + count);
+//		System.out.println("count: " + count);
 		if(count > 0){
 			// 多条线数据
 			Map<String, TimeSeries> lineMap = new HashMap<String, TimeSeries>();
@@ -220,8 +220,7 @@ public class JfreechartServiceImpl implements IJfreechartServcie {
 					for (String key : en_params) {
 						timeseries = lineMap.get(key);
 						if (timeseries == null) {
-							timeseries = ChartUtils.createTimeseries(params
-									.get(key));
+							timeseries = ChartUtils.createTimeseries(params.get(key));
 						}
 						// 转换为double 类型
 						double dValue = Double.parseDouble(doc.getString(key));
@@ -252,8 +251,8 @@ public class JfreechartServiceImpl implements IJfreechartServcie {
 				for (ConstraintDto constraintDto : constraintList) {
 					dataset.addSeries(lineMap.get(constraintDto.getValue()));
 					
-					System.out.println("constraintDto.getValue(): "
-							+ lineMap.get(constraintDto.getValue()).getItemCount());
+//					System.out.println("constraintDto.getValue(): "
+//							+ lineMap.get(constraintDto.getValue()).getItemCount());
 				}
 
 				String title = "";

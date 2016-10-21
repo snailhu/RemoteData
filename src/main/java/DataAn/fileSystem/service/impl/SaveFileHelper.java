@@ -22,7 +22,7 @@ import DataAn.fileSystem.service.ICSVService;
 import DataAn.mongo.service.IMongoService;
 
 @Aspect
-@Component
+//@Component
 public class SaveFileHelper {
 
 	@Resource

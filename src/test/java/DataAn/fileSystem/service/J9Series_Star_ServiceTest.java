@@ -109,6 +109,7 @@ public class J9Series_Star_ServiceTest {
 		for (String key : keys) {
 			System.out.println(key + " : " + map.get(key));
 		}
+		System.out.println(map.get("飞轮温度Xa(00815)"));
 	}
 	
 	@Test

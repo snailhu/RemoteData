@@ -1,8 +1,9 @@
 package DataAn.Analysis.dto;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class ParamGroup {
+public class ParamGroup implements Serializable{
 	private int id;
 	
 	private String Ycount;

@@ -206,7 +206,7 @@ public class J9Series_Star_ServiceImpl implements IJ9Series_Star_Service{
 		Map<String,String> map = new HashMap<String,String>();
 		Set<String> keys = map2.keySet();
 		for (String key : keys) {
-			if(!key.equals("时间")){
+			if(!key.equals("时间") && !key.equals("接收地方时")){
 				map.put(key.split(":")[1], map2.get(key));					
 			}
 		}

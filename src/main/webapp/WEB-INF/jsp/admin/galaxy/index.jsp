@@ -96,9 +96,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     position: relative;
 /*     padding-left: 20px; */
 }
-p, span, b, div {
-    text-align: center;
-}
 .icon-remove {
     background: url('') no-repeat center center;
 }
@@ -123,6 +120,9 @@ p, span, b, div {
     margin-bottom: 0px;
     color: #737373;
 }
+.form-horizontal {
+    margin-bottom: 0px;
+}
   </style>
   <script type="text/javascript">
   	$(function(){
@@ -143,12 +143,20 @@ p, span, b, div {
                       }
                   }
               },
+              code: {
+                  message: '系列码不能为空',
+                  validators: {
+                      notEmpty: {
+                          message: '系列码不能为空'
+                      }
+                  }
+              },
               description : {
             	  message: '',
               }
           }
       });
-	$('#add-series-close').click(function() {
+	$('#close_addSeriesInfo').click(function() {
 	    $('#addSeriesInfoForm').data('bootstrapValidator').resetForm(true);
 	});	
   	$('#editSeriesInfoForm').bootstrapValidator({
@@ -168,12 +176,20 @@ p, span, b, div {
                       }
                   }
               },
+              code: {
+                  message: '系列码不能为空',
+                  validators: {
+                      notEmpty: {
+                          message: '系列码不能为空'
+                      }
+                  }
+              },
               description : {
             	  message: '',
               }
           }
       });
-  	$('#edit-series-close').click(function() {
+  	$('#close_editSeriesInfo').click(function() {
 	    $('#editSeriesInfoForm').data('bootstrapValidator').resetForm(true);
 	});	
   	$('#addStarInfoForm').bootstrapValidator({
@@ -310,78 +326,95 @@ p, span, b, div {
 				</thead>
 			</table>
 			<!-- 添加系列表单 -->
-			<div class="modal fade" id="addSeriesInfoModal" tabindex="-1" role="dialog" aria-labelledby="addSeriesInfoModalLabel"  >
-			  <div class="modal-dialog" role="document" style="margin:55px -300px">
-			    <div class="modal-content">
-			      <div class="modal-header">
-			        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-			        <h4 class="modal-title" id="addSeriesInfoModalLabel">添加系列</h4>
-			      </div>
-			      <div class="modal-body">
-					<form id="addSeriesInfoForm" class="form-horizontal" role="form">
-						<div class="space-4"></div>
-						<div class="form-group">
-							<label class="col-sm-3 control-label no-padding-right" for="add-series-name"> 系列名称:</label>
-							<div class="col-sm-8">
-								<input type="text" name="name" id="add-series-name" placeholder="系列名称" class="form-control" />
+			<div class="modal fade" id="addSeriesInfoModal" tabindex="-1" role="dialog" aria-labelledby="addSeriesInfoModalLabel">
+				<div class="modal-dialog" role="document" style="margin:55px -300px">
+					<div class="modal-content">
+						<form id="addSeriesInfoForm" class="form-horizontal" role="form">
+							<div class="modal-header">
+<!-- 								<button type="button" class="close" data-dismiss="modal" -->
+<!-- 									aria-label="Close"> -->
+<!-- 									<span aria-hidden="true">&times;</span> -->
+<!-- 								</button> -->
+								<h4 class="modal-title" id="addSeriesInfoModalLabel">添加系列</h4>
 							</div>
-						</div>
-						<div class="space-8"></div>
-						<div class="form-group">
-							<label class="col-sm-3 control-label no-padding-right" for="add-series-description"> 系列描述： </label>
-							<div class="col-sm-8">
-								<textarea class="form-control" name="description" id="add-series-description" placeholder="系列描述"></textarea>
+							<div class="modal-body">
+								<div class="space-4"></div>
+								<div class="form-group">
+									<label class="col-sm-3 control-label no-padding-right" for="add-series-name"> 系列名称:</label>
+									<div class="col-sm-8">
+										<input type="text" name="name" id="add-series-name" placeholder="系列名称" class="form-control" />
+									</div>
+								</div>
+								<div class="space-4"></div>
+								<div class="form-group">
+									<label class="col-sm-3 control-label no-padding-right" for="add-series-code"> 系列码:</label>
+									<div class="col-sm-8">
+										<input type="text" name="code" id="add-series-code" placeholder="系列码" class="form-control" />
+									</div>
+								</div>
+								<div class="space-8"></div>
+								<div class="form-group">
+									<label class="col-sm-3 control-label no-padding-right" for="add-series-description"> 系列描述： </label>
+									<div class="col-sm-8">
+										<textarea class="form-control" name="description" id="add-series-description" placeholder="系列描述"></textarea>
+									</div>
+								</div>
 							</div>
-						</div>
-					</form>
-			      </div>
-			      <div class="modal-footer">
-			      	<div class="col-lg-4 col-lg-offset-5">
-<!--                         <button type="submit" class="btn btn-primary" name="signup" value="Sign up">提交</button> -->
-<!--                         <button type="button" class="btn btn-info" id="resetBtn">重置表单</button> -->
-				        <button type="button" class="btn btn-default" id="add-series-close" data-dismiss="modal">关闭</button>
-				        <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="submit_addSeriesInfo()">确定</button>
-                    </div>
-			      </div>
-			    </div>
-			  </div>
+							<div class="modal-footer">
+								<div class="col-lg-4 col-lg-offset-5">
+									<button type="button" class="btn btn-default" data-dismiss="modal" id="close_addSeriesInfo">关闭</button>
+									<button type="submit" class="btn btn-primary" data-dismiss="modal" onclick="submit_addSeriesInfo()">确定</button>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
 			</div>
 			<!-- 编辑系列表单 -->
-			<div class="modal fade" id="editSeriesInfoModal" tabindex="-1" role="dialog" aria-labelledby="editSeriesInfoModalLabel"  >
-			  <div class="modal-dialog" role="document" style="margin:55px -300px">
-			    <div class="modal-content">
-			      <div class="modal-header">
-			        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-			        <h4 class="modal-title" id="editSeriesInfoModalLabel">编辑系列</h4>
-			      </div>
-			      <div class="modal-body">
-					<form id="editSeriesInfoForm" class="form-horizontal" role="form">
-						<div class="space-4"></div>
-						<div class="form-group">
-							<label class="col-sm-3 control-label no-padding-right" for="edit-series-name"> 系列名称:</label>
-							<div class="col-sm-8">
-								<input type="text" name="name" id="edit-series-name" placeholder="系列名称" class="form-control" />
+			<div class="modal fade" id="editSeriesInfoModal" tabindex="-1"
+				role="dialog" aria-labelledby="editSeriesInfoModalLabel">
+				<div class="modal-dialog" role="document" style="margin:55px -300px">
+					<div class="modal-content">
+						<form id="editSeriesInfoForm" class="form-horizontal" role="form">
+							<div class="modal-header">
+<!-- 								<button type="button" class="close" data-dismiss="modal" -->
+<!-- 									aria-label="Close"> -->
+<!-- 									<span aria-hidden="true">&times;</span> -->
+<!-- 								</button> -->
+								<h4 class="modal-title" id="editSeriesInfoModalLabel">编辑系列</h4>
 							</div>
-						</div>
-						<div class="space-8"></div>
-						<div class="form-group">
-							<label class="col-sm-3 control-label no-padding-right" for="edit-series-description"> 系列描述： </label>
-							<div class="col-sm-8">
-								<textarea class="form-control" name="description" id="edit-series-description" placeholder="系列描述"></textarea>
+							<div class="modal-body">
+									<div class="space-4"></div>
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="edit-series-name"> 系列名称:</label>
+										<div class="col-sm-8">
+											<input type="text" name="name" id="edit-series-name" placeholder="系列名称" class="form-control" />
+										</div>
+									</div>
+									<div class="space-4"></div>
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="edit-series-code"> 系列码:</label>
+										<div class="col-sm-8">
+											<input type="text" name="code" id="edit-series-code" placeholder="系列码" class="form-control" />
+										</div>
+									</div>
+									<div class="space-8"></div>
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="edit-series-description"> 系列描述： </label>
+										<div class="col-sm-8">
+											<textarea class="form-control" name="description" id="edit-series-description" placeholder="系列描述"></textarea>
+										</div>
+									</div>
 							</div>
-						</div>
-					</form>
-			      </div>
-			      <div class="modal-footer">
-			      	<div class="col-lg-4 col-lg-offset-5">
-<!--                         <button type="submit" class="btn btn-primary" name="signup" value="Sign up">提交</button> -->
-<!--                         <button type="button" class="btn btn-info" id="resetBtn">重置表单</button> -->
-				        <button type="button" class="btn btn-default" id="edit-series-close" data-dismiss="modal">关闭</button>
-				        <button type="button" class="btn btn-primary" data-dismiss="modal" id="submit_editSeriesInfo" >确定</button>
-                    </div>
-			      </div>
-			    </div>
-			  </div>
+							<div class="modal-footer">
+								<div class="col-lg-4 col-lg-offset-5">
+									<button type="button" class="btn btn-default" data-dismiss="modal" id="close_editSeriesInfo">关闭</button>
+									<button type="submit" class="btn btn-primary" data-dismiss="modal" id="submit_editSeriesInfo">确定</button>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
 			</div>
 			<!-- 添加一颗星 -->
 			<div class="modal fade" id="addStarInfoModal" tabindex="-1" role="dialog" aria-labelledby="addStarInfoModalLabel"  >
@@ -418,9 +451,7 @@ p, span, b, div {
 			      </div>
 			      <div class="modal-footer">
 			      	<div class="col-lg-4 col-lg-offset-5">
-<!--                         <button type="submit" class="btn btn-primary" name="signup" value="Sign up">提交</button> -->
-<!--                         <button type="button" class="btn btn-info" id="resetBtn">重置表单</button> -->
-				        <button type="button" class="btn btn-default" id="add-star-close" data-dismiss="modal">关闭</button>
+				        <button type="button" class="btn btn-default" data-dismiss="modal" id="add-star-close">关闭</button>
 				        <button type="button" class="btn btn-primary" data-dismiss="modal" id="submit_addStarInfo">确定</button>
                     </div>
 			      </div>
@@ -596,14 +627,16 @@ $(function() {
 	//提交创建系列
 	function submit_addSeriesInfo(){
 		var name = $('#add-series-name').val();
+		var code = $('#add-series-code').val();
 		var description = $('#add-series-description').val();
 		$('#add-series-name').val("");
 		$('#add-series-description').val("");
-		if(name != ""){
+		if(name != "" && code != ""){
 			$.ajax({
 				url : '${pageContext.request.contextPath}/admin/series/createSeries',
 				data : {
 					name : name,
+					code : code,
 					description : description
 				},
 				cache : false,

@@ -43,6 +43,7 @@ public class SeriesController {
 	@RequestMapping(value="/createSeries", method = RequestMethod.POST)
 	@ResponseBody
 	public JsonMessage createSeries(@RequestParam(value = "name", required = true) String name,
+									@RequestParam(value = "code", required = true) String code,
 									@RequestParam(value = "description", required = false) String description){
 		JsonMessage jsonMsg = new JsonMessage();
 		try {
@@ -76,18 +77,20 @@ public class SeriesController {
 	@ResponseBody
 	public JsonMessage editSeries(@RequestParam(value = "id", required = true) long id,
 								  @RequestParam(value = "name", required = true) String name,
+								  @RequestParam(value = "code", required = true) String code,
 								  @RequestParam(value = "description", required = false) String description){
-		JsonMessage jsonMsg = new JsonMessage();
-		try {
 //			System.out.println("come in editSeries...");
 //			System.out.println("id: " + id);
 //			System.out.println("name: " + name);
 //			System.out.println("description: " + description);
 //			System.out.println();
-			SeriesDto dto = new SeriesDto();
-			dto.setId(id);
-			dto.setName(name);
-			dto.setDescription(description);
+		SeriesDto dto = new SeriesDto();
+		dto.setId(id);
+		dto.setName(name);
+		dto.setDescription(description);
+		
+		JsonMessage jsonMsg = new JsonMessage();
+		try {
 			seriesService.updateSeries(dto);
 		} catch (Exception e) {
 			e.printStackTrace();

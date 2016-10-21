@@ -1,14 +1,14 @@
 package DataAn.reportManager.controller;
 
-import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.net.URLEncoder;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,12 +33,22 @@ import DataAn.common.utils.DateUtil;
 import DataAn.common.utils.UUIDGeneratorUtil;
 import DataAn.fileSystem.dto.MongoFSDto;
 import DataAn.fileSystem.option.J9Series_Star_ParameterType;
+import DataAn.galaxyManager.domain.Star;
+import DataAn.galaxyManager.dto.StarDto;
+import DataAn.jfreechart.dto.LineChartDto;
+import DataAn.jfreechart.service.IJfreechartServcie;
 import DataAn.mongo.init.InitMongo;
+import DataAn.reportManager.domain.ReportFileSystem;
+import DataAn.reportManager.domain.StarParam;
 import DataAn.reportManager.dto.DataToDocDto;
 import DataAn.reportManager.dto.ParamDto;
 import DataAn.reportManager.dto.ParamImgDataDto;
+import DataAn.reportManager.dto.ProductDto;
 import DataAn.reportManager.dto.ReportFileDto;
 import DataAn.reportManager.service.IReoportService;
+import DataAn.reportManager.service.IStarParamService;
+import DataAn.reportManager.util.CommonsConstant;
+import DataAn.reportManager.util.ResultJSON;
 import DataAn.sys.dto.ActiveUserDto;
 import DataAn.wordManager.config.OptionConfig;
 
@@ -47,6 +57,14 @@ import DataAn.wordManager.config.OptionConfig;
 public class ReportController {
 	@Resource
 	private IReoportService reoportService;
+	
+	@Resource
+	private IStarParamService starParamService;
+	
+	@Resource
+	private IJfreechartServcie jfreechartServcie;
+	
+	
 	
 	@RequestMapping("/index")
 	public String reportIndex(Model model,HttpServletRequest request,HttpServletResponse response) {
@@ -69,11 +87,17 @@ public class ReportController {
 			name = J9Series_Star_ParameterType.TOP.getName();
 		}
 		//当前所在参数名称
-		model.addAttribute("nowParameterTypeValue", value);
-		model.addAttribute("nowParameterTypeName", name);			
+		model.addAttribute("nowpartsTypeValue", value);
+		model.addAttribute("nowpartsTypeName", name);			
 		//当前所在目录
 		model.addAttribute("nowDirId", 0);
 		return "/admin/reportManager/index";
+	}
+	
+	@RequestMapping("/reportDownLoad")
+	public String reportDownLoad(Model model,HttpServletRequest request,HttpServletResponse response) {
+		
+		return "/admin/reportManager/createReport";
 	}
 	
 	@RequestMapping(value = "getList/{series}/{star}/{paramType}/{dirId}/", method = RequestMethod.POST)
@@ -162,133 +186,110 @@ public class ReportController {
 		}
 		return jsonMsg;
 	}
-	@RequestMapping(value = { "/createReport2" }, method = { RequestMethod.GET})
-	public void  goCreateReport(HttpServletResponse response) throws Exception {
+	@SuppressWarnings("deprecation")
+	@RequestMapping(value = { "/createReport" })
+	public void  createReport(HttpServletResponse response,HttpServletRequest request,String seriesId,String starId,String partsType,String beginTime,String endTime) throws Exception {
 		
-		String filename = "report-20160922.doc";
+			String imgUrl = OptionConfig.getWebPath() + "\\report\\wordtemplate\\satellite.jpg";  
+			String templateUrl = OptionConfig.getWebPath() + "\\report\\wordtemplate\\卫星状态报告.doc";
+			String templateName = "Employees";
+			
+			String filename = seriesId+"_"+starId+"_"+partsType+".doc";
+			String docPath = OptionConfig.getWebPath() + "report\\"+filename;
+			Date beginDate = DateUtil.format(beginTime,"yyyy-MM-dd");
+			Date endDate =  DateUtil.format(endTime,"yyyy-MM-dd");
+			reoportService.createReport( beginDate, endDate, filename, imgUrl, templateUrl, templateName, docPath, seriesId, starId, partsType);
+			reoportService.downloadReport(response, docPath,filename);
+			reoportService.removeDoc(docPath);
+	}
+	@RequestMapping(value = { "/createReportTest" })
+public void createReprotTest() throws Exception{
 		
 		String imgUrl = OptionConfig.getWebPath() + "\\report\\wordtemplate\\satellite.jpg";  
-		
-		String templateUrl =OptionConfig.getWebPath() + "\\report\\wordtemplate\\卫星状态报告.doc";
-		
+		String templateUrl = OptionConfig.getWebPath() + "\\report\\wordtemplate\\卫星状态报告1.doc";
 		String templateName = "Employees";
 		
-		String docPath = OptionConfig.getWebPath() + "\\report\\"+filename;
+		String seriesId = "j9";
+		String starId = "02";
+		String partsType = "flywheel";
+		String time = DateUtil.getBeforeDate();
 		
-		
-		/********************************导出报告到临时目录***********************************/
+		String filename = seriesId+"_"+starId+"_"+partsType+"_"+time+".doc";
+		String docPath = OptionConfig.getWebPath() + "report\\"+filename;
 		
 		DataToDocDto data = new DataToDocDto();
-		data.setHealthcondition("飞轮运行正常");
-		data.setParts("飞轮状态");
-		data.setReporttitle("卫星状态");
-		ParamDto param1 = new ParamDto();
-		param1.setParamName("飞轮a电压");
-		param1.setParamNumMax("5伏");
-		param1.setParamNumMin("2伏");
 		
-		ParamDto param2 = new ParamDto();
-		param2.setParamName("飞轮b电压");
-		param2.setParamNumMax("6伏");
-		param2.setParamNumMin("3伏");
 		
 		List<ParamDto> params = new ArrayList<ParamDto>();
-		params.add(param1);
-		params.add(param2);
+		ParamDto paramDto1 = new ParamDto();
+		paramDto1.setParamName("电流");
+		paramDto1.setProductName("飞轮a");
+		paramDto1.setParamNumMin("2");
+		paramDto1.setParamNumMax("5");
+		
+		
+		ParamDto paramDto2 = new ParamDto();
+		paramDto2.setParamName("电压");
+		paramDto2.setProductName("飞轮a");
+		paramDto2.setParamNumMin("10");
+		paramDto2.setParamNumMax("22");
+		
+		ParamDto paramDto3 = new ParamDto();
+		paramDto3.setParamName("转速");
+		paramDto3.setProductName("飞轮a");
+		paramDto3.setParamNumMin("25");
+		paramDto3.setParamNumMax("60");
+		
+		ParamDto paramDto4 = new ParamDto();
+		paramDto4.setParamName("电流");
+		paramDto4.setProductName("飞轮b");
+		paramDto4.setParamNumMin("3");
+		paramDto4.setParamNumMax("6");
+		
+		
+		ParamDto paramDto5 = new ParamDto();
+		paramDto5.setParamName("电压");
+		paramDto5.setProductName("飞轮b");
+		paramDto5.setParamNumMin("12");
+		paramDto5.setParamNumMax("31");
+		
+		ParamDto paramDto6 = new ParamDto();
+		paramDto6.setParamName("转速");
+		paramDto6.setProductName("飞轮b");
+		paramDto6.setParamNumMin("22");
+		paramDto6.setParamNumMax("62");
+		ParamDto paramDto7 = new ParamDto();
+		paramDto7.setParamName("电压");
+		paramDto7.setProductName("飞轮b");
+		paramDto7.setParamNumMin("10");
+		paramDto7.setParamNumMax("20");
+		params.add(paramDto1);
+		params.add(paramDto2);
+		params.add(paramDto3);
+		params.add(paramDto4);
+		params.add(paramDto5);
+		params.add(paramDto6);
+		params.add(paramDto7);
+		
+		List<ProductDto> products = new ArrayList<ProductDto>();
+		
+		ProductDto productDto1 = new ProductDto();
+		productDto1.setProductName("飞轮a");
+		productDto1.setMovableNum(8);
+		
+		ProductDto productDto2 = new ProductDto();
+		productDto2.setProductName("飞轮b");
+		productDto2.setMovableNum(10);
+		products.add(productDto1);
+		products.add(productDto2);
 		
 		data.setParams(params);
+		data.setProducts(products);
 		
-		/********************************图片循环插入处理***********************************/
-		
-		List<ParamImgDataDto> paramImgDatas = new ArrayList<ParamImgDataDto>();
-		
-		ParamImgDataDto paramImgData1 = new ParamImgDataDto();
-		paramImgData1.setParName("飞轮a:温度");
-		paramImgData1.setParImg(imgUrl);
-		
-		
-		ParamImgDataDto paramImgData2 = new ParamImgDataDto();
-		paramImgData2.setParName("飞轮a：电流，转速");
-		paramImgData2.setParImg(imgUrl);
-		
-		ParamImgDataDto paramImgData3= new ParamImgDataDto();
-		paramImgData3.setParName("飞轮b:温度");
-		paramImgData3.setParImg(imgUrl);
-		
-		ParamImgDataDto paramImgData4 = new ParamImgDataDto();
-		paramImgData4.setParName("飞轮b：电流，转速");
-		paramImgData4.setParImg(imgUrl);
-		
-		paramImgDatas.add(paramImgData1);
-		paramImgDatas.add(paramImgData2);
-		paramImgDatas.add(paramImgData3);
-		paramImgDatas.add(paramImgData4);
-		
-		data.setParamImgData(paramImgDatas);
-		
-		
-		/********************************end图片循环插入处理***********************************/
-		
-
 		reoportService.reportDoc(filename, data, imgUrl, templateUrl, templateName, docPath);
 		
-		
-		/********************************服务器临时目录下载文档到客户端***********************************/
-		
-		InputStream inputStream = new FileInputStream(OptionConfig.getWebPath() + "\\report\\report-20160922.doc");
-		String fileName =  "report-20160922.doc";
-		reoportService.downLoadReportForDis(inputStream, fileName, response);
-		
-		
-		
-		/********************************保存报告到db***********************************/
-		Map<String,String> dataMap = new HashMap<String,String>();
-		dataMap.put("series", "j9");
-		dataMap.put("star", "02");
-		String date = "2016-09-22";
-		dataMap.put("date", DateUtil.formatString(date, "yyyy-MM-dd", "yyyy-MM-dd"));
-		String year = DateUtil.formatString(date, "yyyy-MM-dd", "yyyy");
-		dataMap.put("year", year);
-		String month = DateUtil.formatString(date, "yyyy-MM-dd", "MM");
-		dataMap.put("month", month);
-		String versions = UUIDGeneratorUtil.getUUID();
-		dataMap.put("versions", versions);
-		dataMap.put("startTime", "2016-09-22 00:00:01");
-		dataMap.put("endTime", "2016-09-22 11:11:11");
-		dataMap.put("parameterType","flywheel");
-		dataMap.put("databaseName",InitMongo.DATABASE_TEST); 
-		
-		InputStream input = new FileInputStream(OptionConfig.getWebPath() + "\\report\\report-20160922.doc");
-		
-		ReportFileDto reportFileDto = new ReportFileDto();
-		DecimalFormat df = new DecimalFormat("#.00");
-		reportFileDto.setFileName(filename);
-		double size = input.available() / 1024 /1024;
-		String strSize = df.format(size);
-		reportFileDto.setFileSize(Float.parseFloat(strSize));
-		reportFileDto.setIn(input);
-		
-		reoportService.saveReport(reportFileDto, dataMap);
-		
-		input.close();
-		
-		
-		/********************************删除服务器临时目录文件***********************************/
-		/*String filePath = OptionConfig.getWebPath() + "\\report\\"+filename;
-		File file = new File(filePath);
-		if (file.exists()) {
-		    file.delete();
-		}*/
-		
-		/********************************从db中下载文档***********************************/
-		long fileId=4L;
-		String databaseName = InitMongo.DATABASE_TEST;
-		//reoportService.downLoadReportForDb(fileId, databaseName,  response);
-		
-		
-//		String reportNmae="飞轮报告1.doc";
-//		response.sendRedirect("secondStyle/wordshow?file="
-//				+ URLEncoder.encode(reportNmae, "UTF-8"));
 	}
+	
+	
 	
 }

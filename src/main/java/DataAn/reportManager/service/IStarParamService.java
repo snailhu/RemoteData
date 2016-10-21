@@ -5,6 +5,7 @@ import java.util.List;
 import DataAn.common.dao.Pager;
 import DataAn.galaxyManager.domain.Series;
 import DataAn.galaxyManager.domain.Star;
+import DataAn.reportManager.domain.StarParam;
 import DataAn.reportManager.dto.StarParamDto;
 
 public interface IStarParamService {
@@ -21,6 +22,8 @@ public interface IStarParamService {
 
 	public List<Series> getSeriesList();
 
-	public List<Star> getStarList(long seriesId);
+	public List<Star> getStarList(String seriesId);
+	
+	public List<StarParam> getStarParamForReport(String seriesId,String starId,String partsType);
 
 }

@@ -122,11 +122,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     padding: 0;
 /*     line-height: 24px; */
 }
-.form-group {
-    margin-bottom: 0px;
-}
-.form-group>label[class*="col-"] {
-    padding-top: 2px;
+.form-horizontal {
     margin-bottom: 0px;
 }
 </style>

@@ -49,11 +49,11 @@ public class MongoServiceImpl implements IMongoService{
 		String databaseName = InitMongo.getDataBaseNameBySeriesAndStar(series, star);
 		Set<String> keys = map.keySet();
 		for (String key : keys) {
-			
+			//集合名称： 参数名+等级
 			String collectionName = paramType + key;
 			List<Document> documents = map.get(key);
 			if(documents != null && documents.size() > 0){
-//				long begin = System.currentTimeMillis();
+				long begin = System.currentTimeMillis();
 				
 				//设置同一时间段的数据的状态为0
 				Date beginDate = documents.get(0).getDate("datetime");
@@ -62,11 +62,11 @@ public class MongoServiceImpl implements IMongoService{
 				//保存数据到mongodb中
 				mg.insertMany(databaseName, collectionName, documents);
 				
-//				long end = System.currentTimeMillis();
-//				System.out.println("保存数据在： " + databaseName + "." + collectionName);
-//				System.out.println("耗时： " + (end - begin) );
+				long end = System.currentTimeMillis();
+				System.out.println("保存数据在： " + databaseName + "." + collectionName + " 记录： " + documents.size());
+				System.out.println("耗时： " + (end - begin) );
 				
-//				Thread.sleep(10000);
+				Thread.sleep(10000);
 			}
 		}
 		
@@ -119,6 +119,15 @@ public class MongoServiceImpl implements IMongoService{
 		String collectionName =  paramType;
 		
 		return mg.find(databaseName, collectionName, "week_of_year", week_of_year);
+	}
+
+	@Override
+	public MongoCursor<Document> findByDate(String series, String star,
+			String paramType, Date beginDate, Date endDate) {
+		String databaseName = InitMongo.getDataBaseNameBySeriesAndStar(series, star);
+		String collectionName =  paramType;
+		
+		return mg.find(databaseName, collectionName, beginDate, endDate);
 	}
 
 

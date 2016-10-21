@@ -1,6 +1,9 @@
 package DataAn.jfreechart;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 
@@ -11,9 +14,11 @@ import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import DataAn.common.utils.DateUtil;
 import DataAn.fileSystem.option.J9SeriesType;
 import DataAn.fileSystem.option.SeriesType;
 import DataAn.jfreechart.chart.Serie;
+import DataAn.jfreechart.dto.ConstraintDto;
 import DataAn.jfreechart.dto.LineChartDto;
 import DataAn.jfreechart.service.IJfreechartServcie;
 
@@ -31,7 +36,7 @@ public class JfreechartServcieTest {
 		String series = SeriesType.J9_SERIES.getValue();
 		String star = J9SeriesType.STRA2.getValue();
 		String paramType = "flywheel2016";
-		String date = "2016-02-01";
+		
 		Map<String, String> params = new HashMap<String,String>();
 //		params.put("sequence_16025", "飞轮a电机电流(16025)");
 //		params.put("sequence_16026", "飞轮a电源+5V(16026)");
@@ -41,9 +46,37 @@ public class JfreechartServcieTest {
 		params.put("sequence_00817", "飞轮温度Ya(00817)");
 		params.put("sequence_00819", "飞轮温度Za(00819)");
 		params.put("sequence_00821", "飞轮温度Xb(00821)");
-		LineChartDto lineChartDto = jfreechartServcie.createLineChart(series, star, paramType, date, params);
+		
+		Map<String,List<ConstraintDto>> constraintsMap = new HashMap<String,List<ConstraintDto>>();
+		List<ConstraintDto> list1 = new ArrayList<ConstraintDto>();
+		ConstraintDto c11 = new ConstraintDto();
+		c11.setName("飞轮温度Xa(00815)");
+		c11.setValue("sequence_00815");
+		list1.add(c11);
+		ConstraintDto c12 = new ConstraintDto();
+		c12.setName("飞轮温度Ya(00817)");
+		c12.setValue("sequence_00817");
+		list1.add(c12);
+		constraintsMap.put("chart1", list1);
+		
+		List<ConstraintDto> list2 = new ArrayList<ConstraintDto>();
+		ConstraintDto c21 = new ConstraintDto();
+		c21.setName("飞轮温度Za(00819)");
+		c21.setValue("sequence_00819");
+		list2.add(c21);
+		ConstraintDto c22 = new ConstraintDto();
+		c22.setName("飞轮温度Xb(00821)");
+		c22.setValue("sequence_00821");
+		list2.add(c22);
+		constraintsMap.put("chart2", list2);
+		
+		Date beginDate = DateUtil.format("2016-02-01 00:00:00");
+		Date endDate = DateUtil.format("2016-02-07 00:00:00");
+		
+		LineChartDto lineChartDto = jfreechartServcie.createLineChart(series, star, paramType, beginDate, endDate, constraintsMap);
 		System.out.println(lineChartDto);
 	}
+	
 	
 	@Test
 	public void createLineChart() throws Exception{

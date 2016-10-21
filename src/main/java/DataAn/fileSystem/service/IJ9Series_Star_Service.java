@@ -24,8 +24,12 @@ public interface IJ9Series_Star_Service {
 	* @date 2016年9月2日
 	* @version 1.0
 	*/
-	public List<ConstraintDto> getAllParameterList(String beginDate,String endDate,String type) throws Exception;
+	public List<ConstraintDto> getAllParameterList(String beginDate,String endDate,
+			String type) throws Exception;
 	
+	public List<ConstraintDto> getAllParameterList(String beginDate,String endDate,
+			String series, String star, String paramType) throws Exception;
+
 	/**
 	* Description: 获取飞轮类型的参数列表
 	* @return 
@@ -105,6 +109,7 @@ public interface IJ9Series_Star_Service {
 	* @date 2016年8月2日
 	* @version 1.0
 	*/
-	public Map<String,String> getAllParameterList_allZh_and_enByOption(String type, List<String> params) throws Exception;
+	public Map<String,String> getAllParameterList_allZh_and_enByOption(String type, 
+			List<String> params) throws Exception;
 
 }

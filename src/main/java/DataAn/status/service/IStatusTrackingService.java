@@ -21,5 +21,4 @@ public interface IStatusTrackingService {
 	public StatusTracking getStatusTrackingById(long trackingId) throws Exception;
 
 	public List<StatusYstepDTO> getSatusYstepList(String userType) throws Exception;
-
 }

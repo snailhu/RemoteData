@@ -148,7 +148,7 @@
 	<!-- /.nav-list -->
 	<ul id="left_con" class="nav nav-list">
 	    <li>
-	    	<a href="report/toUploadFile"> <i class="icon-dashboard"></i> <span
+	    	<a href="admin/file/toUploadFile"> <i class="icon-dashboard"></i> <span
 				class="menu-text"> 文件上传 </span>
 			</a>
 		</li>
@@ -176,12 +176,12 @@
 							</a>
 							<ul class="submenu">
 		                        <li class="flywheel-li">
-		                            <a href="report/index/j9/01/flywheel/0/">
+		                            <a href="admin/file/index/j9/01/flywheel/0/">
 		                                <i class="icon-leaf"></i> 飞轮
 		                            </a>
 		                        </li>
 		                        <li class="top-li">
-		                            <a href="report/index/j9/01/top/0/">
+		                            <a href="admin/file/index/j9/01/top/0/">
 		                                <i class="icon-leaf"></i>陀螺
 		                            </a>
 		                        </li>
@@ -194,12 +194,12 @@
 							</a>
 							<ul class="submenu">
 		                        <li class="flywheel-li">
-		                            <a href="report/index/j9/02/flywheel/0/">
+		                            <a href="admin/file/index/j9/02/flywheel/0/">
 		                                <i class="icon-leaf"></i> 飞轮
 		                            </a>
 		                        </li>
 		                        <li class="top-li">
-		                            <a href="report/index/j9/02/top/0/">
+		                            <a href="admin/file/index/j9/02/top/0/">
 		                                <i class="icon-leaf"></i>陀螺
 		                            </a>
 		                        </li>
@@ -212,12 +212,12 @@
 							</a>
 							<ul class="submenu">
 		                        <li class="flywheel-li">
-		                            <a href="report/index/j9/03/flywheel/0/">
+		                            <a href="admin/file/index/j9/03/flywheel/0/">
 		                                <i class="icon-leaf"></i> 飞轮
 		                            </a>
 		                        </li>
 		                          <li class="top-li">
-		                            <a href="report/index/j9/03/top/0/">
+		                            <a href="admin/file/index/j9/03/top/0/">
 		                                <i class="icon-leaf"></i>陀螺
 		                            </a>
 		                        </li>
@@ -230,12 +230,12 @@
 							</a>
 							<ul class="submenu">
 		                        <li class="flywheel-li">
-		                            <a href="report/index/j9/04/flywheel/0/">
+		                            <a href="admin/file/index/j9/04/flywheel/0/">
 		                                <i class="icon-leaf"></i> 飞轮
 		                            </a>
 		                        </li>
 		                          <li class="top-li">
-		                            <a href="report/index/j9/04/top/0/">
+		                            <a href="admin/file/index/j9/04/top/0/">
 		                                <i class="icon-leaf"></i>陀螺
 		                            </a>
 		                        </li>
@@ -248,12 +248,12 @@
 							</a>
 							<ul class="submenu">
 		                        <li class="flywheel-li">
-		                            <a href="report/index/j9/05/flywheel/0/">
+		                            <a href="admin/file/index/j9/05/flywheel/0/">
 		                                <i class="icon-leaf"></i> 飞轮
 		                            </a>
 		                        </li>
 		                          <li class="top-li">
-		                            <a href="report/index/j9/05/top/0/">
+		                            <a href="admin/file/index/j9/05/top/0/">
 		                                <i class="icon-leaf"></i>陀螺
 		                            </a>
 		                        </li>

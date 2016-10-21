@@ -1,6 +1,8 @@
 package DataAn.Analysis.dto;
 
-public class SeriesBtnMenu {
+import java.io.Serializable;
+
+public class SeriesBtnMenu implements Serializable{
 	private long id;
 	
 	private String name;

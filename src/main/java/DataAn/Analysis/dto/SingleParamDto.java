@@ -1,7 +1,9 @@
 package DataAn.Analysis.dto;
 
+import java.io.Serializable;
 
-public class SingleParamDto {
+
+public class SingleParamDto implements Serializable{
 	private int id;
 	
 	private String name;//中文键

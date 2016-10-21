@@ -1,9 +1,12 @@
 package DataAn.jfreechart.service;
 
+import java.util.Date;
+import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 
 import DataAn.jfreechart.chart.Serie;
+import DataAn.jfreechart.dto.ConstraintDto;
 import DataAn.jfreechart.dto.LineChartDto;
 
 
@@ -15,26 +18,22 @@ public interface IJfreechartServcie {
 	* @param series 系列 j9
 	* @param star 星 01、02、03...
 	* @param paramType flywheel、top
-	* @param date 某一天：2015-01-01
-	* @param params 参数： 英文-中文
+	* @param beginDate 开始时间
+	* @param endDate 结束时间
+	* @param constraintList 参数约束条件
 	* @return 
 	* @throws Exception
 	* @author Shenwp
 	* @date 2016年10月11日
 	* @version 1.0
 	*/
-	public LineChartDto createLineChart(String series,
-			String star, String paramType, String date,
-			Map<String,String> params) throws Exception;
+	public LineChartDto createLineChart(String series,String star, String paramType, 
+			Date beginDate, Date endDate, Map<String,List<ConstraintDto>> constraintsMap) throws Exception;
 	
-	/**
-	* Description: 生成一年中第几个星期的图片
-	* @param week_of_year 一年中第几个星期
-	* @return
-	*/
-	public LineChartDto createLineChart(String series,
-			String star, String paramType, int week_of_year,
-			Map<String,String> params) throws Exception;
+	public LineChartDto createLineChartMock(String series,String star, String paramType, 
+			Date beginDate, Date endDate, Map<String,List<ConstraintDto>> constraintsMap) throws Exception;
+
+
 	
 	/**
 	* Description: 生成一张图片，只有一个y轴

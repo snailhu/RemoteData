@@ -34,7 +34,7 @@ public class SaveFileHelper {
 	@Resource
 	private IMongoService mongoService;
 
-	@Pointcut("execution(* DataAn.fileSystem.service.*.saveFile(..))")
+	@Pointcut("execution(* DataAn22.fileSystem.service.*.saveFile(..))")
 	private void pointCutMethod() {
 
 	}

@@ -2,13 +2,10 @@ package DataAn.fileSystem.service.impl;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -17,13 +14,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
 import javax.annotation.Resource;
-
 import org.bson.Document;
 import org.springframework.stereotype.Service;
-
-import DataAn.common.config.CommonConfig;
 import DataAn.common.utils.DateUtil;
 import DataAn.fileSystem.dto.CSVFileDataResultDto;
 import DataAn.fileSystem.service.ICSVService;
@@ -37,14 +30,24 @@ public class CSVServiceImpl implements ICSVService{
 	private IJ9Series_Star_Service j9SeriesStarService;
 	
 	@Override
-	public CSVFileDataResultDto<Document> readCSVFileToDocAndgetTitle(String filePath) throws Exception {
-		InputStream in = new BufferedInputStream(new FileInputStream(new File(filePath)));
-		InputStreamReader inputStreamReader = new InputStreamReader(in, "gb2312");
-		BufferedReader reader = new BufferedReader(inputStreamReader);// 换成你的文件名
-		String title = reader.readLine();// 第一行信息，为标题信息，不用,如果需要，注释掉
-		CSVFileDataResultDto<Document> result = new CSVFileDataResultDto<Document>();
-		result.setTitle(title);
-		return result;
+	public CSVFileDataResultDto<Document> readCSVFileToDocAndgetTitle(String filePath) throws Exception {		
+		InputStream in = null;
+		BufferedReader reader = null;
+		try {
+			in = new BufferedInputStream(new FileInputStream(new File(filePath)));
+			reader = new BufferedReader(new InputStreamReader(in, "gb2312"));// 换成你的文件名
+			String title = reader.readLine();// 第一行信息，为标题信息，不用,如果需要，注释掉
+			CSVFileDataResultDto<Document> result = new CSVFileDataResultDto<Document>();
+			result.setTitle(title);
+			return result;
+		} finally{
+			if(reader != null){
+				reader.close();
+			}
+			if(in != null){
+				in.close();
+			}
+		}
 	}	
 	
 	@Override
@@ -64,7 +67,9 @@ public class CSVServiceImpl implements ICSVService{
 	@Override
 	public CSVFileDataResultDto<Document> readCSVFileToDoc(InputStream in, String versions) throws Exception {
 
-		return this.readCSVFileToDoc_delFrontAndBack_arithmetic1(in, versions, 4, 0);
+//		return this.readCSVFileToDoc_delFrontAndBack_arithmetic1(in, versions, 4, 0);
+		
+		return this.readCSVFileToDoc_delFrontAndBack_arithmetic1_grading(in, versions, 4, 0);
 		
 //		return this.readCSVFileToDoc_delFrontAndBack_arithmetic2(in, versions, 4, 50);
 		
@@ -91,8 +96,7 @@ public class CSVServiceImpl implements ICSVService{
 		List<Document> docList = new ArrayList<Document>();
 		//获取j9系列参数列表
 		Map<String,String> j9SeriesPatameterMap = j9SeriesStarService.getAllParameterList_allZh_and_en();
-		InputStreamReader inputStreamReader = new InputStreamReader(in, "gb2312");
-		BufferedReader reader = new BufferedReader(inputStreamReader);// 换成你的文件名
+		BufferedReader reader = new BufferedReader(new InputStreamReader(in, "gb2312"));// 换成你的文件名
 		String title = reader.readLine();// 第一行信息，为标题信息，不用,如果需要，注释掉
 		//CSV格式文件为逗号分隔符文件，这里根据逗号切分
 		String[] array = title.split(",");
@@ -150,6 +154,7 @@ public class CSVServiceImpl implements ICSVService{
 			count ++;
 			flag = false;
 		}
+		reader.close();
 		
 		for (int i = 0; i < tempList.size(); i++) {
 			//排除无效点保存
@@ -268,16 +273,19 @@ public class CSVServiceImpl implements ICSVService{
 			//排除无效点保存
 			if(!delDateSet.contains(i)){
 				doc = tempList.get(i);
+				//原始数据集
 				docList.add(doc);
 				
 				//获取时间区间
 				time = (doc.getDate("datetime").getTime() - time0) / 1000;
-				if(time % 1 == 0){
-					if(datetime_1s.compareTo(doc.getDate("datetime")) != 0){
-						datetime_1s = doc.getDate("datetime");						
-						docList_1s.add(doc);
-					}
-				}
+				
+//				if(time % 1 == 0){ //1s使用原始数据集
+//					if(datetime_1s.compareTo(doc.getDate("datetime")) != 0){
+//						datetime_1s = doc.getDate("datetime");						
+//						docList_1s.add(doc);
+//					}
+//				}
+				
 				if(time % 5 == 0){
 					if(datetime_5s.compareTo(doc.getDate("datetime")) != 0){
 						datetime_5s = doc.getDate("datetime");						

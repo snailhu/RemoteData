@@ -1,13 +1,17 @@
 package DataAn.mongo.client;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+
 import org.bson.Document;
+
 import DataAn.common.utils.DataTypeUtil;
 import DataAn.common.utils.LogUtil;
 import DataAn.mongo.init.InitMongo;
+
 import com.mongodb.BasicDBObject;
 import com.mongodb.CommandResult;
 import com.mongodb.DB;
@@ -324,4 +328,10 @@ public class MongodbUtil {
 		return collection.find(Filters.eq(key, value)).iterator();
 	}
 	
+	public MongoCursor<Document> find(String databaseName,String collectionName,Date beginDate, Date endDate){
+		MongoCollection<Document> collection = this.getCollection(databaseName, collectionName);
+		
+		return collection.find(Filters.and(Filters.gte("datetime", beginDate),
+							   Filters.lte("datetime", endDate))).iterator();
+	}
 }

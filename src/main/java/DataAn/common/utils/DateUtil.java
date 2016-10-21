@@ -198,5 +198,12 @@ public class DateUtil {
 		c.setTime(date);
 		return c.get(Calendar.YEAR);
 	}
-
+	
+	public static String getBeforeDate() {
+		Calendar  c = Calendar.getInstance();   
+		c.add(Calendar.DAY_OF_MONTH, -1);  
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd"); 
+		String mDateTime=formatter.format(c.getTime());  
+		return mDateTime;
+	}
 }

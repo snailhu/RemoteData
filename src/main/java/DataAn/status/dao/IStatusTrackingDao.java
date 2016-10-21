@@ -13,4 +13,8 @@ public interface IStatusTrackingDao extends IBaseDao<StatusTracking> {
 	public Pager<StatusTracking> selectByOption(int pageIndex, int pageSize, String fileName, String userType,
 			String statusType, String createdatetimeStart, String createdatetimeEnd);
 
+	public boolean checkStatusTrackingByParams(String fileName, String userType);
+
+	public StatusTracking getStatusTrackingByParams(String fileName, String userType);
+
 }

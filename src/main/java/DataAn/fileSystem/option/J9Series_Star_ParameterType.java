@@ -68,6 +68,17 @@ public enum J9Series_Star_ParameterType {
 		return list;
 	}
 	
+	public static List<String> getFlywheelTypeOnName2() {
+		List<String> list = new ArrayList<String>();
+		list.add("Xa");
+		list.add("Ya");
+		list.add("Za");
+		list.add("Xb");
+		list.add("Yb");
+		list.add("Zb");
+		return list;
+	}
+	
 	/**
 	* Description:  获取飞轮数据类型 通过参数分类  "电流","转速","温度","指令","供电状态","角动量"
 	* @return  
@@ -77,8 +88,8 @@ public enum J9Series_Star_ParameterType {
 	*/
 	public static List<String> getFlywheelTypeOnParams() {
 		List<String> list = new ArrayList<String>();
-		list.add("电流");
 		list.add("转速");
+		list.add("电流");
 		list.add("温度");
 		list.add("指令");
 		list.add("供电状态");

@@ -14,6 +14,8 @@ public class WarningLogDTO implements java.io.Serializable {
 
 	private Long series; // 星系
 
+	private Long star; // 星
+
 	private String parameter; // 参数
 
 	private String parameterType; // 设备
@@ -25,6 +27,14 @@ public class WarningLogDTO implements java.io.Serializable {
 	private int hadRead; // 是否已读（0未读，1已读）
 
 	private Date timeValue; // 时间点
+
+	public Long getStar() {
+		return star;
+	}
+
+	public void setStar(Long star) {
+		this.star = star;
+	}
 
 	public Date getTimeValue() {
 		return timeValue;

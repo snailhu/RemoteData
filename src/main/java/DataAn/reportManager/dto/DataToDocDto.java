@@ -12,17 +12,49 @@ public class DataToDocDto {
 	
 	private String PhotoBLOB;
 	
+	private List<ProductDto> products;
+	
 	private List<ParamDto> params;
 	
-	private List<ParamImgDataDto> paramImgData;
-
-	public List<ParamImgDataDto> getParamImgData() {
-		return paramImgData;
+	private List<ParamImgDataDto> threeParamImg;
+	
+	private List<ParamImgDataDto> twoParamImg;
+	
+	private List<ParamImgDataDto> oneParamImg;
+	
+	
+	public List<ParamImgDataDto> getThreeParamImg() {
+		return threeParamImg;
 	}
 
-	public void setParamImgData(List<ParamImgDataDto> paramImgData) {
-		this.paramImgData = paramImgData;
+	public void setThreeParamImg(List<ParamImgDataDto> threeParamImg) {
+		this.threeParamImg = threeParamImg;
 	}
+
+	public List<ParamImgDataDto> getTwoParamImg() {
+		return twoParamImg;
+	}
+
+	public void setTwoParamImg(List<ParamImgDataDto> twoParamImg) {
+		this.twoParamImg = twoParamImg;
+	}
+
+	public List<ParamImgDataDto> getOneParamImg() {
+		return oneParamImg;
+	}
+
+	public void setOneParamImg(List<ParamImgDataDto> oneParamImg) {
+		this.oneParamImg = oneParamImg;
+	}
+
+	public List<ParamDto> getParams() {
+		return params;
+	}
+
+	public void setParams(List<ParamDto> params) {
+		this.params = params;
+	}
+
 
 	public String getReporttitle() {
 		return reporttitle;
@@ -56,11 +88,11 @@ public class DataToDocDto {
 		PhotoBLOB = photoBLOB;
 	}
 
-	public List<ParamDto> getParams() {
-		return params;
+	public List<ProductDto> getProducts() {
+		return products;
 	}
 
-	public void setParams(List<ParamDto> params) {
-		this.params = params;
+	public void setProducts(List<ProductDto> products) {
+		this.products = products;
 	}
 }

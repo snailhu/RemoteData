@@ -383,7 +383,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		
 	  
 	  function createReport() {
-		  $.get('<%=request.getContextPath()%>/report/createReport2', {}, function (data) {
+		  $.get('<%=request.getContextPath()%>/report/createReportTest', {}, function (data) {
               if (data.success) {
                   reloadDataGrid();
                   top.showMsg('提示', "报告生成成功");

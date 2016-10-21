@@ -99,11 +99,13 @@ public class RoleServiceImpl implements IRoleService {
 		}
 		List<RoleDto> roleDtoList = new ArrayList<RoleDto>();
 		Pager<Role> rolePager = roleDao.selectByPager(pageIndex, pageSize);
-		List<Role> roleList = rolePager.getDatas();
-		if(roleList != null && roleList.size() > 0){
-			for (Role role : roleList) {
-				roleDtoList.add(this.pojoToDto(role));
-			}
+		if(rolePager != null){
+			List<Role> roleList = rolePager.getDatas();
+			if(roleList != null && roleList.size() > 0){
+				for (Role role : roleList) {
+					roleDtoList.add(this.pojoToDto(role));
+				}
+			}			
 		}
 		Pager<RoleDto> pager = new Pager<RoleDto>(pageIndex, pageSize, rolePager.getTotalCount(), roleDtoList);
 		return pager;			

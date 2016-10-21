@@ -82,7 +82,7 @@ public class StatusController {
 	}
 
 	// 批量删除参数
-	@RequestMapping(value = "/deleteStatus")
+	@RequestMapping(value = "/deleteStatus", method = RequestMethod.POST)
 	@ResponseBody
 	public JsonMessage deleteStatus(HttpServletRequest request, String trackingIds) {
 		System.out.println("come in deleteStatus");

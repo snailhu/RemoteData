@@ -215,6 +215,12 @@
 							message : '请选择星系！'
 						}
 					}
+				},star : {
+					validators : {
+						notEmpty : {
+							message : '请选择星！'
+						}
+					}
 				},
 				parameterType : {
 					validators : {
@@ -261,6 +267,13 @@
 					validators : {
 						notEmpty : {
 							message : '请选择星系！'
+						}
+					}
+				},
+				star : {
+					validators : {
+						notEmpty : {
+							message : '请选择星！'
 						}
 					}
 				},
@@ -357,6 +370,17 @@
 									<div class="space-4"></div>
 									<div class="form-group">
 										<label class="col-sm-3 control-label no-padding-right"
+											for="search-star"> 星</label>
+										<div class="col-sm-9">
+											<select class="col-xs-10 col-sm-5" id="search-star"
+												name="star">
+												<option value="">--请选择--</option>
+											</select>
+										</div>
+									</div>
+									<div class="space-4"></div>
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right"
 											for="search-parameterType"> 设备 </label>
 										<div class="col-sm-9">
 											<select class="col-xs-10 col-sm-5" id="search-parameterType"
@@ -426,6 +450,16 @@
 										for="add-series"> 星系: </label>
 									<div class="col-sm-8">
 										<select class="form-control" id="add-series" name="series">
+											<option value="">--请选择--</option>
+										</select>
+									</div>
+								</div>
+								<div class="space-4"></div>
+								<div class="form-group">
+									<label class="col-sm-3 control-label no-padding-right"
+										for="add-star"> 星: </label>
+									<div class="col-sm-8">
+										<select class="form-control" id="add-star" name="star">
 											<option value="">--请选择--</option>
 										</select>
 									</div>
@@ -507,6 +541,16 @@
 										for="edit-series"> 星系: </label>
 									<div class="col-sm-8">
 										<select class="form-control" id="edit-series" name="series">
+											<option value="">--请选择--</option>
+										</select>
+									</div>
+								</div>
+								<div class="space-4"></div>
+								<div class="form-group">
+									<label class="col-sm-3 control-label no-padding-right"
+										for="edit-star"> 星: </label>
+									<div class="col-sm-8">
+										<select class="form-control" id="edit-star" name="star">
 											<option value="">--请选择--</option>
 										</select>
 									</div>
@@ -635,6 +679,10 @@
 									field : 'series',
 									title : '星系',
 									width : 100,
+								},{
+									field : 'star',
+									title : '星',
+									width : 100,
 								}, {
 									field : 'parameterType',
 									title : '设备',
@@ -701,8 +749,57 @@
 							top.showMsg('提示', res.msg);
 						}
 					});
-
 		});
+        
+    	$("#search-series").change(function(){
+			 	var seriesId = $('#search-series').val();	
+			 	  $.get('<%=request.getContextPath()%>/starParam/getStarList', {'seriesId':seriesId},  function (res) {
+					  if(res.result == "true") {
+						  $('#search-star').find("option").remove();
+						 $('#search-star').append("<option value=''>--请选择--</option>"); 
+		            	  $.each(res.data.data ,function(){
+								$('#search-star').append("<option value='"+ this.id+"'>"+ this.description +"</option>"); 
+							});
+		              }
+		              else {
+		            	  top.showMsg('提示', res.msg);
+		              }
+		          });	
+		});
+    	
+    	$("#add-series").change(function(){
+		 	var seriesId = $('#add-series').val();	
+		 	  $.get('<%=request.getContextPath()%>/starParam/getStarList', {'seriesId':seriesId},  function (res) {
+				  if(res.result == "true") {
+					  $('#add-star').find("option").remove();
+					 $('#add-star').append("<option value=''>--请选择--</option>"); 
+	            	  $.each(res.data.data ,function(){
+							$('#add-star').append("<option value='"+ this.id+"'>"+ this.description +"</option>"); 
+						});
+	              }
+	              else {
+	            	  top.showMsg('提示', res.msg);
+	              }
+	          });	
+		});
+    	
+    	$("#edit-series").change(function(){
+		 	var seriesId = $('#edit-series').val();	
+		 	  $.get('<%=request.getContextPath()%>/starParam/getStarList', {'seriesId':seriesId},  function (res) {
+				  if(res.result == "true") {
+					  $('#edit-star').find("option").remove();
+					 $('#edit-star').append("<option value=''>--请选择--</option>"); 
+	            	  $.each(res.data.data ,function(){
+							$('#edit-star').append("<option value='"+ this.id+"'>"+ this.description +"</option>"); 
+						});
+	              }
+	              else {
+	            	  top.showMsg('提示', res.msg);
+	              }
+	          });	
+		});
+        
+        
         
         $("#search-parameterType").change(function(){
 		 	var parameterType = $('#search-parameterType').val();	
@@ -776,10 +873,12 @@
 			// 				}
 			// 			}
 			var series = $('#search-series').val();
+			var star = $('#search-star').val();
 			var parameterType = $('#search-parameterType').val();
 			var parameter = $('#search-parameter').val();
 			valueGrid.datagrid('load', {
 				series : series,
+				star : star,
 				parameterType : parameterType,
 				parameter : parameter,
 				warningType : "1"
@@ -894,6 +993,7 @@
 									if (data) {
 										$.get('<%=request.getContextPath()%>/admin/prewarning/getParamList',
 														{
+															'series' : data.series,
 															'parameterType' : data.parameterType
 														},
 														function(res) {
@@ -903,8 +1003,15 @@
 																		.find(
 																				"option")
 																		.remove();
+																$('#edit-star')
+																		.find(
+																				"option")
+																		.remove();
 																$(
 																		'#edit-parameter')
+																		.append(
+																				"<option value=''>--请选择--</option>");
+																$('#edit-star')
 																		.append(
 																				"<option value=''>--请选择--</option>");
 																$
@@ -925,6 +1032,29 @@
 																									.append(
 																											"<option value='"+ this.value+"'>"
 																													+ this.name
+																													+ "</option>");
+																						}
+																					}
+																				});
+
+																$
+																		.each(
+																				res.stars,
+																				function() {
+																					if (this.id) {
+																						if (this.id == data.star) {
+																							$(
+																									'#edit-star')
+																									.append(
+																											"<option value='"+ this.id+"' selected = 'selected'>"
+																													+ this.description
+																													+ "</option>");
+																						} else {
+																							$(
+																									'#edit-star')
+																									.append(
+																											"<option value='"+ this.id+"'>"
+																													+ this.description
 																													+ "</option>");
 																						}
 																					}

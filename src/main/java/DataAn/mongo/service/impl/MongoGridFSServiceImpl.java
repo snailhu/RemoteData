@@ -2,11 +2,8 @@ package DataAn.mongo.service.impl;
 
 import java.io.InputStream;
 import java.util.List;
-
 import javax.annotation.Resource;
-
 import org.springframework.stereotype.Service;
-
 import DataAn.fileSystem.dao.IVirtualFileSystemDao;
 import DataAn.fileSystem.domain.VirtualFileSystem;
 import DataAn.mongo.fs.IDfsDb;
@@ -18,7 +15,7 @@ import DataAn.mongo.service.IMongoGridFSService;
 public class MongoGridFSServiceImpl implements IMongoGridFSService{
 
 	//从mongofs中获取数据流
-	private IDfsDb dfs = null;//MongoDfsDb.getInstance();
+	private IDfsDb dfs = MongoDfsDb.getInstance();
 	@Resource
 	private IVirtualFileSystemDao fileDao;
 	

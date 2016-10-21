@@ -51,6 +51,12 @@ public class ParameterDto {
 	public void setCode(String code) {
 		this.code = code;
 	}
+
+	@Override
+	public String toString() {
+		return "ParameterDto [id=" + id + ", series=" + series + ", star="
+				+ star + ", name=" + name + ", code=" + code + "]";
+	}
 	
 	
 }

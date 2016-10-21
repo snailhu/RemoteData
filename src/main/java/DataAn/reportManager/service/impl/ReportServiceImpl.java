@@ -536,7 +536,6 @@ public class ReportServiceImpl implements IReoportService {
 	public void createReport(Date beginDate,Date endDate,  String filename, String imgUrl, String templateUrl, 
 			String docPath, String seriesId, String starId, String partsType) throws Exception { 
 		
-		List<StarParam> starParamList =  starParamService.getStarParamForReport(seriesId, starId, partsType);
 	
 		DataToDocDto data = new DataToDocDto();
 		data.setSeries(seriesId);
@@ -545,6 +544,7 @@ public class ReportServiceImpl implements IReoportService {
 		data.setEndDate(DateUtil.format(endDate, "yyyy-MM-dd"));
 		data.setCreateDate(DateUtil.getNowTime("yyyy-MM-dd"));
 		
+		List<StarParam> starParamList =  starParamService.getStarParamForReport(seriesId, starId, partsType);
 		List<String> parList = new ArrayList<String>();
 		String paramStr = "转速,电流";
 		String[] parArr = paramStr.split(",");
@@ -708,7 +708,84 @@ public class ReportServiceImpl implements IReoportService {
 		
 		reportDoc(filename, data, imgUrl, templateUrl, docPath);
 	}
-	
+	@Override
+	public Map<String,List<ConstraintDto>> getConstraintDtoList(String seriesId, String starId,String partsType) {
+		List<StarParam> starParamList =  starParamService.getStarParamForReport(seriesId, starId, partsType);
+		List<String> parList = new ArrayList<String>();
+		String paramStr = "转速,电流";
+		String[] parArr = paramStr.split(",");
+		for (String p : parArr) {
+			parList.add(p);
+		}
+		Map<String,List<ConstraintDto>> constraintsMap = new HashMap<String,List<ConstraintDto>>();
+		List<StarParam> doubleList =  new  ArrayList<StarParam>();
+		
+		//封装一条线（温度、电压等）的参数值
+		List<StarParam> firstList =  new  ArrayList<StarParam>();
+		for (StarParam starParam : starParamList) {
+			if(!parList.contains(starParam.getParameterType())) {
+				String key = starParam.getProductName()+starParam.getParameterType();
+				List<ConstraintDto> listSingle = new ArrayList<ConstraintDto>();
+				ConstraintDto constraintDto = new ConstraintDto();
+				constraintDto.setName(starParam.getParamName());
+				constraintDto.setValue(starParam.getParamCode());
+				constraintDto.setMax(starParam.getEffeMax());
+				constraintDto.setMin(starParam.getEffeMin());
+				listSingle.add(constraintDto);
+				constraintsMap.put(key, listSingle);
+				firstList.add(starParam);
+			} else {
+				doubleList.add(starParam);
+			}
+		}
+		//等到产品数  如飞轮A、飞轮B 
+		List<String> productType = new ArrayList<String>();
+		for (StarParam starParam : doubleList) {
+			if( !productType.contains(starParam.getProductName())) {
+				productType.add(starParam.getProductName());
+			}
+		}
+		//封装两条线（转速,电流）的参数值  如 飞轮A转速,电流   ；飞轮B转速,电流
+		for (String product : productType) {
+			List<ConstraintDto> productlist = new ArrayList<ConstraintDto>();
+			for (StarParam starParam : doubleList) {
+				if(product.equals(starParam.getProductName())) {
+					ConstraintDto constraintDto = new ConstraintDto();
+					constraintDto.setName(starParam.getParamName());
+					constraintDto.setValue(starParam.getParamCode());
+					constraintDto.setMax(starParam.getEffeMax());
+					constraintDto.setMin(starParam.getEffeMin());
+					productlist.add(constraintDto);
+				}
+			}
+			constraintsMap.put(product+paramStr, productlist);
+		}
+		
+		//等到参数类型  如转速、电流、温度、电压等
+		List<String> parameterType = new ArrayList<String>();
+		for (StarParam starParam : starParamList) {
+			if( !parameterType.contains(starParam.getParameterType())) {
+				parameterType.add(starParam.getParameterType());
+			}
+		}
+		
+		//封装同一参数类型下的多条线  如 在轨电流、在轨转速、在轨温度等
+		for (String string : parameterType) {
+			List<ConstraintDto> parameterTypelist = new ArrayList<ConstraintDto>();
+			for (StarParam starParam : starParamList) {
+				if(string.equals(starParam.getParameterType())) {
+					ConstraintDto constraintDto = new ConstraintDto();
+					constraintDto.setName(starParam.getParamName());
+					constraintDto.setValue(starParam.getParamCode());
+					constraintDto.setMax(starParam.getEffeMax());
+					constraintDto.setMin(starParam.getEffeMin());
+					parameterTypelist.add(constraintDto);
+				}
+			}
+			constraintsMap.put(string, parameterTypelist);
+		}
+		return constraintsMap;
+	}
 	
 	private int getMovableNumByParamCode(String seriesId, String starId, String partsType, Date beginDate, Date endDate,
 			String paramCode) {

@@ -55,4 +55,6 @@ public interface IReoportService {
 			String docPath, String seriesId, String starId, String partsType) throws Exception;
 	
 	public Map<String,List<ConstraintDto>> getConstraintDtoList(String seriesId, String starId,String partsType);
+	
+	public void reportNullDoc(String filename,String templateUrl,String docPath,String beginDate ,String endDate) throws Exception;
 }

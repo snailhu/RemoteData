@@ -35,6 +35,7 @@ public class StarServiceImpl implements IStarService{
 		Star star = new Star();
 		star.setSeries(series);
 		star.setName(starDto.getName());
+		star.setCode(starDto.getCode());
 		star.setDescription(starDto.getDescription());
 		star.setStartRunDate(DateUtil.format(starDto.getBeginDate()));
 		starDao.add(star);
@@ -54,6 +55,9 @@ public class StarServiceImpl implements IStarService{
 		Star star = starDao.get(starDto.getId());
 		if(StringUtils.isNotBlank(starDto.getName())){
 			star.setName(starDto.getName());			
+		}
+		if(StringUtils.isNotBlank(starDto.getCode())){
+			star.setCode(starDto.getCode());			
 		}
 		if(StringUtils.isNotBlank(starDto.getDescription())){
 			star.setDescription(starDto.getDescription());
@@ -75,6 +79,7 @@ public class StarServiceImpl implements IStarService{
 				dto = new StarDto();
 				dto.setId(star.getId());
 				dto.setName(star.getName());
+				dto.setCode(star.getCode());
 				dto.setBeginDate(DateUtil.format(star.getStartRunDate()));
 				dto.setDescription(star.getDescription());
 				starDtoList.add(dto);
@@ -89,6 +94,7 @@ public class StarServiceImpl implements IStarService{
 		StarDto dto = new StarDto();
 		dto.setId(star.getId());
 		dto.setName(star.getName());
+		dto.setCode(star.getCode());
 		dto.setBeginDate(DateUtil.format(star.getStartRunDate()));
 		dto.setDescription(star.getDescription());
 		return dto;

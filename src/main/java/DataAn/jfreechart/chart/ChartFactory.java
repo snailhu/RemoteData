@@ -56,7 +56,7 @@ public class ChartFactory {
         
 //        XYLineAndShapeRenderer xyRenderer = (XYLineAndShapeRenderer) xyplot.getRenderer();
 //        xyRenderer.setBaseItemLabelsVisible(false);
-        dateTickUnit = new DateTickUnit(DateTickUnitType.DAY, 1, new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")); // 第二个参数是时间轴间距
+        dateTickUnit = new DateTickUnit(DateTickUnitType.HOUR, 4, new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")); // 第二个参数是时间轴间距
 
         
         // 设置时间单位

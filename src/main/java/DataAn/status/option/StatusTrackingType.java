@@ -26,6 +26,18 @@ public enum StatusTrackingType {
 			return "2";
 		}
 	},
+	/** 文件上传失败 */
+	FILEUPLOADFAIL {
+		@Override
+		public String getName() {
+			return "文件上传失败";
+		}
+
+		@Override
+		public String getValue() {
+			return "e2";
+		}
+	},
 	/** 数据导入 */
 	IMPORT {
 		@Override
@@ -38,6 +50,18 @@ public enum StatusTrackingType {
 			return "3";
 		}
 	},
+	/** 数据导入失败 */
+	IMPORTFAIL {
+		@Override
+		public String getName() {
+			return "数据导入失败";
+		}
+
+		@Override
+		public String getValue() {
+			return "e3";
+		}
+	},
 	/** 数据预处理 */
 	PREHANDLE {
 		@Override
@@ -48,6 +72,18 @@ public enum StatusTrackingType {
 		@Override
 		public String getValue() {
 			return "4";
+		}
+	},
+	/** 数据预处理失败 */
+	PREHANDLEFAIL {
+		@Override
+		public String getName() {
+			return "数据预处理失败";
+		}
+
+		@Override
+		public String getValue() {
+			return "e4";
 		}
 	},
 	/** 结束 */
@@ -74,11 +110,20 @@ public enum StatusTrackingType {
 		case "2":
 			return StatusTrackingType.FILEUPLOAD;
 
+		case "e2":
+			return StatusTrackingType.FILEUPLOADFAIL;
+
 		case "3":
 			return StatusTrackingType.IMPORT;
 
+		case "e3":
+			return StatusTrackingType.IMPORTFAIL;
+
 		case "4":
 			return StatusTrackingType.PREHANDLE;
+
+		case "e4":
+			return StatusTrackingType.PREHANDLEFAIL;
 
 		case "5":
 			return StatusTrackingType.END;

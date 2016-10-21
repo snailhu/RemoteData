@@ -4,13 +4,15 @@ import java.util.List;
 
 public class DataToDocDto {
 	
-	private String reporttitle;
+	private String series;
 	
-	private String parts;
+	private String star;
 	
-	private String healthcondition;
+	private String beginDate;
 	
-	private String PhotoBLOB;
+	private String endDate;
+	
+	private String createDate;
 	
 	private List<ProductDto> products;
 	
@@ -54,38 +56,44 @@ public class DataToDocDto {
 	public void setParams(List<ParamDto> params) {
 		this.params = params;
 	}
-
-
-	public String getReporttitle() {
-		return reporttitle;
+	public String getSeries() {
+		return series;
 	}
 
-	public void setReporttitle(String reporttitle) {
-		this.reporttitle = reporttitle;
+	public void setSeries(String series) {
+		this.series = series;
 	}
 
-	public String getParts() {
-		return parts;
+	public String getStar() {
+		return star;
 	}
 
-	public void setParts(String parts) {
-		this.parts = parts;
+	public void setStar(String star) {
+		this.star = star;
 	}
 
-	public String getHealthcondition() {
-		return healthcondition;
+	public String getBeginDate() {
+		return beginDate;
 	}
 
-	public void setHealthcondition(String healthcondition) {
-		this.healthcondition = healthcondition;
+	public void setBeginDate(String beginDate) {
+		this.beginDate = beginDate;
 	}
 
-	public String getPhotoBLOB() {
-		return PhotoBLOB;
+	public String getEndDate() {
+		return endDate;
 	}
 
-	public void setPhotoBLOB(String photoBLOB) {
-		PhotoBLOB = photoBLOB;
+	public void setEndDate(String endDate) {
+		this.endDate = endDate;
+	}
+
+	public String getCreateDate() {
+		return createDate;
+	}
+
+	public void setCreateDate(String createDate) {
+		this.createDate = createDate;
 	}
 
 	public List<ProductDto> getProducts() {

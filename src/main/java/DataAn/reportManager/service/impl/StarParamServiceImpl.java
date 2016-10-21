@@ -10,6 +10,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import DataAn.common.dao.Pager;
+import DataAn.fileSystem.service.IJ9Series_Star_Service;
 import DataAn.galaxyManager.dao.ISeriesDao;
 import DataAn.galaxyManager.dao.IStarDao;
 import DataAn.galaxyManager.domain.Series;
@@ -30,6 +31,10 @@ public class StarParamServiceImpl implements IStarParamService {
 	
 	@Resource
 	private IStarDao starDao;
+	
+	@Resource
+	private IJ9Series_Star_Service j9Series_Star_Service;
+	
 	
 	@Override
 	public Pager<StarParamDto> getStarParamList(int pageIndex, int pageSize, String series, String star, String parameterType) {
@@ -73,13 +78,14 @@ public class StarParamServiceImpl implements IStarParamService {
 	}*/
 
 	@Override
-	public void save(StarParamDto starParamDto) {
+	public void save(StarParamDto starParamDto) throws Exception {
 		StarParam starParam = new StarParam();
 		starParam.setCreater(starParamDto.getCreater());
 		starParam.setSeries(starParamDto.getSeries());
 		starParam.setStar(starParamDto.getStar());
 		starParam.setPartsType(starParamDto.getPartsType());
-		starParam.setParameterType("电流");//TODO
+		starParam.setParameterType(j9Series_Star_Service.getFlyWheelParameterType(starParamDto.getParamCode()));
+		starParam.setProductName("Za");//TODO
 		starParam.setParamCode(starParamDto.getParamCode());
 		starParam.setParamName(starParamDto.getParamName());
 		starParam.setEffeMin(starParamDto.getEffeMin());
@@ -94,7 +100,7 @@ public class StarParamServiceImpl implements IStarParamService {
 	}
 
 	@Override
-	public void update(StarParamDto starParamDto) {
+	public void update(StarParamDto starParamDto) throws Exception {
 		
 		StarParam starParam = starParamDao.get(starParamDto.getId());
 		if (StringUtils.isNotBlank(starParamDto.getSeries())) {
@@ -108,6 +114,8 @@ public class StarParamServiceImpl implements IStarParamService {
 		}
 		if (StringUtils.isNotBlank(starParamDto.getParamCode())) {
 			starParam.setParamCode(starParamDto.getParamCode());
+			starParam.setParameterType(j9Series_Star_Service.getFlyWheelParameterType(starParamDto.getParamCode()));
+			starParam.setProductName("Za");//TODO
 		}
 		if (StringUtils.isNotBlank(starParamDto.getParamName())) {
 			starParam.setParamName(starParamDto.getParamName());

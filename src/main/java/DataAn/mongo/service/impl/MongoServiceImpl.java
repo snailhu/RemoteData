@@ -125,13 +125,19 @@ public class MongoServiceImpl implements IMongoService{
 	public MongoCursor<Document> findByDate(String series, String star,
 			String paramType, Date beginDate, Date endDate) {
 		String databaseName = InitMongo.getDataBaseNameBySeriesAndStar(series, star);
-		String collectionName =  paramType;
+		//1s 等级存储原始数据集
+		String collectionName =  paramType + "1s";
+		//开始时间向前推进 1m
+		beginDate = new Date(beginDate.getTime() - 1000);
 		
 		return mg.find(databaseName, collectionName, beginDate, endDate);
 	}
 
-
-
-
+	@Override
+	public long findMovableNumByParamCode(String series, String star, String collectionName, String paramName,
+			Date beginDate, Date endDate) {
+		String databaseName = InitMongo.getDataBaseNameBySeriesAndStar(series, star);
+		return mg.countByDate(databaseName, collectionName, beginDate, endDate, "paramName", paramName);
+	}
 
 }

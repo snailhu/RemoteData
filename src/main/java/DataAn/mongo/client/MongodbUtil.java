@@ -6,11 +6,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.apache.commons.lang3.StringUtils;
 import org.bson.Document;
-
-import DataAn.common.utils.DataTypeUtil;
-import DataAn.common.utils.LogUtil;
-import DataAn.mongo.init.InitMongo;
 
 import com.mongodb.BasicDBObject;
 import com.mongodb.CommandResult;
@@ -24,6 +21,10 @@ import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.MongoIterable;
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.Updates;
+
+import DataAn.common.utils.DataTypeUtil;
+import DataAn.common.utils.LogUtil;
+import DataAn.mongo.init.InitMongo;
 
 public class MongodbUtil {
 	
@@ -203,6 +204,58 @@ public class MongodbUtil {
 	}
 	
 	/**
+	 * 获取所有数据库
+	 * 
+	 * @param databaseName
+	 * @return
+	 */
+	public List<String> getDBsBySeriersAndStar(String seriers, String star) {
+		List<String> databaseNames = mg.getDatabaseNames();
+		List<String> namesResult = new ArrayList<String>();
+		for (String name : databaseNames) {
+			if (StringUtils.isNotBlank(seriers) && StringUtils.isNotBlank(star)) {
+				if (name.contains(seriers) && name.contains(star)) {
+					namesResult.add(name);
+				}
+			} else if (StringUtils.isNotBlank(seriers) && StringUtils.isBlank(star)) {
+				if (name.contains(seriers)) {
+					namesResult.add(name);
+				}
+			} else {
+				if (name.contains("db")) {
+					namesResult.add(name);
+				}
+			}
+
+		}
+		return namesResult;
+	}
+	
+	
+	public MongoCollection<Document> getCollectionNotShard(String databaseName, String collectionName) {
+		MongoCollection<Document> dbCollection = cols.get(databaseName + collectionName);
+		if (dbCollection == null) {
+			MongoDatabase db = getDB(databaseName);
+			// 需要判断集合时候存在
+			MongoIterable<String> collectionNames = db.listCollectionNames();
+			boolean flag = false;
+			for (String collection : collectionNames) {
+				if (collection.equals(collectionName)) {
+					flag = true;
+					break;
+				}
+			}
+			if (!flag && isShard) {
+				return null;
+			}
+			dbCollection = db.getCollection(collectionName);
+			cols.put(databaseName + collectionName, dbCollection);
+		}
+		return dbCollection;
+	}
+
+	
+	/**
 	 * dropCollection:(删除表集合). 
 	 * @param databaseName
 	 * @param collectionName
@@ -330,8 +383,15 @@ public class MongodbUtil {
 	
 	public MongoCursor<Document> find(String databaseName,String collectionName,Date beginDate, Date endDate){
 		MongoCollection<Document> collection = this.getCollection(databaseName, collectionName);
-		
 		return collection.find(Filters.and(Filters.gte("datetime", beginDate),
 							   Filters.lte("datetime", endDate))).iterator();
+	}
+	
+	public long countByDate(String databaseName,String collectionName,
+			Date beginDate, Date endDate,String fieldName,String value ){
+		MongoCollection<Document> collection = this.getCollection(databaseName, collectionName);
+		return collection.count(Filters.and(Filters.gte("datetime", beginDate),
+							   				Filters.lte("datetime", endDate),
+							   				Filters.eq(fieldName, value)));
 	}
 }

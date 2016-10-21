@@ -12,11 +12,11 @@ public interface IStarParamService {
 
 	public Pager<StarParamDto> getStarParamList(int pageIndex, int pageSize, String series, String star, String parameterType);
 
-	public void save(StarParamDto starParamDto);
+	public void save(StarParamDto starParamDto) throws Exception ;
 
 	public boolean cherkStarParam(StarParamDto starParamDto);
 
-	public void update(StarParamDto starParamDto);
+	public void update(StarParamDto starParamDto)  throws Exception;
 
 	public void delete(String[] userIdArray);
 

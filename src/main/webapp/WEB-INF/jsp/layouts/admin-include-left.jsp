@@ -271,34 +271,20 @@
 			</a>
 			<ul class="submenu">
 				<li>
-					<a href="javascript:void(0)"> <i class="icon-double-angle-right"></i> 其他系列
+					<a  href="${pageContext.request.contextPath}/starParam/index" "> <i class="icon-double-angle-right"></i> 参数管理
+					</a>
+				</li>
+				<li>
+					<a  href="${pageContext.request.contextPath}/report/reportDownLoad" "> <i class="icon-double-angle-right"></i> 报告下载
 					</a>
 				</li>
 				<li>
 					<a href="#" class="dropdown-toggle">
 						<i class="icon-double-angle-right"></i>
-						j9系列
+						j9系列报告
 						<b class="arrow icon-angle-down"></b>
 					</a>
 					<ul class="submenu">
-						<li>
-							<a href="#" class="dropdown-toggle">
-								<i class="icon-double-angle-right"></i>I号星
-		                        <b class="arrow icon-angle-down"></b>
-							</a>
-							<ul class="submenu">
-		                        <li class="flywheel-li">
-		                            <a href="report/index/j9/01/flywheel/0/">
-		                                <i class="icon-leaf"></i> 飞轮
-		                            </a>
-		                        </li>
-		                        <li class="top-li">
-		                            <a href="report/index/j9/01/top/0/">
-		                                <i class="icon-leaf"></i>陀螺
-		                            </a>
-		                        </li>
-		                    </ul>
-						</li>
 						<li>
 							<a href="#" class="dropdown-toggle">
 								<i class="icon-double-angle-right"></i>II号星
@@ -310,65 +296,8 @@
 		                                <i class="icon-leaf"></i> 飞轮
 		                            </a>
 		                        </li>
-		                        <li class="top-li">
-		                            <a href="report/index/j9/02/top/0/">
-		                                <i class="icon-leaf"></i>陀螺
-		                            </a>
-		                        </li>
 		                    </ul>
 						</li>
-						<li>
-							<a href="#" class="dropdown-toggle">
-								<i class="icon-double-angle-right"></i>III号星
-		                        <b class="arrow icon-angle-down"></b>
-							</a>
-							<ul class="submenu">
-		                        <li class="flywheel-li">
-		                            <a href="report/index/j9/03/flywheel/0/">
-		                                <i class="icon-leaf"></i> 飞轮
-		                            </a>
-		                        </li>
-		                          <li class="top-li">
-		                            <a href="report/index/j9/03/top/0/">
-		                                <i class="icon-leaf"></i>陀螺
-		                            </a>
-		                        </li>
-		                    </ul>
-						</li>
-						<li>
-							<a href="#" class="dropdown-toggle">
-								<i class="icon-double-angle-right"></i>IV号星
-		                        <b class="arrow icon-angle-down"></b>
-							</a>
-							<ul class="submenu">
-		                        <li class="flywheel-li">
-		                            <a href="report/index/j9/04/flywheel/0/">
-		                                <i class="icon-leaf"></i> 飞轮
-		                            </a>
-		                        </li>
-		                          <li class="top-li">
-		                            <a href="report/index/j9/04/top/0/">
-		                                <i class="icon-leaf"></i>陀螺
-		                            </a>
-		                        </li>
-		                    </ul>
-						</li>
-						<li>
-							<a href="#" class="dropdown-toggle">
-								<i class="icon-double-angle-right"></i>V号星
-		                        <b class="arrow icon-angle-down"></b>
-							</a>
-							<ul class="submenu">
-		                        <li class="flywheel-li">
-		                            <a href="report/index/j9/05/flywheel/0/">
-		                                <i class="icon-leaf"></i> 飞轮
-		                            </a>
-		                        </li>
-		                          <li class="top-li">
-		                            <a href="report/index/j9/05/top/0/">
-		                                <i class="icon-leaf"></i>陀螺
-		                            </a>
-		                        </li>
 		                    </ul>
 						</li>
 					</ul>
@@ -403,7 +332,7 @@
 			<ul class="submenu">
 				<li><a href="${pageContext.request.contextPath}/admin/status/startingIndex"> <i class="icon-double-angle-right"></i> 进行中
 					</a></li>
-				<li><a href="${pageContext.request.contextPath}/admin/status/endIndex"> <i class="icon-double-angle-right"></i> 已完成
+				<li><a href="${pageContext.request.contextPath}/admin/status/endIndex"> <i class="icon-double-angle-right"></i> 已结束
 					</a></li>
 			</ul>
 		</li>
@@ -417,7 +346,7 @@
 					</a></li>
 				<li><a href="${pageContext.request.contextPath}/admin/prewarning/errorvalueIndex"> <i class="icon-double-angle-right"></i> 异常参数配置
 					</a></li>
-				<li><a href="${pageContext.request.contextPath}/admin/prewarning/logIndex"> <i class="icon-double-angle-right"></i> 预警查询
+				<li><a href="${pageContext.request.contextPath}/admin/prewarning/logIndex?hadReadFlag=1"> <i class="icon-double-angle-right"></i> 预警查询
 					</a></li>
 			</ul>
 		</li>

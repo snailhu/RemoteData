@@ -276,13 +276,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				                       </select>
 									</div>
 								</div>
-								<div class="space-4"></div>
-								<div class="form-group">
-									<label class="col-sm-3 control-label no-padding-right" for="add-starParam-paramCode"> 参数编码： </label>
-									<div class="col-sm-8">
-										<input type="text" name="paramCode" id="add-starParam-paramCode" placeholder="参数编码" class="form-control" />
-									</div>
-								</div>
+								
 								<div class="space-4"></div>
 								<div class="form-group">
 									<label class="col-lg-3 control-label no-padding-right" for="add-starParam-paramName"> 参数名称： </label>
@@ -290,6 +284,32 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 										<input type="text" name="paramName" id="add-starParam-paramName" placeholder="参数名称" class="form-control" />
 									</div>
 								</div>
+								
+								<div class="space-4"></div>
+								<div class="form-group">
+									<label class="col-sm-3 control-label no-padding-right" for="add-starParam-paramCode"> 参数编码： </label>
+									<div class="col-sm-8">
+										<input type="text" name="paramCode" id="add-starParam-paramCode" placeholder="参数编码" class="form-control" />
+									</div>
+								</div>
+								
+								<!-- <div class="space-4"></div>
+								<div class="form-group">
+									<label class="col-sm-3 control-label no-padding-right" for="add-starParam-productName"> 产品： </label>
+									<div class="col-sm-8">
+										<input type="text" name="productName" id="add-starParam-productName" placeholder="参数编码" class="form-control" />
+									</div>
+								</div>
+								
+								
+								<div class="space-4"></div>
+								<div class="form-group">
+									<label class="col-sm-3 control-label no-padding-right" for="add-starParam-parameterType"> 类型： </label>
+									<div class="col-sm-8">
+										<input type="text" name="parameterType" id="add-starParam-parameterType" placeholder="类型" class="form-control" />
+									</div>
+								</div> -->
+								
 								<div class="space-4"></div>
 								<div class="form-group">
 									<label class="col-lg-3 control-label no-padding-right" for="add-starParam-effeMin"> 最小有效值： </label>
@@ -355,18 +375,35 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								</div>
 								<div class="space-4"></div>
 								<div class="form-group">
-									<label class="col-sm-3 control-label no-padding-right" for="edit-starParam-paramCode"> 参数编码： </label>
-									<div class="col-sm-8">
-										<input type="text" name="paramCode" id="edit-starParam-paramCode" placeholder="参数编码" class="form-control" />
-									</div>
-								</div>
-								<div class="space-4"></div>
-								<div class="form-group">
 									<label class="col-lg-3 control-label no-padding-right" for="edit-starParam-paramName"> 参数名称： </label>
 									<div class="col-sm-8">
 										<input type="text" name="paramName" id="edit-starParam-paramName" placeholder="参数名称" class="form-control" />
 									</div>
 								</div>
+								 <div class="space-4"></div>
+								<div class="form-group">
+									<label class="col-sm-3 control-label no-padding-right" for="edit-starParam-paramCode"> 参数编码： </label>
+									<div class="col-sm-8">
+										<input type="text" name="paramCode" id="edit-starParam-paramCode" placeholder="参数编码" class="form-control" />
+									</div>
+								</div>
+								
+							<!--	<div class="space-4"></div>
+								<div class="form-group">
+									<label class="col-sm-3 control-label no-padding-right" for="edit-starParam-productName"> 产品： </label>
+									<div class="col-sm-8">
+										<input type="text" name="productName" id="edit-starParam-productName" placeholder="参数编码" class="form-control" />
+									</div>
+								</div>
+								
+								<div class="space-4"></div>
+								<div class="form-group">
+									<label class="col-sm-3 control-label no-padding-right" for="edit-starParam-parameterType"> 类型： </label>
+									<div class="col-sm-8">
+										<input type="text" name="parameterType" id="edit-starParam-parameterType" placeholder="类型" class="form-control" />
+									</div>
+								</div> -->
+								
 								<div class="space-4"></div>
 								<div class="form-group">
 									<label class="col-lg-3 control-label no-padding-right" for="edit-starParam-effeMin"> 最小有效值： </label>
@@ -467,18 +504,23 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                     title: '部件',
                     width: 100
                 },{
-                    field: 'parameterType',
-                    title: '类型',
-                    width: 100
+                	 field: 'paramName',
+                     title: '参数名称',
+                     width: 100
+                  
                 },{
                     field: 'paramCode',
                     title: '参数编码',
                     width: 100,
                 }, {
-                    field: 'paramName',
-                    title: '参数名称',
-                    width: 100
-                },{
+                	  field: 'productName',
+                      title: '产品',
+                      width: 100
+                }, {
+              	  field: 'parameterType',
+                  title: '类型',
+                  width: 100
+           	 	},{
                     field: 'effeMin',
                     title: '最小有效值',
                     width: 100,

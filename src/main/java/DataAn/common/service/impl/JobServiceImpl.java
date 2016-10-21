@@ -2,6 +2,7 @@ package DataAn.common.service.impl;
 
 import java.io.BufferedInputStream;
 import java.io.FileInputStream;
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -93,13 +94,12 @@ public class JobServiceImpl implements IJobService{
 		
 	}
 
-	//每天晚上1点执行此方法
-	@Scheduled(cron = "0 0 01 * * ?") 
+	//每个星期一晚上11点触发
+	@Scheduled(cron = "0 0 23 ? * MON") 
 	@Override
 	public void createReport() throws Exception {
 		String imgUrl = OptionConfig.getWebPath() + "\\report\\wordtemplate\\satellite.jpg";  
 		String templateUrl = OptionConfig.getWebPath() + "\\report\\wordtemplate\\卫星状态报告.doc";
-		String templateName = "Employees";
 		
 		List<StarParam> starList = starParamDao.getStarParamByParts();
 		for (StarParam starParam : starList) {
@@ -107,12 +107,18 @@ public class JobServiceImpl implements IJobService{
 			String starId = starParam.getStar();
 			String partsType = starParam.getPartsType();
 			
-			String time = DateUtil.getBeforeDate();
+			String starTime = DateUtil.getYesterdayTime();
+			String endTime =DateUtil.getLastWeekTime();
+			String time = DateUtil.getNowTime("yyyy-MM-dd");
+			
+			Date beginDate = DateUtil.format(starTime,"yyyy-MM-dd HH:mm:ss");
+			Date endDate =  DateUtil.format(endTime,"yyyy-MM-dd HH:mm:ss");
+			
+			String databaseName = InitMongo.DATABASE_TEST;
 			String filename = seriesId+"_"+starId+"_"+partsType+"_"+time+".doc";
 			String docPath = OptionConfig.getWebPath() + "report\\"+filename;
-			//TODO
-			//reoportService.createReport(time, filename, imgUrl, templateUrl, templateName, docPath, seriesId, starId, partsType);
-			reoportService.insertReportToDB(filename, docPath,seriesId,starId, partsType);
+			reoportService.createReport(beginDate, endDate, filename, imgUrl, templateUrl, docPath, seriesId, starId, partsType);
+			reoportService.insertReportToDB(filename, docPath,seriesId,starId, partsType,starTime,endTime,databaseName);
 			reoportService.removeDoc(docPath);
 		}
 	}

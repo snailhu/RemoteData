@@ -1,6 +1,7 @@
 package DataAn.reportManager.dao.impl;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -117,7 +118,17 @@ public class StarParamDao extends BaseDaoImpl<StarParam> implements IStarParamDa
 	public List<StarParam>  getStarParamByParts() {
 		String hql = "select distinct  series,star,partsType from StarParam";
 		Query query = this.getSession().createQuery(hql);
-		List<StarParam> starParamList =   query.list();
+		List<Object[]> list = query.list();    
+		List<StarParam> starParamList =new ArrayList<StarParam>();
+        for(Object[] obj : list){
+        	StarParam sp = new StarParam();
+        	sp.setSeries(obj[0].toString());
+        	sp.setStar(obj[1].toString());
+        	sp.setPartsType(obj[2].toString());
+        	starParamList.add(sp);
+        }
+		
+//		List<StarParam> starParamList =   query.list();
 		return starParamList;
 	}
 	

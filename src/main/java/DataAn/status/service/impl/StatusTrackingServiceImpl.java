@@ -33,20 +33,22 @@ public class StatusTrackingServiceImpl implements IStatusTrackingService {
 	}
 
 	@Override
-	public void updateStatusTracking(StatusTrackingDTO statusTrackingDTO) throws Exception {
+	public void updateStatusTracking(String fileName, String statusType, String userType) throws Exception {
 		// 判断是否已存在
-		String fileName = statusTrackingDTO.getFileName();
-		String userType = statusTrackingDTO.getUserType();
 		boolean checkStatusTracking = statusTrackingDao.checkStatusTrackingByParams(fileName, userType);
 		if (checkStatusTracking) {
 			// 存在则更新
 			StatusTracking statusTracking = statusTrackingDao.getStatusTrackingByParams(fileName, userType);
-			statusTracking.setFileName(statusTrackingDTO.getFileName());
-			statusTracking.setStatusType(statusTrackingDTO.getStatusType());
-			statusTracking.setUserType(statusTrackingDTO.getUserType());
+			statusTracking.setFileName(fileName);
+			statusTracking.setStatusType(statusType);
+			statusTracking.setUserType(userType);
 			statusTrackingDao.update(statusTracking);
 		} else {
 			// 不存在则新增
+			StatusTrackingDTO statusTrackingDTO = new StatusTrackingDTO();
+			statusTrackingDTO.setFileName(fileName);
+			statusTrackingDTO.setUserType(userType);
+			statusTrackingDTO.setStatusType(statusType);
 			addStatusTracking(statusTrackingDTO);
 		}
 	}

@@ -12,8 +12,8 @@ public interface IWarningLogDao extends IBaseDao<WarningLog> {
 			String warningType, String hadRead);
 
 	public Pager<WarningLog> selectByOption(int pageIndex, int pageSize, String series, String star,
-			String parameterType, String createdatetimeStart, String createdatetimeEnd, String warningType,
-			String hadRead);
+			String parameterType, String parameter, String createdatetimeStart, String createdatetimeEnd,
+			String warningType, String hadRead);
 
 	public Long getNotReadCount(String series, String star, String parameterType, String parameter, String warningType);
 

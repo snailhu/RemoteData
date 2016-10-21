@@ -14,7 +14,6 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import DataAn.fileSystem.option.FileDataType;
 import DataAn.fileSystem.option.FileType;
 import DataAn.reportManager.option.ReportDataType;
 
@@ -46,42 +45,36 @@ public class ReportFileSystem {
 	private String partsType;
 	
 	@Enumerated(EnumType.STRING)
-	@Column(name = "dataType", nullable = true, length = 16)
+	@Column(name = "dataType", nullable = false, length = 16)
 	private ReportDataType dataType;
 	
 	@Enumerated(EnumType.STRING)
-	@Column(name = "fileType", nullable = true, length = 16)
+	@Column(name = "fileType", nullable = false, length = 16)
 	private FileType fileType;
 	
-	@Column(name = "fileSize", nullable = true)
+	@Column(name = "fileSize", nullable = false)
 	private Float fileSize;
 	
 	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "updateDate", nullable = true)
+	@Column(name = "updateDate", nullable = false)
 	private Date updateDate = new Date();
 	
-	@Column(name = "mongoFSUUId", nullable = true, length = 32)
+	@Column(name = "mongoFSUUId", nullable = false, length = 32)
 	private String mongoFSUUId;
 	
-//	@Column(name = "year", nullable = true, length = 32)
-//	private String year;
-//	
-//	@Column(name = "year_month", nullable = true, length = 32)
-//	private String year_month;
-	
-	@Column(name = "year_month_day", nullable = true, length = 32)
+	@Column(name = "year_month_day", nullable = false, length = 32)
 	private String year_month_day;
 	
-	@Column(name = "cachePath", nullable = true, length = 512)
+	@Column(name = "cachePath", nullable = false, length = 512)
 	private String cachePath;
 
-	@Column(name = "creater", nullable = true, length = 32)
+	@Column(name = "creater", nullable = false, length = 32)
 	private String creater;//创建人
 	
-	@Column(name = "startTime", nullable = true, length = 32)
+	@Column(name = "startTime", nullable = false, length = 32)
 	private String startTime;
 	
-	@Column(name = "endTime", nullable = true, length = 32)
+	@Column(name = "endTime", nullable = false, length = 32)
 	private String endTime ;
 	
 	public String getCreater() {
@@ -196,21 +189,6 @@ public class ReportFileSystem {
 		this.mongoFSUUId = mongoFSUUId;
 	}
 
-//	public String getYear() {
-//		return year;
-//	}
-//
-//	public void setYear(String year) {
-//		this.year = year;
-//	}
-//
-//	public String getYear_month() {
-//		return year_month;
-//	}
-//
-//	public void setYear_month(String year_month) {
-//		this.year_month = year_month;
-//	}
 
 	public String getYear_month_day() {
 		return year_month_day;
@@ -228,15 +206,4 @@ public class ReportFileSystem {
 	public void setCachePath(String cachePath) {
 		this.cachePath = cachePath;
 	}
-
-	@Override
-	public String toString() {
-		return "VirtualFileSystem [id=" + id + ", series=" + series + ", star="
-				+ star + ", dataType=" + dataType + ", parentId=" + parentId
-				+ ", fileName=" + fileName + ", fileType=" + fileType
-				+ ", fileSize=" + fileSize + ", updateDate=" + updateDate
-				+ ", mongoFSUUId=" + mongoFSUUId + ", year_month_day="
-				+ year_month_day + ", cachePath=" + cachePath + "]";
-	}
-	
 }

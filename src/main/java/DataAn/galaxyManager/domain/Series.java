@@ -35,6 +35,9 @@ public class Series {
 	@Column(name = "name", nullable = false, length = 64)
 	private String name;
 	
+	@Column(name = "code", nullable = false, length = 64,unique = true)
+	private String code;
+	
 	@Column(name = "description", nullable = true, length = 512)
 	private String description;
 	
@@ -59,6 +62,14 @@ public class Series {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public String getCode() {
+		return code;
+	}
+
+	public void setCode(String code) {
+		this.code = code;
 	}
 
 	public String getDescription() {

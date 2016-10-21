@@ -119,7 +119,7 @@ public class reportServcieTest {
 		data.setParams(params);
 		data.setProducts(products);
 		
-		reoportService.reportDoc(filename, data, imgUrl, templateUrl, templateName, docPath);
+		//reoportService.reportDoc(filename, data, imgUrl, templateUrl, templateName, docPath);
 		
 	}
 	

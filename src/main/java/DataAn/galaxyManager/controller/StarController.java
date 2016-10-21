@@ -35,21 +35,19 @@ public class StarController {
 	@ResponseBody
 	public JsonMessage createStar(@RequestParam(value = "seriesId", required = true) long seriesId,
 								  @RequestParam(value = "name", required = true) String name,
+								  @RequestParam(value = "code", required = true) String code,
 								  @RequestParam(value = "beginDate", required = true) String beginDate,
 								  @RequestParam(value = "description", required = false) String description){
+		StarDto starDto = new StarDto();
+		starDto.setSeriesId(seriesId);
+		starDto.setName(name);
+		starDto.setCode(code);
+		starDto.setDescription(description);
+		starDto.setBeginDate(beginDate);
+		System.out.println("come in createStar..");
+		System.out.println(starDto);
 		JsonMessage jsonMsg = new JsonMessage();
 		try {
-//			System.out.println("come in createStar..");
-//			System.out.println("seriesId: " + seriesId);
-//			System.out.println("name: " + name);
-//			System.out.println("beginDate: " + beginDate);
-//			System.out.println("description: " + description);
-//			System.out.println();
-			StarDto starDto = new StarDto();
-			starDto.setSeriesId(seriesId);
-			starDto.setName(name);
-			starDto.setDescription(description);
-			starDto.setBeginDate(beginDate);
 			starService.saveStar(starDto);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -74,21 +72,19 @@ public class StarController {
 	@ResponseBody
 	public JsonMessage editStar(@RequestParam(value = "id", required = true) long id,
 								@RequestParam(value = "name", required = true) String name,
+								@RequestParam(value = "code", required = true) String code,
 								@RequestParam(value = "beginDate", required = true) String beginDate,
 								@RequestParam(value = "description", required = false) String description){
+		StarDto starDto = new StarDto();
+		starDto.setId(id);
+		starDto.setName(name);
+		starDto.setCode(code);
+		starDto.setDescription(description);
+		starDto.setBeginDate(beginDate);
+		System.out.println("come in editStar..");
+		System.out.println(starDto);
 		JsonMessage jsonMsg = new JsonMessage();
 		try {
-//			System.out.println("come in editStar..");
-//			System.out.println("id: " + id);
-//			System.out.println("name: " + name);
-//			System.out.println("beginDate: " + beginDate);
-//			System.out.println("description: " + description);
-//			System.out.println();
-			StarDto starDto = new StarDto();
-			starDto.setId(id);
-			starDto.setName(name);
-			starDto.setDescription(description);
-			starDto.setBeginDate(beginDate);
 			starService.updateStar(starDto);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -104,11 +100,11 @@ public class StarController {
 	@RequestMapping(value="/deleteStar", method = RequestMethod.POST)
 	@ResponseBody
 	public JsonMessage deleteStar(@RequestParam(value = "starId", required = true) long starId){
+		System.out.println("come in deleteStar..");
+		System.out.println("starId: " + starId);
+		System.out.println();
 		JsonMessage jsonMsg = new JsonMessage();
 		try {
-//			System.out.println("come in deleteStar..");
-//			System.out.println("starId: " + starId);
-//			System.out.println();
 			starService.deleteStar(starId);
 		} catch (Exception e) {
 			e.printStackTrace();

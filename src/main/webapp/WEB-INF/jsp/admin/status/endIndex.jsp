@@ -163,7 +163,7 @@
 	<div class="main-content">
 		<div class="page-content">
 			<div class="page-header" style="margin: 0px; float: left;">
-				<h1>已完成列表</h1>
+				<h1>已结束列表</h1>
 			</div>
 			<!-- /.page-header -->
 
@@ -274,7 +274,6 @@ jeDate({
 	//minDate:"2014-09-19 00:00:00",//最小日期
 	maxDate:jeDate.now(0), //设定最大日期为当前日期
 });
-		var hadRead = '${hadRead}';
 		var logGrid;
         $(function () {
         	logGrid = $("#logList").datagrid({

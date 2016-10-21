@@ -167,7 +167,7 @@
 			</div>
 			<!-- /.page-header -->
 
-			<div>
+			<div id="searchFormDiv">
 				<div class="col-xs-12 col-sm-12">
 					<!-- PAGE CONTENT BEGINS -->
 					<div class="widget-box">
@@ -217,6 +217,17 @@
 												<option value="">--请选择--</option>
 												<option value="flywheel">飞轮</option>
 												<option value="top">陀螺</option>
+											</select>
+										</div>
+									</div>
+									<div class="space-4"></div>
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right"
+											for="search-parameter"> 参数 </label>
+										<div class="col-sm-9">
+											<select class="col-xs-10 col-sm-5" id="search-parameter"
+												name="parameter">
+												<option value="">--请选择--</option>
 											</select>
 										</div>
 									</div>
@@ -276,6 +287,7 @@
 				<!-- /.col -->
 			</div>
 			<!-- /.row -->
+			</c:if>
 
 			<div id="content" region="center" title="预警信息"
 				style="overflow: hidden"></div>
@@ -314,7 +326,12 @@ jeDate({
 	//minDate:"2014-09-19 00:00:00",//最小日期
 	maxDate:jeDate.now(0), //设定最大日期为当前日期
 });
-		var hadRead = '${hadRead}';
+		var hadReadFlag = '${hadReadFlag}';
+		var hadRead = "";
+		if(hadReadFlag == 0){
+			$("#searchFormDiv").hide();
+			hadRead = 0;
+		}
 		var logGrid;
         $(function () {
         	logGrid = $("#logList").datagrid({
@@ -395,6 +412,39 @@ jeDate({
 	              }
 	          });	
 		});
+        
+        $("#search-parameterType").change(function(){
+		 	var parameterType = $('#search-parameterType').val();	
+			  $.get('<%=request.getContextPath()%>/admin/prewarning/getParamList',
+											{
+												'parameterType' : parameterType
+											},
+											function(res) {
+												if (res) {
+													$('#search-parameter')
+															.find("option")
+															.remove();
+													$('#search-parameter')
+															.append(
+																	"<option value=''>--请选择--</option>");
+													$
+															.each(
+																	res.paramaters,
+																	function() {
+																		if (this.value) {
+																			$(
+																					'#search-parameter')
+																					.append(
+																							"<option value='"+ this.value+"'>"
+																									+ this.name
+																									+ "</option>");
+																		}
+																	});
+												} else {
+													top.showMsg('提示', res.msg);
+												}
+											});
+						});
 
 		function reloadDataGrid() {
 			logGrid.datagrid('clearChecked');
@@ -406,6 +456,7 @@ jeDate({
 			var series = $('#search-series').val();
 			var star = $('#search-star').val();
 			var parameterType = $('#search-parameterType').val();
+			var parameter = $('#search-parameter').val();
 			var warningType = $('#search-warningType').val();
 			var createdatetimeStart = $('#search-createdatetimeStart').val();
 			var createdatetimeEnd = $('#search-createdatetimeEnd').val();
@@ -413,6 +464,7 @@ jeDate({
 				series : series,
 				star : star,
 				parameterType : parameterType,
+				parameter : parameter,
 				warningType : warningType,
 				createdatetimeStart : createdatetimeStart,
 				createdatetimeEnd : createdatetimeEnd,

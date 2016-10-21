@@ -8,7 +8,7 @@ public class QueryLogDTO implements java.io.Serializable {
 
 	/** serialVersionUID */
 	private static final long serialVersionUID = 1L;
-	private Long logId; // 记录Id
+	private String logId; // 记录Id
 
 	private String series; // 星系
 
@@ -34,11 +34,11 @@ public class QueryLogDTO implements java.io.Serializable {
 		this.star = star;
 	}
 
-	public Long getLogId() {
+	public String getLogId() {
 		return logId;
 	}
 
-	public void setLogId(Long logId) {
+	public void setLogId(String logId) {
 		this.logId = logId;
 	}
 

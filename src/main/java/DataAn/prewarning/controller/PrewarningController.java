@@ -31,19 +31,19 @@ public class PrewarningController extends BaseController {
 	@Resource
 	private IPrewarningService prewarningService;
 
-	@RequestMapping("logIndex")
+	@RequestMapping("/logIndex")
 	public String logIndex(Model model, HttpServletRequest request, HttpServletResponse response) {
-		String hadRead = request.getParameter("hadRead");
-		model.addAttribute("hadRead", hadRead);
+		String hadReadFlag = request.getParameter("hadReadFlag");
+		model.addAttribute("hadReadFlag", hadReadFlag);
 		return "admin/prewarning/logIndex";
 	}
 
-	@RequestMapping("errorvalueIndex")
+	@RequestMapping("/errorvalueIndex")
 	public String errorvalueIndex() {
 		return "admin/prewarning/errorvalueIndex";
 	}
 
-	@RequestMapping("warnvalueIndex")
+	@RequestMapping("/warnvalueIndex")
 	public String warnvalueIndex() {
 		return "admin/prewarning/warnvalueIndex";
 	}
@@ -103,7 +103,7 @@ public class PrewarningController extends BaseController {
 		EasyuiDataGridJson json = new EasyuiDataGridJson();
 		String series = request.getParameter("series");
 		String star = request.getParameter("star");
-		// String parameter = request.getParameter("parameter");
+		String parameter = request.getParameter("parameter");
 		String parameterType = request.getParameter("parameterType");
 		String warningType = request.getParameter("warningType");
 		String createdatetimeStart = request.getParameter("createdatetimeStart");
@@ -115,14 +115,16 @@ public class PrewarningController extends BaseController {
 		System.out.println("series: " + series);
 		System.out.println("star: " + star);
 		System.out.println("parameterType: " + parameterType);
+		System.out.println("parameter: " + parameter);
 		System.out.println("createdatetimeStart: " + createdatetimeStart);
 		System.out.println("createdatetimeEnd: " + createdatetimeEnd);
 		System.out.println("warningType: " + warningType);
 		System.out.println("hadRead: " + hadRead);
 		Pager<QueryLogDTO> pager = null;
 		try {
-			pager = prewarningService.pageQueryWarningLog(page, rows, series, star, parameterType, createdatetimeStart,
-					createdatetimeEnd, warningType, hadRead);
+			pager = prewarningService.pageQueryWarningLog(page, rows, series, star, parameterType, parameter,
+					createdatetimeStart, createdatetimeEnd, warningType, hadRead);
+
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -285,7 +287,7 @@ public class PrewarningController extends BaseController {
 		JsonMessage jsonMsg = new JsonMessage();
 		try {
 			for (String logId : logIdArray) {
-				prewarningService.deleteWarningLog(Long.parseLong(logId));
+				prewarningService.deleteWarningLog(logId);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

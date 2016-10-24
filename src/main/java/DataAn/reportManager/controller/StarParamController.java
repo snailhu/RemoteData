@@ -19,11 +19,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.WebRequest;
 
+import DataAn.Analysis.dto.ConstraintDto;
 import DataAn.common.controller.BaseController;
 import DataAn.common.dao.Pager;
 import DataAn.common.pageModel.EasyuiDataGridJson;
 import DataAn.common.pageModel.JsonMessage;
 import DataAn.fileSystem.option.J9Series_Star_ParameterType;
+import DataAn.fileSystem.service.IJ9Series_Star_Service;
 import DataAn.galaxyManager.domain.Series;
 import DataAn.galaxyManager.domain.Star;
 import DataAn.galaxyManager.dto.SeriesDto;
@@ -39,6 +41,9 @@ import DataAn.sys.dto.ActiveUserDto;
 public class StarParamController  extends BaseController {
 	@Resource
 	private IStarParamService starParamService;
+	
+	@Resource
+	private IJ9Series_Star_Service j9Series_Star_Service;
 	
 	@RequestMapping("/index")
 	public String reportIndex(Model model,HttpServletRequest request,HttpServletResponse response) {
@@ -83,6 +88,8 @@ public class StarParamController  extends BaseController {
 		}
 		return json;
 	}
+	
+	
 	
 	// 创建用户
 	@RequestMapping(value = "/createStarParam")

@@ -281,7 +281,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								<div class="form-group">
 									<label class="col-lg-3 control-label no-padding-right" for="add-starParam-paramName"> 参数名称： </label>
 									<div class="col-sm-8">
-										<input type="text" name="paramName" id="add-starParam-paramName" placeholder="参数名称" class="form-control" />
+										<input type="text" name="paramName" id="add-starParam-paramName" placeholder="参数名称" class="form-control" /> 
 									</div>
 								</div>
 								
@@ -595,11 +595,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   		              }
   		          });	
   		});
-            
-            
         });
      
         function showTreeGrid(type) {
+       	 $('#jqxWidgetModal').modal('show');
 			var beginDate = "";
 		   	var endDate = "";
  			 var url = "<%=request.getContextPath()%>/getConstraint?beginDate="+beginDate+"&endDate="+endDate+"&type="+type;
@@ -636,19 +635,19 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			             { text: 'ID',  dataField: 'id',editable: false, width:200, hidden: true }
 					]
 		       });
-		       $('#jqxWidgetModal').modal('show');
         }
         
-        $("#add-starParam-paramName").click(function() {
+     $("#add-starParam-paramName").click(function() {
+    	 $("#add-starParam-paramName").val('');
         	var type = $('#add-starParam-partsType').val();
         	showTreeGrid(type);
+        
         });
         
         $("#edit-starParam-paramName").click(function() {
         	var type = $('#edit-starParam-partsType').val();
         	showTreeGrid(type);
-        });
-        
+        }); 
         
         $('#submit_jqxWidgetInfo').click(function(){
         	 var jqxParamName = $($(".jqx-grid-cell-selected-energyblue")[0]).text();
@@ -688,7 +687,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						$('#add-starParam-series').append("<option value='"+ this.name+"'>"+ this.description +"</option>"); 
 					});
             		var seriesId = $('#add-starParam-series').val();	
-    				  console.log(seriesId);
     				  $.get('<%=request.getContextPath()%>/starParam/getStarList', {'seriesId':seriesId},  function (res) {
     					  if(res.result == "true") {
     						  $('#add-starParam-star').find("option").remove();

@@ -17,11 +17,11 @@ public class StatusTrackingDaoImpl extends BaseDaoImpl<StatusTracking> implement
 	@Override
 	@SuppressWarnings("unchecked")
 	public List<StatusTracking> getStatusTrackingByParams(String userType) {
-		String hql = "from StatusTracking where statusType != '5'";
+		String hql = "from StatusTracking where statusType != '5' and statusType not like '%e%'";
 		if (StringUtils.isNotBlank(userType)) {
 			hql += " and userType = '" + userType + "'";
 		}
-		hql += "order by createDate";
+		hql += " order by createDate";
 		List<StatusTracking> statusTrackings = this.getSession().createQuery(hql).list();
 		return statusTrackings;
 	}
@@ -30,8 +30,8 @@ public class StatusTrackingDaoImpl extends BaseDaoImpl<StatusTracking> implement
 	@SuppressWarnings("unchecked")
 	public Pager<StatusTracking> selectByOption(int pageIndex, int pageSize, String fileName, String userType,
 			String statusType, String createdatetimeStart, String createdatetimeEnd) {
-		String hql = "from StatusTracking where 1=1";
-		String countHQL = "select count(*) from StatusTracking where 1=1";
+		String hql = "from StatusTracking where (statusType='5' or statusType like('%e%'))";
+		String countHQL = "select count(*) from StatusTracking where (statusType='5' or statusType like('%e%'))";
 		if (StringUtils.isNotBlank(fileName)) {
 			hql += " and fileName = '" + fileName + "'";
 			countHQL += " and fileName = '" + fileName + "'";

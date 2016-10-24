@@ -81,6 +81,30 @@ public class ReportServiceImpl implements IReoportService {
 	
 	
 	@Override
+	public void reportNullDoc(String filename,String templateUrl,String docPath,String beginDate ,String endDate) throws Exception {
+
+		// 验证License		
+        if (!AsposeLicenseManage.getAsposeLicense()) {
+            return;
+        }
+    	//1 读取模板  
+		Document doc = new Document(templateUrl);  
+		 
+		doc.getMailMerge().executeWithRegions(new MapMailMergeDataSource(getNullDoc(beginDate,endDate), "nullTab"));
+		//3生成报告
+       doc.save(docPath, SaveFormat.DOC); 
+	
+	}
+	
+	private List<Map<String, Object>> getNullDoc(String beginDate ,String endDate) {
+		   List<Map<String, Object>> dataList = new ArrayList<Map<String,Object>>();  
+	        Map<String, Object> record = new HashMap<String, Object>();  
+	        record.put("title", "日期区间"+beginDate+"到"+endDate+"没有找到对应的数据！");  
+	        dataList.add(record);  
+	        return dataList;  
+	}
+
+	@Override
 	public void reportDoc(String filename, DataToDocDto data, String imgPath, String templateUrl,String docPath)
 			throws Exception {
 		// 验证License		
@@ -446,7 +470,7 @@ public class ReportServiceImpl implements IReoportService {
 				if(fs.getFileType().getName().equals("dir")){
 					fsDto.setFileSize("-");					
 				}else{
-					fsDto.setFileSize(String.valueOf(fs.getFileSize()) + " M");
+					fsDto.setFileSize(String.valueOf(fs.getFileSize()) + " KB");
 				}
 				fsDto.setName(fs.getFileName());
 				fsDto.setType(fs.getFileType().getName());
@@ -619,9 +643,9 @@ public class ReportServiceImpl implements IReoportService {
 			}
 			constraintsMap.put(string, parameterTypelist);
 		}
-		
+		LineChartDto lineChartDto = null;
 		//画图并返回参数
-		LineChartDto lineChartDto = jfreechartServcie.createLineChart(seriesId, starId, partsType, beginDate, endDate, constraintsMap);
+		 lineChartDto = jfreechartServcie.createLineChart(seriesId, starId, partsType, beginDate, endDate, constraintsMap);
 		
 		Map<String,Double> minMap = lineChartDto.getMinMap();//所以参数最小值Map
 		Map<String,Double> maxMap = lineChartDto.getMaxMap();//所以参数最大值Map
@@ -818,7 +842,7 @@ public class ReportServiceImpl implements IReoportService {
 		ReportFileDto reportFileDto = new ReportFileDto();
 		DecimalFormat df = new DecimalFormat("#.00");
 		reportFileDto.setFileName(filename);
-		double size = input.available() / 1024 /1024;
+		double size = input.available() / 1024 ;
 		String strSize = df.format(size);
 		reportFileDto.setFileSize(Float.parseFloat(strSize));
 		reportFileDto.setIn(input);

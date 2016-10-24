@@ -15,9 +15,9 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 
 import DataAn.common.controller.BaseController;
+import DataAn.communicate.Thread.UpdatePrewarnThread;
 import DataAn.prewarning.domain.WarningValue;
 import DataAn.prewarning.service.IPrewarningService;
-import DataAn.status.dto.StatusTrackingDTO;
 import DataAn.status.service.IStatusTrackingService;
 
 @Controller
@@ -150,12 +150,8 @@ public class CommunicateController extends BaseController {
 	@RequestMapping(value = "/updateStatus", method = RequestMethod.POST)
 	@ResponseBody
 	public String updateStatus(HttpServletRequest request, String fileName, String statusType, String userType) {
-		StatusTrackingDTO statusTrackingDTO = new StatusTrackingDTO();
-		statusTrackingDTO.setFileName(fileName);
-		statusTrackingDTO.setUserType(userType);
-		statusTrackingDTO.setStatusType(statusType);
 		try {
-			statusTrackingService.updateStatusTracking(statusTrackingDTO);
+			statusTrackingService.updateStatusTracking(fileName, statusType, userType);
 			JSONObject jsonObject = new JSONObject();
 			jsonObject.put("sucFlag", true);
 			return jsonObject.toJSONString();
@@ -168,4 +164,21 @@ public class CommunicateController extends BaseController {
 		}
 	}
 
+	// 同步预警数据
+	@RequestMapping(value = "/updatePreWarn", method = RequestMethod.POST)
+	@ResponseBody
+	public String updatePreWarn() {
+		try {
+			UpdatePrewarnThread prewarnThread = new UpdatePrewarnThread(prewarningService);
+			prewarnThread.start();
+			JSONObject jsonObject = new JSONObject();
+			jsonObject.put("sucFlag", true);
+			return jsonObject.toJSONString();
+		} catch (Exception e) {
+			e.printStackTrace();
+			JSONObject jsonObject = new JSONObject();
+			jsonObject.put("sucFlag", false);
+			return jsonObject.toJSONString();
+		}
+	}
 }

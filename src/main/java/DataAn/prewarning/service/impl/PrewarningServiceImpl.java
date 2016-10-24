@@ -20,6 +20,7 @@ import DataAn.galaxyManager.domain.Series;
 import DataAn.galaxyManager.domain.Star;
 import DataAn.galaxyManager.dto.StarDto;
 import DataAn.prewarning.dao.IWarningLogDao;
+import DataAn.prewarning.dao.IWarningLogMongoDao;
 import DataAn.prewarning.dao.IWarningValueDao;
 import DataAn.prewarning.domain.WarningLog;
 import DataAn.prewarning.domain.WarningValue;
@@ -37,6 +38,8 @@ public class PrewarningServiceImpl implements IPrewarningService {
 	private IWarningValueDao warningValueDao;
 	@Resource
 	private IWarningLogDao warningLogDao;
+	@Resource
+	private IWarningLogMongoDao warningLogMongoDao;
 	@Resource
 	private ISeriesDao seriersDao;
 	@Resource
@@ -155,18 +158,22 @@ public class PrewarningServiceImpl implements IPrewarningService {
 	}
 
 	@Override
-	public void deleteWarningLog(long logId) throws Exception {
+	public void deleteWarningLog(String logId) throws Exception {
+		WarningLog warningLog = warningLogDao.get(logId);
+		warningLogMongoDao.deleteWainingById(logId, seriersDao.getSeriesName(warningLog.getSeries().toString()),
+				starDao.getStarName(warningLog.getStar().toString()), warningLog.getParameterType(),
+				warningLog.getWarningType() + "");
 		warningLogDao.delete(logId);
 	}
 
 	@Override
 	public Pager<QueryLogDTO> pageQueryWarningLog(int pageIndex, int pageSize, String series, String star,
-			String parameterType, String createdatetimeStart, String createdatetimeEnd, String warningType,
-			String hadRead) throws Exception {
+			String parameterType, String parameter, String createdatetimeStart, String createdatetimeEnd,
+			String warningType, String hadRead) throws Exception {
 
 		List<QueryLogDTO> logDTOs = new ArrayList<QueryLogDTO>();
 		Pager<WarningLog> logPager = warningLogDao.selectByOption(pageIndex, pageSize, series, star, parameterType,
-				createdatetimeStart, createdatetimeEnd, warningType, hadRead);
+				parameter, createdatetimeStart, createdatetimeEnd, warningType, hadRead);
 		List<WarningLog> warningLogs = logPager.getDatas();
 		if (warningLogs != null && warningLogs.size() > 0) {
 			for (WarningLog warnLog : warningLogs) {
@@ -218,7 +225,6 @@ public class PrewarningServiceImpl implements IPrewarningService {
 	@Override
 	public void addWarnValue(WarnValueDTO warnValueDTO) throws Exception {
 		WarningValue warningValue = new WarningValue();
-		System.out.println(warningValue.getMaxVal());
 		warningValue.setCreateDate(new Date());
 		warningValue.setMaxVal(warnValueDTO.getMaxVal().doubleValue());
 		warningValue.setMinVal(warnValueDTO.getMinVal().doubleValue());
@@ -306,6 +312,39 @@ public class PrewarningServiceImpl implements IPrewarningService {
 			return null;
 		}
 		return warningValueDao.getWarningValueByParams(seriesId, starId, parameter, parameterType, warningType);
+	}
+
+	@Override
+	public void addWarningLogFromMongo() throws Exception {
+		List<QueryLogDTO> queryLogDTOs = warningLogMongoDao.getQueryLogDTOs();
+		for (QueryLogDTO logDTO : queryLogDTOs) {
+			WarningLog warningLog = new WarningLog();
+			WarningLog hadwarn = warningLogDao.get(logDTO.getLogId());
+			if (hadwarn != null) {
+				continue;
+			}
+			warningLog.setLogId(logDTO.getLogId());
+			warningLog.setCreateDate(new Date());
+			warningLog.setHadRead(0);
+			warningLog.setParameter(logDTO.getParameter());
+			warningLog.setParameterType(logDTO.getParameterType());
+			warningLog.setParamValue(logDTO.getParamValue());
+			String seriersId = seriersDao.getSeriesIdByName(logDTO.getSeries());
+			if (StringUtils.isNoneBlank(seriersId)) {
+				warningLog.setSeries(Long.parseLong(seriersId));
+			} else {
+				continue;
+			}
+			String starId = starDao.getStarIdByName(logDTO.getStar());
+			if (StringUtils.isNoneBlank(starId)) {
+				warningLog.setStar(Long.parseLong(starId));
+			} else {
+				continue;
+			}
+			warningLog.setWarningType(Integer.parseInt(logDTO.getWarningType()));
+			warningLog.setTimeValue(DateUtil.format(logDTO.getTimeValue(), "yyyy-MM-dd HH:mm:ss.SSS"));
+			warningLogDao.add(warningLog);
+		}
 	}
 
 }

@@ -76,7 +76,7 @@
 							欢迎光临,${activeUser.userName}
 					</a>
 				</li>
-				<li><a href="${pageContext.request.contextPath}/admin/prewarning/logIndex?hadRead=0" id="prewarning">您有${warnCount}条未读预警信息</a></li>
+				<li><a href="${base}/admin/prewarning/logIndex?hadReadFlag=0" id="prewarning">您有${warnCount}条未读预警信息</a></li>
 				<li style='position:relative; top:15px'>
 					<a style='margin-top: -15px;' href='${base}/loginOut' id='loginOutLink'> |&nbsp; 注销 
 					</a>
@@ -98,9 +98,6 @@
 		<div class="navbar-collapse collapse" >
 			<ul class="nav navbar-nav navbar-right">
 				<li><a href="${base}/Index" style="color: #9d9d9d;;font-size: 18px;line-height: 1.8;">网站首页</a></li>
-				<li><a href="${base}/report/index" style="color: #9d9d9d;;font-size: 18px;line-height: 1.8;">报告管理</a></li>
-				<li><a href="${base}/report/reportDownLoad" style="color: #9d9d9d;;font-size: 18px;line-height: 1.8;">报告下载</a></li>
-				<li><a href="${base}/starParam/index" style="color: #9d9d9d;;font-size: 18px;line-height: 1.8;">参数管理</a></li>
 				<li><a href="${base}/admin/file/index" style="color: #9d9d9d;;font-size: 18px;line-height: 1.8;">文件管理</a></li>
 				<li><a href="${base}/conditionMonitoring" style="color: #9d9d9d;;font-size: 18px;line-height: 1.8;">数据分析</a></li>
 				<li><a href="${base}/admin/galaxy/index" style="color: #9d9d9d;;font-size: 18px;line-height: 1.8;">星系管理</a></li>

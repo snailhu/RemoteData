@@ -193,21 +193,29 @@ public class ReportController {
 		
 			String imgUrl = OptionConfig.getWebPath() + "\\report\\wordtemplate\\satellite.jpg";  
 			String templateUrl = OptionConfig.getWebPath() + "\\report\\wordtemplate\\卫星状态报告.doc";
-			String time = DateUtil.getNowTime("yyyy-MM-dd");
+			String templateNullUrl = OptionConfig.getWebPath() + "\\report\\wordtemplate\\nullData.doc";
 			
+			String time = DateUtil.getNowTime("yyyy-MM-dd");
 			String filename = seriesId+"_"+starId+"_"+partsType+"_"+time+".doc";
 			String docPath = OptionConfig.getWebPath() + "report\\"+filename;
 			Date beginDate = DateUtil.format(beginTime,"yyyy-MM-dd HH:mm:ss");
 			Date endDate =  DateUtil.format(endTime,"yyyy-MM-dd HH:mm:ss");
-			reoportService.createReport( beginDate, endDate, filename, imgUrl, templateUrl, docPath, seriesId, starId, partsType);
+		try {	
+			reoportService.createReport(beginDate, endDate, filename, imgUrl, templateUrl, docPath, seriesId, starId, partsType);
 			reoportService.downloadReport(response, docPath,filename);
 			reoportService.removeDoc(docPath);
+		} catch (Exception e) {
+			reoportService.reportNullDoc(filename,templateNullUrl, docPath, beginTime, endTime);
+			reoportService.downloadReport(response, docPath,filename);
+			reoportService.removeDoc(docPath);
+		}
 	}
 	@RequestMapping(value = { "/createReportTest" })
-public void createReprotTest() throws Exception{
+	public void createReprotTest() throws Exception{
 
 		String imgUrl = OptionConfig.getWebPath() + "\\report\\wordtemplate\\satellite.jpg";  
 		String templateUrl = OptionConfig.getWebPath() + "\\report\\wordtemplate\\卫星状态报告.doc";
+		String templateNullUrl = OptionConfig.getWebPath() + "\\report\\wordtemplate\\nullData.doc";
 		
 		List<StarParam> starList = starParamDao.getStarParamByParts();
 		for (StarParam starParam : starList) {
@@ -225,9 +233,15 @@ public void createReprotTest() throws Exception{
 			String databaseName = InitMongo.DATABASE_TEST;
 			String filename = seriesId+"_"+starId+"_"+partsType+"_"+time+".doc";
 			String docPath = OptionConfig.getWebPath() + "report\\"+filename;
-			reoportService.createReport(beginDate, endDate, filename, imgUrl, templateUrl, docPath, seriesId, starId, partsType);
-			reoportService.insertReportToDB(filename, docPath,seriesId,starId, partsType,starTime,endTime,databaseName);
-			reoportService.removeDoc(docPath);
+			try {
+				reoportService.createReport(beginDate, endDate, filename, imgUrl, templateUrl, docPath, seriesId, starId, partsType);
+				reoportService.insertReportToDB(filename, docPath,seriesId,starId, partsType,starTime,endTime,databaseName);
+				reoportService.removeDoc(docPath);
+			} catch (Exception e) {
+				reoportService.reportNullDoc(filename,templateNullUrl, docPath, starTime, endTime);
+				reoportService.insertReportToDB(filename, docPath,seriesId,starId, partsType,starTime,endTime,databaseName);
+				reoportService.removeDoc(docPath);
+			}
 		}
 	}
 }

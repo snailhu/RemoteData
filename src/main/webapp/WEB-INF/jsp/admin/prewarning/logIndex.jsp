@@ -399,7 +399,7 @@ jeDate({
         
         $("#search-series").change(function(){
 		 	var seriesId = $('#search-series').val();	
-		 	  $.get('<%=request.getContextPath()%>/starParam/getStarList', {'seriesId':seriesId},  function (res) {
+		 	  $.get('<%=request.getContextPath()%>/admin/prewarning/getStarList', {'seriesId':seriesId},  function (res) {
 				  if(res.result == "true") {
 					  $('#search-star').find("option").remove();
 					 $('#search-star').append("<option value=''>--请选择--</option>"); 

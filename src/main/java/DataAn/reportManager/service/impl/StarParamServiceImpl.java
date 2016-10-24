@@ -61,6 +61,7 @@ public class StarParamServiceImpl implements IStarParamService {
 		starParamDto.setEffeMin(starParam.getEffeMin());
 		starParamDto.setEffeMax(starParam.getEffeMax());
 		starParamDto.setParameterType(starParam.getParameterType());
+		starParamDto.setProductName(starParam.getProductName());
 		starParamDto.setPartsType(starParam.getPartsType());
 		starParamDto.setSeries(starParam.getSeries());
 		starParamDto.setStar(starParam.getStar());
@@ -68,14 +69,6 @@ public class StarParamServiceImpl implements IStarParamService {
 		starParamDto.setCreateDate(starParam.getCreateDate());
 		return starParamDto;
 	}
-
-/*	private String getStarName(String starId) {
-		return starDao.getStarName(starId);
-	}*/
-
-	/*private String getSeriesName(String seriesId) {
-		return seriesDao.getSeriesName(seriesId);
-	}*/
 
 	@Override
 	public void save(StarParamDto starParamDto) throws Exception {
@@ -85,7 +78,7 @@ public class StarParamServiceImpl implements IStarParamService {
 		starParam.setStar(starParamDto.getStar());
 		starParam.setPartsType(starParamDto.getPartsType());
 		starParam.setParameterType(j9Series_Star_Service.getFlyWheelParameterType(starParamDto.getParamCode()));
-		starParam.setProductName("Za");//TODO
+		starParam.setProductName(j9Series_Star_Service.getFlyWheelName(starParamDto.getParamCode()));
 		starParam.setParamCode(starParamDto.getParamCode());
 		starParam.setParamName(starParamDto.getParamName());
 		starParam.setEffeMin(starParamDto.getEffeMin());
@@ -115,7 +108,7 @@ public class StarParamServiceImpl implements IStarParamService {
 		if (StringUtils.isNotBlank(starParamDto.getParamCode())) {
 			starParam.setParamCode(starParamDto.getParamCode());
 			starParam.setParameterType(j9Series_Star_Service.getFlyWheelParameterType(starParamDto.getParamCode()));
-			starParam.setProductName("Za");//TODO
+			starParam.setProductName(j9Series_Star_Service.getFlyWheelName(starParamDto.getParamCode()));
 		}
 		if (StringUtils.isNotBlank(starParamDto.getParamName())) {
 			starParam.setParamName(starParamDto.getParamName());

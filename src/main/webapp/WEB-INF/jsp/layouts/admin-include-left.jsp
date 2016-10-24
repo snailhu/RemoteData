@@ -302,8 +302,6 @@
 						</li>
 					</ul>
 				</li>
-			</ul>
-		</li>
 		
 		
 		<li  id="sysPermission-li">

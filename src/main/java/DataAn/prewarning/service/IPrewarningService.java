@@ -3,6 +3,7 @@ package DataAn.prewarning.service;
 import java.util.List;
 
 import DataAn.common.dao.Pager;
+import DataAn.galaxyManager.domain.Star;
 import DataAn.prewarning.domain.WarningLog;
 import DataAn.prewarning.domain.WarningValue;
 import DataAn.prewarning.dto.ErrorValueDTO;
@@ -53,4 +54,6 @@ public interface IPrewarningService {
 
 	public List<WarningValue> getWarningValueByParams(String series, String star, String parameter,
 			String parameterType, String warningType);
+
+	public List<Star> getStarList(String seriesId);
 }

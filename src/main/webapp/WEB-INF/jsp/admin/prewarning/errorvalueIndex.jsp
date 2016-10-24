@@ -753,7 +753,7 @@
         
     	$("#search-series").change(function(){
 			 	var seriesId = $('#search-series').val();	
-			 	  $.get('<%=request.getContextPath()%>/starParam/getStarList', {'seriesId':seriesId},  function (res) {
+			 	  $.get('<%=request.getContextPath()%>/admin/prewarning/getStarList', {'seriesId':seriesId},  function (res) {
 					  if(res.result == "true") {
 						  $('#search-star').find("option").remove();
 						 $('#search-star').append("<option value=''>--请选择--</option>"); 
@@ -769,7 +769,7 @@
     	
     	$("#add-series").change(function(){
 		 	var seriesId = $('#add-series').val();	
-		 	  $.get('<%=request.getContextPath()%>/starParam/getStarList', {'seriesId':seriesId},  function (res) {
+		 	  $.get('<%=request.getContextPath()%>/admin/prewarning/getStarList', {'seriesId':seriesId},  function (res) {
 				  if(res.result == "true") {
 					  $('#add-star').find("option").remove();
 					 $('#add-star').append("<option value=''>--请选择--</option>"); 
@@ -785,7 +785,7 @@
     	
     	$("#edit-series").change(function(){
 		 	var seriesId = $('#edit-series').val();	
-		 	  $.get('<%=request.getContextPath()%>/starParam/getStarList', {'seriesId':seriesId},  function (res) {
+		 	  $.get('<%=request.getContextPath()%>/admin/prewarning/getStarList', {'seriesId':seriesId},  function (res) {
 				  if(res.result == "true") {
 					  $('#edit-star').find("option").remove();
 					 $('#edit-star').append("<option value=''>--请选择--</option>"); 

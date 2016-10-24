@@ -100,7 +100,4 @@ public class StarServiceImpl implements IStarService{
 		return dto;
 	}
 
-
-
-
 }

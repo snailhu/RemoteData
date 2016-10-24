@@ -1,17 +1,7 @@
 package DataAn.reportManager.controller;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.text.DecimalFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -30,26 +20,14 @@ import DataAn.common.pageModel.EasyuiDataGridJson;
 import DataAn.common.pageModel.JsonMessage;
 import DataAn.common.pageModel.Pager;
 import DataAn.common.utils.DateUtil;
-import DataAn.common.utils.UUIDGeneratorUtil;
 import DataAn.fileSystem.dto.MongoFSDto;
 import DataAn.fileSystem.option.J9Series_Star_ParameterType;
-import DataAn.galaxyManager.domain.Star;
-import DataAn.galaxyManager.dto.StarDto;
-import DataAn.jfreechart.dto.LineChartDto;
 import DataAn.jfreechart.service.IJfreechartServcie;
 import DataAn.mongo.init.InitMongo;
 import DataAn.reportManager.dao.IStarParamDao;
-import DataAn.reportManager.domain.ReportFileSystem;
 import DataAn.reportManager.domain.StarParam;
-import DataAn.reportManager.dto.DataToDocDto;
-import DataAn.reportManager.dto.ParamDto;
-import DataAn.reportManager.dto.ParamImgDataDto;
-import DataAn.reportManager.dto.ProductDto;
-import DataAn.reportManager.dto.ReportFileDto;
 import DataAn.reportManager.service.IReoportService;
 import DataAn.reportManager.service.IStarParamService;
-import DataAn.reportManager.util.CommonsConstant;
-import DataAn.reportManager.util.ResultJSON;
 import DataAn.sys.dto.ActiveUserDto;
 import DataAn.wordManager.config.OptionConfig;
 
@@ -68,17 +46,21 @@ public class ReportController {
 	@Resource
 	private IStarParamDao starParamDao;
 	
-	@RequestMapping("/index")
+	@RequestMapping("/index/{series}/{star}/{paramType}/{dirId}/")
 	public String reportIndex(Model model,HttpServletRequest request,HttpServletResponse response) {
+		
+		String strSeries = request.getParameter("series");
+		String strStar = request.getParameter("star");
+		String strParamType = request.getParameter("paramType");
 		//当前所在系列
-		model.addAttribute("nowSeries", "j9");
+		model.addAttribute("nowSeries", strSeries);
 		//当前所在星号
-		model.addAttribute("nowStar", "02");
+		model.addAttribute("nowStar", strStar);
 		
 		HttpSession session = request.getSession();
 		ActiveUserDto acticeUser = (ActiveUserDto) session.getAttribute("activeUser");
-		String flywheel = J9Series_Star_ParameterType.FLYWHEEL.getValue();
-		String type = acticeUser.getPermissionItems().get(flywheel);
+//		String flywheel = J9Series_Star_ParameterType.FLYWHEEL.getValue();
+		String type = acticeUser.getPermissionItems().get(strParamType);
 		String value = "";
 		String name = "";
 		if (StringUtils.isNotBlank(type)) {

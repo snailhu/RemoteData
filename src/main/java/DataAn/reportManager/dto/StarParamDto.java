@@ -18,6 +18,8 @@ public class StarParamDto {
 	private String star;
 	
 	private String parameterType;
+	
+	private String productName;
 		
 	private String partsType;
 	
@@ -27,15 +29,13 @@ public class StarParamDto {
 	
 	private Date createDate = new Date();
 	
-	
-	private String products;
-	
-	public String getProducts() {
-		return products;
+
+	public String getProductName() {
+		return productName;
 	}
 
-	public void setProducts(String products) {
-		this.products = products;
+	public void setProductName(String productName) {
+		this.productName = productName;
 	}
 
 	public double getEffeMin() {

@@ -6,7 +6,7 @@
 	<mapping path="/admin/*/index" decorator="/WEB-INF/jsp/layouts/admin-home.jsp" />
 	<mapping path="/admin/*/index/*/" decorator="/WEB-INF/jsp/layouts/admin-home.jsp" />
 <!-- 	<mapping path="/admin/file/toUploadFile" decorator="/WEB-INF/jsp/layouts/admin-home.jsp" /> -->
-	<mapping path="/report/index" decorator="/WEB-INF/jsp/layouts/admin-home.jsp" />
+	<mapping path="/report/index/*/" decorator="/WEB-INF/jsp/layouts/admin-home.jsp" />
 	<mapping path="/report/reportDownLoad" decorator="/WEB-INF/jsp/layouts/admin-home.jsp" />
 	<mapping path="/starParam/index" decorator="/WEB-INF/jsp/layouts/admin-home.jsp" />
 	<mapping path="/refuse" decorator="/WEB-INF/jsp/layouts/admin-home.jsp" />

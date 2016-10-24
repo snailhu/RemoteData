@@ -246,23 +246,24 @@ $(function() {
 <!-- 							</button> -->
 							<h4 class="modal-title" id="addParamModalLabel">参数信息</h4>
 						</div>
-						<div class="modal-body">
-						    <div class="space-8"></div>
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label no-padding-right" for="add-param-series"> 系列： </label>
-                                <div class="col-sm-8">
-                                    <input name="series" id="add-param-series" class="form-control" style="width: 357px;height: 34px" placeholder="系列"/>
-                                </div>
-                            </div>
-							<div class="space-4"></div>
-							<div class="form-group">
-								<label class="col-sm-3 control-label no-padding-right" for="add-param-name"> 参数名称：</label>
-								<div class="col-sm-8">
-									<input type="text" name="name" id="add-param-name" class="form-control" placeholder="参数名称"/>
+							<div class="modal-body">
+								<div class="space-8"></div>
+								<div class="form-group">
+									<label class="col-sm-3 control-label no-padding-right" for="add-param-series"> 系列： </label>
+									<div class="col-sm-8">
+										<input name="series" id="add-param-series" class="form-control" style="width: 357px;height: 34px" 
+										placeholder="系列" />
+									</div>
+								</div>
+								<div class="space-4"></div>
+								<div class="form-group">
+									<label class="col-sm-3 control-label no-padding-right" for="add-param-name"> 参数名称：</label>
+									<div class="col-sm-8">
+										<input type="text" name="name" id="add-param-name" class="form-control" placeholder="参数名称" />
+									</div>
 								</div>
 							</div>
-						</div>
-						<div class="modal-footer">
+							<div class="modal-footer">
 							<div class="col-lg-4 col-lg-offset-5">
 								<button type="button" class="btn btn-default" data-dismiss="modal" id="reset_addParamInfo">关闭</button>
 								<button type="submit" class="btn btn-primary" data-dismiss="modal" id="submit_addParamInfo">确定</button>
@@ -272,7 +273,7 @@ $(function() {
 			    </div>
 			  </div>
 			</div>
-			<!-- 编辑角色 -->
+			<!-- 编辑参数 -->
 			<div class="modal fade" id="editParamModal" tabindex="-1" role="dialog" aria-labelledby="editParamModalLabel">
 				<div class="modal-dialog" role="document" style="margin:55px -300px">
 					<div class="modal-content">
@@ -285,20 +286,21 @@ $(function() {
 							</div>
 							<div class="modal-body">
 								<input type="hidden" name="id" id="edit-role-id"/>
-								<div class="space-4"></div>
-								<div class="form-group">
-									<label class="col-sm-3 control-label no-padding-right" for="edit-param-name"> 参数名称：</label>
-									<div class="col-sm-8">
-										<input type="text" name="name" id="edit-param-name" placeholder="参数名称" class="form-control" />
-									</div>
-								</div>
-								<div class="space-8"></div>
-								<div class="form-group">
-									<label class="col-sm-3 control-label no-padding-right" for="edit-param-description"> 参数描述： </label>
-									<div class="col-sm-8">
-										<textarea class="form-control" name="description" id="edit-param-description" placeholder="参数描述"></textarea>
-									</div>
-								</div>
+                                <div class="space-8"></div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label no-padding-right" for="edit-param-series"> 系列： </label>
+                                    <div class="col-sm-8">
+                                        <input name="series" id="edit-param-series" class="form-control" style="width: 357px;height: 34px" 
+                                        placeholder="系列" />
+                                    </div>
+                                </div>
+                                <div class="space-4"></div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label no-padding-right" for="edit-param-name"> 参数名称：</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" name="name" id="edit-param-name" class="form-control" placeholder="参数名称" />
+                                    </div>
+                                </div>
 							</div>
 							<div class="modal-footer">
 								<div class="col-lg-4 col-lg-offset-5">

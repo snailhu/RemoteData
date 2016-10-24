@@ -5,6 +5,7 @@ import java.util.List;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,6 +22,7 @@ import DataAn.common.pageModel.JsonMessage;
 import DataAn.status.dto.StatusTrackingDTO;
 import DataAn.status.dto.StatusYstepDTO;
 import DataAn.status.service.IStatusTrackingService;
+import DataAn.sys.dto.ActiveUserDto;
 
 @Controller
 @RequestMapping("/admin/status")
@@ -36,6 +38,8 @@ public class StatusController {
 
 	@RequestMapping("/startingIndex")
 	public String startingIndex(Model model, HttpServletRequest request, HttpServletResponse response) {
+		HttpSession session = request.getSession();
+		ActiveUserDto acticeUser = (ActiveUserDto) session.getAttribute("activeUser");
 		String userType = "";
 		try {
 			List<StatusYstepDTO> statusYstepList = statusTrackingService.getSatusYstepList(userType);

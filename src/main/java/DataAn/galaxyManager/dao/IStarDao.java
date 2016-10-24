@@ -11,6 +11,8 @@ public interface IStarDao extends IBaseDao<Star> {
 
 	public List<Star> getStarList(String seriesId);
 
+	public List<Star> getStarListBySeriesId(String seriesId);
+
 	public String getStarName(String starId);
 
 	public String getStarIdByName(String starName);

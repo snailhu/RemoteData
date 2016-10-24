@@ -36,4 +36,11 @@ public class StarDaoImpl extends BaseDaoImpl<Star> implements IStarDao {
 		return getSession().createQuery(hql).setParameter(0, starName).uniqueResult().toString();
 	}
 
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Star> getStarListBySeriesId(String seriesId) {
+		String hql = "from Star star where star.series.id=?";
+		return this.getSession().createQuery(hql).setParameter(0, Long.parseLong(seriesId)).list();
+	}
+
 }

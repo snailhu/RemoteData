@@ -1,5 +1,10 @@
 package DataAn.prewarning.controller;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -16,6 +21,8 @@ import DataAn.common.controller.BaseController;
 import DataAn.common.dao.Pager;
 import DataAn.common.pageModel.EasyuiDataGridJson;
 import DataAn.common.pageModel.JsonMessage;
+import DataAn.galaxyManager.domain.Star;
+import DataAn.galaxyManager.dto.StarDto;
 import DataAn.prewarning.domain.WarningValue;
 import DataAn.prewarning.dto.ErrorValueDTO;
 import DataAn.prewarning.dto.QueryLogDTO;
@@ -23,6 +30,8 @@ import DataAn.prewarning.dto.QueryValueDTO;
 import DataAn.prewarning.dto.SelectOptionDTO;
 import DataAn.prewarning.dto.WarnValueDTO;
 import DataAn.prewarning.service.IPrewarningService;
+import DataAn.reportManager.util.CommonsConstant;
+import DataAn.reportManager.util.ResultJSON;
 
 @Controller
 @RequestMapping(value = "/admin/prewarning")
@@ -299,6 +308,31 @@ public class PrewarningController extends BaseController {
 		jsonMsg.setSuccess(true);
 		jsonMsg.setMsg("删除预警成功!");
 		return jsonMsg;
+	}
+
+	@RequestMapping(value = "/getStarList")
+	@ResponseBody
+	public ResultJSON getStarList(HttpServletRequest request, String seriesId) {
+		ResultJSON res = ResultJSON.getSuccessResultJSON();
+		try {
+			List<Star> starList = prewarningService.getStarList(seriesId);
+			List<StarDto> starDtoList = new ArrayList<StarDto>();
+			for (Star star : starList) {
+				StarDto starDto = new StarDto();
+				starDto.setName(star.getName());
+				starDto.setDescription(star.getDescription());
+				starDto.setId(star.getId());
+				starDto.setSeriesId(star.getSeries().getId());
+				starDtoList.add(starDto);
+			}
+			Map<String, Object> data = new HashMap<String, Object>();
+			data.put("data", starDtoList);
+			res.setData(data);
+		} catch (Exception ex) {
+			res.setMsg("下载失败！");
+			res.setResult(CommonsConstant.RESULT_FALSE);
+		}
+		return res;
 	}
 
 }

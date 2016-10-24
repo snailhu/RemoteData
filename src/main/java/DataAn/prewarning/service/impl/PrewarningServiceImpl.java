@@ -347,4 +347,9 @@ public class PrewarningServiceImpl implements IPrewarningService {
 		}
 	}
 
+	@Override
+	public List<Star> getStarList(String seriesId) {
+		return starDao.getStarListBySeriesId(seriesId);
+	}
+
 }

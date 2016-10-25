@@ -24,7 +24,9 @@ import DataAn.common.controller.BaseController;
 import DataAn.common.dao.Pager;
 import DataAn.common.pageModel.EasyuiDataGridJson;
 import DataAn.common.pageModel.JsonMessage;
+import DataAn.fileSystem.option.J9SeriesType;
 import DataAn.fileSystem.option.J9Series_Star_ParameterType;
+import DataAn.fileSystem.option.SeriesType;
 import DataAn.fileSystem.service.IJ9Series_Star_Service;
 import DataAn.galaxyManager.domain.Series;
 import DataAn.galaxyManager.domain.Star;
@@ -68,7 +70,7 @@ public class StarParamController  extends BaseController {
 		//当前所在参数名称
 		model.addAttribute("nowParameterTypeValue", value);
 		model.addAttribute("nowParameterTypeName", name);			
-		//当前所在目录
+		//当前所在目录 
 		model.addAttribute("nowDirId", 0);
 		return "/admin/reportManager/paramManager";
 	}
@@ -80,11 +82,16 @@ public class StarParamController  extends BaseController {
 		String series = request.getParameter("series");
 		String star = request.getParameter("star");
 		String parameterType = request.getParameter("parameterType");
-		Pager<StarParamDto> pager = starParamService.getStarParamList(page, rows, series,star,
-				parameterType);
-		if(pager != null){
-			json.setTotal(pager.getTotalCount());
-			json.setRows(pager.getDatas());	
+		Pager<StarParamDto> pager;
+		try {
+			pager = starParamService.getStarParamList(page, rows, series,star,
+					parameterType);
+			if(pager != null){
+				json.setTotal(pager.getTotalCount());
+				json.setRows(pager.getDatas());	
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 		return json;
 	}
@@ -201,7 +208,29 @@ public class StarParamController  extends BaseController {
 			 data.put("data", starDtoList);
 			 res.setData(data);
 		 } catch (Exception ex) {
-			 res.setMsg("下载失败！");
+			 res.setMsg("获取星失败！");
+			 res.setResult(CommonsConstant.RESULT_FALSE);
+		 }
+		 return res;
+	}
+	
+	@RequestMapping(value = "/getConstraintList")
+	@ResponseBody
+	public ResultJSON getConstraintList(HttpServletRequest request,String seriesId,String starId,String partstype) {
+		ResultJSON res = ResultJSON.getSuccessResultJSON();
+		try {
+			if(StringUtils.isBlank(seriesId)) {
+				 seriesId = 	SeriesType.J9_SERIES.getName();
+			}
+			if(StringUtils.isBlank(starId)) {
+				 starId = J9SeriesType.STRA1.getValue();
+			}
+			 List<ConstraintDto> starList = starParamService.getConstraintList(seriesId,starId,partstype); 
+			 Map<String, Object> data = new HashMap<String, Object>();
+			 data.put("data", starList);
+			 res.setData(data);
+		 } catch (Exception ex) {
+			 res.setMsg("获取参数失败！");
 			 res.setResult(CommonsConstant.RESULT_FALSE);
 		 }
 		 return res;

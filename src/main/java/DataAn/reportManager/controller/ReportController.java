@@ -1,7 +1,10 @@
 package DataAn.reportManager.controller;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -28,6 +31,8 @@ import DataAn.reportManager.dao.IStarParamDao;
 import DataAn.reportManager.domain.StarParam;
 import DataAn.reportManager.service.IReoportService;
 import DataAn.reportManager.service.IStarParamService;
+import DataAn.reportManager.util.CommonsConstant;
+import DataAn.reportManager.util.ResultJSON;
 import DataAn.sys.dto.ActiveUserDto;
 import DataAn.wordManager.config.OptionConfig;
 
@@ -170,28 +175,60 @@ public class ReportController {
 		}
 		return jsonMsg;
 	}
-	@RequestMapping(value = { "/createReport" })
-	public void  createReport(HttpServletResponse response,HttpServletRequest request,String seriesId,String starId,String partsType,String beginTime,String endTime) throws Exception {
+	@RequestMapping(value = { "/downloadReport" })
+	public void  downloadReport(HttpServletResponse response,HttpServletRequest request,String docPath,String filename) throws Exception {
 		
-			String imgUrl = OptionConfig.getWebPath() + "\\report\\wordtemplate\\satellite.jpg";  
-			String templateUrl = OptionConfig.getWebPath() + "\\report\\wordtemplate\\卫星状态报告.doc";
-			String templateNullUrl = OptionConfig.getWebPath() + "\\report\\wordtemplate\\nullData.doc";
+//			String imgUrl = OptionConfig.getWebPath() + "\\report\\wordtemplate\\satellite.jpg";  
+//			String templateUrl = OptionConfig.getWebPath() + "\\report\\wordtemplate\\卫星状态报告.doc";
+//			String templateNullUrl = OptionConfig.getWebPath() + "\\report\\wordtemplate\\nullData.doc";
 			
-			String time = DateUtil.getNowTime("yyyy-MM-dd");
-			String filename = seriesId+"_"+starId+"_"+partsType+"_"+time+".doc";
-			String docPath = OptionConfig.getWebPath() + "report\\"+filename;
-			Date beginDate = DateUtil.format(beginTime,"yyyy-MM-dd HH:mm:ss");
-			Date endDate =  DateUtil.format(endTime,"yyyy-MM-dd HH:mm:ss");
+//			String time = DateUtil.getNowTime("yyyy-MM-dd");
+//			String filename = seriesId+"_"+starId+"_"+partsType+"_"+time+".doc";
+//			String docPath = OptionConfig.getWebPath() + "report\\"+filename;
+//			Date beginDate = DateUtil.format(beginTime,"yyyy-MM-dd HH:mm:ss");
+//			Date endDate =  DateUtil.format(endTime,"yyyy-MM-dd HH:mm:ss");
 		try {	
-			reoportService.createReport(beginDate, endDate, filename, imgUrl, templateUrl, docPath, seriesId, starId, partsType);
+			//reoportService.createReport(beginDate, endDate, filename, imgUrl, templateUrl, docPath, seriesId, starId, partsType);
 			reoportService.downloadReport(response, docPath,filename);
 			reoportService.removeDoc(docPath);
 		} catch (Exception e) {
-			reoportService.reportNullDoc(filename,templateNullUrl, docPath, beginTime, endTime);
-			reoportService.downloadReport(response, docPath,filename);
-			reoportService.removeDoc(docPath);
+			e.printStackTrace();
+			//reoportService.reportNullDoc(filename,templateNullUrl, docPath, beginTime, endTime);
+//			reoportService.downloadReport(response, docPath,filename);
+//			reoportService.removeDoc(docPath);
 		}
 	}
+	
+	@RequestMapping(value = "/createReport")
+	@ResponseBody
+	public ResultJSON createReport(HttpServletRequest request,String seriesId,String starId,String partsType,String beginTime,String endTime) {
+		ResultJSON res = ResultJSON.getSuccessResultJSON();
+		
+		String imgUrl = OptionConfig.getWebPath() + "\\report\\wordtemplate\\satellite.jpg";  
+		String templateUrl = OptionConfig.getWebPath() + "\\report\\wordtemplate\\卫星状态报告.doc";
+//		String templateNullUrl = OptionConfig.getWebPath() + "\\report\\wordtemplate\\nullData.doc";
+		
+		String time = DateUtil.getNowTime("yyyy-MM-dd");
+		String filename = seriesId+"_"+starId+"_"+partsType+"_"+time+".doc";
+		String docPath = OptionConfig.getWebPath() + "report\\"+filename;
+		Date beginDate = DateUtil.format(beginTime,"yyyy-MM-dd");
+		Date endDate =  DateUtil.format(endTime,"yyyy-MM-dd");
+		try {
+			reoportService.createReport(beginDate, endDate, filename, imgUrl, templateUrl, docPath, seriesId, starId, partsType);
+			
+			 Map<String, Object> data = new HashMap<String, Object>();
+			 data.put("docPath", docPath);
+			 data.put("filename", filename);
+			 res.setData(data);
+		 } catch (Exception ex) {
+			 ex.printStackTrace();
+			 res.setMsg(ex.getMessage());
+			 res.setResult(CommonsConstant.RESULT_FALSE);
+		 }
+		 return res;
+	}
+	
+	
 	@RequestMapping(value = { "/createReportTest" })
 	public void createReprotTest() throws Exception{
 

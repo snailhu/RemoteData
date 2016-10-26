@@ -28,6 +28,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     <link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/static/content/jeDate/jedate/skin/jedate.css">
     <script type="text/javascript" src="${pageContext.request.contextPath}/static/content/jeDate/jedate/jedate.js"></script>
     
+    <script  src="<%=request.getContextPath()%>/static/showLoading/js/jquery.showLoading.min.js"></script>
+      <link rel="stylesheet"  href="<%=request.getContextPath()%>/static/showLoading/css/showLoading.css" />
+    
 <style type="text/css">
 .sweet-alert h2 {
 	color: rgb(87, 87, 87);
@@ -137,19 +140,19 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     <div class="main-content">
 		<div class="page-content">
 			<div class="page-header" style="margin: 0px;float: left;">
-				<h1>报告下载</h1>
+				<h1>实时报告下载</h1>
 			</div>
 			<div >
 				<div class="col-xs-12 col-sm-12">
 					<!-- PAGE CONTENT BEGINS -->
-					<div class="widget-box">
+					<div class="widget-box" id = "downloadReport">
 						<div class="widget-header" id="change-search-box" data-action="collapse">
 							<h4>参数</h4>
-							<div class="widget-toolbar">
+							<!-- <div class="widget-toolbar">
 								<a href="javascript:void(0);" >
 									<i class="icon-chevron-up"></i>
 								</a>
-							</div>
+							</div> -->
 						</div>
 						<div class="widget-body">
 							<div class="widget-main">
@@ -173,7 +176,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 									</div>
 									<div class="space-4"></div>
 									<div class="form-group">
-										<label class="col-sm-3 control-label no-padding-right" for="form-partsType">部件：</label>
+										<label class="col-sm-3 control-label no-padding-right" for="form-partsType">设备：</label>
 										<div class="col-sm-4">
 											<select name="partsType"  id="form-partsType" class="form-control " >
 				                           		<option selected="selected" value = "flywheel">飞轮</option>
@@ -185,18 +188,16 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 									<div class="form-group">
 										<label class="col-sm-3 control-label no-padding-right" for="form-beginTime"> 开始日期： </label>
 										<div class="col-sm-4">
-												<input class="datainp" id="form-beginTime"   name="beginTime" type="text" placeholder="请选择" readonly>
-											<!-- <input type="text" id="form-beginTime" name="beginTime" placeholder="日期" class="col-xs-10 col-sm-5" />
-											<div id="getBeginTime"></div> -->
+											<input type="text" id="form-beginTime" name="beginTime" placeholder="日期" class="col-xs-10 col-sm-5" />
+											<div id="getBeginTime"></div>
 										</div>
 									</div>
 									<div class="space-1"></div>
 									<div class="form-group">
 										<label class="col-sm-3 control-label no-padding-right" for="form-endTime"> 结束日期： </label>
 										<div class="col-sm-4">
-											<input class="datainp"  id="form-endTime" name="endTime"  type="text" placeholder="请选择" readonly>
-											<!-- <input type="text" id="form-endTime" name="endTime" placeholder="日期" class="col-xs-10 col-sm-5" />
-											<div id="getEndTime"></div> -->
+											<input type="text" id="form-endTime" name="endTime" placeholder="日期" class="col-xs-10 col-sm-5" />
+											<div id="getEndTime"></div>
 										</div>
 									</div>
 									
@@ -226,26 +227,24 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
 $(function(){
 	  
-		jeDate({
-			dateCell:"#form-beginTime",//直接显示日期层的容器，可以是ID  CLASS
-			format:"YYYY-MM-DD hh:mm:ss",//日期格式
-			isinitVal:false, //是否初始化时间
-			festival:false, //是否显示节日
-			isTime:true, //是否开启时间选择
-			//minDate:"2014-09-19 00:00:00",//最小日期
-			maxDate:jeDate.now(0), //设定最大日期为当前日期
-		});
-		jeDate({
-			dateCell:"#form-endTime",//直接显示日期层的容器，可以是ID  CLASS
-			format:"YYYY-MM-DD hh:mm:ss",//日期格式
-			isinitVal:false, //是否初始化时间
-			festival:false, //是否显示节日
-			isTime:true, //是否开启时间选择
-			//minDate:"2014-09-19 00:00:00",//最小日期
-			maxDate:jeDate.now(0), //设定最大日期为当前日期
-		});
-	  
-	  
+	  $('#getBeginTime').calendar({
+	        trigger: '#form-beginTime',
+	        zIndex: 999,
+			format: 'yyyy-mm-dd',
+	        onSelected: function (view, date, data) {
+	        },
+	        onClose: function (view, date, data) {
+	        }
+	    });
+	  $('#getEndTime').calendar({
+	        trigger: '#form-endTime',
+	        zIndex: 999,
+			format: 'yyyy-mm-dd',
+	        onSelected: function (view, date, data) {
+	        },
+	        onClose: function (view, date, data) {
+	        }
+	    });
 
       $.get('<%=request.getContextPath()%>/starParam/getSeriesList', {}, function (res) {
 		  if(res.result == "true") {
@@ -284,15 +283,75 @@ $(function(){
 	          });	
 	});
 });
+
+
+		function dateDiff(date1, date2) {
+		    var type1 = typeof date1, type2 = typeof date2;
+		    if (type1 == 'string')
+		        date1 = stringToTime(date1);
+		    else if (date1.getTime)
+		        date1 = date1.getTime();
+		    if (type2 == 'string')
+		        date2 = stringToTime(date2);
+		    else if (date2.getTime)
+		        date2 = date2.getTime();
+		    //alert((date1 - date2) / (1000*60*60)); 
+		    return (date1 - date2) / (1000 * 60 * 60 * 24); //结果是小时 
+		}
+		//字符串转成Time(dateDiff)所需方法 
+		function stringToTime(string) {
+		    var f = string.split(' ', 2);
+		    var d = (f[0] ? f[0] : '').split('-', 3);
+		    var t = (f[1] ? f[1] : '').split(':', 3);
+		    return (new Date(
+		   parseInt(d[0], 10) || null,
+		   (parseInt(d[1], 10) || 1) - 1,
+		    parseInt(d[2], 10) || null,
+		    parseInt(t[0], 10) || null,
+		    parseInt(t[1], 10) || null,
+		    parseInt(t[2], 10) || null
+		    )).getTime();
+		}
+
+
 	$('#btn-downLoad').click(function(){
 			var Qseries =  $('#form-series').val();
 			var Qstar = $('#form-star').val();
 			var QpartsType = $('#form-partsType').val();
 			var QbeginTime = $("#form-beginTime").val();
 			var QendTime = $("#form-endTime").val();
+			if(QbeginTime == '') {
+				  top.showMsg('提示', "开始日期不能为空");
+				  return false;
+			}
+			if(QendTime == '') {
+				  top.showMsg('提示', "结束日期不能为空");
+				  return false;
+			}
+			var t = dateDiff(QendTime, QbeginTime);
+			if(t<=0) {
+				 top.showMsg('提示', "结束日期不能小于开始日期");
+				  return false;
+			}
+			if(t>7) {
+				 top.showMsg('提示', "日期区间不能大于一周");
+				  return false;
+			}
+			
          	var data = {'seriesId':Qseries,'starId':Qstar,'partsType':QpartsType,'beginTime':QbeginTime,'endTime':QendTime};
-         	window.location.href="report/createReport?seriesId="+Qseries+"&starId="+Qstar+"&partsType="+QpartsType+"&beginTime="+QbeginTime+"&endTime="+QendTime;
-         	
+        	$("#downloadReport").showLoading(); 
+         	 $.get('<%=request.getContextPath()%>/report/createReport', data ,  function (res) {
+				  if(res.result == "true") {
+					  $("#downloadReport").hideLoading();
+					 	var docPath = res.data.docPath;
+					 	var filename = res.data.filename;
+         				window.location.href="report/downloadReport?docPath="+docPath+"&filename="+filename;
+	              }
+	              else {
+	            	  $("#downloadReport").hideLoading();
+	            	  top.showMsg('提示', res.msg);
+	              }
+	          });	
 		});
 	</script>	
   </body>

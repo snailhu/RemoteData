@@ -2,6 +2,7 @@ package DataAn.reportManager.service;
 
 import java.util.List;
 
+import DataAn.Analysis.dto.ConstraintDto;
 import DataAn.common.dao.Pager;
 import DataAn.galaxyManager.domain.Series;
 import DataAn.galaxyManager.domain.Star;
@@ -10,7 +11,7 @@ import DataAn.reportManager.dto.StarParamDto;
 
 public interface IStarParamService {
 
-	public Pager<StarParamDto> getStarParamList(int pageIndex, int pageSize, String series, String star, String parameterType);
+	public Pager<StarParamDto> getStarParamList(int pageIndex, int pageSize, String series, String star, String parameterType) throws Exception;
 
 	public void save(StarParamDto starParamDto) throws Exception ;
 
@@ -26,4 +27,5 @@ public interface IStarParamService {
 	
 	public List<StarParam> getStarParamForReport(String seriesId,String starId,String partsType);
 
+	public List<ConstraintDto> getConstraintList(String series,String star,String paramType) throws Exception;
 }

@@ -249,6 +249,7 @@ public class JfreechartServiceImpl implements IJfreechartServcie {
 				// 多条线图表数据
 				TimeSeriesCollection dataset = new TimeSeriesCollection();
 				for (ConstraintDto constraintDto : constraintList) {
+					
 					dataset.addSeries(lineMap.get(constraintDto.getValue()));
 					
 //					System.out.println("constraintDto.getValue(): "
@@ -281,7 +282,7 @@ public class JfreechartServiceImpl implements IJfreechartServcie {
 			lineChartDto.setMaxMap(maxMap);
 			return lineChartDto;
 		}else{
-			throw new Exception("暂无数据集！！！");
+			throw new RuntimeException("未找到报告数据！");
 		}
 		
 	}

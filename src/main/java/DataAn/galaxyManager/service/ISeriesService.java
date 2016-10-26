@@ -20,11 +20,15 @@ public interface ISeriesService {
 	
 	public void updateSeries(SeriesDto dto);
 	
-	public Pager<SeriesDto> getRoleList(int pageIndex, int pageSize);
+	public Pager<SeriesDto> getSeriesList(int pageIndex, int pageSize);
+	
+	public List<SeriesDto> getAllSeries();
 	
 	public SeriesDto getSeriesDto(long seriesId);
 
-	public void initSeries();
-
 	public List<Combo> getSeriesComboData(long seriesId);
+	
+	public boolean checkSeriesAndStar(String series, String star);
+	
+	public void initJ9Series();
 }

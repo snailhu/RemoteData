@@ -52,7 +52,7 @@ public class ParameterController {
 		System.out.println(param);
 		JsonMessage jsonMsg = new JsonMessage();
 		try {
-			parameterService.save(param.getSeries(),param.getStar(),param.getName());
+			parameterService.saveOne(param.getSeries(),param.getStar(),param.getParameterType(), param.getFullName());
 		} catch (Exception e) {
 			e.printStackTrace();
 			jsonMsg.setSuccess(false);
@@ -71,7 +71,7 @@ public class ParameterController {
 			  					@RequestParam(value = "description", required = false) String description){
 		ParameterDto Param = new ParameterDto();
 		Param.setId(id);
-		Param.setName(name);
+		Param.setFullName(name);
 		System.out.println("come in editParam");
 		System.out.println(Param);
 		JsonMessage jsonMsg = new JsonMessage();

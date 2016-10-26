@@ -34,7 +34,7 @@ public class SeriesController {
 	public EasyuiDataGridJson getRoleList(int page, int rows) {
 //		System.out.println("come in getroleList..");
 		EasyuiDataGridJson json = new EasyuiDataGridJson();
-		Pager<SeriesDto> pager = seriesService.getRoleList(page, rows);
+		Pager<SeriesDto> pager = seriesService.getSeriesList(page, rows);
 		json.setRows(pager.getRows());
 		json.setTotal(pager.getTotalCount());			
 		return json;

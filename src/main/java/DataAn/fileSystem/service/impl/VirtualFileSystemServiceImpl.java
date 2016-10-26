@@ -13,10 +13,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
+
 import javax.annotation.Resource;
+
 import org.bson.Document;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import DataAn.common.config.CommonConfig;
 import DataAn.common.pageModel.Pager;
 import DataAn.common.utils.DateUtil;
@@ -31,10 +34,10 @@ import DataAn.fileSystem.dto.FileDto;
 import DataAn.fileSystem.dto.MongoFSDto;
 import DataAn.fileSystem.option.FileDataType;
 import DataAn.fileSystem.option.FileType;
-import DataAn.fileSystem.option.J9SeriesType;
-import DataAn.fileSystem.option.SeriesType;
 import DataAn.fileSystem.service.ICSVService;
 import DataAn.fileSystem.service.IVirtualFileSystemService;
+import DataAn.galaxyManager.option.J9SeriesType;
+import DataAn.galaxyManager.option.SeriesType;
 import DataAn.mongo.fs.IDfsDb;
 import DataAn.mongo.fs.MongoDfsDb;
 import DataAn.mongo.init.InitMongo;
@@ -89,9 +92,9 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 		csvFileDto.setFilePath(csvTempFilePath);
 		
 		// 保存 *.csv文件
-		//this.saveFileOfCSV(csvFileDto, dataMap);
+		this.saveFileOfCSV(csvFileDto, dataMap);
 		//测试分级数据存储
-		this.saveFileOfCSVMock(csvFileDto, dataMap);
+		//this.saveFileOfCSVMock(csvFileDto, dataMap);
 		
 		//获取map中的csv文件
 		FileDto datFile = map.get("dat");
@@ -99,7 +102,12 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 			// 保存 *.DAT文件
 			this.saveFileOfDAT(datFile, dataMap);
 		}
-				
+		
+		new Thread(new SaveFileToKafka(nowSeries, 
+									   nowStar, 
+									   csvFileDto.getParameterType(), 
+									   csvTempFilePath)).start();
+		
 		return versions;
 	}
 	
@@ -374,7 +382,7 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 		} catch(Exception e){
 			//删除上传csv原文件
 			dfs.delete(uuId);
-			throw new Exception("csv 文件上传失败！！！");
+			throw new RuntimeException("csv 文件上传失败！！！");
 		}finally {
 			if(bis != null){
 				bis.close();

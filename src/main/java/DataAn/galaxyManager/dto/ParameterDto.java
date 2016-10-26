@@ -8,7 +8,11 @@ public class ParameterDto {
 	
 	private String star;
 	
-	private String name;
+	private String parameterType;
+	
+	private String fullName;
+	
+	private String simplyName;
 	
 	private String code;
 
@@ -36,12 +40,28 @@ public class ParameterDto {
 		this.star = star;
 	}
 
-	public String getName() {
-		return name;
+	public String getParameterType() {
+		return parameterType;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setParameterType(String parameterType) {
+		this.parameterType = parameterType;
+	}
+
+	public String getFullName() {
+		return fullName;
+	}
+
+	public void setFullName(String fullName) {
+		this.fullName = fullName;
+	}
+
+	public String getSimplyName() {
+		return simplyName;
+	}
+
+	public void setSimplyName(String simplyName) {
+		this.simplyName = simplyName;
 	}
 
 	public String getCode() {
@@ -55,8 +75,10 @@ public class ParameterDto {
 	@Override
 	public String toString() {
 		return "ParameterDto [id=" + id + ", series=" + series + ", star="
-				+ star + ", name=" + name + ", code=" + code + "]";
+				+ star + ", fullName=" + fullName + ", simplyName="
+				+ simplyName + ", code=" + code + "]";
 	}
+
 	
 	
 }

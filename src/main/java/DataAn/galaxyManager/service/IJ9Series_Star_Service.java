@@ -1,4 +1,4 @@
-package DataAn.fileSystem.service;
+package DataAn.galaxyManager.service;
 
 import java.util.List;
 import java.util.Map;
@@ -12,8 +12,7 @@ import DataAn.Analysis.dto.ConstraintDto;
 * @date 2016年7月26日
 */
 public interface IJ9Series_Star_Service {
-	
-	
+
 	/**
 	* Description: 获取某个时间段的所有参数信息
 	* @param beginDate
@@ -29,7 +28,7 @@ public interface IJ9Series_Star_Service {
 	
 	public List<ConstraintDto> getAllParameterList(String beginDate,String endDate,
 			String series, String star, String paramType) throws Exception;
-
+	
 	/**
 	* Description: 获取飞轮类型的参数列表
 	* @return 
@@ -120,4 +119,5 @@ public interface IJ9Series_Star_Service {
 	public Map<String,String> getAllParameterList_allZh_and_enByOption(String type, 
 			List<String> params) throws Exception;
 
+	public void initJ9SeriesParameterData() throws Exception;
 }

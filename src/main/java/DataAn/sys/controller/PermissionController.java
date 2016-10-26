@@ -1,15 +1,12 @@
 package DataAn.sys.controller;
 
 import java.util.List;
-
 import javax.annotation.Resource;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-
 import DataAn.common.dao.Pager;
 import DataAn.common.pageModel.EasyuiDataGridJson;
 import DataAn.common.pageModel.EasyuiTreeNode;
@@ -68,6 +65,13 @@ public class PermissionController {
 //		System.out.println("come in createPermissionGroup....");
 //		System.out.println(permissionGroup);
 		JsonMessage jsonMsg = new JsonMessage();
+		//判断此权限组是否存在
+		boolean flag = permissionService.isExistPermissionGroup(permissionGroup);
+		if(flag){
+			jsonMsg.setSuccess(false);
+			jsonMsg.setMsg("权限组已存在！");
+			return jsonMsg;
+		}
 		try {
 			permissionService.savePermissionGroup(permissionGroup);
 		} catch (Exception e) {
@@ -144,6 +148,13 @@ public class PermissionController {
 //		System.out.println("come in createPermissionItem..");
 //		System.out.println(permissionItem);
 		JsonMessage jsonMsg = new JsonMessage();
+		//判断权限项是否存在
+		boolean flag = permissionService.isExistPermissionItem(permissionItem);
+		if(flag){
+			jsonMsg.setSuccess(false);
+			jsonMsg.setMsg("权限项已存在！");
+			return jsonMsg;
+		}
 		try {
 			permissionService.savePermissionItem(permissionItem);
 		} catch (Exception e) {

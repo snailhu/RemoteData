@@ -1,4 +1,4 @@
-package DataAn.fileSystem.service.impl;
+package DataAn.galaxyManager.service.impl;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -16,8 +16,10 @@ import DataAn.Analysis.dto.ConstraintDto;
 import DataAn.Util.EhCache;
 import DataAn.fileSystem.dao.IDateParametersDao;
 import DataAn.fileSystem.domain.DateParameters;
-import DataAn.fileSystem.option.J9Series_Star_ParameterType;
-import DataAn.fileSystem.service.IJ9Series_Star_Service;
+import DataAn.galaxyManager.option.J9SeriesType;
+import DataAn.galaxyManager.option.J9Series_Star_ParameterType;
+import DataAn.galaxyManager.option.SeriesType;
+import DataAn.galaxyManager.service.IJ9Series_Star_Service;
 import DataAn.galaxyManager.service.IParameterService;
 
 @Service
@@ -67,7 +69,7 @@ public class J9Series_Star_ServiceImpl implements IJ9Series_Star_Service{
 			}
 			List<String> dataTypes = null;
 			if(type.equals(J9Series_Star_ParameterType.FLYWHEEL.getValue())){
-				dataTypes = J9Series_Star_ParameterType.getFlywheelTypeOnName();
+				dataTypes = J9Series_Star_ParameterType.getFlywheelTypeOnParamTypeName();
 			}else{
 				dataTypes = J9Series_Star_ParameterType.getTopTypeOnName();
 			}
@@ -93,12 +95,12 @@ public class J9Series_Star_ServiceImpl implements IJ9Series_Star_Service{
 			Map<String,String> simplyZh_and_enMap = new HashMap<String,String>();
 			String param_en = "";
 			for (String param_zh : paramSet) {
-				param_en = paramService.getParameter_en_by_allZh(series, star, param_zh);
+				param_en = paramService.getParameter_en_by_allZh(series, star,paramType, param_zh);
 				simplyZh_and_enMap.put(param_zh.split(":")[1], param_en);
 			}
 			List<String> dataTypes = null;
 			if(paramType.equals(J9Series_Star_ParameterType.FLYWHEEL.getValue())){
-				dataTypes = J9Series_Star_ParameterType.getFlywheelTypeOnName2();
+				dataTypes = J9Series_Star_ParameterType.getFlywheelTypeOnParamTypeName();
 			}else{
 				dataTypes = J9Series_Star_ParameterType.getTopTypeOnName();
 			}
@@ -115,7 +117,7 @@ public class J9Series_Star_ServiceImpl implements IJ9Series_Star_Service{
 		if(list == null || list.size() == 0){
 //			System.out.println("getFlyWheelParameterList cache is null");
 			String type = J9Series_Star_ParameterType.FLYWHEEL.getName();
-			List<String> flyWheelDataTypes = J9Series_Star_ParameterType.getFlywheelTypeOnName();
+			List<String> flyWheelDataTypes = J9Series_Star_ParameterType.getFlywheelTypeOnParamTypeName();
 			Map<String,String> map = this.getAllParameterList_simplyZh_and_en(this.getAllParameterList_allZh_and_enByOption(type,flyWheelDataTypes));
 			list = this.getFlyWheelOrTopParameterList(map,flyWheelDataTypes);	
 			ehCache.addToCache("flyWheelParameterList", list);
@@ -125,28 +127,18 @@ public class J9Series_Star_ServiceImpl implements IJ9Series_Star_Service{
 
 	@Override
 	public String getFlyWheelParameterType(String param_en) throws Exception {
-		Map<String,String> map = this.getAllParameterList_en_and_simplyZh();
-		String param = map.get(param_en);
-		List<String> typeList = J9Series_Star_ParameterType.getFlywheelTypeOnParams();
-		for (String type : typeList) {
-			if(param.indexOf(type) > -1){
-				return type;
-			}
-		}
-		return null;
+		String series = SeriesType.J9_SERIES.getName();
+		String star = J9SeriesType.STRA2.getValue();
+		String paramType = J9Series_Star_ParameterType.FLYWHEEL.getValue();
+		return paramService.getParameter_dataType_by_en(series, star, paramType, param_en);
 	}
 
 	@Override
 	public String getFlyWheelName(String param_en) throws Exception {
-		Map<String,String> map = this.getAllParameterList_en_and_simplyZh();
-		String param = map.get(param_en);
-		List<String> typeList = J9Series_Star_ParameterType.getFlywheelTypeOnName2();
-		for (String type : typeList) {
-			if(param.indexOf(type) > -1){
-				return type;
-			}
-		}
-		return null;
+		String series = SeriesType.J9_SERIES.getName();
+		String star = J9SeriesType.STRA2.getValue();
+		String paramType = J9Series_Star_ParameterType.FLYWHEEL.getValue();
+		return paramService.getParameter_paramTypeName_by_en(series, star, paramType, param_en);
 	}
 
 	
@@ -251,7 +243,7 @@ public class J9Series_Star_ServiceImpl implements IJ9Series_Star_Service{
 		Map<String,String> map = (Map<String, String>) ehCache.getCacheElement("allParameterList_allZh_and_enByOption");
 		if(map == null || map.size() == 0){
 			map = new HashMap<String,String>();
-			Class<?> pojoClass = Class.forName("DataAn.fileSystem.option.J9Series_Star_ParameterConfig");
+			Class<?> pojoClass = Class.forName("DataAn.galaxyManager.option.J9Series_Star_ParameterConfig");
 			Object obj = pojoClass.newInstance();
 			Field[] fields = pojoClass.getDeclaredFields();
 			String key = "";
@@ -325,4 +317,19 @@ public class J9Series_Star_ServiceImpl implements IJ9Series_Star_Service{
 		return list;
 	}
 
+	@Override
+	public void initJ9SeriesParameterData() throws Exception {
+		//初始化飞轮参数数据
+		String type = J9Series_Star_ParameterType.FLYWHEEL.getName();
+		String paramType = J9Series_Star_ParameterType.FLYWHEEL.getValue();
+		//"电流","转速","温度","指令","供电状态","角动量"
+		List<String> params = J9Series_Star_ParameterType.getFlywheelTypeOnDataType();
+		Map<String,String> map =  this.getAllParameterList_allZh_and_enByOption(type,null);
+		Set<String> keys = map.keySet();
+		String series = SeriesType.J9_SERIES.getName();
+		String star = J9SeriesType.STRA2.getValue();
+		for (String key : keys) {
+			paramService.getParameter_en_by_allZh(series, star,paramType, key);
+		}
+	}
 }

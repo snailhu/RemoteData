@@ -147,7 +147,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                   validators: {
                       notEmpty: {
                           message: '系列编码不能为空'
-                      }
+                      },
+                      regexp : { 
+                          regexp : /^[A-Za-z0-9]+$/,
+                          message : '系列编码由字母和数字组成'
+                      },
                   }
               },
               description : {
@@ -179,7 +183,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                   validators: {
                       notEmpty: {
                           message: '系列编码不能为空'
-                      }
+                      },
+                      regexp : { 
+                          regexp : /^[A-Za-z0-9]+$/,
+                          message : '系列编码由字母和数字组成'
+                      },
                   }
               },
               description : {
@@ -211,7 +219,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
               validators: {
                   notEmpty: {
                       message: '星编码不能为空'
-                  }
+                  },
+                  regexp : { 
+                      regexp : /^[A-Za-z0-9]+$/,
+                      message : '星编码由字母和数字组成'
+                  },
               }
           },
           beginDate: {
@@ -254,7 +266,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                 validators: {
                     notEmpty: {
                         message: '星编码不能为空'
-                    }
+                    },
+                    regexp : { 
+                        regexp : /^[A-Za-z0-9]+$/,
+                        message : '星编码由字母和数字组成'
+                    },
                 }
             },
             beginDate: {
@@ -327,7 +343,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					</div>
 				</div>
 			</div>
-			<table id="galaxyList" fit="false" border="false" height="400px">
+			<table id="galaxyList" fit="false" border="false" height="500px">
 				<thead>
 					<tr>
 						<th field="ck" checkbox="true"></th>

@@ -31,12 +31,20 @@ public class Parameter {
 	@Column(name = "star", nullable = false, length = 16)
 	private String star;
 	
-	//参数名
-	@Column(name = "name", nullable = false, length = 64)
-	private String name;
+	//参数 如: flywheel、top
+	@Column(name = "parameterType", nullable = false, length = 16)
+	private String parameterType;
+		
+	//参数名全称
+	@Column(name = "fullName", unique = true, nullable = false, length = 128)
+	private String fullName;
+	
+	//参数名简写
+	@Column(name = "simplyName", unique = true, nullable = true, length = 64)
+	private String simplyName;
 	
 	//参数码
-	@Column(name = "code", nullable = false, length = 64)
+	@Column(name = "code", unique = true, nullable = false, length = 64)
 	private String code;
 
 	public Long getId() {
@@ -63,12 +71,28 @@ public class Parameter {
 		this.star = star;
 	}
 
-	public String getName() {
-		return name;
+	public String getParameterType() {
+		return parameterType;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setParameterType(String parameterType) {
+		this.parameterType = parameterType;
+	}
+
+	public String getFullName() {
+		return fullName;
+	}
+
+	public void setFullName(String fullName) {
+		this.fullName = fullName;
+	}
+
+	public String getSimplyName() {
+		return simplyName;
+	}
+
+	public void setSimplyName(String simplyName) {
+		this.simplyName = simplyName;
 	}
 
 	public String getCode() {

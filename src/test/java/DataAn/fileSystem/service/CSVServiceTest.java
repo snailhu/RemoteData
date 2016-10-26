@@ -9,16 +9,21 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
 import javax.annotation.Resource;
+
 import org.bson.Document;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
 import DataAn.common.utils.DateUtil;
 import DataAn.common.utils.UUIDGeneratorUtil;
 import DataAn.fileSystem.dto.CSVFileDataResultDto;
-import DataAn.fileSystem.option.J9Series_Star_ParameterType;
+import DataAn.galaxyManager.option.J9Series_Star_ParameterType;
+import DataAn.galaxyManager.service.IJ9Series_Star_Service;
+
 import com.csvreader.CsvWriter;
 
 
@@ -115,7 +120,7 @@ public class CSVServiceTest {
 	public void testWriteCSVByJavacsv(int year,int month,int day) throws Exception{
 		String type = J9Series_Star_ParameterType.FLYWHEEL.getName();
 		//飞轮-->"电流","转速","温度","指令","供电状态","角动量"
-		List<String> params = J9Series_Star_ParameterType.getFlywheelTypeOnParams();
+		List<String> params = J9Series_Star_ParameterType.getFlywheelTypeOnDataType();
 		Map<String,String> map =  j9Series_Star_Service.getAllParameterList_allZh_and_enByOption(type,params);
 		Set<String> keys = map.keySet();
 		List<String> titleList = new ArrayList<String>();

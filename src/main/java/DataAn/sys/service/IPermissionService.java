@@ -28,5 +28,9 @@ public interface IPermissionService {
 	List<PermissionItemDto> getPermissionItemsByPermissionGroupId(long permissionGroupId);
 
 	List<EasyuiTreeNode> getTree(long roleId);
+	
+	boolean isExistPermissionGroup(PermissionGroupDto permissionGroup);
+	
+	boolean isExistPermissionItem(PermissionItemDto permissionItem);
 
 }

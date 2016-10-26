@@ -145,7 +145,7 @@ $(function() {
                     },
                 }
             },
-            name : {
+            fullName : {
                 message : '参数名不能为空',
                 validators : {
                     notEmpty : {
@@ -167,7 +167,7 @@ $(function() {
             validating : 'glyphicon glyphicon-refresh'
         },
         fields : {
-            name : {
+        	fullName : {
                 message : '参数名不能为空',
                 validators : {
                     notEmpty : {
@@ -257,9 +257,9 @@ $(function() {
 								</div>
 								<div class="space-4"></div>
 								<div class="form-group">
-									<label class="col-sm-3 control-label no-padding-right" for="add-param-name"> 参数名称：</label>
+									<label class="col-sm-3 control-label no-padding-right" for="add-param-fullName"> 参数名称：</label>
 									<div class="col-sm-8">
-										<input type="text" name="name" id="add-param-name" class="form-control" placeholder="参数名称" />
+										<input type="text" name="fullName" id="add-param-fullName" class="form-control" placeholder="参数名称" />
 									</div>
 								</div>
 							</div>
@@ -296,9 +296,9 @@ $(function() {
                                 </div>
                                 <div class="space-4"></div>
                                 <div class="form-group">
-                                    <label class="col-sm-3 control-label no-padding-right" for="edit-param-name"> 参数名称：</label>
+                                    <label class="col-sm-3 control-label no-padding-right" for="edit-param-fullName"> 参数名称：</label>
                                     <div class="col-sm-8">
-                                        <input type="text" name="name" id="edit-param-name" class="form-control" placeholder="参数名称" />
+                                        <input type="text" name="fullName" id="edit-param-fullName" class="form-control" placeholder="参数名称" />
                                     </div>
                                 </div>
 							</div>
@@ -404,13 +404,13 @@ $(function() {
 	        	//赋值
 				var oldName = rows[0].name;
 				var oldDescription = rows[0].description;
-				$('#edit-param-name').val(oldName);
+				$('#edit-param-fullName').val(oldName);
 				$('#edit-param-description').val(oldDescription);
 				//弹出编辑框
 				$('#editParamModal').modal('show');
 				$('#submit_editParamInfo').click(function(){
 					if(isValid){
-						var name = $('#edit-param-name').val();
+						var name = $('#edit-param-fullName').val();
 						var description = $('#edit-param-description').val();
 						if(oldName != name){
 							$.post('${pageContext.request.contextPath}/admin/parameter/editParam', 

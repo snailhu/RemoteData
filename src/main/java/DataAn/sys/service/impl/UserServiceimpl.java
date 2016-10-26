@@ -58,18 +58,20 @@ public class UserServiceimpl implements IUserService{
 	@Transactional
 	public void save(UserDto userDto) {
 		User user = new User();
-		user.setUserName(userDto.getUserName());
-		user.setEmail(userDto.getEmail());
-		user.setMobile(userDto.getMobile());
-		user.setPassWord(userDto.getPassWord());
-		user.setRealName(userDto.getRealName());
-		user.setGender(userDto.getGender());
-		user.setCreateUser(userDto.getCreateUser());
-		user.setUpdateUser(user.getCreateUser());
-		user.setCreateDate(new Date());
-		user.setUpdateDate(user.getCreateDate());
-		user.setVersion(1);
-		userDao.add(user);
+		if (StringUtils.isNotBlank(userDto.getUserName())) {
+			user.setUserName(userDto.getUserName());
+			user.setEmail(userDto.getEmail());
+			user.setMobile(userDto.getMobile());
+			user.setPassWord(userDto.getPassWord());
+			user.setRealName(userDto.getRealName());
+			user.setGender(userDto.getGender());
+			user.setCreateUser(userDto.getCreateUser());
+			user.setUpdateUser(user.getCreateUser());
+			user.setCreateDate(new Date());
+			user.setUpdateDate(user.getCreateDate());
+			user.setVersion(1);
+			userDao.add(user);			
+		}
 	}
 
 	@Override
@@ -103,26 +105,27 @@ public class UserServiceimpl implements IUserService{
 		User user = userDao.get(userDto.getId());
 		if (StringUtils.isNotBlank(userDto.getUserName())) {
 			user.setUserName(userDto.getUserName());
+			
+			if (StringUtils.isNotBlank(userDto.getPassWord())) {
+				user.setPassWord(userDto.getPassWord());
+			}
+			if (StringUtils.isNotBlank(userDto.getEmail())) {
+				user.setEmail(userDto.getEmail());
+			}
+			if (StringUtils.isNotBlank(userDto.getMobile())) {
+				user.setMobile(userDto.getMobile());
+			}
+			if (StringUtils.isNotBlank(userDto.getRealName())) {
+				user.setRealName(userDto.getRealName());
+			}
+			user.setGender(userDto.getGender());
+			user.setUpdateUser(userDto.getUpdateUser());
+			user.setUpdateDate(new Date());
+			if(user.getVersion() != null){
+				user.setVersion(user.getVersion() + 1);			
+			}
+			userDao.update(user);
 		}
-		if (StringUtils.isNotBlank(userDto.getPassWord())) {
-			user.setPassWord(userDto.getPassWord());
-		}
-		if (StringUtils.isNotBlank(userDto.getEmail())) {
-			user.setEmail(userDto.getEmail());
-		}
-		if (StringUtils.isNotBlank(userDto.getMobile())) {
-			user.setMobile(userDto.getMobile());
-		}
-		if (StringUtils.isNotBlank(userDto.getRealName())) {
-			user.setRealName(userDto.getRealName());
-		}
-		user.setGender(userDto.getGender());
-		user.setUpdateUser(userDto.getUpdateUser());
-		user.setUpdateDate(new Date());
-		if(user.getVersion() != null){
-			user.setVersion(user.getVersion() + 1);			
-		}
-		userDao.update(user);
 	}
 	
 	@Override

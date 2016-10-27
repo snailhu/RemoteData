@@ -20,7 +20,7 @@ public class StarParamDao extends BaseDaoImpl<StarParam> implements IStarParamDa
 	@SuppressWarnings("unchecked")
 	@Override
 	public Pager<StarParam> selectByOption(int pageIndex, int pageSize, String series, String star,
-			String parameterType) {
+			String partsType) {
 		String hql = "from StarParam u where 1=1";
 		String countHql = "select count(*) from StarParam u where 1=1";
 		if(StringUtils.isNotBlank(series)){
@@ -31,9 +31,9 @@ public class StarParamDao extends BaseDaoImpl<StarParam> implements IStarParamDa
 			hql += " and u.star = :star";
 			countHql += " and u.star = :star";
 		}
-		if(StringUtils.isNotBlank(parameterType)){
-			hql += " and u.parameterType = :parameterType";
-			countHql += " and u.parameterType = :parameterType";
+		if(StringUtils.isNotBlank(partsType)){
+			hql += " and u.partsType = :partsType";
+			countHql += " and u.partsType = :partsType";
 		}
 			hql += " order by u.createDate";
 		
@@ -47,9 +47,9 @@ public class StarParamDao extends BaseDaoImpl<StarParam> implements IStarParamDa
 			query.setParameter("star", star);
 			countQuery.setParameter("star", star);
 		}
-		if(StringUtils.isNotBlank(parameterType)){
-			query.setParameter("parameterType", parameterType);
-			countQuery.setParameter("parameterType", parameterType);
+		if(StringUtils.isNotBlank(partsType)){
+			query.setParameter("partsType", partsType);
+			countQuery.setParameter("partsType", partsType);
 		}
 		Long totalCount = 0l;
 		Object obj = countQuery.uniqueResult();

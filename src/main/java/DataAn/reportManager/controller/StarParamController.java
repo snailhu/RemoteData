@@ -81,11 +81,11 @@ public class StarParamController  extends BaseController {
 		EasyuiDataGridJson json = new EasyuiDataGridJson();
 		String series = request.getParameter("series");
 		String star = request.getParameter("star");
-		String parameterType = request.getParameter("parameterType");
+		String partsType = request.getParameter("partsType");
 		Pager<StarParamDto> pager;
 		try {
 			pager = starParamService.getStarParamList(page, rows, series,star,
-					parameterType);
+					partsType);
 			if(pager != null){
 				json.setTotal(pager.getTotalCount());
 				json.setRows(pager.getDatas());	
@@ -219,12 +219,6 @@ public class StarParamController  extends BaseController {
 	public ResultJSON getConstraintList(HttpServletRequest request,String seriesId,String starId,String partstype) {
 		ResultJSON res = ResultJSON.getSuccessResultJSON();
 		try {
-			if(StringUtils.isBlank(seriesId)) {
-				 seriesId = 	SeriesType.J9_SERIES.getName();
-			}
-			if(StringUtils.isBlank(starId)) {
-				 starId = J9SeriesType.STRA1.getValue();
-			}
 			 List<ConstraintDto> starList = starParamService.getConstraintList(seriesId,starId,partstype); 
 			 Map<String, Object> data = new HashMap<String, Object>();
 			 data.put("data", starList);
@@ -235,7 +229,4 @@ public class StarParamController  extends BaseController {
 		 }
 		 return res;
 	}
-	
-	
-	
 }

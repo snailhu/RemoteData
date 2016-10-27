@@ -81,11 +81,11 @@ public class StarParamController  extends BaseController {
 		EasyuiDataGridJson json = new EasyuiDataGridJson();
 		String series = request.getParameter("series");
 		String star = request.getParameter("star");
-		String parameterType = request.getParameter("parameterType");
+		String partsType = request.getParameter("partsType");
 		Pager<StarParamDto> pager;
 		try {
 			pager = starParamService.getStarParamList(page, rows, series,star,
-					parameterType);
+					partsType);
 			if(pager != null){
 				json.setTotal(pager.getTotalCount());
 				json.setRows(pager.getDatas());	
@@ -235,7 +235,4 @@ public class StarParamController  extends BaseController {
 		 }
 		 return res;
 	}
-	
-	
-	
 }

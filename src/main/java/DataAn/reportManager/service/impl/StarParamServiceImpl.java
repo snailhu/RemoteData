@@ -42,14 +42,14 @@ public class StarParamServiceImpl implements IStarParamService {
 	
 	
 	@Override
-	public Pager<StarParamDto> getStarParamList(int pageIndex, int pageSize, String series, String star, String parameterType) throws Exception {
+	public Pager<StarParamDto> getStarParamList(int pageIndex, int pageSize, String series, String star, String partsType) throws Exception {
 
 		if(pageIndex == 0){
 			pageIndex = 1;
 		}
 		List<StarParamDto>  starParamModelList = new ArrayList<StarParamDto>();
 		Pager<StarParam> paramPager = starParamDao.selectByOption(pageIndex, pageSize, series, 
-				star, parameterType);
+				star, partsType);
 		List<StarParam> userList = paramPager.getDatas();
 		for (StarParam starParam : userList) {
 			starParamModelList.add(pojoToDto(starParam));

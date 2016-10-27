@@ -14,9 +14,9 @@
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
 	
-	<listener>
-		<listener-class>DataAn.common.listener.InitDataListener</listener-class>
-	</listener>
+<!-- 	<listener> -->
+<!-- 		<listener-class>DataAn.common.listener.InitDataListener</listener-class> -->
+<!-- 	</listener> -->
 	<listener>
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
 	</listener>

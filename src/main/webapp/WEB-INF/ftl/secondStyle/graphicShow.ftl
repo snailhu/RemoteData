@@ -7,6 +7,7 @@
     <script src="${base}/static/js/jquery-2.0.3.min.js"></script>
 
     <script type="text/javascript" src="${base}/static/scripts/echarts.js"></script>
+    <script type="text/javascript" src="${base}/static/scripts/test.js"></script>
     <!-- 时间选择器 -->
     <link type="text/css" rel="stylesheet" href="${base}/static/content/jeDate/jedate/skin/jedate.css">
     <script type="text/javascript" src="${base}/static/content/jeDate/jedate/jedate.js"></script>
@@ -59,7 +60,7 @@
 		<input class="datainp" id="dateStart" type="text" placeholder="请选择" readonly>
 		<label>结束日期</label>
 		<input class="datainp" id="dateEnd" type="text" placeholder="请选择" readonly>
-		<input class="btn btn-default getData-btn" id="getData"  type="button" name="getData" value="获取数据">
+		<input class="btn btn-default getData-btn" id="getData"  type="button" name="getData" value="获取数据111111">
 	</div>
 	<div style="margin-top: -30px;float: right;margin-right: 300px;">
 		<input type="button" class="btn btn-default getData-btn" id="changeColor" name="changeColor" value="配置图信息" data-toggle="modal" data-target="#configChartModal" >
@@ -148,7 +149,7 @@
 
     $(function(){   
     	var paramObject={};			
-    	var myChart = echarts.init(document.getElementById('main'));
+    	var myChart = echarts.init(document.getElementById('main'),'customed');
     	var seriesOptions = []
     	var pSeriesOptions = []
         var seriesCounter = 0
@@ -172,19 +173,17 @@
          var options = {
        //  color:['green'],
             tooltip: {
-                trigger: 'axis',   
+                trigger: 'axis'
            //      formatter: function (params) {
 			//	     mouseover_message = params;
  			//		}           
             },
             title: {
-                left: 'center',
-
+                left: 'center'
             },
             legend: {
                 top: 'bottom', 
                 data:names
-                           
             },
             toolbox: {
                 feature: {
@@ -221,7 +220,8 @@
             dataZoom: [{
                 type: 'inside',
                 start:0,
-                end:100         
+                end:100,
+                realtime:false
             }],
             series: []
         };    	     	
@@ -252,13 +252,11 @@
              	  	seriesOptions[i++] = {
 			            	type: 'line',
 			                name: param,
-			                smooth:true,
+			                smooth:false,
 			               // yAxisIndex: n.y,
 			                lineStyle:{
 		                    	normal:{
-		                    		color:'dark',
-		                    		width:2,		
-		                    	}
+		                    		width:0.5                    	}
 		                    },
 			                data: data[param].paramValue
 			            };
@@ -336,8 +334,12 @@
        			  	      
         myChart.on('dataZoom', function (params) {
               //  console.log(params);
-                var endDate = date[params.batch[0].endValue];
-                var startDate = date[params.batch[0].startValue];
+               // var endDate = date[params.batch[0].endValue];
+              //  var startDate = date[params.batch[0].startValue];
+              	var xAxis = myChart.getModel().option.xAxis[0]
+				var startDate = xAxis.data[xAxis.rangeStart]
+				var endDate = xAxis.data[xAxis.rangeEnd]
+              
                 if(endDate && startDate){
 					var seriesCounter_new = 0    
 					var seriesOptionsDam = []	

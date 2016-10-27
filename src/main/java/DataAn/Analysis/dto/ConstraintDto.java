@@ -9,7 +9,8 @@ import java.util.List;
 * @author  Shewp
 * @date 2016年7月15日
 */
-public class ConstraintDto implements Serializable{
+
+public class ConstraintDto implements Serializable {
 
 	private int id;
 	private int parentId;

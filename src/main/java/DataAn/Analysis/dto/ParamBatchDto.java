@@ -70,8 +70,6 @@ public class ParamBatchDto implements Serializable {
 			this.paramAttribute = paramAttribute;
 		}
 
-		
-		
-		
-		
+			
 }
+

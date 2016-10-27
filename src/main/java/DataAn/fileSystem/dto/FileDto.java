@@ -9,7 +9,7 @@ public class FileDto {
 	private String updateDate; //文件更新时间
 	private InputStream in; // 上传-下载
 	private String filePath; //文件批量下载时用到
-	private String parameterType;
+	private String parameterType; //设备类型 飞轮、陀螺
 	
 	public String getFileName() {
 		return fileName;

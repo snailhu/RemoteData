@@ -1,4 +1,4 @@
-package DataAn.fileSystem.option;
+package DataAn.galaxyManager.option;
 
 /**
 * Title: SeriesType

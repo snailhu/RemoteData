@@ -15,8 +15,8 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import DataAn.common.utils.DateUtil;
-import DataAn.fileSystem.option.J9SeriesType;
-import DataAn.fileSystem.option.SeriesType;
+import DataAn.galaxyManager.option.J9SeriesType;
+import DataAn.galaxyManager.option.SeriesType;
 import DataAn.jfreechart.chart.Serie;
 import DataAn.jfreechart.dto.ConstraintDto;
 import DataAn.jfreechart.dto.LineChartDto;
@@ -69,6 +69,11 @@ public class JfreechartServcieTest {
 		c22.setName("飞轮温度Xb(00821)");
 		c22.setValue("sequence_00821");
 		list2.add(c22);
+		//无数据
+		ConstraintDto c23 = new ConstraintDto();
+		c23.setName("飞轮温度Xh(22821)");
+		c23.setValue("sequence_22821");
+		list2.add(c23);
 		constraintsMap.put("chart2", list2);
 		
 		Date beginDate = DateUtil.format("2016-02-01 00:00:00");

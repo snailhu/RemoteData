@@ -1,4 +1,4 @@
-package DataAn.fileSystem.service.impl;
+package DataAn.galaxyManager.service.impl;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -10,14 +10,18 @@ import java.util.Set;
 
 import javax.annotation.Resource;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import DataAn.Analysis.dto.ConstraintDto;
 import DataAn.Util.EhCache;
 import DataAn.fileSystem.dao.IDateParametersDao;
 import DataAn.fileSystem.domain.DateParameters;
-import DataAn.fileSystem.option.J9Series_Star_ParameterType;
-import DataAn.fileSystem.service.IJ9Series_Star_Service;
+import DataAn.galaxyManager.dto.ParameterDto;
+import DataAn.galaxyManager.option.J9SeriesType;
+import DataAn.galaxyManager.option.J9Series_Star_ParameterType;
+import DataAn.galaxyManager.option.SeriesType;
+import DataAn.galaxyManager.service.IJ9Series_Star_Service;
 import DataAn.galaxyManager.service.IParameterService;
 
 @Service
@@ -67,7 +71,7 @@ public class J9Series_Star_ServiceImpl implements IJ9Series_Star_Service{
 			}
 			List<String> dataTypes = null;
 			if(type.equals(J9Series_Star_ParameterType.FLYWHEEL.getValue())){
-				dataTypes = J9Series_Star_ParameterType.getFlywheelTypeOnName();
+				dataTypes = J9Series_Star_ParameterType.getFlywheelTypeOnParamTypeName();
 			}else{
 				dataTypes = J9Series_Star_ParameterType.getTopTypeOnName();
 			}
@@ -93,12 +97,12 @@ public class J9Series_Star_ServiceImpl implements IJ9Series_Star_Service{
 			Map<String,String> simplyZh_and_enMap = new HashMap<String,String>();
 			String param_en = "";
 			for (String param_zh : paramSet) {
-				param_en = paramService.getParameter_en_by_allZh(series, star, param_zh);
+				param_en = paramService.getParameter_en_by_allZh(series, star,paramType, param_zh);
 				simplyZh_and_enMap.put(param_zh.split(":")[1], param_en);
 			}
 			List<String> dataTypes = null;
 			if(paramType.equals(J9Series_Star_ParameterType.FLYWHEEL.getValue())){
-				dataTypes = J9Series_Star_ParameterType.getFlywheelTypeOnName2();
+				dataTypes = J9Series_Star_ParameterType.getFlywheelTypeOnParamTypeName();
 			}else{
 				dataTypes = J9Series_Star_ParameterType.getTopTypeOnName();
 			}
@@ -108,65 +112,132 @@ public class J9Series_Star_ServiceImpl implements IJ9Series_Star_Service{
 		return null;
 	}
 
+	@Override
+	public List<ConstraintDto> getParameterList(String series, String star,
+			String paramType) {
+		List<ParameterDto> list = paramService.getParameterList(series, star, paramType);
+		Map<String,String> map = new HashMap<String,String>();
+		for (ParameterDto parameterDto : list) {
+			map.put(parameterDto.getSimplyName(), parameterDto.getCode());
+		}
+		List<String> dataTypes = null;
+		if(paramType.equals(J9Series_Star_ParameterType.FLYWHEEL.getValue())){
+			dataTypes = J9Series_Star_ParameterType.getFlywheelTypeOnParamTypeName();
+		}else{
+			dataTypes = J9Series_Star_ParameterType.getTopTypeOnName();
+		}
+		return this.getFlyWheelOrTopParameterList(map,dataTypes);
+	}
+
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<ConstraintDto> getFlyWheelParameterList() throws Exception {
-		List<ConstraintDto> list = (List<ConstraintDto>) ehCache.getCacheElement("flyWheelParameterList");
-		if(list == null || list.size() == 0){
-//			System.out.println("getFlyWheelParameterList cache is null");
-			String type = J9Series_Star_ParameterType.FLYWHEEL.getName();
-			List<String> flyWheelDataTypes = J9Series_Star_ParameterType.getFlywheelTypeOnName();
-			Map<String,String> map = this.getAllParameterList_simplyZh_and_en(this.getAllParameterList_allZh_and_enByOption(type,flyWheelDataTypes));
-			list = this.getFlyWheelOrTopParameterList(map,flyWheelDataTypes);	
-			ehCache.addToCache("flyWheelParameterList", list);
+//		List<ConstraintDto> list = (List<ConstraintDto>) ehCache.getCacheElement("flyWheelParameterList");
+//		if(list == null || list.size() == 0){
+////			System.out.println("getFlyWheelParameterList cache is null");
+//			String type = J9Series_Star_ParameterType.FLYWHEEL.getName();
+//			List<String> flyWheelDataTypes = J9Series_Star_ParameterType.getFlywheelTypeOnParamTypeName();
+//			Map<String,String> map = this.getAllParameterList_simplyZh_and_en(this.getAllParameterList_allZh_and_enByOption(type,flyWheelDataTypes));
+//			list = this.getFlyWheelOrTopParameterList(map,flyWheelDataTypes);	
+//			ehCache.addToCache("flyWheelParameterList", list);
+//		}
+//		return list;
+		return this.getFlyWheelParameterList(null, null);
+	}
+
+	@Override
+	public List<ConstraintDto> getFlyWheelParameterList(String series,String star) {
+		if (!StringUtils.isNotBlank(series)) {
+			series = SeriesType.J9_SERIES.getName();
 		}
-		return list;
+		if (!StringUtils.isNotBlank(star)) {
+			star = J9SeriesType.STRA2.getValue();
+		}
+		String paramType = J9Series_Star_ParameterType.FLYWHEEL.getValue();
+		List<ParameterDto> list = paramService.getParameterList(series, star, paramType);
+		Map<String,String> map = new HashMap<String,String>();
+		for (ParameterDto parameterDto : list) {
+			map.put(parameterDto.getSimplyName(), parameterDto.getCode());
+		}
+		List<String> flyWheelDataTypes = J9Series_Star_ParameterType.getFlywheelTypeOnParamTypeName();
+		return this.getFlyWheelOrTopParameterList(map, flyWheelDataTypes);
 	}
 
 	@Override
 	public String getFlyWheelParameterType(String param_en) throws Exception {
-		Map<String,String> map = this.getAllParameterList_en_and_simplyZh();
-		String param = map.get(param_en);
-		List<String> typeList = J9Series_Star_ParameterType.getFlywheelTypeOnParams();
-		for (String type : typeList) {
-			if(param.indexOf(type) > -1){
-				return type;
-			}
+		String series = SeriesType.J9_SERIES.getName();
+		String star = J9SeriesType.STRA2.getValue();
+		String paramType = J9Series_Star_ParameterType.FLYWHEEL.getValue();
+		return paramService.getParameter_dataType_by_en(series, star, paramType, param_en);
+	}
+	
+	@Override
+	public String getFlyWheelParameterType(String series, String star,
+			String param_en){
+		if (!StringUtils.isNotBlank(series)) {
+			series = SeriesType.J9_SERIES.getName();
 		}
-		return null;
+		if (!StringUtils.isNotBlank(star)) {
+			star = J9SeriesType.STRA2.getValue();
+		}
+		String paramType = J9Series_Star_ParameterType.FLYWHEEL.getValue();
+		return paramService.getParameter_dataType_by_en(series, star, paramType, param_en);
+	}
+	
+	@Override
+	public String getFlyWheelName(String param_en) throws Exception {
+		
+		return this.getFlyWheelName(null, null, param_en);
 	}
 
 	@Override
-	public String getFlyWheelName(String param_en) throws Exception {
-		Map<String,String> map = this.getAllParameterList_en_and_simplyZh();
-		String param = map.get(param_en);
-		List<String> typeList = J9Series_Star_ParameterType.getFlywheelTypeOnName2();
-		for (String type : typeList) {
-			if(param.indexOf(type) > -1){
-				return type;
-			}
+	public String getFlyWheelName(String series, String star, String param_en)
+			{
+		if (!StringUtils.isNotBlank(series)) {
+			series = SeriesType.J9_SERIES.getName();
 		}
-		return null;
+		if (!StringUtils.isNotBlank(star)) {
+			star = J9SeriesType.STRA2.getValue();
+		}
+		String paramType = J9Series_Star_ParameterType.FLYWHEEL.getValue();
+		return paramService.getParameter_paramTypeName_by_en(series, star, paramType, param_en);
 	}
 
-	
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<ConstraintDto> getTopParameterList() throws Exception {
-		List<ConstraintDto> list = (List<ConstraintDto>) ehCache.getCacheElement("topParameterList");
-		if(list == null || list.size() == 0){
-//			System.out.println("getTopParameterList cache is null");
-			String type = J9Series_Star_ParameterType.TOP.getName();
-			List<String> params = J9Series_Star_ParameterType.getTopTypeOnName();
-			Map<String,String> map = this.getAllParameterList_simplyZh_and_en(this.getAllParameterList_allZh_and_enByOption(type,params));
-			List<String> topDataTypes = J9Series_Star_ParameterType.getTopTypeOnName();
-			list = this.getFlyWheelOrTopParameterList(map,topDataTypes);			
-			ehCache.addToCache("topParameterList", list);
-		}
-		return list;
+//		List<ConstraintDto> list = (List<ConstraintDto>) ehCache.getCacheElement("topParameterList");
+//		if(list == null || list.size() == 0){
+////			System.out.println("getTopParameterList cache is null");
+//			String type = J9Series_Star_ParameterType.TOP.getName();
+//			List<String> params = J9Series_Star_ParameterType.getTopTypeOnName();
+//			Map<String,String> map = this.getAllParameterList_simplyZh_and_en(this.getAllParameterList_allZh_and_enByOption(type,params));
+//			List<String> topDataTypes = J9Series_Star_ParameterType.getTopTypeOnName();
+//			list = this.getFlyWheelOrTopParameterList(map,topDataTypes);			
+//			ehCache.addToCache("topParameterList", list);
+//		}
+//		return list;
+		return this.getTopParameterList(null, null);
 	}
 	
-
+	@Override
+	public List<ConstraintDto> getTopParameterList(String series, String star) {
+		if (!StringUtils.isNotBlank(series)) {
+			series = SeriesType.J9_SERIES.getName();
+		}
+		if (!StringUtils.isNotBlank(star)) {
+			star = J9SeriesType.STRA2.getValue();
+		}
+		String paramType = J9Series_Star_ParameterType.TOP.getValue();
+		List<ParameterDto> list = paramService.getParameterList(series, star, paramType);
+		Map<String,String> map = new HashMap<String,String>();
+		for (ParameterDto parameterDto : list) {
+			map.put(parameterDto.getSimplyName(), parameterDto.getCode());
+		}
+		List<String> topDataTypes = J9Series_Star_ParameterType.getTopTypeOnName();
+		return this.getFlyWheelOrTopParameterList(map, topDataTypes);
+	}
+	
 	@SuppressWarnings("unchecked")
 	@Override
 	public Map<String, String> getAllParameterList_en_and_simplyZh() throws Exception {
@@ -251,7 +322,7 @@ public class J9Series_Star_ServiceImpl implements IJ9Series_Star_Service{
 		Map<String,String> map = (Map<String, String>) ehCache.getCacheElement("allParameterList_allZh_and_enByOption");
 		if(map == null || map.size() == 0){
 			map = new HashMap<String,String>();
-			Class<?> pojoClass = Class.forName("DataAn.fileSystem.option.J9Series_Star_ParameterConfig");
+			Class<?> pojoClass = Class.forName("DataAn.galaxyManager.option.J9Series_Star_ParameterConfig");
 			Object obj = pojoClass.newInstance();
 			Field[] fields = pojoClass.getDeclaredFields();
 			String key = "";
@@ -285,7 +356,7 @@ public class J9Series_Star_ServiceImpl implements IJ9Series_Star_Service{
 		return map;
 	}
 	
-	private List<ConstraintDto> getFlyWheelOrTopParameterList(Map<String,String> map, List<String> dataTypes) throws Exception {
+	private List<ConstraintDto> getFlyWheelOrTopParameterList(Map<String,String> map, List<String> dataTypes) {
 		List<ConstraintDto> list = new ArrayList<ConstraintDto>();
 		ConstraintDto c = null;
 		List<ConstraintDto> children = null;
@@ -323,6 +394,22 @@ public class J9Series_Star_ServiceImpl implements IJ9Series_Star_Service{
 			}
 		}
 		return list;
+	}
+
+	@Override
+	public void initJ9SeriesParameterData() throws Exception {
+		//初始化飞轮参数数据
+		String type = J9Series_Star_ParameterType.FLYWHEEL.getName();
+		String paramType = J9Series_Star_ParameterType.FLYWHEEL.getValue();
+		//"电流","转速","温度","指令","供电状态","角动量"
+		List<String> params = J9Series_Star_ParameterType.getFlywheelTypeOnDataType();
+		Map<String,String> map =  this.getAllParameterList_allZh_and_enByOption(type,null);
+		Set<String> keys = map.keySet();
+		String series = SeriesType.J9_SERIES.getName();
+		String star = J9SeriesType.STRA2.getValue();
+		for (String key : keys) {
+			paramService.getParameter_en_by_allZh(series, star,paramType, key);
+		}
 	}
 
 }

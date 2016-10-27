@@ -1,4 +1,6 @@
-package DataAn.fileSystem.option;
+package DataAn.galaxyManager.option;
+
+import java.util.Date;
 
 /**
 * Title: J9SeriesType
@@ -19,6 +21,11 @@ public enum J9SeriesType {
 		public String getValue() {
 			return "01";
 		}
+
+		@Override
+		public Date getStartRunDate() {
+			return new Date();
+		}
 	},
 	/**星2*/
 	STRA2 {
@@ -30,6 +37,11 @@ public enum J9SeriesType {
 		@Override
 		public String getValue() {
 			return "02";
+		}
+		
+		@Override
+		public Date getStartRunDate() {
+			return new Date();
 		}
 	},
 	/**星3*/
@@ -43,6 +55,11 @@ public enum J9SeriesType {
 		public String getValue() {
 			return "03";
 		}
+		
+		@Override
+		public Date getStartRunDate() {
+			return new Date();
+		}
 	},
 	/**星4*/
 	STRA4 {
@@ -54,6 +71,11 @@ public enum J9SeriesType {
 		@Override
 		public String getValue() {
 			return "04";
+		}
+		
+		@Override
+		public Date getStartRunDate() {
+			return new Date();
 		}
 	},
 	/**星5*/
@@ -67,11 +89,18 @@ public enum J9SeriesType {
 		public String getValue() {
 			return "05";
 		}
+		
+		@Override
+		public Date getStartRunDate() {
+			return new Date();
+		}
 	};
 	public abstract String getName();
 
 	public abstract String getValue();
 
+	public abstract Date getStartRunDate();
+	
 	public static J9SeriesType getJ9SeriesType(String type) {
 		switch (type) {
 		case "01":

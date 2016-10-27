@@ -6,9 +6,10 @@ import java.io.InputStream;
 import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.Map;
+
 import DataAn.common.utils.SpringUtil;
 import DataAn.fileSystem.dto.FileDto;
-import DataAn.fileSystem.option.J9Series_Star_ParameterType;
+import DataAn.galaxyManager.option.J9Series_Star_ParameterType;
 
 public class ServiceTest {
 

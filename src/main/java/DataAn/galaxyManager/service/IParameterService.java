@@ -8,13 +8,37 @@ import DataAn.galaxyManager.dto.ParameterDto;
 
 public interface IParameterService {
 
-	public Parameter save(String series, String star, String param_zh);
+	public Parameter saveOne(String series, String star, String paramType, String param_zh);
 	
-	public List<Parameter> getAllParameterList();
+	public void saveMany(String series, String star, String paramType, String param_zhs);
+	
+	public List<ParameterDto> getParameterList(String series, String star, String paramType);
 	
 	public Pager<ParameterDto> getParameterList(int pageIndex, int pageSize);
 
-	public String getParameter_en_by_allZh(String series, String star, String param_zh);
+	public String getParameter_en_by_allZh(String series, String star, String paramType, String param_zh);
 	
-	public String getParameter_allZh_by_en(String series, String star, String param_en);
+	public String getParameter_allZh_by_en(String series, String star, String paramType, String param_en);
+	
+	/** 通过参数的英文返回参数的类型
+	 * @param series 系列
+	 * @param star 星
+	 * @param paramType 参数类型
+	 * @param param_en 参数英文值
+	 * @return  "电流","转速","温度","指令","供电状态","角动量"
+	 * @author Shenwp
+	 * @date 2016年10月26日
+	 */
+	public String getParameter_dataType_by_en(String series, String star, String paramType, String param_en);
+	
+	/** 通过参数的英文返回飞轮名称
+	 * @param series 系列
+	 * @param star 星
+	 * @param paramType 参数类型
+	 * @param param_en 参数英文值
+	 * @return Xa、Ya、Za、Xb、Yb、Zb
+	 * @author Shenwp
+	 * @date 2016年10月26日
+	 */
+	public String getParameter_paramTypeName_by_en(String series, String star, String paramType, String param_en);
 }

@@ -3,7 +3,10 @@ package DataAn.galaxyManager.controller;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -22,22 +25,30 @@ public class ParameterController {
 	private IParameterService parameterService;
 	
 	// 返回参数管理主页
-	@RequestMapping()
-	public String toParameterIndex() {
-		return "redirect:/admin/parameter/index";
-	}
-	
-	@RequestMapping("index")
-	public String parameterIndex() {
+	@RequestMapping("/index")
+	public String index(Model model) {
+		//当前所在系列
+		model.addAttribute("nowSeries", "j9");
+		
 		return "admin/galaxy/parameterList";
 	}
 	
-	@RequestMapping(value = "/getList", method = RequestMethod.POST)
+	@RequestMapping("/index/{series}")
+	public String indexOfSeries(@PathVariable String series, Model model) {
+		//当前所在系列
+		model.addAttribute("nowSeries", series);
+		
+		return "admin/galaxy/parameterList";
+	}
+	
+	@RequestMapping(value = "/getList/{series}", method = RequestMethod.POST)
 	@ResponseBody
-	public EasyuiDataGridJson getParamList(int page, int rows) {
-//		System.out.println("getParamList..");
-//		System.out.println("pageIndex: " + page);
-//		System.out.println("pageSize: " + rows);
+	public EasyuiDataGridJson getParamList(@PathVariable String series,
+										int page, int rows) {
+		System.out.println("getParamList..");
+		System.out.println("series: " + series);
+		System.out.println("pageIndex: " + page);
+		System.out.println("pageSize: " + rows);
 		EasyuiDataGridJson json = new EasyuiDataGridJson();
 		Pager<ParameterDto> pager = parameterService.getParameterList(page, rows);
 		json.setRows(pager.getDatas());
@@ -52,7 +63,7 @@ public class ParameterController {
 		System.out.println(param);
 		JsonMessage jsonMsg = new JsonMessage();
 		try {
-			parameterService.save(param.getSeries(),param.getStar(),param.getName());
+			parameterService.saveOne(param.getSeries(),param.getStar(),param.getParameterType(), param.getFullName());
 		} catch (Exception e) {
 			e.printStackTrace();
 			jsonMsg.setSuccess(false);
@@ -71,7 +82,7 @@ public class ParameterController {
 			  					@RequestParam(value = "description", required = false) String description){
 		ParameterDto Param = new ParameterDto();
 		Param.setId(id);
-		Param.setName(name);
+		Param.setFullName(name);
 		System.out.println("come in editParam");
 		System.out.println(Param);
 		JsonMessage jsonMsg = new JsonMessage();

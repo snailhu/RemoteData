@@ -15,7 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import DataAn.common.dao.Pager;
 import DataAn.common.pageModel.EasyuiTreeNode;
 import DataAn.common.utils.DateUtil;
-import DataAn.fileSystem.option.J9Series_Star_ParameterType;
+import DataAn.galaxyManager.option.J9Series_Star_ParameterType;
 import DataAn.sys.dao.IAuthDao;
 import DataAn.sys.dao.IRoleAuthDao;
 import DataAn.sys.domain.Auth;
@@ -88,30 +88,34 @@ public class PermissionServiceImpl implements IPermissionService{
 	@Transactional
 	public void savePermissionGroup(PermissionGroupDto permissionGroup) {
 		Auth auth = new Auth();
-		auth.setAuthName(permissionGroup.getName());
-		auth.setCreateDate(new Date());
-		auth.setUpdateDate(auth.getCreateDate());
-		auth.setDescription(permissionGroup.getDescription());
-		auth.setVersion(1);
-		auth.setStatus("1");
-		authDao.add(auth);
+		if (StringUtils.isNotBlank(permissionGroup.getName())) {
+			auth.setAuthName(permissionGroup.getName());
+			auth.setCreateDate(new Date());
+			auth.setUpdateDate(auth.getCreateDate());
+			auth.setDescription(permissionGroup.getDescription());
+			auth.setVersion(1);
+			auth.setStatus("1");
+			authDao.add(auth);
+		}
 	}
 
 	@Override
 	@Transactional
 	public void savePermissionItem(PermissionItemDto permissionItem) {
 		Auth auth = new Auth();
-		Auth parentAuth = new Auth();
-		parentAuth.setAuthId(permissionItem.getPermissionGroupId());
-		auth.setAuth(parentAuth);
-		auth.setAuthName(permissionItem.getDisplayName());
-		auth.setCode(permissionItem.getCode());
-		auth.setDescription(permissionItem.getDescription());
-		auth.setCreateDate(new Date());
-		auth.setUpdateDate(auth.getCreateDate());
-		auth.setVersion(1);
-		auth.setStatus("1");
-		authDao.add(auth);
+		if (StringUtils.isNotBlank(permissionItem.getDisplayName())) {
+			auth.setAuthName(permissionItem.getDisplayName());
+			Auth parentAuth = new Auth();
+			parentAuth.setAuthId(permissionItem.getPermissionGroupId());
+			auth.setAuth(parentAuth);
+			auth.setCode(permissionItem.getCode());
+			auth.setDescription(permissionItem.getDescription());
+			auth.setCreateDate(new Date());
+			auth.setUpdateDate(auth.getCreateDate());
+			auth.setVersion(1);
+			auth.setStatus("1");
+			authDao.add(auth);			
+		}
 	}
 
 	@Override
@@ -137,14 +141,15 @@ public class PermissionServiceImpl implements IPermissionService{
 	public void update(PermissionGroupDto permissionGroup) {
 		Auth auth = authDao.get(permissionGroup.getId());
 		if (StringUtils.isNotBlank(permissionGroup.getName())) {
-			auth.setAuthName(permissionGroup.getName());			
+			auth.setAuthName(permissionGroup.getName());	
+			
+			if (StringUtils.isNotBlank(permissionGroup.getDescription())) {
+				auth.setDescription(permissionGroup.getDescription());			
+			}
+			auth.setUpdateDate(new Date());
+			auth.setVersion(auth.getVersion() + 1);
+			authDao.update(auth);
 		}
-		if (StringUtils.isNotBlank(permissionGroup.getDescription())) {
-			auth.setDescription(permissionGroup.getDescription());			
-		}
-		auth.setUpdateDate(new Date());
-		auth.setVersion(auth.getVersion() + 1);
-		authDao.update(auth);
 	}
 
 	@Override
@@ -152,17 +157,18 @@ public class PermissionServiceImpl implements IPermissionService{
 	public void update(PermissionItemDto permissionItem) {
 		Auth auth = authDao.get(permissionItem.getId());
 		if (StringUtils.isNotBlank(permissionItem.getDisplayName())) {
-			auth.setAuthName(permissionItem.getDisplayName());			
+			auth.setAuthName(permissionItem.getDisplayName());	
+			
+			if (StringUtils.isNotBlank(permissionItem.getCode())) {
+				auth.setCode(permissionItem.getCode());
+			}
+			if (StringUtils.isNotBlank(permissionItem.getDescription())) {
+				auth.setDescription(permissionItem.getDescription());
+			}
+			auth.setUpdateDate(new Date());
+			auth.setVersion(auth.getVersion() + 1);
+			authDao.update(auth);
 		}
-		if (StringUtils.isNotBlank(permissionItem.getCode())) {
-			auth.setCode(permissionItem.getCode());
-		}
-		if (StringUtils.isNotBlank(permissionItem.getDescription())) {
-			auth.setDescription(permissionItem.getDescription());
-		}
-		auth.setUpdateDate(new Date());
-		auth.setVersion(auth.getVersion() + 1);
-		authDao.update(auth);
 	}
 
 	@Override
@@ -287,6 +293,24 @@ public class PermissionServiceImpl implements IPermissionService{
 			return node;
 		}
 		return null;
+	}
+
+	@Override
+	public boolean isExistPermissionGroup(PermissionGroupDto permissionGroup) {
+		List<Auth> list = authDao.findByParam("authName", permissionGroup.getName());
+		if (list != null && list.size() > 0) {
+			return true;
+		}
+		return false;
+	}
+
+	@Override
+	public boolean isExistPermissionItem(PermissionItemDto permissionItem) {
+		List<Auth> list = authDao.findByParam("authName", permissionItem.getDisplayName());
+		if (list != null && list.size() > 0) {
+			return true;
+		}
+		return false;
 	}
 
 }

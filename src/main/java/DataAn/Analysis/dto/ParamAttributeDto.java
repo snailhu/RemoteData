@@ -1,6 +1,9 @@
+
 package DataAn.Analysis.dto;
 
-public class ParamAttributeDto {
+import java.io.Serializable;
+
+public class ParamAttributeDto implements Serializable {
 	
 	private String name;
 	

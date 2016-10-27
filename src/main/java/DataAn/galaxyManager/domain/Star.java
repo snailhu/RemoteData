@@ -107,6 +107,14 @@ public class Star {
 	public void setSeries(Series series) {
 		this.series = series;
 	}
+
+	@Override
+	public String toString() {
+		return "Star [id=" + id + ", name=" + name + ", code=" + code
+				+ ", description=" + description + ", startRunDate="
+				+ startRunDate + ", createDate=" + createDate + ", series="
+				+ series + "]";
+	}
 	
 	
 }

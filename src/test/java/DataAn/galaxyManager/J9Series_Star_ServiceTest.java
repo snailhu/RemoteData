@@ -1,4 +1,4 @@
-package DataAn.fileSystem.service;
+package DataAn.galaxyManager;
 
 import java.util.List;
 import java.util.Map;
@@ -14,10 +14,11 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import DataAn.Analysis.dto.ConstraintDto;
 import DataAn.Util.EhCache;
-import DataAn.fileSystem.option.J9SeriesType;
-import DataAn.fileSystem.option.J9Series_Star_ParameterType;
-import DataAn.fileSystem.option.SeriesType;
-import DataAn.fileSystem.service.impl.J9Series_Star_ServiceImpl;
+import DataAn.galaxyManager.option.J9SeriesType;
+import DataAn.galaxyManager.option.J9Series_Star_ParameterType;
+import DataAn.galaxyManager.option.SeriesType;
+import DataAn.galaxyManager.service.IJ9Series_Star_Service;
+import DataAn.galaxyManager.service.impl.J9Series_Star_ServiceImpl;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:applicationContext-hibernate.xml","classpath:applicationContext-cache.xml"})
@@ -62,15 +63,24 @@ public class J9Series_Star_ServiceTest {
 	@SuppressWarnings("unchecked")
 	@Test
 	public void getFlyWheelParameterList() throws Exception{
-		service.getFlyWheelParameterList();
-		EhCache ehCache = new EhCache("j9seriesConfig");
-		List<ConstraintDto> list = (List<ConstraintDto>) ehCache.getCacheElement("flyWheelParameterList");
+//		service.getFlyWheelParameterList();
+//		EhCache ehCache = new EhCache("j9seriesConfig");
+//		List<ConstraintDto> list = (List<ConstraintDto>) ehCache.getCacheElement("flyWheelParameterList");
+		List<ConstraintDto> list = service.getFlyWheelParameterList(null, null);
 		for (ConstraintDto constraintDto : list) {
 			System.out.println(constraintDto);
 		}
 		System.out.println(list.size());
 	}
 	
+	@Test
+	public void getTopParameterList(){
+		List<ConstraintDto> list = service.getTopParameterList(null, null);
+		for (ConstraintDto constraintDto : list) {
+			System.out.println(constraintDto);
+		}
+		System.out.println(list.size());
+	}
 	@Test
 	public void test(){
 		String str = "采集数据26:飞轮a电源+5V(16026)";
@@ -137,7 +147,7 @@ public class J9Series_Star_ServiceTest {
 	public void getAllParameterList_allZh_and_enByOption() throws Exception{
 		String type = J9Series_Star_ParameterType.FLYWHEEL.getName();
 		//"电流","转速","温度","指令","供电状态","角动量"
-		List<String> params = J9Series_Star_ParameterType.getFlywheelTypeOnParams();
+		List<String> params = J9Series_Star_ParameterType.getFlywheelTypeOnDataType();
 		Map<String,String> map =  service.getAllParameterList_allZh_and_enByOption(type,null);
 		Set<String> keys = map.keySet();
 		for (String key : keys) {

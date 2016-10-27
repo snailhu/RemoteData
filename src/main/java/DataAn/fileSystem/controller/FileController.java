@@ -9,10 +9,12 @@ import java.io.OutputStream;
 import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.Map;
+
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,13 +24,17 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+
 import DataAn.common.pageModel.EasyuiDataGridJson;
 import DataAn.common.pageModel.JsonMessage;
 import DataAn.common.pageModel.Pager;
 import DataAn.fileSystem.dto.FileDto;
 import DataAn.fileSystem.dto.MongoFSDto;
-import DataAn.fileSystem.option.J9Series_Star_ParameterType;
 import DataAn.fileSystem.service.IVirtualFileSystemService;
+import DataAn.galaxyManager.option.J9SeriesType;
+import DataAn.galaxyManager.option.J9Series_Star_ParameterType;
+import DataAn.galaxyManager.option.SeriesType;
+import DataAn.galaxyManager.service.ISeriesService;
 import DataAn.sys.dto.ActiveUserDto;
 
 @Controller
@@ -37,6 +43,8 @@ public class FileController {
 
 	@Resource
 	private IVirtualFileSystemService fileService;
+	@Resource
+	private ISeriesService seriesService;
 	
 	@RequestMapping("/index")
 	public String mongoFSIndex(Model model,HttpServletRequest request,HttpServletResponse response) {
@@ -154,8 +162,25 @@ public class FileController {
 		JsonMessage msg = new JsonMessage();
 		fileName = fileName.replace("\\", "/");
 		String[] strs = fileName.split("/");
-		boolean flag = fileService.isExistFile(strs[strs.length-1]);
-		msg.setSuccess(flag);
+		//j9-02--2016-02-01.csv
+		fileName = strs[strs.length-1];
+		boolean flag = false;
+		//j9-02
+		String[] seriesStarStrs = fileName.substring(0, fileName.lastIndexOf(".csv")).split("--");
+		String[] ss = seriesStarStrs[0].split("-");
+		String nowSeries = ss[0];//SeriesType.J9_SERIES.getName();
+		String nowStar = ss[1];//J9SeriesType.getJ9SeriesType(ss[1]).getValue();
+		flag = seriesService.checkSeriesAndStar(nowSeries, nowStar);
+		if(!flag){
+			msg.setSuccess(true);
+			msg.setMsg("文件中的星系不存在！！！");			
+		}else{
+			flag = fileService.isExistFile(fileName);
+			if(flag){
+				msg.setSuccess(true);
+				msg.setMsg("csv文件已存在！！！");	
+			}
+		}
 		return msg;
 	}
 	
@@ -224,15 +249,15 @@ public class FileController {
 			map.put("dat", datFileDto);			
 		}
 		//打开另外一个线程处理文件
-		new Thread(new Runnable(){
-			@Override
-			public void run() {
-				try {
-					fileService.saveFile(map);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}				
-			}}).start();
+//		new Thread(new Runnable(){
+//			@Override
+//			public void run() {
+//				try {
+//				} catch (Exception e) {
+//					e.printStackTrace();
+//				}				
+//			}}).start();
+		fileService.saveFile(map);
 		long end = System.currentTimeMillis();
 		System.out.println("time: " + (end - begin));
 //		jsonMsg.setSuccess(true);

@@ -147,7 +147,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                   validators: {
                       notEmpty: {
                           message: '系列编码不能为空'
-                      }
+                      },
+                      regexp : { 
+                          regexp : /^[A-Za-z0-9]+$/,
+                          message : '系列编码由字母和数字组成'
+                      },
                   }
               },
               description : {
@@ -179,7 +183,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                   validators: {
                       notEmpty: {
                           message: '系列编码不能为空'
-                      }
+                      },
+                      regexp : { 
+                          regexp : /^[A-Za-z0-9]+$/,
+                          message : '系列编码由字母和数字组成'
+                      },
                   }
               },
               description : {
@@ -211,7 +219,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
               validators: {
                   notEmpty: {
                       message: '星编码不能为空'
-                  }
+                  },
+                  regexp : { 
+                      regexp : /^[A-Za-z0-9]+$/,
+                      message : '星编码由字母和数字组成'
+                  },
               }
           },
           beginDate: {
@@ -247,6 +259,18 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                     notEmpty: {
                         message: '星名称不能为空'
                     }
+                }
+            },
+            code: {
+                message: '星编码不能为空',
+                validators: {
+                    notEmpty: {
+                        message: '星编码不能为空'
+                    },
+                    regexp : { 
+                        regexp : /^[A-Za-z0-9]+$/,
+                        message : '星编码由字母和数字组成'
+                    },
                 }
             },
             beginDate: {
@@ -319,7 +343,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					</div>
 				</div>
 			</div>
-			<table id="galaxyList" fit="false" border="false" height="400px">
+			<table id="galaxyList" fit="false" border="false" height="500px">
 				<thead>
 					<tr>
 						<th field="ck" checkbox="true"></th>
@@ -571,7 +595,7 @@ $(function() {
 						fitColumns : true,
 						rownumbers : true,
 						singleSelect : true,
-						loadMsg : '正在载入权限项，请稍后...',
+						loadMsg : '正在载入系列下面的星项，请稍后...',
 						height : 'auto',
 						toolbar : [ {
 							text : '创建',
@@ -590,8 +614,13 @@ $(function() {
 								{
 									field : 'name',
 									title : '名称',
-									width : 100
+									width : 80
 								},
+								{
+                                    field : 'code',
+                                    title : '星编码',
+                                    width : 50
+                                },
 								{
 									field : 'beginDate',
 									title : '开始运行时间',
@@ -600,7 +629,7 @@ $(function() {
 								{
 									field : 'description',
 									title : '描述',
-									width : 150
+									width : 100
 								},
 								{
 									field : 'operation',

@@ -118,12 +118,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     margin-bottom: 0px;
     color: #737373;
 }
+.form-horizontal {
+    margin-bottom: 0px;
+}
   </style>
   <script type="text/javascript">
   	$(function(){
   		$('#addPermissionGroupInfoForm').bootstrapValidator({
-//          live: 'disabled',
-          message: 'This value is not valid',
+          message: '权限组名称不能为空',
           feedbackIcons: {
               valid: 'glyphicon glyphicon-ok',
               invalid: 'glyphicon glyphicon-remove',
@@ -140,6 +142,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
               },
               description : {
             	  message: '',
+            	  validators: {
+                     
+                  }
               }
           }
       });
@@ -147,8 +152,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	    $('#addPermissionGroupInfoForm').data('bootstrapValidator').resetForm(true);
 	});	
   	$('#editPermissionGroupInfoForm').bootstrapValidator({
-//          live: 'disabled',
-          message: 'This value is not valid',
+          message: '权限组名称不能为空',
           feedbackIcons: {
               valid: 'glyphicon glyphicon-ok',
               invalid: 'glyphicon glyphicon-remove',
@@ -164,10 +168,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                   }
               },
               description : {
-            	  message: '',
+                  message: '',
+                  validators: {
+                      
+                  }
               }
           }
-      });
+    });
   	$('#reset_editPermissionGroupInfo').click(function() {
 	    $('#editPermissionGroupInfoForm').data('bootstrapValidator').resetForm(true);
 	});	
@@ -192,7 +199,17 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
               validators: {
             	  notEmpty: {
                       message: '权限代码不能为空'
-                  }
+                  },
+                  regexp : { 
+                      regexp : /^[a-zA-Z]+$/,
+                      message : '权限代码只能由字母组成'
+                  },
+              }
+          },
+          description : {
+              message: '',
+              validators: {
+                  
               }
           }
       }
@@ -222,6 +239,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
               	  notEmpty: {
                         message: '权限代码不能为空'
                     }
+                }
+            },
+            description : {
+                message: '',
+                validators: {
+                    
                 }
             }
         }
@@ -282,7 +305,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					</div>
 				</div>
 			</div>
-			<table id="permissionList" fit="true" border="false" height="400px">
+			<table id="permissionList" fit="false" border="false" height="500px">
 				<thead>
 					<tr>
 						<th field="ck" checkbox="true"></th>
@@ -293,165 +316,180 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				</thead>
 			</table>
 			<!-- 创建权限组 -->
-			<div class="modal fade" id="addPermissionGroupModal" tabindex="-1" role="dialog" aria-labelledby="addPermissionGroupModalLabel"  >
-			  <div class="modal-dialog" role="document" style="margin:55px -300px">
-			    <div class="modal-content">
-			      <div class="modal-header">
-<!-- 			        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button> -->
-			        <h4 class="modal-title" id="addPermissionGroupModalLabel">权限组信息</h4>
-			      </div>
-			      <div class="modal-body">
-					<form id="addPermissionGroupInfoForm" class="form-horizontal" role="form">
-						<div class="space-4"></div>
-						<div class="form-group">
-							<label class="col-sm-3 control-label no-padding-right" for="add-permissionGroup-name"> 分组名称：</label>
-							<div class="col-sm-8">
-								<input type="text" name="name" id="add-permissionGroup-name" placeholder="权限组名称" class="form-control" />
+			<div class="modal fade" id="addPermissionGroupModal" tabindex="-1"
+				role="dialog" aria-labelledby="addPermissionGroupModalLabel">
+				<div class="modal-dialog" role="document" style="margin:55px -300px">
+					<div class="modal-content">
+						<form id="addPermissionGroupInfoForm" class="form-horizontal" role="form">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+									<span aria-hidden="true">&times;</span>
+								</button>
+								<h4 class="modal-title" id="addPermissionGroupModalLabel">权限组信息</h4>
 							</div>
-						</div>
-						<div class="space-8"></div>
-						<div class="form-group">
-							<label class="col-sm-3 control-label no-padding-right" for="add-permissionGroup-description"> 分组描述： </label>
-							<div class="col-sm-8">
-								<textarea class="form-control" name="description" id="add-permissionGroup-description" placeholder="权限组描述"></textarea>
+							<div class="modal-body">
+								<div class="space-4"></div>
+								<div class="form-group">
+									<label class="col-sm-3 control-label no-padding-right" for="add-permissionGroup-name"> 分组名称：</label>
+									<div class="col-sm-8">
+										<input type="text" name="name" id="add-permissionGroup-name" placeholder="权限组名称" class="form-control" />
+									</div>
+								</div>
+								<div class="space-8"></div>
+								<div class="form-group">
+									<label class="col-sm-3 control-label no-padding-right" for="add-permissionGroup-description"> 分组描述： </label>
+									<div class="col-sm-8">
+										<textarea class="form-control" name="description" id="add-permissionGroup-description" placeholder="权限组描述"></textarea>
+									</div>
+								</div>
 							</div>
-						</div>
-					</form>
-			      </div>
-			      <div class="modal-footer">
-			      	<div class="col-lg-4 col-lg-offset-5">
-				        <button type="button" class="btn btn-default" data-dismiss="modal" id="reset_addPermissionGroupInfo">关闭</button>
-				        <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="submit_addPermissionGroupInfo()">确定</button>
-                    </div>
-			      </div>
-			    </div>
-			  </div>
+							<div class="modal-footer">
+								<div class="col-lg-4 col-lg-offset-5">
+									<button type="button" class="btn btn-default" data-dismiss="modal" id="reset_addPermissionGroupInfo">关闭</button>
+									<button type="submit" class="btn btn-primary" data-dismiss="modal" onclick="submit_addPermissionGroupInfo()">确定</button>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
 			</div>
 			<!-- 编辑权限组 -->
-			<div class="modal fade" id="editPermissionGroupModal" tabindex="-1" role="dialog" aria-labelledby="editPermissionGroupModalLabel"  >
-			  <div class="modal-dialog" role="document" style="margin:55px -300px">
-			    <div class="modal-content">
-			      <div class="modal-header">
-<!-- 			        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button> -->
-			        <h4 class="modal-title" id="editPermissionGroupModalLabel">权限组信息</h4>
-			      </div>
-			      <div class="modal-body">
-					<form id="editPermissionGroupInfoForm" class="form-horizontal" role="form">
-						<div class="space-4"></div>
-						<div class="form-group">
-							<label class="col-sm-3 control-label no-padding-right" for="edit-permissionGroup-name"> 分组名称:</label>
-							<div class="col-sm-8">
-								<input type="text" name="name" id="edit-permissionGroup-name" placeholder="权限组名称" class="form-control" />
+			<div class="modal fade" id="editPermissionGroupModal" tabindex="-1"
+				role="dialog" aria-labelledby="editPermissionGroupModalLabel">
+				<div class="modal-dialog" role="document" style="margin:55px -300px">
+					<div class="modal-content">
+						<form id="editPermissionGroupInfoForm" class="form-horizontal" role="form">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+									<span aria-hidden="true">&times;</span>
+								</button>
+								<h4 class="modal-title" id="editPermissionGroupModalLabel">权限组信息</h4>
 							</div>
-						</div>
-						<div class="space-8"></div>
-						<div class="form-group">
-							<label class="col-sm-3 control-label no-padding-right" for="edit-permissionGroup-description"> 分组描述： </label>
-							<div class="col-sm-8">
-								<textarea class="form-control" name="description" id="edit-permissionGroup-description" placeholder="分组描述"></textarea>
+							<div class="modal-body">
+								<div class="space-4"></div>
+								<div class="form-group">
+									<label class="col-sm-3 control-label no-padding-right" for="edit-permissionGroup-name"> 分组名称:</label>
+									<div class="col-sm-8">
+										<input type="text" name="name" id="edit-permissionGroup-name" placeholder="权限组名称" class="form-control" />
+									</div>
+								</div>
+								<div class="space-8"></div>
+								<div class="form-group">
+									<label class="col-sm-3 control-label no-padding-right" for="edit-permissionGroup-description"> 分组描述： </label>
+									<div class="col-sm-8">
+										<textarea class="form-control" name="description" id="edit-permissionGroup-description" placeholder="分组描述"></textarea>
+									</div>
+								</div>
 							</div>
-						</div>
-					</form>
-			      </div>
-			      <div class="modal-footer">
-			      	<div class="col-lg-4 col-lg-offset-5">
-				        <button type="button" class="btn btn-default" data-dismiss="modal" id="reset_editPermissionGroupInfo">关闭</button>
-				        <button type="button" class="btn btn-primary" data-dismiss="modal" id="submit_editPermissionGroupInfo" >确定</button>
-                    </div>
-			      </div>
-			    </div>
-			  </div>
+							<div class="modal-footer">
+								<div class="col-lg-4 col-lg-offset-5">
+									<button type="button" class="btn btn-default" data-dismiss="modal" id="reset_editPermissionGroupInfo">关闭</button>
+									<button type="submit" class="btn btn-primary" data-dismiss="modal" id="submit_editPermissionGroupInfo">确定</button>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
 			</div>
 			<!-- 添加权限项 -->
-			<div class="modal fade" id="addPermissionItemModal" tabindex="-1" role="dialog" aria-labelledby="addPermissionItemModalLabel"  >
-			  <div class="modal-dialog" role="document" style="margin:55px -300px">
-			    <div class="modal-content">
-			      <div class="modal-header">
-<!-- 			        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button> -->
-			        <h4 class="modal-title" id="addPermissionItemModalLabel">权限项信息</h4>
-			      </div>
-			      <div class="modal-body">
-					<form id="addPermissionItemInfoForm" class="form-horizontal" role="form">
-						<div class="space-4"></div>
-						<div class="form-group">
-							<label class="col-sm-3 control-label no-padding-right" for="add-permissionItem-permissionGroupName"> 所属权限组:</label>
-							<div class="col-sm-8">
-								<input type="text" name="permissionGroupName" id="add-permissionItem-permissionGroupName" placeholder="所属权限组名称" class="form-control" readonly="true"/>
+			<div class="modal fade" id="addPermissionItemModal" tabindex="-1"
+				role="dialog" aria-labelledby="addPermissionItemModalLabel">
+				<div class="modal-dialog" role="document" style="margin:55px -300px">
+					<div class="modal-content">
+						<form id="addPermissionItemInfoForm" class="form-horizontal" role="form">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+									<span aria-hidden="true">&times;</span>
+								</button>
+								<h4 class="modal-title" id="addPermissionItemModalLabel">权限项信息</h4>
 							</div>
-						</div>
-						<div class="space-4"></div>
-						<div class="form-group">
-							<label class="col-sm-3 control-label no-padding-right" for="add-permissionItem-displayName"> 显示名称:</label>
-							<div class="col-sm-8">
-								<input type="text" name="displayName" id="add-permissionItem-displayName" placeholder="显示名称" class="form-control" />
+							<div class="modal-body">
+								<div class="space-4"></div>
+								<div class="form-group">
+									<label class="col-sm-3 control-label no-padding-right" for="add-permissionItem-permissionGroupName"> 所属权限组:</label>
+									<div class="col-sm-8">
+										<input type="text" name="permissionGroupName" id="add-permissionItem-permissionGroupName"
+											placeholder="所属权限组名称" class="form-control" readonly="true" />
+									</div>
+								</div>
+								<div class="space-4"></div>
+								<div class="form-group">
+									<label class="col-sm-3 control-label no-padding-right" for="add-permissionItem-displayName"> 显示名称:</label>
+									<div class="col-sm-8">
+										<input type="text" name="displayName" id="add-permissionItem-displayName" placeholder="显示名称"
+											class="form-control" />
+									</div>
+								</div>
+								<div class="space-4"></div>
+								<div class="form-group">
+									<label class="col-sm-3 control-label no-padding-right" for="add-permissionItem-code"> 权限代码:</label>
+									<div class="col-sm-8">
+										<input type="text" class="form-control" name="code" id="add-permissionItem-code" placeholder="权限代码">
+									</div>
+								</div>
+								<div class="space-4"></div>
+								<div class="form-group">
+									<label class="col-sm-3 control-label no-padding-right" for="add-permissionItem-description"> 权限描述： </label>
+									<div class="col-sm-8">
+										<textarea class="form-control" name="description" id="add-permissionItem-description" placeholder="分组描述"></textarea>
+									</div>
+								</div>
 							</div>
-						</div>
-						<div class="space-4"></div>
-						<div class="form-group">
-							<label class="col-sm-3 control-label no-padding-right" for="add-permissionItem-code"> 权限代码:</label>
-							<div class="col-sm-8">
-								<input type="text" class="form-control" name="code" id="add-permissionItem-code" placeholder="权限代码">
+							<div class="modal-footer">
+								<div class="col-lg-4 col-lg-offset-5">
+									<button type="button" class="btn btn-default" data-dismiss="modal" id="reset_addPermissionItemInfo">关闭</button>
+									<button type="submit" class="btn btn-primary" data-dismiss="modal" id="submit_addPermissionItemInfo">确定</button>
+								</div>
 							</div>
-						</div>
-						<div class="space-4"></div>
-						<div class="form-group">
-							<label class="col-sm-3 control-label no-padding-right" for="add-permissionItem-description"> 权限描述： </label>
-							<div class="col-sm-8">
-								<textarea class="form-control" name="description" id="add-permissionItem-description" placeholder="分组描述"></textarea>
-							</div>
-						</div>
-					</form>
-			      </div>
-			      <div class="modal-footer">
-			      	<div class="col-lg-4 col-lg-offset-5">
-				        <button type="button" class="btn btn-default" data-dismiss="modal" id="reset_addPermissionItemInfo">关闭</button>
-				        <button type="button" class="btn btn-primary" data-dismiss="modal" id="submit_addPermissionItemInfo">确定</button>
-                    </div>
-			      </div>
-			    </div>
-			  </div>
+						</form>
+					</div>
+				</div>
 			</div>
 			<!-- 编辑权限项 -->
-			<div class="modal fade" id="editPermissionItemInfoModal" tabindex="-1" role="dialog" aria-labelledby="editPermissionItemInfoModalLabel"  >
-			  <div class="modal-dialog" role="document" style="margin:55px -300px">
-			    <div class="modal-content">
-			      <div class="modal-header">
-<!-- 			        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button> -->
-			        <h4 class="modal-title" id="editPermissionItemInfoModalLabel">权限项信息</h4>
-			      </div>
-			      <div class="modal-body">
-					<form id="editPermissionItemInfoForm" class="form-horizontal" role="form">
-						<div class="space-4"></div>
-						<div class="form-group">
-							<label class="col-sm-3 control-label no-padding-right" for="edit-permissionItem-displayName"> 显示名称:</label>
-							<div class="col-sm-8">
-								<input type="text" name="displayName" id="edit-permissionItem-displayName" placeholder="显示名称" class="form-control" />
+			<div class="modal fade" id="editPermissionItemInfoModal" tabindex="-1" role="dialog"
+				aria-labelledby="editPermissionItemInfoModalLabel">
+				<div class="modal-dialog" role="document" style="margin:55px -300px">
+					<div class="modal-content">
+						<form id="editPermissionItemInfoForm" class="form-horizontal" role="form">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+									<span aria-hidden="true">&times;</span>
+								</button>
+								<h4 class="modal-title" id="editPermissionItemInfoModalLabel">权限项信息</h4>
 							</div>
-						</div>
-						<div class="space-4"></div>
-						<div class="form-group">
-							<label class="col-sm-3 control-label no-padding-right" for="edit-permissionItem-code"> 权限代码:</label>
-							<div class="col-sm-8">
-								<input type="text" class="form-control" name="code" id="edit-permissionItem-code" placeholder="权限代码">
+							<div class="modal-body">
+								<div class="space-4"></div>
+								<div class="form-group">
+									<label class="col-sm-3 control-label no-padding-right" for="edit-permissionItem-displayName"> 显示名称:</label>
+									<div class="col-sm-8">
+										<input type="text" name="displayName" id="edit-permissionItem-displayName" placeholder="显示名称"
+											class="form-control" />
+									</div>
+								</div>
+								<div class="space-4"></div>
+								<div class="form-group">
+									<label class="col-sm-3 control-label no-padding-right" for="edit-permissionItem-code"> 权限代码:</label>
+									<div class="col-sm-8">
+										<input type="text" class="form-control" name="code" id="edit-permissionItem-code" placeholder="权限代码">
+									</div>
+								</div>
+								<div class="space-4"></div>
+								<div class="form-group">
+									<label class="col-sm-3 control-label no-padding-right" for="edit-permissionItem-description"> 权限描述： </label>
+									<div class="col-sm-8">
+										<textarea class="form-control" name="description" id="edit-permissionItem-description" placeholder="分组描述"></textarea>
+									</div>
+								</div>
 							</div>
-						</div>
-						<div class="space-4"></div>
-						<div class="form-group">
-							<label class="col-sm-3 control-label no-padding-right" for="edit-permissionItem-description"> 权限描述： </label>
-							<div class="col-sm-8">
-								<textarea class="form-control" name="description" id="edit-permissionItem-description" placeholder="分组描述"></textarea>
+							<div class="modal-footer">
+								<div class="col-lg-4 col-lg-offset-5">
+									<button type="button" class="btn btn-default" data-dismiss="modal" id="reset_editPermissionItemInfo">关闭</button>
+									<button type="submit" class="btn btn-primary" data-dismiss="modal" id="submit_editPermissionItemInfo">确定</button>
+								</div>
 							</div>
-						</div>
-					</form>
-			      </div>
-			      <div class="modal-footer">
-			      	<div class="col-lg-4 col-lg-offset-5">
-				        <button type="button" class="btn btn-default" data-dismiss="modal" id="reset_editPermissionItemInfo">关闭</button>
-				        <button type="button" class="btn btn-primary" data-dismiss="modal" id="submit_editPermissionItemInfo">确定</button>
-                    </div>
-			      </div>
-			    </div>
-			  </div>
+						</form>
+					</div>
+				</div>
 			</div>
 			<!-- /.page-header -->
 			<div class="row">
@@ -570,29 +608,27 @@ $(function() {
 	function submit_addPermissionGroupInfo(){
 		var name = $('#add-permissionGroup-name').val();
 		var description = $('#add-permissionGroup-description').val();
-		$('#add-permissionGroup-name').val("");
-		$('#add-permissionGroup-description').val("");
 		var isValid = $('#addPermissionGroupInfoForm').data('bootstrapValidator').isValid();
-		if(isValid){
-			$.ajax({
-				url : '${pageContext.request.contextPath}/admin/permission/createPermissionGroup',
-				data : {
-					name : name,
-					description : description
-				},
-				cache : false,
-				dataType : "json",
-				success : function(data) {
-					if (data.success) {
-						permissionGrid.datagrid("unselectAll");
-						permissionGrid.datagrid('reload');
-						top.showMsg('提示', data.msg);
-					} else {
-						top.alertMsg('警告', data.msg);
-					}
-				}
-			});
-		}
+        if(isValid){
+        	$.ajax({
+                url : '${pageContext.request.contextPath}/admin/permission/createPermissionGroup',
+                data : {
+                    name : name,
+                    description : description
+                },
+                cache : false,
+                dataType : "json",
+                success : function(data) {
+                    if (data.success) {
+                        permissionGrid.datagrid("unselectAll");
+                        permissionGrid.datagrid('reload');
+                        top.showMsg('提示', data.msg);
+                    } else {
+                        top.alertMsg('警告', data.msg);
+                    }
+                }
+            });
+        }
 		$('#addPermissionGroupInfoForm').data('bootstrapValidator').resetForm(true);
 	}	
 	//编辑权限组
@@ -611,28 +647,25 @@ $(function() {
 					var name = $('#edit-permissionGroup-name').val();
 					var description = $('#edit-permissionGroup-description').val();
 					if(oldName != name || oldDescription != description){
-						var isValid = $('#editPermissionGroupInfoForm').data('bootstrapValidator').isValid();
-						if(isValid){
-							$.ajax({
-								url : '${pageContext.request.contextPath}/admin/permission/editPermissionGroup',
-								data : {
-									id : rows[0].id,
-									name : name,
-									description : description
-								},
-								cache : false,
-								dataType : "json",
-								success : function(data) {
-									if (data.success) {
-										permissionGrid.datagrid("unselectAll");
-										permissionGrid.datagrid('reload');
-										top.showMsg('提示', data.msg);
-									} else {
-										top.alertMsg('警告', data.msg);
-									}
-								}
-							});
-						}
+						$.ajax({
+                            url : '${pageContext.request.contextPath}/admin/permission/editPermissionGroup',
+                            data : {
+                                id : rows[0].id,
+                                name : name,
+                                description : description
+                            },
+                            cache : false,
+                            dataType : "json",
+                            success : function(data) {
+                                if (data.success) {
+                                    permissionGrid.datagrid("unselectAll");
+                                    permissionGrid.datagrid('reload');
+                                    top.showMsg('提示', data.msg);
+                                } else {
+                                    top.alertMsg('警告', data.msg);
+                                }
+                            }
+                        });
 					}else{
 						top.showMsg('提示', "权限组信息没有被修改！");
 					}
@@ -706,34 +739,32 @@ $(function() {
 			var displayName = $('#add-permissionItem-displayName').val();
 			var code = $('#add-permissionItem-code').val();
 			var description = $('#add-permissionItem-description').val();
-			$('#add-permissionItem-displayName').val("");
-			$('#add-permissionItem-code').val("");
-			$('#add-permissionItem-description').val("");
 			var isValid = $('#addPermissionItemInfoForm').data('bootstrapValidator').isValid();
-			if(isValid){
-				$.ajax({
-					url : '${pageContext.request.contextPath}/admin/permission/createPermissionItem',
-					data : {
-						permissionGroupId : permissionGroupId,
-						displayName : displayName,
-						code : code,
-						description : description
-					},
-					cache : false,
-					dataType : "json",
-					success : function(data) {
-						if (data.success) {
-							reloadDatagrid(datagridId);
-							top.showMsg('提示', data.msg);
-						} else {
-							top.alertMsg('警告', data.msg);
-						}
-					}
-				});
-			}
-			$('#addPermissionItemInfoForm').data('bootstrapValidator').resetForm(true);
+	        if(isValid){
+	        	$.ajax({
+	                url : '${pageContext.request.contextPath}/admin/permission/createPermissionItem',
+	                data : {
+	                    permissionGroupId : permissionGroupId,
+	                    displayName : displayName,
+	                    code : code,
+	                    description : description
+	                },
+	                cache : false,
+	                dataType : "json",
+	                success : function(data) {
+	                    if (data.success) {
+	                        reloadDatagrid(datagridId);
+	                        top.showMsg('提示', data.msg);
+	                    } else {
+	                        top.alertMsg('警告', data.msg);
+	                    }
+	                }
+	            });
+	        }
  		});
+		$('#addPermissionItemInfoForm').data('bootstrapValidator').resetForm(true);
 	}
+	
 	function editPermissionItemInfo(datagridId, permissionItemId) {
 // 		console.log('datagridId:' + datagridId);
 // 		console.log('permissionItemId:'+permissionItemId);

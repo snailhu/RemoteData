@@ -31,12 +31,12 @@ import DataAn.Analysis.dto.YearAndParamDataDto;
 import DataAn.Util.EhCache;
 import DataAn.Util.JsonStringToObj;
 import DataAn.common.pageModel.Pager;
-import DataAn.fileSystem.option.J9SeriesType;
-import DataAn.fileSystem.option.J9Series_Star_ParameterType;
-import DataAn.fileSystem.option.SeriesType;
-import DataAn.fileSystem.service.IJ9Series_Star_Service;
 import DataAn.galaxyManager.dto.SeriesDto;
 import DataAn.galaxyManager.dto.StarDto;
+import DataAn.galaxyManager.option.J9SeriesType;
+import DataAn.galaxyManager.option.J9Series_Star_ParameterType;
+import DataAn.galaxyManager.option.SeriesType;
+import DataAn.galaxyManager.service.IJ9Series_Star_Service;
 import DataAn.galaxyManager.service.ISeriesService;
 import DataAn.galaxyManager.service.IStarService;
 import DataAn.mongo.db.MongoService;
@@ -251,8 +251,7 @@ public class CommonController {
 			HttpServletResponse response) throws Exception{
 			//EhCache ehCache = new EhCache();
 			//@SuppressWarnings("unchecked")		
-			Pager<SeriesDto> pager= seriesService.getRoleList(0, 100);
-			List<SeriesDto> lsb = pager.getRows();
+			List<SeriesDto> lsb = seriesService.getAllSeries() ;
 			List<SeriesBtnMenu> lseriesbtnMenu =new ArrayList<SeriesBtnMenu>();
 			for(SeriesDto pg:lsb){
 				SeriesBtnMenu sbtnm =new SeriesBtnMenu();

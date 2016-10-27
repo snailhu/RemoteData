@@ -1,4 +1,4 @@
-package DataAn.fileSystem.option;
+package DataAn.galaxyManager.option;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,7 +56,8 @@ public enum J9Series_Star_ParameterType {
 	* @date 2016年8月2日
 	* @version 1.0
 	*/
-	public static List<String> getFlywheelTypeOnName() {
+	@Deprecated
+	public static List<String> getFlywheelTypeOnParamTypeName2() {
 		List<String> list = new ArrayList<String>();
 		list.add("飞轮a");
 		list.add("飞轮b");
@@ -68,7 +69,7 @@ public enum J9Series_Star_ParameterType {
 		return list;
 	}
 	
-	public static List<String> getFlywheelTypeOnName2() {
+	public static List<String> getFlywheelTypeOnParamTypeName() {
 		List<String> list = new ArrayList<String>();
 		list.add("Xa");
 		list.add("Ya");
@@ -86,7 +87,7 @@ public enum J9Series_Star_ParameterType {
 	* @date 2016年8月2日
 	* @version 1.0
 	*/
-	public static List<String> getFlywheelTypeOnParams() {
+	public static List<String> getFlywheelTypeOnDataType() {
 		List<String> list = new ArrayList<String>();
 		list.add("转速");
 		list.add("电流");

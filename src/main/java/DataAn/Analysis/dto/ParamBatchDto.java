@@ -1,5 +1,6 @@
 package DataAn.Analysis.dto;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -7,7 +8,7 @@ import java.util.List;
  * @author snailHU
  *
  */
-public class ParamBatchDto {
+public class ParamBatchDto implements Serializable {
 	
 		private String nowSeries;
 		
@@ -69,8 +70,6 @@ public class ParamBatchDto {
 			this.paramAttribute = paramAttribute;
 		}
 
-		
-		
-		
-		
+			
 }
+

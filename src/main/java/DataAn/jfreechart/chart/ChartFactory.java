@@ -1,10 +1,15 @@
 package DataAn.jfreechart.chart;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
+import java.awt.Font;
 import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Vector;
+
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.axis.CategoryAxis;
+import org.jfree.chart.axis.CategoryLabelPositions;
 import org.jfree.chart.axis.DateAxis;
 import org.jfree.chart.axis.DateTickUnit;
 import org.jfree.chart.axis.DateTickUnitType;
@@ -32,6 +37,7 @@ public class ChartFactory {
 			String categoryAxisLabel, String valueAxisLabel,
 			TimeSeriesCollection dataset) {
         JFreeChart chart = org.jfree.chart.ChartFactory.createTimeSeriesChart(title, categoryAxisLabel, valueAxisLabel, dataset);
+        
         // 3:设置抗锯齿，防止字体显示不清楚
         ChartUtils.setAntiAlias(chart);// 抗锯齿
         // 4:对柱子进行渲染[创建不同图形]
@@ -57,11 +63,11 @@ public class ChartFactory {
 //        XYLineAndShapeRenderer xyRenderer = (XYLineAndShapeRenderer) xyplot.getRenderer();
 //        xyRenderer.setBaseItemLabelsVisible(false);
         dateTickUnit = new DateTickUnit(DateTickUnitType.HOUR, 4, new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")); // 第二个参数是时间轴间距
-
         
         // 设置时间单位
         domainAxis.setTickUnit(dateTickUnit);
         ChartUtils.setLegendEmptyBorder(chart);
+       
 		return chart;
 	}
 	
@@ -69,17 +75,13 @@ public class ChartFactory {
 			String categoryAxisLabel, String valueAxisLabel,
 			List<TimeSeriesCollection> datasetList) {
         JFreeChart chart = org.jfree.chart.ChartFactory.createTimeSeriesChart(title, categoryAxisLabel, valueAxisLabel, datasetList.get(0));
-        // 3:设置抗锯齿，防止字体显示不清楚
-        ChartUtils.setAntiAlias(chart);// 抗锯齿
-        // 4:对柱子进行渲染[创建不同图形]
-        ChartUtils.setTimeSeriesRender(chart.getPlot(), false, false);
-        // 5:对其他部分进行渲染
+        
         XYPlot xyplot = (XYPlot) chart.getPlot();
         //第二个Y轴的数据构造
         if(datasetList.size() > 1){
         	TimeSeriesCollection dataset2  = datasetList.get(1);
 			// 添加第2个Y轴
-			NumberAxis axis2 = new NumberAxis(" Second Axis");
+			NumberAxis axis2 = new NumberAxis();
 			// -- 修改第2个Y轴的显示效果
 			axis2.setAxisLinePaint(Color.BLUE);
 			axis2.setLabelPaint(Color.BLUE);
@@ -99,8 +101,22 @@ public class ChartFactory {
 			xyrenderer1.setBaseItemLabelsVisible(false);// 数据点绘制形状
 			xyrenderer1.setBaseShapesVisible(false);// 数据点绘制形状
 			xyplot.setRenderer(1,xyrenderer1);
+			xyrenderer1.setSeriesStroke(0, new BasicStroke(0.5F)); //设置线的大小
+			// xyrenderer1.setSeriesPaint(0, Color.RED);//红色
+			xyrenderer1.setSeriesStroke(1, new BasicStroke(0.5F));
+			// xyrenderer1.setSeriesPaint(1, Color.GREEN);//绿色
+			xyrenderer1.setSeriesStroke(3, new BasicStroke(0.5F));
+			// xyrenderer1.setSeriesPaint(3, Color.BLUE);//蓝色
+			xyrenderer1.setSeriesStroke(4, new BasicStroke(0.5F));
+			// xyrenderer1.setSeriesPaint(4, Color.BLACK);//黑色
+			xyrenderer1.setSeriesStroke(5, new BasicStroke(0.5F));
+			// xyrenderer1.setSeriesPaint(5, Color.CYAN);
 		}
-        
+     // 3:设置抗锯齿，防止字体显示不清楚
+        ChartUtils.setAntiAlias(chart);// 抗锯齿
+        // 4:对柱子进行渲染[创建不同图形]
+        ChartUtils.setTimeSeriesRender(chart.getPlot(), false, false);
+        // 5:对其他部分进行渲染
         ChartUtils.setXY_XAixs(xyplot);
         ChartUtils.setXY_YAixs(xyplot);
         // 日期X坐标轴
@@ -119,7 +135,7 @@ public class ChartFactory {
         
 //        XYLineAndShapeRenderer xyRenderer = (XYLineAndShapeRenderer) xyplot.getRenderer();
 //        xyRenderer.setBaseItemLabelsVisible(false);
-        dateTickUnit = new DateTickUnit(DateTickUnitType.DAY, 1, new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")); // 第二个参数是时间轴间距
+        dateTickUnit = new DateTickUnit(DateTickUnitType.HOUR, 4, new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")); // 第二个参数是时间轴间距
 
         // 设置时间单位
         domainAxis.setTickUnit(dateTickUnit);

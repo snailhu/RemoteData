@@ -363,7 +363,7 @@ input[type=text]::-webkit-focus-inner {
 	   	 				$.post("${pageContext.request.contextPath}/admin/file/existFile", { fileName: fileName},function(data){
 	    					console.log("flag: " + data.success);
 	    					if (data.success) {
-	    						$("#returnMsg").html("<img src='${pageContext.request.contextPath}/static/imgs/error.png'/><font color='red'>csv文件已存在</font>");
+	    						$("#returnMsg").html("<img src='${pageContext.request.contextPath}/static/imgs/error.png'/><font color='red'>"+data.msg+"</font>");
 	    					}else{
 	    						swal({
 	    							title : "你是否确定上传?",

@@ -1,8 +1,8 @@
 package DataAn.mongo.init;
 
 import DataAn.common.utils.PropertiesUtil;
-import DataAn.fileSystem.option.J9SeriesType;
-import DataAn.fileSystem.option.SeriesType;
+import DataAn.galaxyManager.option.J9SeriesType;
+import DataAn.galaxyManager.option.SeriesType;
 
 
 public class InitMongo {

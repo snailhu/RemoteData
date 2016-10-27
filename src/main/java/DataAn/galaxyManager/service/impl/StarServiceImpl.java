@@ -74,15 +74,8 @@ public class StarServiceImpl implements IStarService{
 		List<StarDto> starDtoList = new ArrayList<StarDto>();
 		List<Star> list = starDao.findByParam("series.id", seriesId);
 		if(list != null && list.size() > 0){
-			StarDto dto = null;
 			for (Star star : list) {
-				dto = new StarDto();
-				dto.setId(star.getId());
-				dto.setName(star.getName());
-				dto.setCode(star.getCode());
-				dto.setBeginDate(DateUtil.format(star.getStartRunDate()));
-				dto.setDescription(star.getDescription());
-				starDtoList.add(dto);
+				starDtoList.add(this.pojoToDto(star));
 			}
 		}
 		return starDtoList;
@@ -91,6 +84,10 @@ public class StarServiceImpl implements IStarService{
 	@Override
 	public StarDto getStarDto(long starId) {
 		Star star = starDao.get(starId);
+		return this.pojoToDto(star);
+	}
+
+	private StarDto pojoToDto(Star star){
 		StarDto dto = new StarDto();
 		dto.setId(star.getId());
 		dto.setName(star.getName());
@@ -99,8 +96,4 @@ public class StarServiceImpl implements IStarService{
 		dto.setDescription(star.getDescription());
 		return dto;
 	}
-
-
-
-
 }

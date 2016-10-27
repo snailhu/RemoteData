@@ -45,12 +45,14 @@ public class RoleServiceImpl implements IRoleService {
 	@Transactional
 	public void save(RoleDto roleDto) {
 		Role role = new Role();
-		role.setRoleName(roleDto.getName());
-		role.setDescription(roleDto.getDescription());
-		role.setCreateDate(new Date());
-		role.setUpdateDate(role.getCreateDate());
-		role.setVersion(1);
-		roleDao.add(role);
+		if (StringUtils.isNotBlank(roleDto.getName())) {
+			role.setRoleName(roleDto.getName());
+			role.setDescription(roleDto.getDescription());
+			role.setCreateDate(new Date());
+			role.setUpdateDate(role.getCreateDate());
+			role.setVersion(1);
+			roleDao.add(role);			
+		}
 	}
 	
 	@Override
@@ -66,14 +68,15 @@ public class RoleServiceImpl implements IRoleService {
 	public void update(RoleDto roleDto) {
 		Role role = roleDao.get(roleDto.getId());
 		if (StringUtils.isNotBlank(roleDto.getName())){
-			role.setRoleName(roleDto.getName());			
+			role.setRoleName(roleDto.getName());	
+			
+			if (StringUtils.isNotBlank(roleDto.getDescription())){
+				role.setDescription(roleDto.getDescription());		
+			}
+			role.setUpdateDate(new Date());
+			role.setVersion(role.getVersion() + 1);
+			roleDao.update(role);
 		}
-		if (StringUtils.isNotBlank(roleDto.getDescription())){
-			role.setDescription(roleDto.getDescription());		
-		}
-		role.setUpdateDate(new Date());
-		role.setVersion(role.getVersion() + 1);
-		roleDao.update(role);
 	}
 	
 	@Override

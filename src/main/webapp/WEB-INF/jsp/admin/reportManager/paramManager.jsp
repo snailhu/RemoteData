@@ -190,8 +190,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								<form id="form" action="" class="form-horizontal" role="form" >
 									<div class="space-1"></div>
 									<div class="form-group">
-										<label class="col-sm-3 control-label no-padding-right" for="form-series">星系：</label>
-										<div class="col-sm-4"  >
+										<label class="col-sm-5 control-label no-padding-right" for="form-series">星系：</label>
+										<div class="col-sm-3"  >
 										<select name="series"  id="form-series" class="form-control " >
 										<option value="">--请选择--</option>
 				                       </select>
@@ -199,8 +199,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 									</div>
 									<div class="space-4"></div>
 									<div class="form-group">
-										<label class="col-sm-3 control-label no-padding-right" for="form-star">星号：</label>
-										<div class="col-sm-4">
+										<label class="col-sm-5 control-label no-padding-right" for="form-star">星号：</label>
+										<div class="col-sm-3">
 												<select name="star"  id="form-star" class="form-control " >
 												<option value="">--请选择--</option>
 				                       			</select>
@@ -208,8 +208,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 									</div>
 									<div class="space-4"></div>
 									<div class="form-group">
-										<label class="col-sm-3 control-label no-padding-right" for="form-partsType">设备：</label>
-										<div class="col-sm-4">
+										<label class="col-sm-5 control-label no-padding-right" for="form-partsType">设备：</label>
+										<div class="col-sm-3">
 											<select name="partsType"  id="form-partsType" class="form-control " >
 				                           		<option selected="selected" value="">--请选择--</option>
 				                           		<option  value = "flywheel">飞轮</option>
@@ -220,15 +220,15 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 									
 									<div class="space-4"></div>
 									<div class="form-group">
-										<label class="col-sm-3 control-label no-padding-right" for="form-paramCode">参数：</label>
-										<div class="col-sm-4">
+										<label class="col-sm-5 control-label no-padding-right" for="form-paramCode">参数：</label>
+										<div class="col-sm-3">
 											<select name="paramCode"  id="form-paramCode" class="form-control " >
 				                           		<option value="">--请选择--</option>
 				                       		</select>
 										</div>
 									</div>
 									
-									<div class="space-1"></div>
+									<div class="space-4"></div>
 									<div class="form-group">
 			                           <div class="col-lg-4 col-lg-offset-6">
 					                        <button type="button" id="btn-search" class="btn btn-primary start">
@@ -566,7 +566,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
             $.get('<%=request.getContextPath()%>/starParam/getSeriesList', {}, function (res) {
   			  if(res.result == "true") {
               	  $.each(res.data.data ,function(){
-  						$('#form-series').append("<option value='"+ this.name+"'>"+ this.description +"</option>"); 
+  						$('#form-series').append("<option value='"+ this.code+"'>"+ this.name +"</option>"); 
   					});
               		  var seriesId = $('#form-series').val();
               			$.get('<%=request.getContextPath()%>/starParam/getStarList', {'seriesId':seriesId},  function (res) {
@@ -574,7 +574,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         						  $('#form-star').find("option").remove();
         						   $('#form-star').append("<option value=''>--请选择--</option>"); 
         		            	  $.each(res.data.data ,function(){
-        								$('#form-star').append("<option value='"+ this.name+"'>"+ this.description +"</option>"); 
+        								$('#form-star').append("<option value='"+ this.code+"'>"+ this.name +"</option>"); 
         							});
         							reqParamSearch();
         		              	}
@@ -588,7 +588,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   						  $('#form-star').find("option").remove();
   						   $('#form-star').append("<option value=''>--请选择--</option>"); 
   		            	  $.each(res.data.data ,function(){
-  								$('#form-star').append("<option value='"+ this.name+"'>"+ this.description +"</option>"); 
+  								$('#form-star').append("<option value='"+ this.code+"'>"+ this.name +"</option>"); 
   							});
   							reqParamSearch();
   		              }
@@ -745,7 +745,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			 	 top.showMsg('提示', "最大值必须为数字");
 				 return false;
 			}
-			if(effeMax <= effeMin) {
+			if(Number(effeMax) <= Number(effeMin)) {
 			 	 top.showMsg('提示', "最大值不能小于最小值");
 				 return false;
 			}
@@ -760,14 +760,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		  $.get('<%=request.getContextPath()%>/starParam/getSeriesList', {}, function (res) {
 			  if(res.result == "true") {
             	  $.each(res.data.data ,function(){
-						$('#add-starParam-series').append("<option value='"+ this.name+"'>"+ this.description +"</option>"); 
+						$('#add-starParam-series').append("<option value='"+ this.code+"'>"+ this.name +"</option>"); 
 					});
             		var seriesId = $('#add-starParam-series').val();	
     				  $.get('<%=request.getContextPath()%>/starParam/getStarList', {'seriesId':seriesId},  function (res) {
     					  if(res.result == "true") {
     						  $('#add-starParam-star').find("option").remove();
     		            	  $.each(res.data.data ,function(){
-    								$('#add-starParam-star').append("<option value='"+ this.name+"'>"+ this.description +"</option>"); 
+    								$('#add-starParam-star').append("<option value='"+ this.code+"'>"+ this.name +"</option>"); 
     							});
     							reqParamAdd();
     		              }
@@ -787,7 +787,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					  if(res.result == "true") {
 						  $('#add-starParam-star').find("option").remove();
 		            	  $.each(res.data.data ,function(){
-								$('#add-starParam-star').append("<option value='"+ this.name+"'>"+ this.description +"</option>"); 
+								$('#add-starParam-star').append("<option value='"+ this.code+"'>"+ this.name +"</option>"); 
 							});
 							  reqParamAdd();
 		              }
@@ -923,9 +923,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							  $('#edit-starParam-series').find("option").remove();
 			            	  $.each(res.data.data ,function(){
 			            		  if(rows[0].series == this.id) {
-			            			  $('#edit-starParam-series').append("<option value='"+ this.name+"' selected>"+ this.description +"</option>"); 
+			            			  $('#edit-starParam-series').append("<option value='"+ this.code+"' selected>"+ this.name +"</option>"); 
 			            		  } else {
-									$('#edit-starParam-series').append("<option value='"+ this.name+"'>"+ this.description +"</option>"); 
+									$('#edit-starParam-series').append("<option value='"+ this.code+"'>"+ this.name +"</option>"); 
 			            		  }
 								});
 			            		var seriesId = $('#edit-starParam-series').val();	
@@ -934,9 +934,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			    						  $('#edit-starParam-star').find("option").remove();
 			    		            	  $.each(res.data.data ,function(){
 			    		            		  if(rows[0].star == this.id) {
-			    		            			  $('#edit-starParam-star').append("<option value='"+ this.name+"' selected>"+ this.description +"</option>"); 
+			    		            			  $('#edit-starParam-star').append("<option value='"+ this.code+"' selected>"+ this.name +"</option>"); 
 			    		            		  }else {
-			    								$('#edit-starParam-star').append("<option value='"+ this.name+"'>"+ this.description +"</option>"); 
+			    								$('#edit-starParam-star').append("<option value='"+ this.code+"'>"+ this.name +"</option>"); 
 			    		            		  }
 			    							});
 			    							
@@ -972,7 +972,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							  if(res.result == "true") {
 								  $('#edit-starParam-star').find("option").remove();
 				            	  $.each(res.data.data ,function(){
-				            		  $('#edit-starParam-star').append("<option value='"+ this.name+"'>"+ this.description +"</option>"); 
+				            		  $('#edit-starParam-star').append("<option value='"+ this.code+"'>"+ this.name +"</option>"); 
 									});
 				              }
 				              else {
@@ -1039,7 +1039,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				} else {
 					var names = [];
 					for ( var i = 0; i < rows.length; i++) {
-						names.push(rows[i].StarParamName);
+						names.push(rows[i].paramName);
 					}
 					top.showMsg("提示", '只能选择一个参数进行编辑！您已经选择了【' + names.join(',')
 							+ '】' + rows.length + '个用户');

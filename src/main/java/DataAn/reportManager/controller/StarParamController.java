@@ -173,6 +173,7 @@ public class StarParamController  extends BaseController {
 			 for (Series series : seriesList) {
 				 SeriesDto seriesDto = new SeriesDto();
 				 seriesDto.setName(series.getName());
+				 seriesDto.setCode(series.getCode());
 				 seriesDto.setDescription(series.getDescription());
 				 seriesDto.setId(series.getId());
 				 seriesDtoList.add(seriesDto);
@@ -199,6 +200,7 @@ public class StarParamController  extends BaseController {
 				 starDto.setName(star.getName());
 				 starDto.setDescription(star.getDescription());
 				 starDto.setId(star.getId());
+				 starDto.setCode(star.getCode());
 				 starDto.setSeriesId(star.getSeries().getId());
 				 starDtoList.add(starDto);
 			}

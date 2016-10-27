@@ -60,7 +60,7 @@ public class OperateDataServiceImpl implements OperateDataService {
 			map.put("yyyy-MM-dd-HH-mm-ss", DateUtil.formatString(date, "yyyy-MM-dd-HH-mm-ss"));
 			//items.length;
 			for (int i = 0; i < 3; i++) {
-				map.put(FlyWheelDataType.getFlyWheelDataTypeByZh(array[i]).getName(), items[i].trim());
+//				map.put(FlyWheelDataType.getFlyWheelDataTypeByZh(array[i]).getName(), items[i].trim());
 			}
 			list.add(map);
 		}

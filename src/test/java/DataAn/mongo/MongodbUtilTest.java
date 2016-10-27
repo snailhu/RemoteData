@@ -1,7 +1,10 @@
 package DataAn.mongo;
 
 import org.junit.Before;
-import DataAn.mongo.db.MongodbUtil;
+import org.junit.Test;
+
+import DataAn.mongo.client.MongodbUtil;
+import DataAn.mongo.init.InitMongo;
 
 public class MongodbUtilTest {
 
@@ -13,7 +16,11 @@ public class MongodbUtilTest {
 		mg = MongodbUtil.getInstance();
 	}
 
-	
+	@Test
+	public void test(){
+		boolean flag = mg.isExistCollection(InitMongo.DB_J9STAR2, "flywheel5s");
+		System.out.println("flag: " + flag);
+	}
 
 	
 

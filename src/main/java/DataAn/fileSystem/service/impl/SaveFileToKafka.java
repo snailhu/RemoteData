@@ -7,12 +7,9 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-
 import org.apache.storm.utils.Utils;
 import DataAn.common.utils.DateUtil;
 import DataAn.common.utils.SpringUtil;
@@ -57,26 +54,39 @@ public class SaveFileToKafka implements Runnable {
 			String title = reader.readLine();// 第一行信息，为标题信息，不用,如果需要，注释掉
 			//CSV格式文件为逗号分隔符文件，这里根据逗号切分
 			String[] array = title.split(",");
-			String[] properties = new String[array.length-1];
-			for (int i = 1; i < array.length; i++) {
+			String[] properties = new String[array.length];
+			for (int i = 0; i < array.length; i++) {
 				//将中文字符串转换为英文
-				properties[i-1] = paramService.getParameter_en_by_allZh(series, star, name, array[i]);
+				properties[i] = paramService.getParameter_en_by_allZh(series, star, name, array[i]);
 			}
 			String line = null;
 			String date = "";
 			Date dateTime = null;
-			List<DefaultFetchObj> defaultFetchObjList =new ArrayList<DefaultFetchObj>();
+			Date dateTime1 = null;
+			int count = 1;
 			DefaultFetchObj defaultFetchObj = null;
 			String[] propertyVals = null;
+			
+			//
+			Map conf=new HashMap<>();
+			KafkaNameKeys.setKafkaServer(conf, "192.168.0.97:9092");
+			InnerProducer innerProducer=new InnerProducer(conf);
+			BoundProducer boundProducer=new BoundProducer(innerProducer,"bound-replicated-1", 0);
+			boundProducer.send(new Beginning());
 			while ((line = reader.readLine()) != null) {
 				//CSV格式文件为逗号分隔符文件，这里根据逗号切分
 				String[] items = line.split(",");
 				date = items[0].trim();
 				dateTime = DateUtil.format(date, "yyyy年MM月dd日HH时mm分ss秒");
-				propertyVals = new String[array.length-1];
+				if(count == 1){
+					dateTime1 = dateTime;
+				}
+				count ++;
+				propertyVals = new String[array.length];
+				propertyVals[0] = DateUtil.format(dateTime);
 				for (int i = 1; i < items.length; i++) {
 					//获取值除时间外
-					propertyVals[i-1] = items[i];
+					propertyVals[i] = items[i];
 				}
 				//
 				defaultFetchObj = new DefaultFetchObj();
@@ -84,37 +94,28 @@ public class SaveFileToKafka implements Runnable {
 				defaultFetchObj.setName(this.name);
 				defaultFetchObj.setSeries(this.series);
 				defaultFetchObj.setStar(this.star);
-				defaultFetchObj.setTime(date);
+				defaultFetchObj.setTime(propertyVals[0]);
 				defaultFetchObj.set_time(dateTime.getTime());
 				defaultFetchObj.setProperties(properties);
 				defaultFetchObj.setPropertyVals(propertyVals);
-				defaultFetchObjList.add(defaultFetchObj);
+				//发送到kafka
+				boundProducer.send(defaultFetchObj);
 			}
-			System.out.println("defaultFetchObjList: " + defaultFetchObjList.size());
-			for (int i = 0; i < 50; i++) {
-				System.out.println(defaultFetchObjList.get(i).toString());
-			}
+			boundProducer.send(new Ending());
+			
 //			MongodbUtil mg = MongodbUtil.getInstance();
 //			String databaseName = InitMongo.getDataBaseNameBySeriesAndStar(series, star);
 //			//集合名称： 参数名+等级
 //			String collectionName = this.name;
-//			//设置同一时间段的数据的状态为0
-//			Date beginDate = DateUtil.format(defaultFetchObjList.get(0).getTime(), "yyyy年MM月dd日HH时mm分ss秒");;
-//			Date endDate = dateTime;
-//			mg.updateByDate(databaseName, collectionName, beginDate, endDate);
-//			
-//			Map conf=new HashMap<>();
-//			KafkaNameKeys.setKafkaServer(conf, "192.168.0.97:9092");
-//			InnerProducer innerProducer=new InnerProducer(conf);
-//			BoundProducer boundProducer=new BoundProducer(innerProducer,"bound-replicated-1", 0);
-//
-//			boundProducer.send(new Beginning());
-//			for (DefaultFetchObj fetchObj : defaultFetchObjList) {
-//				boundProducer.send(fetchObj);
+//			boolean flag = mg.isExistCollection(databaseName, collectionName);
+//			if(flag){
+//				//设置同一时间段的数据的状态为0
+//				Date beginDate = dateTime1;
+//				Date endDate = dateTime;
+//				mg.updateByDate(databaseName, collectionName, beginDate, endDate);				
 //			}
-//			boundProducer.send(new Ending());
-//			
-//			Utils.sleep(10000000);
+			
+			Utils.sleep(10000000);
 			
 		} catch (Exception e) {
 			e.printStackTrace();

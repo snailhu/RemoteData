@@ -63,15 +63,24 @@ public class J9Series_Star_ServiceTest {
 	@SuppressWarnings("unchecked")
 	@Test
 	public void getFlyWheelParameterList() throws Exception{
-		service.getFlyWheelParameterList();
-		EhCache ehCache = new EhCache("j9seriesConfig");
-		List<ConstraintDto> list = (List<ConstraintDto>) ehCache.getCacheElement("flyWheelParameterList");
+//		service.getFlyWheelParameterList();
+//		EhCache ehCache = new EhCache("j9seriesConfig");
+//		List<ConstraintDto> list = (List<ConstraintDto>) ehCache.getCacheElement("flyWheelParameterList");
+		List<ConstraintDto> list = service.getFlyWheelParameterList(null, null);
 		for (ConstraintDto constraintDto : list) {
 			System.out.println(constraintDto);
 		}
 		System.out.println(list.size());
 	}
 	
+	@Test
+	public void getTopParameterList(){
+		List<ConstraintDto> list = service.getTopParameterList(null, null);
+		for (ConstraintDto constraintDto : list) {
+			System.out.println(constraintDto);
+		}
+		System.out.println(list.size());
+	}
 	@Test
 	public void test(){
 		String str = "采集数据26:飞轮a电源+5V(16026)";

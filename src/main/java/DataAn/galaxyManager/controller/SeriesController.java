@@ -1,16 +1,21 @@
 package DataAn.galaxyManager.controller;
 
 import java.util.List;
+
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import DataAn.common.dao.Pager;
 import DataAn.common.pageModel.Combo;
 import DataAn.common.pageModel.EasyuiDataGridJson;
 import DataAn.common.pageModel.JsonMessage;
-import DataAn.common.pageModel.Pager;
 import DataAn.galaxyManager.dto.SeriesDto;
 import DataAn.galaxyManager.service.ISeriesService;
 
@@ -31,11 +36,12 @@ public class SeriesController {
 	//获取系列列表
 	@RequestMapping(value = "getList", method = RequestMethod.POST)
 	@ResponseBody
-	public EasyuiDataGridJson getRoleList(int page, int rows) {
+	public EasyuiDataGridJson getRoleList(int page, int rows,
+			HttpServletRequest request,HttpServletResponse response) {
 //		System.out.println("come in getroleList..");
 		EasyuiDataGridJson json = new EasyuiDataGridJson();
-		Pager<SeriesDto> pager = seriesService.getSeriesList(page, rows);
-		json.setRows(pager.getRows());
+		Pager<SeriesDto> pager = seriesService.getSeriesList(page, rows,request.getContextPath());
+		json.setRows(pager.getDatas());
 		json.setTotal(pager.getTotalCount());			
 		return json;
 	}

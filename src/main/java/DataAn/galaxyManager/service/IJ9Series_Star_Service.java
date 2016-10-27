@@ -2,7 +2,6 @@ package DataAn.galaxyManager.service;
 
 import java.util.List;
 import java.util.Map;
-
 import DataAn.Analysis.dto.ConstraintDto;
 
 /**
@@ -29,6 +28,7 @@ public interface IJ9Series_Star_Service {
 	public List<ConstraintDto> getAllParameterList(String beginDate,String endDate,
 			String series, String star, String paramType) throws Exception;
 	
+	public List<ConstraintDto> getParameterList(String series, String star, String paramType);
 	/**
 	* Description: 获取飞轮类型的参数列表
 	* @return 
@@ -37,15 +37,20 @@ public interface IJ9Series_Star_Service {
 	* @date 2016年7月26日
 	* @version 1.0
 	*/
+	@Deprecated
 	public List<ConstraintDto> getFlyWheelParameterList() throws Exception;
 	
+	public List<ConstraintDto> getFlyWheelParameterList(String series, String star);
 	/**
 	* Description: 通过参数的英文返回参数的类型
 	* @param param_en 参数英文值
 	* @return   "电流","转速","温度","指令","供电状态","角动量"
 	* @throws Exception
 	*/
+	@Deprecated
 	public String getFlyWheelParameterType(String param_en) throws Exception;
+	
+	public String getFlyWheelParameterType(String series, String star, String param_en);
 	
 	/**
 	* Description: 通过参数的英文返回飞轮名称
@@ -53,8 +58,10 @@ public interface IJ9Series_Star_Service {
 	* @return   Xa、Ya、Za、Xb、Yb、Zb
 	* @throws Exception
 	*/
+	@Deprecated
 	public String getFlyWheelName(String param_en) throws Exception;
 	
+	public String getFlyWheelName(String series, String star, String param_en);
 	/**
 	* Description: 获取陀螺类型的参数列表
 	* @return 
@@ -63,7 +70,10 @@ public interface IJ9Series_Star_Service {
 	* @date 2016年7月28日
 	* @version 1.0
 	*/
+	@Deprecated
 	public List<ConstraintDto> getTopParameterList() throws Exception;
+	
+	public List<ConstraintDto> getTopParameterList(String series, String star);
 	
 	/**
 	* Description: 获取所有的 英-简写中文 参数列表 如：flywheel_d_speed -- 飞轮D转速(16110)

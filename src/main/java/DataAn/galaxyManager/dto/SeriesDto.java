@@ -12,6 +12,8 @@ public class SeriesDto{
 	private String description;
 	
 	private String createDate;
+	
+	private String paramPath;
 
 	public long getId() {
 		return id;
@@ -53,12 +55,19 @@ public class SeriesDto{
 		this.createDate = createDate;
 	}
 
+	public String getParamPath() {
+		return paramPath;
+	}
+
+	public void setParamPath(String paramPath) {
+		this.paramPath = paramPath;
+	}
+
 	@Override
 	public String toString() {
 		return "SeriesDto [id=" + id + ", name=" + name + ", code=" + code
 				+ ", description=" + description + ", createDate=" + createDate
-				+ "]";
+				+ ", paramPath=" + paramPath + "]";
 	}
-	
-	
+
 }

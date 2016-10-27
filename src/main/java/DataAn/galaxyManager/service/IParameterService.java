@@ -12,7 +12,7 @@ public interface IParameterService {
 	
 	public void saveMany(String series, String star, String paramType, String param_zhs);
 	
-	public List<Parameter> getParameterList(String series, String star, String paramType);
+	public List<ParameterDto> getParameterList(String series, String star, String paramType);
 	
 	public Pager<ParameterDto> getParameterList(int pageIndex, int pageSize);
 

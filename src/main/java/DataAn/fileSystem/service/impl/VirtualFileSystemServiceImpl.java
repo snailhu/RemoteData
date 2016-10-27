@@ -92,17 +92,18 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 		csvFileDto.setFilePath(csvTempFilePath);
 		
 		// 保存 *.csv文件
-		this.saveFileOfCSV(csvFileDto, dataMap);
-		//测试分级数据存储
-		//this.saveFileOfCSVMock(csvFileDto, dataMap);
+//		this.saveFileOfCSV(csvFileDto, dataMap);
+//		//测试分级数据存储
+//		//this.saveFileOfCSVMock(csvFileDto, dataMap);
+//		
+//		//获取map中的csv文件
+//		FileDto datFile = map.get("dat");
+//		if(datFile != null){			
+//			// 保存 *.DAT文件
+//			this.saveFileOfDAT(datFile, dataMap);
+//		}
 		
-		//获取map中的csv文件
-		FileDto datFile = map.get("dat");
-		if(datFile != null){			
-			// 保存 *.DAT文件
-			this.saveFileOfDAT(datFile, dataMap);
-		}
-		
+		//开另外一个线程处理存入kafka的数据
 		new Thread(new SaveFileToKafka(nowSeries, 
 									   nowStar, 
 									   csvFileDto.getParameterType(), 

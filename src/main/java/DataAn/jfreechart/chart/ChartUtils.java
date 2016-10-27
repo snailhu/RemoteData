@@ -509,7 +509,6 @@ public class ChartUtils {
 		plot.getDomainAxis().setAxisLinePaint(lineColor);// X坐标轴颜色
 		plot.getDomainAxis().setTickMarkPaint(lineColor);// X坐标轴标记|竖线颜色
 		plot.getDomainAxis().setVerticalTickLabels(true); //X坐标轴数据垂直显示
-		
 		//plot.getDomainAxis().setLabelFont(new Font("宋体", Font.BOLD, 16));// 设置横轴的字体
 	}
 
@@ -527,11 +526,15 @@ public class ChartUtils {
 		// false隐藏Y刻度 true 显示
  		axis.setAxisLineVisible(true);
 		axis.setTickMarksVisible(true);
+		//
+		axis.setTickLabelsVisible(true);
 		// Y轴网格线条
 		plot.setRangeGridlinePaint(new Color(192, 192, 192));
 		plot.setRangeGridlineStroke(new BasicStroke(1));
-		plot.setDomainGridlinesVisible(false);
-
+		
+		plot.setRangeGridlinesVisible(false); // 数据轴网格是否可见
+		plot.setDomainGridlinesVisible(false); //垂直方向：分类轴网格是否可见
+		
 		plot.getRangeAxis().setUpperMargin(0.12);// 设置顶部Y坐标轴间距,防止数据无法显示
 		plot.getRangeAxis().setLowerMargin(0.12);// 设置底部Y坐标轴间距
 

@@ -12,6 +12,7 @@ import java.util.Vector;
 
 import javax.annotation.Resource;
 
+import org.apache.commons.lang3.StringUtils;
 import org.bson.Document;
 import org.jfree.chart.ChartUtilities;
 import org.jfree.chart.JFreeChart;
@@ -222,23 +223,29 @@ public class JfreechartServiceImpl implements IJfreechartServcie {
 						if (timeseries == null) {
 							timeseries = ChartUtils.createTimeseries(params.get(key));
 						}
-						// 转换为double 类型
-						double dValue = Double.parseDouble(doc.getString(key));
-						// 往序列里面添加数据
-						timeseries.addOrUpdate(new Millisecond(datetime), dValue);
-						lineMap.put(key, timeseries);
-						// 获取最小值
-						min = minMap.get(key);
-						if (min == null) {
-							min = dValue;
+						String strValue = doc.getString(key);
+						if(StringUtils.isNotBlank(strValue)){
+							// 转换为double 类型
+							double dValue = Double.parseDouble(strValue.trim());
+							// 往序列里面添加数据
+							timeseries.addOrUpdate(new Millisecond(datetime), dValue);
+							lineMap.put(key, timeseries);
+							// 获取最小值
+							min = minMap.get(key);
+							if (min == null) {
+								min = dValue;
+							}
+							minMap.put(key, this.getMin(min, dValue));
+							// 获取最大值
+							max = maxMap.get(key);
+							if (max == null) {
+								max = dValue;
+							}
+							maxMap.put(key, this.getMax(max, dValue));
+						}else{
+							throw new RuntimeException(DateUtil.format(beginDate) + " 到 "+ 
+									DateUtil.format(endDate) +" " + params.get(key) + " 未找到报告数据！");
 						}
-						minMap.put(key, this.getMin(min, dValue));
-						// 获取最大值
-						max = maxMap.get(key);
-						if (max == null) {
-							max = dValue;
-						}
-						maxMap.put(key, this.getMax(max, dValue));
 					}
 				}
 			}
@@ -246,14 +253,31 @@ public class JfreechartServiceImpl implements IJfreechartServcie {
 			Map<String, String> chartMap = new HashMap<String, String>();
 			for (String key : constraintsKeys) {
 				List<ConstraintDto> constraintList = constraintsMap.get(key);
-				// 多条线图表数据
-				TimeSeriesCollection dataset = new TimeSeriesCollection();
-				for (ConstraintDto constraintDto : constraintList) {
-					
-					dataset.addSeries(lineMap.get(constraintDto.getValue()));
-					
-//					System.out.println("constraintDto.getValue(): "
-//							+ lineMap.get(constraintDto.getValue()).getItemCount());
+				List<TimeSeriesCollection> datasetList = new ArrayList<TimeSeriesCollection>();
+				if(constraintList.size() == 2){
+					//双Y轴
+					for (ConstraintDto constraintDto : constraintList) {
+						TimeSeriesCollection dataset = new TimeSeriesCollection();
+						TimeSeries timeSeries = lineMap.get(constraintDto.getValue());
+						if(timeSeries == null){
+							throw new RuntimeException(DateUtil.format(beginDate) + " 到 "+ 
+									DateUtil.format(endDate) +" " + constraintDto.getName()+" 未找到报告数据！");
+						}
+						dataset.addSeries(timeSeries);						
+						datasetList.add(dataset);
+					}
+				}else{
+					// 多条线图表数据
+					TimeSeriesCollection dataset = new TimeSeriesCollection();
+					for (ConstraintDto constraintDto : constraintList) {
+						TimeSeries timeSeries = lineMap.get(constraintDto.getValue());
+						if(timeSeries == null){
+							throw new RuntimeException(DateUtil.format(beginDate) + " 到 "+ 
+									DateUtil.format(endDate) +" " + constraintDto.getName()+" 未找到报告数据！");
+						}
+						dataset.addSeries(timeSeries);						
+					}
+					datasetList.add(dataset);
 				}
 
 				String title = "";
@@ -261,7 +285,7 @@ public class JfreechartServiceImpl implements IJfreechartServcie {
 				String valueAxisLabel = "";
 
 				JFreeChart chart = ChartFactory.createTimeSeriesChart(title,
-						categoryAxisLabel, valueAxisLabel, dataset);
+						categoryAxisLabel, valueAxisLabel, datasetList);
 
 				String cachePath = CommonConfig.getChartCachePath();
 				File parentDir = new File(cachePath);
@@ -282,7 +306,7 @@ public class JfreechartServiceImpl implements IJfreechartServcie {
 			lineChartDto.setMaxMap(maxMap);
 			return lineChartDto;
 		}else{
-			throw new RuntimeException("未找到报告数据！");
+			throw new RuntimeException(DateUtil.format(beginDate) + " 到 "+ DateUtil.format(endDate) +" 未找到报告数据！");
 		}
 		
 	}

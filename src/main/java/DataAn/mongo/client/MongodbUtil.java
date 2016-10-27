@@ -203,6 +203,17 @@ public class MongodbUtil {
 		return dbCollection;
 	}
 	
+	public boolean isExistCollection(String databaseName, String collectionName){
+		MongoDatabase db = getDB(databaseName);
+		 MongoIterable<String> cols = db.listCollectionNames();
+		 for (String col : cols) {
+			if(col.equals(collectionName)){
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	/**
 	 * 获取所有数据库
 	 * 

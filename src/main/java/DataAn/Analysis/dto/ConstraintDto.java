@@ -1,5 +1,6 @@
 package DataAn.Analysis.dto;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -8,7 +9,7 @@ import java.util.List;
 * @author  Shewp
 * @date 2016年7月15日
 */
-public class ConstraintDto {
+public class ConstraintDto implements Serializable{
 
 	private int id;
 	private int parentId;

@@ -1,8 +1,9 @@
 package DataAn.Analysis.dto;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class GroupMenu {
+public class GroupMenu implements Serializable{
 	
 	private String id;
 	

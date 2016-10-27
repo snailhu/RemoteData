@@ -4,17 +4,17 @@ public class ParameterDto {
 
 	private Long id;
 	
-	private String series;
+	private String series; //系列 j9
 	
-	private String star;
+	private String star; //星 01、02、03...
 	
-	private String parameterType;
+	private String parameterType; //参数类型 flywheel、top
 	
-	private String fullName;
+	private String fullName; //参数全称如， F10W111:飞轮电流Xa(00814)
 	
-	private String simplyName;
+	private String simplyName; //参数简称 如， 飞轮电流Xa(00814)
 	
-	private String code;
+	private String code; //码： sequence_00814
 
 	public Long getId() {
 		return id;
@@ -75,10 +75,10 @@ public class ParameterDto {
 	@Override
 	public String toString() {
 		return "ParameterDto [id=" + id + ", series=" + series + ", star="
-				+ star + ", fullName=" + fullName + ", simplyName="
-				+ simplyName + ", code=" + code + "]";
+				+ star + ", parameterType=" + parameterType + ", fullName="
+				+ fullName + ", simplyName=" + simplyName + ", code=" + code
+				+ "]";
 	}
-
 	
 	
 }

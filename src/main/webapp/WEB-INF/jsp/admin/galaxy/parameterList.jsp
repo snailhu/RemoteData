@@ -342,7 +342,7 @@ $(function() {
 	              width: 50,
 	              checkbox: true
 	          }, {
-	              field: 'name',
+	              field: 'fullName',
 	              title: '参数名',
 	              width: 200,
 	              sortable: true

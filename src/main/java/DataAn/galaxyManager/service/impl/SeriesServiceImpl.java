@@ -10,8 +10,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import DataAn.common.dao.Pager;
 import DataAn.common.pageModel.Combo;
-import DataAn.common.pageModel.Pager;
 import DataAn.common.utils.DateUtil;
 import DataAn.galaxyManager.dao.ISeriesDao;
 import DataAn.galaxyManager.dao.IStarDao;
@@ -68,17 +68,23 @@ public class SeriesServiceImpl implements ISeriesService{
 	}
 	
 	@Override
-	public Pager<SeriesDto> getSeriesList(int pageIndex, int pageSize) {
-		List<Series> list = seriesDao.findAll();
+	public Pager<SeriesDto> getSeriesList(int pageIndex, int pageSize, String contextPath) {
 		List<SeriesDto> seriesDtoList = new ArrayList<SeriesDto>();
-		Long totalCount = 0l;
+		Pager<Series> seriesPager = seriesDao.selectByPager(pageIndex, pageSize);
+		List<Series> list = seriesPager.getDatas();
 		if(list != null && list.size() > 0){
 			for (Series series : list) {
-				seriesDtoList.add(this.pojoToDto(series));
+				SeriesDto dto = new SeriesDto();
+				dto.setId(series.getId());
+				dto.setName(series.getName());
+				dto.setCode(series.getCode());
+				dto.setCreateDate(DateUtil.format(series.getCreateDate()));
+				dto.setDescription(series.getDescription());
+				dto.setParamPath(contextPath + "/");
+				seriesDtoList.add(dto);
 			}
-			totalCount = (long) list.size();
 		}
-		Pager<SeriesDto> pager = new Pager<SeriesDto>(pageIndex, pageSize, totalCount , seriesDtoList);
+		Pager<SeriesDto> pager = new Pager<SeriesDto>(pageIndex, pageSize, seriesPager.getTotalCount() , seriesDtoList);
 		return pager;
 	}
 

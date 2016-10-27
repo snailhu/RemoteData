@@ -81,9 +81,15 @@ public class ParameterServiceImpl implements IParameterService{
 	}
 
 	@Override
-	public List<Parameter> getParameterList(String series, String star, String paramType) {
-		
-		return parameterDao.selectBySeriesAndParameterType(series, paramType);
+	public List<ParameterDto> getParameterList(String series, String star, String paramType) {
+		List<ParameterDto> paramDtoList = new ArrayList<ParameterDto>();
+		List<Parameter> paramList = parameterDao.selectBySeriesAndParameterType(series, paramType);
+		if(paramList != null && paramList.size() > 0){
+			for (Parameter parameter : paramList) {
+				paramDtoList.add(this.pojoToDto(parameter));
+			}
+		}
+		return paramDtoList;
 	}
 
 	
@@ -114,6 +120,7 @@ public class ParameterServiceImpl implements IParameterService{
 		paramDto.setSimplyName(param.getSimplyName());
 		paramDto.setSeries(param.getSeries());
 		paramDto.setStar(param.getStar());
+		paramDto.setParameterType(param.getParameterType());
 		return paramDto;
 	}
 

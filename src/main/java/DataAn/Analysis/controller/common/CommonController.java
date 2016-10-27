@@ -248,8 +248,7 @@ public class CommonController {
 			HttpServletResponse response) throws Exception{
 			//EhCache ehCache = new EhCache();
 			//@SuppressWarnings("unchecked")		
-			Pager<SeriesDto> pager= seriesService.getSeriesList(0, 100);
-			List<SeriesDto> lsb = pager.getRows();
+			List<SeriesDto> lsb = seriesService.getAllSeries() ;
 			List<SeriesBtnMenu> lseriesbtnMenu =new ArrayList<SeriesBtnMenu>();
 			for(SeriesDto pg:lsb){
 				SeriesBtnMenu sbtnm =new SeriesBtnMenu();

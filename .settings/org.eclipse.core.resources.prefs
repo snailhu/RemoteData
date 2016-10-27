@@ -7,6 +7,7 @@ encoding//src/main/java/DataAn/jfreechart/chart/ChartFactory.java=UTF-8
 encoding//src/main/resources=UTF-8
 encoding//src/main/resources/config.properties=UTF-8
 encoding//src/main/resources/mongoDB.properties=UTF-8
+encoding//src/main/resources/reportConfig.properties=UTF-8
 encoding//src/main/webapp/WEB-INF/ftl/secondStyle/dataAnalysis.ftl=UTF-8
 encoding//src/test/java=UTF-8
 encoding//src/test/resources=UTF-8

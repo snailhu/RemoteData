@@ -196,6 +196,19 @@
 									<div class="space-4"></div>
 									<div class="form-group">
 										<label class="col-sm-3 control-label no-padding-right"
+											for="search-status"> 状态</label>
+										<div class="col-sm-9">
+											<select class="col-xs-10 col-sm-5" id="search-statusType"
+												name="statusType">
+												<option value="">--请选择--</option>
+												<option value="0">已成功</option>
+												<option value="1">失败</option>
+											</select>
+										</div>
+									</div>
+									<div class="space-4"></div>
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right"
 											for="search-createdatetimeStart"> 创建开始时间 </label>
 										<div class="col-sm-9">
 											<input type="text" id="search-createdatetimeStart"
@@ -236,6 +249,39 @@
 				<!-- /.col -->
 			</div>
 			<!-- /.row -->
+
+			<!-- 异常详情 -->
+			<div class="modal fade" id="exceptionInfoModal" role="dialog"
+				aria-labelledby="exceptionInfoModalLabel">
+				<div class="modal-dialog" role="document"
+					style="margin: 55px -300px">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal"
+								aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+							<h4 class="modal-title" id="exceptionInfoModalLabel">异常信息</h4>
+						</div>
+						<div class="modal-body">
+							<div class="form-group">
+								<label class="col-sm-3 control-label no-padding-right"
+									for="edit-series"> 详情: </label>
+								<div class="col-sm-8">
+									<textarea rows="5" cols="20" id="exceptionInfoModalArea"
+										class="form-control"></textarea>
+								</div>
+							</div>
+						</div>
+						<div class="modal-footer">
+							<div class="col-lg-4 col-lg-offset-5">
+								<button type="button" class="btn btn-default"
+									id="closeExceptionInfoModal" data-dismiss="modal">关闭</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
 
 			<div id="content" region="center" title="已完成信息"
 				style="overflow: hidden"></div>
@@ -295,20 +341,27 @@ jeDate({
 									field : 'trackingId',//'trackingId',
 									width : 50,
 									checkbox : true
-
 								} ] ],
 								columns : [ [ {
 									field : 'fileName',
 									title : '文件名',
 									width : 100,
+									sortable : true
 								}, {
 									field : 'createDate',
 									title : '上传时间',
 									width : 100,
+									sortable : true
 								}, {
 									field : 'statusType',
 									title : '状态',
 									width : 100,
+									sortable : true
+								}, {
+									field : 'exceptionInfo',
+									title : '操作',
+									width : 100,
+									formatter : formatOper
 								} ] ],
 
 								toolbar : [ {
@@ -322,6 +375,28 @@ jeDate({
 
 		});
 
+		function formatOper(val, row, index) {
+			if (row.exceptionInfo == null) {
+				return '<input type="hidden" id="search-fileName" value = "'+row.exceptionInfo+'"/>'
+			} else {
+				return '<a href="javascript:ShowexceptionInfo('
+						+ index
+						+ '" onclick="ShowexceptionInfo('
+						+ index
+						+ ')">异常详情</a><input type="hidden" id="ShowexceptionInfo'+index+'" value = "'+row.exceptionInfo+'"/>';
+			}
+		}
+
+		function ShowexceptionInfo(index) {
+			$('#exceptionInfoModalArea').text(
+					$('#ShowexceptionInfo' + index).val());
+			$('#exceptionInfoModal').modal('show');
+		}
+
+		$('#closeExceptionInfoModal').click(function() {
+			$('#exceptionInfoModalArea').text("");
+		});
+
 		function reloadDataGrid() {
 			logGrid.datagrid('clearChecked');
 			logGrid.datagrid('reload');
@@ -330,12 +405,14 @@ jeDate({
 		//快速搜索按钮
 		$('#btn-search').click(function() {
 			var fileName = $('#search-fileName').val();
+			var statusType = $('#search-statusType').val();
 			var createdatetimeStart = $('#search-createdatetimeStart').val();
 			var createdatetimeEnd = $('#search-createdatetimeEnd').val();
 			logGrid.datagrid('load', {
 				fileName : fileName,
 				createdatetimeStart : createdatetimeStart,
-				createdatetimeEnd : createdatetimeEnd
+				createdatetimeEnd : createdatetimeEnd,
+				statusType : statusType
 			});
 		});
 		//删除用户

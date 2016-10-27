@@ -10,6 +10,7 @@ import DataAn.common.dao.BaseDaoImpl;
 import DataAn.common.dao.Pager;
 import DataAn.status.dao.IStatusTrackingDao;
 import DataAn.status.domain.StatusTracking;
+import DataAn.status.option.StatusTrackingType;
 
 @Repository
 public class StatusTrackingDaoImpl extends BaseDaoImpl<StatusTracking> implements IStatusTrackingDao {
@@ -30,8 +31,10 @@ public class StatusTrackingDaoImpl extends BaseDaoImpl<StatusTracking> implement
 	@SuppressWarnings("unchecked")
 	public Pager<StatusTracking> selectByOption(int pageIndex, int pageSize, String fileName, String userType,
 			String statusType, String createdatetimeStart, String createdatetimeEnd) {
-		String hql = "from StatusTracking where (statusType='5' or statusType like('%e%'))";
-		String countHQL = "select count(*) from StatusTracking where (statusType='5' or statusType like('%e%'))";
+		String hql = "from StatusTracking where (statusType='" + StatusTrackingType.END.getValue()
+				+ "' or statusType like('%e%'))";
+		String countHQL = "select count(*) from StatusTracking where (statusType='" + StatusTrackingType.END.getValue()
+				+ "' or statusType like('%e%'))";
 		if (StringUtils.isNotBlank(fileName)) {
 			hql += " and fileName = '" + fileName + "'";
 			countHQL += " and fileName = '" + fileName + "'";
@@ -41,8 +44,14 @@ public class StatusTrackingDaoImpl extends BaseDaoImpl<StatusTracking> implement
 			countHQL += " and userType = '" + userType + "'";
 		}
 		if (StringUtils.isNotBlank(statusType)) {
-			hql += " and statusType = '" + statusType + "'";
-			countHQL += " and statusType = '" + statusType + "'";
+			if (statusType.equals("0")) {
+				hql += " and statusType = '" + StatusTrackingType.END.getValue() + "'";
+				countHQL += " and statusType = '" + StatusTrackingType.END.getValue() + "'";
+			} else {
+				hql += " and statusType like '%e%'";
+				countHQL += " and statusType like '%e%'";
+			}
+
 		}
 		if (StringUtils.isNotBlank(createdatetimeStart)) {
 			hql += " and createDate >= '" + createdatetimeStart + "'";

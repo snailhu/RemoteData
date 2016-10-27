@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,6 +20,7 @@ import com.alibaba.fastjson.JSON;
 import DataAn.common.dao.Pager;
 import DataAn.common.pageModel.EasyuiDataGridJson;
 import DataAn.common.pageModel.JsonMessage;
+import DataAn.fileSystem.option.J9Series_Star_ParameterType;
 import DataAn.status.dto.StatusTrackingDTO;
 import DataAn.status.dto.StatusYstepDTO;
 import DataAn.status.service.IStatusTrackingService;
@@ -40,7 +42,21 @@ public class StatusController {
 	public String startingIndex(Model model, HttpServletRequest request, HttpServletResponse response) {
 		HttpSession session = request.getSession();
 		ActiveUserDto acticeUser = (ActiveUserDto) session.getAttribute("activeUser");
+		String flywheel = J9Series_Star_ParameterType.FLYWHEEL.getValue();
+		String top = J9Series_Star_ParameterType.TOP.getValue();
 		String userType = "";
+		int i = 0;
+		if (StringUtils.isNotBlank(acticeUser.getPermissionItems().get(flywheel))) {
+			userType = J9Series_Star_ParameterType.FLYWHEEL.getValue();
+			i++;
+		}
+		if (StringUtils.isNotBlank(acticeUser.getPermissionItems().get(top))) {
+			userType = J9Series_Star_ParameterType.TOP.getValue();
+			i++;
+		}
+		if (i > 1) {
+			userType = "";
+		}
 		try {
 			List<StatusYstepDTO> statusYstepList = statusTrackingService.getSatusYstepList(userType);
 			System.out.println(JSON.toJSONString(statusYstepList));

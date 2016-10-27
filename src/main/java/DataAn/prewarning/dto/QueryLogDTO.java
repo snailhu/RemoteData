@@ -26,6 +26,16 @@ public class QueryLogDTO implements java.io.Serializable {
 
 	private String timeValue; // 时间点
 
+	private String warnRemark; // 预警备注
+
+	public String getWarnRemark() {
+		return warnRemark;
+	}
+
+	public void setWarnRemark(String warnRemark) {
+		this.warnRemark = warnRemark;
+	}
+
 	public String getStar() {
 		return star;
 	}

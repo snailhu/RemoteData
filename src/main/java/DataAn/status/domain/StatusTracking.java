@@ -10,8 +10,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import DataAn.reportManager.option.ReportDataType;
-
 /**
  * @author wj
  *
@@ -36,8 +34,19 @@ public class StatusTracking implements java.io.Serializable {
 	@Column(name = "statusType", nullable = true)
 	private String statusType; // 所处状态
 
+	@Column(name = "exceptionInfo", nullable = true)
+	private String exceptionInfo; // 异常详情
+
 	@Column(name = "createDate", nullable = true)
 	private Date createDate;
+
+	public String getExceptionInfo() {
+		return exceptionInfo;
+	}
+
+	public void setExceptionInfo(String exceptionInfo) {
+		this.exceptionInfo = exceptionInfo;
+	}
 
 	public Long getTrackingId() {
 		return trackingId;

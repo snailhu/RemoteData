@@ -151,8 +151,9 @@ public class CommonController {
 			@PathVariable("id") Integer id
 			) throws Exception{
 		EhCache ehCache = new EhCache(); 
+		String sessionId = request.getSession().getId();
 		@SuppressWarnings("unchecked")
-		List<ParamGroup> lPs = (List<ParamGroup>) ehCache.getCacheElement("AllJsonData");
+		List<ParamGroup> lPs = (List<ParamGroup>) ehCache.getCacheElement(sessionId+"AllJsonData");
 		List<SingleParamDto> params = new ArrayList<SingleParamDto>();
 		Map<String,String> map = j9Series_Star_Service.getAllParameterList_simplyZh_and_en();
 		ModelAndView mv = new ModelAndView("/secondStyle/graphicShow");

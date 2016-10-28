@@ -58,6 +58,9 @@
 <link rel="stylesheet"
 	href="<%=request.getContextPath()%>/static/content/css/default.css"
 	type="text/css" />
+<link rel="stylesheet"
+	href="<%=request.getContextPath()%>/static/select2/select2.min.css"
+	type="text/css" />
 
 <script type="text/javascript"
 	src="<%=request.getContextPath()%>/static/jqwidgets/jqxcore.js"></script>
@@ -93,6 +96,9 @@
 
 <script type="text/javascript"
 	src="<%=request.getContextPath()%>/static/jqwidgets/jqxbuttons.js"></script>
+
+<script type="text/javascript"
+	src="<%=request.getContextPath()%>/static/select2/select2.full.min.js"></script>
 
 <style type="text/css">
 .sweet-alert h2 {
@@ -343,18 +349,8 @@
 		});
 		$('#change-search-box').click();
 		
-// 		$.ajax({
-// 			url : '${pageContext.request.contextPath}/admin/prewarning/getSelectOptions',
-// 			cache : false,
-// 			dataType : "json",
-// 			success : function(data) {
-// 				if (data) {
-					
-// 				} else {
-// 					swal("获取条件列表失败", "","error");
-// 				}
-// 			}
-// 		});
+		$.fn.modal.Constructor.prototype.enforceFocus = function() {};
+		$(".select2").select2();
 	});
 </script>
 </head>
@@ -424,8 +420,8 @@
 										<label class="col-sm-3 control-label no-padding-right"
 											for="search-parameter"> 参数 </label>
 										<div class="col-sm-9">
-											<select class="col-xs-10 col-sm-5" id="search-parameter"
-												name="parameter">
+											<select class="col-xs-10 col-sm-5 select2"
+												style="width: 41.7%;" id="search-parameter" name="parameter">
 												<option value="">--请选择--</option>
 											</select>
 										</div>
@@ -458,8 +454,8 @@
 			</table>
 
 			<!-- 创建参数 -->
-			<div class="modal fade" id="addValueModal" tabindex="-1"
-				role="dialog" aria-labelledby="addValueModalLabel">
+			<div class="modal fade" id="addValueModal" role="dialog"
+				aria-labelledby="addValueModalLabel">
 				<div class="modal-dialog" role="document"
 					style="margin: 55px -300px">
 					<div class="modal-content">
@@ -510,8 +506,8 @@
 									<label class="col-sm-3 control-label no-padding-right"
 										for="add-parameter"> 参数： </label>
 									<div class="col-sm-8">
-										<select class="form-control" id="add-parameter"
-											name="parameter">
+										<select class="form-control select2" style="width: 100%;"
+											id="add-parameter" name="parameter">
 											<option value="">--请选择--</option>
 										</select>
 									</div>
@@ -519,7 +515,7 @@
 								<div class="space-4"></div>
 								<div class="form-group">
 									<label class="col-lg-3 control-label no-padding-right"
-										for="add-timeZone"> 时间区间： </label>
+										for="add-timeZone"> 时间区间(min)： </label>
 									<div class="col-sm-8">
 										<input type="text" name="timeZone" id="add-timeZone"
 											placeholder="时间区间" class="form-control" />
@@ -566,8 +562,8 @@
 				</div>
 			</div>
 			<!-- 编辑参数 -->
-			<div class="modal fade" id="editValueModal" tabindex="-1"
-				role="dialog" aria-labelledby="editValueModalLabel">
+			<div class="modal fade" id="editValueModal" role="dialog"
+				aria-labelledby="editValueModalLabel">
 				<div class="modal-dialog" role="document"
 					style="margin: 55px -300px">
 					<div class="modal-content">
@@ -619,8 +615,8 @@
 									<label class="col-sm-3 control-label no-padding-right"
 										for="edit-parameter"> 参数： </label>
 									<div class="col-sm-8">
-										<select class="form-control" id="edit-parameter"
-											name="parameter">
+										<select class="form-control select2" style="width: 100%;"
+											id="edit-parameter" name="parameter">
 											<option value="">--请选择--</option>
 										</select>
 									</div>
@@ -628,7 +624,7 @@
 								<div class="space-4"></div>
 								<div class="form-group">
 									<label class="col-lg-3 control-label no-padding-right"
-										for="edit-timeZone"> 时间区间： </label>
+										for="edit-timeZone"> 时间区间(min)： </label>
 									<div class="col-sm-8">
 										<input type="text" name="timeZone" id="edit-timeZone"
 											placeholder="时间区间" class="form-control" />
@@ -737,40 +733,47 @@
 									field : 'valueId',//'valueId',
 									width : 50,
 									checkbox : true
-
 								} ] ],
 								columns : [ [ {
 									field : 'series',
 									title : '星系',
 									width : 100,
+									sortable:true
 								}, {
 									field : 'star',
 									title : '星',
 									width : 100,
+									sortable:true
 								},{
 									field : 'parameterType',
 									title : '设备',
 									width : 100,
+									sortable:true
 								}, {
 									field : 'parameter',
 									title : '参数',
-									width : 150,
+									width : 200,
+									sortable:true
 								}, {
 									field : 'timeZone',
-									title : '时间区间',
+									title : '时间区间(min)',
 									width : 100,
+									sortable:true
 								}, {
 									field : 'limitTimes',
 									title : '限定次数',
 									width : 100,
+									sortable:true
 								}, {
 									field : 'maxVal',
 									title : '最大值',
 									width : 100,
+									sortable:true
 								}, {
 									field : 'minVal',
 									title : '最小值',
 									width : 100,
+									sortable:true
 								} ] ],
 
 								toolbar : [ {
@@ -875,6 +878,7 @@
 	            		    	$('#search-parameter').append("<option value='"+ this.value+"'>"+ this.name +"</option>"); 
 	            		    }
 						});
+	            	  $("#search-parameter").select2().val("").trigger("change");
 	              }
 	              else {
 	            	  top.showMsg('提示', res.msg);
@@ -893,6 +897,7 @@
 	            		    	$('#add-parameter').append("<option value='"+ this.value+"'>"+ this.name +"</option>"); 
 	            		    }
 						});
+	            	  $("#add-parameter").select2().val("").trigger("change");
 	              }
 	              else {
 	            	  top.showMsg('提示', res.msg);
@@ -911,6 +916,7 @@
 	            		    	$('#edit-parameter').append("<option value='"+ this.value+"'>"+ this.name +"</option>"); 
 	            		    }
 						});
+	            	  $("#edit-parameter").select2().val("").trigger("change");
 	              }
 	              else {
 	            	  top.showMsg('提示', res.msg);
@@ -1154,11 +1160,8 @@
 												  $('#edit-star').append("<option value=''>--请选择--</option>");
 								            	  $.each(res.paramaters ,function(){
 								            		    if(this.value){
-								            		    	if(this.value == data.parameter){
-								            		    		$('#edit-parameter').append("<option value='"+ this.value+"' selected = 'selected'>"+ this.name +"</option>"); 
-								            		    	}else{
-								            		    		$('#edit-parameter').append("<option value='"+ this.value+"'>"+ this.name +"</option>"); 
-								            		    	}
+								            		    	$('#edit-parameter').append("<option value='"+ this.value+"'>"+ this.name +"</option>"); 
+								            		    	$("#edit-parameter").select2().val(data.parameter).trigger("change");
 								            		    }
 													});
 								            	  $.each(res.stars,

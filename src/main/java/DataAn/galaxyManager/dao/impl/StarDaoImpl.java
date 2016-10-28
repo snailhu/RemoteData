@@ -20,7 +20,7 @@ public class StarDaoImpl extends BaseDaoImpl<Star> implements IStarDao {
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Star> getStarList(String seriesId) {
-		String hql = "from Star star where star.series.name=?";
+		String hql = "from Star star where star.series.code=?";
 		return this.getSession().createQuery(hql).setParameter(0, seriesId).list();
 	}
 

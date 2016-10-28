@@ -46,9 +46,9 @@ import DataAn.jfreechart.service.IJfreechartServcie;
 import DataAn.mongo.db.MongodbUtil;
 import DataAn.mongo.fs.IDfsDb;
 import DataAn.mongo.fs.MongoDfsDb;
-import DataAn.mongo.init.InitMongo;
 import DataAn.mongo.service.IMongoService;
 import DataAn.mongo.zip.ZipCompressorByAnt;
+import DataAn.reportManager.config.OptionConfig;
 import DataAn.reportManager.dao.IReportFileSystemDao;
 import DataAn.reportManager.domain.ReportFileSystem;
 import DataAn.reportManager.domain.StarParam;
@@ -60,9 +60,8 @@ import DataAn.reportManager.dto.ReportFileDto;
 import DataAn.reportManager.option.ReportDataType;
 import DataAn.reportManager.service.IReoportService;
 import DataAn.reportManager.service.IStarParamService;
-import DataAn.wordManager.config.OptionConfig;
-import DataAn.wordManager.util.AsposeLicenseManage;
-import DataAn.wordManager.util.MapMailMergeDataSource;
+import DataAn.reportManager.util.AsposeLicenseManage;
+import DataAn.reportManager.util.MapMailMergeDataSource;
 @Service
 public class ReportServiceImpl implements IReoportService { 
 	
@@ -570,7 +569,7 @@ public class ReportServiceImpl implements IReoportService {
 		
 		List<StarParam> starParamList =  starParamService.getStarParamForReport(seriesId, starId, partsType);
 		List<String> parList = new ArrayList<String>();
-		String paramStr = "转速,电流";
+		String paramStr =OptionConfig.getParamStr();
 		String[] parArr = paramStr.split(",");
 		for (String p : parArr) {
 			parList.add(p);

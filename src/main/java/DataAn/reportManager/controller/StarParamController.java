@@ -24,13 +24,11 @@ import DataAn.common.controller.BaseController;
 import DataAn.common.dao.Pager;
 import DataAn.common.pageModel.EasyuiDataGridJson;
 import DataAn.common.pageModel.JsonMessage;
-import DataAn.fileSystem.option.J9SeriesType;
 import DataAn.galaxyManager.domain.Series;
 import DataAn.galaxyManager.domain.Star;
 import DataAn.galaxyManager.dto.SeriesDto;
 import DataAn.galaxyManager.dto.StarDto;
 import DataAn.galaxyManager.option.J9Series_Star_ParameterType;
-import DataAn.galaxyManager.option.SeriesType;
 import DataAn.galaxyManager.service.IJ9Series_Star_Service;
 import DataAn.reportManager.dto.StarParamDto;
 import DataAn.reportManager.service.IStarParamService;
@@ -175,6 +173,7 @@ public class StarParamController  extends BaseController {
 			 for (Series series : seriesList) {
 				 SeriesDto seriesDto = new SeriesDto();
 				 seriesDto.setName(series.getName());
+				 seriesDto.setCode(series.getCode());
 				 seriesDto.setDescription(series.getDescription());
 				 seriesDto.setId(series.getId());
 				 seriesDtoList.add(seriesDto);
@@ -201,6 +200,7 @@ public class StarParamController  extends BaseController {
 				 starDto.setName(star.getName());
 				 starDto.setDescription(star.getDescription());
 				 starDto.setId(star.getId());
+				 starDto.setCode(star.getCode());
 				 starDto.setSeriesId(star.getSeries().getId());
 				 starDtoList.add(starDto);
 			}
@@ -219,12 +219,6 @@ public class StarParamController  extends BaseController {
 	public ResultJSON getConstraintList(HttpServletRequest request,String seriesId,String starId,String partstype) {
 		ResultJSON res = ResultJSON.getSuccessResultJSON();
 		try {
-			if(StringUtils.isBlank(seriesId)) {
-				 seriesId = SeriesType.J9_SERIES.getName();
-			}
-			if(StringUtils.isBlank(starId)) {
-				 starId = J9SeriesType.STRA1.getValue();
-			}
 			 List<ConstraintDto> starList = starParamService.getConstraintList(seriesId,starId,partstype); 
 			 Map<String, Object> data = new HashMap<String, Object>();
 			 data.put("data", starList);

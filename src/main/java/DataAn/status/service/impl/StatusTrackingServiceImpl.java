@@ -74,6 +74,7 @@ public class StatusTrackingServiceImpl implements IStatusTrackingService {
 						StatusTrackingType.getStatusTrackingType(statusTracking.getStatusType()).getName());
 				statusTrackingDTO.setTrackingId(statusTracking.getTrackingId());
 				statusTrackingDTO.setUserType(statusTracking.getUserType());
+				statusTrackingDTO.setExceptionInfo(statusTracking.getExceptionInfo());
 				statusTrackingDTOs.add(statusTrackingDTO);
 			}
 		}

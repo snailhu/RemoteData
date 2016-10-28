@@ -118,6 +118,8 @@ public class PermissionController {
 	@ResponseBody
 	public JsonMessage deletePermissionGroup(String permissionGroupIds)
 	{
+//		System.out.println("come in deletePermissionGroup....");
+//		System.out.println(permissionGroupIds);
 		String[] permissionGroupIdArray = permissionGroupIds.split(",");
 		JsonMessage jsonMsg = new JsonMessage();
 		try {

@@ -219,6 +219,7 @@ public class StarParamController  extends BaseController {
 	public ResultJSON getConstraintList(HttpServletRequest request,String seriesId,String starId,String partstype) {
 		ResultJSON res = ResultJSON.getSuccessResultJSON();
 		try {
+
 			 List<ConstraintDto> starList = starParamService.getConstraintList(seriesId,starId,partstype); 
 			 Map<String, Object> data = new HashMap<String, Object>();
 			 data.put("data", starList);

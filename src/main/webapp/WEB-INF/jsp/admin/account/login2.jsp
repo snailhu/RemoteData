@@ -18,6 +18,11 @@
 <meta http-equiv="description" content="This is my page">
 
 <%@include file="/WEB-INF/jsp/layouts/admin-include-public.jsp"%>
+<script src="<%=request.getContextPath()%>/static/content/js/outlook2.js" type="text/javascript"></script>
+
+<!--
+	<link rel="stylesheet" type="text/css" href="styles.css">
+	-->
 
 <style type="text/css">
 .row {
@@ -26,9 +31,6 @@
 	margin-top: 100px;
 }
 </style>
-<link rel="stylesheet" type="text/css" href="styles.css">
-<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/static/new/css/login.css">
-<script src="<%=request.getContextPath()%>/static/content/js/outlook2.js" type="text/javascript"></script>
 <script type="text/javascript">
 	$(function() {
 
@@ -75,14 +77,27 @@
 </script>
 </head>
 <body class="login-layout" style="overflow: hidden;">
-	<img src="<%=request.getContextPath()%>/static/new/img/login/bg.png" class="bg">
 	<div class="main-container">
 		<div class="main-content">
-			<h1>
-				<p class="title">惯性产品在轨数据处理分析</p>
-			</h1>
-								<div class="login">
+			<div class="row">
+				<div class="col-sm-10 col-sm-offset-1">
+					<div class="login-container">
+						<div class="center">
+							<h1>
+								<i class="icon-leaf green"></i> <span class="red">产品在轨数据分析平台</span>
+							</h1>
+							<h4 class="blue">&copy; TYCC</h4>
+						</div>
+						<div class="space-6"></div>
+						<div class="position-relative">
+							<div id="login-box"
+								class="login-box visible widget-box no-border">
+								<div class="widget-body">
 									<div class="widget-main">
+										<h4 class="header blue lighter bigger">
+											<i class="icon-coffee green"></i> 用户登录
+										</h4>
+										<div class="space-6"></div>
 										<form id="loginForm" action="login" method="post">
 											<label class="block clearfix">
 												<span class="block input-icon input-icon-right"> 
@@ -91,8 +106,7 @@
 													<i class="icon-user" id="vuname"></i>
 												</span>
 											</label>
-											<div class="space">
-											</div>
+											<div class="space"></div>
 											<label class="block clearfix"> 
 												<span class="block input-icon input-icon-right"> 
 													<input type="password" class="form-control" id="upassword"
@@ -100,27 +114,39 @@
 													<i class="icon-lock" id="vpassword"></i>
 												</span>
 											</label>
-											<!--<div>
+											<div>
 												<span id="returnMsg"></span>
-											</div>-->
-											<div class="select">
-												<input type="checkbox"></input>
-												<span class="next">下次自动登录</span>
-												<span class="forget">忘记密码？</span>
 											</div>
 											<div class="space"></div>
 											<div class="clearfix">
-												<span id="returnMsg"></span>
-												<button type="button" class="loginButton" id="submitForm">
+												<!--  
+												<label class="inline"> <input type="checkbox"
+													class="ace" name="rememberMe" value="1" /> <span
+													class="lbl">记住我</span>
+												</label>
+												-->
+												<button type="button" class="width-35 pull-right btn btn-sm btn-primary" id="submitForm">
 													<i class="icon-key"></i> 登录
 												</button>
 											</div>
 											<div class="space-4"></div>
 										</form>
 									</div>
+									<!-- /widget-main -->
 								</div>
+								<!-- /widget-body -->
+							</div>
+							<!-- /login-box -->
+						</div>
+						<!-- /position-relative -->
+					</div>
+				</div>
+				<!-- /.col -->
+			</div>
+			<!-- /.row -->
 		</div>
 	</div>
+	<!-- /.main-container -->
 
 </body>
 </html>

@@ -32,6 +32,8 @@
         //currentseriesbtnid=btn.attr('id');
         //alert("回调函数里的id:"+currentseriesbtnid);
       });
+      //调用定时函数
+      //time();
     }
   }
  

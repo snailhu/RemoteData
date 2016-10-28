@@ -202,7 +202,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					<ul class="breadcrumb" id="fileCatalog">
 						<li class="active">全部文件</li>
 					</ul>
-					<table id="fsList" height="400px" border="false">
+					<table id="fsList" height="450px" border="false">
 					</table>
 					<form id="upload_file_form" action="admin/file/uploadFile" method="post" enctype="multipart/form-data" style="display:none">
 						<input type="hidden" id="file_dirId" name="dirId" />

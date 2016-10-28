@@ -24,7 +24,6 @@ import DataAn.common.controller.BaseController;
 import DataAn.common.dao.Pager;
 import DataAn.common.pageModel.EasyuiDataGridJson;
 import DataAn.common.pageModel.JsonMessage;
-import DataAn.fileSystem.option.J9SeriesType;
 import DataAn.galaxyManager.domain.Series;
 import DataAn.galaxyManager.domain.Star;
 import DataAn.galaxyManager.dto.SeriesDto;
@@ -219,12 +218,7 @@ public class StarParamController  extends BaseController {
 	public ResultJSON getConstraintList(HttpServletRequest request,String seriesId,String starId,String partstype) {
 		ResultJSON res = ResultJSON.getSuccessResultJSON();
 		try {
-			if(StringUtils.isBlank(seriesId)) {
-				 seriesId = SeriesType.J9_SERIES.getName();
-			}
-			if(StringUtils.isBlank(starId)) {
-				 starId = J9SeriesType.STRA1.getValue();
-			}
+			
 			 List<ConstraintDto> starList = starParamService.getConstraintList(seriesId,starId,partstype); 
 			 Map<String, Object> data = new HashMap<String, Object>();
 			 data.put("data", starList);

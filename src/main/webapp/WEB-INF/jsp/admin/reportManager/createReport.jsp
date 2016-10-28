@@ -158,50 +158,50 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							<div class="widget-main">
 								<!-- 搜索form -->
 								<form id="form" action="" class="form-horizontal" role="form" >
-									<div class="space-1"></div>
+									<div class="space-4"></div>
 									<div class="form-group">
-										<label class="col-sm-3 control-label no-padding-right" for="form-series">星系：</label>
-										<div class="col-sm-4"  >
+										<label class="col-sm-5 control-label no-padding-right" for="form-series">星系：</label>
+										<div class="col-sm-3"  >
 										<select name="series"  id="form-series" class="form-control " >
 				                       </select>
 									</div>
 									</div>
 									<div class="space-4"></div>
 									<div class="form-group">
-										<label class="col-sm-3 control-label no-padding-right" for="form-star">星号：</label>
-										<div class="col-sm-4">
+										<label class="col-sm-5 control-label no-padding-right" for="form-star">星号：</label>
+										<div class="col-sm-3">
 												<select name="star"  id="form-star" class="form-control " >
 				                       			</select>
 										</div>
 									</div>
 									<div class="space-4"></div>
 									<div class="form-group">
-										<label class="col-sm-3 control-label no-padding-right" for="form-partsType">设备：</label>
-										<div class="col-sm-4">
+										<label class="col-sm-5 control-label no-padding-right" for="form-partsType">设备：</label>
+										<div class="col-sm-3">
 											<select name="partsType"  id="form-partsType" class="form-control " >
 				                           		<option selected="selected" value = "flywheel">飞轮</option>
 				                           		<option value = "top">陀螺</option>
 				                       		</select>
 										</div>
 									</div>
-									<div class="space-1"></div>
+									<div class="space-4"></div>
 									<div class="form-group">
-										<label class="col-sm-3 control-label no-padding-right" for="form-beginTime"> 开始日期： </label>
-										<div class="col-sm-4">
-											<input type="text" id="form-beginTime" name="beginTime" placeholder="日期" class="col-xs-10 col-sm-5" />
+										<label class="col-sm-5 control-label no-padding-right" for="form-beginTime"> 开始日期： </label>
+										<div class="col-sm-3">
+											<input type="text" id="form-beginTime" name="beginTime" placeholder="日期" class="form-control" />
 											<div id="getBeginTime"></div>
 										</div>
 									</div>
-									<div class="space-1"></div>
+									<div class="space-4"></div>
 									<div class="form-group">
-										<label class="col-sm-3 control-label no-padding-right" for="form-endTime"> 结束日期： </label>
-										<div class="col-sm-4">
-											<input type="text" id="form-endTime" name="endTime" placeholder="日期" class="col-xs-10 col-sm-5" />
+										<label class="col-sm-5 control-label no-padding-right" for="form-endTime"> 结束日期： </label>
+										<div class="col-sm-3">
+											<input type="text" id="form-endTime" name="endTime" placeholder="日期" class="form-control" />
 											<div id="getEndTime"></div>
 										</div>
 									</div>
 									
-									<div class="space-1"></div>
+									<div class="space-4"></div>
 									<div class="form-group">
 			                           <div class="col-lg-4 col-lg-offset-6">
 					                        <button type="button" id="btn-downLoad" class="btn btn-primary start">
@@ -249,14 +249,14 @@ $(function(){
       $.get('<%=request.getContextPath()%>/starParam/getSeriesList', {}, function (res) {
 		  if(res.result == "true") {
         	  $.each(res.data.data ,function(){
-					$('#form-series').append("<option value='"+ this.name+"'>"+ this.description +"</option>"); 
+					$('#form-series').append("<option value='"+ this.code+"'>"+ this.name +"</option>"); 
 				});
         		  var seriesId = $('#form-series').val();
         			$.get('<%=request.getContextPath()%>/starParam/getStarList', {'seriesId':seriesId},  function (res) {
   					  if(res.result == "true") {
   						  $('#form-star').find("option").remove();
   		            	  $.each(res.data.data ,function(){
-  								$('#form-star').append("<option value='"+ this.name+"'>"+ this.description +"</option>"); 
+  								$('#form-star').append("<option value='"+ this.code+"'>"+ this.name +"</option>"); 
   							});
   		              }
   		              else {
@@ -274,7 +274,7 @@ $(function(){
 				  if(res.result == "true") {
 					  $('#form-star').find("option").remove();
 	            	  $.each(res.data.data ,function(){
-							$('#form-star').append("<option value='"+ this.name+"'>"+ this.description +"</option>"); 
+							$('#form-star').append("<option value='"+ this.code+"'>"+ this.name +"</option>"); 
 						});
 	              }
 	              else {

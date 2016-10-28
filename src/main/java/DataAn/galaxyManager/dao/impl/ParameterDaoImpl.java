@@ -92,7 +92,7 @@ implements IParameterDao{
 	@Override
 	public List<Parameter> selectBySeriesAndParameterType(String series,
 			String parameterType) {
-		String hql = "from Parameter param where param.series=? and param.parameterType=?";
+		String hql = "from Parameter param where param.series=? and param.parameterType=? and param.simplyName is not null";
 		return this.getSession().createQuery(hql)
 								.setParameter(0, series)
 								.setParameter(1, parameterType).list();

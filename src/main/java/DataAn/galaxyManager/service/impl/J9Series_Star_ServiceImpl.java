@@ -157,7 +157,9 @@ public class J9Series_Star_ServiceImpl implements IJ9Series_Star_Service{
 		List<ParameterDto> list = paramService.getParameterList(series, star, paramType);
 		Map<String,String> map = new HashMap<String,String>();
 		for (ParameterDto parameterDto : list) {
-			map.put(parameterDto.getSimplyName(), parameterDto.getCode());
+			if(StringUtils.isNotBlank(parameterDto.getSimplyName())){
+				map.put(parameterDto.getSimplyName(), parameterDto.getCode());				
+			}
 		}
 		List<String> flyWheelDataTypes = J9Series_Star_ParameterType.getFlywheelTypeOnParamTypeName();
 		return this.getFlyWheelOrTopParameterList(map, flyWheelDataTypes);
@@ -232,7 +234,9 @@ public class J9Series_Star_ServiceImpl implements IJ9Series_Star_Service{
 		List<ParameterDto> list = paramService.getParameterList(series, star, paramType);
 		Map<String,String> map = new HashMap<String,String>();
 		for (ParameterDto parameterDto : list) {
-			map.put(parameterDto.getSimplyName(), parameterDto.getCode());
+			if(StringUtils.isNotBlank(parameterDto.getSimplyName())){
+				map.put(parameterDto.getSimplyName(), parameterDto.getCode());				
+			}
 		}
 		List<String> topDataTypes = J9Series_Star_ParameterType.getTopTypeOnName();
 		return this.getFlyWheelOrTopParameterList(map, topDataTypes);
@@ -375,7 +379,7 @@ public class J9Series_Star_ServiceImpl implements IJ9Series_Star_Service{
 			Set<String> flyWheelDatas = map.keySet();
 			for (String flyWheelData : flyWheelDatas) {
 				// 采集数据107:飞轮A转速(16107) == 采集数据107:飞轮a转速(16107) 大小写一样
-				sameFlyWheelData = flyWheelData.toLowerCase();
+				//sameFlyWheelData = flyWheelData.toLowerCase();
 				if(flyWheelData.indexOf(dataType) != -1){
 					child = new ConstraintDto();
 					child.setId(count);

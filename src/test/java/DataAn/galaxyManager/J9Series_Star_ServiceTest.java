@@ -66,7 +66,7 @@ public class J9Series_Star_ServiceTest {
 //		service.getFlyWheelParameterList();
 //		EhCache ehCache = new EhCache("j9seriesConfig");
 //		List<ConstraintDto> list = (List<ConstraintDto>) ehCache.getCacheElement("flyWheelParameterList");
-		List<ConstraintDto> list = service.getFlyWheelParameterList(null, null);
+		List<ConstraintDto> list = service.getFlyWheelParameterList();
 		for (ConstraintDto constraintDto : list) {
 			System.out.println(constraintDto);
 		}

@@ -35,6 +35,10 @@
 <!--     <link rel="stylesheet" href="<%=request.getContextPath()%>/static/content/bootstrapValidator/vendor/bootstrap/css/bootstrap.css"/> -->
 <link rel="stylesheet"
 	href="<%=request.getContextPath()%>/static/content/bootstrapValidator/dist/css/bootstrapValidator.css" />
+<link rel="stylesheet"
+	href="<%=request.getContextPath()%>/static/select2/select2.min.css"
+	type="text/css" />
+
 <script type="text/javascript"
 	src="<%=request.getContextPath()%>/static/content/bootstrapValidator/vendor/bootstrap/js/bootstrap.min.js"></script>
 <script type="text/javascript"
@@ -47,6 +51,8 @@
 	href="${pageContext.request.contextPath}/static/content/jeDate/jedate/skin/jedate.css">
 <script type="text/javascript"
 	src="${pageContext.request.contextPath}/static/content/jeDate/jedate/jedate.js"></script>
+<script type="text/javascript"
+	src="<%=request.getContextPath()%>/static/select2/select2.full.min.js"></script>
 
 <style type="text/css">
 .sweet-alert h2 {
@@ -152,10 +158,17 @@
 	padding-top: 2px;
 	margin-bottom: 0px;
 }
+
+.mustchoose {
+	padding-top: 5px;
+	padding-left: 5px;
+	color: red;
+}
 </style>
 <script type="text/javascript">
 	$(function() {
 		$('#change-search-box').click();
+		$(".select2").select2();
 	});
 </script>
 </head>
@@ -187,13 +200,26 @@
 									<div class="space-1"></div>
 									<div class="form-group">
 										<label class="col-sm-3 control-label no-padding-right"
+											for="search-warningType"> 预警类型 </label>
+										<div class="col-sm-9">
+											<select class="col-xs-10 col-sm-5" id="search-warningType"
+												name="warningType">
+												<option value="">--请选择--</option>
+												<option value="0">特殊工况</option>
+												<option value="1">异常</option>
+											</select> <label class="mustchoose">*</label>
+										</div>
+									</div>
+									<div class="space-4"></div>
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right"
 											for="search-series"> 星系 </label>
 										<div class="col-sm-9">
 											<select class="col-xs-10 col-sm-5" id="search-series"
 												name="series">
 												<option value="">--请选择--</option>
 												<option value="1">j9</option>
-											</select>
+											</select> <label class="mustchoose">*</label>
 										</div>
 									</div>
 									<div class="space-4"></div>
@@ -204,7 +230,7 @@
 											<select class="col-xs-10 col-sm-5" id="search-star"
 												name="star">
 												<option value="">--请选择--</option>
-											</select>
+											</select> <label class="mustchoose">*</label>
 										</div>
 									</div>
 									<div class="space-4"></div>
@@ -217,7 +243,7 @@
 												<option value="">--请选择--</option>
 												<option value="flywheel">飞轮</option>
 												<option value="top">陀螺</option>
-											</select>
+											</select> <label class="mustchoose">*</label>
 										</div>
 									</div>
 									<div class="space-4"></div>
@@ -225,22 +251,9 @@
 										<label class="col-sm-3 control-label no-padding-right"
 											for="search-parameter"> 参数 </label>
 										<div class="col-sm-9">
-											<select class="col-xs-10 col-sm-5" id="search-parameter"
-												name="parameter">
+											<select class="col-xs-10 col-sm-5 select2"
+												style="width: 41.7%;" id="search-parameter" name="parameter">
 												<option value="">--请选择--</option>
-											</select>
-										</div>
-									</div>
-									<div class="space-4"></div>
-									<div class="form-group">
-										<label class="col-sm-3 control-label no-padding-right"
-											for="search-warningType"> 预警类型 </label>
-										<div class="col-sm-9">
-											<select class="col-xs-10 col-sm-5" id="search-warningType"
-												name="warningType">
-												<option value="">--请选择--</option>
-												<option value="0">特殊工况</option>
-												<option value="1">异常</option>
 											</select>
 										</div>
 									</div>
@@ -354,36 +367,47 @@ jeDate({
 									field : 'logId',//'logId',
 									width : 50,
 									checkbox : true
-
 								} ] ],
 								columns : [ [ {
 									field : 'series',
 									title : '星系',
 									width : 100,
+									sortable:true
 								},{
 									field : 'star',
 									title : '星',
 									width : 100,
+									sortable:true
 								}, {
 									field : 'parameterType',
 									title : '设备',
 									width : 100,
+									sortable:true
 								}, {
 									field : 'parameter',
 									title : '参数',
-									width : 100,
+									width : 200,
+									sortable:true
 								}, {
 									field : 'timeValue',
 									title : '时间点',
-									width : 100,
+									width : 200,
+									sortable:true
 								}, {
 									field : 'paramValue',
 									title : '参数值',
-									width : 100
+									width : 100,
+									sortable:true
 								}, {
 									field : 'warningType',
 									title : '预警类型',
-									width : 100
+									width : 100,
+									sortable:true
+								}, {
+									field : 'warnRemark',
+									title : '备注',
+									width : 300,
+									sortable:true
 								} ] ],
 
 								toolbar : [ {
@@ -460,6 +484,22 @@ jeDate({
 			var warningType = $('#search-warningType').val();
 			var createdatetimeStart = $('#search-createdatetimeStart').val();
 			var createdatetimeEnd = $('#search-createdatetimeEnd').val();
+			if (warningType == "") {
+				alert("请选择预警类型！");
+				return;
+			}
+			if (series == "") {
+				alert("请选择星系！");
+				return;
+			}
+			if (star == "") {
+				alert("请选择星！");
+				return;
+			}
+			if (parameterType == "") {
+				alert("请选择设备！");
+				return;
+			}
 			logGrid.datagrid('load', {
 				series : series,
 				star : star,
@@ -468,6 +508,7 @@ jeDate({
 				warningType : warningType,
 				createdatetimeStart : createdatetimeStart,
 				createdatetimeEnd : createdatetimeEnd,
+				clickCount : 1
 			});
 		});
 		//删除用户
@@ -489,14 +530,31 @@ jeDate({
 						},
 						function(isConfirm) {
 							if (isConfirm) {
+								var series = "";
+								var star = "";
+								var parameterType = "";
+								var warningType = "";
 								for (var i = 0; i < rows.length; i++) {
 									ids.push(rows[i].logId);
+									series = rows[i].series;
+									star = rows[i].star;
+									parameterType = rows[i].parameterType;
+									series = rows[i].series;
+									if(rows[i].warningType=='特殊工况'){
+										warningType = "0";	
+									}else{
+										warningType = "1";	
+									}
 								}
 								$
 										.ajax({
 											url : '${pageContext.request.contextPath}/admin/prewarning/deleteLog',
 											data : {
-												logIds : ids.join(',')
+												logIds : ids.join(','),
+												series : series,
+												star : star,
+												parameterType : parameterType,
+												warningType : warningType
 											},
 											cache : false,
 											dataType : "json",

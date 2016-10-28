@@ -118,6 +118,7 @@ public class PrewarningController extends BaseController {
 		String createdatetimeStart = request.getParameter("createdatetimeStart");
 		String createdatetimeEnd = request.getParameter("createdatetimeEnd");
 		String hadRead = request.getParameter("hadRead");
+		String clickCount = request.getParameter("clickCount");
 		System.out.println("come in getLogList...");
 		System.out.println("pageIndex: " + page);
 		System.out.println("pageSize: " + rows);
@@ -129,11 +130,13 @@ public class PrewarningController extends BaseController {
 		System.out.println("createdatetimeEnd: " + createdatetimeEnd);
 		System.out.println("warningType: " + warningType);
 		System.out.println("hadRead: " + hadRead);
+		System.out.println("clickCount: " + clickCount);
 		Pager<QueryLogDTO> pager = null;
 		try {
-			pager = prewarningService.pageQueryWarningLog(page, rows, series, star, parameterType, parameter,
-					createdatetimeStart, createdatetimeEnd, warningType, hadRead);
-
+			if ("1".equals(clickCount)) {
+				pager = prewarningService.pageQueryWarningLog(page, rows, series, star, parameterType, parameter,
+						createdatetimeStart, createdatetimeEnd, warningType, hadRead);
+			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -144,7 +147,14 @@ public class PrewarningController extends BaseController {
 		} else {
 			System.out.println("pager is null");
 		}
-		request.setAttribute("warnCount", 0, RequestAttributes.SCOPE_SESSION);
+		Long warnCount = 0l;
+		try {
+			warnCount = prewarningService.getNotReadCount("", "", "", "", "");
+			request.setAttribute("warnCount", warnCount, RequestAttributes.SCOPE_SESSION);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return json;
 	}
 
@@ -289,14 +299,15 @@ public class PrewarningController extends BaseController {
 	// 批量删除预警
 	@RequestMapping(value = "/deleteLog")
 	@ResponseBody
-	public JsonMessage deleteLog(HttpServletRequest request, String logIds) {
+	public JsonMessage deleteLog(HttpServletRequest request, String logIds, String series, String star,
+			String parameterType, String warningType) {
 		System.out.println("come in deleteLog");
 		System.out.println(logIds);
 		String[] logIdArray = logIds.split(",");
 		JsonMessage jsonMsg = new JsonMessage();
 		try {
 			for (String logId : logIdArray) {
-				prewarningService.deleteWarningLog(logId);
+				prewarningService.deleteWarningLog(logId, series, star, parameterType, warningType);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

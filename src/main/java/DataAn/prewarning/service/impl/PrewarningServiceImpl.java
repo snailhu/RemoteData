@@ -158,57 +158,44 @@ public class PrewarningServiceImpl implements IPrewarningService {
 	}
 
 	@Override
-	public void deleteWarningLog(String logId) throws Exception {
-		WarningLog warningLog = warningLogDao.get(logId);
-		warningLogMongoDao.deleteWainingById(logId, seriersDao.getSeriesName(warningLog.getSeries().toString()),
-				starDao.getStarName(warningLog.getStar().toString()), warningLog.getParameterType(),
-				warningLog.getWarningType() + "");
-		warningLogDao.delete(logId);
+	public void deleteWarningLog(String logId, String series, String star, String parameterType, String warningType)
+			throws Exception {
+		warningLogMongoDao.deleteWainingById(logId, series, star, parameterType, warningType);
 	}
 
 	@Override
 	public Pager<QueryLogDTO> pageQueryWarningLog(int pageIndex, int pageSize, String series, String star,
 			String parameterType, String parameter, String createdatetimeStart, String createdatetimeEnd,
 			String warningType, String hadRead) throws Exception {
-
-		List<QueryLogDTO> logDTOs = new ArrayList<QueryLogDTO>();
-		Pager<WarningLog> logPager = warningLogDao.selectByOption(pageIndex, pageSize, series, star, parameterType,
-				parameter, createdatetimeStart, createdatetimeEnd, warningType, hadRead);
-		List<WarningLog> warningLogs = logPager.getDatas();
-		if (warningLogs != null && warningLogs.size() > 0) {
-			for (WarningLog warnLog : warningLogs) {
-				QueryLogDTO logDTO = new QueryLogDTO();
-				logDTO.setHadRead("1");
-				logDTO.setLogId(warnLog.getLogId());
-				logDTO.setParameter(getParamCNname(warnLog.getParameter()));
-				logDTO.setParameterType(
-						J9Series_Star_ParameterType.getJ9SeriesStarParameterType(warnLog.getParameterType()).getName());
-				logDTO.setParamValue(warnLog.getParamValue());
-				Series seriesDomain = seriersDao.get(warnLog.getSeries());
-				if (seriesDomain != null) {
-					logDTO.setSeries(seriesDomain.getDescription());
-				} else {
-					logDTO.setSeries(warnLog.getSeries().toString());
-				}
-				Star starDomain = starDao.get(warnLog.getStar());
-				if (starDomain != null) {
-					logDTO.setStar(starDomain.getDescription());
-				} else {
-					logDTO.setStar(warnLog.getStar().toString());
-				}
-				logDTO.setTimeValue(DateUtil.formatSSS(warnLog.getTimeValue()));
-				if (warnLog.getWarningType() == 0) {
-					logDTO.setWarningType("特殊工况");
-				} else if (warnLog.getWarningType() == 1) {
-					logDTO.setWarningType("异常");
-				}
-				logDTOs.add(logDTO);
-				warnLog.setHadRead(1);
-				warningLogDao.update(warnLog);
+		String seriesName = "";
+		String starName = "";
+		Series seriesDomain = seriersDao.get(series);
+		if (seriesDomain != null) {
+			seriesName = seriesDomain.getName();
+		}
+		Star starDomain = starDao.get(star);
+		if (starDomain != null) {
+			starName = starDomain.getName();
+		}
+		Pager<QueryLogDTO> logPager = warningLogMongoDao.selectByOption(pageIndex, pageSize, seriesName, starName,
+				parameterType, parameter, createdatetimeStart, createdatetimeEnd, warningType, hadRead);
+		for (QueryLogDTO warnLog : logPager.getDatas()) {
+			warnLog.setParameter(getParamCNname(warnLog.getParameter()));
+			warnLog.setParameterType(
+					J9Series_Star_ParameterType.getJ9SeriesStarParameterType(warnLog.getParameterType()).getName());
+			if (seriesDomain != null) {
+				warnLog.setSeries(seriesDomain.getDescription());
+			}
+			if (starDomain != null) {
+				warnLog.setStar(starDomain.getDescription());
+			}
+			if (warnLog.getWarningType().equals("0")) {
+				warnLog.setWarningType("特殊工况");
+			} else if (warnLog.getWarningType().equals("1")) {
+				warnLog.setWarningType("异常");
 			}
 		}
-		Pager<QueryLogDTO> pager = new Pager<QueryLogDTO>(pageSize, pageIndex, logPager.getTotalCount(), logDTOs);
-		return pager;
+		return logPager;
 	}
 
 	@Override
@@ -219,7 +206,7 @@ public class PrewarningServiceImpl implements IPrewarningService {
 	@Override
 	public Long getNotReadCount(String series, String star, String parameterType, String parameter, String warningType)
 			throws Exception {
-		return warningLogDao.getNotReadCount(series, star, parameterType, parameter, warningType);
+		return warningLogMongoDao.getNotReadCount(series, star, parameterType, parameter, warningType);
 	}
 
 	@Override

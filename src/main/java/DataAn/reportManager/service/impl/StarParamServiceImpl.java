@@ -8,9 +8,6 @@ import javax.annotation.Resource;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import DataAn.Analysis.dto.ConstraintDto;
 import DataAn.common.dao.Pager;
@@ -62,7 +59,7 @@ public class StarParamServiceImpl implements IStarParamService {
 		StarParamDto starParamDto = new StarParamDto();
 		starParamDto.setId(starParam.getId());
 		starParamDto.setParamCode(starParam.getParamCode());
-		starParamDto.setParamName(getParamCNname(starParamDto.getParamCode()));
+		starParamDto.setParamName(getParamCNname(starParamDto.getSeries(),starParamDto.getStar(),starParamDto.getParamCode()));
 		starParamDto.setEffeMin(starParam.getEffeMin());
 		starParamDto.setEffeMax(starParam.getEffeMax());
 		starParamDto.setParameterType(starParam.getParameterType());
@@ -82,28 +79,25 @@ public class StarParamServiceImpl implements IStarParamService {
 		starParam.setSeries(starParamDto.getSeries());
 		starParam.setStar(starParamDto.getStar());
 		starParam.setPartsType(starParamDto.getPartsType());
-		starParam.setParameterType("转速");
-		starParam.setProductName("Ya");
-		//TODO
-//		starParam.setParameterType(j9Series_Star_Service.getFlyWheelParameterType(starParamDto.getParamCode()));
-//		starParam.setProductName(j9Series_Star_Service.getFlyWheelName(starParamDto.getParamCode()));
+		starParam.setParameterType(j9Series_Star_Service.getFlyWheelParameterType(starParamDto.getSeries(),starParamDto.getStar(),starParamDto.getParamCode()));
+		starParam.setProductName(j9Series_Star_Service.getFlyWheelName(starParamDto.getSeries(),starParamDto.getStar(),starParamDto.getParamCode()));
 		starParam.setParamCode(starParamDto.getParamCode());
-		starParam.setParamName(getParamCNname(starParamDto.getParamCode()));
+		starParam.setParamName(getParamCNname(starParamDto.getSeries(),starParamDto.getStar(),starParamDto.getParamCode()));
 		starParam.setEffeMin(starParamDto.getEffeMin());
 		starParam.setEffeMax(starParamDto.getEffeMax());
 		starParam.setCreateDate(new Date());
 		starParamDao.add(starParam);
 	}
 	
-	private String getParamCNname(String EnName) throws Exception {
+	private String getParamCNname(String series ,String star,String EnName) throws Exception {
 		String cnName = "";
-		for (ConstraintDto constraintDto : j9Series_Star_Service.getFlyWheelParameterList()) {
+		for (ConstraintDto constraintDto : j9Series_Star_Service.getFlyWheelParameterList(series,star)) {
 			if (EnName.equals(constraintDto.getValue())) {
 				cnName = constraintDto.getName();
 				break;
 			}
 		}
-		for (ConstraintDto constraintDto : j9Series_Star_Service.getTopParameterList()) {
+		for (ConstraintDto constraintDto : j9Series_Star_Service.getTopParameterList(series,star)) {
 			if (EnName.equals(constraintDto.getValue())) {
 				cnName = constraintDto.getName();
 				break;
@@ -132,12 +126,9 @@ public class StarParamServiceImpl implements IStarParamService {
 		}
 		if (StringUtils.isNotBlank(starParamDto.getParamCode())) {
 			starParam.setParamCode(starParamDto.getParamCode());
-			starParam.setParamName(getParamCNname(starParamDto.getParamCode()));
-			//TODO
-//			starParam.setParameterType(j9Series_Star_Service.getFlyWheelParameterType(starParamDto.getParamCode()));
-//			starParam.setProductName(j9Series_Star_Service.getFlyWheelName(starParamDto.getParamCode()));
-			starParam.setParameterType("温度");
-			starParam.setProductName("Ya");
+			starParam.setParamName(getParamCNname(starParamDto.getSeries(),starParamDto.getStar(),starParamDto.getParamCode()));
+			starParam.setParameterType(j9Series_Star_Service.getFlyWheelParameterType(starParamDto.getSeries(),starParamDto.getStar(),starParamDto.getParamCode()));
+			starParam.setProductName(j9Series_Star_Service.getFlyWheelName(starParamDto.getSeries(),starParamDto.getStar(),starParamDto.getParamCode()));
 		}
 		starParam.setCreater(starParamDto.getCreater());
 		starParam.setCreateDate(new Date());

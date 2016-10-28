@@ -1,6 +1,5 @@
 package DataAn.reportManager.controller;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -178,24 +177,11 @@ public class ReportController {
 	@RequestMapping(value = { "/downloadReport" })
 	public void  downloadReport(HttpServletResponse response,HttpServletRequest request,String docPath,String filename) throws Exception {
 		
-//			String imgUrl = OptionConfig.getWebPath() + "\\report\\wordtemplate\\satellite.jpg";  
-//			String templateUrl = OptionConfig.getWebPath() + "\\report\\wordtemplate\\卫星状态报告.doc";
-//			String templateNullUrl = OptionConfig.getWebPath() + "\\report\\wordtemplate\\nullData.doc";
-			
-//			String time = DateUtil.getNowTime("yyyy-MM-dd");
-//			String filename = seriesId+"_"+starId+"_"+partsType+"_"+time+".doc";
-//			String docPath = OptionConfig.getWebPath() + "report\\"+filename;
-//			Date beginDate = DateUtil.format(beginTime,"yyyy-MM-dd HH:mm:ss");
-//			Date endDate =  DateUtil.format(endTime,"yyyy-MM-dd HH:mm:ss");
 		try {	
-			//reoportService.createReport(beginDate, endDate, filename, imgUrl, templateUrl, docPath, seriesId, starId, partsType);
 			reoportService.downloadReport(response, docPath,filename);
 			reoportService.removeDoc(docPath);
 		} catch (Exception e) {
 			e.printStackTrace();
-			//reoportService.reportNullDoc(filename,templateNullUrl, docPath, beginTime, endTime);
-//			reoportService.downloadReport(response, docPath,filename);
-//			reoportService.removeDoc(docPath);
 		}
 	}
 	
@@ -206,7 +192,6 @@ public class ReportController {
 		
 		String imgUrl = OptionConfig.getWebPath() + "\\report\\wordtemplate\\satellite.jpg";  
 		String templateUrl = OptionConfig.getWebPath() + "\\report\\wordtemplate\\卫星状态报告.doc";
-//		String templateNullUrl = OptionConfig.getWebPath() + "\\report\\wordtemplate\\nullData.doc";
 		
 		String time = DateUtil.getNowTime("yyyy-MM-dd");
 		String filename = seriesId+"_"+starId+"_"+partsType+"_"+time+".doc";

@@ -343,7 +343,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					</div>
 				</div>
 			</div>
-			<table id="galaxyList" fit="false" border="false" height="500px">
+			<table id="galaxyList" fit="false" border="false" height="450px">
 				<thead>
 					<tr>
 						<th field="ck" checkbox="true"></th>
@@ -356,7 +356,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			</table>
 			<!-- 添加系列表单 -->
 			<div class="modal fade" id="addSeriesInfoModal" tabindex="-1" role="dialog" aria-labelledby="addSeriesInfoModalLabel">
-				<div class="modal-dialog" role="document" style="margin:55px -300px">
+				<div class="modal-dialog" role="document" style="margin:150px 450px">
 					<div class="modal-content">
 						<form id="addSeriesInfoForm" class="form-horizontal" role="form">
 							<div class="modal-header">
@@ -402,7 +402,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			<!-- 编辑系列表单 -->
 			<div class="modal fade" id="editSeriesInfoModal" tabindex="-1"
 				role="dialog" aria-labelledby="editSeriesInfoModalLabel">
-				<div class="modal-dialog" role="document" style="margin:55px -300px">
+				<div class="modal-dialog" role="document" style="margin:150px 450px">
 					<div class="modal-content">
 						<form id="editSeriesInfoForm" class="form-horizontal" role="form">
 							<div class="modal-header">
@@ -448,7 +448,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			<!-- 添加一颗星 -->
 			<div class="modal fade" id="addStarInfoModal" tabindex="-1"
 				role="dialog" aria-labelledby="addStarInfoModalLabel">
-				<div class="modal-dialog" role="document" style="margin:55px -300px">
+				<div class="modal-dialog" role="document" style="margin:150px 450px">
 					<div class="modal-content">
 						<form id="addStarInfoForm" class="form-horizontal" role="form">
 							<div class="modal-header">
@@ -500,7 +500,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			</div>
 			<!-- 编辑一颗星 -->
 			<div class="modal fade" id="editStarInfoModal" tabindex="-1" role="dialog" aria-labelledby="editStarInfoModalLabel">
-				<div class="modal-dialog" role="document" style="margin:55px -300px">
+				<div class="modal-dialog" role="document" style="margin:150px 450px">
 					<div class="modal-content">
 						<form id="editStarInfoForm" class="form-horizontal" role="form">
 							<div class="modal-header">
@@ -614,7 +614,7 @@ $(function() {
 								{
 									field : 'name',
 									title : '名称',
-									width : 80
+									width : 50
 								},
 								{
                                     field : 'code',
@@ -624,12 +624,12 @@ $(function() {
 								{
 									field : 'beginDate',
 									title : '开始运行时间',
-									width : 100
+									width : 80
 								},
 								{
 									field : 'description',
 									title : '描述',
-									width : 100
+									width : 80
 								},
 								{
 									field : 'operation',

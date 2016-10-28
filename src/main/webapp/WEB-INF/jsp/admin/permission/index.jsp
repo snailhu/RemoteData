@@ -305,7 +305,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					</div>
 				</div>
 			</div>
-			<table id="permissionList" fit="false" border="false" height="500px">
+			<table id="permissionList" fit="false" border="false" height="450px">
 				<thead>
 					<tr>
 						<th field="ck" checkbox="true"></th>
@@ -318,7 +318,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			<!-- 创建权限组 -->
 			<div class="modal fade" id="addPermissionGroupModal" tabindex="-1"
 				role="dialog" aria-labelledby="addPermissionGroupModalLabel">
-				<div class="modal-dialog" role="document" style="margin:55px -300px">
+				<div class="modal-dialog" role="document" style="margin:150px 450px">
 					<div class="modal-content">
 						<form id="addPermissionGroupInfoForm" class="form-horizontal" role="form">
 							<div class="modal-header">
@@ -356,7 +356,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			<!-- 编辑权限组 -->
 			<div class="modal fade" id="editPermissionGroupModal" tabindex="-1"
 				role="dialog" aria-labelledby="editPermissionGroupModalLabel">
-				<div class="modal-dialog" role="document" style="margin:55px -300px">
+				<div class="modal-dialog" role="document" style="margin:150px 450px">
 					<div class="modal-content">
 						<form id="editPermissionGroupInfoForm" class="form-horizontal" role="form">
 							<div class="modal-header">
@@ -394,7 +394,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			<!-- 添加权限项 -->
 			<div class="modal fade" id="addPermissionItemModal" tabindex="-1"
 				role="dialog" aria-labelledby="addPermissionItemModalLabel">
-				<div class="modal-dialog" role="document" style="margin:55px -300px">
+				<div class="modal-dialog" role="document" style="margin:150px 450px">
 					<div class="modal-content">
 						<form id="addPermissionItemInfoForm" class="form-horizontal" role="form">
 							<div class="modal-header">
@@ -448,7 +448,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			<!-- 编辑权限项 -->
 			<div class="modal fade" id="editPermissionItemInfoModal" tabindex="-1" role="dialog"
 				aria-labelledby="editPermissionItemInfoModalLabel">
-				<div class="modal-dialog" role="document" style="margin:55px -300px">
+				<div class="modal-dialog" role="document" style="margin:150px 450px">
 					<div class="modal-content">
 						<form id="editPermissionItemInfoForm" class="form-horizontal" role="form">
 							<div class="modal-header">
@@ -546,17 +546,17 @@ $(function() {
 								{
 									field : 'displayName',
 									title : '显示名称',
-									width : 100
+									width : 80
 								},
 								{
 									field : 'code',
 									title : '权限代码',
-									width : 100
+									width : 80
 								},
 								{
 									field : 'description',
 									title : '权限描述',
-									width : 150
+									width : 100
 								},
 								{
 									field : 'operation',

@@ -16,10 +16,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<meta http-equiv="expires" content="0">    
 	<meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
 	<meta http-equiv="description" content="This is my page">
-		
+	
+	<%@include file="/WEB-INF/jsp/layouts/admin-include-public.jsp"%> 
+	
 	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/static/content/sweetalert/dist/sweetalert.css">
 	<script src="${pageContext.request.contextPath}/static/content/sweetalert/dist/sweetalert.min.js"></script>
-	
 <style type="text/css">
   .form-horizontal .has-feedback .form-control-feedback {
     top: 0;
@@ -47,7 +48,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 /*     -moz-osx-font-smoothing: grayscale; */
 }
 .form-group>label[class*="col-"] {
-/*     padding-top: 15px; */
+    padding-top: 15px;
     margin-bottom: -4px;
 }
   </style>
@@ -105,7 +106,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 .button {
 	float: left;
 	height: 32px;
-/* 	width: 80px; */
+	width: 80px;
 	display: inline-block;
 	outline: 0 none;
 	padding: 8px 12px;
@@ -210,90 +211,122 @@ input[type=text]::-webkit-focus-inner {
     text-align: center;
     padding-left: 60px;
 }
-.form-horizontal{
-	font-size: 14px;   
-    margin-top: 40px;
-	margin-left: 75px;
-}
-.btn {
-	margin-right: 30px;
-}
 </style>
+<!-- basic styles -->
+<link href="${pageContext.request.contextPath}/static/assets/css/bootstrap.min.css" rel="stylesheet" />
+<link rel="stylesheet" href="${pageContext.request.contextPath}/static/assets/css/font-awesome.min.css" />
+<!--[if IE 7]>
+<link rel="stylesheet" href="${pageContext.request.contextPath}/static/assets/css/font-awesome-ie7.min.css" />
+<![endif]-->
+
+<link rel="stylesheet" href="${pageContext.request.contextPath}/static/assets/css/ace.min.css" />
+<link rel="stylesheet" href="${pageContext.request.contextPath}/static/assets/css/ace-rtl.min.css" />
+<link rel="stylesheet" href="${pageContext.request.contextPath}/static/assets/css/ace-skins.min.css" />
+<!-- <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/buttons.css" /> -->
+<!--[if lte IE 8]>
+<link rel="stylesheet" href="${pageContext.request.contextPath}/static/assets/css/ace-ie.min.css" />
+<![endif]-->
+<script type="text/javascript">
+	$(function(){
+		var scroll_offset = $("#main-container").offset();  //得到pos这个div层的offset，包含两个值，top和left
+		  $("body,html").animate({
+		     scrollTop:scroll_offset.top  //让body的scrollTop等于pos的top，就实现了滚动
+		   },0);
+	})
+</script>
 </head>
   <body>
-	<div class="main-content">
-		<div class="page-content" id="page-content">
-			<div class="page-header" style="padding-bottom: 10px; /**margin: -5px 0px 5px;*/">
-				<h1>文件上传</h1>
-			</div>					
-			<!-- /.page-header -->
-			<div class="row">
-				<div class="col-xs-12 col-sm-12"> 
-					<!-- PAGE CONTENT BEGINS -->
-					
-					<!-- 文件上传form -->
-					<form id="fileupload" action="admin/file/uploadFiles" class="form-horizontal" role="form" method="post" enctype="multipart/form-data">
-						<div class="space-20"></div>
-						<div class="form-group">
-							<label class="col-sm-3 control-label no-padding-right" > DAT文件:  </label>
-							<div class="col-sm-8">
-								<div class="uploader white">
-									<input type="text" class="filename" name="showDatFileName" placeholder="No file selected..." readonly/>
-									<input type="button" class="button" value="Browse..."/>
-									<input type="file" accept=".DAT" name="datFile" id="datFile"/>
+	<jsp:include page="/WEB-INF/jsp/layouts/admin-include-header2.jsp"></jsp:include>
+  	<div class="main-container" id="main-container">
+<!-- 		<script type="text/javascript">
+			try {
+				ace.settings.check('main-container', 'fixed')
+			} catch (e) {
+			}
+		</script> -->
+
+		<div class="main-container-inner">
+			<a class="menu-toggler" id="menu-toggler" href="#"> <span
+				class="menu-text"></span>
+			</a>
+			<jsp:include page="/WEB-INF/jsp/layouts/admin-include-left.jsp"></jsp:include>
+			<div class="main-content">
+				<div class="page-content" id="page-content">
+					<div class="page-header" style="padding-bottom: 10px; /**margin: -5px 0px 5px;*/">
+						<h1>文件上传</h1>
+					</div>					
+					<!-- /.page-header -->
+					<div class="row">
+ 						<div class="col-xs-12 col-sm-12"> 
+							<!-- PAGE CONTENT BEGINS -->
+							<!-- 文件上传form -->
+							<form id="fileupload" action="admin/file/uploadFiles" class="form-horizontal" role="form" method="post" enctype="multipart/form-data">
+								<div class="space-20"></div>
+								<div class="form-group">
+									<label class="col-sm-3 control-label no-padding-right" > DAT文件:  </label>
+									<div class="col-sm-8">
+										<div class="uploader white">
+											<input type="text" class="filename" name="showDatFileName" placeholder="No file selected..." readonly/>
+											<input type="button" class="button" value="Browse..."/>
+											<input type="file" accept=".DAT" name="datFile" id="datFile"/>
+										</div>
+									</div>
 								</div>
-							</div>
-						</div>
-						<div class="space-12"></div>
-						<div class="form-group">
-							<label class="col-sm-3 control-label no-padding-right"> CSV文件:  </label>
-							<div class="col-sm-8">
-								<div class="uploader blue">
-									<input type="text" class="filename" placeholder="No file selected..." readonly/>
-									<input type="button" class="button" value="Browse..."/>
-									<input type="file" accept=".csv" name="csvFile" id="csvFile"/>
+								<div class="space-8"></div>
+								<div class="form-group">
+									<label class="col-sm-3 control-label no-padding-right"> CSV文件:  </label>
+									<div class="col-sm-8">
+										<div class="uploader blue">
+											<input type="text" class="filename" placeholder="No file selected..." readonly/>
+											<input type="button" class="button" value="Browse..."/>
+											<input type="file" accept=".csv" name="csvFile" id="csvFile"/>
+										</div>
+									</div>
 								</div>
-							</div>
-						</div>
-						<div class="space-12"></div>
-						<div class="form-group">
-							<label class="col-sm-3 control-label no-padding-right">文件类型:</label>
-							<div class="col-sm-8" style="margin-top: 4px;">
-								<label style="margin-right: 50px;">
-									<input name="paramType" type="radio" class="ace" value="flywheel" checked="true"/>
-									<span class="lbl"> 飞轮</span>
-								</label>
-								<label>
-									<input name="paramType" type="radio" class="ace" value="top"/>
-									<span class="lbl"> 陀螺</span>
-								</label>
-							</div>
-						</div>
-						<div class="space-1"></div>
-						<div class="form-group">
-							<div style="margin-left: 300px;">
-								<span id="returnMsg"></span>
-							</div>
-						</div>
-						<div class="space-4"></div>
-						<div class="form-group">
-                           <div class="col-sm-8" style="float: right;">
-		                        <button type="button" id="submit-fileupload" class=" button btn btn-primary start">
-				                    <i class="icon-upload icon-white"></i>
-				                    <span>开始 上传</span>
-				                </button>
-				                <button type="reset" id="resetBtn" class="button btn btn-warning cancel">
-				                    <i class="icon-ban-circle icon-white"></i>
-				                    <span>取消 上传</span>
-				                </button>
-                           </div>
-                       </div>
-					</form>
-				</div><!-- /.col -->								
-			</div><!-- /.row -->
-		</div><!-- /.page-content -->
-	</div><!-- /.main-content -->
-	
+								<div class="space-8"></div>
+								<div class="form-group">
+									<label class="col-sm-3 control-label no-padding-right">文件类型:</label>
+									<div class="col-sm-8">
+										<label>
+											<input name="paramType" type="radio" class="ace" value="flywheel" checked="true"/>
+											<span class="lbl"> 飞轮</span>
+										</label>
+										&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+										<label>
+											<input name="paramType" type="radio" class="ace" value="top"/>
+											<span class="lbl"> 陀螺</span>
+										</label>
+									</div>
+								</div>
+								<div class="space-8"></div>
+								<div style="margin-left: 300px;">
+									<span id="returnMsg"></span>
+								</div>
+								<div class="space-12"></div>
+								<div class="form-group">
+		                           <div class="col-sm-8" style="float: right;">
+				                        <button type="button" id="submit-fileupload" class="btn btn-primary start">
+						                    <i class="icon-upload icon-white"></i>
+						                    <span>开始 上传</span>
+						                </button>
+						                <button type="reset" id="resetBtn" class="btn btn-warning cancel">
+						                    <i class="icon-ban-circle icon-white"></i>
+						                    <span>取消 上传</span>
+						                </button>
+		                           </div>
+		                       </div>
+							</form>
+						</div><!-- /.col -->								
+					</div><!-- /.row -->
+				</div><!-- /.page-content -->
+			</div><!-- /.main-content -->			
+		</div><!-- /.main-container-inner -->
+		<a href="#" id="btn-scroll-up"
+			class="btn-scroll-up btn btn-sm btn-inverse"> <i
+			class="icon-double-angle-up icon-only bigger-110"></i>
+		</a>
+	</div><!-- /.main-container -->
+  </body>
   <script type="text/javascript">
   	$(function(){
 //   		swal("Hello world!");
@@ -369,5 +402,5 @@ input[type=text]::-webkit-focus-inner {
     });	
   });
   </script>
-  </body>
+
 </html>

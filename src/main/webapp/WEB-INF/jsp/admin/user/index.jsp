@@ -376,12 +376,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			
 			<div id="content" region="center" title="用户信息" style="overflow: hidden">
 			</div>
-			<table id="userList" border="false" width="100%" height="500px">
+			<table id="userList" border="false" width="100%" height="450px">
 			</table>
 			
 			<!-- 创建用户 -->
 			<div class="modal fade" id="addUserModal" tabindex="-1" role="dialog" aria-labelledby="addUserModalLabel">
-				<div class="modal-dialog" role="document" style="margin:55px -300px">
+				<div class="modal-dialog" role="document" style="margin:150px 450px">
 					<div class="modal-content">
 						<form id="addUserInfoForm" class="form-horizontal" role="form" style="margin: 0px;">
 							<div class="modal-header">
@@ -438,7 +438,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			</div>
 			<!-- 编辑用户 -->
 			<div class="modal fade" id="editUserModal" tabindex="-1" role="dialog" aria-labelledby="editUserModalLabel">
-				<div class="modal-dialog" role="document" style="margin:55px -300px">
+				<div class="modal-dialog" role="document" style="margin:150px 450px">
 					<div class="modal-content">
 						<form id="editUserInfoForm" class="form-horizontal" role="form" style="margin: 0px;">
 							<div class="modal-header">
@@ -496,7 +496,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			</div>
 			<!-- 编辑用户角色 -->
 			<div class="modal fade" id="editUserRoleModal" tabindex="-1" role="dialog" aria-labelledby="editUserRoleModalLabel"  >
-			  <div class="modal-dialog" role="document" style="margin:55px -300px">
+			  <div class="modal-dialog" role="document" style="margin:150px 450px">
 			    <div class="modal-content">
 			      <div class="modal-header">
 			        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>

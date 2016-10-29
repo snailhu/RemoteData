@@ -121,6 +121,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 .form-horizontal {
     margin-bottom: 0px;
 }
+.icon-undo {
+    background: no-repeat center center;
+}
   </style>
   <script type="text/javascript">
   	$(function(){
@@ -179,7 +182,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	    $('#editPermissionGroupInfoForm').data('bootstrapValidator').resetForm(true);
 	});	
   	$('#addPermissionItemInfoForm').bootstrapValidator({
-//      live: 'disabled',
       message: 'This value is not valid',
       feedbackIcons: {
           valid: 'glyphicon glyphicon-ok',
@@ -236,9 +238,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
             },
             code: {
                 validators: {
-              	  notEmpty: {
+              	    notEmpty: {
                         message: '权限代码不能为空'
-                    }
+                    },
+		            regexp : { 
+		                regexp : /^[a-zA-Z]+$/,
+		                message : '权限代码只能由字母组成'
+		            },
                 }
             },
             description : {
@@ -291,17 +297,17 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			<div id="content" region="center" style="overflow: hidden">
 				<div id="toolbar" class="datagrid-toolbar" style="height: 28px;">
 					<div style="height: 28px;">
-						<button class="easyui-linkbutton" iconcls="icon-add" style="float: left;" 
+						<button class="easyui-linkbutton" iconcls="icon-add" plain="true" style="float: left;" 
 							data-toggle="modal" data-target="#addPermissionGroupModal">创建</button>
 						<div class="datagrid-btn-separator"></div>
-						<button class="easyui-linkbutton" iconcls="icon-remove" style="float: left;"
+						<button class="easyui-linkbutton" iconcls="icon-remove" plain="true" style="float: left;"
 							onclick="deletePermissionGroup();">删除</button>
 						<div class="datagrid-btn-separator"></div>
-						<button class="easyui-linkbutton" iconcls="icon-edit" style="float: left;"
+						<button class="easyui-linkbutton" iconcls="icon-edit" plain="true" style="float: left;"
 							onclick="editPermissionGroup();">编辑</button>
 						<div class="datagrid-btn-separator"></div>
-						<button class="easyui-linkbutton" iconcls="icon-undo"
-							onclick="permissionGrid.datagrid('unselectAll');" style="float: left;">取消选中</button>
+						<button class="easyui-linkbutton" iconcls="icon-undo" plain="true" style="float: left;"
+							onclick="permissionGrid.datagrid('unselectAll');">取消选中</button>
 					</div>
 				</div>
 			</div>
@@ -540,10 +546,6 @@ $(function() {
 						],
 						columns : [ [
 								{
-									field : 'ck',
-									checkbox : false
-								},
-								{
 									field : 'displayName',
 									title : '显示名称',
 									width : 80
@@ -562,14 +564,14 @@ $(function() {
 									field : 'operation',
 									title : '操作选项',
 									align : 'center',
-									width : 120,
+									width : 80,
 									formatter : function(value,row,index) {
 										// var editStr = "<a name=\"operButton\"  class=\"easyui-linkbutton\" iconcls=\"icon-edit\"  plain=\"true\" href=\"javascript:EditPermissionItem('" + row.Id + "');\">编辑</a>";
 										var editStr = "<a class=\"l-btn l-btn-plain\" href=\"javascript:editPermissionItemInfo('"
 												+ subgridId
 												+ "','"
 												+ row.id
-												+ "')\" style=\"float: left;\"><span class=\"l-btn-left\"><span class=\"l-btn-text icon-edit\" style=\"padding-left: 60px;\">编辑</span></span></a>";
+												+ "')\" style=\"float: left;\"><span class=\"l-btn-left\" style=\"margin:0px 20px;\" ><span class=\"l-btn-text icon-edit\" style=\"/*padding-left: 50px;*/\">编辑</span></span></a>";
 										// var delStr = "<a name=\"operButton\" class=\"easyui-linkbutton\"  iconcls=\"icon-remove\"  plain=\"true\" href=\"javascript:DeletePermissionItem('" + row.Id + "');\"> 删除</a>"
 										var delStr = "<a class=\"l-btn l-btn-plain\" href=\"javascript:deletePermissionItemInfo('"
 												+ subgridId
@@ -577,7 +579,7 @@ $(function() {
 												+ row.id
 												+ "','"
 												+ row.displayName
-												+ "')\" style=\"float: left;\"><span class=\"l-btn-left\"><span class=\"l-btn-text icon-remove\" style=\"padding-left: 80px;\">删除</span></span></a>";
+												+ "')\" style=\"float: left;\"><span class=\"l-btn-left\" style=\"margin:0px 20px;\" ><span class=\"l-btn-text icon-remove\" style=\"/*padding-left: 50px;*/\">删除</span></span></a>";
 										return editStr
 												+ '<div class="datagrid-btn-separator"></div>'
 												+ delStr;

@@ -106,7 +106,8 @@ public class ServiceTest {
 			datFileDto.setParameterType(parameterType);
 			map.put("dat", datFileDto);			
 		}
-		fileService.saveFile(map);
+		String versions = fileService.saveFile(map);
+		System.out.println("versions: " + versions);
 	}
 	
 }

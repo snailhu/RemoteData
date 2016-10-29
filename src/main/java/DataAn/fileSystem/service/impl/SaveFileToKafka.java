@@ -34,14 +34,19 @@ public class SaveFileToKafka implements Runnable {
 	
 	private String filePath;
 	
-	public SaveFileToKafka(String series, String star, String paramType,
-			String filePath) {
+	private String versions;	
+
+	public SaveFileToKafka(String series, String star, String name,
+			String filePath, String versions) {
 		super();
 		this.series = series;
 		this.star = star;
-		this.name = paramType;
+		this.name = name;
 		this.filePath = filePath;
+		this.versions = versions;
 	}
+
+
 
 	@Override
 	public void run() {
@@ -54,10 +59,11 @@ public class SaveFileToKafka implements Runnable {
 			String title = reader.readLine();// 第一行信息，为标题信息，不用,如果需要，注释掉
 			//CSV格式文件为逗号分隔符文件，这里根据逗号切分
 			String[] array = title.split(",");
-			String[] properties = new String[array.length];
+			String[] properties = new String[array.length + 1];
+			properties[0] = "versions";
 			for (int i = 0; i < array.length; i++) {
 				//将中文字符串转换为英文
-				properties[i] = paramService.getParameter_en_by_allZh(series, star, name, array[i]);
+				properties[i + 1] = paramService.getParameter_en_by_allZh(series, star, name, array[i]);
 			}
 			String line = null;
 			String date = "";
@@ -68,11 +74,12 @@ public class SaveFileToKafka implements Runnable {
 			String[] propertyVals = null;
 			
 			//
-			Map conf=new HashMap<>();
-			KafkaNameKeys.setKafkaServer(conf, "192.168.0.97:9092");
-			InnerProducer innerProducer=new InnerProducer(conf);
-			BoundProducer boundProducer=new BoundProducer(innerProducer,"bound-replicated-1", 0);
-			boundProducer.send(new Beginning());
+//			Map conf=new HashMap<>();
+//			KafkaNameKeys.setKafkaServer(conf, "192.168.0.97:9092");
+//			InnerProducer innerProducer=new InnerProducer(conf);
+//			BoundProducer boundProducer=new BoundProducer(innerProducer,"bound-replicated-1", 0);
+//			boundProducer.send(new Beginning());
+			
 			while ((line = reader.readLine()) != null) {
 				//CSV格式文件为逗号分隔符文件，这里根据逗号切分
 				String[] items = line.split(",");
@@ -82,11 +89,12 @@ public class SaveFileToKafka implements Runnable {
 					dateTime1 = dateTime;
 				}
 				count ++;
-				propertyVals = new String[array.length];
-				propertyVals[0] = DateUtil.format(dateTime);
+				propertyVals = new String[array.length + 1];
+				propertyVals[0] = this.versions;
+				propertyVals[1] = DateUtil.format(dateTime);
 				for (int i = 1; i < items.length; i++) {
 					//获取值除时间外
-					propertyVals[i] = items[i];
+					propertyVals[i + 1] = items[i];
 				}
 				//
 				defaultFetchObj = new DefaultFetchObj();
@@ -94,14 +102,19 @@ public class SaveFileToKafka implements Runnable {
 				defaultFetchObj.setName(this.name);
 				defaultFetchObj.setSeries(this.series);
 				defaultFetchObj.setStar(this.star);
-				defaultFetchObj.setTime(propertyVals[0]);
+				defaultFetchObj.setTime(propertyVals[1]);
 				defaultFetchObj.set_time(dateTime.getTime());
 				defaultFetchObj.setProperties(properties);
 				defaultFetchObj.setPropertyVals(propertyVals);
+				
+				if(count == 50)
+					break;
+				System.out.println(defaultFetchObj);
+				
 				//发送到kafka
-				boundProducer.send(defaultFetchObj);
+//				boundProducer.send(defaultFetchObj);
 			}
-			boundProducer.send(new Ending());
+//			boundProducer.send(new Ending());
 			
 //			MongodbUtil mg = MongodbUtil.getInstance();
 //			String databaseName = InitMongo.getDataBaseNameBySeriesAndStar(series, star);
@@ -115,7 +128,7 @@ public class SaveFileToKafka implements Runnable {
 //				mg.updateByDate(databaseName, collectionName, beginDate, endDate);				
 //			}
 			
-			Utils.sleep(10000000);
+//			Utils.sleep(10000000);
 			
 		} catch (Exception e) {
 			e.printStackTrace();

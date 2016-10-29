@@ -125,6 +125,15 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 .form-horizontal {
     margin-bottom: 0px;
 }
+.icon-remove {
+    background: no-repeat center center;
+}
+.icon-edit {
+    background: no-repeat center center;
+}
+.icon-undo {
+    background: no-repeat center center;
+}
 </style>
 <script type="text/javascript">
 $(function() {

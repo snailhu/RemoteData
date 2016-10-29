@@ -232,12 +232,12 @@ $(function() {
 					</div>
 				</div>
 			</div>
-			<table id="roleList" width="100%" height="500px" border="false">
+			<table id="roleList" width="100%" fit="false" height="450px" border="false">
 			</table>
 			
 			<!-- 创建参数 -->
 			<div class="modal fade" id="addParamModal" tabindex="-1" role="dialog" aria-labelledby="addParamModalLabel"  >
-			  <div class="modal-dialog" role="document" style="margin:55px -300px">
+			  <div class="modal-dialog" role="document" style="margin:150px 450px">
 			    <div class="modal-content">
 					<form id="addParamInfoForm" class="form-horizontal" role="form">
 						<div class="modal-header">
@@ -275,7 +275,7 @@ $(function() {
 			</div>
 			<!-- 编辑参数 -->
 			<div class="modal fade" id="editParamModal" tabindex="-1" role="dialog" aria-labelledby="editParamModalLabel">
-				<div class="modal-dialog" role="document" style="margin:55px -300px">
+				<div class="modal-dialog" role="document" style="margin:150px 450px">
 					<div class="modal-content">
 						<form id="editParamInfoForm" class="form-horizontal" role="form">
 							<div class="modal-header">
@@ -323,12 +323,14 @@ $(function() {
 	</div><!-- /.main-content -->
 	
 	<script type="text/javascript">
+	  var nowSeries = '${nowSeries}';
+	  console.log('nowSeries:' + nowSeries);
 	  var paramGrid;
-	  var url='<%=request.getContextPath()%>/admin/parameter/getList';
+	  var url='<%=request.getContextPath()%>/admin/parameter/getList/'+nowSeries;
 	  $(function () {
 	      paramGrid = $('#roleList').datagrid({
 	          url: url,
-	          title: '角色列表',
+	          title: '遥测节点列表',
 	          rownumbers: true,
 	          fitColumns:true,
 	          idField: 'id',
@@ -344,13 +346,13 @@ $(function() {
 	          }, {
 	              field: 'fullName',
 	              title: '参数名',
-	              width: 200,
+	              width: 300,
 	              sortable: true
 	          }]],
 	          columns: [[{
 	              field: 'code',
 	              title: '参数码',
-	              width: 200
+	              width: 300
 	          }, 
 	          ]]
 	      });

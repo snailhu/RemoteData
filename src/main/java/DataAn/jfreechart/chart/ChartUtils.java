@@ -467,6 +467,7 @@ public class ChartUtils {
 		domainAxis.setAxisLinePaint(lineColor);// X坐标轴颜色
 		domainAxis.setTickMarkPaint(lineColor);// X坐标轴标记|竖线颜色
         
+		domainAxis.setCategoryLabelPositions(CategoryLabelPositions.UP_45);
 		// 设置横轴的字体
 		domainAxis.setLabelFont(new Font("宋体", Font.BOLD, 16));
 		// 设置分类标签以45度倾斜

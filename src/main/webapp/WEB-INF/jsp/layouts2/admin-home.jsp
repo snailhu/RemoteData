@@ -28,12 +28,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	
 	<link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/static/new/css/all.css"/>
 	<style type="text/css">
-	.container {
-	    max-width: 1500px;
-	}
 	.DataImport_manage .container {
 	    width: 1200px;
 	    margin: 0 auto;
+	}
+	.container {
+	    max-width: 1500px;
 	}
 	</style>
 	<script type="text/javascript">

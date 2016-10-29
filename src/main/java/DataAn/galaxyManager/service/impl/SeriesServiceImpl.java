@@ -80,7 +80,7 @@ public class SeriesServiceImpl implements ISeriesService{
 				dto.setCode(series.getCode());
 				dto.setCreateDate(DateUtil.format(series.getCreateDate()));
 				dto.setDescription(series.getDescription());
-				dto.setParamPath(contextPath + "/");
+				dto.setParamPath(contextPath + "/admin/parameter/index/" + series.getCode());
 				seriesDtoList.add(dto);
 			}
 		}

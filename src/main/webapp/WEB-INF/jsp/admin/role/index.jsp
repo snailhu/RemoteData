@@ -228,12 +228,12 @@ $(function() {
 					</div>
 				</div>
 			</div>
-			<table id="roleList" width="100%" height="500px" border="false">
+			<table id="roleList" width="100%" height="450px" border="false">
 			</table>
 			
 			<!-- 创建角色 -->
 			<div class="modal fade" id="addRoleModal" tabindex="-1" role="dialog" aria-labelledby="addRoleModalLabel"  >
-			  <div class="modal-dialog" role="document" style="margin:55px -300px">
+			  <div class="modal-dialog" role="document" style="margin:150px 450px">
 			    <div class="modal-content">
 					<form id="addRoleInfoForm" class="form-horizontal" role="form">
 						<div class="modal-header">
@@ -270,7 +270,7 @@ $(function() {
 			</div>
 			<!-- 编辑角色 -->
 			<div class="modal fade" id="editRoleModal" tabindex="-1" role="dialog" aria-labelledby="editRoleModalLabel">
-				<div class="modal-dialog" role="document" style="margin:55px -300px">
+				<div class="modal-dialog" role="document" style="margin:150px 450px">
 					<div class="modal-content">
 						<form id="editRoleInfoForm" class="form-horizontal" role="form">
 							<div class="modal-header">
@@ -308,7 +308,7 @@ $(function() {
 			</div>
 			<!-- 编辑角色权限 -->
 			<div class="modal fade" id="editRolePermissionModal" tabindex="-1" role="dialog" aria-labelledby="editRolePermissionModalLabel"  >
-			  <div class="modal-dialog" role="document" style="margin:55px -300px">
+			  <div class="modal-dialog" role="document" style="margin:150px 450px">
 			    <div class="modal-content">
 			      <div class="modal-header">
 			        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>

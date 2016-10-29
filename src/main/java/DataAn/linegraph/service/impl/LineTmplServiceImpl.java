@@ -41,13 +41,31 @@ public class LineTmplServiceImpl implements ILineTmplService {
 		}		
 		return templateList;
 	}
+	@Override
+	@Transactional
+	public List<LineGraphTemplateDto> getTemplateListByUser(long userid) {
+		List<LineGraphTemplateDto> templateList = new ArrayList<LineGraphTemplateDto>();
+		List<LineGraphTemplate> list= linetmpdao.findByParam("ownerid", userid);
+		if(list != null && list.size() > 0){
+			LineGraphTemplateDto dto = null;
+			for (LineGraphTemplate tmpl : list) {
+				dto = new LineGraphTemplateDto();
+				dto.setName(tmpl.getName());				
+				dto.setId(tmpl.getId());
+				dto.setDescription(tmpl.getDescription());
+				templateList.add(dto);
+			}
+		}		
+		return templateList;
+	}
 
 	@Override
 	@Transactional
 	public void SaveTemplate(LineGraphTemplateDto templateDto) {
 		LineGraphTemplate template =new LineGraphTemplate();
 		template.setName(templateDto.getName());
-		template.setDescription(templateDto.getDescription());	
+		template.setDescription(templateDto.getDescription());
+		template.setOwnerid(templateDto.getOwnerid());
 		linetmpdao.add(template);	
 	}
 	

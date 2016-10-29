@@ -25,4 +25,11 @@ public class SelectOptionDTO {
 		this.paramaters = paramaters;
 	}
 
+	@Override
+	public String toString() {
+		return "SelectOptionDTO [stars=" + stars + ", paramaters=" + paramaters
+				+ "]";
+	}
+
+	
 }

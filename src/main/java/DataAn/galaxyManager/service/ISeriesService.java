@@ -20,7 +20,7 @@ public interface ISeriesService {
 	
 	public void updateSeries(SeriesDto dto);
 	
-	public Pager<SeriesDto> getSeriesList(int pageIndex, int pageSize, String contextPath);
+	public Pager<SeriesDto> getSeriesList(int pageIndex, int pageSize);
 	
 	public List<SeriesDto> getAllSeries();
 	

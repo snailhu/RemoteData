@@ -344,15 +344,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				</div>
 			</div>
 			<table id="galaxyList" fit="false" border="false" height="450px">
-				<thead>
-					<tr>
-						<th field="ck" checkbox="true"></th>
-						<th field="name" width="80">名称</th>
-						<th field="code" width="80">编码</th>
-						<th field="description" width="120" align="center">描述</th>
-						<th field="createDate" width="100" align="center">创建日期</th>
-					</tr>
-				</thead>
+				
 			</table>
 			<!-- 添加系列表单 -->
 			<div class="modal fade" id="addSeriesInfoModal" tabindex="-1" role="dialog" aria-labelledby="addSeriesInfoModalLabel">
@@ -581,6 +573,33 @@ $(function() {
 		pageSize: 10,
 		pagination: true,
 		pageList: [10, 20, 30, 40, 50, 60, 70, 80, 90, 100],
+        frozenColumns: [[{
+            title: 'id',
+            field: 'id',
+            width: 50,
+            checkbox: true
+        }]],
+        columns: [[{
+            field: 'name',
+            title: '名称',
+            width: 80,
+        }, {
+            field: 'code',
+            title: '编码',
+            width: 80
+        }, {
+            field: 'description',
+            title: '描述',
+            width: 120
+        }, {
+            field: 'editParam',
+            title: '参数列表',
+            width: 80,
+            formatter: function (value, row, index) {
+                return "<a href=\"javascript:doEditParam('" + row.code +  "');\"" + " title='参数列表'>参数列表</a>";
+            }
+        }
+        ]],
 		onLoadError:function(data){
 			$.messager.alert("信息", "暂无数据信息", "error");
 		},	
@@ -670,6 +689,11 @@ $(function() {
 			}
 		});
 	});
+	
+	function doEditParam(code){
+		 window.location.href='${pageContext.request.contextPath}/admin/parameter/index/' + code; 
+	}
+	
 	function reloadDatagrid(datagridId) {
 		$('#' + datagridId).datagrid("unselectAll");
 		$('#' + datagridId).datagrid('reload');

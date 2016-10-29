@@ -330,7 +330,7 @@ $(function() {
 	  $(function () {
 	      paramGrid = $('#roleList').datagrid({
 	          url: url,
-	          title: '遥测节点列表',
+	          title: '参数列表',
 	          rownumbers: true,
 	          fitColumns:true,
 	          idField: 'id',

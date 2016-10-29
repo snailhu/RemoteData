@@ -32,6 +32,9 @@ public class LineGraphTemplate {
 	@Column(name = "name", nullable = false, length = 64)
 	private String name;
 	
+	@Column(name = "ownerid", nullable = true)
+	private Long ownerid;
+	
 	@Column(name = "description", nullable = true, length = 512)
 	private String description;
 	
@@ -61,5 +64,11 @@ public class LineGraphTemplate {
 	}
 	public void setParameters(Set<TemplateParameter> parameters) {
 		Parameters = parameters;
+	}
+	public Long getOwnerid() {
+		return ownerid;
+	}
+	public void setOwnerid(Long ownerid) {
+		this.ownerid = ownerid;
 	}
 }

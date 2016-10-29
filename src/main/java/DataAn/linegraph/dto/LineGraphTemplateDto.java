@@ -2,6 +2,7 @@ package DataAn.linegraph.dto;
 
 public class LineGraphTemplateDto {
 	private long id;
+	private long ownerid;
 	private String name;
 	private String description;
 	public long getId() {
@@ -21,5 +22,11 @@ public class LineGraphTemplateDto {
 	}
 	public void setDescription(String description) {
 		this.description = description;
+	}
+	public long getOwnerid() {
+		return ownerid;
+	}
+	public void setOwnerid(long ownerid) {
+		this.ownerid = ownerid;
 	}
 }

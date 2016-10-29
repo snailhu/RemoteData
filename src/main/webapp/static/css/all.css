@@ -1,0 +1,1407 @@
+a:hover{
+    color: #09c;
+    cursor: pointer;
+}
+.changyongmoban {
+    margin: 0px;
+    background-color: #F3F3F3;
+    font-family: "微软雅黑";
+}
+.changyongmoban .container {
+    width: 1176px;
+    margin: 0 auto;
+    overflow: auto;
+}
+.changyongmoban input {
+    outline: none;
+}
+.changyongmoban .data_import .head {
+    height: 80px;
+    color: #f4f4f4;
+    font-size: 12px;
+    background: url("../../static/imgs/head/head.png") center no-repeat;
+}
+.changyongmoban .data_import .head .logo {
+    float: left;
+    margin: 11px 0 11px 30px;
+}
+.changyongmoban .data_import .head .head_button {
+    float: right;
+    margin: 40px 25px 0 0;
+}
+.changyongmoban .data_import .head .head_button > span {
+    margin-right: 25px;
+}
+.changyongmoban .data_import .head .head_button > span > img {
+    vertical-align: text-bottom;
+}
+.changyongmoban .data_import .left {
+    float: left;
+    width: 200px;
+    background-color: #F3F3F3;
+}
+.changyongmoban .data_import .left .title {
+    height: 46px;
+}
+.changyongmoban .data_import .left .content {
+    height: 1181px;
+    border: 1px solid #DEDEDE;
+}
+.changyongmoban .data_import .left .content .tab_title {
+    height: 40px;
+    line-height: 40px;
+    padding: 0 40px 0 35px;
+    font-size: 15px;
+    color: #525252;
+    border-bottom: 1px solid #DEDEDE;
+}
+.changyongmoban .data_import .left .content .tab_title .img_head {
+    vertical-align: text-bottom;
+    margin-right: 5px;
+}
+.changyongmoban .data_import .left .content .tab_title .img_down {
+    margin-top: 12px;
+    float: right;
+}
+.changyongmoban .data_import .left .content .tab_li {
+    height: 40px;
+    line-height: 40px;
+    padding: 0 40px;
+    font-size: 15px;
+    color: #525252;
+    background-color: #e8f5fe;
+    border-bottom: 1px solid #DEDEDE;
+}
+.changyongmoban .data_import .left .content .tab_li .img_head {
+    margin-right: 5px;
+    vertical-align: middle;
+}
+.changyongmoban .data_import .left .content .tab_li .img_down {
+    margin-top: 12px;
+    float: right;
+}
+.changyongmoban .data_import .left .content .tab_li.level2 {
+    padding-left: 60px;
+}
+.changyongmoban .data_import .left .content .tab_li.level3 {
+    padding-left: 80px;
+}
+.changyongmoban .data_import .right {
+    float: left;
+    width: 970px;
+    margin-left: 5px;
+    margin-bottom: 10px;
+}
+.changyongmoban .data_import .right .right_head {
+    font-size: 12px;
+    color: #7a7a7a;
+    line-height: 46px;
+    padding-left: 20px;
+    height: 46px;
+}
+.changyongmoban .data_import .right .right_head > img {
+    vertical-align: text-bottom;
+}
+.changyongmoban .data_import .right .right_content {
+    width: 925px;
+    border: 1px solid #DEDEDE;
+    background-color: white;
+}
+.changyongmoban .data_import .right .right_content .title {
+    height: 40px;
+    line-height: 40px;
+    padding-left: 20px;
+    color: #0076ca;
+    border-bottom: 1px solid #DEDEDE;
+}
+.changyongmoban .data_import .right .right_content .time {
+    font-size: 14px;
+    font-weight: 900;
+    padding: 25px 0 35px 30px;
+}
+.changyongmoban .data_import .right .right_content .time > div {
+    float: left;
+}
+.changyongmoban .data_import .right .right_content .time > div > span {
+    margin-right: 10px;
+}
+.changyongmoban .data_import .right .right_content .time > div > input {
+    font-size: 16px;
+    text-align: center;
+    width: 175px;
+    height: 25px;
+    margin-right: 30px;
+    color: #b2b2b2;
+    background-color: #F8F8F8;
+    border-width: 1px;
+}
+.changyongmoban .data_import .right .right_content .time > div .input {
+    margin-right: 15px;
+}
+.changyongmoban .data_import .right .right_content .time > button {
+    height: 31px;
+    width: 100px;
+    color: white;
+    background-color: #4B92DD;
+    border-width: 1px;
+}
+.changyongmoban .data_import .right2 {
+    float: left;
+    margin-left: 5px;
+    margin-bottom: 10px;
+    background-color: white;
+    border: 1px solid #DEDEDE;
+}
+.changyongmoban .data_import .right2 .title {
+    height: 40px;
+    line-height: 40px;
+    padding-left: 20px;
+    color: #0076ca;
+    border-bottom: 1px solid #DEDEDE;
+}
+.changyongmoban .data_import .right2 .content {
+    padding: 20px 60px 30px 20px;
+}
+.changyongmoban .data_import .right2 .content > div {
+    border: 1px solid #aaaaaa;
+    border-bottom: none;
+    height: 36px;
+}
+.changyongmoban .data_import .right2 .content > div > img {
+    margin: 7px;
+}
+.changyongmoban .data_import .right2 .content table {
+    border: 1px solid #aaaaaa;
+    border-spacing: 0px;
+    border-collapse: collapse;
+    font-size: 14px;
+    color: #333333;
+}
+.changyongmoban .data_import .right2 .content table tr td {
+    width: 166px;
+}
+.changyongmoban .data_import .right2 .content .gray {
+    background-color: #e8e8e8;
+}
+.changyongmoban .data_import .right2 .content .double {
+    background-color: #f9f9f9;
+}
+.changyongmoban .data_import .right3 {
+    float: left;
+    margin-left: 5px;
+    margin-bottom: 10px;
+    background-color: white;
+    border: 1px solid #DEDEDE;
+    padding: 0 58px 60px 20px;
+}
+.changyongmoban .data_import .right3 .button {
+    height: 72px;
+    line-height: 72px;
+}
+.changyongmoban .data_import .right3 .button > button {
+    border: 1px solid #DADADA;
+    background-color: #f5f5f5;
+    border-radius: 20px;
+    height: 30px;
+    line-height: 28px;
+    width: 95px;
+    font-size: 14px;
+    margin-right: 15px;
+}
+.changyongmoban .data_import .right3 .button > button:last-of-type {
+    background-color: #1C76C5;
+    color: white;
+}
+.changyongmoban .data_import .right3 .button > select {
+    float: right;
+    font-size: 14px;
+    height: 32px;
+    margin: 20px 0;
+    width: 100px;
+    padding-left: 8px;
+    border-color: #C2DBEE;
+    color: #919191;
+}
+.changyongmoban .data_import .right3 .table_content table {
+    border: 1px solid #B4CBDB;
+    border-spacing: 0px;
+    border-collapse: collapse;
+    font-size: 14px;
+    color: #333333;
+}
+.changyongmoban .data_import .right3 .table_content table tr td {
+    width: 160px;
+}
+.changyongmoban .data_import .right3 .table_content table tr td:first-child {
+    width: 326px;
+}
+.changyongmoban .data_import .right3 .table_content table .blue {
+    background-color: #E0EAF6;
+}
+.changyongmoban .data_import .right3 .table_content table .xuan {
+    padding-left: 30px;
+}
+.changyongmoban .data_import .right4 {
+    width: 927px;
+    float: left;
+    margin-left: 5px;
+    margin-bottom: 10px;
+    background-color: white;
+    border: 1px solid #DEDEDE;
+}
+.changyongmoban .data_import .right4 .title {
+    height: 40px;
+    line-height: 40px;
+    padding-left: 20px;
+    color: #0076ca;
+    border-bottom: 1px solid #DEDEDE;
+}
+.changyongmoban .data_import .right4 .content {
+    font-size: 14px;
+    padding: 20px 58px 20px 10px;
+    height: 70px;
+}
+.changyongmoban .data_import .right4 .content > div {
+    background-color: #fcf9e3;
+    height: 50px;
+}
+.changyongmoban .data_import .right4 .content > div .info {
+    padding: 15px;
+    float: left;
+}
+.changyongmoban .data_import .right4 .content > div .button {
+    padding: 9px;
+    float: right;
+}
+.changyongmoban .data_import .right4 .content > div .button > button {
+    width: 112px;
+    height: 32px;
+    margin-left: 20px;
+    border: 1px solid #DADADA;
+    font-size: 14px;
+    background-color: #b0b0b0;
+    color: white;
+}
+.changyongmoban .data_import .right4 .content > div .button > button:first-child {
+    background-color: #efa90e;
+    color: white;
+}
+.changyongmoban .clearfix:after,
+.changyongmoban .clearfix:before {
+    content: " ";
+    display: table;
+}
+.changyongmoban .clearfix:after {
+    clear: both;
+}
+.changyongmoban .down {
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+    background-color: #FCFCFC;
+    border: 1px solid #DEDEDE;
+}
+
+
+
+.DataImport_manage {
+    margin: 0px;
+    background-color: #F3F3F3;
+    font-family: "微软雅黑";
+}
+.DataImport_manage .container {
+    width: 1176px;
+    margin: 0 auto;
+}
+.DataImport_manage input {
+    outline: none;
+}
+.DataImport_manage .data_import .head {
+    height: 80px;
+    color: #f4f4f4;
+    font-size: 12px;
+    background: url("../../static/imgs/head/head.png") center no-repeat;
+}
+.DataImport_manage .data_import .head .logo {
+    float: left;
+    margin: 11px 0 11px 30px;
+}
+.DataImport_manage .data_import .head .head_button {
+    float: right;
+    margin: 40px 25px 0 0;
+}
+.DataImport_manage .data_import .head .head_button > span {
+    margin-right: 25px;
+}
+.DataImport_manage .data_import .head .head_button > span > img {
+    vertical-align: text-bottom;
+}
+.DataImport_manage .data_import .left {
+    float: left;
+    width: 200px;
+    background-color: #F3F3F3;
+}
+.DataImport_manage .data_import .left .title {
+    height: 46px;
+}
+.DataImport_manage .data_import .left .content {
+    height: 491px;
+    border: 1px solid #DEDEDE;
+}
+.DataImport_manage .data_import .left .content .tab_title {
+    height: 40px;
+    line-height: 40px;
+    padding: 0 40px 0 35px;
+    font-size: 15px;
+    color: #525252;
+    border-bottom: 1px solid #DEDEDE;
+}
+.DataImport_manage .data_import .left .content .tab_title .img_head {
+    vertical-align: text-bottom;
+    margin-right: 5px;
+}
+.DataImport_manage .data_import .left .content .tab_title .img_down {
+    margin-top: 12px;
+    float: right;
+}
+.DataImport_manage .data_import .left .content .tab_li {
+    height: 40px;
+    line-height: 40px;
+    padding: 0 40px;
+    font-size: 15px;
+    color: #525252;
+    background-color: #e8f5fe;
+    border-bottom: 1px solid #DEDEDE;
+}
+.DataImport_manage .data_import .left .content .tab_li .img_head {
+    margin-right: 5px;
+    vertical-align: middle;
+}
+.DataImport_manage .data_import .left .content .tab_li .img_down {
+    margin-top: 12px;
+    float: right;
+}
+.DataImport_manage .data_import .left .content .tab_li.level2 {
+    padding-left: 60px;
+}
+.DataImport_manage .data_import .left .content .tab_li.level3 {
+    padding-left: 80px;
+}
+.DataImport_manage .data_import .right {
+    float: left;
+    width: 911px;
+    padding: 0 60px 12px 5px;
+}
+.DataImport_manage .data_import .right .right_head {
+    font-size: 12px;
+    color: #7a7a7a;
+    line-height: 46px;
+    padding-left: 20px;
+    height: 46px;
+}
+.DataImport_manage .data_import .right .right_head > img {
+    vertical-align: text-bottom;
+}
+.DataImport_manage .data_import .right .right_content {
+    height: 380px;
+    border: 1px solid #DEDEDE;
+    background-color: white;
+    margin-bottom: 12px;
+}
+.DataImport_manage .data_import .right .right_content .title {
+    height: 40px;
+    line-height: 40px;
+    padding-left: 20px;
+    color: #0076ca;
+    border-bottom: 1px solid #DEDEDE;
+}
+.DataImport_manage .data_import .right .right_content .title > img {
+    float: right;
+    margin: 5px;
+}
+.DataImport_manage .data_import .right .right_content .input_content {
+    font-size: 14px;
+    margin: 70px auto;
+    text-align: center;
+}
+.DataImport_manage .data_import .right .right_content .input_content > div {
+    margin-bottom: 25px;
+}
+.DataImport_manage .data_import .right .right_content .input_content > div .first_label {
+    margin-right: 30px;
+    margin-left: 8px;
+}
+.DataImport_manage .data_import .right .right_content .input_content > div > span {
+    margin-right: 15px;
+}
+.DataImport_manage .data_import .right .right_content .input_content > div > input {
+    width: 280px;
+    height: 26px;
+    border-width: thin;
+    background-color: #F8F8F8;
+}
+.DataImport_manage .data_import .right .right_content .input_content .last {
+    margin-right: 135px;
+}
+.DataImport_manage .data_import .right .right_content .input_content .button_1 {
+    color: white;
+    font-size: 14px;
+    width: 100px;
+    background-color: #1d76c5;
+    height: 32px;
+    border-width: 0;
+    margin-right: 37px;
+    margin-left: 30px;
+}
+.DataImport_manage .data_import .right .right_content .input_content .button_2 {
+    color: white;
+    font-size: 14px;
+    width: 100px;
+    background-color: #9C9C9C;
+    height: 32px;
+    border-width: 0;
+}
+.DataImport_manage .data_import .right .content_table {
+    background-color: white;
+}
+.DataImport_manage .data_import .right .content_table .table_title {
+    height: 40px;
+    line-height: 40px;
+    padding-left: 20px;
+    color: #0076ca;
+    border-bottom: 1px solid #DEDEDE;
+}
+.DataImport_manage .data_import .right .content_table .table_content {
+    padding: 0 25px;
+}
+.DataImport_manage .data_import .right .content_table .table_content .button {
+    height: 70px;
+    line-height: 70px;
+}
+.DataImport_manage .data_import .right .content_table .table_content .button > button {
+    border: 1px solid #DADADA;
+    background-color: #f5f5f5;
+    border-radius: 20px;
+    height: 30px;
+    line-height: 28px;
+    font-size: 14px;
+    margin-right: 15px;
+}
+.DataImport_manage .data_import .right .content_table .table_content .button > button > span {
+    margin: 0 10px;
+}
+.DataImport_manage .data_import .right .content_table .table_content .button .choose {
+    background-color: #1d76c5;
+    color: white;
+}
+.DataImport_manage .data_import .right .content_table .table_content table {
+    border: 1px solid #e3e3e3;
+    border-spacing: 0px;
+    border-collapse: collapse;
+    font-size: 12px;
+    color: #333333;
+}
+.DataImport_manage .data_import .right .content_table .table_content table > tbody tr th {
+    border: 1px dotted #e3e3e3;
+}
+.DataImport_manage .data_import .right .content_table .table_content table > tbody tr td {
+    border: 1px dotted #e3e3e3;
+}
+.DataImport_manage .data_import .right .content_table .table_content table > tbody .hao {
+    min-width: 27px;
+    text-align: center;
+}
+.DataImport_manage .data_import .right .content_table .table_content table > tbody .flite {
+    min-width: 330px;
+    padding-left: 5px;
+}
+.DataImport_manage .data_import .right .content_table .table_content table > tbody .sum {
+    min-width: 200px;
+    padding-left: 5px;
+}
+.DataImport_manage .data_import .right .content_table .table_content table > tbody .time {
+    min-width: 250px;
+    padding-left: 5px;
+}
+.DataImport_manage .data_import .right .content_table .table_content table .color {
+    background-color: #f7f7f7;
+}
+.DataImport_manage .data_import .right .content_table .table_content table .xuan {
+    background-color: #0093DC;
+    color: white;
+}
+.DataImport_manage .data_import .right .content_table .table_content .page {
+    padding: 20px 135px;
+}
+.DataImport_manage .data_import .right .content_table .table_content .page > div {
+    font-size: 16px;
+    color: #555555;
+    margin: 15px 15px;
+}
+.DataImport_manage .data_import .right .content_table .table_content .page > div > input {
+    width: 25px;
+    height: 27px;
+    font-size: 16px;
+    color: #555555;
+    border: 1px solid #e7e7e7;
+}
+.DataImport_manage .data_import .right .content_table .table_content .page > div > span {
+    line-height: 32px;
+    margin: 0 5px;
+}
+.DataImport_manage .data_import .right .content_table .table_content .page > div > div {
+    margin: 0 5px;
+    line-height: 32px;
+    border: 1px solid #e7e7e7;
+    width: 31px;
+    height: 29px;
+    text-align: center;
+}
+.DataImport_manage .data_import .right .content_table .table_content .page > div .xuan {
+    background-color: #0093DC;
+    color: white;
+}
+.DataImport_manage .data_import .right .content_table .table_content .page > div > button {
+    font-weight: 500;
+    margin: 0 10px;
+    font-size: 16px;
+    height: 31px;
+    color: #555555;
+    background-color: #ffffff;
+    border: 1px solid #e7e7e7;
+    width: 90px;
+}
+.DataImport_manage .data_import .right .content_table .table_content .page > div .float_left {
+    float: left;
+}
+.DataImport_manage .down {
+    height: 40px;
+    width: 100%;
+    line-height: 40px;
+    text-align: center;
+    background-color: #FCFCFC;
+    border: 1px solid #DEDEDE;
+}
+.DataImport_manage .clearfix:after,
+.DataImport_manage .clearfix:before {
+    content: " ";
+    display: table;
+}
+.DataImport_manage .clearfix:after {
+    clear: both;
+}
+
+
+
+.DataImport_manage_2 {
+    margin: 0px;
+    background-color: #F3F3F3;
+    font-family: "微软雅黑";
+}
+.DataImport_manage_2 .container {
+    width: 1176px;
+    margin: 0 auto;
+}
+.DataImport_manage_2 input {
+    outline: none;
+}
+.DataImport_manage_2 .data_import .head {
+    height: 80px;
+    color: #f4f4f4;
+    font-size: 12px;
+    background: url("../../static/imgs/head/head.png") center no-repeat;
+}
+.DataImport_manage_2 .data_import .head .logo {
+    float: left;
+    margin: 11px 0 11px 30px;
+}
+.DataImport_manage_2 .data_import .head .head_button {
+    float: right;
+    margin: 40px 25px 0 0;
+}
+.DataImport_manage_2 .data_import .head .head_button > span {
+    margin-right: 25px;
+}
+.DataImport_manage_2 .data_import .head .head_button > span > img {
+    vertical-align: text-bottom;
+}
+.DataImport_manage_2 .data_import .left {
+    float: left;
+    width: 200px;
+    background-color: #F3F3F3;
+}
+.DataImport_manage_2 .data_import .left .title {
+    height: 46px;
+}
+.DataImport_manage_2 .data_import .left .content {
+    height: 491px;
+    border: 1px solid #DEDEDE;
+}
+.DataImport_manage_2 .data_import .left .content .tab_title {
+    height: 40px;
+    line-height: 40px;
+    padding: 0 40px 0 35px;
+    font-size: 15px;
+    color: #525252;
+    border-bottom: 1px solid #DEDEDE;
+}
+.DataImport_manage_2 .data_import .left .content .tab_title .img_head {
+    vertical-align: text-bottom;
+    margin-right: 5px;
+}
+.DataImport_manage_2 .data_import .left .content .tab_title .img_down {
+    margin-top: 12px;
+    float: right;
+}
+.DataImport_manage_2 .data_import .left .content .tab_li {
+    height: 40px;
+    line-height: 40px;
+    padding: 0 40px;
+    font-size: 15px;
+    color: #525252;
+    background-color: #e8f5fe;
+    border-bottom: 1px solid #DEDEDE;
+}
+.DataImport_manage_2 .data_import .left .content .tab_li .img_head {
+    margin-right: 5px;
+    vertical-align: middle;
+}
+.DataImport_manage_2 .data_import .left .content .tab_li .img_down {
+    margin-top: 12px;
+    float: right;
+}
+.DataImport_manage_2 .data_import .left .content .tab_li.level2 {
+    padding-left: 60px;
+}
+.DataImport_manage_2 .data_import .left .content .tab_li.level3 {
+    padding-left: 80px;
+}
+.DataImport_manage_2 .data_import .right {
+    float: left;
+    width: 911px;
+    padding: 0 60px 12px 5px;
+}
+.DataImport_manage_2 .data_import .right .right_head {
+    font-size: 12px;
+    color: #7a7a7a;
+    line-height: 46px;
+    padding-left: 20px;
+    height: 46px;
+}
+.DataImport_manage_2 .data_import .right .right_head > img {
+    vertical-align: text-bottom;
+}
+.DataImport_manage_2 .data_import .right .right_content {
+    border: 1px solid #DEDEDE;
+    background-color: white;
+    margin-bottom: 12px;
+    height: 40px;
+    line-height: 40px;
+    padding-left: 20px;
+    color: #0076ca;
+}
+.DataImport_manage_2 .data_import .right .right_content > img {
+    float: right;
+    margin: 5px;
+}
+.DataImport_manage_2 .data_import .right .content_table {
+    background-color: white;
+}
+.DataImport_manage_2 .data_import .right .content_table .table_title {
+    height: 40px;
+    line-height: 40px;
+    padding-left: 20px;
+    color: #0076ca;
+    border-bottom: 1px solid #DEDEDE;
+}
+.DataImport_manage_2 .data_import .right .content_table .table_content {
+    padding: 0 25px;
+}
+.DataImport_manage_2 .data_import .right .content_table .table_content .button {
+    height: 70px;
+    line-height: 70px;
+}
+.DataImport_manage_2 .data_import .right .content_table .table_content .button > button {
+    border: 1px solid #DADADA;
+    background-color: #f5f5f5;
+    border-radius: 20px;
+    height: 30px;
+    line-height: 28px;
+    font-size: 14px;
+    margin-right: 15px;
+}
+.DataImport_manage_2 .data_import .right .content_table .table_content .button > button > span {
+    margin: 0 10px;
+}
+.DataImport_manage_2 .data_import .right .content_table .table_content .button .choose {
+    background-color: #1d76c5;
+    color: white;
+}
+.DataImport_manage_2 .data_import .right .content_table .table_content table {
+    border: 1px solid #e3e3e3;
+    border-spacing: 0px;
+    border-collapse: collapse;
+    font-size: 12px;
+    color: #333333;
+}
+.DataImport_manage_2 .data_import .right .content_table .table_content table > tbody tr th {
+    border: 1px dotted #e3e3e3;
+}
+.DataImport_manage_2 .data_import .right .content_table .table_content table > tbody tr td {
+    border: 1px dotted #e3e3e3;
+}
+.DataImport_manage_2 .data_import .right .content_table .table_content table > tbody .hao {
+    min-width: 27px;
+    text-align: center;
+}
+.DataImport_manage_2 .data_import .right .content_table .table_content table > tbody .flite {
+    min-width: 330px;
+    padding-left: 5px;
+}
+.DataImport_manage_2 .data_import .right .content_table .table_content table > tbody .sum {
+    min-width: 200px;
+    padding-left: 5px;
+}
+.DataImport_manage_2 .data_import .right .content_table .table_content table > tbody .time {
+    min-width: 250px;
+    padding-left: 5px;
+}
+.DataImport_manage_2 .data_import .right .content_table .table_content table .color {
+    background-color: #f7f7f7;
+}
+.DataImport_manage_2 .data_import .right .content_table .table_content table .xuan {
+    background-color: #0093DC;
+    color: white;
+}
+.DataImport_manage_2 .data_import .right .content_table .table_content .page {
+    padding: 20px 135px;
+}
+.DataImport_manage_2 .data_import .right .content_table .table_content .page > div {
+    font-size: 16px;
+    color: #555555;
+    margin: 15px 15px;
+}
+.DataImport_manage_2 .data_import .right .content_table .table_content .page > div > input {
+    width: 25px;
+    height: 27px;
+    font-size: 16px;
+    color: #555555;
+    border: 1px solid #e7e7e7;
+}
+.DataImport_manage_2 .data_import .right .content_table .table_content .page > div > span {
+    line-height: 32px;
+    margin: 0 5px;
+}
+.DataImport_manage_2 .data_import .right .content_table .table_content .page > div > div {
+    margin: 0 5px;
+    line-height: 32px;
+    border: 1px solid #e7e7e7;
+    width: 31px;
+    height: 29px;
+    text-align: center;
+}
+.DataImport_manage_2 .data_import .right .content_table .table_content .page > div .xuan {
+    background-color: #0093DC;
+    color: white;
+}
+.DataImport_manage_2 .data_import .right .content_table .table_content .page > div > button {
+    font-weight: 500;
+    margin: 0 10px;
+    font-size: 16px;
+    height: 31px;
+    color: #555555;
+    background-color: #ffffff;
+    border: 1px solid #e7e7e7;
+    width: 90px;
+}
+.DataImport_manage_2 .data_import .right .content_table .table_content .page > div .float_left {
+    float: left;
+}
+.DataImport_manage_2 .down {
+    position: fixed;
+    height: 40px;
+    bottom: 0;
+    width: 100%;
+    line-height: 40px;
+    text-align: center;
+    background-color: #FCFCFC;
+    border: 1px solid #DEDEDE;
+}
+.DataImport_manage_2 .clearfix:after,
+.DataImport_manage_2 .clearfix:before {
+    content: " ";
+    display: table;
+}
+.DataImport_manage_2 .clearfix:after {
+    clear: both;
+}
+
+
+
+.DataImport_upload {
+    margin: 0px;
+    background-color: #F3F3F3;
+    font-family: "微软雅黑";
+}
+.DataImport_upload .container {
+    width: 1176px;
+    margin: 0 auto;
+    overflow: auto;
+}
+.DataImport_upload input {
+    outline: none;
+}
+.DataImport_upload .data_import .head {
+    height: 80px;
+    color: #f4f4f4;
+    font-size: 12px;
+    background: url("../../static/imgs/head/head.png") center no-repeat;
+}
+.DataImport_upload .data_import .head .logo {
+    float: left;
+    margin: 11px 0 11px 30px;
+}
+.DataImport_upload .data_import .head .head_button {
+    float: right;
+    margin: 40px 25px 0 0;
+}
+.DataImport_upload .data_import .head .head_button > span {
+    margin-right: 25px;
+}
+.DataImport_upload .data_import .head .head_button > span > img {
+    vertical-align: text-bottom;
+}
+.DataImport_upload .data_import .left {
+    float: left;
+    width: 200px;
+    background-color: #F3F3F3;
+}
+.DataImport_upload .data_import .left .title {
+    height: 46px;
+}
+.DataImport_upload .data_import .left .content {
+    height: 380px;
+    border: 1px solid #DEDEDE;
+}
+.DataImport_upload .data_import .left .content .tab_title {
+    height: 40px;
+    line-height: 40px;
+    padding: 0 40px 0 35px;
+    font-size: 15px;
+    color: #525252;
+    border-bottom: 1px solid #DEDEDE;
+}
+.DataImport_upload .data_import .left .content .tab_title .img_head {
+    vertical-align: text-bottom;
+    margin-right: 5px;
+}
+.DataImport_upload .data_import .left .content .tab_title .img_down {
+    margin-top: 12px;
+    float: right;
+}
+.DataImport_upload .data_import .left .content .tab_li {
+    height: 40px;
+    line-height: 40px;
+    padding: 0 40px;
+    font-size: 15px;
+    color: #525252;
+    background-color: #e8f5fe;
+    border-bottom: 1px solid #DEDEDE;
+}
+.DataImport_upload .data_import .left .content .tab_li .img_head {
+    margin-right: 5px;
+    vertical-align: middle;
+}
+.DataImport_upload .data_import .left .content .tab_li .img_down {
+    margin-top: 12px;
+    float: right;
+}
+.DataImport_upload .data_import .left .content .tab_li.level2 {
+    padding-left: 60px;
+}
+.DataImport_upload .data_import .left .content .tab_li.level3 {
+    padding-left: 80px;
+}
+.DataImport_upload .data_import .right {
+    float: right;
+    width: 970px;
+    margin-left: 5px;
+    margin-bottom: 25px;
+}
+.DataImport_upload .data_import .right .right_head {
+    font-size: 12px;
+    color: #7a7a7a;
+    line-height: 46px;
+    padding-left: 20px;
+    height: 46px;
+}
+.DataImport_upload .data_import .right .right_head > img {
+    vertical-align: text-bottom;
+}
+.DataImport_upload .data_import .right .right_content {
+    width: 925px;
+    height: 380px;
+    border: 1px solid #DEDEDE;
+    background-color: white;
+}
+.DataImport_upload .data_import .right .right_content .title {
+    height: 40px;
+    line-height: 40px;
+    padding-left: 20px;
+    color: #0076ca;
+    border-bottom: 1px solid #DEDEDE;
+}
+.DataImport_upload .data_import .right .right_content .input_content {
+    font-size: 14px;
+    margin: 70px auto;
+    text-align: center;
+}
+.DataImport_upload .data_import .right .right_content .input_content > div {
+    margin-bottom: 25px;
+}
+.DataImport_upload .data_import .right .right_content .input_content > div > label:first-child {
+    margin-right: 30px;
+}
+.DataImport_upload .data_import .right .right_content .input_content > div > span {
+    margin-right: 15px;
+}
+.DataImport_upload .data_import .right .right_content .input_content > div > input {
+    width: 280px;
+    height: 26px;
+    border-width: thin;
+    background-color: #F8F8F8;
+}
+.DataImport_upload .data_import .right .right_content .input_content .last_div {
+    margin-right: 140px;
+}
+.DataImport_upload .data_import .right .right_content .input_content .button_1 {
+    color: white;
+    font-size: 14px;
+    width: 100px;
+    background-color: #1d76c5;
+    height: 32px;
+    border-width: 0;
+    margin-right: 24px;
+    margin-left: 30px;
+}
+.DataImport_upload .data_import .right .right_content .input_content .button_2 {
+    color: white;
+    font-size: 14px;
+    width: 100px;
+    background-color: #feb851;
+    height: 32px;
+    border-width: 0;
+}
+.DataImport_upload .clearfix:after,
+.DataImport_upload .clearfix:before {
+    content: " ";
+    display: table;
+}
+.DataImport_upload .clearfix:after {
+    clear: both;
+}
+.DataImport_upload .down {
+    position: fixed;
+    height: 40px;
+    bottom: 0;
+    width: 100%;
+    line-height: 40px;
+    text-align: center;
+    background-color: #FCFCFC;
+    border: 1px solid #DEDEDE;
+}
+
+
+
+
+.home {
+    margin: 0px;
+    font-family: "微软雅黑";
+}
+.home .container {
+    width: 1000px;
+    margin: 0 auto;
+}
+.home .blue {
+    color: #0076ca;
+}
+.home .blue_back {
+    background-color: #0076ca !important;
+}
+.home .white {
+    color: white;
+}
+.home .home {
+    width: auto;
+    background-color: white;
+}
+.home .home .head {
+    line-height: 32px;
+    height: 32px;
+    background-color: #F3F3F3;
+}
+.home .home .head > div .head_text {
+    color: #737373;
+    font-size: 12px;
+    opacity: 0.7;
+    float: right;
+}
+.home .home .head > div .head_text > span {
+    margin-left: 20px;
+}
+.home .home .top {
+    height: 90px;
+    line-height: 90px;
+}
+.home .home .top > div .top_logo {
+    float: left;
+}
+.home .home .top > div .top_logo > img {
+    margin: 10px 0;
+}
+.home .home .top > div .top_text {
+    color: #333333;
+    font-size: 15px;
+    float: right;
+}
+.home .home .top > div .top_text > span {
+    margin-left: 40px;
+}
+.home .home .top > div .top_text > span > img {
+    margin: 0 5px;
+    vertical-align: text-bottom;
+}
+.home .home .div1 {
+    height: 398px;
+    width: 100%;
+    background: url("../../static/imgs/home/20160923_10.png") center no-repeat;
+}
+.home .home .div2 {
+    height: 515px;
+}
+.home .home .div2 > div {
+    padding-top: 50px;
+}
+.home .home .div2 > div .div2_title {
+    color: #333333;
+    text-align: center;
+    font-size: 18px;
+}
+.home .home .div2 > div .div2_title > div {
+    margin-bottom: 10px;
+}
+.home .home .div2 > div .line {
+    height: 1px;
+    position: relative;
+    background-color: #f2f2f2;
+}
+.home .home .div2 > div .line .block {
+    position: absolute;
+    top: -3px;
+    left: 48%;
+    width: 70px;
+    height: 7px;
+    margin-left: -15px;
+    background-color: #0076ca;
+}
+.home .home .div2 > div .div2_content {
+    text-align: center;
+}
+.home .home .div2 > div .div2_content > div {
+    width: 33.33333%;
+    margin-top: 30px;
+    float: left;
+}
+.home .home .div2 > div .div2_content > div .content_img {
+    margin-bottom: 20px;
+}
+.home .home .div2 > div .div2_content > div .content_title {
+    font-size: 18px;
+    font-weight: 900;
+    margin-bottom: 15px;
+}
+.home .home .div2 > div .div2_content > div .content_content {
+    font-size: 14px;
+    margin-bottom: 30px;
+}
+.home .home .div2 > div .div2_content > div .content_button {
+    width: 136px;
+    height: 40px;
+    margin: 0 auto;
+    line-height: 40px;
+    background-color: #f2f2f2;
+}
+.home .home .div3 {
+    height: 217px;
+    font-size: 14px;
+    text-align: center;
+    background: url("../../static/imgs/home/20160923_23.png") center no-repeat;
+}
+.home .home .div3 > div .block {
+    width: 25%;
+    float: left;
+    margin-top: 90px;
+}
+.home .home .div3 > div .block:last-of-type {
+    margin-top: 60px;
+}
+.home .home .div3 > div .block .title {
+    font-weight: 900;
+    color: #333333;
+}
+.home .home .div3 > div .block .line {
+    height: 1px;
+    position: relative;
+    margin: 10px 2px 20px 0;
+    background-color: #eaeaea;
+}
+.home .home .div3 > div .block .content {
+    color: #5b5b5b;
+    opacity: 0.7;
+    font-weight: 900;
+}
+.home .home .div3 > div .block .qr_img {
+    margin-bottom: 10px;
+}
+.home .home .div3 > div .block .info {
+    color: #333333;
+    font-weight: 900;
+}
+.hover-effect {
+   -webkit-transition: all 0.4s ease-in-out;
+   -moz-transition: all 0.4s ease-in-out;
+   -o-transition: all 0.4s ease-in-out;
+   transition: all 0.4s ease-in-out;
+}
+.hover-effect:hover {
+    box-shadow:0 0 15px #b5b5b5;
+}
+.home .home .div3 > div .dot {
+    position: absolute;
+    width: 5px;
+    height: 5px;
+    top: -2px;
+    right: 1px;
+    margin-right: -3px;
+    background-color: #a9a9a9;
+    border-radius: 50%;
+}
+.home .home .tail {
+    height: 70px;
+    line-height: 70px;
+    background-color: #F3F3F3;
+}
+.home .home .tail > div > div {
+    font-size: 12px;
+    color: #5b5b5b;
+    opacity: 0.5;
+    text-align: center;
+}
+
+
+
+
+
+
+.shujufenxi {
+    margin: 0px;
+    background-color: #F3F3F3;
+    font-family: "微软雅黑";
+}
+.shujufenxi .container {
+    width: 1176px;
+    margin: 0 auto;
+    overflow: auto;
+}
+.shujufenxi input {
+    outline: none;
+}
+.shujufenxi .data_import .head {
+    height: 80px;
+    color: #f4f4f4;
+    font-size: 12px;
+    background: url("../../static/imgs/head/head.png") center no-repeat;
+}
+.shujufenxi .data_import .head .logo {
+    float: left;
+    margin: 11px 0 11px 30px;
+}
+.shujufenxi .data_import .head .head_button {
+    float: right;
+    margin: 40px 25px 0 0;
+}
+.shujufenxi .data_import .head .head_button > span {
+    margin-right: 25px;
+}
+.shujufenxi .data_import .head .head_button > span > img {
+    vertical-align: text-bottom;
+}
+.shujufenxi .data_import .left {
+    float: left;
+    width: 200px;
+    background-color: #F3F3F3;
+}
+.shujufenxi .data_import .left .title {
+    height: 46px;
+}
+.shujufenxi .data_import .left .content {
+    height: 617px;
+    border: 1px solid #DEDEDE;
+}
+.shujufenxi .data_import .left .content .tab_title {
+    height: 40px;
+    line-height: 40px;
+    padding: 0 40px 0 35px;
+    font-size: 15px;
+    color: #525252;
+    border-bottom: 1px solid #DEDEDE;
+}
+.shujufenxi .data_import .left .content .tab_title .img_head {
+    vertical-align: text-bottom;
+    margin-right: 5px;
+}
+.shujufenxi .data_import .left .content .tab_title .img_down {
+    margin-top: 12px;
+    float: right;
+}
+.shujufenxi .data_import .left .content .tab_li {
+    height: 40px;
+    line-height: 40px;
+    padding: 0 40px;
+    font-size: 15px;
+    color: #525252;
+    background-color: #e8f5fe;
+    border-bottom: 1px solid #DEDEDE;
+}
+.shujufenxi .data_import .left .content .tab_li .img_head {
+    margin-right: 5px;
+    vertical-align: middle;
+}
+.shujufenxi .data_import .left .content .tab_li .img_down {
+    margin-top: 12px;
+    float: right;
+}
+.shujufenxi .data_import .right {
+    float: left;
+    width: 970px;
+    margin-left: 5px;
+    margin-bottom: 10px;
+}
+.shujufenxi .data_import .right .right_head {
+    font-size: 12px;
+    color: #7a7a7a;
+    line-height: 46px;
+    padding-left: 20px;
+    height: 46px;
+}
+.shujufenxi .data_import .right .right_head > img {
+    vertical-align: text-bottom;
+}
+.shujufenxi .data_import .right .nav {
+    padding: 1px;
+}
+.shujufenxi .data_import .right .nav > div {
+    float: left;
+    background-color: #1d75c6;
+    height: 26px;
+    border: 1px solid transparent;
+    padding: 0 40px;
+    line-height: 28px;
+    margin-left: 10px;
+    margin-bottom: 0;
+    color: #fff;
+}
+.shujufenxi .data_import .right .nav > div:first-child {
+    margin-left: 0;
+}
+.shujufenxi .data_import .right .nav > div.active {
+    color: #333;
+    height: 30px;
+    background-color: #fff;
+    border-color: #dedede;
+    border-bottom: none;
+    margin-bottom: -2px;
+}
+.shujufenxi .data_import .right .right_content {
+    width: 925px;
+    border: 1px solid #DEDEDE;
+    background-color: white;
+}
+.shujufenxi .data_import .right .right_content .title {
+    height: 40px;
+    line-height: 40px;
+    padding-left: 20px;
+    color: #0076ca;
+    border-bottom: 1px solid #DEDEDE;
+}
+.shujufenxi .data_import .right .right_content .time {
+    font-size: 14px;
+    font-weight: 900;
+    padding: 25px 0 35px 30px;
+}
+.shujufenxi .data_import .right .right_content .time > div {
+    float: left;
+}
+.shujufenxi .data_import .right .right_content .time > div > span {
+    margin-right: 10px;
+}
+.shujufenxi .data_import .right .right_content .time > div > input {
+    font-size: 16px;
+    text-align: center;
+    width: 175px;
+    height: 25px;
+    margin-right: 30px;
+    color: #b2b2b2;
+    background-color: #F8F8F8;
+    border-width: 1px;
+}
+.shujufenxi .data_import .right .right_content .time > div .input {
+    margin-right: 15px;
+}
+.shujufenxi .data_import .right .right_content .time > button {
+    height: 31px;
+    width: 100px;
+    color: white;
+    background-color: #4B92DD;
+    border-width: 1px;
+}
+.shujufenxi .data_import .right .right_content .canshu {
+    height: 455px;
+    padding: 0 15px;
+}
+.shujufenxi .data_import .right .right_content .canshu img {
+    max-width: 100%;
+    max-height: 100%;
+}
+.shujufenxi .data_import .right .right_content .canshu .button {
+    float: right;
+    margin: 23px 0;
+}
+.shujufenxi .data_import .right .right_content .canshu .button > div {
+    float: left;
+    height: 28px;
+    line-height: 28px;
+    text-align: center;
+    width: 65px;
+    margin-right: 10px;
+    border-radius: 20px;
+    background-color: #f3f3f3;
+}
+.shujufenxi .clearfix:after,
+.shujufenxi .clearfix:before {
+    content: " ";
+    display: table;
+}
+.shujufenxi .clearfix:after {
+    clear: both;
+}
+.shujufenxi .down {
+    position: fixed;
+    height: 40px;
+    bottom: 0;
+    width: 100%;
+    line-height: 40px;
+    text-align: center;
+    background-color: #FCFCFC;
+    border: 1px solid #DEDEDE;
+}

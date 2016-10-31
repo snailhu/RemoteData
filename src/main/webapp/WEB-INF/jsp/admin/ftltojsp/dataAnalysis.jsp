@@ -7,12 +7,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
-  <head>
-    	
+  <head>    	
   </head>
   
   <body> 
-  	 <link href="${pageContext.request.contextPath}/static/assets/css/bootstrap.min.css" rel="stylesheet" />
+  	<link href="${pageContext.request.contextPath}/static/assets/css/bootstrap.min.css" rel="stylesheet" />
  
    	<link rel="stylesheet" href="${pageContext.request.contextPath}/static/jqwidgets/styles/jqx.base.css" type="text/css" />
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/static/jqwidgets/styles/jqx.energyblue.css" type="text/css" />
@@ -39,9 +38,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
 	<link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/static/content/jeDate/jedate/skin/jedate.css">
     <script type="text/javascript" src="${pageContext.request.contextPath}/static/content/jeDate/jedate/jedate.js"></script>
-    
-   
-    
+       
 	<style>
 		.dateStyle{
 			float:left;
@@ -97,7 +94,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	</div>
 	<!--保存为模板弹出框-->
     <div class="modal fade" id="id_Modal_template" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"  >
-	  <div class="modal-dialog" role="document" style="margin:30px -200px">
+	  <div class="modal-dialog" role="document" style="margin:30px 400px">
 	    <div class="modal-content">
 	      <div class="modal-header">
 	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -146,25 +143,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			</ul><!-- .breadcrumb -->	
 		</div>	
 		<div class="page-content">
-			<div class="page-header">
-				<div class="dateStyle">
-					<label>开始日期</label>
-					<div id="dateStart-div">
-						<input class="datainp" id="dateStart" type="text" placeholder="请选择" readonly>
-					</div>
-				</div>
-				<div class="dateStyle" style="margin-left:20px">
-					<label>结束日期</label>
-					<div id='dateEnd-div'>
-						<input class="datainp" id="dateEnd" type="text" placeholder="请选择" readonly>
-					</div>
-					<div style="margin-left:320px;margin-top:-25px" id='jqxButton-getParameters'>获取参数</div>
-				</div>
-				<div style="clear:both"></div>
-			</div>
-			<!-- /.page-header -->
-
-		<div>
 			<div class="col-xs-12 col-sm-12">
 				<div class="widget-box">
 					<div class="widget-header" id="change-search-box" data-action="collapse">
@@ -182,10 +160,27 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					</div>
 				</div>
 			</div><!-- /.col -->
-		 </div>
+
+		<div class="col-xs-12 col-sm-12">		
+				<div class="dateStyle">
+					<label>开始日期</label>
+					<div id="dateStart-div">
+						<input class="datainp" id="dateStart" type="text" placeholder="请选择" readonly>
+					</div>
+				</div>
+				<div class="dateStyle" style="margin-left:20px">
+					<label>结束日期</label>
+					<div id='dateEnd-div'>
+						<input class="datainp" id="dateEnd" type="text" placeholder="请选择" readonly>
+					</div>
+					<div style="margin-left:330px;margin-top:-25px" id='jqxButton-getParameters'>获取参数</div>
+				</div>
+		</div>	
+		
+		
+		<div class="col-xs-12"><hr/></div>
 		  	
-		 <div class="hr hr32 hr-dotted"></div>
-			<div class="row">
+		 	
 			<div class="col-xs-12">
 					<div style="margin-left:1px;margin-top:0px" id='jqxButton_addgroup'>添加分组</div>
   					<div style="margin-left:110px;margin-top:-25px" id='jqxButton_submitgroup'>提交分组</div>
@@ -199,19 +194,20 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			</div>	      		     
 			</div><!-- /.row -->
 			
-			<div class="hr hr32 hr-dotted"></div>
+			
 			<div class="row">
-			<div class="col-xs-12">	
-  				<div id='jqxWidget'>
-			              已有分组：		       	
-			    </div>
-			 </div>
+				<div class="col-xs-12">
+					<hr/>	
+					<div id='jqxWidget'>
+									   已有分组：		       	
+					</div>
+				 </div>
 			 </div>
 									
 		</div><!-- /.page-content -->
 			
 	</div><!-- /.main-content -->
-	
+	<div class="col-xs-12"><hr/></div>
 <script type="text/javascript">
 	jeDate({
 		dateCell:"#dateStart",//直接显示日期层的容器，可以是ID  CLASS
@@ -293,11 +289,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
            theme: 'energyblue',
            hierarchicalCheckboxes: true,              	
            columns: [
-	             { text: '参数名称',  dataField: 'name',editable: false, width: 300 },
+	             { text: '参数名称',  dataField: 'name',editable: false, width: 305 },
 	             { text: 'ID',  dataField: 'id',editable: false, width:200, hidden: true },
 	             { text: '最大值', dataField: 'max', width: 150 },
 	             { text: '最小值', dataField: 'min', width: 150 },
-	             { text: 'Y轴', dataField:'yname',width:150,columnType:'template',
+	             { text: 'Y轴', dataField:'yname',width:155,columnType:'template',
 	             	cellsRenderer: function (row, column, value, rowData) {if(value=="0") {return "Y1"};if(value=="1"){return "Y2"}},
 					createEditor: function (row, cellValue, editor, cellText, width, height) {
 					  var source = ["Y1", "Y2"];
@@ -564,7 +560,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	            var data_templateTree = new $.jqx.dataAdapter(source_template);         
 	            $("#id_templateTreeGrid").jqxTreeGrid(
 	            {
-	                width: 960,
+	                width: 830,
 	                source: data_templateTree,
 	                sortable: true,
 	                editable: false,
@@ -654,11 +650,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	                },              	
 	                columns: [
 	                  { text: '模板名称',  dataField: 'templateName', editable: false, width: 200 },
-	                  { text: '模板包含参数',  dataField: 'name', width: 200 },
+	                  { text: '模板包含参数',  dataField: 'name', width: 180 },
 	                  //{ text: '模板ID',   dataField: 'templateid',editable: false, width:200, hidden: false },
-	                  { text: '最大值',   dataField: 'max', width: 200 },
-	                  { text: '最小值',    dataField: 'min', width: 160 },
-	                  { text: 'Y轴',     dataField: 'yname', width:200, columnType:'custom',
+	                  { text: '最大值',   dataField: 'max', width: 150 },
+	                  { text: '最小值',    dataField: 'min', width: 150 },
+	                  { text: 'Y轴',     dataField: 'yname', width:150, columnType:'custom',
 	                  	//cellsRenderer: function (row, column, value, rowData) {if(value=="添加到分组") {return "<input type='button' value='删除模板'></input>"}},
 	                  	cellsRenderer: function (row, column, value, rowData) { if(value=="0") {return "Y1";} else if(value=="1"){return "Y2"} else{ return "";}}, 
 	                  	createEditor: function (row, cellValue, editor, cellText, width, height) {
@@ -675,7 +671,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	                ]
 	            });
             }	
-</script>
-   		 
+</script>		 
   </body>
 </html>

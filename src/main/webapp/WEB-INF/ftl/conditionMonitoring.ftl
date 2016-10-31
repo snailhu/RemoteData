@@ -214,7 +214,7 @@
 	<img class="commentAvatarImage" src="${base}/static/images/satellite.jpg" alt="在这张图上面加载悬浮提示框" />
 </a>-->
 	<div class="background">    
-		<img src="${base}/static/images/earth1.jpg" height="100%" width="100%">
+		<img src="${base}/static/images/earth.jpg" height="100%" width="100%">
 		</img>
 	</div>
 	<div id="id_div_seriesbtnmanage" class="seriesbutton" >

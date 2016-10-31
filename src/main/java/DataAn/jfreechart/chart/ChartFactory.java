@@ -165,16 +165,6 @@ public class ChartFactory {
 		JFreeChart chart = org.jfree.chart.ChartFactory.createLineChart(title,
 				categoryAxisLabel, valueAxisLabel, dataset1);
 		
-		// 3:设置抗锯齿，防止字体显示不清楚
-		ChartUtils.setAntiAlias(chart);// 抗锯齿
-		// 4:对柱子进行渲染[[采用不同渲染]]
-		ChartUtils.setLineRender(chart.getCategoryPlot(), false, false);//
-		// 5:对其他部分进行渲染
-		ChartUtils.setXAixs(chart.getCategoryPlot());// X坐标轴渲染
-		ChartUtils.setYAixs(chart.getCategoryPlot());// Y坐标轴渲染
-		// 设置标注无边框
-		chart.getLegend().setFrame(new BlockBorder(Color.WHITE));
-		
 		if(series2.size() > 1){
 			CategoryPlot plot = chart.getCategoryPlot();
 			DefaultCategoryDataset dataset2 = ChartUtils.createDefaultCategoryDataset(series2, categories);
@@ -200,6 +190,15 @@ public class ChartFactory {
 			renderer1.setBaseShapesVisible(false);// 数据点绘制形状
 			plot.setRenderer(1, renderer1);
 		}
+		// 3:设置抗锯齿，防止字体显示不清楚
+		ChartUtils.setAntiAlias(chart);// 抗锯齿
+		// 4:对柱子进行渲染[[采用不同渲染]]
+		ChartUtils.setLineRender(chart.getCategoryPlot(), false, false);//
+		// 5:对其他部分进行渲染
+		ChartUtils.setXAixs(chart.getCategoryPlot());// X坐标轴渲染
+		ChartUtils.setYAixs(chart.getCategoryPlot());// Y坐标轴渲染
+		// 设置标注无边框
+		chart.getLegend().setFrame(new BlockBorder(Color.WHITE));
 		
 		return chart;
 	}

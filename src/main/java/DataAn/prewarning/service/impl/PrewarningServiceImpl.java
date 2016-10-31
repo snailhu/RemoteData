@@ -9,16 +9,17 @@ import javax.annotation.Resource;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
-import DataAn.Analysis.dto.ConstraintDto;
 import DataAn.common.dao.Pager;
 import DataAn.common.utils.DateUtil;
+import DataAn.galaxyManager.dao.IParameterDao;
 import DataAn.galaxyManager.dao.ISeriesDao;
 import DataAn.galaxyManager.dao.IStarDao;
+import DataAn.galaxyManager.domain.Parameter;
 import DataAn.galaxyManager.domain.Series;
 import DataAn.galaxyManager.domain.Star;
 import DataAn.galaxyManager.dto.StarDto;
 import DataAn.galaxyManager.option.J9Series_Star_ParameterType;
-import DataAn.galaxyManager.service.IJ9Series_Star_Service;
+import DataAn.galaxyManager.service.IParameterService;
 import DataAn.prewarning.dao.IWarningLogDao;
 import DataAn.prewarning.dao.IWarningLogMongoDao;
 import DataAn.prewarning.dao.IWarningValueDao;
@@ -45,7 +46,9 @@ public class PrewarningServiceImpl implements IPrewarningService {
 	@Resource
 	private IStarDao starDao;
 	@Resource
-	private IJ9Series_Star_Service j9Series_Star_Service;
+	private IParameterDao parameterDao;
+	@Resource
+	private IParameterService parameterService;
 
 	@Override
 	public void addErrorValue(ErrorValueDTO errorValueDTO) throws Exception {
@@ -93,12 +96,12 @@ public class PrewarningServiceImpl implements IPrewarningService {
 				valueDTO.setLimitTimes(value.getLimitTimes());
 				valueDTO.setMaxVal(value.getMaxVal());
 				valueDTO.setMinVal(value.getMinVal());
-				valueDTO.setParameter(getParamCNname(value.getParameter()));
 				valueDTO.setParameterType(
 						J9Series_Star_ParameterType.getJ9SeriesStarParameterType(value.getParameterType()).getName());
 				Series seriesDomain = seriersDao.get(value.getSeries());
 				if (seriesDomain != null) {
-					valueDTO.setSeries(seriesDomain.getDescription());
+					valueDTO.setSeries(seriesDomain.getName());
+					valueDTO.setParameter(getParamCNname(seriesDomain.getCode(), value.getParameter()));
 				} else {
 					valueDTO.setSeries(value.getSeries().toString());
 				}
@@ -169,22 +172,22 @@ public class PrewarningServiceImpl implements IPrewarningService {
 			String warningType, String hadRead) throws Exception {
 		String seriesName = "";
 		String starName = "";
-		Series seriesDomain = seriersDao.get(series);
+		Series seriesDomain = seriersDao.get(Long.parseLong(series));
 		if (seriesDomain != null) {
-			seriesName = seriesDomain.getName();
+			seriesName = seriesDomain.getCode();
 		}
-		Star starDomain = starDao.get(star);
+		Star starDomain = starDao.get(Long.parseLong(star));
 		if (starDomain != null) {
-			starName = starDomain.getName();
+			starName = starDomain.getCode();
 		}
 		Pager<QueryLogDTO> logPager = warningLogMongoDao.selectByOption(pageIndex, pageSize, seriesName, starName,
 				parameterType, parameter, createdatetimeStart, createdatetimeEnd, warningType, hadRead);
 		for (QueryLogDTO warnLog : logPager.getDatas()) {
-			warnLog.setParameter(getParamCNname(warnLog.getParameter()));
 			warnLog.setParameterType(
 					J9Series_Star_ParameterType.getJ9SeriesStarParameterType(warnLog.getParameterType()).getName());
 			if (seriesDomain != null) {
-				warnLog.setSeries(seriesDomain.getDescription());
+				warnLog.setSeries(seriesDomain.getName());
+				warnLog.setParameter(getParamCNname(seriesDomain.getCode(), warnLog.getParameter()));
 			}
 			if (starDomain != null) {
 				warnLog.setStar(starDomain.getDescription());
@@ -242,44 +245,36 @@ public class PrewarningServiceImpl implements IPrewarningService {
 	@Override
 	public SelectOptionDTO getSelectOption(String series, String paramaterType) throws Exception {
 		SelectOptionDTO selectOptionDTO = new SelectOptionDTO();
-		if ("flywheel".equals(paramaterType)) {
-			selectOptionDTO.setParamaters(j9Series_Star_Service.getFlyWheelParameterList());
+		if (StringUtils.isBlank(series)) {
+			return selectOptionDTO;
 		}
-		if ("top".equals(paramaterType)) {
-			selectOptionDTO.setParamaters(j9Series_Star_Service.getTopParameterList());
+		Series seriesDomain = seriersDao.get(Long.parseLong(series));
+		if (seriesDomain != null) {
+			selectOptionDTO
+					.setParamaters(parameterService.getParameterList(seriesDomain.getCode(), null, paramaterType));
 		}
-		if (StringUtils.isNoneBlank(series)) {
-			List<StarDto> starDtoList = new ArrayList<StarDto>();
-			List<Star> list = starDao.findByParam("series.id", Long.parseLong(series));
-			if (list != null && list.size() > 0) {
-				StarDto dto = null;
-				for (Star star : list) {
-					dto = new StarDto();
-					dto.setId(star.getId());
-					dto.setName(star.getName());
-					dto.setBeginDate(DateUtil.format(star.getStartRunDate()));
-					dto.setDescription(star.getDescription());
-					starDtoList.add(dto);
-				}
+		List<StarDto> starDtoList = new ArrayList<StarDto>();
+		List<Star> list = starDao.findByParam("series.id", Long.parseLong(series));
+		if (list != null && list.size() > 0) {
+			StarDto dto = null;
+			for (Star star : list) {
+				dto = new StarDto();
+				dto.setId(star.getId());
+				dto.setName(star.getDescription());
+				dto.setBeginDate(DateUtil.format(star.getStartRunDate()));
+				dto.setDescription(star.getDescription());
+				starDtoList.add(dto);
 			}
-			selectOptionDTO.setStars(starDtoList);
 		}
+		selectOptionDTO.setStars(starDtoList);
 		return selectOptionDTO;
 	}
 
-	private String getParamCNname(String EnName) throws Exception {
+	private String getParamCNname(String series, String EnName) throws Exception {
 		String cnName = "";
-		for (ConstraintDto constraintDto : j9Series_Star_Service.getFlyWheelParameterList()) {
-			if (EnName.equals(constraintDto.getValue())) {
-				cnName = constraintDto.getName();
-				break;
-			}
-		}
-		for (ConstraintDto constraintDto : j9Series_Star_Service.getTopParameterList()) {
-			if (EnName.equals(constraintDto.getValue())) {
-				cnName = constraintDto.getName();
-				break;
-			}
+		Parameter constraintDto = parameterDao.selectBySeriesAndCode(series, EnName);
+		if (constraintDto != null) {
+			cnName = constraintDto.getSimplyName();
 		}
 		return cnName;
 	}

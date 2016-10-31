@@ -11,7 +11,8 @@ public interface IStatusTrackingService {
 
 	public void addStatusTracking(StatusTrackingDTO statusTrackingDTO) throws Exception;
 
-	public void updateStatusTracking(String fileName, String statusType, String userType) throws Exception;
+	public void updateStatusTracking(String fileName, String statusType, String userType, String exceptionInfo)
+			throws Exception;
 
 	public void deleteStatusTracking(long trackingId) throws Exception;
 

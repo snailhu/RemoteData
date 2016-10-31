@@ -20,9 +20,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<link href="<%=request.getContextPath()%>/static/content/css/default.css" rel="stylesheet" type="text/css"/>
 	<script src="<%=request.getContextPath()%>/static/content/js/outlook2.js" type="text/javascript"></script>
   	<script src="<%=request.getContextPath()%>/static/content/jQuery-AjaxFileUpload/jquery.ajaxfileupload.js" type="text/javascript"></script>
+	
 	<!-- 时间选择器 -->
-	<link rel="stylesheet" href="${pageContext.request.contextPath}/static/content/jQueryCalendar/calendar.css">
-	<script src="${pageContext.request.contextPath}/static/content/jQueryCalendar/calendar.js"></script> 
+	<link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/static/content/jeDate/jedate/skin/jedate.css">
+    <script type="text/javascript" src="${pageContext.request.contextPath}/static/content/jeDate/jedate/jedate.js"></script>
 	
   <style type="text/css">
   .widget-toolbar>a {
@@ -43,34 +44,26 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   </style>
   <script type="text/javascript">
   $(function(){
-	  $('#getBeginTime').calendar({
-	        trigger: '#form-beginTime',
-	        zIndex: 999,
-			format: 'yyyy-mm-dd',
-	        onSelected: function (view, date, data) {
-// 	            console.log('event: onSelected')
-	        },
-	        onClose: function (view, date, data) {
-// 	            console.log('event: onClose')
-// 	            console.log('view:' + view)
-// 	            console.log('date:' + date)
-// 	            console.log('data:' + (data || 'None'));
-	        }
-	    });
-	  $('#getEndTime').calendar({
-	        trigger: '#form-endTime',
-	        zIndex: 999,
-			format: 'yyyy-mm-dd',
-	        onSelected: function (view, date, data) {
-// 	            console.log('event: onSelected')
-	        },
-	        onClose: function (view, date, data) {
-// 	            console.log('event: onClose')
-// 	            console.log('view:' + view)
-// 	            console.log('date:' + date)
-// 	            console.log('data:' + (data || 'None'));
-	        }
-	    });
+	  
+	  jeDate({
+			dateCell:"#form-beginTime",//直接显示日期层的容器，可以是ID  CLASS
+			format:"YYYY-MM-DD",//日期格式
+			isinitVal:false, //是否初始化时间
+			festival:false, //是否显示节日
+			isTime:false, //是否开启时间选择
+			//minDate:"2014-09-19 00:00:00",//最小日期
+			maxDate:jeDate.now(0), //设定最大日期为当前日期
+		});
+		jeDate({
+			dateCell:"#form-endTime",//直接显示日期层的容器，可以是ID  CLASS
+			format:"YYYY-MM-DD",//日期格式
+			isinitVal:false, //是否初始化时间
+			festival:false, //是否显示节日
+			isTime:false, //是否开启时间选择
+			//minDate:"2014-09-19 00:00:00",//最小日期
+			maxDate:jeDate.now(0), //设定最大日期为当前日期
+		});
+	  
 	  $('#change-search-box').click();
   })
   </script>
@@ -182,17 +175,17 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <!-- 							onclick="uploadFS();" plain="true" href="javascript:void(0);" -->
 <!-- 							style="float: left;">上传</a> -->
 <!-- 						<div class="datagrid-btn-separator"></div> -->
-						<a class="easyui-linkbutton" iconcls="icon-cloud-download"
-							onclick="downloadFS();" plain="true" href="javascript:void(0);"
-							style="float: left;">下载</a>
+						<button class="easyui-linkbutton" iconcls="icon-cloud-download"
+							onclick="downloadFS();" plain="true"
+							style="float: left;">下载</button>
 						<div class="datagrid-btn-separator"></div>
-						<a class="easyui-linkbutton" iconcls="icon-remove"
-							onclick="deleteFS();" plain="true" href="javascript:void(0);"
-							style="float: left;">删除</a>
+						<button class="easyui-linkbutton" iconcls="icon-remove"
+							onclick="deleteFS();" plain="true"
+							style="float: left;">删除</button>
 						<div class="datagrid-btn-separator"></div>
-						<a class="easyui-linkbutton" iconcls="icon-undo"
+						<button class="easyui-linkbutton" iconcls="icon-undo"
 							onclick="fsGrid.datagrid('unselectAll');" plain="true"
-							href="javascript:void(0);" style="float: left;">取消选中</a>
+							style="float: left;">取消选中</button>
 					</div>
 				</div>
 			</div>
@@ -202,7 +195,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					<ul class="breadcrumb" id="fileCatalog">
 						<li class="active">全部文件</li>
 					</ul>
-					<table id="fsList" height="400px" border="false">
+					<table id="fsList" height="450px" border="false">
 					</table>
 					<form id="upload_file_form" action="admin/file/uploadFile" method="post" enctype="multipart/form-data" style="display:none">
 						<input type="hidden" id="file_dirId" name="dirId" />

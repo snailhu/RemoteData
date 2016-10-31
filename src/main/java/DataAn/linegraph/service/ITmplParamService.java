@@ -24,7 +24,7 @@ public boolean saveTmplparam(TemplateParameterDto tmplparamDto);
 	public List<TemplateParameterDto> getTmplparamDtoByTmplId(long LineGraphTemplateid);
 	
 	public List<TemplateParameterDto> getAllTemplate();
-	
+	public List<TemplateParameterDto> getTemplateByUser(long Userid);
 	public List<TemplateParameterDto> getAllTemlparamDto();
 	
 	public TemplateParameterDto getTmplparamDto(long parameterid);

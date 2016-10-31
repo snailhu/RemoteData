@@ -428,7 +428,7 @@
 			<div class="modal fade" id="addValueModal" role="dialog"
 				aria-labelledby="addValueModalLabel">
 				<div class="modal-dialog" role="document"
-					style="margin: 55px -300px">
+					style="margin: 55px 30%">
 					<div class="modal-content">
 						<form id="addValueInfoForm" class="form-horizontal" role="form"
 							style="margin: 0px;">
@@ -518,7 +518,7 @@
 			<div class="modal fade" id="editValueModal" role="dialog"
 				aria-labelledby="editValueModalLabel">
 				<div class="modal-dialog" role="document"
-					style="margin: 55px -300px">
+					style="margin: 55px 30%">
 					<div class="modal-content">
 						<form id="editValueInfoForm" class="form-horizontal" role="form"
 							style="margin: 0px;">
@@ -673,32 +673,32 @@
 									field : 'series',
 									title : '星系',
 									width : 100,
-									sortable:true
+									//sortable:true
 								},{
 									field : 'star',
 									title : '星',
 									width : 100,
-									sortable:true
+									//sortable:true
 								}, {
 									field : 'parameterType',
 									title : '设备',
 									width : 100,
-									sortable:true
+									//sortable:true
 								}, {
 									field : 'parameter',
 									title : '参数',
 									width : 200,
-									sortable:true
+									//sortable:true
 								}, {
 									field : 'maxVal',
 									title : '最大值',
 									width : 100,
-									sortable:true
+									//sortable:true
 								}, {
 									field : 'minVal',
 									title : '最小值',
 									width : 100,
-									sortable:true
+									//sortable:true
 								} ] ],
 
 								toolbar : [ {
@@ -803,13 +803,14 @@
         
         $("#search-parameterType").change(function(){
 		 	var parameterType = $('#search-parameterType').val();	
-			  $.get('<%=request.getContextPath()%>/admin/prewarning/getParamList', {'parameterType':parameterType},  function (res) {
+		 	var seriesId = $('#search-series').val();
+			  $.get('<%=request.getContextPath()%>/admin/prewarning/getParamList', {'parameterType':parameterType, 'series':seriesId},  function (res) {
 				  if(res) {
 					  $('#search-parameter').find("option").remove();
 					  $('#search-parameter').append("<option value=''>--请选择--</option>"); 
 	            	  $.each(res.paramaters ,function(){
-	            		    if(this.value){
-	            		    	$('#search-parameter').append("<option value='"+ this.value+"'>"+ this.name +"</option>"); 
+	            		    if(this.code){
+	            		    	$('#search-parameter').append("<option value='"+ this.code+"'>"+ this.simplyName +"</option>"); 
 	            		    }
 						});
 	            	  $("#search-parameter").select2().val("").trigger("change");
@@ -822,13 +823,14 @@
         
         $("#add-parameterType").change(function(){
 		 	var parameterType = $('#add-parameterType').val();	
-			  $.get('<%=request.getContextPath()%>/admin/prewarning/getParamList', {'parameterType':parameterType},  function (res) {
+		 	var seriesId = $('#add-series').val();
+			  $.get('<%=request.getContextPath()%>/admin/prewarning/getParamList', {'parameterType':parameterType, 'series':seriesId},  function (res) {
 				  if(res) {
 					  $('#add-parameter').find("option").remove();
 					  $('#add-parameter').append("<option value=''>--请选择--</option>"); 
 	            	  $.each(res.paramaters ,function(){
-	            		    if(this.value){
-	            		    	$('#add-parameter').append("<option value='"+ this.value+"'>"+ this.name +"</option>"); 
+	            		    if(this.code){
+	            		    	$('#add-parameter').append("<option value='"+ this.code+"'>"+ this.simplyName +"</option>"); 
 	            		    }
 						});
 	            	  $("#add-parameter").select2().val("").trigger("change");
@@ -841,13 +843,14 @@
         
         $("#edit-parameterType").change(function(){
 		 	var parameterType = $('#edit-parameterType').val();	
-			  $.get('<%=request.getContextPath()%>/admin/prewarning/getParamList', {'parameterType':parameterType},  function (res) {
+		 	var seriesId = $('#edit-series').val();
+			  $.get('<%=request.getContextPath()%>/admin/prewarning/getParamList', {'parameterType':parameterType, 'series':seriesId},  function (res) {
 				  if(res) {
 					  $('#edit-parameter').find("option").remove();
 					  $('#edit-parameter').append("<option value=''>--请选择--</option>"); 
 	            	  $.each(res.paramaters ,function(){
-	            		    if(this.value){
-	            		    	$('#edit-parameter').append("<option value='"+ this.value+"'>"+ this.name +"</option>"); 
+	            		    if(this.code){
+	            		    	$('#edit-parameter').append("<option value='"+ this.code+"'>"+ this.simplyName +"</option>"); 
 	            		    }
 						});
 	            	  $("#edit-parameter").select2().val("").trigger("change");
@@ -1021,8 +1024,8 @@
 																		.each(
 																				res.paramaters,
 																				function() {
-																					if (this.value) {
-																						$('#edit-parameter').append("<option value='"+ this.value+"'>"+ this.name +"</option>"); 
+																					if (this.code) {
+																						$('#edit-parameter').append("<option value='"+ this.code+"'>"+ this.simplyName +"</option>"); 
 															            		    	$("#edit-parameter").select2().val(data.parameter).trigger("change");
 																					}
 																				});

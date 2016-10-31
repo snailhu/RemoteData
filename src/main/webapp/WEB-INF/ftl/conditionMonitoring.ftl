@@ -90,6 +90,7 @@
 }
 	//延时函数
 	var timeout = false; //启动及关闭按钮
+	var timestate = false; //标记定时器状态
 	function time()
 	{
 	  if(timeout) return;
@@ -149,13 +150,14 @@
 		});
 		}
 
-		var timeout = false; //启动及关闭按钮
+		/*//var timeout = false; //启动及关闭按钮
+		//var timestate = false; //标记定时器状态
 		function time()
 		{
 		  if(timeout) return;
 		  fun_animat();
 		  setTimeout(time,100); //time是指本身,延时递归调用自己,100为间隔调用时间,单位毫秒
-		};
+		};*/
 	
 		/*//定时调用运动函数
 		timeout = false;

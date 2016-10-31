@@ -11,15 +11,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
-import DataAn.Analysis.service.OperateDataService;
 
 
 @Controller
 public class TestController {
 	
 	
-	@Resource
-	private OperateDataService operateDataService;
+//	@Resource
+//	private OperateDataService operateDataService;
 	
 	
 	@RequestMapping(value = "/test", method = { RequestMethod.GET })

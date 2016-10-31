@@ -68,7 +68,7 @@ public class SeriesServiceImpl implements ISeriesService{
 	}
 	
 	@Override
-	public Pager<SeriesDto> getSeriesList(int pageIndex, int pageSize, String contextPath) {
+	public Pager<SeriesDto> getSeriesList(int pageIndex, int pageSize) {
 		List<SeriesDto> seriesDtoList = new ArrayList<SeriesDto>();
 		Pager<Series> seriesPager = seriesDao.selectByPager(pageIndex, pageSize);
 		List<Series> list = seriesPager.getDatas();
@@ -80,7 +80,6 @@ public class SeriesServiceImpl implements ISeriesService{
 				dto.setCode(series.getCode());
 				dto.setCreateDate(DateUtil.format(series.getCreateDate()));
 				dto.setDescription(series.getDescription());
-				dto.setParamPath(contextPath + "/");
 				seriesDtoList.add(dto);
 			}
 		}

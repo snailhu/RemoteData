@@ -18,9 +18,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<meta http-equiv="description" content="This is my page">
 	
 	<jsp:include page="/WEB-INF/jsp/inc/include-easyUI.jsp"></jsp:include>
-	
-	<link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/static/content/jeDate/jedate/skin/jedate.css">
-    <script type="text/javascript" src="${pageContext.request.contextPath}/static/content/jeDate/jedate/jedate.js"></script>
     
 	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/static/content/sweetalert/dist/sweetalert.css">
 	<script src="${pageContext.request.contextPath}/static/content/sweetalert/dist/sweetalert.min.js"></script>
@@ -33,15 +30,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<script src="${pageContext.request.contextPath}/static/content/js/outlook2.js" type="text/javascript"></script>
 	<script type="text/javascript" src="${pageContext.request.contextPath}/static/content/js/validDate.js"></script>
 	<script type="text/javascript" src="${pageContext.request.contextPath}/static/content/jquery-easyui-datagridview/datagrid-detailview.js"></script>
-  	<script src="${pageContext.request.contextPath}/static/assets/js/bootstrap.min.js"></script>
-	<script src="${pageContext.request.contextPath}/static/assets/js/typeahead-bs2.min.js"></script>
-	<script src="${pageContext.request.contextPath}/static/assets/js/bootstrap-colorpicker.min.js"></script>
-	<script src="${pageContext.request.contextPath}/static/assets/js/jquery.knob.min.js"></script>
-	<script src="${pageContext.request.contextPath}/static/assets/js/jquery.autosize.min.js"></script>
-	<script src="${pageContext.request.contextPath}/static/assets/js/jquery.inputlimiter.1.3.1.min.js"></script>
-	<script src="${pageContext.request.contextPath}/static/assets/js/jquery.maskedinput.min.js"></script>
-	<script src="${pageContext.request.contextPath}/static/assets/js/bootstrap-tag.min.js"></script>
-	
+  	<!-- 时间选择器 -->
+	<link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/static/content/jeDate/jedate/skin/jedate.css">
+    <script type="text/javascript" src="${pageContext.request.contextPath}/static/content/jeDate/jedate/jedate.js"></script>
+    
+    <!-- 时间选择器 -->
+	<link rel="stylesheet" href="${pageContext.request.contextPath}/static/content/jQueryCalendar/calendar.css">
+	<script src="${pageContext.request.contextPath}/static/content/jQueryCalendar/calendar.js"></script>   
+    
   <style type="text/css">
   .sweet-alert h2 {
     color: rgb(87, 87, 87);
@@ -96,12 +92,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     position: relative;
 /*     padding-left: 20px; */
 }
-.icon-remove {
-    background: url('') no-repeat center center;
-}
-.icon-edit {
-    background: url('') no-repeat center center;
-}
+
 .glyphicon {
     position: relative;
     top: -23px;
@@ -122,6 +113,15 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 }
 .form-horizontal {
     margin-bottom: 0px;
+}
+.icon-remove {
+    background: no-repeat center center;
+}
+.icon-edit {
+    background: no-repeat center center;
+}
+.icon-undo {
+    background: no-repeat center center;
 }
   </style>
   <script type="text/javascript">
@@ -231,10 +231,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
             	  notEmpty: {
                       message: '开始运行时间不能为空'
                   },
-              regexp: {
-                  regexp: /^(\d{4})-(0\d{1}|1[0-2])-(0\d{1}|[12]\d{1}|3[01])$/,
-                  message: '时间格式不对'
-              },
+	              regexp: {
+	                  regexp: /^(?:(?!0000)[0-9]{4}-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1[0-9]|2[0-8])|(?:0[13-9]|1[0-2])-(?:29|30)|(?:0[13578]|1[02])-31)|(?:[0-9]{2}(?:0[48]|[2468][048]|[13579][26])|(?:0[48]|[2468][048]|[13579][26])00)-02-29)\s+([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]$/,
+	                  message: '时间格式不对'
+	              },
               }
           },
           description : {
@@ -329,34 +329,26 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			<div id="content" region="center" style="overflow: hidden">
 				<div id="toolbar" class="datagrid-toolbar" style="height: 28px;">
 					<div style="height: 28px;">
-						<button class="easyui-linkbutton" iconcls="icon-add" style="float: left;" 
+						<button class="easyui-linkbutton" iconcls="icon-add" plain="true" style="float: left;" 
 							data-toggle="modal" data-target="#addSeriesInfoModal">创建</button>
 						<div class="datagrid-btn-separator"></div>
-						<button class="easyui-linkbutton" iconcls="icon-edit" style="float: left;"
+						<button class="easyui-linkbutton" iconcls="icon-remove" plain="true" style="float: left;"
+							onclick="deleteSeries();">删除</button>
+						<div class="datagrid-btn-separator"></div>
+						<button class="easyui-linkbutton" iconcls="icon-edit" plain="true" style="float: left;"
 							onclick="editSeries();">编辑</button>
 						<div class="datagrid-btn-separator"></div>
-						<button class="easyui-linkbutton" iconcls="icon-remove"
-							onclick="deleteSeries();" style="float: left;">删除</button>
-						<div class="datagrid-btn-separator"></div>
-						<button class="easyui-linkbutton" iconcls="icon-undo"
-							onclick="galaxyGrid.datagrid('unselectAll');" style="float: left;">取消选中</button>
+						<button class="easyui-linkbutton" iconcls="icon-undo" plain="true" style="float: left;"
+							onclick="galaxyGrid.datagrid('unselectAll');">取消选中</button>
 					</div>
 				</div>
 			</div>
-			<table id="galaxyList" fit="false" border="false" height="500px">
-				<thead>
-					<tr>
-						<th field="ck" checkbox="true"></th>
-						<th field="name" width="80">名称</th>
-						<th field="code" width="80">编码</th>
-						<th field="description" width="120" align="center">描述</th>
-						<th field="createDate" width="100" align="center">创建日期</th>
-					</tr>
-				</thead>
+			<table id="galaxyList" fit="false" border="false" height="450px">
+				
 			</table>
 			<!-- 添加系列表单 -->
 			<div class="modal fade" id="addSeriesInfoModal" tabindex="-1" role="dialog" aria-labelledby="addSeriesInfoModalLabel">
-				<div class="modal-dialog" role="document" style="margin:55px -300px">
+				<div class="modal-dialog" role="document" style="margin:150px 450px">
 					<div class="modal-content">
 						<form id="addSeriesInfoForm" class="form-horizontal" role="form">
 							<div class="modal-header">
@@ -402,7 +394,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			<!-- 编辑系列表单 -->
 			<div class="modal fade" id="editSeriesInfoModal" tabindex="-1"
 				role="dialog" aria-labelledby="editSeriesInfoModalLabel">
-				<div class="modal-dialog" role="document" style="margin:55px -300px">
+				<div class="modal-dialog" role="document" style="margin:150px 450px">
 					<div class="modal-content">
 						<form id="editSeriesInfoForm" class="form-horizontal" role="form">
 							<div class="modal-header">
@@ -448,7 +440,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			<!-- 添加一颗星 -->
 			<div class="modal fade" id="addStarInfoModal" tabindex="-1"
 				role="dialog" aria-labelledby="addStarInfoModalLabel">
-				<div class="modal-dialog" role="document" style="margin:55px -300px">
+				<div class="modal-dialog" role="document" style="margin:150px 450px">
 					<div class="modal-content">
 						<form id="addStarInfoForm" class="form-horizontal" role="form">
 							<div class="modal-header">
@@ -478,6 +470,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 									<div class="col-sm-8">
 										<input type="text" class="form-control input-mask-date" name="beginDate" id="add-star-beginDate"
 											placeholder="yyyy-MM-dd HH:mm:ss">
+										<div id="getBeginTime"></div>
 									</div>
 								</div>
 								<div class="space-8"></div>
@@ -500,7 +493,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			</div>
 			<!-- 编辑一颗星 -->
 			<div class="modal fade" id="editStarInfoModal" tabindex="-1" role="dialog" aria-labelledby="editStarInfoModalLabel">
-				<div class="modal-dialog" role="document" style="margin:55px -300px">
+				<div class="modal-dialog" role="document" style="margin:150px 450px">
 					<div class="modal-content">
 						<form id="editStarInfoForm" class="form-horizontal" role="form">
 							<div class="modal-header">
@@ -560,16 +553,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		</div><!-- /.page-content -->
 	</div><!-- /.main-content -->
 <script type="text/javascript">
-// jeDate({
-//     dateCell:"#add-star-beginDate",//isinitVal:true,
-//     format:"YYYY-MM-DD",
-//     isTime:false, //isClear:false,
-//     minDate:"2014-09-19 00:00:00",
-// });
+
 var galaxyGrid;
 $(function() {
-	$('#add-star-beginDate').mask('9999-99-99 99:99:99');
-	$('#edit-star-beginDate').mask('9999-99-99 99:99:99');
+	
+// 	$('#add-star-beginDate').mask('9999-99-99 99:99:99');
+// 	$('#edit-star-beginDate').mask('9999-99-99 99:99:99');
 	
 	galaxyGrid = $('#galaxyList').datagrid({
 		view : detailview,
@@ -581,6 +570,33 @@ $(function() {
 		pageSize: 10,
 		pagination: true,
 		pageList: [10, 20, 30, 40, 50, 60, 70, 80, 90, 100],
+        frozenColumns: [[{
+            title: 'id',
+            field: 'id',
+            width: 50,
+            checkbox: true
+        }]],
+        columns: [[{
+            field: 'name',
+            title: '名称',
+            width: 80,
+        }, {
+            field: 'code',
+            title: '编码',
+            width: 50
+        }, {
+            field: 'description',
+            title: '描述',
+            width: 100
+        }, {
+            field: 'editParam',
+            title: '参数列表',
+            width: 80,
+            formatter: function (value, row, index) {
+                return "<a href=\"javascript:doEditParam('" + row.code +  "');\"" + " title='参数列表'>参数列表</a>";
+            }
+        }
+        ]],
 		onLoadError:function(data){
 			$.messager.alert("信息", "暂无数据信息", "error");
 		},	
@@ -608,13 +624,9 @@ $(function() {
 						],
 						columns : [ [
 								{
-									field : 'ck',
-									checkbox : false
-								},
-								{
 									field : 'name',
 									title : '名称',
-									width : 80
+									width : 50
 								},
 								{
                                     field : 'code',
@@ -624,25 +636,25 @@ $(function() {
 								{
 									field : 'beginDate',
 									title : '开始运行时间',
-									width : 100
+									width : 80
 								},
 								{
 									field : 'description',
 									title : '描述',
-									width : 100
+									width : 80
 								},
 								{
 									field : 'operation',
 									title : '操作选项',
 									align : 'center',
-									width : 120,
+									width : 80,
 									formatter : function(value,row,index) {
 										// var editStr = "<a name=\"operButton\"  class=\"easyui-linkbutton\" iconcls=\"icon-edit\"  plain=\"true\" href=\"javascript:EditPermissionItem('" + row.Id + "');\">编辑</a>";
 										var editStr = "<a class=\"l-btn l-btn-plain\" href=\"javascript:editStarInfo('"
 												+ subgridId
 												+ "','"
 												+ row.id
-												+ "')\" style=\"float: left;\"><span class=\"l-btn-left\"><span class=\"l-btn-text icon-edit\" style=\"padding-left: 60px;\">编辑</span></span></a>";
+												+ "')\" style=\"float: left;\"><span class=\"l-btn-left\" style=\"margin:0px 20px;\" ><span class=\"l-btn-text icon-edit\" style=\"/*padding-left: 60px;*/\">编辑</span></span></a>";
 										// var delStr = "<a name=\"operButton\" class=\"easyui-linkbutton\"  iconcls=\"icon-remove\"  plain=\"true\" href=\"javascript:DeletePermissionItem('" + row.Id + "');\"> 删除</a>"
 										var delStr = "<a class=\"l-btn l-btn-plain\" href=\"javascript:deleteStarInfo('"
 												+ subgridId
@@ -650,7 +662,7 @@ $(function() {
 												+ row.id
 												+ "','"
 												+ row.name
-												+ "')\" style=\"float: left;\"><span class=\"l-btn-left\"><span class=\"l-btn-text icon-remove\" style=\"padding-left: 80px;\">删除</span></span></a>";
+												+ "')\" style=\"float: left;\"><span class=\"l-btn-left\" style=\"margin:0px 20px;\" ><span class=\"l-btn-text icon-remove\" style=\"/*padding-left: 80px;*/\">删除</span></span></a>";
 										return editStr
 												+ '<div class="datagrid-btn-separator"></div>'
 												+ delStr;
@@ -670,6 +682,11 @@ $(function() {
 			}
 		});
 	});
+	
+	function doEditParam(code){
+		 window.location.href='${pageContext.request.contextPath}/admin/parameter/index/' + code; 
+	}
+	
 	function reloadDatagrid(datagridId) {
 		$('#' + datagridId).datagrid("unselectAll");
 		$('#' + datagridId).datagrid('reload');
@@ -814,9 +831,32 @@ $(function() {
 		}
 	}
 	
+	$('#add-star-beginDate').click(function(){
+		jeDate({
+ 			dateCell:"#add-star-beginDate",//直接显示日期层的容器，可以是ID  CLASS
+ 			format:"YYYY-MM-DD hh:mm:ss",//日期格式
+ 			isinitVal:false, //是否初始化时间
+ 			festival:false, //是否显示节日
+ 			isTime:true, //是否开启时间选择
+ 			minDate:"2014-09-19 00:00:00",//最小日期
+ 			maxDate:jeDate.now(0), //设定最大日期为当前日期
+ 		});
+	});
+	
+// 	$('#getBeginTime').calendar({
+//         trigger: '#add-star-beginDate',
+//         zIndex: 999,
+// 		format: 'yyyy-mm-dd',
+//         onSelected: function (view, date, data) {
+//         },
+//         onClose: function (view, date, data) {
+//         }
+//     });
+	
 	//在一个系列下创建一颗星
 	function createStar(datagridId, seriesId){
  		$('#addStarInfoModal').modal('show');
+ 		
  		$('#submit_addStarInfo').click(function(){
 			var name = $('#add-star-name').val();
 			var code = $('#add-star-code').val();

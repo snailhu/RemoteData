@@ -457,7 +457,7 @@
 			<div class="modal fade" id="addValueModal" role="dialog"
 				aria-labelledby="addValueModalLabel">
 				<div class="modal-dialog" role="document"
-					style="margin: 55px -300px">
+					style="margin: 55px 30%">
 					<div class="modal-content">
 						<form id="addValueInfoForm" class="form-horizontal" role="form"
 							style="margin: 0px;">
@@ -565,7 +565,7 @@
 			<div class="modal fade" id="editValueModal" role="dialog"
 				aria-labelledby="editValueModalLabel">
 				<div class="modal-dialog" role="document"
-					style="margin: 55px -300px">
+					style="margin: 55px 30%">
 					<div class="modal-content">
 						<form id="editValueInfoForm" class="form-horizontal" role="form"
 							style="margin: 0px;">
@@ -868,14 +868,15 @@
 	});
         
         $("#search-parameterType").change(function(){
-		 	var parameterType = $('#search-parameterType').val();	
-			  $.get('<%=request.getContextPath()%>/admin/prewarning/getParamList', {'parameterType':parameterType},  function (res) {
+		 	var parameterType = $('#search-parameterType').val();
+		 	var seriesId = $('#search-series').val();
+			  $.get('<%=request.getContextPath()%>/admin/prewarning/getParamList', {'parameterType':parameterType , 'series':seriesId},  function (res) {
 				  if(res) {
 					  $('#search-parameter').find("option").remove();
 					  $('#search-parameter').append("<option value=''>--请选择--</option>"); 
 	            	  $.each(res.paramaters ,function(){
-	            		    if(this.value){
-	            		    	$('#search-parameter').append("<option value='"+ this.value+"'>"+ this.name +"</option>"); 
+	            		    if(this.code){
+	            		    	$('#search-parameter').append("<option value='"+ this.code+"'>"+ this.simplyName +"</option>"); 
 	            		    }
 						});
 	            	  $("#search-parameter").select2().val("").trigger("change");
@@ -888,13 +889,14 @@
         
         $("#add-parameterType").change(function(){
 		 	var parameterType = $('#add-parameterType').val();	
-			  $.get('<%=request.getContextPath()%>/admin/prewarning/getParamList', {'parameterType':parameterType},  function (res) {
+		 	var seriesId = $('#add-series').val();
+			  $.get('<%=request.getContextPath()%>/admin/prewarning/getParamList', {'parameterType':parameterType, 'series':seriesId},  function (res) {
 				  if(res) {
 					  $('#add-parameter').find("option").remove();
 					  $('#add-parameter').append("<option value=''>--请选择--</option>"); 
 	            	  $.each(res.paramaters ,function(){
-	            		    if(this.value){
-	            		    	$('#add-parameter').append("<option value='"+ this.value+"'>"+ this.name +"</option>"); 
+	            		    if(this.code){
+	            		    	$('#add-parameter').append("<option value='"+ this.code+"'>"+ this.simplyName +"</option>"); 
 	            		    }
 						});
 	            	  $("#add-parameter").select2().val("").trigger("change");
@@ -906,14 +908,15 @@
 		});
         
         $("#edit-parameterType").change(function(){
-		 	var parameterType = $('#edit-parameterType').val();	
-			  $.get('<%=request.getContextPath()%>/admin/prewarning/getParamList', {'parameterType':parameterType},  function (res) {
+		 	var parameterType = $('#edit-parameterType').val();
+		 	var seriesId = $('#edit-series').val();
+			  $.get('<%=request.getContextPath()%>/admin/prewarning/getParamList', {'parameterType':parameterType, 'series':seriesId},  function (res) {
 				  if(res) {
 					  $('#edit-parameter').find("option").remove();
 					  $('#edit-parameter').append("<option value=''>--请选择--</option>"); 
 	            	  $.each(res.paramaters ,function(){
-	            		    if(this.value){
-	            		    	$('#edit-parameter').append("<option value='"+ this.value+"'>"+ this.name +"</option>"); 
+	            		    if(this.code){
+	            		    	$('#edit-parameter').append("<option value='"+ this.code+"'>"+ this.simplyName +"</option>"); 
 	            		    }
 						});
 	            	  $("#edit-parameter").select2().val("").trigger("change");
@@ -1159,8 +1162,8 @@
 												  $('#edit-parameter').append("<option value=''>--请选择--</option>"); 
 												  $('#edit-star').append("<option value=''>--请选择--</option>");
 								            	  $.each(res.paramaters ,function(){
-								            		    if(this.value){
-								            		    	$('#edit-parameter').append("<option value='"+ this.value+"'>"+ this.name +"</option>"); 
+								            		    if(this.code){
+								            		    	$('#edit-parameter').append("<option value='"+ this.code+"'>"+ this.simplyName +"</option>"); 
 								            		    	$("#edit-parameter").select2().val(data.parameter).trigger("change");
 								            		    }
 													});

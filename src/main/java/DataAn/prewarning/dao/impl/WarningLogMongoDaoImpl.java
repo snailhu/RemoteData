@@ -39,17 +39,23 @@ public class WarningLogMongoDaoImpl implements IWarningLogMongoDao {
 			String collectionName = getCollectionName(parameterType, warningType);
 			for (String databaseName : databaseNames) {
 				MongoCollection<Document> collection = mongodbUtil.getCollectionNotShard(databaseName, collectionName);
-				sum += collection.count(Filters.eq("hadRead", "0"));
+				if (collection != null) {
+					sum += collection.count(Filters.eq("hadRead", "0"));
+				}
 			}
 		} else if (StringUtils.isNotBlank(parameterType) && StringUtils.isBlank(warningType)) {
 			for (String databaseName : databaseNames) {
 				MongoCollection<Document> collection = mongodbUtil.getCollectionNotShard(databaseName,
 						parameterType + "_SpecialCase");
-				sum += collection.count(Filters.eq("hadRead", "0"));
+				if (collection != null) {
+					sum += collection.count(Filters.eq("hadRead", "0"));
+				}
 
 				MongoCollection<Document> collection2 = mongodbUtil.getCollectionNotShard(databaseName,
 						parameterType + "_Exception");
-				sum += collection2.count(Filters.eq("hadRead", "0"));
+				if (collection2 != null) {
+					sum += collection2.count(Filters.eq("hadRead", "0"));
+				}
 			}
 		} else if (StringUtils.isBlank(parameterType) && StringUtils.isNotBlank(warningType)) {
 			String collectionName = "";
@@ -63,22 +69,38 @@ public class WarningLogMongoDaoImpl implements IWarningLogMongoDao {
 			}
 			for (String databaseName : databaseNames) {
 				MongoCollection<Document> collection = mongodbUtil.getCollectionNotShard(databaseName, collectionName);
-				sum += collection.count(Filters.eq("hadRead", "0"));
+				if (collection != null) {
+					sum += collection.count(Filters.eq("hadRead", "0"));
+				}
 
 				MongoCollection<Document> collection2 = mongodbUtil.getCollectionNotShard(databaseName,
 						collectionName2);
-				sum += collection2.count(Filters.eq("hadRead", "0"));
+				if (collection2 != null) {
+					sum += collection2.count(Filters.eq("hadRead", "0"));
+				}
 			}
 		} else {
 			for (String databaseName : databaseNames) {
-				sum += mongodbUtil.getCollectionNotShard(databaseName, "flywheel_SpecialCase")
-						.count(Filters.eq("hadRead", "0"));
-				sum += mongodbUtil.getCollectionNotShard(databaseName, "top_SpecialCase")
-						.count(Filters.eq("hadRead", "0"));
-				sum += mongodbUtil.getCollectionNotShard(databaseName, "flywheel_Exception")
-						.count(Filters.eq("hadRead", "0"));
-				sum += mongodbUtil.getCollectionNotShard(databaseName, "top_Exception")
-						.count(Filters.eq("hadRead", "0"));
+				MongoCollection<Document> collection = mongodbUtil.getCollectionNotShard(databaseName,
+						"flywheel_SpecialCase");
+				if (collection != null) {
+					sum += collection.count(Filters.eq("hadRead", "0"));
+				}
+				MongoCollection<Document> collection2 = mongodbUtil.getCollectionNotShard(databaseName,
+						"top_SpecialCase");
+				if (collection2 != null) {
+					sum += collection2.count(Filters.eq("hadRead", "0"));
+				}
+				MongoCollection<Document> collection3 = mongodbUtil.getCollectionNotShard(databaseName,
+						"flywheel_Exception");
+				if (collection3 != null) {
+					sum += collection3.count(Filters.eq("hadRead", "0"));
+				}
+				MongoCollection<Document> collection4 = mongodbUtil.getCollectionNotShard(databaseName,
+						"top_Exception");
+				if (collection4 != null) {
+					sum += collection4.count(Filters.eq("hadRead", "0"));
+				}
 			}
 		}
 		return sum;
@@ -138,7 +160,9 @@ public class WarningLogMongoDaoImpl implements IWarningLogMongoDao {
 		String databaseName = InitMongo.getDataBaseNameBySeriesAndStar(queryLogDTO.getSeries(), queryLogDTO.getStar());
 		String collectionName = getCollectionName(queryLogDTO.getParameterType(), queryLogDTO.getWarningType());
 		MongoCollection<Document> collection = mongodbUtil.getCollectionNotShard(databaseName, collectionName);
-		collection.updateMany(Filters.eq("_id", queryLogDTO.getLogId()), Updates.set("hadRead", "1"));
+		if (collection != null) {
+			collection.updateMany(Filters.eq("_id", queryLogDTO.getLogId()), Updates.set("hadRead", "1"));
+		}
 	}
 
 	@Override
@@ -182,86 +206,93 @@ public class WarningLogMongoDaoImpl implements IWarningLogMongoDao {
 			MongoCollection<Document> collection = mongodbUtil.getCollectionNotShard(databaseName, collectionName);
 			FindIterable<Document> document_It = null;
 			Long totalCount = 0l;
-			if (StringUtils.isNotBlank(createdatetimeStart) && StringUtils.isNotBlank(createdatetimeEnd)
-					&& StringUtils.isNotBlank(parameter)) {
-				document_It = collection
-						.find(Filters.and(Filters.eq("paramName", parameter),
-								Filters.gte("datetime", DateUtil.format(createdatetimeStart)),
-								Filters.lte("datetime", DateUtil.format(createdatetimeEnd))))
-						.sort(Filters.eq("datetime", -1)).skip((pageIndex - 1) * pageSize).limit(pageSize);
-				totalCount = collection.count(Filters.and(Filters.eq("paramName", parameter),
-						Filters.gte("datetime", DateUtil.format(createdatetimeStart)),
-						Filters.lte("datetime", DateUtil.format(createdatetimeEnd))));
-
-			}
-			if (StringUtils.isNotBlank(createdatetimeStart) && StringUtils.isNotBlank(createdatetimeEnd)
-					&& StringUtils.isBlank(parameter)) {
-				document_It = collection
-						.find(Filters.and(Filters.gte("datetime", DateUtil.format(createdatetimeStart)),
-								Filters.lte("datetime", DateUtil.format(createdatetimeEnd))))
-						.sort(Filters.eq("datetime", -1)).skip((pageIndex - 1) * pageSize).limit(pageSize);
-				totalCount = collection.count(Filters.and(Filters.gte("datetime", DateUtil.format(createdatetimeStart)),
-						Filters.lte("datetime", DateUtil.format(createdatetimeEnd))));
-			}
-			if (StringUtils.isNotBlank(createdatetimeStart) && StringUtils.isBlank(createdatetimeEnd)
-					&& StringUtils.isNotBlank(parameter)) {
-				document_It = collection
-						.find(Filters.and(Filters.eq("paramName", parameter),
-								Filters.gte("datetime", createdatetimeStart)))
-						.sort(Filters.eq("datetime", -1)).skip((pageIndex - 1) * pageSize).limit(pageSize);
-				totalCount = collection.count(Filters.and(Filters.eq("paramName", parameter),
-						Filters.gte("datetime", DateUtil.format(createdatetimeStart))));
-			}
-			if (StringUtils.isBlank(createdatetimeStart) && StringUtils.isNotBlank(createdatetimeEnd)
-					&& StringUtils.isNotBlank(parameter)) {
-				document_It = collection
-						.find(Filters.and(Filters.eq("paramName", parameter),
-								Filters.lte("datetime", DateUtil.format(createdatetimeEnd))))
-						.sort(Filters.eq("datetime", -1)).skip((pageIndex - 1) * pageSize).limit(pageSize);
-				totalCount = collection.count(Filters.and(Filters.eq("paramName", parameter),
-						Filters.lte("datetime", DateUtil.format(createdatetimeEnd))));
-			}
-			if (StringUtils.isBlank(createdatetimeStart) && StringUtils.isBlank(createdatetimeEnd)
-					&& StringUtils.isNotBlank(parameter)) {
-				document_It = collection.find(Filters.eq("paramName", parameter)).sort(Filters.eq("datetime", -1))
-						.skip((pageIndex - 1) * pageSize).limit(pageSize);
-				totalCount = collection.count(Filters.eq("paramName", parameter));
-			}
-			if (StringUtils.isBlank(createdatetimeStart) && StringUtils.isNotBlank(createdatetimeEnd)
-					&& StringUtils.isBlank(parameter)) {
-				document_It = collection.find(Filters.lte("datetime", DateUtil.format(createdatetimeEnd)))
-						.sort(Filters.eq("datetime", -1)).skip((pageIndex - 1) * pageSize).limit(pageSize);
-				totalCount = collection.count(Filters.lte("datetime", DateUtil.format(createdatetimeEnd)));
-			}
-			if (StringUtils.isNotBlank(createdatetimeStart) && StringUtils.isBlank(createdatetimeEnd)
-					&& StringUtils.isBlank(parameter)) {
-				document_It = collection.find(Filters.gte("datetime", DateUtil.format(createdatetimeStart)))
-						.sort(Filters.eq("datetime", -1)).skip((pageIndex - 1) * pageSize).limit(pageSize);
-				totalCount = collection.count(Filters.gte("datetime", DateUtil.format(createdatetimeStart)));
-			}
-			if (StringUtils.isBlank(createdatetimeStart) && StringUtils.isBlank(createdatetimeEnd)
-					&& StringUtils.isBlank(parameter)) {
-				document_It = collection.find().sort(Filters.eq("datetime", -1)).skip((pageIndex - 1) * pageSize)
-						.limit(pageSize);
-				totalCount = collection.count();
-			}
 			List<QueryLogDTO> queryLogDTOs = new ArrayList<QueryLogDTO>();
-			for (Document doc : document_It) {
-				QueryLogDTO warningLog = new QueryLogDTO();
-				warningLog.setLogId(doc.getObjectId("_id").toString());
-				warningLog.setParameter(doc.getString("paramName"));
-				warningLog.setParameterType(doc.getString("deviceName"));
-				warningLog.setParamValue(Double.parseDouble(doc.getString("value")));
-				warningLog.setSeries(doc.getString("series"));
-				warningLog.setStar(doc.getString("star"));
-				warningLog.setTimeValue(DateUtil.formatSSS(doc.getDate("datetime")));
-				warningLog.setWarningType(warningType);
-				warningLog.setWarnRemark(doc.getString("remark"));
-				queryLogDTOs.add(warningLog);
-				collection.updateMany(Filters.eq("_id", doc.getObjectId("_id")), Updates.set("hadRead", "1"));
+			if (collection == null) {
+				Pager<QueryLogDTO> pager = new Pager<QueryLogDTO>(pageSize, pageIndex, totalCount, queryLogDTOs);
+				return pager;
+			} else {
+				if (StringUtils.isNotBlank(createdatetimeStart) && StringUtils.isNotBlank(createdatetimeEnd)
+						&& StringUtils.isNotBlank(parameter)) {
+					document_It = collection
+							.find(Filters.and(Filters.eq("paramName", parameter),
+									Filters.gte("datetime", DateUtil.format(createdatetimeStart)),
+									Filters.lte("datetime", DateUtil.format(createdatetimeEnd))))
+							.sort(Filters.eq("datetime", -1)).skip((pageIndex - 1) * pageSize).limit(pageSize);
+					totalCount = collection.count(Filters.and(Filters.eq("paramName", parameter),
+							Filters.gte("datetime", DateUtil.format(createdatetimeStart)),
+							Filters.lte("datetime", DateUtil.format(createdatetimeEnd))));
+
+				}
+				if (StringUtils.isNotBlank(createdatetimeStart) && StringUtils.isNotBlank(createdatetimeEnd)
+						&& StringUtils.isBlank(parameter)) {
+					document_It = collection
+							.find(Filters.and(Filters.gte("datetime", DateUtil.format(createdatetimeStart)),
+									Filters.lte("datetime", DateUtil.format(createdatetimeEnd))))
+							.sort(Filters.eq("datetime", -1)).skip((pageIndex - 1) * pageSize).limit(pageSize);
+					totalCount = collection
+							.count(Filters.and(Filters.gte("datetime", DateUtil.format(createdatetimeStart)),
+									Filters.lte("datetime", DateUtil.format(createdatetimeEnd))));
+				}
+				if (StringUtils.isNotBlank(createdatetimeStart) && StringUtils.isBlank(createdatetimeEnd)
+						&& StringUtils.isNotBlank(parameter)) {
+					document_It = collection
+							.find(Filters.and(Filters.eq("paramName", parameter),
+									Filters.gte("datetime", createdatetimeStart)))
+							.sort(Filters.eq("datetime", -1)).skip((pageIndex - 1) * pageSize).limit(pageSize);
+					totalCount = collection.count(Filters.and(Filters.eq("paramName", parameter),
+							Filters.gte("datetime", DateUtil.format(createdatetimeStart))));
+				}
+				if (StringUtils.isBlank(createdatetimeStart) && StringUtils.isNotBlank(createdatetimeEnd)
+						&& StringUtils.isNotBlank(parameter)) {
+					document_It = collection
+							.find(Filters.and(Filters.eq("paramName", parameter),
+									Filters.lte("datetime", DateUtil.format(createdatetimeEnd))))
+							.sort(Filters.eq("datetime", -1)).skip((pageIndex - 1) * pageSize).limit(pageSize);
+					totalCount = collection.count(Filters.and(Filters.eq("paramName", parameter),
+							Filters.lte("datetime", DateUtil.format(createdatetimeEnd))));
+				}
+				if (StringUtils.isBlank(createdatetimeStart) && StringUtils.isBlank(createdatetimeEnd)
+						&& StringUtils.isNotBlank(parameter)) {
+					document_It = collection.find(Filters.eq("paramName", parameter)).sort(Filters.eq("datetime", -1))
+							.skip((pageIndex - 1) * pageSize).limit(pageSize);
+					totalCount = collection.count(Filters.eq("paramName", parameter));
+				}
+				if (StringUtils.isBlank(createdatetimeStart) && StringUtils.isNotBlank(createdatetimeEnd)
+						&& StringUtils.isBlank(parameter)) {
+					document_It = collection.find(Filters.lte("datetime", DateUtil.format(createdatetimeEnd)))
+							.sort(Filters.eq("datetime", -1)).skip((pageIndex - 1) * pageSize).limit(pageSize);
+					totalCount = collection.count(Filters.lte("datetime", DateUtil.format(createdatetimeEnd)));
+				}
+				if (StringUtils.isNotBlank(createdatetimeStart) && StringUtils.isBlank(createdatetimeEnd)
+						&& StringUtils.isBlank(parameter)) {
+					document_It = collection.find(Filters.gte("datetime", DateUtil.format(createdatetimeStart)))
+							.sort(Filters.eq("datetime", -1)).skip((pageIndex - 1) * pageSize).limit(pageSize);
+					totalCount = collection.count(Filters.gte("datetime", DateUtil.format(createdatetimeStart)));
+				}
+				if (StringUtils.isBlank(createdatetimeStart) && StringUtils.isBlank(createdatetimeEnd)
+						&& StringUtils.isBlank(parameter)) {
+					document_It = collection.find().sort(Filters.eq("datetime", -1)).skip((pageIndex - 1) * pageSize)
+							.limit(pageSize);
+					totalCount = collection.count();
+				}
+
+				for (Document doc : document_It) {
+					QueryLogDTO warningLog = new QueryLogDTO();
+					warningLog.setLogId(doc.getObjectId("_id").toString());
+					warningLog.setParameter(doc.getString("paramName"));
+					warningLog.setParameterType(doc.getString("deviceName"));
+					warningLog.setParamValue(Double.parseDouble(doc.getString("value")));
+					warningLog.setSeries(doc.getString("series"));
+					warningLog.setStar(doc.getString("star"));
+					warningLog.setTimeValue(DateUtil.formatSSS(doc.getDate("datetime")));
+					warningLog.setWarningType(warningType);
+					warningLog.setWarnRemark(doc.getString("remark"));
+					queryLogDTOs.add(warningLog);
+					collection.updateMany(Filters.eq("_id", doc.getObjectId("_id")), Updates.set("hadRead", "1"));
+				}
+				Pager<QueryLogDTO> pager = new Pager<QueryLogDTO>(pageSize, pageIndex, totalCount, queryLogDTOs);
+				return pager;
 			}
-			Pager<QueryLogDTO> pager = new Pager<QueryLogDTO>(pageSize, pageIndex, totalCount, queryLogDTOs);
-			return pager;
 		}
 	}
 

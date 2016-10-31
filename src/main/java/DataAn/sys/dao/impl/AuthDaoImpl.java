@@ -22,7 +22,7 @@ implements IAuthDao{
 
 	@Override
 	public void deleteByParentAuthId(Long parentAuthId) {
-		String hql = "delete from Auth a where a.auth.id=?";
+		String hql = "delete from Auth a where a.auth.authId=?";
 		this.getSession().createQuery(hql).setParameter(0, parentAuthId).executeUpdate();			
 	}
 
@@ -48,8 +48,8 @@ implements IAuthDao{
 	@Override
 	public Pager<Auth> selectByParentAuthIdIsNullByOrder(String order, 
 			int pageIndex, int pageSize) {
-		String hql = "from Auth a where a.auth.id is null";
-		String countHQL = "select count(*) from Auth a where a.auth.id is null";
+		String hql = "from Auth a where a.auth.authId is null";
+		String countHQL = "select count(*) from Auth a where a.auth.authId is null";
 		if(StringUtils.isNotBlank(order)){
 			hql += " order by " + order;
 		}else{
@@ -78,10 +78,10 @@ implements IAuthDao{
 			o += " order by createDate";
 		}
 		if(parentAuthId == 0){
-			String hql = "from Auth a where a.auth.id is null" + o;
+			String hql = "from Auth a where a.auth.authId is null" + o;
 			return this.getSession().createQuery(hql).list();	
 		}else{
-			String hql = "from Auth a where a.auth.id=?" + o;
+			String hql = "from Auth a where a.auth.authId=?" + o;
 			return this.getSession().createQuery(hql).setParameter(0, parentAuthId).list();				
 		}
 	}

@@ -18,7 +18,7 @@ import java.util.Map;
 import org.junit.Test;
 
 import DataAn.common.utils.DateUtil;
-import DataAn.fileSystem.option.FlyWheelDataType;
+
 
 import com.alibaba.fastjson.JSON;
 
@@ -85,7 +85,7 @@ public class CSVTest {
 				map.put("date", DateUtil.formatString(date, "yyyy-MM-dd"));
 				for (int i = 0; i < items.length; i++) {
 //					System.out.println(array[i] + ": " + FlyWheelDataType.getFlyWheelDataType(array[i]).getName()+ ":" + items[i]);
-					map.put(FlyWheelDataType.getFlyWheelDataTypeByZh(array[i]).getName(), items[i]);
+//					map.put(FlyWheelDataType.getFlyWheelDataTypeByZh(array[i]).getName(), items[i]);
 				}
 				list.add(map);
 //				System.out.println();
@@ -135,11 +135,11 @@ public class CSVTest {
 				resultJson =  resultJson + "\"date\":" + "\"" + DateUtil.formatString(date, "yyyy-MM-dd") + "\","; 
 				for (int i = 0; i < items.length; i++) {
 //					System.out.println(array[i] + ": " + FlyWheelDataType.getFlyWheelDataType(array[i]).getName()+ ":" + items[i]);
-					if(i + 1 == items.length){
-						resultJson =  resultJson + "\""+ FlyWheelDataType.getFlyWheelDataTypeByZh(array[i]).getName() +"\":" + "\"" +items[i].trim() + "\""; 							
-					}else{
-						resultJson =  resultJson + "\""+ FlyWheelDataType.getFlyWheelDataTypeByZh(array[i]).getName() +"\":" + "\"" +items[i].trim() + "\","; 							
-					}
+//					if(i + 1 == items.length){
+//						resultJson =  resultJson + "\""+ FlyWheelDataType.getFlyWheelDataTypeByZh(array[i]).getName() +"\":" + "\"" +items[i].trim() + "\""; 							
+//					}else{
+//						resultJson =  resultJson + "\""+ FlyWheelDataType.getFlyWheelDataTypeByZh(array[i]).getName() +"\":" + "\"" +items[i].trim() + "\","; 							
+//					}
 				}
 				resultJson =  resultJson + "},";
 				sb.append(resultJson);

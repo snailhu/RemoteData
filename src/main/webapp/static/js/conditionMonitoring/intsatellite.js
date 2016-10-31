@@ -4,8 +4,12 @@ function intsatellite(seriesId) {
 	 //var base=window.location;
 	 var containerdiv=$("#id_container");
 	 	 containerdiv.empty();
-	 	 timeout = false;
-		 time();
+	 	 //alert("执行到定时函数，timeout的值为："+timeout);
+	 	 if(!timestate) {
+	 		timeout =false;
+	 		timestate=true;
+	 		time();
+	 	 }	 	 
 /*    $.post(url, { "seriesId": seriesId },
     		   function(data){
 		        $.each(data, function (i, item) {
@@ -70,8 +74,7 @@ function intsatellite(seriesId) {
 		            a.append(span);
 		            div.append(a);
 		            containerdiv.append(div);
-		            
-         })	
+		            })	
 			//中心点横坐标
 			var dotLeft = ($(".container").width()-$(".dot").width())/2-100;
 			//中心点纵坐标
@@ -106,23 +109,22 @@ function intsatellite(seriesId) {
 				var ainhd = speed*Math.PI/180;
 				//按速度来定位DIV元素
 				$(".imagediv").each(function(index, element){
-				var allpers = (Math.cos((ahd*index+ainhd))*b+dotTop)/totTop;
-				var wpers = Math.max(0.1,allpers);
-				var hpers = Math.max(0.1,allpers);
-				$(this).css({
-					"left":Math.sin((ahd*index+ainhd))*a+dotLeft,
-					"top":Math.cos((ahd*index+ainhd))*b+dotTop,
-					//"z-index":Math.ceil(allpers*10),
-					"z-index":2,
-					"width":wpers*wid,
-					"height":hpers*hei,
-					"opacity":1
-				});
+					var allpers = (Math.cos((ahd*index+ainhd))*b+dotTop)/totTop;
+					var wpers = Math.max(0.1,allpers);
+					var hpers = Math.max(0.1,allpers);
+					$(this).css({
+						"left":Math.sin((ahd*index+ainhd))*a+dotLeft,
+						"top":Math.cos((ahd*index+ainhd))*b+dotTop,
+						//"z-index":Math.ceil(allpers*10),
+						"z-index":2,
+						"width":wpers*wid,
+						"height":hpers*hei,
+						"opacity":1
+					});
 				});
 			}
-         
-         }  
-    });
+         }
+    	});
 /*			//中心点横坐标
 			var dotLeft = ($(".container").width()-$(".dot").width())/2-100;
 			//中心点纵坐标
@@ -183,9 +185,10 @@ function intsatellite(seriesId) {
 			//定时调用运动函数
 			 //var setAnimate = setInterval(fun_animat,100);
 			 //clearInterval(setAnimate);
-
-			time();
-			 
+			
+			//timeout =false;
+			//time();
+			//timeout = true;
 			//加载悬浮提示窗口
 			$("[data-toggle='popover']").popover({  
 	        html : true,    

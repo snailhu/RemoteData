@@ -154,6 +154,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	$('#reset_addPermissionGroupInfo').click(function() {
 	    $('#addPermissionGroupInfoForm').data('bootstrapValidator').resetForm(true);
 	});	
+	$('#close_addPermissionGroupInfo').click(function() {
+	    $('#addPermissionGroupInfoForm').data('bootstrapValidator').resetForm(true);
+	});
   	$('#editPermissionGroupInfoForm').bootstrapValidator({
           message: '权限组名称不能为空',
           feedbackIcons: {
@@ -181,6 +184,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   	$('#reset_editPermissionGroupInfo').click(function() {
 	    $('#editPermissionGroupInfoForm').data('bootstrapValidator').resetForm(true);
 	});	
+	$('#close_editPermissionGroupInfo').click(function() {
+	    $('#editPermissionGroupInfoForm').data('bootstrapValidator').resetForm(true);
+	});
   	$('#addPermissionItemInfoForm').bootstrapValidator({
       message: 'This value is not valid',
       feedbackIcons: {
@@ -219,6 +225,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   	$('#reset_addPermissionItemInfo').click(function() {
 	    $('#addPermissionItemInfoForm').data('bootstrapValidator').resetForm(true);
 	});	
+	$('#close_addPermissionItemInfo').click(function() {
+	    $('#addPermissionItemInfoForm').data('bootstrapValidator').resetForm(true);
+	});
     $('#editPermissionItemInfoForm').bootstrapValidator({
 //        live: 'disabled',
         message: 'This value is not valid',
@@ -258,11 +267,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     $('#reset_editPermissionItemInfo').click(function() {
 	    $('#editPermissionItemInfoForm').data('bootstrapValidator').resetForm(true);
 	});	
-    
-// 	$('#add-permissionGroup11-close').click(function() {
-//         $('#defaultForm').bootstrapValidator('validate');
-//     });
-
+	$('#close_editPermissionItemInfo').click(function() {
+	    $('#editPermissionItemInfoForm').data('bootstrapValidator').resetForm(true);
+	});
   	});
   </script>  
   </head>
@@ -328,7 +335,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					<div class="modal-content">
 						<form id="addPermissionGroupInfoForm" class="form-horizontal" role="form">
 							<div class="modal-header">
-								<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+								<button type="button" class="close" data-dismiss="modal" aria-label="Close" id="close_addPermissionGroupInfo">
 									<span aria-hidden="true">&times;</span>
 								</button>
 								<h4 class="modal-title" id="addPermissionGroupModalLabel">权限组信息</h4>
@@ -366,7 +373,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					<div class="modal-content">
 						<form id="editPermissionGroupInfoForm" class="form-horizontal" role="form">
 							<div class="modal-header">
-								<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+								<button type="button" class="close" data-dismiss="modal" aria-label="Close" id="close_editPermissionGroupInfo">
 									<span aria-hidden="true">&times;</span>
 								</button>
 								<h4 class="modal-title" id="editPermissionGroupModalLabel">权限组信息</h4>
@@ -404,7 +411,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					<div class="modal-content">
 						<form id="addPermissionItemInfoForm" class="form-horizontal" role="form">
 							<div class="modal-header">
-								<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+								<button type="button" class="close" data-dismiss="modal" aria-label="Close" id="close_addPermissionItemInfo">
 									<span aria-hidden="true">&times;</span>
 								</button>
 								<h4 class="modal-title" id="addPermissionItemModalLabel">权限项信息</h4>
@@ -458,7 +465,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					<div class="modal-content">
 						<form id="editPermissionItemInfoForm" class="form-horizontal" role="form">
 							<div class="modal-header">
-								<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+								<button type="button" class="close" data-dismiss="modal" aria-label="Close" id="close_editPermissionItemInfo">
 									<span aria-hidden="true">&times;</span>
 								</button>
 								<h4 class="modal-title" id="editPermissionItemInfoModalLabel">权限项信息</h4>

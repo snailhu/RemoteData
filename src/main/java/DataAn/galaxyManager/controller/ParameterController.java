@@ -50,7 +50,7 @@ public class ParameterController {
 		System.out.println("pageIndex: " + page);
 		System.out.println("pageSize: " + rows);
 		EasyuiDataGridJson json = new EasyuiDataGridJson();
-		Pager<ParameterDto> pager = parameterService.getParameterList(page, rows);
+		Pager<ParameterDto> pager = parameterService.getParameterListByPager(series, page, rows);
 		json.setRows(pager.getDatas());
 		json.setTotal(pager.getTotalCount());
 		return json;
@@ -58,12 +58,14 @@ public class ParameterController {
 
 	@RequestMapping(value="/createParam")
 	@ResponseBody
-	public JsonMessage createParam(ParameterDto param,HttpServletRequest request,HttpServletResponse response){
+	public JsonMessage createParam(@RequestParam(value = "series", required = true) String series,
+								   @RequestParam(value = "name", required = true) String name){
 		System.out.println("come in createParam");
-		System.out.println(param);
+		System.out.println("series: " + series);
+		System.out.println("name: " + name);
 		JsonMessage jsonMsg = new JsonMessage();
 		try {
-			parameterService.saveOne(param.getSeries(),param.getStar(),param.getParameterType(), param.getFullName());
+			//parameterService.saveOne(param.getSeries(),param.getStar(),param.getParameterType(), param.getFullName());
 		} catch (Exception e) {
 			e.printStackTrace();
 			jsonMsg.setSuccess(false);
@@ -78,8 +80,7 @@ public class ParameterController {
 	@RequestMapping(value="/editParam", method = RequestMethod.POST)
 	@ResponseBody
 	public JsonMessage editParam(@RequestParam(value = "id", required = true) long id,
-			  					@RequestParam(value = "name", required = true) String name,
-			  					@RequestParam(value = "description", required = false) String description){
+			  					@RequestParam(value = "name", required = true) String name){
 		ParameterDto Param = new ParameterDto();
 		Param.setId(id);
 		Param.setFullName(name);

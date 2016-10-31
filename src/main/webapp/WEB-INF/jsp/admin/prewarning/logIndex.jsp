@@ -372,42 +372,42 @@ jeDate({
 									field : 'series',
 									title : '星系',
 									width : 100,
-									sortable:true
+									//sortable:true
 								},{
 									field : 'star',
 									title : '星',
 									width : 100,
-									sortable:true
+									//sortable:true
 								}, {
 									field : 'parameterType',
 									title : '设备',
 									width : 100,
-									sortable:true
+									//sortable:true
 								}, {
 									field : 'parameter',
 									title : '参数',
 									width : 200,
-									sortable:true
+									//sortable:true
 								}, {
 									field : 'timeValue',
 									title : '时间点',
 									width : 200,
-									sortable:true
+									//sortable:true
 								}, {
 									field : 'paramValue',
 									title : '参数值',
 									width : 100,
-									sortable:true
+									//sortable:true
 								}, {
 									field : 'warningType',
 									title : '预警类型',
 									width : 100,
-									sortable:true
+									//sortable:true
 								}, {
 									field : 'warnRemark',
 									title : '备注',
 									width : 300,
-									sortable:true
+									//sortable:true
 								} ] ],
 
 								toolbar : [ {
@@ -439,9 +439,10 @@ jeDate({
         
         $("#search-parameterType").change(function(){
 		 	var parameterType = $('#search-parameterType').val();	
+		 	var seriesId = $('#search-series').val();
 			  $.get('<%=request.getContextPath()%>/admin/prewarning/getParamList',
 											{
-												'parameterType' : parameterType
+												'parameterType' : parameterType, 'series':seriesId
 											},
 											function(res) {
 												if (res) {
@@ -455,12 +456,12 @@ jeDate({
 															.each(
 																	res.paramaters,
 																	function() {
-																		if (this.value) {
+																		if (this.code) {
 																			$(
 																					'#search-parameter')
 																					.append(
-																							"<option value='"+ this.value+"'>"
-																									+ this.name
+																							"<option value='"+ this.code+"'>"
+																									+ this.simplyName
 																									+ "</option>");
 																		}
 																	});

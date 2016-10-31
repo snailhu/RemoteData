@@ -2,12 +2,12 @@ package DataAn.prewarning.dto;
 
 import java.util.List;
 
-import DataAn.Analysis.dto.ConstraintDto;
+import DataAn.galaxyManager.dto.ParameterDto;
 import DataAn.galaxyManager.dto.StarDto;
 
 public class SelectOptionDTO {
 	private List<StarDto> stars;
-	private List<ConstraintDto> paramaters;
+	private List<ParameterDto> paramaters;
 
 	public List<StarDto> getStars() {
 		return stars;
@@ -17,19 +17,17 @@ public class SelectOptionDTO {
 		this.stars = stars;
 	}
 
-	public List<ConstraintDto> getParamaters() {
+	public List<ParameterDto> getParamaters() {
 		return paramaters;
 	}
 
-	public void setParamaters(List<ConstraintDto> paramaters) {
+	public void setParamaters(List<ParameterDto> paramaters) {
 		this.paramaters = paramaters;
 	}
 
 	@Override
 	public String toString() {
-		return "SelectOptionDTO [stars=" + stars + ", paramaters=" + paramaters
-				+ "]";
+		return "SelectOptionDTO [stars=" + stars + ", paramaters=" + paramaters + "]";
 	}
 
-	
 }

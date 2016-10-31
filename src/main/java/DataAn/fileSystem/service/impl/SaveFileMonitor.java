@@ -42,7 +42,7 @@ public class SaveFileMonitor {
 		System.out.println("保存成功。。。" + versions);
 		VirtualFileSystem file = fileDao.get(versions);
 		statusTrackingService.updateStatusTracking(file.getFileName(), StatusTrackingType.IMPORT.getValue(),
-				file.getParameterType());
+				file.getParameterType(), "");
 	}
 
 	// 声明例外通知

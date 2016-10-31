@@ -346,17 +346,17 @@ jeDate({
 									field : 'fileName',
 									title : '文件名',
 									width : 100,
-									sortable : true
+									//sortable : true
 								}, {
 									field : 'createDate',
 									title : '上传时间',
 									width : 100,
-									sortable : true
+									//sortable : true
 								}, {
 									field : 'statusType',
 									title : '状态',
 									width : 100,
-									sortable : true
+									//sortable : true
 								}, {
 									field : 'exceptionInfo',
 									title : '操作',

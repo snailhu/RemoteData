@@ -8,7 +8,6 @@ import java.util.Map;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
@@ -23,7 +22,6 @@ import DataAn.common.pageModel.JsonMessage;
 import DataAn.common.pageModel.Pager;
 import DataAn.common.utils.DateUtil;
 import DataAn.fileSystem.dto.MongoFSDto;
-import DataAn.galaxyManager.option.J9Series_Star_ParameterType;
 import DataAn.jfreechart.service.IJfreechartServcie;
 import DataAn.mongo.init.InitMongo;
 import DataAn.reportManager.dao.IStarParamDao;
@@ -32,7 +30,6 @@ import DataAn.reportManager.service.IReoportService;
 import DataAn.reportManager.service.IStarParamService;
 import DataAn.reportManager.util.CommonsConstant;
 import DataAn.reportManager.util.ResultJSON;
-import DataAn.sys.dto.ActiveUserDto;
 import DataAn.wordManager.config.OptionConfig;
 
 @Controller
@@ -51,34 +48,16 @@ public class ReportController {
 	private IStarParamDao starParamDao;
 	
 	@RequestMapping("/index/{series}/{star}/{paramType}/{dirId}/")
-	public String reportIndex(Model model,HttpServletRequest request,HttpServletResponse response) {
+	public String reportIndex(@PathVariable String series, 
+			   @PathVariable String star, 
+			   @PathVariable String paramType,
+			   @PathVariable long dirId,Model model,HttpServletRequest request,HttpServletResponse response) {
 		
-		String strSeries = request.getParameter("series");
-		String strStar = request.getParameter("star");
-		String strParamType = request.getParameter("paramType");
-		//当前所在系列
-		model.addAttribute("nowSeries", strSeries);
-		//当前所在星号
-		model.addAttribute("nowStar", strStar);
+		model.addAttribute("nowSeries", series);
+		model.addAttribute("nowStar", star);
+		model.addAttribute("nowDirId", dirId);
+		model.addAttribute("nowParameterTypeValue", paramType);
 		
-		HttpSession session = request.getSession();
-		ActiveUserDto acticeUser = (ActiveUserDto) session.getAttribute("activeUser");
-//		String flywheel = J9Series_Star_ParameterType.FLYWHEEL.getValue();
-		String type = acticeUser.getPermissionItems().get(strParamType);
-		String value = "";
-		String name = "";
-		if (StringUtils.isNotBlank(type)) {
-			value = J9Series_Star_ParameterType.getJ9SeriesStarParameterType(type).getValue();
-			name = J9Series_Star_ParameterType.getJ9SeriesStarParameterType(type).getName();
-		}else{
-			value = J9Series_Star_ParameterType.TOP.getValue();
-			name = J9Series_Star_ParameterType.TOP.getName();
-		}
-		//当前所在参数名称
-		model.addAttribute("nowpartsTypeValue", value);
-		model.addAttribute("nowpartsTypeName", name);			
-		//当前所在目录
-		model.addAttribute("nowDirId", 0);
 		return "/admin/reportManager/index";
 	}
 	
@@ -96,26 +75,14 @@ public class ReportController {
 			   								 @PathVariable long dirId ,
 			   								 HttpServletRequest request,HttpServletResponse response) {
 		EasyuiDataGridJson json = new EasyuiDataGridJson();
-		String strSeries = request.getParameter("series");
-		String strStar = request.getParameter("star");
-		String strParamType = request.getParameter("paramType");
-		String strDirId = request.getParameter("dirId");
 		String strPage = request.getParameter("page");
 		String strRows= request.getParameter("rows");
+		String strDirId = request.getParameter("dirId");
 		String beginTime = request.getParameter("beginTime");
 		String endTime = request.getParameter("endTime");
 		String fileTypes= request.getParameter("fileTypes");
 		int page = 1;
 		int rows = 10;
-		if (StringUtils.isNotBlank(strSeries)) {
-			series = strSeries;
-		}
-		if (StringUtils.isNotBlank(strStar)) {
-			star = strStar;
-		}
-		if (StringUtils.isNotBlank(strParamType)) {
-			paramType = strParamType;
-		}
 		if (StringUtils.isNotBlank(strDirId)) {
 			dirId = Long.parseLong(strDirId);
 		}
@@ -126,8 +93,8 @@ public class ReportController {
 			rows = Integer.parseInt(strRows);
 		}
 		Pager<MongoFSDto> pager = null;
-		if(StringUtils.isNotBlank(beginTime) || StringUtils.isNotBlank(endTime) || StringUtils.isNotBlank(fileTypes)){
-			pager = reoportService.getMongoFSList(page, rows, series, star, paramType, dirId, beginTime, endTime, fileTypes);			
+		if(StringUtils.isNotBlank(beginTime) || StringUtils.isNotBlank(endTime) || StringUtils.isNotBlank(fileTypes) ){
+			pager = reoportService.getMongoFSList(page, rows, series, star, paramType, dirId, beginTime, endTime);
 		}else{
 			pager = reoportService.getMongoFSList(page, rows, series, star, paramType, dirId);			
 		}
@@ -190,7 +157,6 @@ public class ReportController {
 	public ResultJSON createReport(HttpServletRequest request,String seriesId,String starId,String partsType,String beginTime,String endTime) {
 		ResultJSON res = ResultJSON.getSuccessResultJSON();
 		
-		String imgUrl = OptionConfig.getWebPath() + "\\report\\wordtemplate\\satellite.jpg";  
 		String templateUrl = OptionConfig.getWebPath() + "\\report\\wordtemplate\\卫星状态报告.doc";
 		
 		String time = DateUtil.getNowTime("yyyy-MM-dd");
@@ -199,7 +165,7 @@ public class ReportController {
 		Date beginDate = DateUtil.format(beginTime,"yyyy-MM-dd");
 		Date endDate =  DateUtil.format(endTime,"yyyy-MM-dd");
 		try {
-			reoportService.createReport(beginDate, endDate, filename, imgUrl, templateUrl, docPath, seriesId, starId, partsType);
+			reoportService.createReport(beginDate, endDate, filename, templateUrl, docPath, seriesId, starId, partsType);
 			
 			 Map<String, Object> data = new HashMap<String, Object>();
 			 data.put("docPath", docPath);
@@ -217,7 +183,6 @@ public class ReportController {
 	@RequestMapping(value = { "/createReportTest" })
 	public void createReprotTest() throws Exception{
 
-		String imgUrl = OptionConfig.getWebPath() + "\\report\\wordtemplate\\satellite.jpg";  
 		String templateUrl = OptionConfig.getWebPath() + "\\report\\wordtemplate\\卫星状态报告.doc";
 		String templateNullUrl = OptionConfig.getWebPath() + "\\report\\wordtemplate\\nullData.doc";
 		
@@ -238,7 +203,7 @@ public class ReportController {
 			String filename = seriesId+"_"+starId+"_"+partsType+"_"+time+".doc";
 			String docPath = OptionConfig.getWebPath() + "report\\"+filename;
 			try {
-				reoportService.createReport(beginDate, endDate, filename, imgUrl, templateUrl, docPath, seriesId, starId, partsType);
+				reoportService.createReport(beginDate, endDate, filename, templateUrl, docPath, seriesId, starId, partsType);
 				reoportService.insertReportToDB(filename, docPath,seriesId,starId, partsType,starTime,endTime,databaseName);
 				reoportService.removeDoc(docPath);
 			} catch (Exception e) {

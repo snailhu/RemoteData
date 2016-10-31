@@ -9,7 +9,7 @@ import DataAn.reportManager.dto.StarParamDto;
 
 public interface IStarParamDao  extends IBaseDao<StarParam> {
 
-	Pager<StarParam> selectByOption(int pageIndex, int pageSize, String series, String star, String parameterType);
+	Pager<StarParam> selectByOption(int pageIndex, int pageSize, String series, String star, String parameterType,String paramCode);
 
 	boolean cherkStarParam(StarParamDto starParamDto);
 

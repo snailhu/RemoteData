@@ -80,10 +80,11 @@ public class StarParamController  extends BaseController {
 		String series = request.getParameter("series");
 		String star = request.getParameter("star");
 		String partsType = request.getParameter("partsType");
+		String paramCode = request.getParameter("paramCode");
 		Pager<StarParamDto> pager;
 		try {
-			pager = starParamService.getStarParamList(page, rows, series,star,
-					partsType);
+			pager = starParamService.getStarParamList(page, rows, series,star, 
+					partsType,paramCode);
 			if(pager != null){
 				json.setTotal(pager.getTotalCount());
 				json.setRows(pager.getDatas());	
@@ -96,7 +97,6 @@ public class StarParamController  extends BaseController {
 	
 	
 	
-	// 创建用户
 	@RequestMapping(value = "/createStarParam")
 	@ResponseBody
 	public JsonMessage createStarParam(StarParamDto starParamDto,HttpServletRequest request,HttpServletResponse response) {
@@ -125,7 +125,6 @@ public class StarParamController  extends BaseController {
 		return jsonMsg;
 	}
 	
-	// 编辑用户
 	@RequestMapping(value = "/editStarParam")
 	@ResponseBody
 	public JsonMessage editStarParam(StarParamDto starParamDto, HttpServletRequest request, HttpServletResponse response) {
@@ -133,6 +132,13 @@ public class StarParamController  extends BaseController {
 		String currentUserName = getCurrentUserName(request);
 		starParamDto.setCreater(currentUserName);
 		try {
+			boolean falg = starParamService.cherkStarParam(starParamDto);
+			if (falg) {
+				jsonMsg.setSuccess(false);
+				jsonMsg.setMsg("参数已存在！");
+				jsonMsg.setObj("参数已存在！");
+				return jsonMsg;
+			}
 			starParamService.update(starParamDto);
 		} catch (Exception e) {
 			jsonMsg.setSuccess(false);

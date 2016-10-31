@@ -281,14 +281,14 @@
 							</a>
 							<ul class="submenu">
 								<li class="flywheel-li">
-									<a href="#" class="tab_li level3"> 
+									<a href="report/index/j9/01/flywheel/0/" class="tab_li level3"> 
 										<img class="img_head" src="${pageContext.request.contextPath}/static/new/img/DataImport/xuxian.png">
 										<span>飞轮</span>
 <!-- 										<img class="img_down" src="${pageContext.request.contextPath}/static/new/img/DataImport/shangla.png"> -->
 									</a>
 								</li>
 								<li class="top-li">
-									<a href="#" class="tab_li level3">
+									<a href="report/index/j9/01/top/0/" class="tab_li level3">
 						                <img class="img_head" src="${pageContext.request.contextPath}/static/new/img/DataImport/xuxian.png">
 						                <span>陀螺</span>
 <!-- 						                <img class="img_down" src="${pageContext.request.contextPath}/static/new/img/DataImport/shangla.png"> -->
@@ -311,7 +311,7 @@
 									</a>
 								</li>
 								<li class="top-li">
-									<a href="#" class="tab_li level3">
+									<a href="report/index/j9/02/top/0/" class="tab_li level3">
 						                <img class="img_head" src="${pageContext.request.contextPath}/static/new/img/DataImport/xuxian.png">
 						                <span>陀螺</span>
 <!-- 						                <img class="img_down" src="${pageContext.request.contextPath}/static/new/img/DataImport/shangla.png"> -->
@@ -327,14 +327,14 @@
 							</a>
 							<ul class="submenu">
 								<li class="flywheel-li">
-									<a href="#" class="tab_li level3"> 
+									<a href="report/index/j9/03/flywheel/0/" class="tab_li level3"> 
 										<img class="img_head" src="${pageContext.request.contextPath}/static/new/img/DataImport/xuxian.png">
 										<span>飞轮</span>
 <!-- 										<img class="img_down" src="${pageContext.request.contextPath}/static/new/img/DataImport/shangla.png"> -->
 									</a>
 								</li>
 								<li class="top-li">
-									<a href="#" class="tab_li level3">
+									<a href="report/index/j9/03/top/0/" class="tab_li level3">
 						                <img class="img_head" src="${pageContext.request.contextPath}/static/new/img/DataImport/xuxian.png">
 						                <span>陀螺</span>
 <!-- 						                <img class="img_down" src="${pageContext.request.contextPath}/static/new/img/DataImport/shangla.png"> -->
@@ -350,14 +350,14 @@
 							</a>
 							<ul class="submenu">
 								<li class="flywheel-li">
-									<a href="#" class="tab_li level3"> 
+									<a href="report/index/j9/04/flywheel/0/" class="tab_li level3"> 
 										<img class="img_head" src="${pageContext.request.contextPath}/static/new/img/DataImport/xuxian.png">
 										<span>飞轮</span>
 <!-- 										<img class="img_down" src="${pageContext.request.contextPath}/static/new/img/DataImport/shangla.png"> -->
 									</a>
 								</li>
 								<li class="top-li">
-									<a href="#" class="tab_li level3">
+									<a href="report/index/j9/04/top/0/" class="tab_li level3">
 						                <img class="img_head" src="${pageContext.request.contextPath}/static/new/img/DataImport/xuxian.png">
 						                <span>陀螺</span>
 <!-- 						                <img class="img_down" src="${pageContext.request.contextPath}/static/new/img/DataImport/shangla.png"> -->
@@ -373,14 +373,14 @@
 							</a>
 							<ul class="submenu">
 								<li class="flywheel-li">
-									<a href="#" class="tab_li level3"> 
+									<a href="report/index/j9/05/flywheel/0/" class="tab_li level3"> 
 										<img class="img_head" src="${pageContext.request.contextPath}/static/new/img/DataImport/xuxian.png">
 										<span>飞轮</span>
 <!-- 										<img class="img_down" src="${pageContext.request.contextPath}/static/new/img/DataImport/shangla.png"> -->
 									</a>
 								</li>
 								<li class="top-li">
-									<a href="#" class="tab_li level3">
+									<a href="report/index/j9/05/top/0/" class="tab_li level3">
 						                <img class="img_head" src="${pageContext.request.contextPath}/static/new/img/DataImport/xuxian.png">
 						                <span>陀螺</span>
 <!-- 						                <img class="img_down" src="${pageContext.request.contextPath}/static/new/img/DataImport/shangla.png"> -->

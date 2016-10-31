@@ -98,7 +98,6 @@ public class JobServiceImpl implements IJobService{
 	@Scheduled(cron = "0 0 23 ? * MON") 
 	@Override
 	public void createReport() throws Exception {
-		String imgUrl = OptionConfig.getWebPath() + "\\report\\wordtemplate\\satellite.jpg";  
 		String templateUrl = OptionConfig.getWebPath() + "\\report\\wordtemplate\\卫星状态报告.doc";
 		
 		List<StarParam> starList = starParamDao.getStarParamByParts();
@@ -117,7 +116,7 @@ public class JobServiceImpl implements IJobService{
 			String databaseName = InitMongo.DATABASE_TEST;
 			String filename = seriesId+"_"+starId+"_"+partsType+"_"+time+".doc";
 			String docPath = OptionConfig.getWebPath() + "report\\"+filename;
-			reoportService.createReport(beginDate, endDate, filename, imgUrl, templateUrl, docPath, seriesId, starId, partsType);
+			reoportService.createReport(beginDate, endDate, filename,  templateUrl, docPath, seriesId, starId, partsType);
 			reoportService.insertReportToDB(filename, docPath,seriesId,starId, partsType,starTime,endTime,databaseName);
 			reoportService.removeDoc(docPath);
 		}

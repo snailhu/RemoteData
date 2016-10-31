@@ -333,7 +333,7 @@ $(function(){
 				 top.showMsg('提示', "结束日期不能小于开始日期");
 				  return false;
 			}
-			if(t>7) {
+			if(t>6) {
 				 top.showMsg('提示', "日期区间不能大于一周");
 				  return false;
 			}

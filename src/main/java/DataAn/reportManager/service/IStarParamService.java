@@ -11,7 +11,7 @@ import DataAn.reportManager.dto.StarParamDto;
 
 public interface IStarParamService {
 
-	public Pager<StarParamDto> getStarParamList(int pageIndex, int pageSize, String series, String star, String parameterType) throws Exception;
+	public Pager<StarParamDto> getStarParamList(int pageIndex, int pageSize, String series, String star, String parameterType,String paramCode) throws Exception;
 
 	public void save(StarParamDto starParamDto) throws Exception ;
 

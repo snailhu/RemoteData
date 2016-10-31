@@ -61,6 +61,8 @@
 <link rel="stylesheet"
 	href="<%=request.getContextPath()%>/static/select2/select2.min.css"
 	type="text/css" />
+<link rel="stylesheet"
+	href="<%=request.getContextPath()%>/static/css/all.css" type="text/css" />
 
 <script type="text/javascript"
 	src="<%=request.getContextPath()%>/static/jqwidgets/jqxcore.js"></script>
@@ -99,6 +101,7 @@
 
 <script type="text/javascript"
 	src="<%=request.getContextPath()%>/static/select2/select2.full.min.js"></script>
+
 
 <style type="text/css">
 .sweet-alert h2 {
@@ -358,8 +361,10 @@
 
 	<div class="main-content">
 		<div class="page-content">
-			<div class="page-header" style="margin: 0px; float: left;">
-				<h1>特殊工况参数配置</h1>
+			<div class="daohanglancs">
+				<img
+					src="<%=request.getContextPath()%>/static/imgs/DataImport/home.png">
+				<span>位置:</span> <span>预警管理></span> <span>特殊工况参数配置</span>
 			</div>
 			<!-- /.page-header -->
 
@@ -382,9 +387,9 @@
 									role="form">
 									<div class="space-1"></div>
 									<div class="form-group">
-										<label class="col-sm-3 control-label no-padding-right"
+										<label class="col-sm-4 control-label no-padding-right"
 											for="search-series"> 星系 </label>
-										<div class="col-sm-9">
+										<div class="col-sm-8">
 											<select class="col-xs-10 col-sm-5" id="search-series"
 												name="series">
 												<option value="">--请选择--</option>
@@ -393,9 +398,9 @@
 									</div>
 									<div class="space-4"></div>
 									<div class="form-group">
-										<label class="col-sm-3 control-label no-padding-right"
+										<label class="col-sm-4 control-label no-padding-right"
 											for="search-star"> 星</label>
-										<div class="col-sm-9">
+										<div class="col-sm-8">
 											<select class="col-xs-10 col-sm-5" id="search-star"
 												name="star">
 												<option value="">--请选择--</option>
@@ -404,9 +409,9 @@
 									</div>
 									<div class="space-4"></div>
 									<div class="form-group">
-										<label class="col-sm-3 control-label no-padding-right"
+										<label class="col-sm-4 control-label no-padding-right"
 											for="search-parameterType"> 设备 </label>
-										<div class="col-sm-9">
+										<div class="col-sm-8">
 											<select class="col-xs-10 col-sm-5" id="search-parameterType"
 												name="parameterType">
 												<option value="">--请选择--</option>
@@ -417,23 +422,22 @@
 									</div>
 									<div class="space-4"></div>
 									<div class="form-group">
-										<label class="col-sm-3 control-label no-padding-right"
+										<label class="col-sm-4 control-label no-padding-right"
 											for="search-parameter"> 参数 </label>
-										<div class="col-sm-9">
+										<div class="col-sm-8">
 											<select class="col-xs-10 col-sm-5 select2"
 												style="width: 41.7%;" id="search-parameter" name="parameter">
 												<option value="">--请选择--</option>
 											</select>
 										</div>
 									</div>
-									<div class="space-4"></div>
+									<div class="space-8"></div>
 									<div class="form-group">
-										<div class="col-lg-4 col-lg-offset-6">
-											<button type="button" id="btn-search"
-												class="btn btn-primary start">
+										<div class="col-lg-4 col-lg-offset-4">
+											<button type="button" id="btn-search" class="subbutton_1">
 												<i></i> <span>搜索</span>
 											</button>
-											<button type="reset" class="btn btn-warning cancel">
+											<button type="reset" class="cancelbutton_1">
 												<i></i> <span>取消</span>
 											</button>
 										</div>
@@ -456,8 +460,7 @@
 			<!-- 创建参数 -->
 			<div class="modal fade" id="addValueModal" role="dialog"
 				aria-labelledby="addValueModalLabel">
-				<div class="modal-dialog" role="document"
-					style="margin: 55px -300px">
+				<div class="modal-dialog" role="document" style="margin: 55px 30%">
 					<div class="modal-content">
 						<form id="addValueInfoForm" class="form-horizontal" role="form"
 							style="margin: 0px;">
@@ -550,11 +553,11 @@
 								</div>
 							</div>
 							<div class="modal-footer">
-								<div class="col-lg-4 col-lg-offset-5">
-									<button type="button" class="btn btn-default"
-										id="reset_addValueInfo" data-dismiss="modal">关闭</button>
-									<button type="submit" class="btn btn-primary"
+								<div class="col-lg-7 col-lg-offset-3">
+									<button type="submit" class="subbutton_1"
 										id="submit_addValueInfo" data-dismiss="modal">确定</button>
+									<button type="button" class="cancelbutton_1"
+										id="reset_addValueInfo" data-dismiss="modal">关闭</button>
 								</div>
 							</div>
 						</form>
@@ -564,8 +567,7 @@
 			<!-- 编辑参数 -->
 			<div class="modal fade" id="editValueModal" role="dialog"
 				aria-labelledby="editValueModalLabel">
-				<div class="modal-dialog" role="document"
-					style="margin: 55px -300px">
+				<div class="modal-dialog" role="document" style="margin: 55px 30%">
 					<div class="modal-content">
 						<form id="editValueInfoForm" class="form-horizontal" role="form"
 							style="margin: 0px;">
@@ -659,11 +661,11 @@
 								</div>
 							</div>
 							<div class="modal-footer">
-								<div class="col-lg-4 col-lg-offset-5">
-									<button type="button" class="btn btn-default"
-										id="reset_editValueInfo" data-dismiss="modal">关闭</button>
-									<button type="submit" class="btn btn-primary"
+								<div class="col-lg-7 col-lg-offset-3">
+									<button type="submit" class="subbutton_1"
 										id="submit_editValueInfo" data-dismiss="modal">确定</button>
+									<button type="button" class="cancelbutton_1"
+										id="reset_editValueInfo" data-dismiss="modal">关闭</button>
 								</div>
 							</div>
 						</form>
@@ -868,14 +870,15 @@
 	});
         
         $("#search-parameterType").change(function(){
-		 	var parameterType = $('#search-parameterType').val();	
-			  $.get('<%=request.getContextPath()%>/admin/prewarning/getParamList', {'parameterType':parameterType},  function (res) {
+		 	var parameterType = $('#search-parameterType').val();
+		 	var seriesId = $('#search-series').val();
+			  $.get('<%=request.getContextPath()%>/admin/prewarning/getParamList', {'parameterType':parameterType , 'series':seriesId},  function (res) {
 				  if(res) {
 					  $('#search-parameter').find("option").remove();
 					  $('#search-parameter').append("<option value=''>--请选择--</option>"); 
 	            	  $.each(res.paramaters ,function(){
-	            		    if(this.value){
-	            		    	$('#search-parameter').append("<option value='"+ this.value+"'>"+ this.name +"</option>"); 
+	            		    if(this.code){
+	            		    	$('#search-parameter').append("<option value='"+ this.code+"'>"+ this.simplyName +"</option>"); 
 	            		    }
 						});
 	            	  $("#search-parameter").select2().val("").trigger("change");
@@ -888,13 +891,14 @@
         
         $("#add-parameterType").change(function(){
 		 	var parameterType = $('#add-parameterType').val();	
-			  $.get('<%=request.getContextPath()%>/admin/prewarning/getParamList', {'parameterType':parameterType},  function (res) {
+		 	var seriesId = $('#add-series').val();
+			  $.get('<%=request.getContextPath()%>/admin/prewarning/getParamList', {'parameterType':parameterType, 'series':seriesId},  function (res) {
 				  if(res) {
 					  $('#add-parameter').find("option").remove();
 					  $('#add-parameter').append("<option value=''>--请选择--</option>"); 
 	            	  $.each(res.paramaters ,function(){
-	            		    if(this.value){
-	            		    	$('#add-parameter').append("<option value='"+ this.value+"'>"+ this.name +"</option>"); 
+	            		    if(this.code){
+	            		    	$('#add-parameter').append("<option value='"+ this.code+"'>"+ this.simplyName +"</option>"); 
 	            		    }
 						});
 	            	  $("#add-parameter").select2().val("").trigger("change");
@@ -906,14 +910,15 @@
 		});
         
         $("#edit-parameterType").change(function(){
-		 	var parameterType = $('#edit-parameterType').val();	
-			  $.get('<%=request.getContextPath()%>/admin/prewarning/getParamList', {'parameterType':parameterType},  function (res) {
+		 	var parameterType = $('#edit-parameterType').val();
+		 	var seriesId = $('#edit-series').val();
+			  $.get('<%=request.getContextPath()%>/admin/prewarning/getParamList', {'parameterType':parameterType, 'series':seriesId},  function (res) {
 				  if(res) {
 					  $('#edit-parameter').find("option").remove();
 					  $('#edit-parameter').append("<option value=''>--请选择--</option>"); 
 	            	  $.each(res.paramaters ,function(){
-	            		    if(this.value){
-	            		    	$('#edit-parameter').append("<option value='"+ this.value+"'>"+ this.name +"</option>"); 
+	            		    if(this.code){
+	            		    	$('#edit-parameter').append("<option value='"+ this.code+"'>"+ this.simplyName +"</option>"); 
 	            		    }
 						});
 	            	  $("#edit-parameter").select2().val("").trigger("change");
@@ -923,99 +928,6 @@
 	              }
 	          });	
 		});
-        
-        
-//         function showTreeGrid(type) {
-// 			var beginDate = "";
-// 		   	var endDate = "";
-<%--  			 var url = "<%=request.getContextPath()%>/getConstraint?beginDate=" --%>
-// 					+ beginDate + "&endDate=" + endDate + "&type=" + type;
-// 			var source = {
-// 				dataType : "json",
-// 				dataFields : [ {
-// 					name : 'id',
-// 					type : 'number'
-// 				}, {
-// 					name : 'parentId',
-// 					type : 'number'
-// 				}, {
-// 					name : 'name',
-// 					type : 'string'
-// 				}, {
-// 					name : 'value',
-// 					type : 'string'
-// 				} ],
-// 				hierarchy : {
-// 					keyDataField : {
-// 						name : 'id'
-// 					},
-// 					parentDataField : {
-// 						name : 'parentId'
-// 					}
-// 				},
-// 				id : 'id',
-// 				url : url
-// 			};
-// 			var dataAdapter = new $.jqx.dataAdapter(source);
-// 			$("#treeGrid").jqxTreeGrid({
-// 				width : 560,
-// 				source : dataAdapter,
-// 				sortable : false,
-// 				editable : false,
-// 				checkboxes : false,
-// 				theme : 'energyblue',
-// 				hierarchicalCheckboxes : false,
-// 				columns : [ {
-// 					text : '参数名称',
-// 					dataField : 'name',
-// 					editable : false,
-// 					width : 500
-// 				}, {
-// 					text : '参数值',
-// 					dataField : 'value',
-// 					editable : false,
-// 					width : 150,
-// 					hidden : true
-// 				}, {
-// 					text : 'ID',
-// 					dataField : 'id',
-// 					editable : false,
-// 					width : 200,
-// 					hidden : true
-// 				} ]
-// 			});
-// 			$('#jqxWidgetModal').modal('show');
-// 		}
-
-// 		$("#search-parameter").click(function() {
-// 			var type = $('#search-parameterType').val();
-// 			showTreeGrid(type);
-// 		});
-
-// 		$("#add-parameter").click(function() {
-// 			var type = $('#add-parameterType').val();
-// 			showTreeGrid(type);
-// 		});
-
-// 		$("#edit-parameter").click(function() {
-// 			var type = $('#edit-parameterType').val();
-// 			showTreeGrid(type);
-// 		});
-
-// 		$('#submit_jqxWidgetInfo').click(
-// 				function() {
-// 					var jqxParamName = $(
-// 							$(".jqx-grid-cell-selected-energyblue")[0]).text();
-// 					var jqxParamCode = $(
-// 							$(".jqx-grid-cell-selected-energyblue")[1]).text();
-// 					$('#jqxWidgetModal').modal('hide');
-// 					$('#search-parameter').val(jqxParamName);
-// 					$('#search-parameter-value').val(jqxParamCode);
-// 					$('#add-parameter').val(jqxParamName);
-// 					$('#add-parameter-value').val(jqxParamCode);
-// 					$('#edit-parameter').val(jqxParamName);
-// 					$('#edit-parameter-value').val(jqxParamCode);
-// 				});
 
 		function reloadDataGrid() {
 			valueGrid.datagrid('clearChecked');
@@ -1152,38 +1064,79 @@
 								dataType : "json",
 								success : function(data) {
 									if (data) {
-										 $.get('<%=request.getContextPath()%>/admin/prewarning/getParamList', {'parameterType':data.parameterType,'series' : data.series},  function (res) {
-											  if(res) {
-												  $('#edit-parameter').find("option").remove();
-												  $('#edit-star').find("option").remove();
-												  $('#edit-parameter').append("<option value=''>--请选择--</option>"); 
-												  $('#edit-star').append("<option value=''>--请选择--</option>");
-								            	  $.each(res.paramaters ,function(){
-								            		    if(this.value){
-								            		    	$('#edit-parameter').append("<option value='"+ this.value+"'>"+ this.name +"</option>"); 
-								            		    	$("#edit-parameter").select2().val(data.parameter).trigger("change");
-								            		    }
-													});
-								            	  $.each(res.stars,
-														function() {
-															if (this.id) {
-																if (this.id == data.star) {
-																	$('#edit-star').append("<option value='"+ this.id+"' selected = 'selected'>"
-																							+ this.description
-																							+ "</option>");
-																} else {
-																	$('#edit-star').append("<option value='"+ this.id+"'>"
-																							+ this.description
-																							+ "</option>");
-																}
+										 $.get('<%=request.getContextPath()%>/admin/prewarning/getParamList',
+														{
+															'parameterType' : data.parameterType,
+															'series' : data.series
+														},
+														function(res) {
+															if (res) {
+																$(
+																		'#edit-parameter')
+																		.find(
+																				"option")
+																		.remove();
+																$('#edit-star')
+																		.find(
+																				"option")
+																		.remove();
+																$(
+																		'#edit-parameter')
+																		.append(
+																				"<option value=''>--请选择--</option>");
+																$('#edit-star')
+																		.append(
+																				"<option value=''>--请选择--</option>");
+																$
+																		.each(
+																				res.paramaters,
+																				function() {
+																					if (this.code) {
+																						$(
+																								'#edit-parameter')
+																								.append(
+																										"<option value='"+ this.code+"'>"
+																												+ this.simplyName
+																												+ "</option>");
+																						$(
+																								"#edit-parameter")
+																								.select2()
+																								.val(
+																										data.parameter)
+																								.trigger(
+																										"change");
+																					}
+																				});
+																$
+																		.each(
+																				res.stars,
+																				function() {
+																					if (this.id) {
+																						if (this.id == data.star) {
+																							$(
+																									'#edit-star')
+																									.append(
+																											"<option value='"+ this.id+"' selected = 'selected'>"
+																													+ this.description
+																													+ "</option>");
+																						} else {
+																							$(
+																									'#edit-star')
+																									.append(
+																											"<option value='"+ this.id+"'>"
+																													+ this.description
+																													+ "</option>");
+																						}
+																					}
+																				});
+															} else {
+																top
+																		.showMsg(
+																				'提示',
+																				res.msg);
 															}
 														});
-								              }
-								              else {
-								            	  top.showMsg('提示', res.msg);
-								              }
-								          });	
-										
+
 										$('#edit-value-id').val(data.valueId)
 										$('#edit-series').val(data.series);
 										$('#edit-parameterType').val(

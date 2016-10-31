@@ -40,6 +40,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     <link rel="stylesheet" href="<%=request.getContextPath()%>/static/jqwidgets/styles/jqx.base.css" type="text/css" />
 	<link rel="stylesheet" href="<%=request.getContextPath()%>/static/jqwidgets/styles/jqx.energyblue.css" type="text/css" />
 	<link rel="stylesheet" href="<%=request.getContextPath()%>/static/content/css/default.css"  type="text/css"/>	
+	<link rel="stylesheet" href="<%=request.getContextPath()%>/static/select2/select2.min.css" type="text/css" />
     
     <script type="text/javascript" src="<%=request.getContextPath()%>/static/jqwidgets/jqxcore.js"></script>
     <script type="text/javascript" src="<%=request.getContextPath()%>/static/jqwidgets/jqxdatetimeinput.js"></script>
@@ -59,7 +60,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     <script type="text/javascript" src="<%=request.getContextPath()%>/static/jqwidgets/jqxtreegrid.js"></script>     
 
     <script type="text/javascript" src="<%=request.getContextPath()%>/static/jqwidgets/jqxbuttons.js"></script>
-    
+    <script type="text/javascript" src="<%=request.getContextPath()%>/static/select2/select2.full.min.js"></script>
     
 <style type="text/css">
 .sweet-alert h2 {
@@ -222,7 +223,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 									<div class="form-group">
 										<label class="col-sm-5 control-label no-padding-right" for="form-paramCode">参数：</label>
 										<div class="col-sm-3">
-											<select name="paramCode"  id="form-paramCode" class="form-control " >
+											<select name="paramCode"  id="form-paramCode" class="form-control  select2" style="width: 100%;">
 				                           		<option value="">--请选择--</option>
 				                       		</select>
 										</div>
@@ -235,7 +236,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							                    <i></i>
 							                    <span>搜索</span>
 							                </button>
-							                <button type="reset" class="btn btn-warning cancel">
+							                <button type="reset" id="btn-cancel" class="btn btn-warning cancel">
 							                    <i></i>
 							                    <span>取消</span>
 							                </button>
@@ -248,14 +249,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					<!-- PAGE CONTENT ENDS -->
 				</div><!-- /.col -->
 			</div><!-- /.row -->
-			<div id="content" region="center" title="用户信息" style="overflow: hidden">
+			<div id="content" region="center" title="参数信息" style="overflow: hidden">
 			</div>
 			<table id="StarParamList" border="false" width="100%" height="500px">
 			</table>
 			
 			<!-- 创建用户 -->
 			<div class="modal fade" id="addStarParamModal" tabindex="-1" role="dialog" aria-labelledby="addStarParamModalLabel">
-				<div class="modal-dialog" role="document" style="margin:55px -300px">
+				<div class="modal-dialog" role="document">
 					<div class="modal-content">
 						<form id="addStarParamInfoForm" class="form-horizontal" role="form" style="margin: 0px;">
 							<div class="modal-header">
@@ -285,7 +286,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 									<label class="col-sm-3 control-label no-padding-right" for="add-starParam-partsType">  设备： </label>
 									<div class="col-sm-8">
 										<select name="partsType"  id="add-starParam-partsType" class="form-control " >
-				                           <option selected="selected" value = "flywheel">飞轮</option>
+										   <option selected="selected" value="">--请选择--</option>
+				                           <option  value = "flywheel">飞轮</option>
 				                           <option value = "top">陀螺</option>
 				                       </select>
 									</div>
@@ -295,36 +297,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								<div class="form-group">
 									<label class="col-lg-3 control-label no-padding-right" for="add-starParam-paramCode"> 参数： </label>
 									<div class="col-sm-8">
-										<!-- <input type="text" name="paramName" id="add-starParam-paramName" placeholder="参数" class="form-control" />  -->
-										<select name="paramCode"  id="add-starParam-paramCode" class="form-control " >
+										<select name="paramCode"  id="add-starParam-paramCode" class="form-control  select2" style="width: 100%;">
+											<option selected="selected" value="">--请选择--</option>
 				                       </select>
 									</div>
 								</div>
-								
-							<!-- 	<div class="space-4"></div>
-								<div class="form-group">
-									<label class="col-sm-3 control-label no-padding-right" for="add-starParam-paramCode"> 参数编码： </label>
-									<div class="col-sm-8">
-										<input type="text" name="paramCode" id="add-starParam-paramCode" placeholder="参数编码" class="form-control" />
-									</div>
-								</div> -->
-								
-								<!-- <div class="space-4"></div>
-								<div class="form-group">
-									<label class="col-sm-3 control-label no-padding-right" for="add-starParam-productName"> 产品： </label>
-									<div class="col-sm-8">
-										<input type="text" name="productName" id="add-starParam-productName" placeholder="参数编码" class="form-control" />
-									</div>
-								</div>
-								
-								
-								<div class="space-4"></div>
-								<div class="form-group">
-									<label class="col-sm-3 control-label no-padding-right" for="add-starParam-parameterType"> 类型： </label>
-									<div class="col-sm-8">
-										<input type="text" name="parameterType" id="add-starParam-parameterType" placeholder="类型" class="form-control" />
-									</div>
-								</div> -->
 								
 								<div class="space-4"></div>
 								<div class="form-group">
@@ -353,7 +330,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			</div>
 			<!-- 编辑用户 -->
 			<div class="modal fade" id="editStarParamModal" tabindex="-1" role="dialog" aria-labelledby="editStarParamModalLabel">
-				<div class="modal-dialog" role="document" style="margin:55px -300px">
+				<div class="modal-dialog" role="document" >
 					<div class="modal-content">
 						<form id="editStarParamInfoForm" class="form-horizontal" role="form" style="margin: 0px;">
 							<div class="modal-header">
@@ -384,7 +361,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 									<label class="col-sm-3 control-label no-padding-right" for="edit-starParam-partsType">  设备： </label>
 									<div class="col-sm-8">
 										<select name="partsType"  id="edit-starParam-partsType" class="form-control " >
-				                           <option selected="selected" value = "flywheel">飞轮</option>
+										   <option selected="selected" value="">--请选择--</option>
+				                           <option value = "flywheel">飞轮</option>
 				                           <option value = "top">陀螺</option>
 				                       </select>
 									</div>
@@ -401,26 +379,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 									<label class="col-sm-3 control-label no-padding-right" for="edit-starParam-paramCode"> 参数： </label>
 									<div class="col-sm-8">
 										<!-- <input type="text" name="paramCode" id="edit-starParam-paramCode" placeholder="参数" class="form-control" /> -->
-										<select name="paramCode"  id="edit-starParam-paramCode" class="form-control " >
+										<select name="paramCode"  id="edit-starParam-paramCode" class="form-control  select2" style="width: 100%;">
 				                       </select>
 									</div>
 								</div>
-								
-							<!--	<div class="space-4"></div>
-								<div class="form-group">
-									<label class="col-sm-3 control-label no-padding-right" for="edit-starParam-productName"> 产品： </label>
-									<div class="col-sm-8">
-										<input type="text" name="productName" id="edit-starParam-productName" placeholder="参数编码" class="form-control" />
-									</div>
-								</div>
-								
-								<div class="space-4"></div>
-								<div class="form-group">
-									<label class="col-sm-3 control-label no-padding-right" for="edit-starParam-parameterType"> 类型： </label>
-									<div class="col-sm-8">
-										<input type="text" name="parameterType" id="edit-starParam-parameterType" placeholder="类型" class="form-control" />
-									</div>
-								</div> -->
 								
 								<div class="space-4"></div>
 								<div class="form-group">
@@ -456,7 +418,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				</div><!-- /.col -->
 			</div><!-- /.row -->
 			
-			<div class="modal fade" id="jqxWidgetModal" tabindex="-1" role="dialog" aria-labelledby="jqxWidgetModalLabel">
+			<div class="modal fade" id="jqxWidgetModal" role="dialog" aria-labelledby="jqxWidgetModalLabel">
 				<div class="modal-dialog" role="document" style="margin:60px -320px;">
 					<div class="modal-content">
 						<div class="modal-header">
@@ -565,6 +527,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
             $.get('<%=request.getContextPath()%>/starParam/getSeriesList', {}, function (res) {
   			  if(res.result == "true") {
+  			      $('#form-series').find("option").remove();
+  			      $('#form-series').append("<option value=''>--请选择--</option>"); 
               	  $.each(res.data.data ,function(){
   						$('#form-series').append("<option value='"+ this.code+"'>"+ this.name +"</option>"); 
   					});
@@ -572,7 +536,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
               			$.get('<%=request.getContextPath()%>/starParam/getStarList', {'seriesId':seriesId},  function (res) {
         					  if(res.result == "true") {
         						  $('#form-star').find("option").remove();
-        						   $('#form-star').append("<option value=''>--请选择--</option>"); 
+        						  $('#form-star').append("<option value=''>--请选择--</option>"); 
         		            	  $.each(res.data.data ,function(){
         								$('#form-star').append("<option value='"+ this.code+"'>"+ this.name +"</option>"); 
         							});
@@ -586,7 +550,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   			 	  $.get('<%=request.getContextPath()%>/starParam/getStarList', {'seriesId':seriesId},  function (res) {
   					  if(res.result == "true") {
   						  $('#form-star').find("option").remove();
-  						   $('#form-star').append("<option value=''>--请选择--</option>"); 
+  						  $('#form-star').append("<option value=''>--请选择--</option>"); 
   		            	  $.each(res.data.data ,function(){
   								$('#form-star').append("<option value='"+ this.code+"'>"+ this.name +"</option>"); 
   							});
@@ -594,6 +558,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   		              }
   		          });	
   		});
+  		$.fn.modal.Constructor.prototype.enforceFocus = function() {};
+		$(".select2").select2();
         });
      	$("#form-star").change(function(){
 			 reqParamSearch();
@@ -607,102 +573,37 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			 var seriesId = $('#form-series').val();
 			 var starId = $('#form-star').val();
 			 $.get('<%=request.getContextPath()%>/starParam/getConstraintList', {'seriesId':seriesId,'starId':starId,'partstype':partstype},  function (res) {
-					$('#form-paramCode').find("option").remove();
-					$('#form-paramCode').append("<option value=''>--请选择--</option>"); 
 					if(res.result == "true") {
+						$('#form-paramCode').find("option").remove();
+						$('#form-paramCode').append("<option value=''>--请选择--</option>"); 
 			          	$.each(res.data.data ,function(){
 								$('#form-paramCode').append("<option value='"+ this.value+"'>"+ this.name +"</option>"); 
 						});
+			            $("#form-paramCode").select2().val("").trigger("change");
 		             } 
 		      });
       }
-     
-    <%--     function showTreeGrid(type) {
-			var beginDate = "";
-		   	var endDate = "";
- 			 var url = "<%=request.getContextPath()%>/getConstraint?beginDate="+beginDate+"&endDate="+endDate+"&type="+type;
-			  var source =
-		       	{
-		           dataType: "json",
-		           dataFields: [
-		               { name: 'id', type: 'number' },
-		               { name: 'parentId', type: 'number' },
-		               { name: 'name', type: 'string' },
-		               { name: 'value', type: 'string' }
-		           ],
-		           hierarchy:
-		           {
-		               keyDataField: { name: 'id' },
-		               parentDataField: { name: 'parentId' }
-		           },
-		           id: 'id',
-		           url: url
-		       };
-		       var dataAdapter = new $.jqx.dataAdapter(source);
-		       $("#treeGrid").jqxTreeGrid(
-		       {
-		           width: 560,                
-		           source: dataAdapter,
-		           sortable: false,
-		           editable: false,
-		           checkboxes: false,
-		           theme: 'energyblue',
-		           hierarchicalCheckboxes: false,              	
-		           columns: [
-			             { text: '参数名称',  dataField: 'name',editable: false, width: 500 },
-			             { text: '参数值',  dataField: 'value',editable: false, width: 150, hidden: true  },
-			             { text: 'ID',  dataField: 'id',editable: false, width:200, hidden: true }
-					]
-		       });
-        }
-        
-     $("#add-starParam-paramName").click(function() {
-    	 	$("#add-starParam-paramName").val('');
-        	var type = $('#add-starParam-partsType').val();
-        	showTreeGrid(type);
-        	sleep(5000);
-         	 $('#jqxWidgetModal').modal('show');
-        });
-     function sleep(numberMillis) { 
-    	   var now = new Date();
-    	   var exitTime = now.getTime() + numberMillis;  
-    	   while (true) { 
-    	       now = new Date(); 
-    	       if (now.getTime() > exitTime)    return;
-    	    }
-    	}   
-     
-        $("#edit-starParam-paramName").click(function() {
-        	var type = $('#edit-starParam-partsType').val();
-        	showTreeGrid(type);
-        });  
-        
-        $('#submit_jqxWidgetInfo').click(function(){
-        	 var jqxParamName = $($(".jqx-grid-cell-selected-energyblue")[0]).text();
-        	 var jqxParamCode = $($(".jqx-grid-cell-selected-energyblue")[1]).text();
-        	 $('#jqxWidgetModal').modal('hide');
-        	 $('#add-starParam-paramName').val(jqxParamName);
-        	 $('#add-starParam-paramCode').val(jqxParamCode);
-        	 $('#edit-starParam-paramName').val(jqxParamName);
-        	 $('#edit-starParam-paramCode').val(jqxParamCode);
-        });--%>
-        
  
         function reloadDataGrid() {
             StarParamGrid.datagrid('clearChecked');
             StarParamGrid.datagrid('reload');
         }
 
+		$('#btn-cancel').click(function(){
+			$("#form-paramCode").select2().val("").trigger("change");
+		});
+
 		//快速搜索按钮
 		$('#btn-search').click(function(){
 			var Qseries =  $('#form-series').val();
 			var Qstar = $('#form-star').val();
 			var QpartsType = $('#form-partsType').val();
-         
+            var QparamCode = $('#form-paramCode').val();
 			StarParamGrid.datagrid('load', {
 				series : Qseries,
 				star : Qstar,
-				partsType : QpartsType
+				partsType : QpartsType,
+				paramCode : QparamCode
 			});
 		});
 		
@@ -712,28 +613,35 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			  var seriesId = $('#add-starParam-series').val();
 			  var starId = $('#add-starParam-star').val();
 				  $.get('<%=request.getContextPath()%>/starParam/getConstraintList', {'seriesId':seriesId,'starId':starId,'partstype':partstype},  function (res) {
-						$('#add-starParam-paramCode').find("option").remove();
-					  if(res.result == "true") {
+					      $('#add-starParam-paramCode').find("option").remove();
+					      $('#add-starParam-paramCode').append("<option value=''>--请选择--</option>"); 
+					      if(res.result == "true") {
 			          	 	 $.each(res.data.data ,function(){
 									$('#add-starParam-paramCode').append("<option value='"+ this.value+"'>"+ this.name +"</option>"); 
-								});
-		              }
-		              else {
-		            	  top.showMsg('提示', res.msg);
+							 });
+							$("#add-starParam-paramCode").select2().val("").trigger("change");
 		              }
 		          });
 		  }
 		  
-		function  validator (paramCode,effeMin,effeMax) {
-			if(paramCode == null) {
+		function  validator (series,star,paramCode,effeMin,effeMax) {
+			if(series == "") {
+				  top.showMsg('提示', "星系不能为空");
+				  return false;
+			}
+			if(star == "") {
+				  top.showMsg('提示', "星号不能为空");
+				  return false;
+			}
+			if(paramCode == "") {
 				  top.showMsg('提示', "参数不能为空");
 				  return false;
 			}
-			if(effeMin == '') {
+			if(effeMin == "") {
 				 top.showMsg('提示', "最小值不能为空");
 				 return false;
 			}
-			if(effeMax == '') {
+			if(effeMax == "") {
 			 	 top.showMsg('提示', "最大值不能为空");
 				 return false;
 			}
@@ -753,12 +661,17 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		}
 		
 		function createStarParam() {
-			$('#add-starParam-paramCode').find("option").remove();
+			
 			 $('#add-starParam-effeMax').val('');
 			 $('#add-starParam-effeMin').val('');	
-			
-		  $.get('<%=request.getContextPath()%>/starParam/getSeriesList', {}, function (res) {
-			  if(res.result == "true") {
+			 $('#add-starParam-series').find("option").remove();
+			 $('#add-starParam-star').find("option").remove();
+			 $('#add-starParam-partsType').val('');
+			$("#add-starParam-paramCode").select2().val("").trigger("change");
+		  	 $.get('<%=request.getContextPath()%>/starParam/getSeriesList', {}, function (res) {
+			   if(res.result == "true") {
+			   	  $('#add-starParam-series').find("option").remove();
+			   	  $('#add-starParam-series').append("<option value=''>--请选择--</option>"); 
             	  $.each(res.data.data ,function(){
 						$('#add-starParam-series').append("<option value='"+ this.code+"'>"+ this.name +"</option>"); 
 					});
@@ -766,6 +679,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     				  $.get('<%=request.getContextPath()%>/starParam/getStarList', {'seriesId':seriesId},  function (res) {
     					  if(res.result == "true") {
     						  $('#add-starParam-star').find("option").remove();
+    						  $('#add-starParam-star').append("<option value=''>--请选择--</option>"); 
     		            	  $.each(res.data.data ,function(){
     								$('#add-starParam-star').append("<option value='"+ this.code+"'>"+ this.name +"</option>"); 
     							});
@@ -780,71 +694,71 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
             	  top.showMsg('提示', res.msg);
               }
           });
-		  
-		$("#add-starParam-series").change(function(){
-			 	var seriesId = $('#add-starParam-series').val();	
-				  $.get('<%=request.getContextPath()%>/starParam/getStarList', {'seriesId':seriesId},  function (res) {
-					  if(res.result == "true") {
-						  $('#add-starParam-star').find("option").remove();
-		            	  $.each(res.data.data ,function(){
-								$('#add-starParam-star').append("<option value='"+ this.code+"'>"+ this.name +"</option>"); 
-							});
-							  reqParamAdd();
-		              }
-		              else {
-		            	  top.showMsg('提示', res.msg);
-		              }
-		          });
-		});
-		$("#add-starParam-star").change(function(){
-			 reqParamAdd();
-		});
-		
-		$("#add-starParam-partsType").change(function(){
-			 reqParamAdd();
-		});
-	
-		
-			
 			$('#addStarParamModal').modal('show');
-			$('#submit_addStarParam').click(function(){
-				var paramCode = $('#add-starParam-paramCode').val();	
-			    var effeMin = $('#add-starParam-effeMin').val();
-			    var effeMax = $('#add-starParam-effeMax').val();
-				var flag =	validator(paramCode,effeMin,effeMax);
-				if(!flag) {
-					return false;
-				}
-				var toUrl='${pageContext.request.contextPath}/starParam/createStarParam';
-				var f = $('#addStarParamInfoForm');
-				         f.form('submit', {
-				             url: toUrl,
-				             onsubmit: function () {
-				                 var flag = $(this).form('validate');
-				                 if (flag) {
-				                     top.showProcess(true, '温馨提示', '正在提交数据...');
-				                 }
-				                 return flag;
-				             },
-				             success: function (data) {
-				                 top.showProcess(false);
-				                 var map = $.parseJSON(data);
-				                 if (map.success) {
-				                     top.showMsg('提示', map.msg);
-				                     reloadDataGrid();
-				                 }
-				                 else {
-				                 	top.alertMsg('错误', map.msg+"\n"+map.obj==null?"":map.obj);
-				                 }
-				             },
-				             onLoadError: function () {
-				                 top.showProcess(false);
-				                 top.$.messager.alert('温馨提示', '由于网络或服务器太忙，提交失败，请重试！');
-				             }
-				         });
-			});
-		
 		}
+		$("#add-starParam-series").change(function(){
+		 	var seriesId = $('#add-starParam-series').val();	
+			  $.get('<%=request.getContextPath()%>/starParam/getStarList', {'seriesId':seriesId},  function (res) {
+				  if(res.result == "true") {
+					  $('#add-starParam-star').find("option").remove();
+					  $('#add-starParam-star').append("<option value=''>--请选择--</option>"); 
+	            	  $.each(res.data.data ,function(){
+							$('#add-starParam-star').append("<option value='"+ this.code+"'>"+ this.name +"</option>"); 
+						});
+						  reqParamAdd();
+	              }
+	              else {
+	            	  top.showMsg('提示', res.msg);
+	              }
+	          });
+	  });
+	$("#add-starParam-star").change(function(){
+		 reqParamAdd();
+	});
+	
+	$("#add-starParam-partsType").change(function(){
+		 reqParamAdd();
+	});
+		
+		$('#submit_addStarParam').click(function(){
+		    var series = $('#add-starParam-series').val();	
+		    var star = $('#add-starParam-star').val();	
+			var paramCode = $('#add-starParam-paramCode').val();	
+		    var effeMin = $('#add-starParam-effeMin').val();
+		    var effeMax = $('#add-starParam-effeMax').val();
+			var flag =	validator(series,star,paramCode,effeMin,effeMax);
+			if(!flag) {
+				return false;
+			} 
+			var toUrl='${pageContext.request.contextPath}/starParam/createStarParam';
+			var f = $('#addStarParamInfoForm');
+			         f.form('submit', {
+			             url: toUrl,
+			             onsubmit: function () {
+			                 var flag = $(this).form('validate');
+			                 if (flag) {
+			                     top.showProcess(true, '温馨提示', '正在提交数据...');
+			                 }
+			                 return flag;
+			             },
+			             success: function (data) {
+			                 top.showProcess(false);
+			                 var map = $.parseJSON(data);
+			                 if (map.success) {
+			                     top.showMsg('提示', map.msg);
+			                     reloadDataGrid();
+			                 }
+			                 else {
+			                 	top.alertMsg('错误', map.msg+"\n"+map.obj==null?"":map.obj);
+			                 }
+			             },
+			             onLoadError: function () {
+			                 top.showProcess(false);
+			                 top.$.messager.alert('温馨提示', '由于网络或服务器太忙，提交失败，请重试！');
+			             }
+			         });
+		});
+		
 		//删除用户
 		function deleteStarParam() {
 			var ids = [];
@@ -852,7 +766,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			if (rows.length > 0) {
 				var names = [];
 				for ( var i = 0; i < rows.length; i++) {
-					names.push(rows[i].starParamName);
+					names.push(rows[i].paramName);
 				}
 				swal({
 					title : "你是否确定删除?",
@@ -860,8 +774,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					type : "warning",
 					showCancelButton : true,
 					confirmButtonColor : "#DD6B55",
-					confirmButtonText : "删除!",
-					cancelButtonText : "取消!",
+					confirmButtonText : "删除",
+					cancelButtonText : "取消",
 					closeOnConfirm : false,
 					closeOnCancel : false
 				},
@@ -899,11 +813,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			  	  var seriesId = $('#edit-starParam-series').val();
 			 	  var starId = $('#edit-starParam-star').val();
 				  $.get('<%=request.getContextPath()%>/starParam/getConstraintList', {'seriesId':seriesId,'starId':starId,'partstype':partstype},  function (res) {
-						$('#edit-starParam-paramCode').find("option").remove();
 					  if(res.result == "true") {
+					  		 $('#edit-starParam-paramCode').find("option").remove();
+					  		 $('#edit-starParam-paramCode').append("<option value=''>--请选择--</option>"); 
 			          	 	 $.each(res.data.data ,function(){
 									$('#edit-starParam-paramCode').append("<option value='"+ this.value+"'>"+ this.name +"</option>"); 
 								});
+								 $("#edit-starParam-paramCode").select2().val("").trigger("change");
 		              }
 		              else {
 		            	  top.showMsg('提示', res.msg);
@@ -921,6 +837,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					  $.get('<%=request.getContextPath()%>/starParam/getSeriesList', {}, function (res) {
 						  if(res.result == "true") {
 							  $('#edit-starParam-series').find("option").remove();
+							  $('#edit-starParam-series').append("<option value=''>--请选择--</option>"); 
 			            	  $.each(res.data.data ,function(){
 			            		  if(rows[0].series == this.id) {
 			            			  $('#edit-starParam-series').append("<option value='"+ this.code+"' selected>"+ this.name +"</option>"); 
@@ -928,10 +845,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 									$('#edit-starParam-series').append("<option value='"+ this.code+"'>"+ this.name +"</option>"); 
 			            		  }
 								});
+								 $('#edit-starParam-series').val(rows[0].series);
 			            		var seriesId = $('#edit-starParam-series').val();	
 			    				  $.get('<%=request.getContextPath()%>/starParam/getStarList', {'seriesId':seriesId},  function (res) {
 			    					  if(res.result == "true") {
 			    						  $('#edit-starParam-star').find("option").remove();
+			    						  $('#edit-starParam-star').append("<option value=''>--请选择--</option>"); 
 			    		            	  $.each(res.data.data ,function(){
 			    		            		  if(rows[0].star == this.id) {
 			    		            			  $('#edit-starParam-star').append("<option value='"+ this.code+"' selected>"+ this.name +"</option>"); 
@@ -951,90 +870,29 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			              }
 			          });
 					var parts = '';
-						if(rows[0].partsType == "飞轮") {
-							parts = "flywheel";
-						}else if(rows[0].partsType == "陀螺") {
-							parts = "top";
-						}
+					if(rows[0].partsType == "飞轮") {
+						parts = "flywheel";
+					}else if(rows[0].partsType == "陀螺") {
+						parts = "top";
+					}
 					 $.get('<%=request.getContextPath()%>/starParam/getConstraintList', {'seriesId':rows[0].series,'starId':rows[0].star,'partstype':parts},  function (res) {
-					$('#edit-starParam-paramCode').find("option").remove();
 					  if(res.result == "true") {
+					  		 $('#edit-starParam-paramCode').find("option").remove();
+					  		 $('#edit-starParam-paramCode').append("<option value=''>--请选择--</option>"); 
 			          	 	 $.each(res.data.data ,function(){
 									$('#edit-starParam-paramCode').append("<option value='"+ this.value+"'>"+ this.name +"</option>"); 
 								});
-			    			$('#edit-starParam-paramCode').val(rows[0].paramCode);
+			    			$("#edit-starParam-paramCode").select2().val(rows[0].paramCode).trigger("change");
 		              }
 		          });
-					  
-					$("#edit-starParam-series").change(function(){
-					 	var seriesId = $('#edit-starParam-series').val();	
-						  $.get('<%=request.getContextPath()%>/starParam/getStarList', {'seriesId':seriesId},  function (res) {
-							  if(res.result == "true") {
-								  $('#edit-starParam-star').find("option").remove();
-				            	  $.each(res.data.data ,function(){
-				            		  $('#edit-starParam-star').append("<option value='"+ this.code+"'>"+ this.name +"</option>"); 
-									});
-				              }
-				              else {
-				            	  top.showMsg('提示', res.msg);
-				              }
-				          });
-				          
-						    reqParamEdit();
-					});
-					$("#edit-starParam-star").change(function(){
-					    reqParamEdit();
-					});
-					
-					$("#edit-starParam-partsType").change(function(){
-						reqParamEdit();
-					});
-						$('#edit-starParam-id').val(rows[0].id);
-						$('#edit-starParam-series').val(rows[0].series);
-						$('#edit-starParam-star').val(rows[0].star);
-						
-						$('#edit-starParam-partsType').val(parts);
-						
-						$('#edit-starParam-effeMin').val(rows[0].effeMin);
-						$('#edit-starParam-effeMax').val(rows[0].effeMax);
-			
-					$('#editStarParamModal').modal('show');
-					$('#submit_editStarParamInfo').click(function(){
-					
-						var paramCode = $('#edit-starParam-paramCode').val();	
-			   			var effeMin = $('#edit-starParam-effeMin').val();
-			    		var effeMax = $('#edit-starParam-effeMax').val();
-						var flag =	validator(paramCode,effeMin,effeMax);
-						if(!flag) {
-							return false;
-						}
-						var toUrl='${pageContext.request.contextPath}/starParam/editStarParam';
-						var f = $('#editStarParamInfoForm');
-	                    f.form('submit', {
-	                        url: toUrl,
-	                        onsubmit: function () {
-	                            var flag = $(this).form('validate');
-	                            if (flag) {
-	                                top.showProcess(true, '温馨提示', '正在提交数据...');
-	                            }
-	                            return flag;
-	                        },
-	                        success: function (data) {
-	                            top.showProcess(false);
-	                            var map = $.parseJSON(data);
-	                            if (map.success) {
-	                                top.showMsg('提示', map.msg);
-	                                reloadDataGrid();
-	                            } else {
-	                            	top.alertMsg('错误', map.msg+"\n"+map.obj==null?"":map.obj);
-	                            }
-	                        },
-	                        onLoadError: function () {
-	                            top.showProcess(false);
-	                            top.$.messager.alert('温馨提示', '由于网络或服务器太忙，提交失败，请重试！');
-	                        }
-	                    });
-					});
+				 $('#edit-starParam-id').val(rows[0].id);
+				
+				 $('#edit-starParam-star').val(rows[0].star);
+				 $('#edit-starParam-partsType').val(parts);
+				 $('#edit-starParam-effeMin').val(rows[0].effeMin);
+				 $('#edit-starParam-effeMax').val(rows[0].effeMax);
+				 $('#editStarParamModal').modal('show');
+				
 
 				} else {
 					var names = [];
@@ -1049,6 +907,68 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			}
 
 		}
+		$("#edit-starParam-series").change(function(){
+		 	var seriesId = $('#edit-starParam-series').val();	
+			  $.get('<%=request.getContextPath()%>/starParam/getStarList', {'seriesId':seriesId},  function (res) {
+				  if(res.result == "true") {
+					  $('#edit-starParam-star').find("option").remove();
+					  $('#edit-starParam-star').append("<option value=''>--请选择--</option>"); 
+	            	  $.each(res.data.data ,function(){
+	            		  $('#edit-starParam-star').append("<option value='"+ this.code+"'>"+ this.name +"</option>"); 
+						});
+	              }
+	              else {
+	            	  top.showMsg('提示', res.msg);
+	              }
+	          });
+	          
+			    reqParamEdit();
+		});
+		$("#edit-starParam-star").change(function(){
+		    reqParamEdit();
+		});
+		
+		$("#edit-starParam-partsType").change(function(){
+			reqParamEdit();
+		});
+		$('#submit_editStarParamInfo').click(function(){
+			var paramCode = $('#edit-starParam-paramCode').val();	
+			var series = $('#edit-starParam-series').val();	
+			var star = $('#edit-starParam-star').val();	
+   			var effeMin = $('#edit-starParam-effeMin').val();
+    		var effeMax = $('#edit-starParam-effeMax').val();
+			var flag =	validator(series,star,paramCode,effeMin,effeMax);
+			if(!flag) {
+				return false;
+			}
+			var toUrl='${pageContext.request.contextPath}/starParam/editStarParam';
+			var f = $('#editStarParamInfoForm');
+            f.form('submit', {
+                url: toUrl,
+                onsubmit: function () {
+                    var flag = $(this).form('validate');
+                    if (flag) {
+                        top.showProcess(true, '温馨提示', '正在提交数据...');
+                    }
+                    return flag;
+                },
+                success: function (data) {
+                    top.showProcess(false);
+                    var map = $.parseJSON(data);
+                    if (map.success) {
+                        top.showMsg('提示', map.msg);
+                        reloadDataGrid();
+                    } else {
+                    	top.alertMsg('错误', map.msg+"\n"+map.obj==null?"":map.obj);
+                    }
+                },
+                onLoadError: function () {
+                    top.showProcess(false);
+                    top.$.messager.alert('温馨提示', '由于网络或服务器太忙，提交失败，请重试！');
+                }
+            });
+		});
+		
 		function getSelectId() {
 			var row = StarParamGrid.datagrid('getSelected');
 

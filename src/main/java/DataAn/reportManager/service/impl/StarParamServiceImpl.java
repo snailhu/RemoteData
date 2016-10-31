@@ -39,14 +39,14 @@ public class StarParamServiceImpl implements IStarParamService {
 	
 	
 	@Override
-	public Pager<StarParamDto> getStarParamList(int pageIndex, int pageSize, String series, String star, String partsType) throws Exception {
+	public Pager<StarParamDto> getStarParamList(int pageIndex, int pageSize, String series, String star, String partsType,String paramCode) throws Exception {
 
 		if(pageIndex == 0){
 			pageIndex = 1;
 		}
 		List<StarParamDto>  starParamModelList = new ArrayList<StarParamDto>();
 		Pager<StarParam> paramPager = starParamDao.selectByOption(pageIndex, pageSize, series, 
-				star, partsType);
+				star, partsType,paramCode); 
 		List<StarParam> userList = paramPager.getDatas();
 		for (StarParam starParam : userList) {
 			starParamModelList.add(pojoToDto(starParam));
@@ -130,8 +130,8 @@ public class StarParamServiceImpl implements IStarParamService {
 			starParam.setParameterType(j9Series_Star_Service.getFlyWheelParameterType(starParamDto.getSeries(),starParamDto.getStar(),starParamDto.getParamCode()));
 			starParam.setProductName(j9Series_Star_Service.getFlyWheelName(starParamDto.getSeries(),starParamDto.getStar(),starParamDto.getParamCode()));
 		}
-		starParam.setCreater(starParamDto.getCreater());
-		starParam.setCreateDate(new Date());
+		starParam.setEffeMax(starParamDto.getEffeMax());
+		starParam.setEffeMin(starParamDto.getEffeMin());
 		starParamDao.update(starParam);
 	}
 

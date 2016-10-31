@@ -20,7 +20,7 @@ public class StarParamDao extends BaseDaoImpl<StarParam> implements IStarParamDa
 	@SuppressWarnings("unchecked")
 	@Override
 	public Pager<StarParam> selectByOption(int pageIndex, int pageSize, String series, String star,
-			String partsType) {
+			String partsType,String paramCode) {
 		String hql = "from StarParam u where 1=1";
 		String countHql = "select count(*) from StarParam u where 1=1";
 		if(StringUtils.isNotBlank(series)){
@@ -34,6 +34,10 @@ public class StarParamDao extends BaseDaoImpl<StarParam> implements IStarParamDa
 		if(StringUtils.isNotBlank(partsType)){
 			hql += " and u.partsType = :partsType";
 			countHql += " and u.partsType = :partsType";
+		}
+		if(StringUtils.isNotBlank(paramCode)){
+			hql += " and u.paramCode = :paramCode";
+			countHql += " and u.paramCode = :paramCode";
 		}
 			hql += " order by u.createDate";
 		
@@ -50,6 +54,10 @@ public class StarParamDao extends BaseDaoImpl<StarParam> implements IStarParamDa
 		if(StringUtils.isNotBlank(partsType)){
 			query.setParameter("partsType", partsType);
 			countQuery.setParameter("partsType", partsType);
+		}
+		if(StringUtils.isNotBlank(paramCode)){
+			query.setParameter("paramCode", paramCode);
+			countQuery.setParameter("paramCode", paramCode);
 		}
 		Long totalCount = 0l;
 		Object obj = countQuery.uniqueResult();
@@ -70,12 +78,12 @@ public class StarParamDao extends BaseDaoImpl<StarParam> implements IStarParamDa
 		String hql = "select count(*) from  StarParam sp where "
 				+ "  sp.series = :series and "
 				+ "  sp.star = :star and"
-				+ "  sp.parameterType = :parameterType  and"
+				+ "  sp.partsType = :partsType  and"
 				+ "  sp.paramCode = :paramCode";
 		Query countQuery = this.getSession().createQuery(hql);
 		countQuery.setParameter("series", starParamDto.getSeries());
 		countQuery.setParameter("star", starParamDto.getStar());
-		countQuery.setParameter("parameterType", starParamDto.getParameterType());
+		countQuery.setParameter("partsType", starParamDto.getPartsType());
 		countQuery.setParameter("paramCode", starParamDto.getParamCode());
 		
 		Long totalCount = 0L;

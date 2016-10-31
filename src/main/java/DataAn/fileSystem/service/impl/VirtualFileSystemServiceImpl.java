@@ -107,7 +107,8 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 		new Thread(new SaveFileToKafka(nowSeries, 
 									   nowStar, 
 									   csvFileDto.getParameterType(), 
-									   csvTempFilePath)).start();
+									   csvTempFilePath,
+									   versions)).start();
 		
 		return versions;
 	}
@@ -116,18 +117,12 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 	@Transactional(readOnly = true)
 	public void deleteFile(String ids) {
 		String[] arrayIds = ids.split(",");
-		VirtualFileSystem file = null;
 		
 		for (String id : arrayIds) {
 			String[] items = id.split("/");
 			//遍历目录写文件
-			if("dir".equals(items[1])){
-				VirtualFileSystem dir = fileDao.get(Long.parseLong(items[0]));
-				this.deleteFile(dir);
-			}else{
-				file = fileDao.get(Long.parseLong(items[0]));
-				this.deleteFile(file);
-			}
+			VirtualFileSystem file = fileDao.get(Long.parseLong(items[0]));
+			this.deleteFile(file);
 		}
 		
 	}

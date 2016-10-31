@@ -104,7 +104,7 @@ public class ReportServiceImpl implements IReoportService {
 	}
 
 	@Override
-	public void reportDoc(String filename, DataToDocDto data, String imgPath, String templateUrl,String docPath)
+	public void reportDoc(String filename, DataToDocDto data, String templateUrl,String docPath)
 			throws Exception {
 		// 验证License		
         if (!AsposeLicenseManage.getAsposeLicense()) {
@@ -454,8 +454,8 @@ public class ReportServiceImpl implements IReoportService {
 	@Override
 	@Transactional(readOnly = true)
 	public Pager<MongoFSDto> getMongoFSList(int pageIndex, int pageSize, String series,String star, String partsType, 
-			long dirId, String beginTime, String endTime,String dataTypes) {
-		Pager<ReportFileSystem> pager = fileDao.selectByOption(series, star,partsType, dirId, beginTime, endTime, dataTypes, "updateDate",pageIndex,pageSize);
+			long dirId, String beginTime, String endTime ) { 
+		Pager<ReportFileSystem> pager = fileDao.selectByOption(series, star,partsType, dirId, beginTime, endTime, "updateDate",pageIndex,pageSize);
 		return returnPager(pageIndex, pageSize, pager.getRows(),pager.getTotalCount());
 	}
 	private Pager<MongoFSDto> returnPager(int pageIndex, int pageSize, List<ReportFileSystem> fileList,long totalCount){
@@ -556,7 +556,7 @@ public class ReportServiceImpl implements IReoportService {
 		}
 	}
 	@Override
-	public void createReport(Date beginDate,Date endDate,  String filename, String imgUrl, String templateUrl, 
+	public void createReport(Date beginDate,Date endDate,  String filename, String templateUrl, 
 			String docPath, String seriesId, String starId, String partsType) throws Exception { 
 		
 	
@@ -729,7 +729,7 @@ public class ReportServiceImpl implements IReoportService {
 		data.setTwoParamImg(twoParamImgList);
 		data.setThreeParamImg(threeParamImgList);
 		
-		reportDoc(filename, data, imgUrl, templateUrl, docPath);
+		reportDoc(filename, data, templateUrl, docPath);
 	}
 	@Override
 	public Map<String,List<ConstraintDto>> getConstraintDtoList(String seriesId, String starId,String partsType) {

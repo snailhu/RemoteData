@@ -31,7 +31,7 @@ public interface IReportFileSystemDao extends IBaseDao<ReportFileSystem> {
 			int pageIndex, int pageSize);
 
 	public Pager<ReportFileSystem> selectByOption(String series, String star, String partsType,
-			long parentId, String beginTime, String endTime, String dataTypes,
+			long parentId, String beginTime, String endTime,
 			String order, int pageIndex, int pageSize);
 
 	public List<ReportFileSystem> selectByFileTypeIsFileAndCachePathISNotNull();

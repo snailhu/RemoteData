@@ -125,6 +125,15 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 .form-horizontal {
     margin-bottom: 0px;
 }
+.icon-remove {
+    background: no-repeat center center;
+}
+.icon-edit {
+    background: no-repeat center center;
+}
+.icon-undo {
+    background: no-repeat center center;
+}
 </style>
 <script type="text/javascript">
 $(function() {
@@ -217,10 +226,10 @@ $(function() {
 						<button class="easyui-linkbutton" iconcls="icon-add" plain="true" style="float: left;" 
 							data-toggle="modal" data-target="#addRoleModal">创建</button>
 						<div class="datagrid-btn-separator"></div>
-						<button class="easyui-linkbutton" iconcls="icon-remove" plain="true" style="float: left;"
+						<button class="easyui-linkbutton" iconcls="icon-remove" plain="true" style="float: left;" 
 							onclick="deleteRole();">删除</button>
 						<div class="datagrid-btn-separator"></div>
-						<button class="easyui-linkbutton" iconcls="icon-edit" plain="true" style="float: left;"
+						<button class="easyui-linkbutton" iconcls="icon-edit" plain="true" style="float: left;" 
 							onclick="editRole();">编辑</button>
 						<div class="datagrid-btn-separator"></div>
 						<button class="easyui-linkbutton" iconcls="icon-undo" plain="true" style="float: left;"

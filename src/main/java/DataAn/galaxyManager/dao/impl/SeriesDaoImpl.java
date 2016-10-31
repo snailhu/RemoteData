@@ -21,7 +21,7 @@ public class SeriesDaoImpl extends BaseDaoImpl<Series> implements ISeriesDao {
 
 	@Override
 	public String getSeriesIdByName(String seriesName) {
-		String hql = "select s.id from Series s where s.name= ? ";
+		String hql = "select s.id from Series s where s.code= ? ";
 		return getSession().createQuery(hql).setParameter(0, seriesName).uniqueResult().toString();
 	}
 

@@ -132,7 +132,7 @@ public class ReportFileSystemDaoImpl extends BaseDaoImpl<ReportFileSystem> imple
 	@SuppressWarnings("unchecked")
 	@Override
 	public Pager<ReportFileSystem> selectByOption(String series, String star, String partsType, long parentId, 
-			String beginTime, String endTime, String dataTypes,String order, int pageIndex, int pageSize) {
+			String beginTime, String endTime,String order, int pageIndex, int pageSize) {
 		String hql = "from ReportFileSystem fs where fs.fileType=:fileType and fs.series=:series and fs.star=:star and fs.partsType=:partsType";
 		String countHql = "select count (*) from ReportFileSystem fs where fs.fileType=:fileType and fs.series=:series and fs.star=:star and fs.partsType=:partsType";
 		
@@ -147,10 +147,6 @@ public class ReportFileSystemDaoImpl extends BaseDaoImpl<ReportFileSystem> imple
 		if(StringUtils.isNotBlank(endTime)){
 			hql += " and fs.year_month_day<=:endTime";
 			countHql += " and fs.year_month_day<=:endTime";
-		}
-		if(StringUtils.isNotBlank(dataTypes)){
-			hql += " and fs.dataType in (:datatype)";	
-			countHql += " and fs.dataType in (:datatype)";
 		}
 		hql += " order by " + order;
 		Query query = this.getSession().createQuery(hql).setParameter("fileType", FileType.FILE)
@@ -173,15 +169,6 @@ public class ReportFileSystemDaoImpl extends BaseDaoImpl<ReportFileSystem> imple
 		if(StringUtils.isNotBlank(endTime)){
 			query.setParameter("endTime", endTime);
 			countQuery.setParameter("endTime", endTime);
-		}
-		if(StringUtils.isNotBlank(dataTypes)){
-			String[] types = dataTypes.split(",");
-			List<FileDataType> list = new ArrayList<FileDataType>();
-			for (String type : types) {
-				list.add(FileDataType.getType(type));
-			}
-			query.setParameterList("datatype", list);
-			countQuery.setParameterList("datatype", list);
 		}
 		Long totalCount = (Long) countQuery.uniqueResult();
 		//设置每页显示多少个，设置多大结果。  

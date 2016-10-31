@@ -33,7 +33,8 @@ public class StatusTrackingServiceImpl implements IStatusTrackingService {
 	}
 
 	@Override
-	public void updateStatusTracking(String fileName, String statusType, String userType) throws Exception {
+	public void updateStatusTracking(String fileName, String statusType, String userType, String exceptionInfo)
+			throws Exception {
 		// 判断是否已存在
 		boolean checkStatusTracking = statusTrackingDao.checkStatusTrackingByParams(fileName, userType);
 		if (checkStatusTracking) {
@@ -42,6 +43,7 @@ public class StatusTrackingServiceImpl implements IStatusTrackingService {
 			statusTracking.setFileName(fileName);
 			statusTracking.setStatusType(statusType);
 			statusTracking.setUserType(userType);
+			statusTracking.setExceptionInfo(exceptionInfo);
 			statusTrackingDao.update(statusTracking);
 		} else {
 			// 不存在则新增
@@ -49,6 +51,7 @@ public class StatusTrackingServiceImpl implements IStatusTrackingService {
 			statusTrackingDTO.setFileName(fileName);
 			statusTrackingDTO.setUserType(userType);
 			statusTrackingDTO.setStatusType(statusType);
+			statusTrackingDTO.setExceptionInfo(exceptionInfo);
 			addStatusTracking(statusTrackingDTO);
 		}
 	}

@@ -32,7 +32,7 @@ public class StarDaoImpl extends BaseDaoImpl<Star> implements IStarDao {
 
 	@Override
 	public String getStarIdByName(String starName) {
-		String hql = "select star.id from Star star where star.name=?";
+		String hql = "select star.id from Star star where star.code=?";
 		return getSession().createQuery(hql).setParameter(0, starName).uniqueResult().toString();
 	}
 

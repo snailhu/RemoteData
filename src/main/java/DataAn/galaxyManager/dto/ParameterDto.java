@@ -1,20 +1,27 @@
 package DataAn.galaxyManager.dto;
 
-public class ParameterDto {
+import java.io.Serializable;
+
+public class ParameterDto implements Serializable {
+
+	/**
+	 * serialVersionUID:TODO(用一句话描述这个变量表示什么).
+	 */
+	private static final long serialVersionUID = 1L;
 
 	private Long id;
-	
-	private String series; //系列 j9
-	
-	private String star; //星 01、02、03...
-	
-	private String parameterType; //参数类型 flywheel、top
-	
-	private String fullName; //参数全称如， F10W111:飞轮电流Xa(00814)
-	
-	private String simplyName; //参数简称 如， 飞轮电流Xa(00814)
-	
-	private String code; //码： sequence_00814
+
+	private String series; // 系列 j9
+
+	private String star; // 星 01、02、03...
+
+	private String parameterType; // 参数类型 flywheel、top
+
+	private String fullName; // 参数全称如， F10W111:飞轮电流Xa(00814)
+
+	private String simplyName; // 参数简称 如， 飞轮电流Xa(00814)
+
+	private String code; // 码： sequence_00814
 
 	public Long getId() {
 		return id;
@@ -74,11 +81,8 @@ public class ParameterDto {
 
 	@Override
 	public String toString() {
-		return "ParameterDto [id=" + id + ", series=" + series + ", star="
-				+ star + ", parameterType=" + parameterType + ", fullName="
-				+ fullName + ", simplyName=" + simplyName + ", code=" + code
-				+ "]";
+		return "ParameterDto [id=" + id + ", series=" + series + ", star=" + star + ", parameterType=" + parameterType
+				+ ", fullName=" + fullName + ", simplyName=" + simplyName + ", code=" + code + "]";
 	}
-	
-	
+
 }

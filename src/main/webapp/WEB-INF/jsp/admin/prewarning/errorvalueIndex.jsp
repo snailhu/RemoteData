@@ -61,6 +61,8 @@
 <link rel="stylesheet"
 	href="<%=request.getContextPath()%>/static/select2/select2.min.css"
 	type="text/css" />
+<link rel="stylesheet"
+	href="<%=request.getContextPath()%>/static/css/all.css" type="text/css" />
 
 <script type="text/javascript"
 	src="<%=request.getContextPath()%>/static/jqwidgets/jqxcore.js"></script>
@@ -329,8 +331,10 @@
 
 	<div class="main-content">
 		<div class="page-content">
-			<div class="page-header" style="margin: 0px; float: left;">
-				<h1>异常参数配置</h1>
+			<div class="daohanglancs">
+				<img
+					src="<%=request.getContextPath()%>/static/imgs/DataImport/home.png">
+				<span>位置:</span> <span>预警管理></span> <span>异常参数配置</span>
 			</div>
 			<!-- /.page-header -->
 
@@ -353,9 +357,9 @@
 									role="form">
 									<div class="space-1"></div>
 									<div class="form-group">
-										<label class="col-sm-3 control-label no-padding-right"
+										<label class="col-sm-4 control-label no-padding-right"
 											for="search-series"> 星系 </label>
-										<div class="col-sm-9">
+										<div class="col-sm-8">
 											<select class="col-xs-10 col-sm-5" id="search-series"
 												name="series">
 												<option value="">--请选择--</option>
@@ -364,9 +368,9 @@
 									</div>
 									<div class="space-4"></div>
 									<div class="form-group">
-										<label class="col-sm-3 control-label no-padding-right"
+										<label class="col-sm-4 control-label no-padding-right"
 											for="search-star"> 星</label>
-										<div class="col-sm-9">
+										<div class="col-sm-8">
 											<select class="col-xs-10 col-sm-5" id="search-star"
 												name="star">
 												<option value="">--请选择--</option>
@@ -375,9 +379,9 @@
 									</div>
 									<div class="space-4"></div>
 									<div class="form-group">
-										<label class="col-sm-3 control-label no-padding-right"
+										<label class="col-sm-4 control-label no-padding-right"
 											for="search-parameterType"> 设备 </label>
-										<div class="col-sm-9">
+										<div class="col-sm-8">
 											<select class="col-xs-10 col-sm-5" id="search-parameterType"
 												name="parameterType">
 												<option value="">--请选择--</option>
@@ -388,23 +392,22 @@
 									</div>
 									<div class="space-4"></div>
 									<div class="form-group">
-										<label class="col-sm-3 control-label no-padding-right"
+										<label class="col-sm-4 control-label no-padding-right"
 											for="search-parameter"> 参数 </label>
-										<div class="col-sm-9">
+										<div class="col-sm-8">
 											<select class="col-xs-10 col-sm-5 select2"
 												style="width: 41.7%;" id="search-parameter" name="parameter">
 												<option value="">--请选择--</option>
 											</select>
 										</div>
 									</div>
-									<div class="space-4"></div>
+									<div class="space-8"></div>
 									<div class="form-group">
-										<div class="col-lg-4 col-lg-offset-6">
-											<button type="button" id="btn-search"
-												class="btn btn-primary start">
+										<div class="col-lg-4 col-lg-offset-4">
+											<button type="button" id="btn-search" class="subbutton_1">
 												<i></i> <span>搜索</span>
 											</button>
-											<button type="reset" class="btn btn-warning cancel">
+											<button type="reset" class="cancelbutton_1">
 												<i></i> <span>取消</span>
 											</button>
 										</div>
@@ -427,8 +430,7 @@
 			<!-- 创建参数 -->
 			<div class="modal fade" id="addValueModal" role="dialog"
 				aria-labelledby="addValueModalLabel">
-				<div class="modal-dialog" role="document"
-					style="margin: 55px -300px">
+				<div class="modal-dialog" role="document" style="margin: 55px 30%">
 					<div class="modal-content">
 						<form id="addValueInfoForm" class="form-horizontal" role="form"
 							style="margin: 0px;">
@@ -503,11 +505,11 @@
 								</div>
 							</div>
 							<div class="modal-footer">
-								<div class="col-lg-4 col-lg-offset-5">
-									<button type="button" class="btn btn-default"
-										id="reset_addValueInfo" data-dismiss="modal">关闭</button>
-									<button type="submit" class="btn btn-primary"
+								<div class="col-lg-7 col-lg-offset-3">
+									<button type="submit" class="subbutton_1"
 										id="submit_addValueInfo" data-dismiss="modal">确定</button>
+									<button type="button" class="cancelbutton_1"
+										id="reset_addValueInfo" data-dismiss="modal">关闭</button>
 								</div>
 							</div>
 						</form>
@@ -517,8 +519,7 @@
 			<!-- 编辑参数 -->
 			<div class="modal fade" id="editValueModal" role="dialog"
 				aria-labelledby="editValueModalLabel">
-				<div class="modal-dialog" role="document"
-					style="margin: 55px -300px">
+				<div class="modal-dialog" role="document" style="margin: 55px 30%">
 					<div class="modal-content">
 						<form id="editValueInfoForm" class="form-horizontal" role="form"
 							style="margin: 0px;">
@@ -594,11 +595,11 @@
 								</div>
 							</div>
 							<div class="modal-footer">
-								<div class="col-lg-4 col-lg-offset-5">
-									<button type="button" class="btn btn-default"
-										id="reset_editValueInfo" data-dismiss="modal">关闭</button>
-									<button type="submit" class="btn btn-primary"
+								<div class="col-lg-7 col-lg-offset-3">
+									<button type="submit" class="subbutton_1"
 										id="submit_editValueInfo" data-dismiss="modal">确定</button>
+									<button type="button" class="cancelbutton_1"
+										id="reset_editValueInfo" data-dismiss="modal">关闭</button>
 								</div>
 							</div>
 						</form>
@@ -673,32 +674,32 @@
 									field : 'series',
 									title : '星系',
 									width : 100,
-									sortable:true
+									//sortable:true
 								},{
 									field : 'star',
 									title : '星',
 									width : 100,
-									sortable:true
+									//sortable:true
 								}, {
 									field : 'parameterType',
 									title : '设备',
 									width : 100,
-									sortable:true
+									//sortable:true
 								}, {
 									field : 'parameter',
 									title : '参数',
 									width : 200,
-									sortable:true
+									//sortable:true
 								}, {
 									field : 'maxVal',
 									title : '最大值',
 									width : 100,
-									sortable:true
+									//sortable:true
 								}, {
 									field : 'minVal',
 									title : '最小值',
 									width : 100,
-									sortable:true
+									//sortable:true
 								} ] ],
 
 								toolbar : [ {
@@ -803,13 +804,14 @@
         
         $("#search-parameterType").change(function(){
 		 	var parameterType = $('#search-parameterType').val();	
-			  $.get('<%=request.getContextPath()%>/admin/prewarning/getParamList', {'parameterType':parameterType},  function (res) {
+		 	var seriesId = $('#search-series').val();
+			  $.get('<%=request.getContextPath()%>/admin/prewarning/getParamList', {'parameterType':parameterType, 'series':seriesId},  function (res) {
 				  if(res) {
 					  $('#search-parameter').find("option").remove();
 					  $('#search-parameter').append("<option value=''>--请选择--</option>"); 
 	            	  $.each(res.paramaters ,function(){
-	            		    if(this.value){
-	            		    	$('#search-parameter').append("<option value='"+ this.value+"'>"+ this.name +"</option>"); 
+	            		    if(this.code){
+	            		    	$('#search-parameter').append("<option value='"+ this.code+"'>"+ this.simplyName +"</option>"); 
 	            		    }
 						});
 	            	  $("#search-parameter").select2().val("").trigger("change");
@@ -822,13 +824,14 @@
         
         $("#add-parameterType").change(function(){
 		 	var parameterType = $('#add-parameterType').val();	
-			  $.get('<%=request.getContextPath()%>/admin/prewarning/getParamList', {'parameterType':parameterType},  function (res) {
+		 	var seriesId = $('#add-series').val();
+			  $.get('<%=request.getContextPath()%>/admin/prewarning/getParamList', {'parameterType':parameterType, 'series':seriesId},  function (res) {
 				  if(res) {
 					  $('#add-parameter').find("option").remove();
 					  $('#add-parameter').append("<option value=''>--请选择--</option>"); 
 	            	  $.each(res.paramaters ,function(){
-	            		    if(this.value){
-	            		    	$('#add-parameter').append("<option value='"+ this.value+"'>"+ this.name +"</option>"); 
+	            		    if(this.code){
+	            		    	$('#add-parameter').append("<option value='"+ this.code+"'>"+ this.simplyName +"</option>"); 
 	            		    }
 						});
 	            	  $("#add-parameter").select2().val("").trigger("change");
@@ -841,13 +844,14 @@
         
         $("#edit-parameterType").change(function(){
 		 	var parameterType = $('#edit-parameterType').val();	
-			  $.get('<%=request.getContextPath()%>/admin/prewarning/getParamList', {'parameterType':parameterType},  function (res) {
+		 	var seriesId = $('#edit-series').val();
+			  $.get('<%=request.getContextPath()%>/admin/prewarning/getParamList', {'parameterType':parameterType, 'series':seriesId},  function (res) {
 				  if(res) {
 					  $('#edit-parameter').find("option").remove();
 					  $('#edit-parameter').append("<option value=''>--请选择--</option>"); 
 	            	  $.each(res.paramaters ,function(){
-	            		    if(this.value){
-	            		    	$('#edit-parameter').append("<option value='"+ this.value+"'>"+ this.name +"</option>"); 
+	            		    if(this.code){
+	            		    	$('#edit-parameter').append("<option value='"+ this.code+"'>"+ this.simplyName +"</option>"); 
 	            		    }
 						});
 	            	  $("#edit-parameter").select2().val("").trigger("change");
@@ -1021,9 +1025,20 @@
 																		.each(
 																				res.paramaters,
 																				function() {
-																					if (this.value) {
-																						$('#edit-parameter').append("<option value='"+ this.value+"'>"+ this.name +"</option>"); 
-															            		    	$("#edit-parameter").select2().val(data.parameter).trigger("change");
+																					if (this.code) {
+																						$(
+																								'#edit-parameter')
+																								.append(
+																										"<option value='"+ this.code+"'>"
+																												+ this.simplyName
+																												+ "</option>");
+																						$(
+																								"#edit-parameter")
+																								.select2()
+																								.val(
+																										data.parameter)
+																								.trigger(
+																										"change");
 																					}
 																				});
 

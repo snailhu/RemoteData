@@ -106,7 +106,7 @@
 											<div class="select">
 												<input type="checkbox"></input>
 												<span class="next">下次自动登录</span>
-												<span class="forget">忘记密码？</span>
+												<!--span class="forget">忘记密码？</span -->
 											</div>
 											<div class="space"></div>
 											<div class="clearfix">

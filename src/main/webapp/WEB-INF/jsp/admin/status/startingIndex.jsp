@@ -19,7 +19,8 @@
 <meta http-equiv="description" content="This is my page">
 
 <jsp:include page="/WEB-INF/jsp/inc/include-easyUI.jsp"></jsp:include>
-
+<link rel="stylesheet"
+	href="<%=request.getContextPath()%>/static/css/all.css" type="text/css" />
 <link type="text/css" rel="stylesheet"
 	href="${pageContext.request.contextPath}/static/ystep/css/ystep.css">
 

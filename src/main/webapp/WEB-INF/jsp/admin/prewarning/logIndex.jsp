@@ -19,6 +19,8 @@
 <meta http-equiv="description" content="This is my page">
 
 <jsp:include page="/WEB-INF/jsp/inc/include-easyUI.jsp"></jsp:include>
+<link rel="stylesheet"
+	href="<%=request.getContextPath()%>/static/css/all.css" type="text/css" />
 <!-- 弹出框 -->
 <link rel="stylesheet" type="text/css"
 	href="${pageContext.request.contextPath}/static/content/sweetalert/dist/sweetalert.css">
@@ -175,8 +177,10 @@
 <body>
 	<div class="main-content">
 		<div class="page-content">
-			<div class="page-header" style="margin: 0px; float: left;">
-				<h1>预警信息列表</h1>
+			<div class="daohanglancs">
+				<img
+					src="<%=request.getContextPath()%>/static/imgs/DataImport/home.png">
+				<span>位置:</span> <span>预警管理></span> <span>预警查询</span>
 			</div>
 			<!-- /.page-header -->
 
@@ -199,9 +203,9 @@
 									role="form">
 									<div class="space-1"></div>
 									<div class="form-group">
-										<label class="col-sm-3 control-label no-padding-right"
+										<label class="col-sm-4 control-label no-padding-right"
 											for="search-warningType"> 预警类型 </label>
-										<div class="col-sm-9">
+										<div class="col-sm-8">
 											<select class="col-xs-10 col-sm-5" id="search-warningType"
 												name="warningType">
 												<option value="">--请选择--</option>
@@ -212,21 +216,20 @@
 									</div>
 									<div class="space-4"></div>
 									<div class="form-group">
-										<label class="col-sm-3 control-label no-padding-right"
+										<label class="col-sm-4 control-label no-padding-right"
 											for="search-series"> 星系 </label>
-										<div class="col-sm-9">
+										<div class="col-sm-8">
 											<select class="col-xs-10 col-sm-5" id="search-series"
 												name="series">
 												<option value="">--请选择--</option>
-												<option value="1">j9</option>
 											</select> <label class="mustchoose">*</label>
 										</div>
 									</div>
 									<div class="space-4"></div>
 									<div class="form-group">
-										<label class="col-sm-3 control-label no-padding-right"
+										<label class="col-sm-4 control-label no-padding-right"
 											for="search-star"> 星</label>
-										<div class="col-sm-9">
+										<div class="col-sm-8">
 											<select class="col-xs-10 col-sm-5" id="search-star"
 												name="star">
 												<option value="">--请选择--</option>
@@ -235,9 +238,9 @@
 									</div>
 									<div class="space-4"></div>
 									<div class="form-group">
-										<label class="col-sm-3 control-label no-padding-right"
+										<label class="col-sm-4 control-label no-padding-right"
 											for="search-parameterType"> 设备 </label>
-										<div class="col-sm-9">
+										<div class="col-sm-8">
 											<select class="col-xs-10 col-sm-5" id="search-parameterType"
 												name="parameterType">
 												<option value="">--请选择--</option>
@@ -248,9 +251,9 @@
 									</div>
 									<div class="space-4"></div>
 									<div class="form-group">
-										<label class="col-sm-3 control-label no-padding-right"
+										<label class="col-sm-4 control-label no-padding-right"
 											for="search-parameter"> 参数 </label>
-										<div class="col-sm-9">
+										<div class="col-sm-8">
 											<select class="col-xs-10 col-sm-5 select2"
 												style="width: 41.7%;" id="search-parameter" name="parameter">
 												<option value="">--请选择--</option>
@@ -259,9 +262,9 @@
 									</div>
 									<div class="space-4"></div>
 									<div class="form-group">
-										<label class="col-sm-3 control-label no-padding-right"
+										<label class="col-sm-4 control-label no-padding-right"
 											for="search-createdatetimeStart"> 创建开始时间 </label>
-										<div class="col-sm-9">
+										<div class="col-sm-8">
 											<input type="text" id="search-createdatetimeStart"
 												name="createdatetimeStart" placeholder="创建开始时间"
 												class="col-xs-10 col-sm-5" />
@@ -270,23 +273,22 @@
 									</div>
 									<div class="space-4"></div>
 									<div class="form-group">
-										<label class="col-sm-3 control-label no-padding-right"
+										<label class="col-sm-4 control-label no-padding-right"
 											for="search-createdatetimeEnd"> 创建结束时间 </label>
-										<div class="col-sm-9">
+										<div class="col-sm-8">
 											<input type="text" id="search-createdatetimeEnd"
 												name="createdatetimeEnd" placeholder="创建结束时间"
 												class="col-xs-10 col-sm-5" />
 											<div id="getEndTime"></div>
 										</div>
 									</div>
-									<div class="space-4"></div>
+									<div class="space-8"></div>
 									<div class="form-group">
-										<div class="col-lg-4 col-lg-offset-6">
-											<button type="button" id="btn-search"
-												class="btn btn-primary start">
+										<div class="col-lg-4 col-lg-offset-4">
+											<button type="button" id="btn-search" class="subbutton_1">
 												<i></i> <span>搜索</span>
 											</button>
-											<button type="reset" class="btn btn-warning cancel">
+											<button type="reset" class="cancelbutton_1">
 												<i></i> <span>取消</span>
 											</button>
 										</div>
@@ -418,6 +420,17 @@ jeDate({
 									}
 								} ]
 							});
+        	
+        	$.get('<%=request.getContextPath()%>/starParam/getSeriesList', {}, function (res) {
+   			  if(res.result == "true") {
+               	  $.each(res.data.data ,function(){
+   						$('#search-series').append("<option value='"+ this.id+"'>"+ this.description +"</option>"); 
+   					});
+                 }
+                 else {
+               	  top.showMsg('提示', res.msg);
+                 }
+             });
 
 		});
         
@@ -442,7 +455,8 @@ jeDate({
 		 	var seriesId = $('#search-series').val();
 			  $.get('<%=request.getContextPath()%>/admin/prewarning/getParamList',
 											{
-												'parameterType' : parameterType, 'series':seriesId
+												'parameterType' : parameterType,
+												'series' : seriesId
 											},
 											function(res) {
 												if (res) {
@@ -541,10 +555,10 @@ jeDate({
 									star = rows[i].star;
 									parameterType = rows[i].parameterType;
 									series = rows[i].series;
-									if(rows[i].warningType=='特殊工况'){
-										warningType = "0";	
-									}else{
-										warningType = "1";	
+									if (rows[i].warningType == '特殊工况') {
+										warningType = "0";
+									} else {
+										warningType = "1";
 									}
 								}
 								$

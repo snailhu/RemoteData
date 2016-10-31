@@ -19,6 +19,8 @@
 <meta http-equiv="description" content="This is my page">
 
 <jsp:include page="/WEB-INF/jsp/inc/include-easyUI.jsp"></jsp:include>
+<link rel="stylesheet"
+	href="<%=request.getContextPath()%>/static/css/all.css" type="text/css" />
 <!-- 弹出框 -->
 <link rel="stylesheet" type="text/css"
 	href="${pageContext.request.contextPath}/static/content/sweetalert/dist/sweetalert.css">
@@ -162,8 +164,10 @@
 <body>
 	<div class="main-content">
 		<div class="page-content">
-			<div class="page-header" style="margin: 0px; float: left;">
-				<h1>已结束列表</h1>
+			<div class="daohanglancs">
+				<img
+					src="<%=request.getContextPath()%>/static/imgs/DataImport/home.png">
+				<span>位置:</span> <span>预警管理></span> <span>预警查询</span>
 			</div>
 			<!-- /.page-header -->
 
@@ -186,18 +190,18 @@
 									role="form">
 									<div class="space-1"></div>
 									<div class="form-group">
-										<label class="col-sm-3 control-label no-padding-right"
+										<label class="col-sm-4 control-label no-padding-right"
 											for="search-series"> 文件名 </label>
-										<div class="col-sm-9">
+										<div class="col-sm-8">
 											<input type="text" id="search-fileName" name="fileName"
 												placeholder="文件名" class="col-xs-10 col-sm-5" /> </select>
 										</div>
 									</div>
 									<div class="space-4"></div>
 									<div class="form-group">
-										<label class="col-sm-3 control-label no-padding-right"
+										<label class="col-sm-4 control-label no-padding-right"
 											for="search-status"> 状态</label>
-										<div class="col-sm-9">
+										<div class="col-sm-8">
 											<select class="col-xs-10 col-sm-5" id="search-statusType"
 												name="statusType">
 												<option value="">--请选择--</option>
@@ -208,9 +212,9 @@
 									</div>
 									<div class="space-4"></div>
 									<div class="form-group">
-										<label class="col-sm-3 control-label no-padding-right"
+										<label class="col-sm-4 control-label no-padding-right"
 											for="search-createdatetimeStart"> 创建开始时间 </label>
-										<div class="col-sm-9">
+										<div class="col-sm-8">
 											<input type="text" id="search-createdatetimeStart"
 												name="createdatetimeStart" placeholder="创建开始时间"
 												class="col-xs-10 col-sm-5" />
@@ -219,23 +223,22 @@
 									</div>
 									<div class="space-4"></div>
 									<div class="form-group">
-										<label class="col-sm-3 control-label no-padding-right"
+										<label class="col-sm-4 control-label no-padding-right"
 											for="search-createdatetimeEnd"> 创建结束时间 </label>
-										<div class="col-sm-9">
+										<div class="col-sm-8">
 											<input type="text" id="search-createdatetimeEnd"
 												name="createdatetimeEnd" placeholder="创建结束时间"
 												class="col-xs-10 col-sm-5" />
 											<div id="getEndTime"></div>
 										</div>
 									</div>
-									<div class="space-4"></div>
+									<div class="space-8"></div>
 									<div class="form-group">
-										<div class="col-lg-4 col-lg-offset-6">
-											<button type="button" id="btn-search"
-												class="btn btn-primary start">
+										<div class="col-lg-4 col-lg-offset-4">
+											<button type="button" id="btn-search" class="subbutton_1">
 												<i></i> <span>搜索</span>
 											</button>
-											<button type="reset" class="btn btn-warning cancel">
+											<button type="reset" class="cancelbutton_1">
 												<i></i> <span>取消</span>
 											</button>
 										</div>
@@ -253,32 +256,33 @@
 			<!-- 异常详情 -->
 			<div class="modal fade" id="exceptionInfoModal" role="dialog"
 				aria-labelledby="exceptionInfoModalLabel">
-				<div class="modal-dialog" role="document"
-					style="margin: 55px -300px">
+				<div class="modal-dialog" role="document" style="margin: 55px 30%">
 					<div class="modal-content">
-						<div class="modal-header">
-							<button type="button" class="close" data-dismiss="modal"
-								aria-label="Close">
-								<span aria-hidden="true">&times;</span>
-							</button>
-							<h4 class="modal-title" id="exceptionInfoModalLabel">异常信息</h4>
-						</div>
-						<div class="modal-body">
-							<div class="form-group">
-								<label class="col-sm-3 control-label no-padding-right"
-									for="edit-series"> 详情: </label>
-								<div class="col-sm-8">
-									<textarea rows="5" cols="20" id="exceptionInfoModalArea"
-										class="form-control"></textarea>
+						<form class="form-horizontal" role="form" style="margin: 0px;">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal"
+									aria-label="Close">
+									<span aria-hidden="true">&times;</span>
+								</button>
+								<h4 class="modal-title" id="exceptionInfoModalLabel">异常信息</h4>
+							</div>
+							<div class="modal-body">
+								<div class="form-group">
+									<label class="col-sm-3 control-label no-padding-right"
+										for="edit-series"> 详情: </label>
+									<div class="col-sm-8">
+										<textarea rows="5" cols="20" id="exceptionInfoModalArea"
+											class="form-control"></textarea>
+									</div>
 								</div>
 							</div>
-						</div>
-						<div class="modal-footer">
-							<div class="col-lg-4 col-lg-offset-5">
-								<button type="button" class="btn btn-default"
-									id="closeExceptionInfoModal" data-dismiss="modal">关闭</button>
+							<div class="modal-footer">
+								<div class="col-lg-4 col-lg-offset-4">
+									<button type="button" class="cancelbutton_1"
+										id="closeExceptionInfoModal" data-dismiss="modal">关闭</button>
+								</div>
 							</div>
-						</div>
+						</form>
 					</div>
 				</div>
 			</div>
@@ -346,17 +350,17 @@ jeDate({
 									field : 'fileName',
 									title : '文件名',
 									width : 100,
-									//sortable : true
+								//sortable : true
 								}, {
 									field : 'createDate',
 									title : '上传时间',
 									width : 100,
-									//sortable : true
+								//sortable : true
 								}, {
 									field : 'statusType',
 									title : '状态',
 									width : 100,
-									//sortable : true
+								//sortable : true
 								}, {
 									field : 'exceptionInfo',
 									title : '操作',

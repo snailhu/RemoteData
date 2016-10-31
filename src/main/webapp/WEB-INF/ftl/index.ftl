@@ -17,7 +17,7 @@
                 <span>|</span>
                 <span><a href="login">登陆</a></span>
                 <span>|</span>
-                <span>< href='${base}/loginOut'>注销</a></span>
+                <span><a href='${base}/loginOut'>注销</a></span>
             </div>
         </div>
     </div>

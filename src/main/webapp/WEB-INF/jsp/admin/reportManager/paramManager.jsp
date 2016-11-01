@@ -227,6 +227,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				}
 			}
 		});
+		$('#addStarParamModal').on('hide.bs.modal', function () {
+			$('#addStarParamInfoForm').data('bootstrapValidator').resetForm(true);
+		})
+		
+		
 		$('#reset_addStarParam').click(function() {
 			$('#addStarParamInfoForm').data('bootstrapValidator').resetForm(true);
 		});
@@ -287,6 +292,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				}
 			}
 		});
+		$('#editStarParamModal').on('hide.bs.modal', function () {
+			$('#editStarParamInfoForm').data('bootstrapValidator').resetForm(true);
+		})
 		$('#reset_editStarParam').click(function() {
 			$('#editStarParamInfoForm').data('bootstrapValidator').resetForm(true);
 		});
@@ -386,7 +394,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			</table>
 			
 			<!-- 创建用户 -->
-			<div class="modal fade" id="addStarParamModal" data-backdrop="static" data-keyboard="false"  tabindex="-1" role="dialog" aria-labelledby="addStarParamModalLabel">
+			<div class="modal fade" id="addStarParamModal" tabindex="-1" role="dialog" aria-labelledby="addStarParamModalLabel">
 				<div class="modal-dialog" role="document">
 					<div class="modal-content">
 						<form id="addStarParamInfoForm" class="form-horizontal" role="form" style="margin: 0px;">
@@ -458,7 +466,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				</div>
 			</div>
 			<!-- 编辑用户 -->
-			<div class="modal fade" id="editStarParamModal" data-backdrop="static" data-keyboard="false"  tabindex="-1" role="dialog" aria-labelledby="editStarParamModalLabel">
+			<div class="modal fade" id="editStarParamModal" tabindex="-1" role="dialog" aria-labelledby="editStarParamModalLabel">
 				<div class="modal-dialog" role="document" >
 					<div class="modal-content">
 						<form id="editStarParamInfoForm" class="form-horizontal" role="form" style="margin: 0px;">

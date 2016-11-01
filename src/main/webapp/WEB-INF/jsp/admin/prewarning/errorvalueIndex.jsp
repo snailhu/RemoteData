@@ -247,6 +247,9 @@
 					validators : {
 						notEmpty : {
 							message : '最大值不能为空'
+						},
+						numeric : {
+							message : '最大值必须为数字'
 						}
 					}
 				},
@@ -254,6 +257,9 @@
 					validators : {
 						notEmpty : {
 							message : '最小值不能为空'
+						},
+						numeric : {
+							message : '最小值必须为数字'
 						}
 					}
 				}
@@ -261,6 +267,7 @@
 		});
 		$('#reset_addValueInfo').click(function() {
 			$('#addValueInfoForm').data('bootstrapValidator').resetForm(true);
+			$("#add-parameter").select2().val("").trigger("change");
 		});
 		$('#editValueInfoForm').bootstrapValidator({
 			message : '这个值不能为空！',
@@ -302,6 +309,9 @@
 					validators : {
 						notEmpty : {
 							message : '最大值不能为空'
+						},
+						numeric : {
+							message : '最大值必须为数字'
 						}
 					}
 				},
@@ -309,6 +319,9 @@
 					validators : {
 						notEmpty : {
 							message : '最小值不能为空'
+						},
+						numeric : {
+							message : '最小值必须为数字'
 						}
 					}
 				}
@@ -316,6 +329,7 @@
 		});
 		$('#reset_editValueInfo').click(function() {
 			$('#editValueInfoForm').data('bootstrapValidator').resetForm(true);
+			$("#edit-parameter").select2().val("").trigger("change");
 		});
 		$('#vss').click(function() {
 			$('#addValueInfoForm').bootstrapValidator('validate');
@@ -407,7 +421,7 @@
 											<button type="button" id="btn-search" class="subbutton_1">
 												<i></i> <span>搜索</span>
 											</button>
-											<button type="reset" class="cancelbutton_1">
+											<button type="reset" class="cancelbutton_1" id="btn-reset">
 												<i></i> <span>取消</span>
 											</button>
 										</div>
@@ -867,6 +881,10 @@
 			valueGrid.datagrid('reload');
 		}
 
+		$('#btn-reset').click(function(){
+			$("#search-parameter").select2().val("").trigger("change");
+		});
+		
 		//快速搜索按钮
 		$('#btn-search').click(function() {
 			// 			var node = $('#deptTree').tree('getSelected');

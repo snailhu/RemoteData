@@ -346,8 +346,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 										<div class="col-sm-3">
 											<select name="partsType"  id="form-partsType" class="form-control " >
 				                           		<option selected="selected" value="">--请选择--</option>
-				                           		<option  value = "flywheel">飞轮</option>
-				                           		<option value = "top">陀螺</option>
 				                       		</select>
 										</div>
 									</div>
@@ -420,8 +418,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 									<div class="col-sm-8">
 										<select name="partsType"  id="add-starParam-partsType" class="form-control " >
 										   <option selected="selected" value="">--请选择--</option>
-				                           <option  value = "flywheel">飞轮</option>
-				                           <option value = "top">陀螺</option>
 				                       </select>
 									</div>
 								</div>
@@ -571,6 +567,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	</div><!-- /.main-content -->
 <script type="text/javascript">
 
+		var activeUser = '${activeUser}';
 		var StarParamGrid;
 		var deptTree;
         $(function () {
@@ -648,6 +645,17 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                     }
                 }]
             });
+		
+		if(activeUser != ''){
+				var permissionItemsJSON = '${activeUser.permissionItemsJSON}';
+				var map = $.parseJSON(permissionItemsJSON); 
+				if(map.flywheel == 'flywheel'){
+					$("#form-partsType").append(" <option value = 'flywheel'>飞轮</option>"); 
+				}
+				if(map.top == 'top'){
+					$("#form-partsType").append(" <option value = 'top'>陀螺</option>"); 
+				}
+			}
 
             $.get('<%=request.getContextPath()%>/starParam/getSeriesList', {}, function (res) {
   			  if(res.result == "true") {
@@ -795,7 +803,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			 $('#add-starParam-series').find("option").remove();
 			 $('#add-starParam-star').find("option").remove();
 			 $('#add-starParam-partsType').val('');
-			$("#add-starParam-paramCode").select2().val("").trigger("change");
+			 $("#add-starParam-paramCode").select2().val("").trigger("change");
 		  	 $.get('<%=request.getContextPath()%>/starParam/getSeriesList', {}, function (res) {
 			   if(res.result == "true") {
 			   	  $('#add-starParam-series').find("option").remove();
@@ -822,6 +830,16 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
             	  top.showMsg('提示', res.msg);
               }
           });
+          if(activeUser != ''){
+				var permissionItemsJSON = '${activeUser.permissionItemsJSON}';
+				var map = $.parseJSON(permissionItemsJSON); 
+				if(map.flywheel == 'flywheel'){
+					$("#add-starParam-partsType").append(" <option value = 'flywheel'>飞轮</option>"); 
+				}
+				if(map.top == 'top'){
+					$("#add-starParam-partsType").append(" <option value = 'top'>陀螺</option>"); 
+				}
+			}
 			$('#addStarParamModal').modal('show');
 		}
 		$("#add-starParam-series").change(function(){

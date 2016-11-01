@@ -182,8 +182,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 										<label class="col-sm-5 control-label no-padding-right" for="form-partsType">设备：</label>
 										<div class="col-sm-3">
 											<select name="partsType"  id="form-partsType" class="form-control " >
-				                           		<option selected="selected" value = "flywheel">飞轮</option>
-				                           		<option value = "top">陀螺</option>
 				                       		</select>
 										</div>
 									</div>
@@ -227,7 +225,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		</div><!-- /.page-content -->
 	</div><!-- /.main-content -->
 <script type="text/javascript">
-
+	var activeUser = '${activeUser}';
 $(function(){
 	  
 	  $('#getBeginTime').calendar({
@@ -248,6 +246,17 @@ $(function(){
 	        onClose: function (view, date, data) {
 	        }
 	    });
+
+		 if(activeUser != ''){
+				var permissionItemsJSON = '${activeUser.permissionItemsJSON}';
+				var map = $.parseJSON(permissionItemsJSON); 
+				if(map.flywheel == 'flywheel'){
+					$("#form-partsType").append(" <option value = 'flywheel'>飞轮</option>"); 
+				}
+				if(map.top == 'top'){
+					$("#form-partsType").append(" <option value = 'top'>陀螺</option>"); 
+				}
+			}
 
       $.get('<%=request.getContextPath()%>/starParam/getSeriesList', {}, function (res) {
 		  if(res.result == "true") {

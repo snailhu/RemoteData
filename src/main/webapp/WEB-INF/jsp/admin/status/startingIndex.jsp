@@ -164,7 +164,7 @@ p, span, b, div {
 				<h1>正在处理中的流程</h1>
 			</div>
 			<div class="row">
-				<div class="col-xs-12 col-sm-12" id="ystepDiv">
+				<div class="col-xs-12 col-sm-12" id="ystepDiv" style="height: 450px; height: auto;">
 					<!-- ystep容器 -->
 				</div>
 				<!-- /.col -->

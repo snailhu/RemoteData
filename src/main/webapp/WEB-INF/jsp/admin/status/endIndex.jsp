@@ -482,9 +482,9 @@ jeDate({
 			}
 		}
 
-		function clearFun() {
-			$('#frmSearchLog').form('clear');
-		}
+// 		function clearFun() {
+// 			$('#frmSearchLog').form('clear');
+// 		}
 	</script>
 </body>
 </html>

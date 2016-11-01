@@ -151,6 +151,10 @@ p, span, b, div {
 	font-size: 17px;
 	width: 95%;
 }
+
+.breadcrumb {
+    margin-top: 10px;
+}
 </style>
 <script type="text/javascript">
 	
@@ -159,12 +163,27 @@ p, span, b, div {
 
 <body>
 	<div class="main-content">
+		<div class="breadcrumbs" id="breadcrumbs">
+			<script type="text/javascript">
+				try {
+					ace.settings.check('breadcrumbs', 'fixed')
+				} catch (e) {
+				}
+			</script>
+			<ul class="breadcrumb">
+				<li>
+					<img src="${pageContext.request.contextPath}/static/imgs/DataImport/home.png" style="margin-bottom: 3px;">
+					<span>状态跟踪</span>
+				</li>
+				<li class="active">正在进行中</li>
+			</ul><!--  .breadcrumb -->
+		</div>
 		<div class="page-content">
-			<div class="page-header" style="padding-bottom: 10px;">
-				<h1>正在处理中的流程</h1>
-			</div>
+<!-- 			<div class="page-header" style="padding-bottom: 10px;"> -->
+<!-- 				<h1>正在处理中的流程</h1> -->
+<!-- 			</div> -->
 			<div class="row">
-				<div class="col-xs-12 col-sm-12" id="ystepDiv">
+				<div class="col-xs-12 col-sm-12" id="ystepDiv" style="height: 450px; height: auto;">
 					<!-- ystep容器 -->
 				</div>
 				<!-- /.col -->

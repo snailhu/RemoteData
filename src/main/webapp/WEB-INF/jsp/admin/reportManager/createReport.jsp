@@ -30,6 +30,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     
     <script  src="<%=request.getContextPath()%>/static/showLoading/js/jquery.showLoading.min.js"></script>
       <link rel="stylesheet"  href="<%=request.getContextPath()%>/static/showLoading/css/showLoading.css" />
+          <link rel="stylesheet" href="<%=request.getContextPath()%>/static/css/all.css" type="text/css" />
     
 <style type="text/css">
 .sweet-alert h2 {
@@ -139,8 +140,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
     <div class="main-content">
 		<div class="page-content">
-			<div class="page-header" style="margin: 0px;float: left;">
-				<h1>实时报告下载</h1>
+			<div class="daohanglancs">
+				<img
+					src="<%=request.getContextPath()%>/static/imgs/DataImport/home.png">
+				<span>位置:</span> <span>报告管理></span> <span>实时报告下载</span>
 			</div>
 			<div >
 				<div class="col-xs-12 col-sm-12">
@@ -179,8 +182,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 										<label class="col-sm-5 control-label no-padding-right" for="form-partsType">设备：</label>
 										<div class="col-sm-3">
 											<select name="partsType"  id="form-partsType" class="form-control " >
-				                           		<option selected="selected" value = "flywheel">飞轮</option>
-				                           		<option value = "top">陀螺</option>
 				                       		</select>
 										</div>
 									</div>
@@ -201,14 +202,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 										</div>
 									</div>
 									
-									<div class="space-4"></div>
+									<div class="space-12"></div>
 									<div class="form-group">
-			                           <div class="col-lg-4 col-lg-offset-6">
-					                        <button type="button" id="btn-downLoad" class="btn btn-primary start">
+			                           <div class="col-lg-4 col-lg-offset-4">
+					                        <button type="button" id="btn-downLoad" class="subbutton_1">
 							                    <i></i>
 							                    <span>下载</span>
 							                </button>
-							                <button type="reset" class="btn btn-warning cancel">
+							                <button type="reset" class="cancelbutton_1">
 							                    <i></i>
 							                    <span>取消</span>
 							                </button>
@@ -224,7 +225,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		</div><!-- /.page-content -->
 	</div><!-- /.main-content -->
 <script type="text/javascript">
-
+	var activeUser = '${activeUser}';
 $(function(){
 	  
 	  $('#getBeginTime').calendar({
@@ -245,6 +246,17 @@ $(function(){
 	        onClose: function (view, date, data) {
 	        }
 	    });
+
+		 if(activeUser != ''){
+				var permissionItemsJSON = '${activeUser.permissionItemsJSON}';
+				var map = $.parseJSON(permissionItemsJSON); 
+				if(map.flywheel == 'flywheel'){
+					$("#form-partsType").append(" <option value = 'flywheel'>飞轮</option>"); 
+				}
+				if(map.top == 'top'){
+					$("#form-partsType").append(" <option value = 'top'>陀螺</option>"); 
+				}
+			}
 
       $.get('<%=request.getContextPath()%>/starParam/getSeriesList', {}, function (res) {
 		  if(res.result == "true") {

@@ -525,7 +525,7 @@ public class ReportServiceImpl implements IReoportService {
 		for (String id : arrayIds) {
 			String[] items = id.split("/");
 			//遍历目录写文件
-			if("doc".equals(items[1])){
+			if("dir".equals(items[1])){
 				writeDirFile(Long.parseLong(items[0]), dfs, mogodbFilePath,databaseName);
 			}else{
 				file = fileDao.get(Long.parseLong(items[0]));
@@ -547,7 +547,7 @@ public class ReportServiceImpl implements IReoportService {
 		List<ReportFileSystem> fileList = fileDao.findByParam("parentId", dirId);
 		if(fileList != null && fileList.size() > 0){
 			for (ReportFileSystem childFile : fileList) {
-				if(childFile.getFileType().getName().equals("doc")){
+				if("dir".equals(childFile.getFileType().getName())){
 					writeDirFile(childFile.getId(), dfs, path,databaseName);					
 				}else{
 					dfs.downLoadToLocal(databaseName,childFile.getMongoFSUUId(),path);											

@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 import org.bson.Document;
+import org.bson.types.ObjectId;
 import org.springframework.stereotype.Repository;
 
 import com.mongodb.client.FindIterable;
@@ -161,7 +162,7 @@ public class WarningLogMongoDaoImpl implements IWarningLogMongoDao {
 		String collectionName = getCollectionName(queryLogDTO.getParameterType(), queryLogDTO.getWarningType());
 		MongoCollection<Document> collection = mongodbUtil.getCollectionNotShard(databaseName, collectionName);
 		if (collection != null) {
-			collection.updateMany(Filters.eq("_id", queryLogDTO.getLogId()), Updates.set("hadRead", "1"));
+			collection.updateMany(Filters.eq("_id", new ObjectId(queryLogDTO.getLogId())), Updates.set("hadRead", "1"));
 		}
 	}
 

@@ -18,3 +18,16 @@
 	type="text/javascript"></script>
 <link href="<%=request.getContextPath()%>/static/content/css/Common.css"
 	rel="stylesheet" type="text/css" />
+	
+<style type="text/css">
+
+.icon-remove {
+    background: no-repeat center center;
+}
+.icon-edit {
+    background: no-repeat center center;
+}
+.icon-undo {
+    background: no-repeat center center;
+}
+</style>

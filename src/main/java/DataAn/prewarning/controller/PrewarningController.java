@@ -137,6 +137,10 @@ public class PrewarningController extends BaseController {
 				pager = prewarningService.pageQueryWarningLog(page, rows, series, star, parameterType, parameter,
 						createdatetimeStart, createdatetimeEnd, warningType, hadRead);
 			}
+			if("0".equals(hadRead)){
+				pager = prewarningService.pageQueryWarningLog(page, rows, series, star, parameterType, parameter,
+						createdatetimeStart, createdatetimeEnd, warningType, hadRead);
+			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

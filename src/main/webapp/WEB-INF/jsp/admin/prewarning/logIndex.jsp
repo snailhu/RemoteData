@@ -166,6 +166,10 @@
 	padding-left: 5px;
 	color: red;
 }
+
+.breadcrumb {
+    margin-top: 10px;
+}
 </style>
 <script type="text/javascript">
 	$(function() {
@@ -176,14 +180,23 @@
 </head>
 <body>
 	<div class="main-content">
+		<div class="breadcrumbs" id="breadcrumbs">
+			<script type="text/javascript">
+				try {
+					ace.settings.check('breadcrumbs', 'fixed')
+				} catch (e) {
+				}
+			</script>
+			<ul class="breadcrumb">
+				<li>
+					<img src="${pageContext.request.contextPath}/static/imgs/DataImport/home.png" style="margin-bottom: 3px;">
+					<span>预警管理</span>
+				</li>
+				<li class="active">预警查询</li>
+			</ul><!--  .breadcrumb -->
+		</div>
 		<div class="page-content">
-			<div class="daohanglancs">
-				<img
-					src="<%=request.getContextPath()%>/static/imgs/DataImport/home.png">
-				<span>位置:</span> <span>预警管理></span> <span>预警查询</span>
-			</div>
 			<!-- /.page-header -->
-
 			<div id="searchFormDiv">
 				<div class="col-xs-12 col-sm-12">
 					<!-- PAGE CONTENT BEGINS -->
@@ -288,7 +301,7 @@
 											<button type="button" id="btn-search" class="subbutton_1">
 												<i></i> <span>搜索</span>
 											</button>
-											<button type="reset" class="cancelbutton_1">
+											<button type="reset" class="cancelbutton_1" id="btn-reset">
 												<i></i> <span>取消</span>
 											</button>
 										</div>
@@ -448,6 +461,23 @@ jeDate({
 	            	  top.showMsg('提示', res.msg);
 	              }
 	          });	
+		 	  
+		 	 var parameterType = $('#search-parameterType').val();
+			  $.get('<%=request.getContextPath()%>/admin/prewarning/getParamList', {'parameterType':parameterType , 'series':seriesId},  function (res) {
+				  if(res) {
+					  $('#search-parameter').find("option").remove();
+					  $('#search-parameter').append("<option value=''>--请选择--</option>"); 
+	           	  $.each(res.paramaters ,function(){
+	           		    if(this.code){
+	           		    	$('#search-parameter').append("<option value='"+ this.code+"'>"+ this.simplyName +"</option>"); 
+	           		    }
+						});
+	           	  $("#search-parameter").select2().val("").trigger("change");
+	             }
+	             else {
+	           	  top.showMsg('提示', res.msg);
+	             }
+	         });
 		});
         
         $("#search-parameterType").change(function(){
@@ -489,6 +519,10 @@ jeDate({
 			logGrid.datagrid('clearChecked');
 			logGrid.datagrid('reload');
 		}
+
+		$('#btn-reset').click(function() {
+			$("#search-parameter").select2().val("").trigger("change");
+		});
 
 		//快速搜索按钮
 		$('#btn-search').click(function() {
@@ -606,9 +640,9 @@ jeDate({
 			}
 		}
 
-		function clearFun() {
-			$('#frmSearchLog').form('clear');
-		}
+		// 		function clearFun() {
+		// 			$('#frmSearchLog').form('clear');
+		// 		}
 	</script>
 </body>
 </html>

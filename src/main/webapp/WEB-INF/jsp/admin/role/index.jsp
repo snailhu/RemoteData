@@ -35,67 +35,69 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	
 	<script src="${pageContext.request.contextPath}/static/assets/js/bootstrap.min.js"></script>
 <style type="text/css">
-  .sweet-alert h2 {
-    color: rgb(87, 87, 87);
-    font-size: 30px;
-    text-align: center;
-    font-weight: 600;
-    text-transform: none;
-    position: relative;
-    line-height: 40px;
-    display: block;
-    margin: 25px 0px;
-    padding: 0px;
+.sweet-alert h2 {
+	color: rgb(87, 87, 87);
+	font-size: 30px;
+	text-align: center;
+	font-weight: 600;
+	text-transform: none;
+	position: relative;
+	line-height: 40px;
+	display: block;
+	margin: 25px 0px;
+	padding: 0px;
 }
- .sweet-alert p {
-    color: rgb(121, 121, 121);
-    font-size: 16px;
-    font-weight: 300;
-    position: relative;
-    text-align: inherit;
-    float: none;
-    line-height: normal;
-    margin: 0px;
-    padding: 0px;
+
+.sweet-alert p {
+	color: rgb(121, 121, 121);
+	font-size: 16px;
+	font-weight: 300;
+	position: relative;
+	text-align: inherit;
+	float: none;
+	line-height: normal;
+	margin: 0px;
+	padding: 0px;
 }
+
 .sweet-alert .sa-error-container {
-    background-color: rgb(241, 241, 241);
-    margin-left: -17px;
-    margin-right: -17px;
-    max-height: 0px;
-    overflow: hidden;
-    padding: 0px 10px;
-    transition: padding 0.15s, max-height 0.15s;
+	background-color: rgb(241, 241, 241);
+	margin-left: -17px;
+	margin-right: -17px;
+	max-height: 0px;
+	overflow: hidden;
+	padding: 0px 10px;
+	transition: padding 0.15s, max-height 0.15s;
 }
+
 .sweet-alert button.cancel {
-    background-color: rgb(193, 193, 193);
+	background-color: rgb(193, 193, 193);
 }
+
 .sweet-alert button {
-    background-color: rgb(140, 212, 245);
-    color: white;
-    box-shadow: none;
-    font-size: 17px;
-    font-weight: 500;
-    cursor: pointer;
-    border: none;
-    border-radius: 5px;
-    padding: 10px 32px;
-/*     margin: 26px 30px 0px; */
-/*     width: 150px; */
+	background-color: rgb(140, 212, 245);
+	color: white;
+	box-shadow: none;
+	font-size: 17px;
+	font-weight: 500;
+	cursor: pointer;
+	border: none;
+	border-radius: 5px;
+	padding: 10px 32px;
+	margin: 26px 30px 0px;
+	/*     width: 150px; */
 }
+
 .sweet-alert .sa-confirm-button-container {
-    display: inline-block;
-    position: relative;
-/*     padding-left: 20px; */
+	display: inline-block;
+	position: relative;
+	/*     padding-left: 20px; */
 }
-.cancel{
-	margin-top: 15px;
-	margin-left: 50px;
+
+.sa-button-container {
+	float: right;
 }
-.confirm{
-	margin-top: 15px;
-	margin-left: 150px;
-}
+
 .glyphicon {
 	position: relative;
 	top: -23px;
@@ -115,116 +117,107 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	margin-bottom: 0px;
 	color: #737373;
 }
+
 .widget-toolbar>a {
-    font-size: 36px;
-    margin: 0 1px;
-    display: inline-block;
-    padding: 0;
-/*     line-height: 24px; */
+	font-size: 36px;
+	margin: 0 1px;
+	display: inline-block;
+	padding: 0;
+	/*     line-height: 24px; */
 }
+
 .form-horizontal {
-    margin-bottom: 0px;
+	margin-bottom: 0px;
 }
-.icon-remove {
-    background: no-repeat center center;
-}
-.icon-edit {
-    background: no-repeat center center;
-}
-.icon-undo {
-    background: no-repeat center center;
+
+.breadcrumb {
+    margin-top: 10px;
 }
 </style>
 <script type="text/javascript">
-$(function() {
-	//创建角色表单验证
-	$('#addRoleInfoForm').bootstrapValidator({
-		message : '这个值不能为空！',
-		feedbackIcons : {
-			valid : 'glyphicon glyphicon-ok',
-			invalid : 'glyphicon glyphicon-remove',
-			validating : 'glyphicon glyphicon-refresh'
-		},
-		fields : {
-			name : {
-				message : '角色名不能为空',
-				validators : {
-					notEmpty : {
-						message : '角色名不能为空'
-					},
-				}
+	$(function() {
+		//创建角色表单验证
+		$('#addRoleInfoForm').bootstrapValidator({
+			message : '这个值不能为空！',
+			feedbackIcons : {
+				valid : 'glyphicon glyphicon-ok',
+				invalid : 'glyphicon glyphicon-remove',
+				validating : 'glyphicon glyphicon-refresh'
 			},
-			description : {
-          	  message: '',
-            }
-		}
-	});
-	$('#reset_addRoleInfo').click(function() {
-		$('#addRoleInfoForm').data('bootstrapValidator').resetForm(true);
-	});
-	$('#close_addRoleInfo').click(function() {
-		$('#addRoleInfoForm').data('bootstrapValidator').resetForm(true);
-	});
-	//编辑角色表单验证
-	$('#editRoleInfoForm').bootstrapValidator({
-		message : '这个值不能为空！',
-		feedbackIcons : {
-			valid : 'glyphicon glyphicon-ok',
-			invalid : 'glyphicon glyphicon-remove',
-			validating : 'glyphicon glyphicon-refresh'
-		},
-		fields : {
-			name : {
-				message : '角色名不能为空',
-				validators : {
-					notEmpty : {
-						message : '角色名不能为空'
-					},
+			fields : {
+				name : {
+					message : '角色名不能为空',
+					validators : {
+						notEmpty : {
+							message : '角色名不能为空'
+						},
+					}
+				},
+				description : {
+					message : '',
 				}
+			}
+		});
+		$('#reset_addRoleInfo').click(function() {
+			$('#addRoleInfoForm').data('bootstrapValidator').resetForm(true);
+		});
+		$('#close_addRoleInfo').click(function() {
+			$('#addRoleInfoForm').data('bootstrapValidator').resetForm(true);
+		});
+		//编辑角色表单验证
+		$('#editRoleInfoForm').bootstrapValidator({
+			message : '这个值不能为空！',
+			feedbackIcons : {
+				valid : 'glyphicon glyphicon-ok',
+				invalid : 'glyphicon glyphicon-remove',
+				validating : 'glyphicon glyphicon-refresh'
 			},
-			description : {
-          	  message: '',
-            }
-		}
+			fields : {
+				name : {
+					message : '角色名不能为空',
+					validators : {
+						notEmpty : {
+							message : '角色名不能为空'
+						},
+					}
+				},
+				description : {
+					message : '',
+				}
+			}
+		});
+		$('#reset_editRoleInfo').click(function() {
+			$('#editRoleInfoForm').data('bootstrapValidator').resetForm(true);
+		});
+		$('#close_editRoleInfo').click(function() {
+			$('#editRoleInfoForm').data('bootstrapValidator').resetForm(true);
+		});
 	});
-	$('#reset_editRoleInfo').click(function() {
-		$('#editRoleInfoForm').data('bootstrapValidator').resetForm(true);
-	});
-	$('#close_editRoleInfo').click(function() {
-		$('#editRoleInfoForm').data('bootstrapValidator').resetForm(true);
-	});
-});
 </script>
   </head>
   
   <body>
   
     <div class="main-content">
-<!-- 		<div class="breadcrumbs" id="breadcrumbs"> -->
-<!-- 			<script type="text/javascript"> -->
-<!-- 				try { -->
-<!-- 					ace.settings.check('breadcrumbs', 'fixed') -->
-<!-- 				} catch (e) { -->
-<!-- 				} -->
-<!-- 			</script> -->
-<!-- 			<ul class="breadcrumb"> -->
-<!-- 				<li><i class="icon-home home-icon"></i> <a href="javascript:void(0);">首页</a></li> -->
-<!-- 				<li class="active">欢迎页面</li> -->
-<!-- 			</ul>.breadcrumb -->
-<!-- 			<div class="nav-search" id="nav-search"> -->
-<!-- 				<form class="form-search"> -->
-<!-- 					<span class="input-icon"> <input type="text" -->
-<!-- 						placeholder="Search ..." class="nav-search-input" -->
-<!-- 						id="nav-search-input" autocomplete="off" /> <i -->
-<!-- 						class="icon-search nav-search-icon"></i> -->
-<!-- 					</span> -->
-<!-- 				</form> -->
-<!-- 			</div>#nav-search -->
-<!-- 		</div> -->
+		<div class="breadcrumbs" id="breadcrumbs">
+			<script type="text/javascript">
+				try {
+					ace.settings.check('breadcrumbs', 'fixed')
+				} catch (e) {
+				}
+			</script>
+			<ul class="breadcrumb">
+				<li>
+					<img src="${pageContext.request.contextPath}/static/imgs/DataImport/home.png" style="margin-bottom: 3px;">
+					<span>系统管理</span>
+				</li>
+				<li class="active">角色管理</li>
+			</ul><!--  .breadcrumb -->
+		</div>
 		<div class="page-content">
-			<div class="page-header">
-				<h1>角色管理</h1>
-			</div>
+<!-- 			<div class="page-header"> -->
+<!-- 				<h1>角色管理</h1> -->
+<!-- 			</div> -->
 			<!-- /.page-header -->
 			<div id="content" region="center" style="overflow: hidden">
 				<div id="toolbar" class="datagrid-toolbar" style="height: 28px;">

@@ -97,13 +97,7 @@
 
 	<!-- /.nav-list -->
 	<ul id="left_con" class="nav nav-list content">
-		<li>
-			<a href="admin/file/toUploadFile" class="tab_title"> 
-				<img class="img_head" src="${pageContext.request.contextPath}/static/new/img/DataImport/wenjianshangchuan.png">
-				<span class="menu-text"> 文件上传 </span>
-<!-- 				<img class="img_down" src="${pageContext.request.contextPath}/static/new/img/DataImport/xiala.png"> -->
-			</a>
-		</li>
+		
 		<li>
 			<a href="#" class="dropdown-toggle tab_title"> 
 				<img class="img_head" src="${pageContext.request.contextPath}/static/new/img/DataImport/wenjianguanli.png">
@@ -111,6 +105,13 @@
 				<img class="img_down" src="${pageContext.request.contextPath}/static/new/img/DataImport/xiala.png">
 			</a>
 			<ul class="submenu">
+				<li>
+					<a href="admin/file/toUploadFile" class="tab_title"> 
+						<img class="img_head" src="${pageContext.request.contextPath}/static/new/img/DataImport/wenjianshangchuan.png">
+						<span class="menu-text"> 文件上传 </span>
+<!-- 		 				<img class="img_down" src="${pageContext.request.contextPath}/static/new/img/DataImport/xiala.png">  -->
+					</a>
+				</li>
 				<li>
 					<a href="javascript:void(0)" class="tab_li"> 
 						<img class="img_head" src="${pageContext.request.contextPath}/static/new/img/DataImport/xuxian.png">

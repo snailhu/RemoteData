@@ -154,6 +154,10 @@
 	padding-top: 2px;
 	margin-bottom: 0px;
 }
+
+.breadcrumb {
+    margin-top: 10px;
+}
 </style>
 <script type="text/javascript">
 	$(function() {
@@ -163,14 +167,23 @@
 </head>
 <body>
 	<div class="main-content">
+		<div class="breadcrumbs" id="breadcrumbs">
+			<script type="text/javascript">
+				try {
+					ace.settings.check('breadcrumbs', 'fixed')
+				} catch (e) {
+				}
+			</script>
+			<ul class="breadcrumb">
+				<li>
+					<img src="${pageContext.request.contextPath}/static/imgs/DataImport/home.png" style="margin-bottom: 3px;">
+					<span>状态跟踪</span>
+				</li>
+				<li class="active">已结束</li>
+			</ul><!--  .breadcrumb -->
+		</div>
 		<div class="page-content">
-			<div class="daohanglancs">
-				<img
-					src="<%=request.getContextPath()%>/static/imgs/DataImport/home.png">
-				<span>位置:</span> <span>预警管理></span> <span>预警查询</span>
-			</div>
 			<!-- /.page-header -->
-
 			<div>
 				<div class="col-xs-12 col-sm-12">
 					<!-- PAGE CONTENT BEGINS -->
@@ -482,9 +495,9 @@ jeDate({
 			}
 		}
 
-		function clearFun() {
-			$('#frmSearchLog').form('clear');
-		}
+// 		function clearFun() {
+// 			$('#frmSearchLog').form('clear');
+// 		}
 	</script>
 </body>
 </html>

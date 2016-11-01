@@ -1,0 +1,40 @@
+a:hover{
+    color: #09c;
+    cursor: pointer;
+}
+ .head_text a:hover{
+    color: blue;
+    cursor: pointer;
+}
+.hover-effect {
+   -webkit-transition: all 0.4s ease-in-out;
+   -moz-transition: all 0.4s ease-in-out;
+   -o-transition: all 0.4s ease-in-out;
+   transition: all 0.4s ease-in-out;
+}
+.hover-effect:hover {
+    box-shadow:0 0 15px #b5b5b5;
+    z-index: 9;
+    margin-top: -15px;
+}
+
+.div2_content a{
+	display: block;
+	text-decoration: none;
+	color: #000;
+  margin-top: 30px;
+}
+.div2_content .content_button a:hover{
+	color: #09c;
+	cursor: pointer;
+}
+.home .home .div2 > div .line .block {
+  position: absolute;
+  top: -3px;
+  left: 48%;
+  width: 70px;
+  height: 7px;
+  margin-left: -15px;
+  background-color: #0076ca;
+}
+

@@ -41,6 +41,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<link rel="stylesheet" href="<%=request.getContextPath()%>/static/jqwidgets/styles/jqx.energyblue.css" type="text/css" />
 	<link rel="stylesheet" href="<%=request.getContextPath()%>/static/content/css/default.css"  type="text/css"/>	
 	<link rel="stylesheet" href="<%=request.getContextPath()%>/static/select2/select2.min.css" type="text/css" />
+    <link rel="stylesheet" href="<%=request.getContextPath()%>/static/css/all.css" type="text/css" />
     
     <script type="text/javascript" src="<%=request.getContextPath()%>/static/jqwidgets/jqxcore.js"></script>
     <script type="text/javascript" src="<%=request.getContextPath()%>/static/jqwidgets/jqxdatetimeinput.js"></script>
@@ -165,13 +166,153 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 }
 
 </style>
+
+<script type="text/javascript">
+	$(function() {
+		$('#addStarParamInfoForm').bootstrapValidator({
+			message : '这个值不能为空！',
+			feedbackIcons : {
+				valid : 'glyphicon glyphicon-ok',
+				invalid : 'glyphicon glyphicon-remove',
+				validating : 'glyphicon glyphicon-refresh'
+			},
+			fields : {
+				series : {
+					validators : {
+						notEmpty : {
+							message : '请选择星系'
+						}
+					}
+				},
+				star : {
+					validators : {
+						notEmpty : {
+							message : '请选择星'
+						}
+					}
+				},
+				partsType : {
+					validators : {
+						notEmpty : {
+							message : '请选择设备'
+						}
+					}
+				},
+				paramCode : {
+					validators : {
+						notEmpty : {
+							message : '请选择参数'
+						}
+					}
+				},
+				effeMax : {
+					validators : {
+						notEmpty : {
+							message : '最大值不能为空'
+						},
+						numeric: {
+							message: '最大值只能输入数字'
+						}
+					}
+				},
+				effeMin : {
+					validators : {
+						notEmpty : {
+							message : '最小值不能为空'
+						},
+						numeric: {
+							message: '最小值只能输入数字'
+						}  
+					}
+				}
+			}
+		});
+		$('#addStarParamModal').on('hide.bs.modal', function () {
+			$('#addStarParamInfoForm').data('bootstrapValidator').resetForm(true);
+		})
+		
+		
+		$('#reset_addStarParam').click(function() {
+			$('#addStarParamInfoForm').data('bootstrapValidator').resetForm(true);
+		});
+		$('#editStarParamInfoForm').bootstrapValidator({
+			message : '这个值不能为空！',
+			feedbackIcons : {
+				valid : 'glyphicon glyphicon-ok',
+				invalid : 'glyphicon glyphicon-remove',
+				validating : 'glyphicon glyphicon-refresh'
+			},
+			fields : {
+				series : {
+					validators : {
+						notEmpty : {
+							message : '请选择星系'
+						}
+					}
+				},star : {
+					validators : {
+						notEmpty : {
+							message : '请选择星'
+						}
+					}
+				},
+				partsType : {
+					validators : {
+						notEmpty : {
+							message : '请选择设备'
+						}
+					}
+				},
+				paramCode : {
+					validators : {
+						notEmpty : {
+							message : '请选择参数'
+						}
+					}
+				},
+				effeMax : {
+					validators : {
+						notEmpty : {
+							message : '最大值不能为空'
+						},
+						numeric: {
+							message: '最大值只能输入数字'
+						}  
+					}
+				},
+				effeMin : {
+					validators : {
+						notEmpty : {
+							message : '最小值不能为空'
+						},
+						numeric: {
+							message: '最小值只能输入数字'
+						}  
+					}
+				}
+			}
+		});
+		$('#editStarParamModal').on('hide.bs.modal', function () {
+			$('#editStarParamInfoForm').data('bootstrapValidator').resetForm(true);
+		})
+		$('#reset_editStarParam').click(function() {
+			$('#editStarParamInfoForm').data('bootstrapValidator').resetForm(true);
+		});
+		$('#vss').click(function() {
+			$('#addStarParamInfoForm').bootstrapValidator('validate');
+		});
+	});
+</script>
+
   </head>
   <body>
 
     <div class="main-content">
 		<div class="page-content">
-			<div class="page-header" style="margin: 0px;float: left;">
-				<h1>卫星参数管理</h1>
+			<div class="daohanglancs">
+				<img
+					src="<%=request.getContextPath()%>/static/imgs/DataImport/home.png">
+				<span>位置:</span> <span>报告管理></span> <span>报告参数配置</span>
 			</div>
 			<div >
 				<div class="col-xs-12 col-sm-12">
@@ -213,8 +354,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 										<div class="col-sm-3">
 											<select name="partsType"  id="form-partsType" class="form-control " >
 				                           		<option selected="selected" value="">--请选择--</option>
-				                           		<option  value = "flywheel">飞轮</option>
-				                           		<option value = "top">陀螺</option>
 				                       		</select>
 										</div>
 									</div>
@@ -231,12 +370,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 									
 									<div class="space-4"></div>
 									<div class="form-group">
-			                           <div class="col-lg-4 col-lg-offset-6">
-					                        <button type="button" id="btn-search" class="btn btn-primary start">
+			                           <div class="col-lg-4 col-lg-offset-5">
+					                        <button type="button" id="btn-search" class="subbutton_1">
 							                    <i></i>
 							                    <span>搜索</span>
 							                </button>
-							                <button type="reset" id="btn-cancel" class="btn btn-warning cancel">
+							                <button type="reset" id="btn-cancel" class="cancelbutton_1">
 							                    <i></i>
 							                    <span>取消</span>
 							                </button>
@@ -287,8 +426,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 									<div class="col-sm-8">
 										<select name="partsType"  id="add-starParam-partsType" class="form-control " >
 										   <option selected="selected" value="">--请选择--</option>
-				                           <option  value = "flywheel">飞轮</option>
-				                           <option value = "top">陀螺</option>
 				                       </select>
 									</div>
 								</div>
@@ -319,9 +456,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								</div>
 							</div>
 							<div class="modal-footer">
-								<div class="col-lg-4 col-lg-offset-5">
-									<button type="button" class="btn btn-default" id="reset_addStarParam" data-dismiss="modal">关闭</button>
-									<button type="submit" class="btn btn-primary" id="submit_addStarParam" data-dismiss="modal">确定</button>
+								<div class="col-lg-7 col-lg-offset-3">
+									<button type="submit" class="subbutton_1" id="submit_addStarParam" data-dismiss="modal">确定</button>
+									<button type="button" class="cancelbutton_1" id="reset_addStarParam" data-dismiss="modal">关闭</button>
 								</div>
 							</div>
 						</form>
@@ -340,11 +477,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								<h4 class="modal-title" id="editStarParamModalLabel">参数信息</h4>
 							</div>
 							<div class="modal-body">
-							<!-- 	<input type="hidden" name="id" id="edit-starParam-id"/> -->
 								<div class="form-group">
 									<label class="col-sm-3 control-label no-padding-right" for="edit-starParam-series"> 星系: </label>
 									<div class="col-sm-8">
-										<select name="series"  id="edit-starParam-series" class="form-control " >
+										<select name="series"  id="edit-starParam-series" class="form-control " disabled="disabled">
 				                       	</select>
 									</div>
 								</div>
@@ -352,7 +488,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								<div class="form-group">
 									<label class="col-sm-3 control-label no-padding-right" for="edit-starParam-star"> 星号： </label>
 									<div class="col-sm-8">
-										<select name="star"  id="edit-starParam-star" class="form-control " >
+										<select name="star"  id="edit-starParam-star" class="form-control " disabled="disabled">
 				                       </select>
 									</div>
 								</div>
@@ -360,26 +496,18 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								<div class="form-group">
 									<label class="col-sm-3 control-label no-padding-right" for="edit-starParam-partsType">  设备： </label>
 									<div class="col-sm-8">
-										<select name="partsType"  id="edit-starParam-partsType" class="form-control " >
+										<select name="partsType"  id="edit-starParam-partsType" class="form-control " disabled="disabled">
 										   <option selected="selected" value="">--请选择--</option>
 				                           <option value = "flywheel">飞轮</option>
 				                           <option value = "top">陀螺</option>
 				                       </select>
 									</div>
 								</div>
-								<!-- <div class="space-4"></div>
-								<div class="form-group">
-									<label class="col-lg-3 control-label no-padding-right" for="edit-starParam-paramName"> 参数名称： </label>
-									<div class="col-sm-8">
-										<input type="text" name="paramName" id="edit-starParam-paramName" placeholder="参数名称" class="form-control" />
-									</div>
-								</div> -->
 								 <div class="space-4"></div>
 								<div class="form-group">
 									<label class="col-sm-3 control-label no-padding-right" for="edit-starParam-paramCode"> 参数： </label>
 									<div class="col-sm-8">
-										<!-- <input type="text" name="paramCode" id="edit-starParam-paramCode" placeholder="参数" class="form-control" /> -->
-										<select name="paramCode"  id="edit-starParam-paramCode" class="form-control  select2" style="width: 100%;">
+										<select name="paramCode"  id="edit-starParam-paramCode" class="form-control  select2" style="width: 100%;" disabled="disabled">
 				                       </select>
 									</div>
 								</div>
@@ -401,9 +529,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								<input type="hidden" name="id" id="edit-starParam-id" />
 							</div>
 							<div class="modal-footer">
-								<div class="col-lg-4 col-lg-offset-5">
-									<button type="button" class="btn btn-default" id="reset_editStarParamInfo" data-dismiss="modal">关闭</button>
-									<button type="submit" class="btn btn-primary" id="submit_editStarParamInfo" data-dismiss="modal">确定</button>
+								<div class="col-lg-7 col-lg-offset-3">
+									<button type="submit" class="subbutton_1" id="submit_editStarParam" data-dismiss="modal">确定</button>
+									<button type="button" class="cancelbutton_1" id="reset_editStarParam" data-dismiss="modal">关闭</button>
 								</div>
 							</div>
 						</form>
@@ -434,8 +562,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							</div>
 							<div class="modal-footer">
 								<div class="col-lg-4 col-lg-offset-5">
-									<button type="button" class="btn btn-default" id="reset_jqxWidgetInfo" data-dismiss="modal">关闭</button>
 									<button type="submit" class="btn btn-primary" id="submit_jqxWidgetInfo" data-dismiss="modal">确定</button>
+									<button type="button" class="btn btn-default" id="reset_jqxWidgetInfo" data-dismiss="modal">关闭</button>
 								</div>
 							</div>
       	     		</div>
@@ -447,6 +575,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	</div><!-- /.main-content -->
 <script type="text/javascript">
 
+		var activeUser = '${activeUser}';
 		var StarParamGrid;
 		var deptTree;
         $(function () {
@@ -524,6 +653,17 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                     }
                 }]
             });
+		
+		if(activeUser != ''){
+				var permissionItemsJSON = '${activeUser.permissionItemsJSON}';
+				var map = $.parseJSON(permissionItemsJSON); 
+				if(map.flywheel == 'flywheel'){
+					$("#form-partsType").append(" <option value = 'flywheel'>飞轮</option>"); 
+				}
+				if(map.top == 'top'){
+					$("#form-partsType").append(" <option value = 'top'>陀螺</option>"); 
+				}
+			}
 
             $.get('<%=request.getContextPath()%>/starParam/getSeriesList', {}, function (res) {
   			  if(res.result == "true") {
@@ -624,13 +764,17 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		          });
 		  }
 		  
-		function  validator (series,star,paramCode,effeMin,effeMax) {
+		function  validator (series,star,partsType,paramCode,effeMin,effeMax) {
 			if(series == "") {
 				  top.showMsg('提示', "星系不能为空");
 				  return false;
 			}
 			if(star == "") {
 				  top.showMsg('提示', "星号不能为空");
+				  return false;
+			}
+			if(partsType == "") {
+				  top.showMsg('提示', "设备不能为空");
 				  return false;
 			}
 			if(paramCode == "") {
@@ -661,13 +805,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		}
 		
 		function createStarParam() {
-			
+			 
 			 $('#add-starParam-effeMax').val('');
 			 $('#add-starParam-effeMin').val('');	
 			 $('#add-starParam-series').find("option").remove();
 			 $('#add-starParam-star').find("option").remove();
 			 $('#add-starParam-partsType').val('');
-			$("#add-starParam-paramCode").select2().val("").trigger("change");
+			 $("#add-starParam-paramCode").select2().val("").trigger("change");
 		  	 $.get('<%=request.getContextPath()%>/starParam/getSeriesList', {}, function (res) {
 			   if(res.result == "true") {
 			   	  $('#add-starParam-series').find("option").remove();
@@ -694,7 +838,18 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
             	  top.showMsg('提示', res.msg);
               }
           });
+          if(activeUser != ''){
+				var permissionItemsJSON = '${activeUser.permissionItemsJSON}';
+				var map = $.parseJSON(permissionItemsJSON); 
+				if(map.flywheel == 'flywheel'){
+					$("#add-starParam-partsType").append(" <option value = 'flywheel'>飞轮</option>"); 
+				}
+				if(map.top == 'top'){
+					$("#add-starParam-partsType").append(" <option value = 'top'>陀螺</option>"); 
+				}
+			}
 			$('#addStarParamModal').modal('show');
+			
 		}
 		$("#add-starParam-series").change(function(){
 		 	var seriesId = $('#add-starParam-series').val();	
@@ -719,15 +874,32 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	$("#add-starParam-partsType").change(function(){
 		 reqParamAdd();
 	});
+	
+		function checkParam(series,star,partsType,paramCode) {
+			 $.get('<%=request.getContextPath()%>/starParam/checkParam', {'series':series,'star':star,'partsType':partsType,'paramCode':paramCode},  function (res) {
+				  if(res.result == "true") {
+					  return true;	
+	              }else {
+					  top.showMsg('提示', res.msg);
+					  return false;
+	              }
+	          });
+		}
 		
 		$('#submit_addStarParam').click(function(){
 		    var series = $('#add-starParam-series').val();	
 		    var star = $('#add-starParam-star').val();	
-			var paramCode = $('#add-starParam-paramCode').val();	
+		    var partsType = $('#add-starParam-partsType').val();
+			var paramCode = $('#add-starParam-paramCode').val();
+			
 		    var effeMin = $('#add-starParam-effeMin').val();
 		    var effeMax = $('#add-starParam-effeMax').val();
-			var flag =	validator(series,star,paramCode,effeMin,effeMax);
+			var flag =	validator(series,star,partsType,paramCode,effeMin,effeMax);
 			if(!flag) {
+				return false;
+			} 
+			var check =  checkParam(series,star,partsType,paramCode);
+			if(!check) {
 				return false;
 			} 
 			var toUrl='${pageContext.request.contextPath}/starParam/createStarParam';
@@ -828,7 +1000,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		  }
 		
 		
-		//编辑用户
+		//编辑参数
 		function editStarParam() {
 			var rows = StarParamGrid.datagrid('getSelections');
 			if (rows.length > 0) {
@@ -892,8 +1064,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				 $('#edit-starParam-effeMin').val(rows[0].effeMin);
 				 $('#edit-starParam-effeMax').val(rows[0].effeMax);
 				 $('#editStarParamModal').modal('show');
-				
-
 				} else {
 					var names = [];
 					for ( var i = 0; i < rows.length; i++) {
@@ -931,13 +1101,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		$("#edit-starParam-partsType").change(function(){
 			reqParamEdit();
 		});
-		$('#submit_editStarParamInfo').click(function(){
-			var paramCode = $('#edit-starParam-paramCode').val();	
+		$('#submit_editStarParam').click(function(){
 			var series = $('#edit-starParam-series').val();	
 			var star = $('#edit-starParam-star').val();	
+			var partsType = $('#edit-starParam-partsType').val();
+			var paramCode = $('#edit-starParam-paramCode').val();	
    			var effeMin = $('#edit-starParam-effeMin').val();
     		var effeMax = $('#edit-starParam-effeMax').val();
-			var flag =	validator(series,star,paramCode,effeMin,effeMax);
+			var flag =	validator(series,star,partsType,paramCode,effeMin,effeMax);
 			if(!flag) {
 				return false;
 			}

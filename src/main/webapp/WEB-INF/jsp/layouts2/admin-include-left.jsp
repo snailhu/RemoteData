@@ -429,7 +429,7 @@
 					</a>
 				</li>
 				<li>
-					<a href="#" class="tab_li"> 
+					<a href="${pageContext.request.contextPath}/admin/systemLog" class="tab_li"> 
 						<img class="img_head" src="${pageContext.request.contextPath}/static/new/img/DataImport/xuxian.png">
 						<span>日志管理</span>
 <!-- 						<img class="img_down" src="${pageContext.request.contextPath}/static/new/img/DataImport/xiala.png"> -->

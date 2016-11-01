@@ -283,8 +283,9 @@ public class CommonController {
 				@PathVariable String StarId,
 				HttpServletRequest request,HttpServletResponse response
 				){
-	//	ModelAndView modelview = new ModelAndView("/secondStyle/dataAnalysis");	
-		ModelAndView modelview = new ModelAndView("/admin/ftltojsp/dataAnalysis");	
+	    //ModelAndView modelview = new ModelAndView("/secondStyle/dataAnalysis");	
+		ModelAndView modelview = new ModelAndView("/admin/ftltojsp/dataAnalysis");
+		//ModelAndView modelview = new ModelAndView("/layouts2/admin-home");
 		String nowSeriesId=null;
 		String nowStar=null;
 		try {

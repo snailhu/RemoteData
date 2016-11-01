@@ -45,9 +45,7 @@
 
  </head>
  <body>
- 	<div class="navbar navbar-default" id="navbar">
-    	<@block name="header"></@block>
-    </div>
+
 	<div class="main-container" id="main-container">
     	<div class="main-container-inner">
     		<@block name="content_left"></@block>

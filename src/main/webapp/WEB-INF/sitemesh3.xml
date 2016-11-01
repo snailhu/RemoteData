@@ -15,7 +15,7 @@
 	<mapping path="/admin/prewarning/*" decorator="/WEB-INF/jsp/layouts2/admin-home.jsp" />
 	<mapping path="/admin/status/*" decorator="/WEB-INF/jsp/layouts2/admin-home.jsp" />
 	<mapping path="/analysisData/*/*" decorator="/WEB-INF/jsp/layouts2/admin-home.jsp" />
-	
+	<mapping path="/admin/systemLog" decorator="/WEB-INF/jsp/layouts2/admin-home.jsp" />
 	<!-- 指明满足“/exclude.jsp*”的页面，将被排除，不被装饰 -->
 <!--  	<mapping path="/admin/role/toCreateRole" exclue="true" />  -->
 <!-- 	<mapping path="/admin/file/toUploadFile"  exclue="true"/> -->

@@ -90,7 +90,7 @@ public class CommunicateController extends BaseController {
 		JSONObject jsonObject = new JSONObject();
 		jsonObject.put("series", series);
 		jsonObject.put("star", star);
-		jsonObject.put("parameterType", parameterType);
+		jsonObject.put("device", parameterType);
 
 		JSONArray jsonArray = new JSONArray();
 		List<WarningValue> warningValues = null;
@@ -98,11 +98,11 @@ public class CommunicateController extends BaseController {
 			warningValues = prewarningService.getWarningValueByParams(series, star, parameter, parameterType, "0");
 			for (WarningValue value : warningValues) {
 				JSONObject jO = new JSONObject();
-				jO.put("parameter", value.getParameter());
-				jO.put("maxVal", value.getMaxVal());
-				jO.put("minVal", value.getMinVal());
-				jO.put("timeZone", value.getTimeZone());
-				jO.put("limitTimes", value.getLimitTimes());
+				jO.put("paramName", value.getParameter());
+				jO.put("jobMax", value.getMaxVal());
+				jO.put("jobMin", value.getMinVal());
+				jO.put("delayTime", value.getTimeZone());
+				jO.put("count", value.getLimitTimes());
 				jsonArray.add(jO);
 			}
 			jsonObject.put("parameterInfos", jsonArray);
@@ -124,7 +124,7 @@ public class CommunicateController extends BaseController {
 		JSONObject jsonObject = new JSONObject();
 		jsonObject.put("series", series);
 		jsonObject.put("star", star);
-		jsonObject.put("parameterType", parameterType);
+		jsonObject.put("device", parameterType);
 
 		JSONArray jsonArray = new JSONArray();
 		List<WarningValue> warningValues = null;
@@ -132,9 +132,9 @@ public class CommunicateController extends BaseController {
 			warningValues = prewarningService.getWarningValueByParams(series, star, parameter, parameterType, "1");
 			for (WarningValue value : warningValues) {
 				JSONObject jO = new JSONObject();
-				jO.put("parameter", value.getParameter());
-				jO.put("maxVal", value.getMaxVal());
-				jO.put("minVal", value.getMinVal());
+				jO.put("paramName", value.getParameter());
+				jO.put("exceptionMax", value.getMaxVal());
+				jO.put("exceptionMin", value.getMinVal());
 				jsonArray.add(jO);
 			}
 			jsonObject.put("parameterInfos", jsonArray);

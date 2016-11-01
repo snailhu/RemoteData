@@ -207,6 +207,10 @@
 	padding-top: 2px;
 	margin-bottom: 0px;
 }
+
+.breadcrumb {
+    margin-top: 10px;
+}
 </style>
 <script type="text/javascript">
 	$(function() {
@@ -389,14 +393,23 @@
 <body>
 
 	<div class="main-content">
+		<div class="breadcrumbs" id="breadcrumbs">
+			<script type="text/javascript">
+				try {
+					ace.settings.check('breadcrumbs', 'fixed')
+				} catch (e) {
+				}
+			</script>
+			<ul class="breadcrumb">
+				<li>
+					<img src="${pageContext.request.contextPath}/static/imgs/DataImport/home.png" style="margin-bottom: 3px;">
+					<span>预警管理</span>
+				</li>
+				<li class="active">特殊工况参数配置</li>
+			</ul><!--  .breadcrumb -->
+		</div>
 		<div class="page-content">
-			<div class="daohanglancs">
-				<img
-					src="<%=request.getContextPath()%>/static/imgs/DataImport/home.png">
-				<span>位置:</span> <span>预警管理></span> <span>特殊工况参数配置</span>
-			</div>
 			<!-- /.page-header -->
-
 			<div>
 				<div class="col-xs-12 col-sm-12">
 					<!-- PAGE CONTENT BEGINS -->
@@ -837,6 +850,22 @@
 	            	  top.showMsg('提示', res.msg);
 	              }
 	          });	
+		 	  var parameterType = $('#search-parameterType').val();
+			  $.get('<%=request.getContextPath()%>/admin/prewarning/getParamList', {'parameterType':parameterType , 'series':seriesId},  function (res) {
+				  if(res) {
+					  $('#search-parameter').find("option").remove();
+					  $('#search-parameter').append("<option value=''>--请选择--</option>"); 
+	            	  $.each(res.paramaters ,function(){
+	            		    if(this.code){
+	            		    	$('#search-parameter').append("<option value='"+ this.code+"'>"+ this.simplyName +"</option>"); 
+	            		    }
+						});
+	            	  $("#search-parameter").select2().val("").trigger("change");
+	              }
+	              else {
+	            	  top.showMsg('提示', res.msg);
+	              }
+	          });	
 	});
 	
 	$("#add-series").change(function(){
@@ -852,7 +881,23 @@
               else {
             	  top.showMsg('提示', res.msg);
               }
-          });	
+          });
+	 	 var parameterType = $('#add-parameterType').val();
+		  $.get('<%=request.getContextPath()%>/admin/prewarning/getParamList', {'parameterType':parameterType , 'series':seriesId},  function (res) {
+			  if(res) {
+				  $('#add-parameter').find("option").remove();
+				  $('#add-parameter').append("<option value=''>--请选择--</option>"); 
+           	  $.each(res.paramaters ,function(){
+           		    if(this.code){
+           		    	$('#add-parameter').append("<option value='"+ this.code+"'>"+ this.simplyName +"</option>"); 
+           		    }
+					});
+           	  $("#add-parameter").select2().val("").trigger("change");
+             }
+             else {
+           	  top.showMsg('提示', res.msg);
+             }
+         });
 	});
 	
 	$("#edit-series").change(function(){
@@ -869,6 +914,23 @@
             	  top.showMsg('提示', res.msg);
               }
           });	
+	 	  
+	 	 var parameterType = $('#edit-parameterType').val();
+		  $.get('<%=request.getContextPath()%>/admin/prewarning/getParamList', {'parameterType':parameterType , 'series':seriesId},  function (res) {
+			  if(res) {
+				  $('#edit-parameter').find("option").remove();
+				  $('#edit-parameter').append("<option value=''>--请选择--</option>"); 
+           	  $.each(res.paramaters ,function(){
+           		    if(this.code){
+           		    	$('#edit-parameter').append("<option value='"+ this.code+"'>"+ this.simplyName +"</option>"); 
+           		    }
+					});
+           	  $("#edit-parameter").select2().val("").trigger("change");
+             }
+             else {
+           	  top.showMsg('提示', res.msg);
+             }
+         });
 	});
         
         $("#search-parameterType").change(function(){

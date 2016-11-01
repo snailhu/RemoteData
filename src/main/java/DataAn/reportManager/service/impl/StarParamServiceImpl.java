@@ -107,8 +107,8 @@ public class StarParamServiceImpl implements IStarParamService {
 	}
 
 	@Override
-	public boolean cherkStarParam(StarParamDto starParamDto) {
-		return starParamDao.cherkStarParam(starParamDto);
+	public boolean cherkStarParam(String series,String star,String partsType,String paramCode) {
+		return starParamDao.cherkStarParam( series, star, partsType, paramCode);
 	}
 
 	@Override

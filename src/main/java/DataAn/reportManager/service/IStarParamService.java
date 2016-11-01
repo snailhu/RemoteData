@@ -15,7 +15,7 @@ public interface IStarParamService {
 
 	public void save(StarParamDto starParamDto) throws Exception ;
 
-	public boolean cherkStarParam(StarParamDto starParamDto);
+	public boolean cherkStarParam(String series,String star,String partsType,String paramCode);
 
 	public void update(StarParamDto starParamDto)  throws Exception;
 

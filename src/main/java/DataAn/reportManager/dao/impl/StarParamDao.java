@@ -73,7 +73,7 @@ public class StarParamDao extends BaseDaoImpl<StarParam> implements IStarParamDa
 	}
 
 	@Override
-	public boolean cherkStarParam(StarParamDto starParamDto) {
+	public boolean cherkStarParam(String series,String star,String partsType,String paramCode) {
 		
 		String hql = "select count(*) from  StarParam sp where "
 				+ "  sp.series = :series and "
@@ -81,10 +81,10 @@ public class StarParamDao extends BaseDaoImpl<StarParam> implements IStarParamDa
 				+ "  sp.partsType = :partsType  and"
 				+ "  sp.paramCode = :paramCode";
 		Query countQuery = this.getSession().createQuery(hql);
-		countQuery.setParameter("series", starParamDto.getSeries());
-		countQuery.setParameter("star", starParamDto.getStar());
-		countQuery.setParameter("partsType", starParamDto.getPartsType());
-		countQuery.setParameter("paramCode", starParamDto.getParamCode());
+		countQuery.setParameter("series", series);
+		countQuery.setParameter("star", star);
+		countQuery.setParameter("partsType", partsType);
+		countQuery.setParameter("paramCode", paramCode);
 		
 		Long totalCount = 0L;
 		Object obj = countQuery.uniqueResult();

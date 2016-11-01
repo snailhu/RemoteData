@@ -26,7 +26,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	
 	    <link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/static/content/jeDate/jedate/skin/jedate.css">
     <script type="text/javascript" src="${pageContext.request.contextPath}/static/content/jeDate/jedate/jedate.js"></script>
-	
+	       <link rel="stylesheet" href="<%=request.getContextPath()%>/static/css/all.css" type="text/css" />
   <style type="text/css">
   .widget-toolbar>a {
     font-size: 36px;
@@ -71,10 +71,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				<!--#nav-search -->
 <!-- 		</div> -->
 		<div class="page-content">
-			<div class="page-header" style="padding-bottom: 10px; /**margin: -5px 0px 5px;*/">
-				<h1>${nowSeries}系列-${nowStar}星-${nowParameterTypeName}报告管理</h1>
-			</div>
-			
+			<div class="daohanglancs">
+					<img
+						src="<%=request.getContextPath()%>/static/imgs/DataImport/home.png">
+					<span>位置:</span> <span>报告管理></span> <span>报告查看</span>
+				</div>
 			<!-- /.page-header -->
 			<div >
 				<div class="col-xs-12 col-sm-12">
@@ -112,12 +113,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 									</div>
 									<div class="space-4"></div>
 									<div class="form-group">
-			                           <div class="col-lg-4 col-lg-offset-6">
-					                        <button type="button" id="btn-search" class="btn btn-primary start">
+			                           <div class="col-lg-4 col-lg-offset-5">
+					                        <button type="button" id="btn-search" class="subbutton_1">
 							                    <i></i>
 							                    <span>搜索</span>
 							                </button>
-							                <button type="reset" class="btn btn-warning cancel">
+							                <button type="reset" class="cancelbutton_1">
 							                    <i></i>
 							                    <span>取消</span>
 							                </button>

@@ -95,21 +95,29 @@ public class StarParamController  extends BaseController {
 		return json;
 	}
 	
-	
+	@RequestMapping(value = "/checkParam")
+	@ResponseBody
+	public ResultJSON checkParam(String series,String star,String partsType,String paramCode,HttpServletRequest request) {
+		ResultJSON res = ResultJSON.getSuccessResultJSON();
+		try {
+			boolean falg = starParamService.cherkStarParam(series,star,partsType,paramCode);
+			 if(falg) {
+				 res.setMsg("参数已存在！");
+				 res.setResult(CommonsConstant.RESULT_FALSE);
+				 return res;
+			 } 
+		 } catch (Exception ex) {
+			 res.setMsg("参数已存在！");
+			 res.setResult(CommonsConstant.RESULT_FALSE);
+		 }
+		 return res;
+	}
 	
 	@RequestMapping(value = "/createStarParam")
 	@ResponseBody
 	public JsonMessage createStarParam(StarParamDto starParamDto,HttpServletRequest request,HttpServletResponse response) {
 		JsonMessage jsonMsg = new JsonMessage();
-		
 		try {
-			boolean falg = starParamService.cherkStarParam(starParamDto);
-			if (falg) {
-				jsonMsg.setSuccess(false);
-				jsonMsg.setMsg("参数已存在！");
-				jsonMsg.setObj("参数已存在！");
-				return jsonMsg;
-			}
 			String currentUserName = getCurrentUserName(request);
 			starParamDto.setCreater(currentUserName);
 			starParamService.save(starParamDto);
@@ -128,17 +136,11 @@ public class StarParamController  extends BaseController {
 	@RequestMapping(value = "/editStarParam")
 	@ResponseBody
 	public JsonMessage editStarParam(StarParamDto starParamDto, HttpServletRequest request, HttpServletResponse response) {
+		
 		JsonMessage jsonMsg = new JsonMessage();
-		String currentUserName = getCurrentUserName(request);
-		starParamDto.setCreater(currentUserName);
 		try {
-			boolean falg = starParamService.cherkStarParam(starParamDto);
-			if (falg) {
-				jsonMsg.setSuccess(false);
-				jsonMsg.setMsg("参数已存在！");
-				jsonMsg.setObj("参数已存在！");
-				return jsonMsg;
-			}
+			String currentUserName = getCurrentUserName(request);
+			starParamDto.setCreater(currentUserName);
 			starParamService.update(starParamDto);
 		} catch (Exception e) {
 			jsonMsg.setSuccess(false);

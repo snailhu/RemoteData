@@ -162,6 +162,9 @@ $(function() {
 	$('#reset_addRoleInfo').click(function() {
 		$('#addRoleInfoForm').data('bootstrapValidator').resetForm(true);
 	});
+	$('#close_addRoleInfo').click(function() {
+		$('#addRoleInfoForm').data('bootstrapValidator').resetForm(true);
+	});
 	//编辑角色表单验证
 	$('#editRoleInfoForm').bootstrapValidator({
 		message : '这个值不能为空！',
@@ -185,6 +188,9 @@ $(function() {
 		}
 	});
 	$('#reset_editRoleInfo').click(function() {
+		$('#editRoleInfoForm').data('bootstrapValidator').resetForm(true);
+	});
+	$('#close_editRoleInfo').click(function() {
 		$('#editRoleInfoForm').data('bootstrapValidator').resetForm(true);
 	});
 });
@@ -246,9 +252,9 @@ $(function() {
 			    <div class="modal-content">
 					<form id="addRoleInfoForm" class="form-horizontal" role="form">
 						<div class="modal-header">
-<!-- 							<button type="button" class="close" data-dismiss="modal" aria-label="Close"> -->
-<!-- 								<span aria-hidden="true">&times;</span> -->
-<!-- 							</button> -->
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close" id="close_addRoleInfo">
+								<span aria-hidden="true">&times;</span>
+							</button>
 							<h4 class="modal-title" id="addRoleModalLabel">系统角色信息</h4>
 						</div>
 						<div class="modal-body">
@@ -283,9 +289,9 @@ $(function() {
 					<div class="modal-content">
 						<form id="editRoleInfoForm" class="form-horizontal" role="form">
 							<div class="modal-header">
-<!-- 								<button type="button" class="close" data-dismiss="modal" aria-label="Close"> -->
-<!-- 									<span aria-hidden="true">&times;</span> -->
-<!-- 								</button> -->
+								<button type="button" class="close" data-dismiss="modal" aria-label="Close" id="close_editRoleInfo">
+									<span aria-hidden="true">&times;</span>
+								</button>
 								<h4 class="modal-title" id="editRoleModalLabel">系统角色信息</h4>
 							</div>
 							<div class="modal-body">

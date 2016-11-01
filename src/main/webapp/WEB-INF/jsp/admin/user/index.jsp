@@ -211,6 +211,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		$('#reset_addUserInfo').click(function() {
 			$('#addUserInfoForm').data('bootstrapValidator').resetForm(true);
 		});
+		$('#close_addUserInfo').click(function() {
+			$('#addUserInfoForm').data('bootstrapValidator').resetForm(true);
+		});
 		$('#editUserInfoForm').bootstrapValidator({
 			message : '这个值不能为空！',
 			feedbackIcons : {
@@ -276,6 +279,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			}
 		});
 		$('#reset_editUserInfo').click(function() {
+			$('#editUserInfoForm').data('bootstrapValidator').resetForm(true);
+		});
+		$('#close_editUserInfo').click(function() {
 			$('#editUserInfoForm').data('bootstrapValidator').resetForm(true);
 		});
 		$('#vss').click(function() {
@@ -385,9 +391,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					<div class="modal-content">
 						<form id="addUserInfoForm" class="form-horizontal" role="form" style="margin: 0px;">
 							<div class="modal-header">
-<!-- 								<button type="button" class="close" data-dismiss="modal" aria-label="Close"> -->
-<!-- 									<span aria-hidden="true">&times;</span> -->
-<!-- 								</button> -->
+								<button type="button" class="close" data-dismiss="modal" aria-label="Close" id="close_addUserInfo">
+									<span aria-hidden="true">&times;</span>
+								</button>
 								<h4 class="modal-title" id="addUserModalLabel">用户信息</h4>
 							</div>
 							<div class="modal-body">
@@ -442,7 +448,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					<div class="modal-content">
 						<form id="editUserInfoForm" class="form-horizontal" role="form" style="margin: 0px;">
 							<div class="modal-header">
-								<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+								<button type="button" class="close" data-dismiss="modal" aria-label="Close" id="close_editUserInfo">
 									<span aria-hidden="true">&times;</span>
 								</button>
 								<h4 class="modal-title" id="editUserModalLabel">用户信息</h4>

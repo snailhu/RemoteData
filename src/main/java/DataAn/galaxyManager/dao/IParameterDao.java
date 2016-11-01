@@ -8,7 +8,7 @@ import DataAn.galaxyManager.domain.Parameter;
 
 public interface IParameterDao extends IBaseDao<Parameter>{
 
-	Pager<Parameter> selectByPager(int pageIndex, int pageSize);
+	Pager<Parameter> selectByPager(String series, int pageIndex, int pageSize);
 
 	Parameter selectBySeriesAndStarAndName(String series, String star, String param_zh);
 	

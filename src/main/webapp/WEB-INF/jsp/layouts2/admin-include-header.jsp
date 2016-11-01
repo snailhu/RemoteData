@@ -1,22 +1,24 @@
 <%@ page language="java" pageEncoding="UTF-8"%>
 
 <style type="text/css">
-a:link {
+.head a:link {
 	text-decoration: none;
 	
 }
-
-a:visited {
+.head a:visited {
 	text-decoration: none;
 }
-
-a:hover {
+.head a:hover {
 	text-decoration: none;
 }
-
-a:active {
+.head a:active {
 	text-decoration: none;
 }
+.head a {
+    color: White;
+    text-decoration: underline;
+}
+
 </style>
    <div class="head white">
         <div class="logo">

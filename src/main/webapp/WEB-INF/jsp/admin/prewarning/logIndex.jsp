@@ -288,7 +288,7 @@
 											<button type="button" id="btn-search" class="subbutton_1">
 												<i></i> <span>搜索</span>
 											</button>
-											<button type="reset" class="cancelbutton_1">
+											<button type="reset" class="cancelbutton_1" id="btn-reset">
 												<i></i> <span>取消</span>
 											</button>
 										</div>
@@ -490,6 +490,10 @@ jeDate({
 			logGrid.datagrid('reload');
 		}
 
+		$('#btn-reset').click(function(){
+			$("#search-parameter").select2().val("").trigger("change");
+		});
+		
 		//快速搜索按钮
 		$('#btn-search').click(function() {
 			var series = $('#search-series').val();

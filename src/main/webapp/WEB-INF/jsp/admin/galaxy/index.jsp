@@ -159,9 +159,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
               }
           }
       });
-	$('#close_addSeriesInfo').click(function() {
+	$('#reset_addSeriesInfo').click(function() {
 	    $('#addSeriesInfoForm').data('bootstrapValidator').resetForm(true);
 	});	
+	$('#close_addSeriesInfo').click(function() {
+	    $('#addSeriesInfoForm').data('bootstrapValidator').resetForm(true);
+	});
   	$('#editSeriesInfoForm').bootstrapValidator({
           message: 'This value is not valid',
           feedbackIcons: {
@@ -195,9 +198,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
               }
           }
       });
-  	$('#close_editSeriesInfo').click(function() {
+  	$('#reset_editSeriesInfo').click(function() {
 	    $('#editSeriesInfoForm').data('bootstrapValidator').resetForm(true);
 	});	
+	$('#close_editSeriesInfo').click(function() {
+	    $('#editSeriesInfoForm').data('bootstrapValidator').resetForm(true);
+	});
   	$('#addStarInfoForm').bootstrapValidator({
       message: 'This value is not valid',
       feedbackIcons: {
@@ -242,7 +248,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
           }
       }
   	});  
-  	$('#close_addStarInfo').click(function() {
+  	$('#reset_addStarInfo').click(function() {
+	    $('#addStarInfoForm').data('bootstrapValidator').resetForm(true);
+	});	
+	$('#close_addStarInfo').click(function() {
 	    $('#addStarInfoForm').data('bootstrapValidator').resetForm(true);
 	});	
     $('#editStarInfoForm').bootstrapValidator({
@@ -286,10 +295,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
             }
         }
     });  	
-    $('#close_editStarInfo').click(function() {
+    $('#reset_editStarInfo').click(function() {
 	    $('#editStarInfoForm').data('bootstrapValidator').resetForm(true);
 	});	
-    
+	$('#close_editStarInfo').click(function() {
+	    $('#editStarInfoForm').data('bootstrapValidator').resetForm(true);
+	});
 	$('#add-series11-close').click(function() {
         $('#defaultForm').bootstrapValidator('validate');
     });
@@ -352,10 +363,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					<div class="modal-content">
 						<form id="addSeriesInfoForm" class="form-horizontal" role="form">
 							<div class="modal-header">
-<!-- 								<button type="button" class="close" data-dismiss="modal" -->
-<!-- 									aria-label="Close"> -->
-<!-- 									<span aria-hidden="true">&times;</span> -->
-<!-- 								</button> -->
+								<button type="button" class="close" data-dismiss="modal" aria-label="Close" id="close_addSeriesInfo">
+									<span aria-hidden="true">&times;</span>
+								</button>
 								<h4 class="modal-title" id="addSeriesInfoModalLabel">添加系列</h4>
 							</div>
 							<div class="modal-body">
@@ -383,7 +393,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							</div>
 							<div class="modal-footer">
 								<div class="col-lg-4 col-lg-offset-5">
-									<button type="button" class="btn btn-default" data-dismiss="modal" id="close_addSeriesInfo">关闭</button>
+									<button type="button" class="btn btn-default" data-dismiss="modal" id="reset_addSeriesInfo">关闭</button>
 									<button type="submit" class="btn btn-primary" data-dismiss="modal" onclick="submit_addSeriesInfo()">确定</button>
 								</div>
 							</div>
@@ -398,10 +408,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					<div class="modal-content">
 						<form id="editSeriesInfoForm" class="form-horizontal" role="form">
 							<div class="modal-header">
-<!-- 								<button type="button" class="close" data-dismiss="modal" -->
-<!-- 									aria-label="Close"> -->
-<!-- 									<span aria-hidden="true">&times;</span> -->
-<!-- 								</button> -->
+								<button type="button" class="close" data-dismiss="modal" aria-label="Close" id="close_editSeriesInfo">
+									<span aria-hidden="true">&times;</span>
+								</button>
 								<h4 class="modal-title" id="editSeriesInfoModalLabel">编辑系列</h4>
 							</div>
 							<div class="modal-body">
@@ -429,7 +438,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							</div>
 							<div class="modal-footer">
 								<div class="col-lg-4 col-lg-offset-5">
-									<button type="button" class="btn btn-default" data-dismiss="modal" id="close_editSeriesInfo">关闭</button>
+									<button type="button" class="btn btn-default" data-dismiss="modal" id="reset_editSeriesInfo">关闭</button>
 									<button type="submit" class="btn btn-primary" data-dismiss="modal" id="submit_editSeriesInfo">确定</button>
 								</div>
 							</div>
@@ -444,9 +453,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					<div class="modal-content">
 						<form id="addStarInfoForm" class="form-horizontal" role="form">
 							<div class="modal-header">
-<!-- 								<button type="button" class="close" data-dismiss="modal" aria-label="Close"> -->
-<!-- 									<span aria-hidden="true">&times;</span> -->
-<!-- 								</button> -->
+								<button type="button" class="close" data-dismiss="modal" aria-label="Close" id="close_addStarInfo">
+									<span aria-hidden="true">&times;</span>
+								</button>
 								<h4 class="modal-title" id="addStarInfoModalLabel">添加星</h4>
 							</div>
 							<div class="modal-body">
@@ -483,7 +492,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							</div>
 							<div class="modal-footer">
 								<div class="col-lg-4 col-lg-offset-5">
-									<button type="button" class="btn btn-default" data-dismiss="modal" id="close_addStarInfo">关闭</button>
+									<button type="button" class="btn btn-default" data-dismiss="modal" id="reset_addStarInfo">关闭</button>
 									<button type="submit" class="btn btn-primary" data-dismiss="modal" id="submit_addStarInfo">确定</button>
 								</div>
 							</div>
@@ -497,7 +506,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					<div class="modal-content">
 						<form id="editStarInfoForm" class="form-horizontal" role="form">
 							<div class="modal-header">
-								<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+								<button type="button" class="close" data-dismiss="modal" aria-label="Close" id="close_editStarInfo">
 									<span aria-hidden="true">&times;</span>
 								</button>
 								<h4 class="modal-title" id="editStarInfoModalLabel">添加星</h4>
@@ -535,7 +544,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							</div>
 							<div class="modal-footer">
 								<div class="col-lg-4 col-lg-offset-5">
-									<button type="button" class="btn btn-default" data-dismiss="modal" id="close_editStarInfo">关闭</button>
+									<button type="button" class="btn btn-default" data-dismiss="modal" id="reset_editStarInfo">关闭</button>
 									<button type="submit" class="btn btn-primary" data-dismiss="modal" id="submit_editStarInfo">确定</button>
 								</div>
 							</div>

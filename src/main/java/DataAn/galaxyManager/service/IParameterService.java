@@ -12,9 +12,13 @@ public interface IParameterService {
 	
 	public void saveMany(String series, String star, String paramType, String param_zhs);
 	
+	public void deleteParamter(String paramIds);
+	
+	public void updateParamter(long paramId, String param_zh);
+	
 	public List<ParameterDto> getParameterList(String series, String star, String paramType);
 	
-	public Pager<ParameterDto> getParameterList(int pageIndex, int pageSize);
+	public Pager<ParameterDto> getParameterListByPager(String series, int pageIndex, int pageSize);
 
 	public String getParameter_en_by_allZh(String series, String star, String paramType, String param_zh);
 	

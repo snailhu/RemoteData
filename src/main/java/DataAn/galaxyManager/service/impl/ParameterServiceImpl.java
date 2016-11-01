@@ -17,7 +17,6 @@ import DataAn.galaxyManager.dao.IParameterDao;
 import DataAn.galaxyManager.domain.Parameter;
 import DataAn.galaxyManager.dto.ParameterDto;
 import DataAn.galaxyManager.option.J9Series_Star_ParameterType;
-import DataAn.galaxyManager.service.IJ9Series_Star_Service;
 import DataAn.galaxyManager.service.IParameterService;
 
 
@@ -26,9 +25,6 @@ public class ParameterServiceImpl implements IParameterService{
 
 	@Resource
 	private IParameterDao parameterDao;
-	
-	@Resource
-	private IJ9Series_Star_Service j9Series_Star_Service;
 	
 	private ConcurrentHashMap<String,String> parameterList_allZh_and_en = new ConcurrentHashMap<String,String>();
 	
@@ -63,7 +59,6 @@ public class ParameterServiceImpl implements IParameterService{
 		}
 		return param;
 	}
-	
 
 	@Override
 	@Transactional
@@ -81,6 +76,29 @@ public class ParameterServiceImpl implements IParameterService{
 	}
 
 	@Override
+	@Transactional
+	public void deleteParamter(String paramIds) {
+		String[] ids = paramIds.split(",");
+		for (String strId : ids) {
+			parameterDao.delete(Long.parseLong(strId));
+		}
+	}
+
+	@Override
+	@Transactional
+	public void updateParamter(long paramId, String param_zh) {
+		Parameter param = parameterDao.get(paramId);
+		if(param_zh.equals("接收地方时")){ // || param_zh.equals("时间")
+			param.setFullName(param_zh);
+			param.setCode("datetime");
+		}else{
+			param.setFullName(param_zh);
+			param.setSimplyName(param_zh.split(":")[1]);
+		}
+		parameterDao.update(param);
+	}
+
+	@Override
 	public List<ParameterDto> getParameterList(String series, String star, String paramType) {
 		List<ParameterDto> paramDtoList = new ArrayList<ParameterDto>();
 		List<Parameter> paramList = parameterDao.selectBySeriesAndParameterType(series, paramType);
@@ -91,15 +109,14 @@ public class ParameterServiceImpl implements IParameterService{
 		}
 		return paramDtoList;
 	}
-
 	
 	@Override
-	public Pager<ParameterDto> getParameterList(int pageIndex, int pageSize) {
+	public Pager<ParameterDto> getParameterListByPager(String series, int pageIndex, int pageSize) {
 		if(pageIndex == 0){
 			pageIndex = 1;
 		}
 		List<ParameterDto> paramDtoList = new ArrayList<ParameterDto>();
-		Pager<Parameter> paramPager = parameterDao.selectByPager(pageIndex, pageSize);
+		Pager<Parameter> paramPager = parameterDao.selectByPager(series, pageIndex, pageSize);
 		if(paramPager != null){
 			List<Parameter> paramList = paramPager.getDatas();
 			if(paramList != null && paramList.size() > 0){
@@ -158,7 +175,6 @@ public class ParameterServiceImpl implements IParameterService{
 		return param_zh;
 	}
 
-
 	@Override
 	public String getParameter_dataType_by_en(String series, String star,
 			String paramType, String param_en) {
@@ -176,7 +192,6 @@ public class ParameterServiceImpl implements IParameterService{
 		}
 		return null;
 	}
-
 
 	@Override
 	public String getParameter_paramTypeName_by_en(String series, String star,

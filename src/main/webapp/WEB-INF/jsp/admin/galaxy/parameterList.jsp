@@ -167,6 +167,9 @@ $(function() {
     $('#reset_addParamInfo').click(function() {
         $('#addParamInfoForm').data('bootstrapValidator').resetForm(true);
     });
+    $('#close_addParamInfo').click(function() {
+        $('#addParamInfoForm').data('bootstrapValidator').resetForm(true);
+    });
     //编辑角色表单验证
     $('#editRoleInfoForm').bootstrapValidator({
         message : '这个值不能为空！',
@@ -189,7 +192,10 @@ $(function() {
             }
         }
     });
-    $('#reset_editRoleInfo').click(function() {
+    $('#reset_editParamInfo').click(function() {
+        $('#editRoleInfoForm').data('bootstrapValidator').resetForm(true);
+    });
+    $('#close_editParamInfo').click(function() {
         $('#editRoleInfoForm').data('bootstrapValidator').resetForm(true);
     });
 });
@@ -250,9 +256,9 @@ $(function() {
 			    <div class="modal-content">
 					<form id="addParamInfoForm" class="form-horizontal" role="form">
 						<div class="modal-header">
-<!-- 							<button type="button" class="close" data-dismiss="modal" aria-label="Close"> -->
-<!-- 								<span aria-hidden="true">&times;</span> -->
-<!-- 							</button> -->
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close" id="close_addParamInfo">
+								<span aria-hidden="true">&times;</span>
+							</button>
 							<h4 class="modal-title" id="addParamModalLabel">参数信息</h4>
 						</div>
 							<div class="modal-body">
@@ -288,9 +294,9 @@ $(function() {
 					<div class="modal-content">
 						<form id="editParamInfoForm" class="form-horizontal" role="form">
 							<div class="modal-header">
-<!-- 								<button type="button" class="close" data-dismiss="modal" aria-label="Close"> -->
-<!-- 									<span aria-hidden="true">&times;</span> -->
-<!-- 								</button> -->
+								<button type="button" class="close" data-dismiss="modal" aria-label="Close" id="close_editParamInfo">
+									<span aria-hidden="true">&times;</span>
+								</button>
 								<h4 class="modal-title" id="editParamModalLabel">参数信息</h4>
 							</div>
 							<div class="modal-body">
@@ -300,7 +306,7 @@ $(function() {
                                     <label class="col-sm-3 control-label no-padding-right" for="edit-param-series"> 系列： </label>
                                     <div class="col-sm-8">
                                         <input name="series" id="edit-param-series" class="form-control" style="width: 357px;height: 34px" 
-                                        placeholder="系列" />
+                                        placeholder="系列"/>
                                     </div>
                                 </div>
                                 <div class="space-4"></div>
@@ -333,7 +339,7 @@ $(function() {
 	
 	<script type="text/javascript">
 	  var nowSeries = '${nowSeries}';
-	  console.log('nowSeries:' + nowSeries);
+	  //console.log('nowSeries:' + nowSeries);
 	  var paramGrid;
 	  var url='<%=request.getContextPath()%>/admin/parameter/getList/'+nowSeries;
 	  $(function () {
@@ -372,39 +378,34 @@ $(function() {
           valueField:'value',
           textField:'text'
       }); 
+// 	$("#add-param-series").combobox('setValues', '${nowSeries}');
 	
 	//创建参数
 	$('#submit_addParamInfo').click(function(){
+		var series = $("#add-param-series").combobox('getValue');
+		var name = $('#add-param-fullName').val();
 		var isValid = $('#addParamInfoForm').data('bootstrapValidator').isValid();
 		if(isValid){
-			var toUrl='${pageContext.request.contextPath}/admin/parameter/createParam';
-			var f = $('#addParamInfoForm');
-			         f.form('submit', {
-			             url: toUrl,
-			             onsubmit: function () {
-			                 var flag = $(this).form('validate');
-			                 if (flag) {
-			                     top.showProcess(true, '温馨提示', '正在提交数据...');
-			                 }
-			                 return flag;
-			             },
-			             success: function (data) {
-			                 top.showProcess(false);
-			                 var map = $.parseJSON(data);
-			                 if (map.success) {
-			                     top.showMsg('提示', map.msg);
-			                     reloadDataGrid();
-			                 }
-			                 else {
-			                 	top.alertMsg('错误', map.msg+"\n"+map.obj==null?"":map.obj);
-			                 }
-			             },
-			             onLoadError: function () {
-			                 top.showProcess(false);
-			                 top.$.messager.alert('温馨提示', '由于网络或服务器太忙，提交失败，请重试！');
-			             }
-			         });
+			$.ajax({
+				url : '${pageContext.request.contextPath}/admin/parameter/createParam',
+				data : {
+					series : series,
+					name : name
+				},
+				cache : false,
+				dataType : "json",
+				success : function(data) {
+					if (data.success) {
+						top.showMsg('提示', data.msg);
+						reloadDataGrid();
+					} else {
+						top.alertMsg('警告', data.msg);
+					}
+				}
+			});
+			
 		}
+		
 		$('#addParamInfoForm').data('bootstrapValidator').resetForm(true);
 	});
 	  //编辑参数信息

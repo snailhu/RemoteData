@@ -16,15 +16,15 @@ implements IParameterDao{
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public Pager<Parameter> selectByPager(int pageIndex, int pageSize) {
+	public Pager<Parameter> selectByPager(String series, int pageIndex, int pageSize) {
 		
-		String hql = "from Parameter";
-		String countHQL = "select count(*) from Parameter";
-		List<Parameter> list = this.getSession().createQuery(hql)
+		String hql = "from Parameter param where param.series=?";
+		String countHQL = "select count(*) from Parameter param where param.series=?";
+		List<Parameter> list = this.getSession().createQuery(hql).setParameter(0, series)
 										   .setMaxResults(pageSize)
 										   .setFirstResult(pageSize * (pageIndex -1)).list();
 		Long totalCount = 0l; 
-		Object obj = this.getSession().createQuery(countHQL).uniqueResult();
+		Object obj = this.getSession().createQuery(countHQL).setParameter(0, series).uniqueResult();
 		if(obj != null){
 			totalCount = (Long) obj;
 		}

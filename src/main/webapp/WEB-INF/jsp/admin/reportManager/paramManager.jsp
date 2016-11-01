@@ -386,7 +386,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			</table>
 			
 			<!-- 创建用户 -->
-			<div class="modal fade" id="addStarParamModal" tabindex="-1" role="dialog" aria-labelledby="addStarParamModalLabel">
+			<div class="modal fade" id="addStarParamModal" data-backdrop="static" data-keyboard="false"  tabindex="-1" role="dialog" aria-labelledby="addStarParamModalLabel">
 				<div class="modal-dialog" role="document">
 					<div class="modal-content">
 						<form id="addStarParamInfoForm" class="form-horizontal" role="form" style="margin: 0px;">
@@ -458,7 +458,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				</div>
 			</div>
 			<!-- 编辑用户 -->
-			<div class="modal fade" id="editStarParamModal" tabindex="-1" role="dialog" aria-labelledby="editStarParamModalLabel">
+			<div class="modal fade" id="editStarParamModal" data-backdrop="static" data-keyboard="false"  tabindex="-1" role="dialog" aria-labelledby="editStarParamModalLabel">
 				<div class="modal-dialog" role="document" >
 					<div class="modal-content">
 						<form id="editStarParamInfoForm" class="form-horizontal" role="form" style="margin: 0px;">
@@ -522,8 +522,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							</div>
 							<div class="modal-footer">
 								<div class="col-lg-7 col-lg-offset-3">
-									<button type="submit" class="subbutton_1" id="submit_editStarParamInfo" data-dismiss="modal">确定</button>
-									<button type="button" class="cancelbutton_1" id="reset_editStarParamInfo" data-dismiss="modal">关闭</button>
+									<button type="submit" class="subbutton_1" id="submit_editStarParam" data-dismiss="modal">确定</button>
+									<button type="button" class="cancelbutton_1" id="reset_editStarParam" data-dismiss="modal">关闭</button>
 								</div>
 							</div>
 						</form>
@@ -797,7 +797,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		}
 		
 		function createStarParam() {
-			
+			 
 			 $('#add-starParam-effeMax').val('');
 			 $('#add-starParam-effeMin').val('');	
 			 $('#add-starParam-series').find("option").remove();
@@ -841,6 +841,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				}
 			}
 			$('#addStarParamModal').modal('show');
+			
 		}
 		$("#add-starParam-series").change(function(){
 		 	var seriesId = $('#add-starParam-series').val();	
@@ -991,7 +992,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		  }
 		
 		
-		//编辑用户
+		//编辑参数
 		function editStarParam() {
 			var rows = StarParamGrid.datagrid('getSelections');
 			if (rows.length > 0) {
@@ -1055,8 +1056,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				 $('#edit-starParam-effeMin').val(rows[0].effeMin);
 				 $('#edit-starParam-effeMax').val(rows[0].effeMax);
 				 $('#editStarParamModal').modal('show');
-				
-
 				} else {
 					var names = [];
 					for ( var i = 0; i < rows.length; i++) {
@@ -1094,7 +1093,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		$("#edit-starParam-partsType").change(function(){
 			reqParamEdit();
 		});
-		$('#submit_editStarParamInfo').click(function(){
+		$('#submit_editStarParam').click(function(){
 			var series = $('#edit-starParam-series').val();	
 			var star = $('#edit-starParam-star').val();	
 			var partsType = $('#edit-starParam-partsType').val();

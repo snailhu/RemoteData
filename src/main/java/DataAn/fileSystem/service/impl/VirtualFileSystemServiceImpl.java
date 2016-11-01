@@ -43,6 +43,8 @@ import DataAn.mongo.fs.MongoDfsDb;
 import DataAn.mongo.init.InitMongo;
 import DataAn.mongo.service.IMongoService;
 import DataAn.mongo.zip.ZipCompressorByAnt;
+import DataAn.status.option.StatusTrackingType;
+import DataAn.status.service.IStatusTrackingService;
 
 
 @Service("virtualFileSystemServiceImpl")
@@ -56,6 +58,8 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 	private ICSVService csvService;	
 	@Resource
 	private IMongoService mongoService;
+	@Resource
+	private IStatusTrackingService statusTrackingService;
 	
 	@Override
 	@Transactional
@@ -84,7 +88,11 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 		
 		String versions = UUIDGeneratorUtil.getUUID();
 		dataMap.put("versions", versions);
-				
+		
+		//保存文件前
+		statusTrackingService.updateStatusTracking(csvFileDto.getFileName(), StatusTrackingType.START.getValue(),
+				csvFileDto.getParameterType(), "");
+		
 		//保存csv临时文件
 		String csvTempFilePath = CommonConfig.getUplodCachePath() + File.separator + versions;
 		FileUtil.saveFile(csvTempFilePath, fileName, csvFileDto.getIn());
@@ -103,12 +111,15 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 //			this.saveFileOfDAT(datFile, dataMap);
 //		}
 		
+		statusTrackingService.updateStatusTracking(csvFileDto.getFileName(), StatusTrackingType.IMPORTFAIL.getValue(),
+				csvFileDto.getParameterType(), "");
+		
 		//开另外一个线程处理存入kafka的数据
-		new Thread(new SaveFileToKafka(nowSeries, 
-									   nowStar, 
-									   csvFileDto.getParameterType(), 
-									   csvTempFilePath,
-									   versions)).start();
+//		new Thread(new SaveFileToKafka(nowSeries, 
+//									   nowStar, 
+//									   csvFileDto.getParameterType(), 
+//									   csvTempFilePath,
+//									   versions)).start();
 		
 		return versions;
 	}

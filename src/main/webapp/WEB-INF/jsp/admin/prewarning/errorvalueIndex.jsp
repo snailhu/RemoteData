@@ -205,6 +205,10 @@
 	padding-top: 2px;
 	margin-bottom: 0px;
 }
+
+.breadcrumb {
+    margin-top: 10px;
+}
 </style>
 <script type="text/javascript">
 	$(function() {
@@ -265,10 +269,6 @@
 				}
 			}
 		});
-		$('#reset_addValueInfo').click(function() {
-			$('#addValueInfoForm').data('bootstrapValidator').resetForm(true);
-			$("#add-parameter").select2().val("").trigger("change");
-		});
 		$('#editValueInfoForm').bootstrapValidator({
 			message : '这个值不能为空！',
 			feedbackIcons : {
@@ -327,13 +327,21 @@
 				}
 			}
 		});
-		$('#reset_editValueInfo').click(function() {
+		$('#addValueModal').on('hide.bs.modal', function () {
+			$("#add-parameter").select2().val("").trigger("change");
+			$('#addValueInfoForm').data('bootstrapValidator').resetForm(true);
+		})
+		$('#editValueModal').on('hide.bs.modal', function () {
 			$('#editValueInfoForm').data('bootstrapValidator').resetForm(true);
-			$("#edit-parameter").select2().val("").trigger("change");
+		})
+		$('#btn-reset').click(function(){
+			$("#search-parameter").select2().val("").trigger("change");
 		});
-		$('#vss').click(function() {
-			$('#addValueInfoForm').bootstrapValidator('validate');
-		});
+		
+		
+// 		$('#vss').click(function() {
+// 			$('#addValueInfoForm').bootstrapValidator('validate');
+// 		});
 		$('#change-search-box').click();
 		
 		$.fn.modal.Constructor.prototype.enforceFocus = function() {};
@@ -344,14 +352,23 @@
 <body>
 
 	<div class="main-content">
+		<div class="breadcrumbs" id="breadcrumbs">
+			<script type="text/javascript">
+				try {
+					ace.settings.check('breadcrumbs', 'fixed')
+				} catch (e) {
+				}
+			</script>
+			<ul class="breadcrumb">
+				<li>
+					<img src="${pageContext.request.contextPath}/static/imgs/DataImport/home.png" style="margin-bottom: 3px;">
+					<span>预警管理</span>
+				</li>
+				<li class="active">异常参数配置</li>
+			</ul><!--  .breadcrumb -->
+		</div>
 		<div class="page-content">
-			<div class="daohanglancs">
-				<img
-					src="<%=request.getContextPath()%>/static/imgs/DataImport/home.png">
-				<span>位置:</span> <span>预警管理></span> <span>异常参数配置</span>
-			</div>
 			<!-- /.page-header -->
-
 			<div>
 				<div class="col-xs-12 col-sm-12">
 					<!-- PAGE CONTENT BEGINS -->
@@ -520,8 +537,8 @@
 							</div>
 							<div class="modal-footer">
 								<div class="col-lg-7 col-lg-offset-3">
-									<button type="submit" class="subbutton_1"
-										id="submit_addValueInfo" data-dismiss="modal">确定</button>
+									<button type="button" class="subbutton_1"
+										id="submit_addValueInfo">确定</button>
 									<button type="button" class="cancelbutton_1"
 										id="reset_addValueInfo" data-dismiss="modal">关闭</button>
 								</div>
@@ -610,8 +627,8 @@
 							</div>
 							<div class="modal-footer">
 								<div class="col-lg-7 col-lg-offset-3">
-									<button type="submit" class="subbutton_1"
-										id="submit_editValueInfo" data-dismiss="modal">确定</button>
+									<button type="button" class="subbutton_1"
+										id="submit_editValueInfo">确定</button>
 									<button type="button" class="cancelbutton_1"
 										id="reset_editValueInfo" data-dismiss="modal">关闭</button>
 								</div>
@@ -631,38 +648,11 @@
 			</div>
 			<!-- /.row -->
 		</div>
-
-		<!-- 		<div class="modal fade" id="jqxWidgetModal" tabindex="-1" role="dialog" aria-labelledby="jqxWidgetModalLabel"> -->
-		<!-- 				<div class="modal-dialog" role="document" style="margin:60px -320px;"> -->
-		<!-- 					<div class="modal-content"> -->
-		<!-- 						<div class="modal-header"> -->
-		<!-- 								<button type="button" class="close" data-dismiss="modal" aria-label="Close"> -->
-		<!-- 									<span aria-hidden="true">&times;</span> -->
-		<!-- 								</button> -->
-		<!-- 								<h4 class="modal-title" id="editStarParamModalLabel">参数列表</h4> -->
-		<!-- 							</div> -->
-		<!-- 							<div class="modal-body"> -->
-		<!-- 								<div id='jqxWidget'> -->
-		<!-- 								   <div id="treeGrid"></div>	 -->
-		<!-- 			      	   	 		</div> -->
-		<!-- 							</div> -->
-		<!-- 							<div class="modal-footer"> -->
-		<!-- 								<div class="col-lg-4 col-lg-offset-5"> -->
-		<!-- 									<button type="button" class="btn btn-default" id="reset_jqxWidgetInfo" data-dismiss="modal">关闭</button> -->
-		<!-- 									<button type="submit" class="btn btn-primary" id="submit_jqxWidgetInfo" data-dismiss="modal">确定</button> -->
-		<!-- 								</div> -->
-		<!-- 							</div> -->
-
-
-		<!--       	     		</div> -->
-		<!--       	      	</div> -->
-		<!--       	   	</div> -->
 		<!-- /.page-content -->
 	</div>
 	<!-- /.main-content -->
 	<script type="text/javascript">
 		var valueGrid;
-// 		var deptTree;
         $(function () {
         	valueGrid = $("#valueList").datagrid({
                 url: '<%=request.getContextPath()%>/admin/prewarning/getValueList?warningType=1',
@@ -780,6 +770,23 @@
 		            	  top.showMsg('提示', res.msg);
 		              }
 		          });	
+			 	  
+			 	 var parameterType = $('#search-parameterType').val();
+				  $.get('<%=request.getContextPath()%>/admin/prewarning/getParamList', {'parameterType':parameterType , 'series':seriesId},  function (res) {
+					  if(res) {
+						  $('#search-parameter').find("option").remove();
+						  $('#search-parameter').append("<option value=''>--请选择--</option>"); 
+		           	  $.each(res.paramaters ,function(){
+		           		    if(this.code){
+		           		    	$('#search-parameter').append("<option value='"+ this.code+"'>"+ this.simplyName +"</option>"); 
+		           		    }
+							});
+		           	  $("#search-parameter").select2().val("").trigger("change");
+		             }
+		             else {
+		           	  top.showMsg('提示', res.msg);
+		             }
+		         });
 		});
     	
     	$("#add-series").change(function(){
@@ -796,6 +803,23 @@
 	            	  top.showMsg('提示', res.msg);
 	              }
 	          });	
+		 	  
+		 	 var parameterType = $('#add-parameterType').val();
+			  $.get('<%=request.getContextPath()%>/admin/prewarning/getParamList', {'parameterType':parameterType , 'series':seriesId},  function (res) {
+				  if(res) {
+					  $('#add-parameter').find("option").remove();
+					  $('#add-parameter').append("<option value=''>--请选择--</option>"); 
+	           	  $.each(res.paramaters ,function(){
+	           		    if(this.code){
+	           		    	$('#add-parameter').append("<option value='"+ this.code+"'>"+ this.simplyName +"</option>"); 
+	           		    }
+						});
+	           	  $("#add-parameter").select2().val("").trigger("change");
+	             }
+	             else {
+	           	  top.showMsg('提示', res.msg);
+	             }
+	         });
 		});
     	
     	$("#edit-series").change(function(){
@@ -812,6 +836,23 @@
 	            	  top.showMsg('提示', res.msg);
 	              }
 	          });	
+		 	  
+		 	 var parameterType = $('#edit-parameterType').val();
+			  $.get('<%=request.getContextPath()%>/admin/prewarning/getParamList', {'parameterType':parameterType , 'series':seriesId},  function (res) {
+				  if(res) {
+					  $('#edit-parameter').find("option").remove();
+					  $('#edit-parameter').append("<option value=''>--请选择--</option>"); 
+	           	  $.each(res.paramaters ,function(){
+	           		    if(this.code){
+	           		    	$('#edit-parameter').append("<option value='"+ this.code+"'>"+ this.simplyName +"</option>"); 
+	           		    }
+						});
+	           	  $("#edit-parameter").select2().val("").trigger("change");
+	             }
+	             else {
+	           	  top.showMsg('提示', res.msg);
+	             }
+	         });
 		});
         
         
@@ -881,22 +922,8 @@
 			valueGrid.datagrid('reload');
 		}
 
-		$('#btn-reset').click(function(){
-			$("#search-parameter").select2().val("").trigger("change");
-		});
-		
 		//快速搜索按钮
 		$('#btn-search').click(function() {
-			// 			var node = $('#deptTree').tree('getSelected');
-			// 			var orgIds = [];
-			// 			if (node) {
-			// 				var children = deptTree.tree('getChildren', node.target);
-			// 				var orgId = node.id;
-			// 				orgIds.push(orgId);
-			// 				for (var i = 0; i < children.length; i++) {
-			// 					orgIds.push(children[i].id);
-			// 				}
-			// 			}
 			var series = $('#search-series').val();
 			var star = $('#search-star').val();
 			var parameterType = $('#search-parameterType').val();
@@ -907,51 +934,96 @@
 				parameterType : parameterType,
 				parameter : parameter,
 				warningType : "1"
-			// 				orgIds : orgIds.join(',')
 			});
 		});
 		//创建参数
 		function createValue() {
 			//弹出创建参数
 			$('#addValueModal').modal('show');
-			$('#submit_addValueInfo')
-					.click(
-							function() {
-								var toUrl = '${pageContext.request.contextPath}/admin/prewarning/createErrorValue';
-								var f = $('#addValueInfoForm');
-								f.form('submit', {
-									url : toUrl,
-									onsubmit : function() {
-										var flag = $(this).form('validate');
-										if (flag) {
-											top.showProcess(true, '温馨提示',
-													'正在提交数据...');
-										}
-										return flag;
-									},
-									success : function(data) {
-										top.showProcess(false);
-										var map = $.parseJSON(data);
-										if (map.success) {
-											top.showMsg('提示', map.msg);
-											reloadDataGrid();
-										} else {
-											top.alertMsg('错误', map.msg + "\n"
-													+ map.obj == null ? ""
-													: map.obj);
-										}
-									},
-									onLoadError : function() {
-										top.showProcess(false);
-										top.$.messager.alert('温馨提示',
-												'由于网络或服务器太忙，提交失败，请重试！');
-									}
-								});
-								$('#addValueInfoForm').data(
-										'bootstrapValidator').resetForm(true);
-							});
-
 		}
+		$('#submit_addValueInfo').click(function() {
+			var f = $('#addValueInfoForm');
+			f.data('bootstrapValidator').validate();
+			if(!f.data('bootstrapValidator').isValid()){
+				top.alertMsg('错误', '请满足提交条件！');
+				return false;
+			}
+			var maxval = Number($("#add-maxVal").val());
+			var minval = Number($("#add-minVal").val());
+			if(maxval<minval){
+				top.alertMsg('错误', '最大值必须大于最小值！');
+				return false;
+			}
+			f.form('submit', {
+				url : toUrl,
+				onsubmit : function() {
+					var flag = $(this).form('validate');
+					if (flag) {
+						top.showProcess(true, '温馨提示','正在提交数据...');
+					}
+					return flag;
+				},
+				success : function(data) {
+					top.showProcess(false);
+					var map = $.parseJSON(data);
+					if (map.success) {
+						top.showMsg('提示', map.msg);
+						reloadDataGrid();
+					} else {
+						top.alertMsg('错误', map.msg + "\n"+ map.obj == null ? "": map.obj);
+					}
+				},
+				onLoadError : function() {
+					top.showProcess(false);
+					top.$.messager.alert('温馨提示','由于网络或服务器太忙，提交失败，请重试！');
+				}
+			});
+			$('#addValueModal').modal('hide');
+		});
+		
+		$('#submit_editValueInfo').click(function() {
+			var f = $('#editValueInfoForm');
+			f.data('bootstrapValidator').validate();
+			if(!f.data('bootstrapValidator').isValid()){
+				top.alertMsg('错误', '请满足提交条件！');
+				return false;
+			}
+			var maxval = Number($("#edit-maxVal").val());
+			var minval = Number($("#edit-minVal").val());
+			if(maxval<minval){
+				top.alertMsg('错误', '最大值必须大于最小值！');
+				return false;
+			}
+			var toUrl = '${pageContext.request.contextPath}/admin/prewarning/editErrorValue';
+			f.form('submit',{
+				url : toUrl,
+				onsubmit : function() {
+					var flag = $(this).form('validate');
+					if (flag) {
+						top.showProcess(true,'温馨提示','正在提交数据...');
+					}
+					return flag;
+				},
+				success : function(data) {
+					top.showProcess(false);
+					var map = $.parseJSON(data);
+					if (map.success) {
+						top.showMsg('提示',map.msg);
+						reloadDataGrid();
+					} else {
+						top.alertMsg('错误',map.msg+ "\n"+ map.obj == null ? "": map.obj);
+					}
+				},
+				onLoadError : function() {
+					top.showProcess(false);
+					top.$.messager.alert('温馨提示','由于网络或服务器太忙，提交失败，请重试！');
+				}
+			});
+			$('#editValueModal').modal('hide');
+		});
+		
+		
+		
 		//删除参数
 		function deleteValue() {
 			var ids = [];
@@ -1098,64 +1170,7 @@
 										$('#edit-minVal').val(data.minVal);
 
 										//弹出编辑框
-
 										$('#editValueModal').modal('show');
-										$('#submit_editValueInfo')
-												.click(
-														function() {
-															var toUrl = '${pageContext.request.contextPath}/admin/prewarning/editErrorValue';
-															var f = $('#editValueInfoForm');
-															f
-																	.form(
-																			'submit',
-																			{
-																				url : toUrl,
-																				onsubmit : function() {
-																					var flag = $(
-																							this)
-																							.form(
-																									'validate');
-																					if (flag) {
-																						top
-																								.showProcess(
-																										true,
-																										'温馨提示',
-																										'正在提交数据...');
-																					}
-																					return flag;
-																				},
-																				success : function(
-																						data) {
-																					top
-																							.showProcess(false);
-																					var map = $
-																							.parseJSON(data);
-																					if (map.success) {
-																						top
-																								.showMsg(
-																										'提示',
-																										map.msg);
-																						reloadDataGrid();
-																					} else {
-																						top
-																								.alertMsg(
-																										'错误',
-																										map.msg
-																												+ "\n"
-																												+ map.obj == null ? ""
-																												: map.obj);
-																					}
-																				},
-																				onLoadError : function() {
-																					top
-																							.showProcess(false);
-																					top.$.messager
-																							.alert(
-																									'温馨提示',
-																									'由于网络或服务器太忙，提交失败，请重试！');
-																				}
-																			});
-														});
 									} else {
 										top.alertMsg('错误', "未找到参数信息！");
 									}
@@ -1185,9 +1200,9 @@
 			}
 		}
 
-		function clearFun() {
-			$('#frmSearchValue').form('clear');
-		}
+		// 		function clearFun() {
+		// 			$('#frmSearchValue').form('clear');
+		// 		}
 	</script>
 </body>
 </html>

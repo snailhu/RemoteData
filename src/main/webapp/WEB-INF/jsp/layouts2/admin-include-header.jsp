@@ -18,8 +18,18 @@
     color: White;
     text-decoration: underline;
 }
-
 </style>
+<script type="text/javascript">
+	var activeUser = '${activeUser}';
+	var warnCount = ${warnCount};
+	$(function () {
+		if(activeUser != ''){
+			$('#prewarning').append("<a href='${pageContext.request.contextPath}/admin/prewarning/logIndex?hadReadFlag=0' id='prewarning'>"+warnCount+"条未读预警信息</a>");
+		}else{
+			$('#prewarning').append("<a href='${pageContext.request.contextPath}/loginOut' id='prewarning'>请先登录！</a>");
+		}
+	});
+</script>
    <div class="head white">
         <div class="logo">
             <img src="${pageContext.request.contextPath}/static/new/img/head/head_logo.png">
@@ -33,9 +43,8 @@
                 <img src="${pageContext.request.contextPath}/static/new/img/head/mimaxiugai.png">
                 <a>密码修改</a>
             </span>
-            <span>
+            <span id="prewarning">
                 <img src="${pageContext.request.contextPath}/static/new/img/head/xinxitixing.png">
-                <a>信息提醒</a>
             </span>
             <span>
                 <img src="${pageContext.request.contextPath}/static/new/img/head/tuichu.png">

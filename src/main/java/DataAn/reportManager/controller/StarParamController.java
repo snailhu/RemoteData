@@ -17,7 +17,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.context.request.WebRequest;
 
 import DataAn.Analysis.dto.ConstraintDto;
 import DataAn.common.controller.BaseController;
@@ -47,40 +46,32 @@ public class StarParamController  extends BaseController {
 	
 	@RequestMapping("/index")
 	public String reportIndex(Model model,HttpServletRequest request,HttpServletResponse response) {
-		//当前所在系列
-		model.addAttribute("nowSeries", "j9");
-		//当前所在星号
-		model.addAttribute("nowStar", "02");
 		
-		HttpSession session = request.getSession();
-		ActiveUserDto acticeUser = (ActiveUserDto) session.getAttribute("activeUser");
-		String flywheel = J9Series_Star_ParameterType.FLYWHEEL.getValue();
-		String type = acticeUser.getPermissionItems().get(flywheel);
-		String value = "";
-		String name = "";
-		if (StringUtils.isNotBlank(type)) {
-			value = J9Series_Star_ParameterType.getJ9SeriesStarParameterType(type).getValue();
-			name = J9Series_Star_ParameterType.getJ9SeriesStarParameterType(type).getName();
-		}else{
-			value = J9Series_Star_ParameterType.TOP.getValue();
-			name = J9Series_Star_ParameterType.TOP.getName();
-		}
-		//当前所在参数名称
-		model.addAttribute("nowParameterTypeValue", value);
-		model.addAttribute("nowParameterTypeName", name);			
-		//当前所在目录 
-		model.addAttribute("nowDirId", 0);
 		return "/admin/reportManager/paramManager";
 	}
-	//获取用户列表
 	@RequestMapping(value = "/getStarParamList", method = RequestMethod.POST)
 	@ResponseBody
-	public EasyuiDataGridJson getStarParamList(int page, int rows, WebRequest request) {
+	public EasyuiDataGridJson getStarParamList(int page, int rows, HttpServletRequest request) {
 		EasyuiDataGridJson json = new EasyuiDataGridJson();
 		String series = request.getParameter("series");
 		String star = request.getParameter("star");
 		String partsType = request.getParameter("partsType");
 		String paramCode = request.getParameter("paramCode");
+		HttpSession session = request.getSession();
+		ActiveUserDto acticeUser = (ActiveUserDto) session.getAttribute("activeUser");
+		String flywheel = J9Series_Star_ParameterType.FLYWHEEL.getValue();
+		String flywheelRole = acticeUser.getPermissionItems().get(flywheel);
+		String top = J9Series_Star_ParameterType.TOP.getValue();
+		String topRole = acticeUser.getPermissionItems().get(top);
+		
+		String value = "";
+		if (StringUtils.isNotBlank(flywheelRole) && StringUtils.isBlank(topRole)) {
+			value = J9Series_Star_ParameterType.FLYWHEEL.getValue();
+		}
+		if (StringUtils.isNotBlank(topRole)&& StringUtils.isBlank(flywheelRole) ) {
+			value = J9Series_Star_ParameterType.TOP.getValue();
+		}
+		partsType = value;
 		Pager<StarParamDto> pager;
 		try {
 			pager = starParamService.getStarParamList(page, rows, series,star, 
@@ -95,21 +86,29 @@ public class StarParamController  extends BaseController {
 		return json;
 	}
 	
-	
+	@RequestMapping(value = "/checkParam")
+	@ResponseBody
+	public ResultJSON checkParam(String series,String star,String partsType,String paramCode,HttpServletRequest request) {
+		ResultJSON res = ResultJSON.getSuccessResultJSON();
+		try {
+			boolean falg = starParamService.cherkStarParam(series,star,partsType,paramCode);
+			 if(falg) {
+				 res.setMsg("参数已存在！");
+				 res.setResult(CommonsConstant.RESULT_FALSE);
+				 return res;
+			 } 
+		 } catch (Exception ex) {
+			 res.setMsg("参数已存在！");
+			 res.setResult(CommonsConstant.RESULT_FALSE);
+		 }
+		 return res;
+	}
 	
 	@RequestMapping(value = "/createStarParam")
 	@ResponseBody
 	public JsonMessage createStarParam(StarParamDto starParamDto,HttpServletRequest request,HttpServletResponse response) {
 		JsonMessage jsonMsg = new JsonMessage();
-		
 		try {
-			boolean falg = starParamService.cherkStarParam(starParamDto);
-			if (falg) {
-				jsonMsg.setSuccess(false);
-				jsonMsg.setMsg("参数已存在！");
-				jsonMsg.setObj("参数已存在！");
-				return jsonMsg;
-			}
 			String currentUserName = getCurrentUserName(request);
 			starParamDto.setCreater(currentUserName);
 			starParamService.save(starParamDto);
@@ -128,17 +127,11 @@ public class StarParamController  extends BaseController {
 	@RequestMapping(value = "/editStarParam")
 	@ResponseBody
 	public JsonMessage editStarParam(StarParamDto starParamDto, HttpServletRequest request, HttpServletResponse response) {
+		
 		JsonMessage jsonMsg = new JsonMessage();
-		String currentUserName = getCurrentUserName(request);
-		starParamDto.setCreater(currentUserName);
 		try {
-			boolean falg = starParamService.cherkStarParam(starParamDto);
-			if (falg) {
-				jsonMsg.setSuccess(false);
-				jsonMsg.setMsg("参数已存在！");
-				jsonMsg.setObj("参数已存在！");
-				return jsonMsg;
-			}
+			String currentUserName = getCurrentUserName(request);
+			starParamDto.setCreater(currentUserName);
 			starParamService.update(starParamDto);
 		} catch (Exception e) {
 			jsonMsg.setSuccess(false);

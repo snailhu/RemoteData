@@ -80,7 +80,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     border: none;
     border-radius: 5px;
     padding: 10px 32px;
-/*     margin: 26px 30px 0px; */
+    margin: 26px 30px 0px;
 /*     width: 150px; */
 }
 .sweet-alert .sa-confirm-button-container {
@@ -88,14 +88,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     position: relative;
 /*     padding-left: 20px; */
 }
-.cancel{
-	margin-top: 15px;
-	margin-left: 50px;
+
+.sa-button-container {
+	float: right;
 }
-.confirm{
-	margin-top: 15px;
-	margin-left: 150px;
-}
+
 .glyphicon {
 	position: relative;
 	top: -23px;
@@ -125,14 +122,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 .form-horizontal {
     margin-bottom: 0px;
 }
-.icon-remove {
-    background: no-repeat center center;
-}
-.icon-edit {
-    background: no-repeat center center;
-}
-.icon-undo {
-    background: no-repeat center center;
+
+.breadcrumb {
+    margin-top: 10px;
 }
 </style>
 <script type="text/javascript">
@@ -204,31 +196,25 @@ $(function() {
   
   <body>
 	<div class="main-content">
-<!-- 		<div class="breadcrumbs" id="breadcrumbs"> -->
-<!-- 			<script type="text/javascript"> -->
-<!-- 				try { -->
-<!-- 					ace.settings.check('breadcrumbs', 'fixed') -->
-<!-- 				} catch (e) { -->
-<!-- 				} -->
-<!-- 			</script> -->
-<!-- 			<ul class="breadcrumb"> -->
-<!-- 				<li><i class="icon-home home-icon"></i> <a href="javascript:void(0);">首页</a></li> -->
-<!-- 				<li class="active">欢迎页面</li> -->
-<!-- 			</ul>.breadcrumb -->
-<!-- 			<div class="nav-search" id="nav-search"> -->
-<!-- 				<form class="form-search"> -->
-<!-- 					<span class="input-icon"> <input type="text" -->
-<!-- 						placeholder="Search ..." class="nav-search-input" -->
-<!-- 						id="nav-search-input" autocomplete="off" /> <i -->
-<!-- 						class="icon-search nav-search-icon"></i> -->
-<!-- 					</span> -->
-<!-- 				</form> -->
-<!-- 			</div>#nav-search -->
-<!-- 		</div> -->
+		<div class="breadcrumbs" id="breadcrumbs">
+			<script type="text/javascript">
+				try {
+					ace.settings.check('breadcrumbs', 'fixed')
+				} catch (e) {
+				}
+			</script>
+			<ul class="breadcrumb">
+				<li>
+					<img src="${pageContext.request.contextPath}/static/imgs/DataImport/home.png" style="margin-bottom: 3px;">
+					<span>系统管理</span>
+				</li>
+				<li class="active">遥测节点</li>
+			</ul><!--  .breadcrumb -->
+		</div>
 		<div class="page-content">
-			<div class="page-header">
-				<h1>遥测节点</h1>
-			</div>
+<!-- 			<div class="page-header"> -->
+<!-- 				<h1>遥测节点</h1> -->
+<!-- 			</div> -->
 			<!-- /.page-header -->
 			<div id="content" region="center" style="overflow: hidden">
 				<div id="toolbar" class="datagrid-toolbar" style="height: 28px;">

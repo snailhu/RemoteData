@@ -41,6 +41,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     margin-bottom: 0px;
 }
 
+.breadcrumb {
+    margin-top: 10px;
+}
   </style>
   <script type="text/javascript">
   $(function(){
@@ -71,33 +74,25 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   
   <body>
     <div class="main-content" id="main-content">
-<!-- 		<div class="breadcrumbs" id="breadcrumbs"> -->
-<!-- 			<script type="text/javascript"> -->
-<!-- 				try { -->
-<!-- 					ace.settings.check('breadcrumbs', 'fixed') -->
-<!-- 				} catch (e) { -->
-<!-- 				} -->
-<!-- 			</script> -->
-<!-- 			<ul class="breadcrumb"> -->
-<!-- 				<li><i class="icon-home home-icon"></i> <a href="javascript:void(0);">首页</a></li> -->
-<!-- 				<li class="active">文件管理</li> -->
-<!-- 			</ul> -->
-				<!--.breadcrumb -->
-<!-- 			<div class="nav-search" id="nav-search"> -->
-<!-- 				<form class="form-search"> -->
-<!-- 					<span class="input-icon"> <input type="text" -->
-<!-- 						placeholder="Search ..." class="nav-search-input" -->
-<!-- 						id="nav-search-input" autocomplete="off" /> <i -->
-<!-- 						class="icon-search nav-search-icon"></i> -->
-<!-- 					</span> -->
-<!-- 				</form> -->
-<!-- 			</div> -->
-				<!--#nav-search -->
-<!-- 		</div> -->
+		<div class="breadcrumbs" id="breadcrumbs">
+			<script type="text/javascript">
+				try {
+					ace.settings.check('breadcrumbs', 'fixed')
+				} catch (e) {
+				}
+			</script>
+			<ul class="breadcrumb">
+				<li>
+					<img src="${pageContext.request.contextPath}/static/imgs/DataImport/home.png" style="margin-bottom: 3px;">
+					<span>系统管理</span>
+				</li>
+				<li class="active">${nowSeries}系列-${nowStar}星-${nowParameterTypeName}文件列表</li>
+			</ul><!--  .breadcrumb -->
+		</div>
 		<div class="page-content">
-			<div class="page-header" style="padding-bottom: 10px; /**margin: -5px 0px 5px;*/">
-				<h1>${nowSeries}系列-${nowStar}星-${nowParameterTypeName}文件管理</h1>
-			</div>
+<!-- 			<div class="page-header" style="padding-bottom: 10px; /**margin: -5px 0px 5px;*/"> -->
+<!-- 				<h1>${nowSeries}系列-${nowStar}星-${nowParameterTypeName}文件管理</h1> -->
+<!-- 			</div> -->
 			
 			<!-- /.page-header -->
 			<div >

@@ -218,14 +218,33 @@ input[type=text]::-webkit-focus-inner {
 .btn {
 	margin-right: 30px;
 }
+
+.breadcrumb {
+    margin-top: 10px;
+}
 </style>
 </head>
   <body>
 	<div class="main-content">
+		<div class="breadcrumbs" id="breadcrumbs">
+			<script type="text/javascript">
+				try {
+					ace.settings.check('breadcrumbs', 'fixed')
+				} catch (e) {
+				}
+			</script>
+			<ul class="breadcrumb">
+				<li>
+					<img src="${pageContext.request.contextPath}/static/imgs/DataImport/home.png" style="margin-bottom: 3px;">
+					<span>文件管理</span>
+				</li>
+				<li class="active">文件上传</li>
+			</ul><!--  .breadcrumb -->
+		</div>
 		<div class="page-content" id="page-content">
-			<div class="page-header" style="padding-bottom: 10px; /**margin: -5px 0px 5px;*/">
-				<h1>文件上传</h1>
-			</div>					
+<!-- 			<div class="page-header" style="padding-bottom: 10px; /**margin: -5px 0px 5px;*/"> -->
+<!-- 				<h1>文件上传</h1> -->
+<!-- 			</div>					 -->
 			<!-- /.page-header -->
 			<div class="row">
 				<div class="col-xs-12 col-sm-12"> 

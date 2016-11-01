@@ -42,21 +42,148 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     
    
     
-	<style>
-		.dateStyle{
-			float:left;
-		}
-		.row {
-		  margin:0px !important
-		}
-		.page-header{
-			padding:0px !important
-		}
-		.datainp{
-			width: 300px;
-			height: 25px;
-		}
-	</style>
+<style>
+	.breadcrumbs{
+		height:45px;
+	}	
+	.breadcrumbs .breadcrumb{
+		padding:10px 5px;
+	}
+	.breadcrumb>li+li:before {
+    	padding: 0px;
+    	color: #333;
+    	content: "\003e";
+	}
+	.breadcrumbs .breadcrumb li a{		
+		padding:0px;
+	}	
+	.dateStyle{
+		float:left;
+	}
+	.dateStyle span{
+		margin-right: 10px;
+	}
+	.dateStyle input{
+		font-size: 16px;
+    	text-align: center;
+    	width: 175px;
+    	height: 30px;
+    	margin-right: 30px;
+    	color: #b2b2b2;
+    	background-color: #F8F8F8;
+    	border-width: 1px;
+	}
+	.dateSelect button{
+		height: 35px;
+    	width: 100px;
+    	color: white;
+    	background-color: #4B92DD;
+    	border-width: 1px;
+	}
+	#dateStart-div,#dateEnd-div{
+		display:inline;
+	}
+	.row {
+		margin:0px !important
+	}
+	.page-header{
+		padding:0px !important;
+		border: 1px solid #DEDEDE;
+    	background-color: white;
+    	height: 100px;
+    	margin-left: -20px;
+	}
+	.datainp{
+		width: 300px;
+		height: 25px;
+	}
+	.dateRange{
+		height: 40px;
+    	line-height: 40px;
+    	padding-left: 40px;
+    	color: #0076ca;
+    	/* border-bottom: 1px solid #DEDEDE; */	
+    	font-family: "微软雅黑";	
+    	font-size: 16px;
+    	margin-top: -45px;
+    	margin-left: -20px;
+	}
+	.dateSelect{
+		height: 90px;
+		font-size: 14px;
+    	font-weight: 900;
+    	padding: 25px 0 35px 30px;
+	}
+	.widget-header {
+    	width: 894px;
+    }
+    #jqxButton_addgroup,#jqxButton_submitgroup{
+    	overflow:hidden;
+    	padding: 0px;
+    	line-height: 30px;
+    	border-radius:20px;
+    }
+    #jqxButton_addgroup{
+    	margin-left:1px;
+    	margin-top:10px;
+    }
+    #jqxButton_submitgroup{
+    	background-color: #1C76C5;
+    	color: white; 
+    	margin-left:120px;
+    	margin-top:-32px 	
+    }
+    #id_dplist_template{
+    	margin-left:560px;
+    	margin-top:-32px;
+    }
+    .groupButton{
+    	margin-bottom:10px;
+    }
+    .new_hr{
+    	margin:10px 0px 10px -20px;
+    }
+    #jqxWidget{
+    	height: 40px;
+    	line-height: 40px;
+    	color: #0076ca;
+    	/*padding-left: -20px;
+    	border-bottom: 1px solid #DEDEDE;*/
+    	font-size:16px;
+		margin-bottom:200px;
+    }
+    #jqxWidget .button{
+    	padding: 9px;   	
+    	background-color: #fcf9e3;
+    }
+    #jqxWidget .button button{
+    	float: right;
+    	width: 90px;
+    	height: 30px;
+    	margin-left: 20px;
+    	border: 1px solid #DADADA;
+    	font-size: 14px;
+    	background-color: #b0b0b0;
+    	color: white;
+    	font-weight: normal;
+    	line-height: 1;    	 
+     	overflow:hidden;
+    }
+    .keepTemplet{
+    	background-color: #efa90e;
+    	text-shadow: 0 0 0 #FFF;
+     	opacity: 1;  	
+    }
+    .deleteGroup{
+    	text-shadow: 0 0 0 #FFF;
+     	opacity: 1;
+    }
+    .down{
+    	position:fixed;
+    	bottom:0px;
+    	z-index:10;
+    }
+</style>
 	
     <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"  >
 	  <div class="modal-dialog" role="document" style="margin:30px -200px">
@@ -97,7 +224,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	</div>
 	<!--保存为模板弹出框-->
     <div class="modal fade" id="id_Modal_template" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"  >
-	  <div class="modal-dialog" role="document" style="margin:30px -200px">
+	  <div class="modal-dialog" role="document" style="margin:50px auto;">
 	    <div class="modal-content">
 	      <div class="modal-header">
 	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -147,24 +274,27 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		</div>	
 		<div class="page-content">
 			<div class="page-header">
+				<div class="dateRange">日期范围</div>
+				<div class="dateSelect">
 				<div class="dateStyle">
-					<label>开始日期</label>
+					<span>开始日期</span>
 					<div id="dateStart-div">
-						<input class="datainp" id="dateStart" type="text" placeholder="请选择" readonly>
+						<input class="datainp" id="dateStart" type="text" placeholder="--请选择--" readonly>
 					</div>
 				</div>
-				<div class="dateStyle" style="margin-left:20px">
-					<label>结束日期</label>
+				<div class="dateStyle">
+					<span>结束日期</span>
 					<div id='dateEnd-div'>
-						<input class="datainp" id="dateEnd" type="text" placeholder="请选择" readonly>
-					</div>
-					<div style="margin-left:320px;margin-top:-25px" id='jqxButton-getParameters'>获取参数</div>
+						<input class="datainp" id="dateEnd" type="text" placeholder="--请选择--" readonly>
+					</div>				
+				</div>
+				<button style="height: 35px;"  id='jqxButton-getParameters'>获取参数</button>
 				</div>
 				<div style="clear:both"></div>
 			</div>
 			<!-- /.page-header -->
 
-		<div>
+		<div style="margin-left:-20px;">
 			<div class="col-xs-12 col-sm-12">
 				<div class="widget-box">
 					<div class="widget-header" id="change-search-box" data-action="collapse">
@@ -184,13 +314,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			</div><!-- /.col -->
 		 </div>
 		  	
-		 <div class="hr hr32 hr-dotted"></div>
+		 <div class="new_hr hr hr32 hr-dotted"></div>
 			<div class="row">
-			<div class="col-xs-12">
-					<div style="margin-left:1px;margin-top:0px" id='jqxButton_addgroup'>添加分组</div>
-  					<div style="margin-left:110px;margin-top:-25px" id='jqxButton_submitgroup'>提交分组</div>
+			<div class="groupButton col-xs-12">
+					<div id='jqxButton_addgroup'>添加分组</div>
+  					<div id='jqxButton_submitgroup'>提交分组</div>
   					<!--<button onclick="getCleared()">清空已选参数</button>-->
-  					<div style="margin-left:560px;margin-top:-26px" id="id_dplist_template"></div>
+  					<div id="id_dplist_template"></div>
   		 	</div>
   		 	<div class="col-xs-12">	
   				<div id='jqxWidgett'>
@@ -199,7 +329,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			</div>	      		     
 			</div><!-- /.row -->
 			
-			<div class="hr hr32 hr-dotted"></div>
+			<div class="new_hr hr hr32 hr-dotted"></div>
 			<div class="row">
 			<div class="col-xs-12">	
   				<div id='jqxWidget'>
@@ -233,10 +363,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	});
 
 	$(function() {	
-//     	$("#dateStart").jqxDateTimeInput({width: '300px', height: '25px'});
-//     	$("#dateEnd").jqxDateTimeInput({width: '300px', height: '25px'});
+//     	$("#dateStart").jqxDateTimeInput({width: '175px', height: '30px'});
+//     	$("#dateEnd").jqxDateTimeInput({width: '175px', height: '30px'});
         
-		 $("#jqxButton-getParameters").jqxButton({ width: '100', height: '17'});	
+		 $("#jqxButton-getParameters").jqxButton({ width: '100', height: '30'});	
 		 $("#jqxButton-getParameters").click( function ()  {    
 		 	var beginDate = $("#dateStart").val();
 		 	var endDate = $("#dateEnd").val();
@@ -245,12 +375,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
             updateParamTree(url);
 		 });
 		 
-		 $("#jqxButton_addgroup").jqxButton({ width: '100', height: '17'});	
+		 $("#jqxButton_addgroup").jqxButton({ width: '95', height: '30'});	
 		 $("#jqxButton_addgroup").click(function(){
 		 	getSelected();
 		 });
 		 
-		 $("#jqxButton_submitgroup").jqxButton({ width: '100', height: '17'});	
+		 $("#jqxButton_submitgroup").jqxButton({ width: '95', height: '30'});	
 		 $("#jqxButton_submitgroup").click(function(){
 		 	submitGroup();
 		 });
@@ -293,7 +423,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
            theme: 'energyblue',
            hierarchicalCheckboxes: true,              	
            columns: [
-	             { text: '参数名称',  dataField: 'name',editable: false, width: 300 },
+	             { text: '参数名称',  dataField: 'name',editable: false, width: 310 },
 	             { text: 'ID',  dataField: 'id',editable: false, width:200, hidden: true },
 	             { text: '最大值', dataField: 'max', width: 150 },
 	             { text: '最小值', dataField: 'min', width: 150 },
@@ -352,8 +482,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
             	groupObject.Y2name= $("#secondy-name").val();
             }
             //在已分组列表上添加“删除”和“保存为模板”按钮
-            var btn_savemodel="<button type='button' class='close' onclick='saveToLineTemplate(this)'><span aria-hidden='true'>保存为模板   </span></button>";
-            var group= $("<div name="+j+" class='alert alert-block alert-success' role='alert'> <button type='button' class='close' onclick='clearGroup(this)'><span aria-hidden='true'>删除分组;</span></button>"+btn_savemodel+stringName+"</div>")
+            var btn_savemodel="<button type='button' class='keepTemplet close' onclick='saveToLineTemplate(this)' style='background-color: #efa90e;'><span aria-hidden='true'>保存为模板</span></button>";
+            var group= $("<div name="+j+" class='button alert alert-block alert-success' role='alert'> <button type='button' class='deleteGroup close' onclick='clearGroup(this)'><span aria-hidden='true'>删除分组</span></button>"+btn_savemodel+stringName+"</div>")
             $('#jqxWidget').append(group)
             
             AllRowselect[j]=groupObject;
@@ -407,10 +537,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			groupObject.nowStar ="${nowStar}";
 			groupObject.component = $('#SatelliteComponents').attr('name');	
            //在已分组列表上添加“删除”和“保存为模板”按钮
-            var btn_savemodel="<button type='button' class='close' onclick='saveToLineTemplate(this)'><span aria-hidden='true'>保存为模板   </span></button>";
+            var btn_savemodel="<button type='button' class='keepTemplet close' onclick='saveToLineTemplate(this)' style='background-color: #efa90e;'><span aria-hidden='true'>保存为模板</span></button>";
 			//var btn_savetotemplate_id = "btn_savetotemplate_id_"+j;
-	        //var btn_savemodel="<button id='"+btn_savetotemplate_id+"'type='button' class='close' data-toggle='modal' data-target='#id_Modal_template'><span aria-hidden='true'>保存为模板" +j+"  </span></button>";
-		    var group= $("<div name="+j+" class='alert alert-warning alert-dismissible' role='alert'> <button type='button' class='close' onclick='clearGroup(this)'><span aria-hidden='true'>删除分组;</span></button>"+btn_savemodel+stringName+"</div>")            
+	        //var btn_savemodel="<button id='"+btn_savetotemplate_id+"'type='button' class='keepTemplet close' data-toggle='modal' data-target='#id_Modal_template' style='background-color: #efa90e;'><span aria-hidden='true'>保存为模板" +j+"  </span></button>";
+		    var group= $("<div name="+j+" class='button alert alert-warning alert-dismissible' role='alert'> <button type='button' class='deleteGroup close' onclick='clearGroup(this)'><span aria-hidden='true'>删除分组</span></button>"+btn_savemodel+stringName+"</div>")            
 	        $('#jqxWidget').append(group)            
 	        AllRowselect[j]=groupObject;
 	        j++;           
@@ -518,8 +648,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	                valueMember: "id",
 	                placeHolder:"请选择模板",
 	                //theme: 'energyblue',
-	                width: 200, 
-	                height: 25
+	                width: 120, 
+	                height: 30
 	            });
 	
 	            // subscribe to the select event.
@@ -564,7 +694,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	            var data_templateTree = new $.jqx.dataAdapter(source_template);         
 	            $("#id_templateTreeGrid").jqxTreeGrid(
 	            {
-	                width: 960,
+	                width: 880,
 	                source: data_templateTree,
 	                sortable: true,
 	                editable: false,
@@ -653,12 +783,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	                    });
 	                },              	
 	                columns: [
-	                  { text: '模板名称',  dataField: 'templateName', editable: false, width: 200 },
-	                  { text: '模板包含参数',  dataField: 'name', width: 200 },
-	                  //{ text: '模板ID',   dataField: 'templateid',editable: false, width:200, hidden: false },
-	                  { text: '最大值',   dataField: 'max', width: 200 },
-	                  { text: '最小值',    dataField: 'min', width: 160 },
-	                  { text: 'Y轴',     dataField: 'yname', width:200, columnType:'custom',
+	                  { text: '模板名称',  dataField: 'templateName', editable: false, width: 210 },
+	                  { text: '模板包含参数',  dataField: 'name', width: 220 },
+	                  //{ text: '模板ID',   dataField: 'templateid',editable: false, width:180, hidden: false },
+	                  { text: '最大值',   dataField: 'max', width: 150 },
+	                  { text: '最小值',    dataField: 'min', width: 150 },
+	                  { text: 'Y轴',     dataField: 'yname', width:150, columnType:'custom',
 	                  	//cellsRenderer: function (row, column, value, rowData) {if(value=="添加到分组") {return "<input type='button' value='删除模板'></input>"}},
 	                  	cellsRenderer: function (row, column, value, rowData) { if(value=="0") {return "Y1";} else if(value=="1"){return "Y2"} else{ return "";}}, 
 	                  	createEditor: function (row, cellValue, editor, cellText, width, height) {

@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <title>首页</title>
     <link type="text/css" rel="stylesheet" href="${base}/static/css/all.css"/>
+    <link type="text/css" rel="stylesheet" href="${base}/static/css/home.css"/>
     <script src="${base}/static/js/jquery-1.8.3.min.js"></script>
     <script src="${base}/static/js/homepage/home.js"></script>
 </head>

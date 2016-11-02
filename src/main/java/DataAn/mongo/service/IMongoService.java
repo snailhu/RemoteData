@@ -51,6 +51,9 @@ public interface IMongoService {
 	public void updateCSVDataByVersions(String series, String star, String paramType,
 			String versions);
 	
+	public void updateCSVDataByDate(String series, String star, String paramType,
+			Date beginDate, Date endDate);
+	
 	public void find();
 	
 	public MongoCursor<Document> findByYear_month_day(String series,

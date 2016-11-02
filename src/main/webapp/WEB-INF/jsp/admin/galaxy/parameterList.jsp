@@ -156,12 +156,12 @@ $(function() {
             },
         }
     });
-    $('#reset_addParamInfo').click(function() {
-        $('#addParamInfoForm').data('bootstrapValidator').resetForm(true);
-    });
-    $('#close_addParamInfo').click(function() {
-        $('#addParamInfoForm').data('bootstrapValidator').resetForm(true);
-    });
+//     $('#reset_addParamInfo').click(function() {
+//         $('#addParamInfoForm').data('bootstrapValidator').resetForm(true);
+//     });
+//     $('#close_addParamInfo').click(function() {
+//         $('#addParamInfoForm').data('bootstrapValidator').resetForm(true);
+//     });
     //编辑角色表单验证
     $('#editRoleInfoForm').bootstrapValidator({
         message : '这个值不能为空！',
@@ -220,7 +220,7 @@ $(function() {
 				<div id="toolbar" class="datagrid-toolbar" style="height: 28px;">
 					<div style="height: 28px;">
 						<button class="easyui-linkbutton" iconcls="icon-add" plain="true" style="float: left;" 
-							data-toggle="modal" data-target="#addParamModal">创建</button>
+							id="addParamModal-btn">创建</button>
 						<div class="datagrid-btn-separator"></div>
 						<button class="easyui-linkbutton" iconcls="icon-remove" plain="true" style="float: left;"
 							onclick="deleteRole();">删除</button>
@@ -266,8 +266,8 @@ $(function() {
 							</div>
 							<div class="modal-footer">
 							<div class="col-lg-4 col-lg-offset-5">
+								<button type="button" class="btn btn-primary" id="submit_addParamInfo">确定</button>
 								<button type="button" class="btn btn-default" data-dismiss="modal" id="reset_addParamInfo">关闭</button>
-								<button type="submit" class="btn btn-primary" data-dismiss="modal" id="submit_addParamInfo">确定</button>
 							</div>
 						</div>
 					</form>
@@ -305,8 +305,8 @@ $(function() {
 							</div>
 							<div class="modal-footer">
 								<div class="col-lg-4 col-lg-offset-5">
-									<button type="button" class="btn btn-default" data-dismiss="modal" id="reset_editParamInfo">关闭</button>
 									<button type="submit" class="btn btn-primary" data-dismiss="modal" id="submit_editParamInfo">确定</button>
+									<button type="button" class="btn btn-default" data-dismiss="modal" id="reset_editParamInfo">关闭</button>
 								</div>
 							</div>
 						</form>
@@ -366,33 +366,41 @@ $(function() {
       }); 
 // 	$("#add-param-series").combobox('setValues', '${nowSeries}');
 	
+	$('#addParamModal-btn').click(function(){
+		$('#addParamModal').modal('show');
+	});
+	$('#addParamModal').on('hide.bs.modal', function () {
+		$('#addParamInfoForm').data('bootstrapValidator').resetForm(true);
+	});
 	//创建参数
 	$('#submit_addParamInfo').click(function(){
+		var f = $('#addParamInfoForm');
+		f.data('bootstrapValidator').validate();
+		var isValid = f.data('bootstrapValidator').isValid();
+		if(!isValid){
+			//top.alertMsg('错误', '请满足提交条件！');
+			return false;
+		}
 		var series = $("#add-param-series").combobox('getValue');
 		var name = $('#add-param-fullName').val();
-		var isValid = $('#addParamInfoForm').data('bootstrapValidator').isValid();
-		if(isValid){
-			$.ajax({
-				url : '${pageContext.request.contextPath}/admin/parameter/createParam',
-				data : {
-					series : series,
-					name : name
-				},
-				cache : false,
-				dataType : "json",
-				success : function(data) {
-					if (data.success) {
-						top.showMsg('提示', data.msg);
-						reloadDataGrid();
-					} else {
-						top.alertMsg('警告', data.msg);
-					}
+		$.ajax({
+			url : '${pageContext.request.contextPath}/admin/parameter/createParam',
+			data : {
+				series : series,
+				name : name
+			},
+			cache : false,
+			dataType : "json",
+			success : function(data) {
+				if (data.success) {
+					$('#addParamModal').modal('hide');
+					top.showMsg('提示', data.msg);
+					reloadDataGrid();
+				} else {
+					top.alertMsg('警告', data.msg);
 				}
-			});
-			
-		}
-		
-		$('#addParamInfoForm').data('bootstrapValidator').resetForm(true);
+			}
+		});
 	});
 	  //编辑参数信息
 	  function editParam(){

@@ -234,7 +234,6 @@ public class CommonController {
 	return result;			
 	}	
 	
-	
 	@RequestMapping(value = "/showtab", method = RequestMethod.GET)
 	public String showtab(
 			HttpServletRequest request,

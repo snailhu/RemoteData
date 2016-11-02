@@ -82,6 +82,7 @@ public class UserController extends BaseController{
 		System.out.println("come in createUser ");
 		System.out.println(user);
 		JsonMessage jsonMsg = new JsonMessage();
+		System.out.println("existUserName: " + userService.existUserName(user.getUserName()));
 		if (userService.existUserName(user.getUserName())) {
 			jsonMsg.setSuccess(false);
 			jsonMsg.setMsg("用户名已存在！");
@@ -126,14 +127,11 @@ public class UserController extends BaseController{
 	@RequestMapping(value = "/editUser")
 	@ResponseBody
 	public JsonMessage editUser(UserDto user, HttpServletRequest request, HttpServletResponse response) {
+		System.out.println("update user： "+ user.toString());
 		JsonMessage jsonMsg = new JsonMessage();
-		if (StringUtils.isNotBlank(user.getPassWord())) {
-			user.setPassWord(user.getPassWord());
-		}
-		String currentUserName = getCurrentUserName(request);
-		user.setUpdateUser(currentUserName);
 		try {
-			System.out.println("update user： "+ user.toString());
+			String currentUserName = getCurrentUserName(request);
+			user.setUpdateUser(currentUserName);
 			userService.update(user);
 //			UserDto userModel = userService.getUserByName(currentUserName);
 //			// 保存日志记录

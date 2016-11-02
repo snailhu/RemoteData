@@ -139,12 +139,27 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   <body>
 
     <div class="main-content">
+    	<div class="breadcrumbs" id="breadcrumbs">
+			<script type="text/javascript">
+				try {
+					ace.settings.check('breadcrumbs', 'fixed')
+				} catch (e) {
+				}
+			</script>
+			<ul class="breadcrumb" style=" margin-top: 10px;">
+				<li>
+					<img src="${pageContext.request.contextPath}/static/imgs/DataImport/home.png" style="margin-bottom: 3px;">
+					<span>报告管理</span>
+				</li>
+				<li class="active">实时报告下载</li>
+			</ul><!--  .breadcrumb -->
+		</div>
 		<div class="page-content">
-			<div class="daohanglancs">
-				<img
-					src="<%=request.getContextPath()%>/static/imgs/DataImport/home.png">
-				<span>位置:</span> <span>报告管理></span> <span>实时报告下载</span>
-			</div>
+<!-- 			<div class="daohanglancs"> -->
+<!-- 				<img -->
+<!-- 					src="<%=request.getContextPath()%>/static/imgs/DataImport/home.png"> -->
+<!-- 				<span>位置:</span> <span>报告管理></span> <span>实时报告下载</span> -->
+<!-- 			</div> -->
 			<div >
 				<div class="col-xs-12 col-sm-12">
 					<!-- PAGE CONTENT BEGINS -->

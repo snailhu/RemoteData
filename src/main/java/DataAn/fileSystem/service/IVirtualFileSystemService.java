@@ -35,6 +35,7 @@ public interface IVirtualFileSystemService {
 	*/
 	public void deleteFile(String ids);
 	
+	public void deleteFileByUUId(String uuId);
 	/**
 	* @Title: downloadFile
 	* @Description: 下载单个文件

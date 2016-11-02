@@ -169,7 +169,9 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 	@Transactional
 	public void deleteFileByUUId(String uuId) {
 		VirtualFileSystem file = fileDao.selectByFileTypeIsFileAndMongoFSUUId(uuId);
-		this.deleteFile(file);
+		if(file != null){
+			this.deleteFile(file);			
+		}
 	}
 
 	private void deleteFile(VirtualFileSystem file) {

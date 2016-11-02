@@ -58,10 +58,25 @@
 	</style>
 
 	<div class="main-content">
+	    <div class="breadcrumbs" id="breadcrumbs">
+			<script type="text/javascript">
+				try {
+					ace.settings.check('breadcrumbs', 'fixed')
+				} catch (e) {
+				}
+			</script>
+			<ul class="breadcrumb" style=" margin-top: 10px;">
+				<li>
+					<img src="${pageContext.request.contextPath}/static/imgs/DataImport/home.png" style="margin-bottom: 3px;">
+					<span>系统管理</span>
+				</li>
+				<li class="active">系统日志</li>
+			</ul><!--  .breadcrumb -->
+		</div>
 		<div class="page-content">
-			<div class="page-header" style="margin: 0px;float: left;">
-				<h1>系统日志</h1>	
-			</div>
+<!-- 			<div class="page-header" style="margin: 0px;float: left;"> -->
+<!-- 				<h1>系统日志</h1>	 -->
+<!-- 			</div> -->
 				<div class="col-xs-12 col-sm-12">
 					<!-- PAGE CONTENT BEGINS -->
 					<div class="widget-box">

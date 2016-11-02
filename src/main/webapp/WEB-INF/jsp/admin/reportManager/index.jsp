@@ -42,40 +42,34 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     padding-top: 2px;
     margin-bottom: 0px;
 }
-
+.breadcrumb {
+    margin-top: 10px;
+}
   </style>
   </head>
   <body>
     <div class="main-content" id="main-content">
-<!-- 		<div class="breadcrumbs" id="breadcrumbs"> -->
-<!-- 			<script type="text/javascript"> -->
-<!-- 				try { -->
-<!-- 					ace.settings.check('breadcrumbs', 'fixed') -->
-<!-- 				} catch (e) { -->
-<!-- 				} -->
-<!-- 			</script> -->
-<!-- 			<ul class="breadcrumb"> -->
-<!-- 				<li><i class="icon-home home-icon"></i> <a href="javascript:void(0);">首页</a></li> -->
-<!-- 				<li class="active">文件管理</li> -->
-<!-- 			</ul> -->
-				<!--.breadcrumb -->
-<!-- 			<div class="nav-search" id="nav-search"> -->
-<!-- 				<form class="form-search"> -->
-<!-- 					<span class="input-icon"> <input type="text" -->
-<!-- 						placeholder="Search ..." class="nav-search-input" -->
-<!-- 						id="nav-search-input" autocomplete="off" /> <i -->
-<!-- 						class="icon-search nav-search-icon"></i> -->
-<!-- 					</span> -->
-<!-- 				</form> -->
-<!-- 			</div> -->
-				<!--#nav-search -->
-<!-- 		</div> -->
+		<div class="breadcrumbs" id="breadcrumbs">
+			<script type="text/javascript">
+				try {
+					ace.settings.check('breadcrumbs', 'fixed')
+				} catch (e) {
+				}
+			</script>
+			<ul class="breadcrumb">
+				<li>
+					<img src="${pageContext.request.contextPath}/static/imgs/DataImport/home.png" style="margin-bottom: 3px;">
+					<span>报告管理</span>
+				</li>
+				<li class="active">报告查看</li>
+			</ul><!--  .breadcrumb -->
+		</div>
 		<div class="page-content">
-			<div class="daohanglancs">
-					<img
-						src="<%=request.getContextPath()%>/static/imgs/DataImport/home.png">
-					<span>位置:</span> <span>报告管理></span> <span>报告查看</span>
-				</div>
+<!-- 			<div class="daohanglancs"> -->
+<!-- 					<img -->
+<!-- 						src="<%=request.getContextPath()%>/static/imgs/DataImport/home.png"> -->
+<!-- 					<span>位置:</span> <span>报告管理></span> <span>报告查看</span> -->
+<!-- 			</div> -->
 			<!-- /.page-header -->
 			<div >
 				<div class="col-xs-12 col-sm-12">

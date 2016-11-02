@@ -158,12 +158,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
               }
           }
       });
-	$('#reset_addSeriesInfo').click(function() {
-	    $('#addSeriesInfoForm').data('bootstrapValidator').resetForm(true);
-	});	
-	$('#close_addSeriesInfo').click(function() {
-	    $('#addSeriesInfoForm').data('bootstrapValidator').resetForm(true);
-	});
+// 	$('#reset_addSeriesInfo').click(function() {
+// 	    $('#addSeriesInfoForm').data('bootstrapValidator').resetForm(true);
+// 	});	
+// 	$('#close_addSeriesInfo').click(function() {
+// 	    $('#addSeriesInfoForm').data('bootstrapValidator').resetForm(true);
+// 	});
   	$('#editSeriesInfoForm').bootstrapValidator({
           message: 'This value is not valid',
           feedbackIcons: {
@@ -334,7 +334,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				<div id="toolbar" class="datagrid-toolbar" style="height: 28px;">
 					<div style="height: 28px;">
 						<button class="easyui-linkbutton" iconcls="icon-add" plain="true" style="float: left;" 
-							data-toggle="modal" data-target="#addSeriesInfoModal">创建</button>
+							id="addSeriesInfoModal-btn">创建</button>
 						<div class="datagrid-btn-separator"></div>
 						<button class="easyui-linkbutton" iconcls="icon-remove" plain="true" style="float: left;"
 							onclick="deleteSeries();">删除</button>
@@ -386,8 +386,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							</div>
 							<div class="modal-footer">
 								<div class="col-lg-4 col-lg-offset-5">
+									<button type="button" class="btn btn-primary" onclick="submit_addSeriesInfo()">确定</button>
 									<button type="button" class="btn btn-default" data-dismiss="modal" id="reset_addSeriesInfo">关闭</button>
-									<button type="submit" class="btn btn-primary" data-dismiss="modal" onclick="submit_addSeriesInfo()">确定</button>
 								</div>
 							</div>
 						</form>
@@ -431,8 +431,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							</div>
 							<div class="modal-footer">
 								<div class="col-lg-4 col-lg-offset-5">
-									<button type="button" class="btn btn-default" data-dismiss="modal" id="reset_editSeriesInfo">关闭</button>
 									<button type="submit" class="btn btn-primary" data-dismiss="modal" id="submit_editSeriesInfo">确定</button>
+									<button type="button" class="btn btn-default" data-dismiss="modal" id="reset_editSeriesInfo">关闭</button>
 								</div>
 							</div>
 						</form>
@@ -485,8 +485,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							</div>
 							<div class="modal-footer">
 								<div class="col-lg-4 col-lg-offset-5">
-									<button type="button" class="btn btn-default" data-dismiss="modal" id="reset_addStarInfo">关闭</button>
 									<button type="submit" class="btn btn-primary" data-dismiss="modal" id="submit_addStarInfo">确定</button>
+									<button type="button" class="btn btn-default" data-dismiss="modal" id="reset_addStarInfo">关闭</button>
 								</div>
 							</div>
 						</form>
@@ -537,8 +537,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							</div>
 							<div class="modal-footer">
 								<div class="col-lg-4 col-lg-offset-5">
-									<button type="button" class="btn btn-default" data-dismiss="modal" id="reset_editStarInfo">关闭</button>
 									<button type="submit" class="btn btn-primary" data-dismiss="modal" id="submit_editStarInfo">确定</button>
+									<button type="button" class="btn btn-default" data-dismiss="modal" id="reset_editStarInfo">关闭</button>
 								</div>
 							</div>
 						</form>
@@ -696,34 +696,45 @@ $(function() {
 		var arr = datagridId.split('-');
 		galaxyGrid.datagrid('fixDetailRowHeight', arr[1]);
 	}
+	
+	$('#addSeriesInfoModal-btn').click(function(){
+		$('#addSeriesInfoModal').modal('show');
+	});
+	$('#addSeriesInfoModal').on('hide.bs.modal', function () {
+		$('#addSeriesInfoForm').data('bootstrapValidator').resetForm(true);
+	});
 	//提交创建系列
 	function submit_addSeriesInfo(){
+		var f = $('#addSeriesInfoForm');
+		f.data('bootstrapValidator').validate();
+		var isValid = f.data('bootstrapValidator').isValid();
+		if(!isValid){
+			//top.alertMsg('错误', '请满足提交条件！');
+			return false;
+		}
 		var name = $('#add-series-name').val();
 		var code = $('#add-series-code').val();
 		var description = $('#add-series-description').val();
-		var isValid = $('#addSeriesInfoForm').data('bootstrapValidator').isValid();
-		if(isValid){
-			$.ajax({
-				url : '${pageContext.request.contextPath}/admin/series/createSeries',
-				data : {
-					name : name,
-					code : code,
-					description : description
-				},
-				cache : false,
-				dataType : "json",
-				success : function(data) {
-					if (data.success) {
-						galaxyGrid.datagrid("unselectAll");
-						galaxyGrid.datagrid('reload');
-						top.showMsg('提示', data.msg);
-					} else {
-						top.alertMsg('警告', data.msg);
-					}
+		$.ajax({
+			url : '${pageContext.request.contextPath}/admin/series/createSeries',
+			data : {
+				name : name,
+				code : code,
+				description : description
+			},
+			cache : false,
+			dataType : "json",
+			success : function(data) {
+				if (data.success) {
+					$('#addSeriesInfoModal').modal('hide');
+					galaxyGrid.datagrid("unselectAll");
+					galaxyGrid.datagrid('reload');
+					top.showMsg('提示', data.msg);
+				} else {
+					top.alertMsg('警告', data.msg);
 				}
-			});
-		}
-		$('#addSeriesInfoForm').data('bootstrapValidator').resetForm(true);
+			}
+		});
 	}	
 	//编辑系列信息
 	function editSeries(){

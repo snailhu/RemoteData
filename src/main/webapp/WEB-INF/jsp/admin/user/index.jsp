@@ -186,9 +186,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				},
 				mobile : {
 					validators : {
-						notEmpty : {
-							message : '手机号码不能为空'
-						},
 						regexp : {
 							regexp : /^1[3578]\d{9}$/,
 							message : '手机号码格式不对'
@@ -197,9 +194,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				},
 				email : {
 					validators : {
-						notEmpty : {
-							message : '手机号码不能为空'
-						},
 						emailAddress : {
 							message : '请输入正确的邮箱地址'
 						}
@@ -207,12 +201,15 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				},
 			}
 		});
-		$('#reset_addUserInfo').click(function() {
-			$('#addUserInfoForm').data('bootstrapValidator').resetForm(true);
-		});
-		$('#close_addUserInfo').click(function() {
-			$('#addUserInfoForm').data('bootstrapValidator').resetForm(true);
-		});
+		
+// 		$('#reset_addUserInfo').click(function() {
+// 			$('#addUserInfoForm').data('bootstrapValidator').resetForm(true);
+// 		});
+// 		$('#close_addUserInfo').click(function() {
+// 			$('#addUserInfoForm').data('bootstrapValidator').resetForm(true);
+// 		});
+		
+		
 		$('#editUserInfoForm').bootstrapValidator({
 			message : '这个值不能为空！',
 			feedbackIcons : {
@@ -428,8 +425,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							</div>
 							<div class="modal-footer">
 								<div class="col-lg-4 col-lg-offset-5">
-									<button type="button" class="btn btn-default" id="reset_addUserInfo" data-dismiss="modal">关闭</button>
-									<button type="submit" class="btn btn-primary" id="submit_addUserInfo" data-dismiss="modal">确定</button>
+									<button type="button" class="btn btn-primary" id="submit_addUserInfo">确定</button>
+									<button type="button" class="btn btn-default" data-dismiss="modal" id="reset_addUserInfo">关闭</button>
 								</div>
 							</div>
 						</form>
@@ -486,8 +483,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							</div>
 							<div class="modal-footer">
 								<div class="col-lg-4 col-lg-offset-5">
-									<button type="button" class="btn btn-default" id="reset_editUserInfo" data-dismiss="modal">关闭</button>
 									<button type="submit" class="btn btn-primary" id="submit_editUserInfo" data-dismiss="modal">确定</button>
+									<button type="button" class="btn btn-default" id="reset_editUserInfo" data-dismiss="modal">关闭</button>
 								</div>
 							</div>
 						</form>
@@ -514,8 +511,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			      </div>
 			      <div class="modal-footer">
 			      	<div class="col-lg-4 col-lg-offset-5">
-				        <button type="button" class="btn btn-default" data-dismiss="modal" id="reset_editUserRole">关闭</button>
 				        <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="submit_editUserRole()">确定</button>
+				        <button type="button" class="btn btn-default" data-dismiss="modal" id="reset_editUserRole">关闭</button>
                     </div>
 			      </div>
 			    </div>
@@ -711,41 +708,51 @@ jeDate({
 				orgIds:orgIds.join(',')
 			});
 		});
+		
+		$('#addUserModal').on('hide.bs.modal', function () {
+			$('#addUserInfoForm').data('bootstrapValidator').resetForm(true);
+		});
 		//创建用户
 		function createUser() {
 			//弹出创建用户
 			$('#addUserModal').modal('show');
-			$('#submit_addUserInfo').click(function(){
-				var toUrl='${pageContext.request.contextPath}/admin/user/createUser';
-				var f = $('#addUserInfoForm');
-				         f.form('submit', {
-				             url: toUrl,
-				             onsubmit: function () {
-				                 var flag = $(this).form('validate');
-				                 if (flag) {
-				                     top.showProcess(true, '温馨提示', '正在提交数据...');
-				                 }
-				                 return flag;
-				             },
-				             success: function (data) {
-				                 top.showProcess(false);
-				                 var map = $.parseJSON(data);
-				                 if (map.success) {
-				                     top.showMsg('提示', map.msg);
-				                     reloadDataGrid();
-				                 }
-				                 else {
-				                 	top.alertMsg('错误', map.msg+"\n"+map.obj==null?"":map.obj);
-				                 }
-				             },
-				             onLoadError: function () {
-				                 top.showProcess(false);
-				                 top.$.messager.alert('温馨提示', '由于网络或服务器太忙，提交失败，请重试！');
-				             }
-				         });
-			});
-			$('#addUserInfoForm').data('bootstrapValidator').resetForm(true);
 		}
+		$('#submit_addUserInfo').click(function(){
+			var f = $('#addUserInfoForm');
+			f.data('bootstrapValidator').validate();
+			var isValid = f.data('bootstrapValidator').isValid();
+			if(!isValid){
+				//top.alertMsg('错误', '请满足提交条件！');
+				return false;
+			}
+			var toUrl='${pageContext.request.contextPath}/admin/user/createUser';
+			var f = $('#addUserInfoForm');
+				f.form('submit', {
+				    url: toUrl,
+				    onsubmit: function () {
+				        var flag = $(this).form('validate');
+				        if (flag) {
+				            top.showProcess(true, '温馨提示', '正在提交数据...');
+				        }
+				        return flag;
+				    },
+				    success: function (data) {
+				        top.showProcess(false);
+				        var map = $.parseJSON(data);
+				        if (map.success) {
+				        	$('#addUserModal').modal('hide');
+				            top.showMsg('提示', map.msg);
+				            reloadDataGrid();
+				        } else {
+				        	top.showMsg('错误', map.msg);
+				        }
+				    },
+				    onLoadError: function () {
+				        top.showProcess(false);
+				        top.$.messager.alert('温馨提示', '由于网络或服务器太忙，提交失败，请重试！');
+				    }
+				});
+		});
 		//删除用户
 		function deleteUser() {
 			var ids = [];
@@ -806,35 +813,6 @@ jeDate({
 					$('#edit-user-mobile').val(rows[0].mobile);
 					$('#edit-user-email').val(rows[0].email);
 					$('#editUserModal').modal('show');
-					$('#submit_editUserInfo').click(function(){
-						var toUrl='${pageContext.request.contextPath}/admin/user/editUser';
-						var f = $('#editUserInfoForm');
-	                    f.form('submit', {
-	                        url: toUrl,
-	                        onsubmit: function () {
-	                            var flag = $(this).form('validate');
-	                            if (flag) {
-	                                top.showProcess(true, '温馨提示', '正在提交数据...');
-	                            }
-	                            return flag;
-	                        },
-	                        success: function (data) {
-	                            top.showProcess(false);
-	                            var map = $.parseJSON(data);
-	                            if (map.success) {
-	                                top.showMsg('提示', map.msg);
-	                                reloadDataGrid();
-	                            } else {
-	                            	top.alertMsg('错误', map.msg+"\n"+map.obj==null?"":map.obj);
-	                            }
-	                        },
-	                        onLoadError: function () {
-	                            top.showProcess(false);
-	                            top.$.messager.alert('温馨提示', '由于网络或服务器太忙，提交失败，请重试！');
-	                        }
-	                    });
-					});
-
 				} else {
 					var names = [];
 					for ( var i = 0; i < rows.length; i++) {
@@ -846,8 +824,39 @@ jeDate({
 			} else {
 				top.showMsg("提示", "请选择要编辑的用户！");
 			}
-
 		}
+		$('#submit_editUserInfo').click(function(){
+			var isValid = $('#editUserInfoForm').data('bootstrapValidator').isValid();
+			if(isValid){
+				$('#editUserModal').modal('hide');
+				var toUrl='${pageContext.request.contextPath}/admin/user/editUser';
+				var f = $('#editUserInfoForm');
+	            f.form('submit', {
+	                url: toUrl,
+	                onsubmit: function () {
+	                    var flag = $(this).form('validate');
+	                    if (flag) {
+	                        top.showProcess(true, '温馨提示', '正在提交数据...');
+	                    }
+	                    return flag;
+	                },
+	                success: function (data) {
+	                    top.showProcess(false);
+	                    var map = $.parseJSON(data);
+	                    if (map.success) {
+	                        top.showMsg('提示', map.msg);
+	                        reloadDataGrid();
+	                    } else {
+	                    	top.alertMsg('错误', map.msg+"\n"+map.obj==null?"":map.obj);
+	                    }
+	                },
+	                onLoadError: function () {
+	                    top.showProcess(false);
+	                    top.$.messager.alert('温馨提示', '由于网络或服务器太忙，提交失败，请重试！');
+	                }
+	            });
+			}
+		});
 		function getSelectId() {
 			var row = userGrid.datagrid('getSelected');
 

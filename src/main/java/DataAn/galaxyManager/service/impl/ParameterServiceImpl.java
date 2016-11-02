@@ -8,7 +8,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import javax.annotation.Resource;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -48,7 +48,11 @@ public class ParameterServiceImpl implements IParameterService{
 				String code = "sequence_" + num;
 				param.setSeries(series);
 				param.setStar(star);
-				param.setParameterType(paramType);
+				if(StringUtils.isNotBlank(paramType)){
+					param.setParameterType(paramType);					
+				}else{
+					param.setParameterType(J9Series_Star_ParameterType.getJ9SeriesStarParameterTypeByName(param_zh).getValue());	
+				}
 				param.setFullName(param_zh);
 				param.setSimplyName(param_zh.split(":")[1]);
 				param.setCode(code);

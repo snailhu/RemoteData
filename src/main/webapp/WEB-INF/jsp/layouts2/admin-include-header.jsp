@@ -39,16 +39,16 @@
                 <img src="${pageContext.request.contextPath}/static/new/img/head/gonggongshouye.png">
                 <a href="login">公共首页</a>
             </span>
-            <span>
-                <img src="${pageContext.request.contextPath}/static/new/img/head/mimaxiugai.png">
-                <a>密码修改</a>
-            </span>
+<!--             <span> -->
+<!--                 <img src="${pageContext.request.contextPath}/static/new/img/head/mimaxiugai.png"> -->
+<!--                 <a>密码修改</a> -->
+<!--             </span> -->
             <span id="prewarning">
                 <img src="${pageContext.request.contextPath}/static/new/img/head/xinxitixing.png">
             </span>
             <span>
                 <img src="${pageContext.request.contextPath}/static/new/img/head/tuichu.png">
-                <a>退出</a>
+                <a href="${pageContext.request.contextPath}/loginOut">退出</a>
             </span>
         </div>
     </div>

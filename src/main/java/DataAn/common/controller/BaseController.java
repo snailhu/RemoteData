@@ -4,6 +4,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import DataAn.sys.domain.User;
+import DataAn.sys.dto.ActiveUserDto;
 
 /**
  * 控制器基类
@@ -33,10 +34,10 @@ public class BaseController {
 	protected String getCurrentUserName(HttpServletRequest request)
 	{
 		HttpSession session = request.getSession();
-		Object obj = session.getAttribute("user");
+		Object obj = session.getAttribute("activeUser");
 		if (obj != null) {
-			User user = (User) obj;
-			return user.getUserName();	
+			ActiveUserDto acticeUser = (ActiveUserDto) obj;
+			return acticeUser.getUserName();	
 		}else {
 			System.out.println("userName is null");
 			return "admin";

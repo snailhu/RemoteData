@@ -11,6 +11,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -38,6 +39,7 @@ import DataAn.fileSystem.service.ICSVService;
 import DataAn.fileSystem.service.IVirtualFileSystemService;
 import DataAn.galaxyManager.option.J9SeriesType;
 import DataAn.galaxyManager.option.SeriesType;
+import DataAn.galaxyManager.service.IParameterService;
 import DataAn.mongo.fs.IDfsDb;
 import DataAn.mongo.fs.MongoDfsDb;
 import DataAn.mongo.init.InitMongo;
@@ -45,6 +47,11 @@ import DataAn.mongo.service.IMongoService;
 import DataAn.mongo.zip.ZipCompressorByAnt;
 import DataAn.status.option.StatusTrackingType;
 import DataAn.status.service.IStatusTrackingService;
+import DataAn.storm.Communication;
+import DataAn.storm.zookeeper.CommunicationUtils;
+import DataAn.storm.zookeeper.ZooKeeperClient;
+import DataAn.storm.zookeeper.ZooKeeperClient.ZookeeperExecutor;
+import DataAn.storm.zookeeper.ZooKeeperNameKeys;
 
 
 @Service("virtualFileSystemServiceImpl")
@@ -60,6 +67,8 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 	private IMongoService mongoService;
 	@Resource
 	private IStatusTrackingService statusTrackingService;
+	@Resource
+	private IParameterService paramService;
 	
 	@Override
 	@Transactional
@@ -93,39 +102,58 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 		statusTrackingService.updateStatusTracking(csvFileDto.getFileName(), StatusTrackingType.START.getValue(),
 				csvFileDto.getParameterType(), "");
 		
-		//保存csv临时文件
-		String csvTempFilePath = CommonConfig.getUplodCachePath() + File.separator + versions;
-		FileUtil.saveFile(csvTempFilePath, fileName, csvFileDto.getIn());
-		csvTempFilePath = csvTempFilePath + File.separator + fileName;
-		csvFileDto.setFilePath(csvTempFilePath);
-		
-		// 保存 *.csv文件
-//		this.saveFileOfCSV(csvFileDto, dataMap);
+		try {
+			//保存csv临时文件
+			String csvTempFilePath = CommonConfig.getUplodCachePath() + File.separator + versions;
+			FileUtil.saveFile(csvTempFilePath, fileName, csvFileDto.getIn());
+			csvTempFilePath = csvTempFilePath + File.separator + fileName;
+			csvFileDto.setFilePath(csvTempFilePath);
+			
+			// 保存 *.csv文件
+			this.saveFileOfCSV(csvFileDto, dataMap);
 //		//测试分级数据存储
 //		//this.saveFileOfCSVMock(csvFileDto, dataMap);
 //		
 //		//获取map中的csv文件
-//		FileDto datFile = map.get("dat");
-//		if(datFile != null){			
-//			// 保存 *.DAT文件
-//			this.saveFileOfDAT(datFile, dataMap);
-//		}
+			FileDto datFile = map.get("dat");
+			if(datFile != null){			
+				// 保存 *.DAT文件
+				this.saveFileOfDAT(datFile, dataMap);
+			}
+		} catch (Exception e) {
+//			e.printStackTrace();
+			statusTrackingService.updateStatusTracking(csvFileDto.getFileName(), StatusTrackingType.IMPORTFAIL.getValue(),
+					csvFileDto.getParameterType(), "");
+		}
 		
-		statusTrackingService.updateStatusTracking(csvFileDto.getFileName(), StatusTrackingType.IMPORTFAIL.getValue(),
+		statusTrackingService.updateStatusTracking(csvFileDto.getFileName(), StatusTrackingType.PREHANDLE.getValue(),
 				csvFileDto.getParameterType(), "");
 		
+		//TODO 调用文件队列API，  zookeeper 
+		Map conf=new HashMap<>();
+		ZooKeeperNameKeys.setZooKeeperServer(conf, "nim1.storm.com:2182,nim2.storm.com");
+		ZookeeperExecutor executor=new ZooKeeperClient()
+		.connectString(ZooKeeperNameKeys.getZooKeeperServer(conf))
+		.namespace(ZooKeeperNameKeys.getNamespace(conf))
+		.build();
+		CommunicationUtils communicationUtils=CommunicationUtils.get(executor);
+		Communication communication=new Communication();
+		communication.setFileName(csvFileDto.getFileName());
+		communication.setFilePath(csvFileDto.getFilePath());
+		communication.setVersions(versions);
+		communication.setSeries(nowSeries);
+		communication.setStar(nowStar);
+		communication.setName(csvFileDto.getParameterType());
+		communicationUtils.add(communication);
+		
 		//开另外一个线程处理存入kafka的数据
-//		new Thread(new SaveFileToKafka(nowSeries, 
-//									   nowStar, 
-//									   csvFileDto.getParameterType(), 
-//									   csvTempFilePath,
-//									   versions)).start();
+		new Thread(new SaveFileToKafka(paramService, mongoService)).start();
 		
 		return versions;
 	}
 	
 	@Override
-	@Transactional(readOnly = true)
+	@Transactional
 	public void deleteFile(String ids) {
 		String[] arrayIds = ids.split(",");
 		
@@ -135,8 +163,15 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 			VirtualFileSystem file = fileDao.get(Long.parseLong(items[0]));
 			this.deleteFile(file);
 		}
-		
 	}
+
+	@Override
+	@Transactional
+	public void deleteFileByUUId(String uuId) {
+		VirtualFileSystem file = fileDao.selectByFileTypeIsFileAndMongoFSUUId(uuId);
+		this.deleteFile(file);
+	}
+
 	private void deleteFile(VirtualFileSystem file) {
 		if(file.getFileType().getName().equals("dir")){
 			List<VirtualFileSystem> fileList = fileDao.findByParam("parentId", file.getId());
@@ -642,7 +677,5 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 		fileDao.add(file);
 		
 	}
-
-
 
 }

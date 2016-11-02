@@ -158,12 +158,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				}
 			}
 		});
-		$('#reset_addRoleInfo').click(function() {
-			$('#addRoleInfoForm').data('bootstrapValidator').resetForm(true);
-		});
-		$('#close_addRoleInfo').click(function() {
-			$('#addRoleInfoForm').data('bootstrapValidator').resetForm(true);
-		});
+// 		$('#reset_addRoleInfo').click(function() {
+// 			$('#addRoleInfoForm').data('bootstrapValidator').resetForm(true);
+// 		});
+// 		$('#close_addRoleInfo').click(function() {
+// 			$('#addRoleInfoForm').data('bootstrapValidator').resetForm(true);
+// 		});
 		//编辑角色表单验证
 		$('#editRoleInfoForm').bootstrapValidator({
 			message : '这个值不能为空！',
@@ -223,7 +223,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				<div id="toolbar" class="datagrid-toolbar" style="height: 28px;">
 					<div style="height: 28px;">
 						<button class="easyui-linkbutton" iconcls="icon-add" plain="true" style="float: left;" 
-							data-toggle="modal" data-target="#addRoleModal">创建</button>
+							id="createRole-btn">创建</button>
 						<div class="datagrid-btn-separator"></div>
 						<button class="easyui-linkbutton" iconcls="icon-remove" plain="true" style="float: left;" 
 							onclick="deleteRole();">删除</button>
@@ -268,8 +268,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						</div>
 						<div class="modal-footer">
 							<div class="col-lg-4 col-lg-offset-5">
+								<button type="button" class="btn btn-primary" id="submit_addRoleInfo">确定</button>
 								<button type="button" class="btn btn-default" data-dismiss="modal" id="reset_addRoleInfo">关闭</button>
-								<button type="submit" class="btn btn-primary" data-dismiss="modal" id="submit_addRoleInfo">确定</button>
 							</div>
 						</div>
 					</form>
@@ -306,8 +306,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							</div>
 							<div class="modal-footer">
 								<div class="col-lg-4 col-lg-offset-5">
-									<button type="button" class="btn btn-default" data-dismiss="modal" id="reset_editRoleInfo">关闭</button>
 									<button type="submit" class="btn btn-primary" data-dismiss="modal" id="submit_editRoleInfo">确定</button>
+									<button type="button" class="btn btn-default" data-dismiss="modal" id="reset_editRoleInfo">关闭</button>
 								</div>
 							</div>
 						</form>
@@ -330,8 +330,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			      </div>
 			      <div class="modal-footer">
 			      	<div class="col-lg-4 col-lg-offset-5">
-				        <button type="button" class="btn btn-default" data-dismiss="modal" id="reset_editRolePermission">关闭</button>
 				        <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="submit_editRolePermission()">确定</button>
+				        <button type="button" class="btn btn-default" data-dismiss="modal" id="reset_editRolePermission">关闭</button>
                     </div>
 			      </div>
 			    </div>
@@ -435,39 +435,50 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			top.showMsg("提示", "请选择要关联的权限！");
 		}
 	}
+	
+	$('#addRoleModal').on('hide.bs.modal', function () {
+		$('#addRoleInfoForm').data('bootstrapValidator').resetForm(true);
+	});
+	$('#createRole-btn').click(function(){
+		$('#addRoleModal').modal('show');
+	});
+	
 	//创建系统角色
 	$('#submit_addRoleInfo').click(function(){
-		var isValid = $('#addRoleInfoForm').data('bootstrapValidator').isValid();
-		if(isValid){
-			var toUrl='${pageContext.request.contextPath}/admin/role/createRole';
-			var f = $('#addRoleInfoForm');
-			         f.form('submit', {
-			             url: toUrl,
-			             onsubmit: function () {
-			                 var flag = $(this).form('validate');
-			                 if (flag) {
-			                     top.showProcess(true, '温馨提示', '正在提交数据...');
-			                 }
-			                 return flag;
-			             },
-			             success: function (data) {
-			                 top.showProcess(false);
-			                 var map = $.parseJSON(data);
-			                 if (map.success) {
-			                     top.showMsg('提示', map.msg);
-			                     reloadDataGrid();
-			                 }
-			                 else {
-			                 	top.alertMsg('错误', map.msg+"\n"+map.obj==null?"":map.obj);
-			                 }
-			             },
-			             onLoadError: function () {
-			                 top.showProcess(false);
-			                 top.$.messager.alert('温馨提示', '由于网络或服务器太忙，提交失败，请重试！');
-			             }
-			         });
-			$('#addRoleInfoForm').data('bootstrapValidator').resetForm(true);
+		var f = $('#addRoleInfoForm');
+		f.data('bootstrapValidator').validate();
+		var isValid = f.data('bootstrapValidator').isValid();
+		if(!isValid){
+			//top.alertMsg('错误', '请满足提交条件！');
+			return false;
 		}
+		var toUrl='${pageContext.request.contextPath}/admin/role/createRole';
+        f.form('submit', {
+            url: toUrl,
+            onsubmit: function () {
+                var flag = $(this).form('validate');
+                if (flag) {
+                    top.showProcess(true, '温馨提示', '正在提交数据...');
+                }
+                return flag;
+            },
+            success: function (data) {
+                top.showProcess(false);
+                var map = $.parseJSON(data);
+                if (map.success) {
+                	$('#addRoleModal').modal('hide');
+                    top.showMsg('提示', map.msg);
+                    reloadDataGrid();
+                }
+                else {
+                	top.alertMsg('错误', map.msg+"\n"+map.obj==null?"":map.obj);
+                }
+            },
+            onLoadError: function () {
+                top.showProcess(false);
+                top.$.messager.alert('温馨提示', '由于网络或服务器太忙，提交失败，请重试！');
+            }
+        });
 	});
 	  //编辑系统角色
 	  function editRole(){

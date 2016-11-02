@@ -15,6 +15,8 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 
 import DataAn.common.controller.BaseController;
+import DataAn.fileSystem.dao.IVirtualFileSystemDao;
+import DataAn.fileSystem.domain.VirtualFileSystem;
 import DataAn.prewarning.domain.WarningValue;
 import DataAn.prewarning.service.IPrewarningService;
 import DataAn.status.service.IStatusTrackingService;
@@ -26,6 +28,8 @@ public class CommunicateController extends BaseController {
 	private IPrewarningService prewarningService;
 	@Resource
 	private IStatusTrackingService statusTrackingService;
+	@Resource
+	private IVirtualFileSystemDao fileDao;
 
 	// 获取所有特殊工况参数配置信息
 	@RequestMapping(value = "/getAllWarnValue")
@@ -148,13 +152,21 @@ public class CommunicateController extends BaseController {
 	// 修改状态信息
 	@RequestMapping(value = "/updateStatus", method = RequestMethod.POST)
 	@ResponseBody
-	public String updateStatus(HttpServletRequest request, String fileName, String statusType, String userType,
+	public String updateStatus(HttpServletRequest request, String version, String statusType, String userType,
 			String exceptionInfo) {
 		try {
-			statusTrackingService.updateStatusTracking(fileName, statusType, userType, exceptionInfo);
-			JSONObject jsonObject = new JSONObject();
-			jsonObject.put("sucFlag", true);
-			return jsonObject.toJSONString();
+			VirtualFileSystem file = fileDao.get(version);
+			if (file != null) {
+				statusTrackingService.updateStatusTracking(file.getFileName(), statusType, file.getParameterType(),
+						exceptionInfo);
+				JSONObject jsonObject = new JSONObject();
+				jsonObject.put("sucFlag", true);
+				return jsonObject.toJSONString();
+			} else {
+				JSONObject jsonObject = new JSONObject();
+				jsonObject.put("sucFlag", false);
+				return jsonObject.toJSONString();
+			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

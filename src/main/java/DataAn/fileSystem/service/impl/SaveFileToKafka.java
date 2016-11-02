@@ -15,8 +15,7 @@ import DataAn.common.utils.DateUtil;
 import DataAn.common.utils.JJSON;
 import DataAn.common.utils.UUIDGeneratorUtil;
 import DataAn.galaxyManager.service.IParameterService;
-import DataAn.mongo.client.MongodbUtil;
-import DataAn.mongo.init.InitMongo;
+import DataAn.mongo.service.IMongoService;
 import DataAn.storm.Communication;
 import DataAn.storm.FlowUtils;
 import DataAn.storm.kafka.Beginning;
@@ -44,8 +43,10 @@ public class SaveFileToKafka implements Runnable {
 	private Map conf=new HashMap<>();
 	
 	private IParameterService paramService;
+	
+	private IMongoService mongoService;
 
-	public SaveFileToKafka(IParameterService paramService) {
+	public SaveFileToKafka(IParameterService paramService, IMongoService mongoService) {
 		
 		KafkaNameKeys.setKafkaServer(conf, "192.168.0.97:9092");
 		ZooKeeperNameKeys.setZooKeeperServer(conf, "nim1.storm.com:2182,nim2.storm.com");
@@ -58,6 +59,7 @@ public class SaveFileToKafka implements Runnable {
 		nodeWorker=NodeWorkers.get(0);
 		
 		this.paramService = paramService;
+		this.mongoService = mongoService;
 	}
 
 
@@ -147,17 +149,8 @@ public class SaveFileToKafka implements Runnable {
 					boundProducer.send(new Ending(),topic);
 					
 					// mongo...
-					MongodbUtil mg = MongodbUtil.getInstance();
-					String databaseName = InitMongo.getDataBaseNameBySeriesAndStar(series, star);
-					//集合名称： 参数名+等级
-					String collectionName = name;
-					boolean flag = mg.isExistCollection(databaseName, collectionName);
-					if(flag){
-						//设置同一时间段的数据的状态为0
-						Date beginDate = dateTime1;
-						Date endDate = dateTime;
-						mg.updateByDate(databaseName, collectionName, beginDate, endDate);				
-					}
+					mongoService.updateCSVDataByDate(series, star, name, dateTime1, dateTime);
+					
 					
 					communication.setTopicPartition(topic+":0");
 					

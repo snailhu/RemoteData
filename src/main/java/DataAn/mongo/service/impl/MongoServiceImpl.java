@@ -4,13 +4,11 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
 import org.bson.Document;
 import org.springframework.stereotype.Service;
-
 import com.mongodb.client.MongoCursor;
-
 import DataAn.common.utils.DateUtil;
+import DataAn.fileSystem.option.J9Series_Star_ParameterType;
 import DataAn.mongo.client.MongodbUtil;
 import DataAn.mongo.init.InitMongo;
 import DataAn.mongo.service.IMongoService;
@@ -87,6 +85,23 @@ public class MongoServiceImpl implements IMongoService{
 		String databaseName = InitMongo.getDataBaseNameBySeriesAndStar(series, star);
 		String collectionName =  paramType;
 		mg.update(databaseName, collectionName, "versions", versions);
+	}
+	
+
+	@Override
+	public void updateCSVDataByDate(String series, String star,
+			String paramType, Date beginDate, Date endDate) {
+		String databaseName = InitMongo.getDataBaseNameBySeriesAndStar(series, star);
+		List<String> list = InitMongo.getGradingCollectionNames(J9Series_Star_ParameterType.FLYWHEEL.getValue());
+		Set<String> isexistCols = mg.getExistCollections(databaseName);
+		if(list != null && list.size() > 0 && isexistCols != null && isexistCols.size() > 0){
+			for (String collectionName : list) {
+				if(isexistCols.contains(collectionName)){
+					//设置同一时间段的数据的状态为0
+					mg.updateByDate(databaseName, collectionName, beginDate, endDate);								
+				}
+			}			
+		}
 	}
 	
 	@Override

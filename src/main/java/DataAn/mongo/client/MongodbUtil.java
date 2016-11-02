@@ -2,8 +2,10 @@ package DataAn.mongo.client;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.apache.commons.lang3.StringUtils;
@@ -214,6 +216,15 @@ public class MongodbUtil {
 		return false;
 	}
 	
+	public Set<String> getExistCollections(String databaseName){
+		Set<String> set = new HashSet<String>();
+		MongoDatabase db = getDB(databaseName);
+		 MongoIterable<String> cols = db.listCollectionNames();
+		 for (String col : cols) {
+			 set.add(col);
+		}
+		return set;
+	}
 	/**
 	 * 获取所有数据库
 	 * 

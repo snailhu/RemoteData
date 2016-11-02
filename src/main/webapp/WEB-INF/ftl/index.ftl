@@ -14,9 +14,15 @@
     <div class="head">
         <div class="container">
             <div class="head_text">
-                <span><a href="">注册</a></span>
-                <span>|</span>
-                <span><a href="login">登陆</a></span>
+            	<#if activeUser??>
+	            	<span>
+						<a href="javascript:void(0)" id="loginLink">
+								欢迎,${activeUser.userName}
+						</a>
+					</span>
+            	<#else>
+			        <span><a href="login" id="loginLink">登录</a></span>
+	        	</#if>
                 <span>|</span>
                 <span><a href='${base}/loginOut'>注销</a></span>
             </div>

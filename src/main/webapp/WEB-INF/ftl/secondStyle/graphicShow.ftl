@@ -31,11 +31,11 @@
     <script src=${base}/static/assets/js/bootstrap-tag.min.js"></script>
     <style type="text/css">
     .dateStyle{
-    	margin-left: 100px;
+    	margin-left: 80px;
     	margin-top: 25px;
     }
     .datainp{
-		width: 200px;
+		width: 150px;
 		height: 25px;
 	}
 	.getData-btn{
@@ -46,12 +46,32 @@
 		margin-left:0px;
 		margin-right:0px;
 	}
-	label {
-		color: #888;
+	.dateStyle label {
+		font-size: 16px;
+    	text-align: center;
+    	color: #000000;
+    	border-width: 1px;
 	}
 	.form-horizontal .control-label {
 	    text-align: center;
 	}
+	.shujufenxibutton {
+    height: 31px;
+    width: 80px;
+    color: white;
+    background-color: #4B92DD;
+    border-width: 2px;
+	}
+	#getData,#changeColor{
+    overflow:hidden;
+    padding: 0px;
+    line-height: 30px;
+    border-radius:10px;
+    background-color: #1C76C5;
+    color: white; 
+    //margin-left:120px;
+    //margin-top:-32px
+    }
     </style>
 </head>
 <body>
@@ -60,11 +80,14 @@
 		<input class="datainp" id="dateStart" type="text" placeholder="请选择" readonly>
 		<label>结束日期</label>
 		<input class="datainp" id="dateEnd" type="text" placeholder="请选择" readonly>
-		<input class="btn btn-default getData-btn" id="getData"  type="button" name="getData" value="获取数据111111">
+		<input class="btn btn-default getData-btn" id="getData"  type="button" name="getData" value="获取数据">
+		<input class="btn btn-default getData-btn" id="changeColor" type="button" name="changeColor" value="配置图信息" data-toggle="modal" data-target="#configChartModal" >
 	</div>
+	<!--
 	<div style="margin-top: -30px;float: right;margin-right: 300px;">
 		<input type="button" class="btn btn-default getData-btn" id="changeColor" name="changeColor" value="配置图信息" data-toggle="modal" data-target="#configChartModal" >
 	</div>
+	-->
 	<div class="changeColor-div">
 <!--         <#if (params?size>0) > -->
 <!-- 	       	<#list params as param> -->
@@ -124,7 +147,7 @@
 		</div>
 	</div>
 	
-	<div id="main" style="width: 1000px;height:450px;"></div>
+	<div id="main" style="width: 800px;height:450px;"></div>
 	
 </body>
 <script type="text/javascript">

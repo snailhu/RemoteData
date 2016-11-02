@@ -534,19 +534,19 @@ jeDate({
 			var createdatetimeStart = $('#search-createdatetimeStart').val();
 			var createdatetimeEnd = $('#search-createdatetimeEnd').val();
 			if (warningType == "") {
-				alert("请选择预警类型！");
+				top.alertMsg('提示', '请选择预警类型！');
 				return;
 			}
 			if (series == "") {
-				alert("请选择星系！");
+				top.alertMsg('提示', '请选择星系！');
 				return;
 			}
 			if (star == "") {
-				alert("请选择星！");
+				top.alertMsg('提示', '请选择星！');
 				return;
 			}
 			if (parameterType == "") {
-				alert("请选择设备！");
+				top.alertMsg('提示', '请选择设备！');
 				return;
 			}
 			logGrid.datagrid('load', {

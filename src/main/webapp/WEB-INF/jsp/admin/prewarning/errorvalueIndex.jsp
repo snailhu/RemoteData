@@ -954,6 +954,7 @@
 				top.alertMsg('错误', '最大值必须大于最小值！');
 				return false;
 			}
+			var toUrl = '${pageContext.request.contextPath}/admin/prewarning/createErrorValue';
 			f.form('submit', {
 				url : toUrl,
 				onsubmit : function() {

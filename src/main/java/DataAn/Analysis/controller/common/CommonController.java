@@ -98,7 +98,8 @@ public class CommonController {
 		EhCache ehCache = new EhCache(); 
 		@SuppressWarnings("unchecked")
 		List<ParamGroup> lPs = (List<ParamGroup>) ehCache.getCacheElement("AllJsonData");
-		ModelAndView mv = new ModelAndView("/secondStyle/showGraphicByGroup");
+		//ModelAndView mv = new ModelAndView("/secondStyle/showGraphicByGroup");
+		ModelAndView mv = new ModelAndView("/admin/ftltojsp/showGraphicByGroup");
 		mv.addObject("lPs", lPs);
 		return mv;
 		}
@@ -134,7 +135,7 @@ public class CommonController {
 		for(ParamGroup  pg :lPs){
 			GroupMenu gm = new GroupMenu();
 			gm.setId(pg.getId()+"");
-			gm.setText((pg.getId()+1)+"组");
+			gm.setText("第"+(pg.getId()+1)+"组");
 			gm.setIcon("icon-glass");
 			gm.setUrl("/DataRemote/showGraphic/"+pg.getId());
 			lgm.add(gm);
@@ -157,6 +158,7 @@ public class CommonController {
 		List<SingleParamDto> params = new ArrayList<SingleParamDto>();
 		Map<String,String> map = j9Series_Star_Service.getAllParameterList_simplyZh_and_en();
 		ModelAndView mv = new ModelAndView("/secondStyle/graphicShow");
+		//ModelAndView mv = new ModelAndView("/admin/ftltojsp/graphicShow");
 		for(ParamGroup  pg :lPs){		
 			if(pg.getId()==id){
 				List<SingleParamDto> spds = pg.getSecectRow();

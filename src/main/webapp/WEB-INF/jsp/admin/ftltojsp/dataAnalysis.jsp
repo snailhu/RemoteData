@@ -183,6 +183,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     	bottom:0px;
     	z-index:10;
     }
+    
+    .selftoolbar {
+    display: inline-block;
+    padding: 0 10px;
+    line-height: 37px;
+    float: right;
+    position: relative;
+}
 </style>
 	
     <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"  >
@@ -299,11 +307,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				<div class="widget-box">
 					<div class="widget-header" id="change-search-box" data-action="collapse">
 						<h4>常用模板</h4>
-						<div class="widget-toolbar">
+						<div class="selftoolbar">
 							<a href="javascript:void(0);" >
-								<i class="icon-chevron-up"></i>
+								<img id="toolimg" src="${pageContext.request.contextPath}/static/imgs/DataImport_manage/xia.png">
 							</a>
-						</div>
+						</div>						
 					</div>
 					<div class="widget-body">									        					        
 						<div class="widget-main">				
@@ -362,6 +370,26 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		maxDate:jeDate.now(0), //设定最大日期为当前日期
 	});
 	$(function() {	
+		var  flag=false;
+		$(".selftoolbar").click(function(){
+		
+		if(flag){
+			
+			$("#toolimg").attr("src","${pageContext.request.contextPath}/static/imgs/DataImport_manage/xia.png")
+			$(".widget-body").slideUp("slow");
+			flag=false;
+		}else{
+			initTemplateTree();
+			$("#toolimg").attr("src","${pageContext.request.contextPath}/static/imgs/DataImport_manage/xia2.png")
+    		$(".widget-body").slideDown("slow");
+			flag=true;
+		}
+		
+		})
+		
+		
+	
+	
 //     	$("#dateStart").jqxDateTimeInput({width: '175px', height: '30px'});
 //     	$("#dateEnd").jqxDateTimeInput({width: '175px', height: '30px'});
         

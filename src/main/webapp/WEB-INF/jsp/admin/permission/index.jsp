@@ -155,16 +155,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				}
 			}
 		});
-		$('#reset_addPermissionGroupInfo').click(
-				function() {
-					$('#addPermissionGroupInfoForm').data('bootstrapValidator')
-							.resetForm(true);
-				});
-		$('#close_addPermissionGroupInfo').click(
-				function() {
-					$('#addPermissionGroupInfoForm').data('bootstrapValidator')
-							.resetForm(true);
-				});
+// 		$('#reset_addPermissionGroupInfo').click(function() {
+// 			$('#addPermissionGroupInfoForm').data('bootstrapValidator').resetForm(true);
+// 		});
+// 		$('#close_addPermissionGroupInfo').click(function() {
+// 			$('#addPermissionGroupInfoForm').data('bootstrapValidator').resetForm(true);
+// 		});
 		$('#editPermissionGroupInfoForm').bootstrapValidator({
 			message : '权限组名称不能为空',
 			feedbackIcons : {
@@ -189,16 +185,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				}
 			}
 		});
-		$('#reset_editPermissionGroupInfo').click(
-				function() {
-					$('#editPermissionGroupInfoForm')
-							.data('bootstrapValidator').resetForm(true);
-				});
-		$('#close_editPermissionGroupInfo').click(
-				function() {
-					$('#editPermissionGroupInfoForm')
-							.data('bootstrapValidator').resetForm(true);
-				});
+// 		$('#reset_editPermissionGroupInfo').click(function() {
+// 			$('#editPermissionGroupInfoForm').data('bootstrapValidator').resetForm(true);
+// 		});
+// 		$('#close_editPermissionGroupInfo').click(function() {
+// 			$('#editPermissionGroupInfoForm')
+// 					.data('bootstrapValidator').resetForm(true);
+// 		});
 		$('#addPermissionItemInfoForm').bootstrapValidator({
 			message : 'This value is not valid',
 			feedbackIcons : {
@@ -234,16 +227,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				}
 			}
 		});
-		$('#reset_addPermissionItemInfo').click(
-				function() {
-					$('#addPermissionItemInfoForm').data('bootstrapValidator')
-							.resetForm(true);
-				});
-		$('#close_addPermissionItemInfo').click(
-				function() {
-					$('#addPermissionItemInfoForm').data('bootstrapValidator')
-							.resetForm(true);
-				});
+		$('#reset_addPermissionItemInfo').click(function() {
+			$('#addPermissionItemInfoForm').data('bootstrapValidator').resetForm(true);
+		});
+		$('#close_addPermissionItemInfo').click(function() {
+			$('#addPermissionItemInfoForm').data('bootstrapValidator').resetForm(true);
+		});
 		$('#editPermissionItemInfoForm').bootstrapValidator({
 			//        live: 'disabled',
 			message : 'This value is not valid',
@@ -280,16 +269,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				}
 			}
 		});
-		$('#reset_editPermissionItemInfo').click(
-				function() {
-					$('#editPermissionItemInfoForm').data('bootstrapValidator')
-							.resetForm(true);
-				});
-		$('#close_editPermissionItemInfo').click(
-				function() {
-					$('#editPermissionItemInfoForm').data('bootstrapValidator')
-							.resetForm(true);
-				});
+		$('#reset_editPermissionItemInfo').click(function() {
+			$('#editPermissionItemInfoForm').data('bootstrapValidator').resetForm(true);
+		});
+		$('#close_editPermissionItemInfo').click(function() {
+			$('#editPermissionItemInfoForm').data('bootstrapValidator').resetForm(true);
+		});
 	});
 </script>  
   </head>
@@ -319,7 +304,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				<div id="toolbar" class="datagrid-toolbar" style="height: 28px;">
 					<div style="height: 28px;">
 						<button class="easyui-linkbutton" iconcls="icon-add" plain="true" style="float: left;" 
-							data-toggle="modal" data-target="#addPermissionGroupModal">创建</button>
+							id="createPermissionGroup-btn">创建</button>
 						<div class="datagrid-btn-separator"></div>
 						<button class="easyui-linkbutton" iconcls="icon-remove" plain="true" style="float: left;"
 							onclick="deletePermissionGroup();">删除</button>
@@ -372,8 +357,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							</div>
 							<div class="modal-footer">
 								<div class="col-lg-4 col-lg-offset-5">
+									<button type="button" class="btn btn-primary" onclick="submit_addPermissionGroupInfo()">确定</button>
 									<button type="button" class="btn btn-default" data-dismiss="modal" id="reset_addPermissionGroupInfo">关闭</button>
-									<button type="submit" class="btn btn-primary" data-dismiss="modal" onclick="submit_addPermissionGroupInfo()">确定</button>
 								</div>
 							</div>
 						</form>
@@ -393,6 +378,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								<h4 class="modal-title" id="editPermissionGroupModalLabel">权限组信息</h4>
 							</div>
 							<div class="modal-body">
+								<input type="hidden" name="id" id="edit-permissionGroup-id"/>
 								<div class="space-4"></div>
 								<div class="form-group">
 									<label class="col-sm-3 control-label no-padding-right" for="edit-permissionGroup-name"> 分组名称:</label>
@@ -410,8 +396,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							</div>
 							<div class="modal-footer">
 								<div class="col-lg-4 col-lg-offset-5">
+									<button type="button" class="btn btn-primary" id="submit_editPermissionGroupInfo">确定</button>
 									<button type="button" class="btn btn-default" data-dismiss="modal" id="reset_editPermissionGroupInfo">关闭</button>
-									<button type="submit" class="btn btn-primary" data-dismiss="modal" id="submit_editPermissionGroupInfo">确定</button>
 								</div>
 							</div>
 						</form>
@@ -464,8 +450,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							</div>
 							<div class="modal-footer">
 								<div class="col-lg-4 col-lg-offset-5">
-									<button type="button" class="btn btn-default" data-dismiss="modal" id="reset_addPermissionItemInfo">关闭</button>
 									<button type="submit" class="btn btn-primary" data-dismiss="modal" id="submit_addPermissionItemInfo">确定</button>
+									<button type="button" class="btn btn-default" data-dismiss="modal" id="reset_addPermissionItemInfo">关闭</button>
 								</div>
 							</div>
 						</form>
@@ -510,8 +496,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							</div>
 							<div class="modal-footer">
 								<div class="col-lg-4 col-lg-offset-5">
-									<button type="button" class="btn btn-default" data-dismiss="modal" id="reset_editPermissionItemInfo">关闭</button>
 									<button type="submit" class="btn btn-primary" data-dismiss="modal" id="submit_editPermissionItemInfo">确定</button>
+									<button type="button" class="btn btn-default" data-dismiss="modal" id="reset_editPermissionItemInfo">关闭</button>
 								</div>
 							</div>
 						</form>
@@ -627,73 +613,60 @@ $(function() {
 		var arr = datagridId.split('-');
 		permissionGrid.datagrid('fixDetailRowHeight', arr[1]);
 	}
+	
+	$('#addPermissionGroupModal').on('hide.bs.modal', function () {
+		$('#addPermissionGroupInfoForm').data('bootstrapValidator').resetForm(true);
+	});
+	$('#createPermissionGroup-btn').click(function(){
+		$('#addPermissionGroupModal').modal('show');
+	});
 	//提交创建权限组
 	function submit_addPermissionGroupInfo(){
+		var f = $('#addPermissionGroupInfoForm');
+		f.data('bootstrapValidator').validate();
+		var isValid = f.data('bootstrapValidator').isValid();
+		if(!isValid){
+			//top.alertMsg('错误', '请满足提交条件！');
+			return false;
+		}
 		var name = $('#add-permissionGroup-name').val();
 		var description = $('#add-permissionGroup-description').val();
-		var isValid = $('#addPermissionGroupInfoForm').data('bootstrapValidator').isValid();
-        if(isValid){
-        	$.ajax({
-                url : '${pageContext.request.contextPath}/admin/permission/createPermissionGroup',
-                data : {
-                    name : name,
-                    description : description
-                },
-                cache : false,
-                dataType : "json",
-                success : function(data) {
-                    if (data.success) {
-                        permissionGrid.datagrid("unselectAll");
-                        permissionGrid.datagrid('reload');
-                        top.showMsg('提示', data.msg);
-                    } else {
-                        top.alertMsg('警告', data.msg);
-                    }
-                }
-            });
-        }
-		$('#addPermissionGroupInfoForm').data('bootstrapValidator').resetForm(true);
+       	$.ajax({
+               url : '${pageContext.request.contextPath}/admin/permission/createPermissionGroup',
+               data : {
+                   name : name,
+                   description : description
+               },
+               cache : false,
+               dataType : "json",
+               success : function(data) {
+                   if (data.success) {
+                       permissionGrid.datagrid("unselectAll");
+                       permissionGrid.datagrid('reload');
+                       top.showMsg('提示', data.msg);
+                   } else {
+                       top.alertMsg('警告', data.msg);
+                   }
+               }
+           });
+       	$('#addPermissionGroupModal').modal('hide');
 	}	
+	
+	$('#editPermissionGroupModal').on('hide.bs.modal', function () {
+		$('#editPermissionGroupInfoForm').data('bootstrapValidator').resetForm(true);
+	});
 	//编辑权限组
 	function editPermissionGroup(){
 		var rows = permissionGrid.datagrid('getSelections');
 		if (rows.length > 0) {
 			if (rows.length == 1) {
 				//赋值
-				var oldName = rows[0].name;
-				var oldDescription = rows[0].description;
-				$('#edit-permissionGroup-name').val(oldName);
-				$('#edit-permissionGroup-description').val(oldDescription);
+				$('#edit-permissionGroup-id').val(rows[0].id);
+				$('#edit-permissionGroup-name').val(rows[0].name);
+				$('#edit-permissionGroup-description').val(rows[0].description);
 				//弹出编辑框
 				$('#editPermissionGroupModal').modal('show');
-				$('#submit_editPermissionGroupInfo').click(function(){
-					var name = $('#edit-permissionGroup-name').val();
-					var description = $('#edit-permissionGroup-description').val();
-					if(oldName != name || oldDescription != description){
-						$.ajax({
-                            url : '${pageContext.request.contextPath}/admin/permission/editPermissionGroup',
-                            data : {
-                                id : rows[0].id,
-                                name : name,
-                                description : description
-                            },
-                            cache : false,
-                            dataType : "json",
-                            success : function(data) {
-                                if (data.success) {
-                                    permissionGrid.datagrid("unselectAll");
-                                    permissionGrid.datagrid('reload');
-                                    top.showMsg('提示', data.msg);
-                                } else {
-                                    top.alertMsg('警告', data.msg);
-                                }
-                            }
-                        });
-					}else{
-						top.showMsg('提示', "权限组信息没有被修改！");
-					}
-					$('#editPermissionGroupInfoForm').data('bootstrapValidator').resetForm(true);
-				});
+				
 			}else{
 				top.showMsg("提示", "只能编辑一列！");
 			}
@@ -701,6 +674,39 @@ $(function() {
 			top.showMsg("提示", "请选择要编辑的权限组！");
 		}
 	}
+	$('#submit_editPermissionGroupInfo').click(function(){
+		var id = $('#edit-permissionGroup-id').val();
+		var name = $('#edit-permissionGroup-name').val();
+		var description = $('#edit-permissionGroup-description').val();
+		var f = $('#editPermissionGroupInfoForm');
+		f.data('bootstrapValidator').validate();
+		var isValid = f.data('bootstrapValidator').isValid();
+		if(!isValid){
+			//top.alertMsg('错误', '请满足提交条件！');
+			return false;
+		}
+		$.ajax({
+            url : '${pageContext.request.contextPath}/admin/permission/editPermissionGroup',
+            data : {
+                id : rows[0].id,
+                name : name,
+                description : description
+            },
+            cache : false,
+            dataType : "json",
+            success : function(data) {
+                if (data.success) {
+                    permissionGrid.datagrid("unselectAll");
+                    permissionGrid.datagrid('reload');
+                    top.showMsg('提示', data.msg);
+                } else {
+                    top.alertMsg('警告', data.msg);
+                }
+            }
+        });
+		$('#editPermissionGroupModal').modal('hide');
+	});
+	
 	//删除已选中的权限组
 	function deletePermissionGroup(){
 		var ids = [];

@@ -9,10 +9,12 @@ import java.io.OutputStream;
 import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.Map;
+
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+
 import DataAn.common.pageModel.EasyuiDataGridJson;
 import DataAn.common.pageModel.JsonMessage;
 import DataAn.common.pageModel.Pager;
@@ -30,6 +33,7 @@ import DataAn.fileSystem.dto.MongoFSDto;
 import DataAn.fileSystem.service.IVirtualFileSystemService;
 import DataAn.galaxyManager.option.J9Series_Star_ParameterType;
 import DataAn.galaxyManager.service.ISeriesService;
+import DataAn.storm.Communication;
 import DataAn.sys.dto.ActiveUserDto;
 
 @Controller
@@ -396,6 +400,24 @@ public class FileController {
 		JsonMessage jsonMsg = new JsonMessage();
 		try {
 			fileService.deleteFile(itemIds);
+			jsonMsg.setSuccess(true);
+			jsonMsg.setMsg("删除成功！");
+		} catch (Exception e) {
+//			e.printStackTrace();
+			jsonMsg.setSuccess(false);
+			jsonMsg.setMsg("删除失败！");
+		}
+		return jsonMsg;
+	}
+	
+	@RequestMapping(value="/deleteCSVFile",method = { RequestMethod.POST })
+	@ResponseBody
+	public JsonMessage deleteCSVFile(Communication communication) {
+		System.out.println("deleteCSVFile...");
+		System.out.println("version: " + communication.getVersions());
+		JsonMessage jsonMsg = new JsonMessage();
+		try {
+			fileService.deleteFileByUUId(communication.getVersions());
 			jsonMsg.setSuccess(true);
 			jsonMsg.setMsg("删除成功！");
 		} catch (Exception e) {

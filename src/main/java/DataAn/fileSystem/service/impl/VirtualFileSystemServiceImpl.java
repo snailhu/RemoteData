@@ -38,6 +38,7 @@ import DataAn.fileSystem.service.ICSVService;
 import DataAn.fileSystem.service.IVirtualFileSystemService;
 import DataAn.galaxyManager.option.J9SeriesType;
 import DataAn.galaxyManager.option.SeriesType;
+import DataAn.galaxyManager.service.IParameterService;
 import DataAn.mongo.fs.IDfsDb;
 import DataAn.mongo.fs.MongoDfsDb;
 import DataAn.mongo.init.InitMongo;
@@ -60,6 +61,8 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 	private IMongoService mongoService;
 	@Resource
 	private IStatusTrackingService statusTrackingService;
+	@Resource
+	private IParameterService paramService;
 	
 	@Override
 	@Transactional
@@ -114,18 +117,16 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 		statusTrackingService.updateStatusTracking(csvFileDto.getFileName(), StatusTrackingType.IMPORTFAIL.getValue(),
 				csvFileDto.getParameterType(), "");
 		
+		//TODO 调用文件队列API，  zookeeper 
+		
 		//开另外一个线程处理存入kafka的数据
-//		new Thread(new SaveFileToKafka(nowSeries, 
-//									   nowStar, 
-//									   csvFileDto.getParameterType(), 
-//									   csvTempFilePath,
-//									   versions)).start();
+		new Thread(new SaveFileToKafka(paramService)).start();
 		
 		return versions;
 	}
 	
 	@Override
-	@Transactional(readOnly = true)
+	@Transactional
 	public void deleteFile(String ids) {
 		String[] arrayIds = ids.split(",");
 		
@@ -135,8 +136,15 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 			VirtualFileSystem file = fileDao.get(Long.parseLong(items[0]));
 			this.deleteFile(file);
 		}
-		
 	}
+
+	@Override
+	@Transactional
+	public void deleteFileByUUId(String uuId) {
+		VirtualFileSystem file = fileDao.selectByFileTypeIsFileAndMongoFSUUId(uuId);
+		this.deleteFile(file);
+	}
+
 	private void deleteFile(VirtualFileSystem file) {
 		if(file.getFileType().getName().equals("dir")){
 			List<VirtualFileSystem> fileList = fileDao.findByParam("parentId", file.getId());
@@ -642,7 +650,5 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 		fileDao.add(file);
 		
 	}
-
-
 
 }

@@ -37,6 +37,14 @@ public enum J9Series_Star_ParameterType {
 	
 	public abstract String getValue();
 	
+	public static J9Series_Star_ParameterType getJ9SeriesStarParameterTypeByName(String name){
+		if(name.indexOf(FLYWHEEL.getName()) > -1){
+			return J9Series_Star_ParameterType.FLYWHEEL;
+		}else{
+			return J9Series_Star_ParameterType.TOP;
+		}
+	}
+	
 	public static J9Series_Star_ParameterType getJ9SeriesStarParameterType(String type) {
 		switch (type) {
 		case "flywheel":

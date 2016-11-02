@@ -152,10 +152,9 @@ public class CommunicateController extends BaseController {
 	// 修改状态信息
 	@RequestMapping(value = "/updateStatus", method = RequestMethod.POST)
 	@ResponseBody
-	public String updateStatus(HttpServletRequest request, String version, String statusType, String userType,
-			String exceptionInfo) {
+	public String updateStatus(HttpServletRequest request, String version, String statusType, String exceptionInfo) {
 		try {
-			VirtualFileSystem file = fileDao.get(version);
+			VirtualFileSystem file = fileDao.selectByFileTypeIsFileAndMongoFSUUId(version);
 			if (file != null) {
 				statusTrackingService.updateStatusTracking(file.getFileName(), statusType, file.getParameterType(),
 						exceptionInfo);

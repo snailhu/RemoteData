@@ -75,6 +75,8 @@
     </style>
 </head>
 <body>
+<div class="main-content">
+<div class="page-content">
 	<div class="dateStyle">
 		<label>开始日期</label>
 		<input class="datainp" id="dateStart" type="text" placeholder="请选择" readonly>
@@ -148,7 +150,8 @@
 	</div>
 	
 	<div id="main" style="width: 800px;height:450px;"></div>
-	
+</div><!-- /.page-content -->		
+</div><!-- /.main-content -->	
 </body>
 <script type="text/javascript">
 	jeDate({
@@ -270,7 +273,7 @@
              success: function(data){
              	//  var json = eval(data);
              	  var i=0
-             	  debugger;
+             	  //debugger;
              	  for(var param in data){
              	  	seriesOptions[i++] = {
 			            	type: 'line',

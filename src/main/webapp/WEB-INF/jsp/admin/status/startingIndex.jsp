@@ -163,7 +163,7 @@ p, span, b, div {
 
 <body>
 	<div class="main-content">
-		<div class="breadcrumbs" id="breadcrumbs">
+		<div class="breadcrumbs" id="breadcrumbs" style="text-align: left;">
 			<script type="text/javascript">
 				try {
 					ace.settings.check('breadcrumbs', 'fixed')
@@ -183,6 +183,7 @@ p, span, b, div {
 <!-- 				<h1>正在处理中的流程</h1> -->
 <!-- 			</div> -->
 			<div class="row">
+				<br/><br/>
 				<div class="col-xs-12 col-sm-12" id="ystepDiv" style="height: 450px; height: auto;">
 					<!-- ystep容器 -->
 				</div>

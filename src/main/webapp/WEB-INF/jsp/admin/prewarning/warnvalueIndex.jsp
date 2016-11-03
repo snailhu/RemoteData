@@ -209,7 +209,7 @@
 }
 
 .breadcrumb {
-    margin-top: 10px;
+	margin-top: 10px;
 }
 </style>
 <script type="text/javascript">
@@ -279,17 +279,17 @@
 							message : '最大值必须为数字'
 						}
 					}
-				},
-				minVal : {
-					validators : {
-						notEmpty : {
-							message : '最小值不能为空',
-						},
-						numeric : {
-							message : '最小值必须为数字'
-						}
-					}
 				}
+// 				minVal : {
+// 					validators : {
+// 						notEmpty : {
+// 							message : '最小值不能为空',
+// 						},
+// 						numeric : {
+// 							message : '最小值必须为数字'
+// 						}
+// 					}
+// 				}
 			}
 		});
 		$('#editValueInfoForm').bootstrapValidator({
@@ -356,17 +356,17 @@
 							message : '最大值必须为数字'
 						}
 					}
-				},
-				minVal : {
-					validators : {
-						notEmpty : {
-							message : '最小值不能为空'
-						},
-						numeric : {
-							message : '最小值必须为数字'
-						}
-					}
 				}
+// 				minVal : {
+// 					validators : {
+// 						notEmpty : {
+// 							message : '最小值不能为空'
+// 						},
+// 						numeric : {
+// 							message : '最小值必须为数字'
+// 						}
+// 					}
+// 				}
 			}
 		});
 		$('#addValueModal').on('hide.bs.modal', function () {
@@ -401,12 +401,12 @@
 				}
 			</script>
 			<ul class="breadcrumb">
-				<li>
-					<img src="${pageContext.request.contextPath}/static/imgs/DataImport/home.png" style="margin-bottom: 3px;">
-					<span>预警管理</span>
-				</li>
+				<li><img
+					src="${pageContext.request.contextPath}/static/imgs/DataImport/home.png"
+					style="margin-bottom: 3px;"> <span>预警管理</span></li>
 				<li class="active">特殊工况参数配置</li>
-			</ul><!--  .breadcrumb -->
+			</ul>
+			<!--  .breadcrumb -->
 		</div>
 		<div class="page-content">
 			<!-- /.page-header -->
@@ -584,15 +584,15 @@
 											placeholder="最大值" class="form-control" />
 									</div>
 								</div>
-								<div class="space-4"></div>
-								<div class="form-group">
-									<label class="col-lg-3 control-label no-padding-right"
-										for="add-minVal"> 最小值： </label>
-									<div class="col-sm-8">
-										<input type="text" name="minVal" id="add-minVal"
-											placeholder="最小值" class="form-control" />
-									</div>
-								</div>
+								<!-- 								<div class="space-4"></div> -->
+								<!-- 								<div class="form-group"> -->
+								<!-- 									<label class="col-lg-3 control-label no-padding-right" -->
+								<!-- 										for="add-minVal"> 最小值： </label> -->
+								<!-- 									<div class="col-sm-8"> -->
+								<!-- 										<input type="text" name="minVal" id="add-minVal" -->
+								<!-- 											placeholder="最小值" class="form-control" /> -->
+								<!-- 									</div> -->
+								<!-- 								</div> -->
 							</div>
 							<div class="modal-footer">
 								<div class="col-lg-7 col-lg-offset-3">
@@ -692,15 +692,15 @@
 											placeholder="最大值" class="form-control" />
 									</div>
 								</div>
-								<div class="space-4"></div>
-								<div class="form-group">
-									<label class="col-lg-3 control-label no-padding-right"
-										for="edit-minVal"> 最小值： </label>
-									<div class="col-sm-8">
-										<input type="text" name="minVal" id="edit-minVal"
-											placeholder="最小值" class="form-control" />
-									</div>
-								</div>
+								<!-- 								<div class="space-4"></div> -->
+								<!-- 								<div class="form-group"> -->
+								<!-- 									<label class="col-lg-3 control-label no-padding-right" -->
+								<!-- 										for="edit-minVal"> 最小值： </label> -->
+								<!-- 									<div class="col-sm-8"> -->
+								<!-- 										<input type="text" name="minVal" id="edit-minVal" -->
+								<!-- 											placeholder="最小值" class="form-control" /> -->
+								<!-- 									</div> -->
+								<!-- 								</div> -->
 							</div>
 							<div class="modal-footer">
 								<div class="col-lg-7 col-lg-offset-3">
@@ -786,12 +786,13 @@
 									title : '最大值',
 									width : 100,
 									sortable:true
-								}, {
-									field : 'minVal',
-									title : '最小值',
-									width : 100,
-									sortable:true
 								} ] ],
+// 								}, {
+// 									field : 'minVal',
+// 									title : '最小值',
+// 									width : 100,
+// 									sortable:true
+						
 
 								toolbar : [ {
 									text : '创建',
@@ -1024,12 +1025,12 @@
 				top.alertMsg('错误', '请满足提交条件！');
 				return false;
 			}
-			var maxval = Number($("#add-maxVal").val());
-			var minval = Number($("#add-minVal").val());
-			if(maxval<minval){
-				top.alertMsg('错误', '最大值必须大于最小值！');
-				return false;
-			}
+// 			var maxval = Number($("#add-maxVal").val());
+// 			var minval = Number($("#add-minVal").val());
+// 			if(maxval<minval){
+// 				top.alertMsg('错误', '最大值必须大于最小值！');
+// 				return false;
+// 			}
 			var toUrl = '${pageContext.request.contextPath}/admin/prewarning/createWarnValue';
 			f.form('submit', {url : toUrl,
 				onsubmit : function() {
@@ -1064,12 +1065,12 @@
 				top.alertMsg('错误', '请满足提交条件！');
 				return false;
 			}
-			var maxval = Number($("#edit-maxVal").val());
-			var minval = Number($("#edit-minVal").val());
-			if(maxval<minval){
-				top.alertMsg('错误', '最大值必须大于最小值！');
-				return false;
-			}
+// 			var maxval = Number($("#edit-maxVal").val());
+// 			var minval = Number($("#edit-minVal").val());
+// 			if(maxval<minval){
+// 				top.alertMsg('错误', '最大值必须大于最小值！');
+// 				return false;
+// 			}
 			var toUrl = '${pageContext.request.contextPath}/admin/prewarning/editWarnValue';
 			f.form('submit',{url : toUrl,onsubmit : function() {
 				var flag = $(this).form('validate');

@@ -137,7 +137,7 @@ public class PrewarningController extends BaseController {
 				pager = prewarningService.pageQueryWarningLog(page, rows, series, star, parameterType, parameter,
 						createdatetimeStart, createdatetimeEnd, warningType, hadRead);
 			}
-			if("0".equals(hadRead)){
+			if ("0".equals(hadRead)) {
 				pager = prewarningService.pageQueryWarningLog(page, rows, series, star, parameterType, parameter,
 						createdatetimeStart, createdatetimeEnd, warningType, hadRead);
 			}
@@ -170,6 +170,7 @@ public class PrewarningController extends BaseController {
 		System.out.println("come in createValue ");
 		System.out.println(warnValue);
 		System.out.println(warnValue.getMaxVal());
+		warnValue.setMinVal(0.0);
 		JsonMessage jsonMsg = new JsonMessage();
 		try {
 			boolean falg = prewarningService.cherkWarningValue(warnValue.getSeries().toString(),
@@ -243,6 +244,7 @@ public class PrewarningController extends BaseController {
 	public JsonMessage editWarnValue(WarnValueDTO warnValue, HttpServletRequest request, HttpServletResponse response) {
 		JsonMessage jsonMsg = new JsonMessage();
 		try {
+			warnValue.setMinVal(0.0);
 			prewarningService.updateWarnValue(warnValue);
 		} catch (Exception e) {
 			e.printStackTrace();

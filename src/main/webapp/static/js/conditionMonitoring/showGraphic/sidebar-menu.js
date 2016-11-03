@@ -22,7 +22,8 @@
     function init(target, data) {
       $.each(data, function (i, item) {
         //var li = $('<li></li>');
-        var li = $('<button></button>');
+        var li = $('<lable></lable>');
+        //var li = $('<button></button>');
         var a = $('<a></a>');
         var icon = $('<i></i>');
         //icon.addClass('glyphicon');

@@ -7,7 +7,7 @@
     <script src="${base}/static/js/jquery-2.0.3.min.js"></script>
 
     <script type="text/javascript" src="${base}/static/scripts/echarts.js"></script>
-    <script type="text/javascript" src="${base}/static/scripts/test.js"></script>
+    <!--<script type="text/javascript" src="${base}/static/scripts/test.js"></script>-->
     <!-- 时间选择器 -->
     <link type="text/css" rel="stylesheet" href="${base}/static/content/jeDate/jedate/skin/jedate.css">
     <script type="text/javascript" src="${base}/static/content/jeDate/jedate/jedate.js"></script>
@@ -27,8 +27,10 @@
 <!--     <script type="text/javascript" src="${base}/static/content/pscolors/js/layout.js?ver=1.0.2"></script> -->
     
     <link rel="stylesheet" href="${base}/static/assets/css/bootstrap.min.css">
-    <script src="${base}/static/assets/js/bootstrap.min.js"></script>
-    <script src=${base}/static/assets/js/bootstrap-tag.min.js"></script>
+    <!--<script src="${base}/static/assets/js/bootstrap.min.js"></script>-->
+    <!--<script src=${base}/static/assets/js/bootstrap-tag.min.js"></script>-->
+    <script src="${pageContext.request.contextPath}/DataRemote/static/assets/js/bootstrap.min.js"></script>
+	<script src="${pageContext.request.contextPath}/DataRemote/static/assets/js/typeahead-bs2.min.js"></script>
     <style type="text/css">
     .dateStyle{
     	margin-left: 80px;
@@ -75,6 +77,8 @@
     </style>
 </head>
 <body>
+<div class="main-content">
+<div class="page-content">
 	<div class="dateStyle">
 		<label>开始日期</label>
 		<input class="datainp" id="dateStart" type="text" placeholder="请选择" readonly>
@@ -148,7 +152,8 @@
 	</div>
 	
 	<div id="main" style="width: 800px;height:450px;"></div>
-	
+</div><!-- /.page-content -->		
+</div><!-- /.main-content -->	
 </body>
 <script type="text/javascript">
 	jeDate({
@@ -270,7 +275,7 @@
              success: function(data){
              	//  var json = eval(data);
              	  var i=0
-             	  debugger;
+             	  //debugger;
              	  for(var param in data){
              	  	seriesOptions[i++] = {
 			            	type: 'line',

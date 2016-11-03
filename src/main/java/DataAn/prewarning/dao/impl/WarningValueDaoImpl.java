@@ -65,7 +65,7 @@ public class WarningValueDaoImpl extends BaseDaoImpl<WarningValue> implements IW
 			hql += " and warningType = " + warningType;
 			countHQL += " and warningType = " + warningType;
 		}
-		hql += "order by createDate";
+		hql += "order by createDate desc";
 
 		List<WarningValue> list = this.getSession().createQuery(hql).setMaxResults(pageSize)
 				.setFirstResult(pageSize * (pageIndex - 1)).list();

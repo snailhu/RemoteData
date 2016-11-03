@@ -164,7 +164,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				<div class="col-xs-12 col-sm-12">
 					<!-- PAGE CONTENT BEGINS -->
 					<div class="widget-box" id = "downloadReport">
-						<div class="widget-header" id="change-search-box" data-action="collapse">
+						<div class="widget-header">
 							<h4>参数</h4>
 							<!-- <div class="widget-toolbar">
 								<a href="javascript:void(0);" >
@@ -243,24 +243,24 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	var activeUser = '${activeUser}';
 $(function(){
 	  
-	  $('#getBeginTime').calendar({
-	        trigger: '#form-beginTime',
-	        zIndex: 999,
-			format: 'yyyy-mm-dd',
-	        onSelected: function (view, date, data) {
-	        },
-	        onClose: function (view, date, data) {
-	        }
-	    });
-	  $('#getEndTime').calendar({
-	        trigger: '#form-endTime',
-	        zIndex: 999,
-			format: 'yyyy-mm-dd',
-	        onSelected: function (view, date, data) {
-	        },
-	        onClose: function (view, date, data) {
-	        }
-	    });
+	  jeDate({
+			dateCell:"#form-beginTime",//直接显示日期层的容器，可以是ID  CLASS
+			format:"YYYY-MM-DD",//日期格式
+			isinitVal:false, //是否初始化时间
+			festival:false, //是否显示节日
+			isTime:false, //是否开启时间选择
+			//minDate:"2014-09-19 00:00:00",//最小日期
+			maxDate:jeDate.now(0), //设定最大日期为当前日期
+		});
+		jeDate({
+			dateCell:"#form-endTime",//直接显示日期层的容器，可以是ID  CLASS
+			format:"YYYY-MM-DD",//日期格式
+			isinitVal:false, //是否初始化时间
+			festival:false, //是否显示节日
+			isTime:false, //是否开启时间选择
+			//minDate:"2014-09-19 00:00:00",//最小日期
+			maxDate:jeDate.now(0), //设定最大日期为当前日期
+		});
 
 		 if(activeUser != ''){
 				var permissionItemsJSON = '${activeUser.permissionItemsJSON}';
@@ -357,7 +357,7 @@ $(function(){
 			}
 			var t = dateDiff(QendTime, QbeginTime);
 			if(t<=0) {
-				 top.showMsg('提示', "结束日期不能小于开始日期");
+				 top.showMsg('提示', "结束日期需大于开始日期");
 				  return false;
 			}
 			if(t>6) {

@@ -74,17 +74,16 @@
 			</ul><!--  .breadcrumb -->
 		</div>
 		<div class="page-content">
-<!-- 			<div class="page-header" style="margin: 0px;float: left;"> -->
-<!-- 				<h1>系统日志</h1>	 -->
-<!-- 			</div> -->
+		<div>
 				<div class="col-xs-12 col-sm-12">
 					<!-- PAGE CONTENT BEGINS -->
-					<div class="widget-box">
+					<div id="id_widget_search_box" class="widget-box">
 						<div class="widget-header" id="change-search-box" data-action="collapse">
 							<h4>搜索</h4>
 							<div class="widget-toolbar">
 								<a href="javascript:void(0);" >
-									<i class="icon-chevron-up"></i>
+									<div hidden="hidden"><i class="icon-chevron-up" hidden="hidden"></i></div>
+									<img id="toolimg" src="${pageContext.request.contextPath}/static/imgs/DataImport_manage/xia.png">
 								</a>
 							</div>
 						</div>
@@ -132,7 +131,15 @@
 			<div class="col-xs-12">
 				<div id="jqxgrid"></div>
 			</div>
-		</div><!-- /.page-content -->		
+		</div>
+		<div class="row">
+				<div class="col-xs-12">
+					<!-- PAGE CONTENT BEGINS -->
+					<!-- PAGE CONTENT ENDS -->
+				</div>
+				<!-- /.col -->
+		</div>
+		</div> <!--/.page-content -->		
 	</div><!-- /.main-content -->
  <script type="text/javascript">
     var beginTime ="1800-01-01";
@@ -203,6 +210,22 @@
 			//minDate:"2014-09-19 00:00:00",//最小日期
 			maxDate:jeDate.now(0), //设定最大日期为当前日期
 		});
+		
+		//修改搜索框图标
+		var  flag=false;
+		$("#change-search-box").click(function(){		
+		if(flag){
+			
+			$("#toolimg").attr("src","${pageContext.request.contextPath}/static/imgs/DataImport_manage/xia.png")
+			$(".widget-body").slideUp("slow");
+			flag=false;
+		}else{
+			$("#toolimg").attr("src","${pageContext.request.contextPath}/static/imgs/DataImport_manage/xia2.png")
+    		$(".widget-body").slideDown("slow");
+			flag=true;
+		}
+		
+		})
 		
 		 $('#change-search-box').click();
 		 logurl  ="${pageContext.request.contextPath}/admin/showSystemLog/"+beginTime+"/"+endTime;

@@ -14,7 +14,10 @@
 <style type="text/css">
 <!--.seriesbutton{position:absolute;width:986px;height:50px; margin:0 auto;z-index:1}-->
 .seriesbutton{width:986px;height:50px}
-
+.btngroup{
+    	margin-left: 80px;
+    	margin-top: 25px;
+    }
 .shujufenxibutton {
     /*height: 31px;
     width: 80px;

@@ -366,8 +366,9 @@
 						notEmpty : {
 							message : '时间区间不能为空'
 						},
-						integer : {
-							message : '时间区间必须为整数'
+						regexp : {
+							regexp : /^[0-9]*[1-9][0-9]*$/,
+							message : '时间区间必须为正整数'
 						}
 					}
 				},
@@ -376,8 +377,9 @@
 						notEmpty : {
 							message : '限定次数不能为空'
 						},
-						integer : {
-							message : '限定次数必须为整数'
+						regexp : {
+							regexp : /^[0-9]*[1-9][0-9]*$/,
+							message : '限定次数必须为正整数'
 						}
 					}
 				},

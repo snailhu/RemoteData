@@ -74,9 +74,7 @@
 			</ul><!--  .breadcrumb -->
 		</div>
 		<div class="page-content">
-<!-- 			<div class="page-header" style="margin: 0px;float: left;"> -->
-<!-- 				<h1>系统日志</h1>	 -->
-<!-- 			</div> -->
+		<div>
 				<div class="col-xs-12 col-sm-12">
 					<!-- PAGE CONTENT BEGINS -->
 					<div id="id_widget_search_box" class="widget-box">
@@ -133,7 +131,15 @@
 			<div class="col-xs-12">
 				<div id="jqxgrid"></div>
 			</div>
-		</div><!-- /.page-content -->		
+		</div>
+		<div class="row">
+				<div class="col-xs-12">
+					<!-- PAGE CONTENT BEGINS -->
+					<!-- PAGE CONTENT ENDS -->
+				</div>
+				<!-- /.col -->
+		</div>
+		</div> <!--/.page-content -->		
 	</div><!-- /.main-content -->
  <script type="text/javascript">
     var beginTime ="1800-01-01";

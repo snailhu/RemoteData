@@ -35,11 +35,7 @@
                 <img src="${base}/static/imgs/home/logo.png" width="380" height="70">
             </div>
             <div class="top_text">
-<<<<<<< HEAD
                 <span class="blue"><a href="${base}/admin/systemLog">系统管理</a></span>
-=======
-                <span class="blue"><img src="${base}/static/imgs/home/20160923_06.png"><a href="${base}/admin/user/index">系统管理</a></span>
->>>>>>> 069e7ea452b66c6ccc3a4c30e2c78409a80e42d6
                 <span><a href="${base}/report/reportDownLoad">报告管理</a></span>
                 <span><a href="${base}/admin/file/index">文件管理</a></span>
                 <span><a href="${base}/conditionMonitoring">数据分析</a></span>

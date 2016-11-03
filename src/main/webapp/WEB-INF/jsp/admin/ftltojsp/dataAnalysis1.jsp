@@ -72,7 +72,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     	color: #b2b2b2;
     	background-color: #F8F8F8;
     	border-width: 1px;
-    	cursor: pointer;
 	}
 	.dateSelect button{
 		height: 35px;
@@ -80,7 +79,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     	color: white;
     	background-color: #4B92DD;
     	border-width: 1px;
-    	cursor: pointer;
 	}
 	#dateStart-div,#dateEnd-div{
 		display:inline;
@@ -90,14 +88,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	}
 	.page-header{
 		padding:0px !important;
-		border-top: 1px solid #DEDEDE;
+		border: 1px solid #DEDEDE;
     	background-color: white;
     	height: 100px;
     	margin-left: -20px;
-    	width:950px;
 	}
-	.widget-box{border-bottom:none;}
-	.widget-body{border:none;}
 	.datainp{
 		width: 300px;
 		height: 25px;
@@ -127,7 +122,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     	padding: 0px;
     	line-height: 30px;
     	border-radius:20px;
-    	cursor: pointer;
     }
     #jqxButton_addgroup{
     	margin-left:1px;
@@ -147,10 +141,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     	margin-bottom:10px;
     }
     .new_hr{
-    	margin:25px 0px 10px -20px;
-    }
-    .parameter-list{
-    	margin-top:35px;
+    	margin:10px 0px 10px -20px;
     }
     #jqxWidget{
     	height: 40px;
@@ -305,7 +296,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						<input class="datainp" id="dateEnd" type="text" placeholder="--请选择--" readonly>
 					</div>				
 				</div>
-				<button style="height: 35px;"  id='jqxButton-getParameters' onMouseOut="this.style.backgroundColor=''" onMouseOver="this.style.backgroundColor='#00A1CB'">获取参数</button>
+				<button style="height: 35px;"  id='jqxButton-getParameters'>获取参数</button>
 				</div>
 				<div style="clear:both"></div>
 			</div>
@@ -331,16 +322,15 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			</div><!-- /.col -->
 		 </div>
 		  	
-		 <!--<div class="hr hr32 hr-dotted"></div>-->
-		 
+		 <div class="new_hr hr hr32 hr-dotted"></div>
 			<div class="row">
 			<div class="groupButton col-xs-12">
-					<div id='jqxButton_addgroup' onMouseOut="this.style.backgroundColor=''" onMouseOver="this.style.backgroundColor='#aaa'">添加分组</div>
-  					<div id='jqxButton_submitgroup' onMouseOut="this.style.backgroundColor=''" onMouseOver="this.style.backgroundColor='#00A1CB'">提交分组</div>
+					<div id='jqxButton_addgroup'>添加分组</div>
+  					<div id='jqxButton_submitgroup'>提交分组</div>
   					<!--<button onclick="getCleared()">清空已选参数</button>-->
   					<div id="id_dplist_template"></div>
   		 	</div>
-  		 	<div class="parameter-list col-xs-12">	
+  		 	<div class="col-xs-12">	
   				<div id='jqxWidgett'>
 			        <div id="treeGrid"></div>			       	
 			     </div>
@@ -348,7 +338,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			</div><!-- /.row -->
 			
 			<div class="new_hr hr hr32 hr-dotted"></div>
-			
 			<div class="row">
 			<div class="col-xs-12">	
   				<div id='jqxWidget'>
@@ -392,8 +381,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		}else{
 			initTemplateTree();
 			$("#toolimg").attr("src","${pageContext.request.contextPath}/static/imgs/DataImport_manage/xia2.png")
-			$(".widget-body").css("border","1px solid #ccc");
-    		$(".widget-body").slideDown("slow");   		
+    		$(".widget-body").slideDown("slow");
 			flag=true;
 		}
 		

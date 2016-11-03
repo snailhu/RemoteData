@@ -161,7 +161,22 @@
 </style>
 <script type="text/javascript">
 	$(function() {
-		$('#change-search-box').click();
+		var flag=false;
+		$(".widget-body").hide();
+		$(".selftoolbar").click(function(){
+		 if(flag){
+			$("#toolimg").attr("src","${pageContext.request.contextPath}/static/imgs/DataImport_manage/xia2.png")
+			$(".widget-body").hide();
+			flag=false;
+		 }else{
+			$("#toolimg").attr("src","${pageContext.request.contextPath}/static/imgs/DataImport_manage/xia.png")
+			$(".widget-body").css("border","1px solid #ccc");
+    		$(".widget-body").show();
+			flag=true;
+		 }
+		});
+		
+// 		$('#change-search-box').click();
 	});
 </script>
 </head>
@@ -191,8 +206,9 @@
 						<div class="widget-header" id="change-search-box"
 							data-action="collapse">
 							<h4>搜索</h4>
-							<div class="widget-toolbar">
-								<a href="javascript:void(0);"> <i class="icon-chevron-up"></i>
+							<div class="selftoolbar">
+								<a href="javascript:void(0);">
+									<img id="toolimg" src="${pageContext.request.contextPath}/static/imgs/DataImport_manage/xia2.png">
 								</a>
 							</div>
 						</div>

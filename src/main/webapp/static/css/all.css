@@ -1429,3 +1429,10 @@ a:hover{
     padding-left: 6px;
     height: 46px;
 }
+.selftoolbar {
+    display: inline-block;
+    padding: 0 10px;
+    line-height: 37px;
+    float: right;
+    position: relative;
+}

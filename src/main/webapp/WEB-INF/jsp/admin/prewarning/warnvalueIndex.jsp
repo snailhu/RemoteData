@@ -213,7 +213,38 @@
 }
 </style>
 <script type="text/javascript">
+	var activeUser = '${activeUser}';
 	$(function() {
+		if(activeUser != ''){
+			var permissionItemsJSON = '${activeUser.permissionItemsJSON}';
+			var map = $.parseJSON(permissionItemsJSON); 
+			if(map.flywheel == 'flywheel'){
+				$("#search-parameterType").append("<option value = 'flywheel'>飞轮</option>"); 
+				$("#add-parameterType").append("<option value = 'flywheel'>飞轮</option>"); 
+				$("#edit-parameterType").append("<option value = 'flywheel'>飞轮</option>"); 
+			}
+			if(map.top == 'top'){
+				$("#search-parameterType").append("<option value = 'top'>陀螺</option>"); 
+				$("#add-parameterType").append("<option value = 'top'>陀螺</option>"); 
+				$("#edit-parameterType").append("<option value = 'top'>陀螺</option>"); 
+			}
+		}
+		
+		var flag=false;
+		$(".widget-body").hide();
+		$(".selftoolbar").click(function(){
+		 if(flag){
+			$("#toolimg").attr("src","${pageContext.request.contextPath}/static/imgs/DataImport_manage/xia2.png")
+			$(".widget-body").hide();
+			flag=false;
+		 }else{
+			$("#toolimg").attr("src","${pageContext.request.contextPath}/static/imgs/DataImport_manage/xia.png")
+			$(".widget-body").css("border","1px solid #ccc");
+    		$(".widget-body").show();
+			flag=true;
+		 }
+		});
+		
 		$('#addValueInfoForm').bootstrapValidator({
 			message : '这个值不能为空！',
 			feedbackIcons : {
@@ -384,7 +415,7 @@
 // 			$('#addValueInfoForm').bootstrapValidator('validate');
 // 		});
 		
-		$('#change-search-box').click();
+// 		$('#change-search-box').click();
 		$.fn.modal.Constructor.prototype.enforceFocus = function() {};
 		$(".select2").select2();
 	});
@@ -417,8 +448,9 @@
 						<div class="widget-header" id="change-search-box"
 							data-action="collapse">
 							<h4>搜索</h4>
-							<div class="widget-toolbar">
-								<a href="javascript:void(0);"> <i class="icon-chevron-up"></i>
+							<div class="selftoolbar">
+								<a href="javascript:void(0);">
+									<img id="toolimg" src="${pageContext.request.contextPath}/static/imgs/DataImport_manage/xia2.png">
 								</a>
 							</div>
 						</div>
@@ -457,8 +489,6 @@
 											<select class="col-xs-10 col-sm-5" id="search-parameterType"
 												name="parameterType">
 												<option value="">--请选择--</option>
-												<option value="flywheel">飞轮</option>
-												<option value="top">陀螺</option>
 											</select>
 										</div>
 									</div>
@@ -541,8 +571,6 @@
 										<select class="form-control" id="add-parameterType"
 											name="parameterType">
 											<option value="">--请选择--</option>
-											<option value="flywheel">飞轮</option>
-											<option value="top">陀螺</option>
 										</select>
 									</div>
 								</div>
@@ -649,8 +677,6 @@
 										<select class="form-control" id="edit-parameterType"
 											name="parameterType">
 											<option value="">--请选择--</option>
-											<option value="flywheel">飞轮</option>
-											<option value="top">陀螺</option>
 										</select>
 									</div>
 								</div>
@@ -834,7 +860,6 @@
                  	  top.showMsg('提示', res.msg);
                    }
                });
-        
         });
         
         $("#search-series").change(function(){

@@ -1,6 +1,7 @@
 package DataAn.fileSystem.service.impl;
 
 import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.stereotype.Service;
 
@@ -10,8 +11,10 @@ import DataAn.mongo.service.IMongoService;
 @Service
 public class SaveFileTaskSingleService implements BeanPostProcessor {
 
+	@Autowired
 	private IParameterService paramService;
 	
+	@Autowired
 	private  IMongoService mongoService;
 
 	public IParameterService getParamService() {

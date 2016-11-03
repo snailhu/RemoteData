@@ -223,10 +223,10 @@ p, span, b, div {
 					content : "文件上传至服务器"
 				}, {
 					title : "数据导入",
-					content : "文件数据导入数据库"
+					content : "文件数据导入后台系统"
 				}, {
 					title : "预处理",
-					content : "数据预处理"
+					content : "将导入的数据进行一系列预处理"
 				}, {
 					title : "结束",
 					content : "结束"

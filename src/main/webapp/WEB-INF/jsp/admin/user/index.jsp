@@ -36,6 +36,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/static/content/jeDate/jedate/skin/jedate.css">
     <script type="text/javascript" src="${pageContext.request.contextPath}/static/content/jeDate/jedate/jedate.js"></script>
     
+    <link rel="stylesheet" href="<%=request.getContextPath()%>/static/css/all.css" type="text/css" />
+    
 <style type="text/css">
 .sweet-alert h2 {
 	color: rgb(87, 87, 87);
@@ -352,16 +354,24 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 									</div>
 									<div class="space-4"></div>
 									<div class="form-group">
-			                           <div class="col-lg-4 col-lg-offset-6">
-					                        <button type="button" id="btn-search" class="btn btn-primary start">
-							                    <i></i>
-							                    <span>搜索</span>
-							                </button>
-							                <button type="reset" class="btn btn-warning cancel">
-							                    <i></i>
-							                    <span>取消</span>
-							                </button>
-			                           </div>
+<!-- 			                           <div class="col-lg-4 col-lg-offset-6"> -->
+<!-- 					                        <button type="button" id="btn-search" class="btn btn-primary start"> -->
+<!-- 							                    <i></i> -->
+<!-- 							                    <span>搜索</span> -->
+<!-- 							                </button> -->
+<!-- 							                <button type="reset" class="btn btn-warning cancel"> -->
+<!-- 							                    <i></i> -->
+<!-- 							                    <span>取消</span> -->
+<!-- 							                </button> -->
+<!-- 			                           </div> -->
+										<div class="col-lg-4 col-lg-offset-4">
+											<button type="button" id="btn-search" class="subbutton_1">
+												<i></i> <span>搜索</span>
+											</button>
+											<button type="reset" id="btn-reset" class="cancelbutton_1">
+												<i></i> <span>取消</span>
+											</button>
+										</div>
 			                       </div>
 								</form>
 							</div>

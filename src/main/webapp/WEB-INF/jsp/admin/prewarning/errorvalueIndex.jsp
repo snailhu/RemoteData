@@ -955,6 +955,11 @@
 			valueGrid.datagrid('clearChecked');
 			valueGrid.datagrid('reload');
 		}
+		function returnLoadDataGrid(){
+			valueGrid.datagrid('load', {
+				warningType : "1"
+			});
+		}
 
 		//快速搜索按钮
 		$('#btn-search').click(function() {
@@ -1003,7 +1008,7 @@
 					var map = $.parseJSON(data);
 					if (map.success) {
 						top.showMsg('提示', map.msg);
-						reloadDataGrid();
+						returnLoadDataGrid();
 					} else {
 						top.alertMsg('错误', map.msg + "\n"+ map.obj == null ? "": map.obj);
 					}

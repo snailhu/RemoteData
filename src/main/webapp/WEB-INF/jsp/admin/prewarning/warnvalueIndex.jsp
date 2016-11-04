@@ -454,8 +454,8 @@
 							data-action="collapse">
 							<h4>搜索</h4>
 							<div class="selftoolbar">
-								<a href="javascript:void(0);">
-									<img id="toolimg" src="${pageContext.request.contextPath}/static/imgs/DataImport_manage/xia2.png">
+								<a href="javascript:void(0);"> <img id="toolimg"
+									src="${pageContext.request.contextPath}/static/imgs/DataImport_manage/xia2.png">
 								</a>
 							</div>
 						</div>
@@ -1036,6 +1036,11 @@
 			valueGrid.datagrid('clearChecked');
 			valueGrid.datagrid('reload');
 		}
+		function returnLoadDataGrid(){
+			valueGrid.datagrid('load', {
+				warningType : "0"
+			});
+		}
 		
 		//快速搜索按钮
 		$('#btn-search').click(function() {
@@ -1083,7 +1088,7 @@
 					var map = $.parseJSON(data);
 					if (map.success) {
 						top.showMsg('提示', map.msg);
-						reloadDataGrid();
+						returnLoadDataGrid();
 					} else {
 						top.alertMsg('错误', map.msg + "\n"+ map.obj == null ? "": map.obj);
 					}

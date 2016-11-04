@@ -24,6 +24,7 @@ import DataAn.common.pageModel.JsonMessage;
 import DataAn.galaxyManager.domain.Star;
 import DataAn.galaxyManager.dto.StarDto;
 import DataAn.galaxyManager.option.J9Series_Star_ParameterType;
+import DataAn.prewarning.domain.WarningLog;
 import DataAn.prewarning.domain.WarningValue;
 import DataAn.prewarning.dto.ErrorValueDTO;
 import DataAn.prewarning.dto.QueryLogDTO;
@@ -249,13 +250,19 @@ public class PrewarningController extends BaseController {
 	public JsonMessage editWarnValue(WarnValueDTO warnValue, HttpServletRequest request, HttpServletResponse response) {
 		JsonMessage jsonMsg = new JsonMessage();
 		try {
-			boolean falg = prewarningService.cherkWarningValue(warnValue.getSeries().toString(),
-					warnValue.getStar().toString(), warnValue.getParameter(), warnValue.getParameterType(), "0");
-			if (falg) {
-				jsonMsg.setSuccess(false);
-				jsonMsg.setMsg("参数已存在！");
-				jsonMsg.setObj("参数已存在！");
-				return jsonMsg;
+			WarningValue value = prewarningService.getWarningValueById(warnValue.getValueId());
+			if (!(value.getParameter().equals(warnValue.getParameter())
+					&& value.getParameterType().equals(warnValue.getParameterType())
+					&& value.getSeries().equals(warnValue.getSeries())
+					&& value.getStar().equals(warnValue.getStar()))) {
+				boolean falg = prewarningService.cherkWarningValue(warnValue.getSeries().toString(),
+						warnValue.getStar().toString(), warnValue.getParameter(), warnValue.getParameterType(), "0");
+				if (falg) {
+					jsonMsg.setSuccess(false);
+					jsonMsg.setMsg("参数已存在！");
+					jsonMsg.setObj("参数已存在！");
+					return jsonMsg;
+				}
 			}
 			warnValue.setMinVal(0.0);
 			prewarningService.updateWarnValue(warnValue);
@@ -278,13 +285,18 @@ public class PrewarningController extends BaseController {
 			HttpServletResponse response) {
 		JsonMessage jsonMsg = new JsonMessage();
 		try {
-			boolean falg = prewarningService.cherkWarningValue(errorValue.getSeries().toString(),
-					errorValue.getStar().toString(), errorValue.getParameter(), errorValue.getParameterType(), "1");
-			if (falg) {
-				jsonMsg.setSuccess(false);
-				jsonMsg.setMsg("参数已存在！");
-				jsonMsg.setObj("参数已存在！");
-				return jsonMsg;
+			WarningLog log = prewarningService.getWarningLogById(errorValue.getValueId());
+			if (!(log.getParameter().equals(errorValue.getParameter())
+					&& log.getParameterType().equals(errorValue.getParameterType())
+					&& log.getSeries().equals(errorValue.getSeries()) && log.getStar().equals(errorValue.getStar()))) {
+				boolean falg = prewarningService.cherkWarningValue(errorValue.getSeries().toString(),
+						errorValue.getStar().toString(), errorValue.getParameter(), errorValue.getParameterType(), "1");
+				if (falg) {
+					jsonMsg.setSuccess(false);
+					jsonMsg.setMsg("参数已存在！");
+					jsonMsg.setObj("参数已存在！");
+					return jsonMsg;
+				}
 			}
 			prewarningService.updateErrorValue(errorValue);
 		} catch (Exception e) {

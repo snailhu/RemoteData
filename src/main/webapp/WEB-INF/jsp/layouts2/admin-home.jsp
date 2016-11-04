@@ -23,12 +23,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	
 	<%@include file="/WEB-INF/jsp/layouts2/admin-include-public.jsp"%>
 	
-	
-	
-	
 	<link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/static/new/css/all.css"/>
 	<style type="text/css">
-	html{background:#f3f3f3;}
+/* 	html{background:#f3f3f3;height: auto;} */
 	.DataImport_manage .container {
 	    width: 1200px;
 	    margin: 0 auto;

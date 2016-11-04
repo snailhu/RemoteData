@@ -83,7 +83,8 @@
 							<div class="widget-toolbar">
 								<a href="javascript:void(0);" >
 									<div hidden="hidden"><i class="icon-chevron-up" hidden="hidden"></i></div>
-									<img id="toolimg" src="${pageContext.request.contextPath}/static/imgs/DataImport_manage/xia.png">
+									<img id="toolimg" style="margin-top: 3px;"
+									src="${pageContext.request.contextPath}/static/imgs/DataImport_manage/xia.png">
 								</a>
 							</div>
 						</div>

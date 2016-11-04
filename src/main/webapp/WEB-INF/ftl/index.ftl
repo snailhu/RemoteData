@@ -16,9 +16,7 @@
             <div class="head_text">
             	<#if activeUser??>
 	            	<span>
-						<a href="javascript:void(0)" id="loginLink">
-								欢迎,${activeUser.userName}
-						</a>
+						欢迎,${activeUser.userName}
 					</span>
             	<#else>
 			        <span><a href="login" id="loginLink">登录</a></span>

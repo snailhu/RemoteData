@@ -11,17 +11,15 @@
 <script type="text/javascript" src="${base}/static/js/conditionMonitoring/intsatellite.js"></script>
 <script type="text/javascript" src="${base}/static/js/conditionMonitoring/series-button.js"></script> 	
 <script type="text/javascript">
-	//模拟动态加载标题(真实情况可能会跟后台进行ajax交互)
+	var currentDate =new Date();
+	var beginDate=new Date(2016,1,1,1,1,1)
+	var runtime=DateDiff('d','2016-6-6','2016-1-1');
+	
+	//卫星信息显示悬浮窗口Title
 	function title() {
 	    return '卫星运行状态信息';
 	}
-	var currentDate =new Date();
-	var beginDate=new Date(2016,1,1,1,1,1)
-	//var runtime=DateDiff(currentDate,beginDate);
-	//var runtime=(currentDate-beginDate);
-	var runtime=DateDiff('d','2016-6-6','2016-1-1');
-	
-	//模拟动态加载内容(真实情况可能会跟后台进行ajax交互)
+	//卫星信息显示悬浮窗口，动态加载内容(真实情况可能会跟后台进行ajax交互)
 	function content(id,begintime,rundate) {
 	    var data = $("<form><ul><li><span aria-hidden='true' class='icon_globe'></span>&nbsp;<font>卫星代号:</font>"+id+"</li>" +
 	             "<li><span aria-hidden='true' class='icon_piechart'></span>&nbsp;<font>开始时间:</font>"+begintime+"</li>" +
@@ -35,19 +33,14 @@
 	var dotTop = ($(".container").height()-$(".dot").height())/2-100;
 	//椭圆长边
 	//a = document.documentElement.clientWidth/3;//获取可见区域的宽度和高度
-	//a = document.body.clientWidth/3;//body区域的宽度和高度
-	//a = $(".container").width()/3;
 	a=460;
 	//椭圆短边
 	//b = document.documentElement.clientHeight/3;
-	//b = document.body.clientHeight/3;
-	//b = $(".container").height()/3;
 	b=150;
 	//起始角度
 	var stard = 0;
 	//每一个BOX对应的角度;
 	//var avd = 360/$(".container img").length;
-	//var avd = 360/$(".imagediv").length;
 	var avd = 180;
 	//每一个BOX对应的弧度;
 	var ahd = avd*Math.PI/180;
@@ -64,7 +57,6 @@
 	$(".dot").css({"left":dotLeft,"top":dotTop});
 	
 	//运动函数
-	//var fun_animat = function(){
 	fun_animat = function(){
 	speed = speed<360?speed:2;
 	//运运的速度
@@ -85,15 +77,17 @@
 		"height":hpers*hei,
 		"opacity":1
 	});
-	//alert(Math.sin((ahd*index+ainhd))*a+dotLeft+"-----"+ainhd+"--ahd--"+ahd+"--index--"+index)
 	});
 }
 	//延时函数
-	var timeout = false; //启动及关闭按钮
-	var timestate = false; //标记定时器状态
+	var timeout = false; //启动及关闭按钮为fals时开始定时器 | 为true时停止计时
+	var timestate = false; //标记定时器状态 false时停止计时 |true时开始计时
+	var sportstate = false;//图片运动状态，运动为true;	
 	function time()
 	{
 	  if(timeout) return;
+	  //clearTimeout(timeoutProcess);
+	  //clearTimeout(time);
 	  fun_animat();
 	  setTimeout(time,100); //time是指本身,延时递归调用自己,100为间隔调用时间,单位毫秒
 	};
@@ -148,40 +142,7 @@
 			"opacity":1
 		});
 		});
-		}
-
-		/*//var timeout = false; //启动及关闭按钮
-		//var timestate = false; //标记定时器状态
-		function time()
-		{
-		  if(timeout) return;
-		  fun_animat();
-		  setTimeout(time,100); //time是指本身,延时递归调用自己,100为间隔调用时间,单位毫秒
-		};*/
-	
-		/*//定时调用运动函数
-		timeout = false;
-		time();	
-			
-		//加载悬浮提示窗口
-		$("[data-toggle='popover']").popover({  
-        html : true,    
-        title: title(),    
-        delay:{show:10, hide:10},  
-        content: function() { 
-			//clearInterval(setAnimate);
-			timeout = true;
-			time();
-          	return content();    
-			}   
-		});
-		//悬浮窗口消失时继续旋转
-		$("[data-toggle='popover']").on('hidden.bs.popover', function() {
-		//setAnimate = setInterval(fun_animat,100)
-		timeout = false;
-		time();
-		});	*/
-		
+		}	
 		$('#id_div_seriesbtnmanage').seriesbtnmenu({ url: "${base}/getSeriesBtnMenus"});
 	});
 </script>
@@ -209,27 +170,13 @@
 </style>
 </head>
 <body>
-<!--
-<a href="#"  data-toggle="popover" data-placement="bottom" data-trigger="hover">
-	<img class="commentAvatarImage" src="${base}/static/images/satellite.jpg" alt="在这张图上面加载悬浮提示框" />
-</a>-->
 	<div class="background">    
 		<img src="${base}/static/images/earth.jpg" height="100%" width="100%">
 		</img>
 	</div>
 	<div id="id_div_seriesbtnmanage" class="seriesbutton" >
 	</div>
-	<div id="id_container" class="container">
-		<!--<div class="imagediv" >
-			<a href="admin/file/index/j9/01/0/"  data-toggle="popover" data-placement="top" data-trigger="hover">
-			<img id="1"  src="${base}/static/images/satellite.png" alt=""/>
-			<span>1号星</span></a>
-		</div>
-		<div class="imagediv" >
-			<a href="admin/file/index/j9/01/0/"  data-toggle="popover" data-placement="top" data-trigger="hover">
-			<img id="2"  src="${base}/static/images/satellite.png" alt=""/>
-			<span>2号星</span></a>
-		</div>-->			
+	<div id="id_container" class="container">		
 	</div>
 </body>
 </html>

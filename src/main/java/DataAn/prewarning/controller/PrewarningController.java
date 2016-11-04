@@ -250,7 +250,7 @@ public class PrewarningController extends BaseController {
 	public JsonMessage editWarnValue(WarnValueDTO warnValue, HttpServletRequest request, HttpServletResponse response) {
 		JsonMessage jsonMsg = new JsonMessage();
 		try {
-			WarningValue value = prewarningService.getWarningValueById(warnValue.getValueId());
+			WarningValue value = prewarningService.getWarningValueById(warnValue.getValueId().longValue());
 			if (!(value.getParameter().equals(warnValue.getParameter())
 					&& value.getParameterType().equals(warnValue.getParameterType())
 					&& value.getSeries().equals(warnValue.getSeries())
@@ -285,10 +285,11 @@ public class PrewarningController extends BaseController {
 			HttpServletResponse response) {
 		JsonMessage jsonMsg = new JsonMessage();
 		try {
-			WarningLog log = prewarningService.getWarningLogById(errorValue.getValueId());
-			if (!(log.getParameter().equals(errorValue.getParameter())
-					&& log.getParameterType().equals(errorValue.getParameterType())
-					&& log.getSeries().equals(errorValue.getSeries()) && log.getStar().equals(errorValue.getStar()))) {
+			WarningValue value = prewarningService.getWarningValueById((errorValue.getValueId().longValue()));
+			if (!(value.getParameter().equals(errorValue.getParameter())
+					&& value.getParameterType().equals(errorValue.getParameterType())
+					&& value.getSeries().equals(errorValue.getSeries())
+					&& value.getStar().equals(errorValue.getStar()))) {
 				boolean falg = prewarningService.cherkWarningValue(errorValue.getSeries().toString(),
 						errorValue.getStar().toString(), errorValue.getParameter(), errorValue.getParameterType(), "1");
 				if (falg) {

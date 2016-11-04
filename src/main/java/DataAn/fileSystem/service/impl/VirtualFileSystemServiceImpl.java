@@ -56,7 +56,7 @@ import DataAn.storm.zookeeper.ZooKeeperNameKeys;
 
 @Service("virtualFileSystemServiceImpl")
 public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
-
+	
 	@Resource
 	private IVirtualFileSystemDao fileDao;
 	@Resource
@@ -129,11 +129,7 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 		statusTrackingService.updateStatusTracking(csvFileDto.getFileName(), StatusTrackingType.PREHANDLE.getValue(),
 				csvFileDto.getParameterType(), "");
 		
-		//TODO 调用文件队列API，  zookeeper 
-		
-		//开另外一个线程处理存入kafka的数据
-		new Thread(new SaveFileToKafka(paramService, mongoService)).start();
-				
+		// 调用文件队列API，  zookeeper 
 		Map conf=new HashMap<>();
 		ZooKeeperNameKeys.setZooKeeperServer(conf, "nim1.storm.com:2182,nim2.storm.com");
 		ZookeeperExecutor executor=new ZooKeeperClient()
@@ -149,8 +145,6 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 		communication.setStar(nowStar);
 		communication.setName(csvFileDto.getParameterType());
 		communicationUtils.add(communication);
-		
-		
 		
 		return versions;
 	}

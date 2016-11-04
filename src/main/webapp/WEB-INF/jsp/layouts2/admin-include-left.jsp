@@ -28,6 +28,7 @@
     color: #525252;
     border-bottom: 1px solid #DEDEDE;
     padding-left: 0px;
+    text-decoration: none;
 }
 .DataImport_manage .data_import .left .content .tab_li {
     height: 40px;
@@ -38,18 +39,23 @@
     background-color: rgba(255, 255, 255, 0.15);
     border-bottom: 1px solid #DEDEDE;
     padding-left: 15px;
+    text-decoration: none;
 }
 .DataImport_manage .data_import .left .content .tab_li.level2 {
     padding-left: 15px;
+    text-decoration: none;
 }
 .DataImport_manage .data_import .left .content .tab_li.level3 {
     padding-left: 30px;
+    text-decoration: none;
 }
 .DataImport_manage .data_import .left .content .tab_li.level4 {
     padding-left: 45px;
+    text-decoration: none;
 }
 .DataImport_manage .data_import .left .content .tab_li.level5 {
     padding-left: 60px;
+    text-decoration: none;
 }
 .DataImport_manage .data_import .left .content {
      height: 0px; 
@@ -61,26 +67,22 @@
     background-color: #F3F3F3;
     margin-left: 0px;
 }
-.left-li-list a:link {
+a:link {
 	text-decoration: none;
-	text-decoration: underline;
 }
-.left-li-list a:visited {
+a:visited {
 	text-decoration: none;
-	text-decoration: underline;
 }
-.left-li-list a:hover {
+a:hover {
 	text-decoration: none;
-	text-decoration: underline;
 }
-.left-li-list a:active {
+a:active {
 	text-decoration: none;
-	text-decoration: underline;
 }
-.left-li-list a {
-    color: White;
-    text-decoration: underline;
+a {
+    text-decoration: none;
 }
+
 </style>
 <div class="sidebar left" id="sidebar">
  	<script type="text/javascript">
@@ -111,7 +113,7 @@
 			}
 			$("a").click(function(){
 				var flag = $(this).find(".img_down").attr("src");
-				if(flag = "${pageContext.request.contextPath}/static/new/img/DataImport/xiala.png"){
+				if(flag == "${pageContext.request.contextPath}/static/new/img/DataImport/xiala.png"){
 					$(this).find(".img_down").attr("src","${pageContext.request.contextPath}/static/new/img/DataImport/shangla.png");
 				}else{
 					$(this).find(".img_down").attr("src","${pageContext.request.contextPath}/static/new/img/DataImport/xiala.png");

@@ -7,8 +7,8 @@
 <head>
 <base href="<%=basePath%>">
 <title>日志管理</title>
-</head>
-<body>
+
+
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/static/jqwidgets/styles/jqx.base.css" type="text/css" />
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/static/jqwidgets/styles/jqx.energyblue.css" type="text/css" />
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/static/content/css/default.css"  type="text/css"/>
@@ -45,18 +45,12 @@
 		.dateStyle{
 			float:left;
 		}
-		.row {
-		  margin:0px !important
-		}
 		.page-header{
 			padding:0px !important
 		}
-		.datainp{
-			width: 300px;
-			height: 25px;
-		}
 	</style>
-
+</head>
+<body>
 	<div class="main-content">
 	    <div class="breadcrumbs" id="breadcrumbs">
 			<script type="text/javascript">
@@ -106,8 +100,7 @@
 										<label class="col-sm-5 control-label no-padding-right" for="form-endTime"> 结束时间 </label>
 										<div class="col-sm-3">
 											<input  class="form-control"  id="form-endTime" name="endTime"  type="text" placeholder="输入结束时间" >
-											<!-- class="datainp" <input type="text" id="form-endTime" name="endTime" placeholder="结束时间" class="col-xs-10 col-sm-5" />
-											<div id="getEndTime"></div> -->
+											<div id="getEndTime"></div>
 										</div>
 									</div>
 									<div class="space-4"></div>
@@ -132,13 +125,6 @@
 			<div class="col-xs-12">
 				<div id="jqxgrid"></div>
 			</div>
-		</div>
-		<div class="row">
-				<div class="col-xs-12">
-					<!-- PAGE CONTENT BEGINS -->
-					<!-- PAGE CONTENT ENDS -->
-				</div>
-				<!-- /.col -->
 		</div>
 		</div> <!--/.page-content -->		
 	</div><!-- /.main-content -->
@@ -208,7 +194,7 @@
 			isinitVal:false, //是否初始化时间
 			festival:false, //是否显示节日
 			isTime:true, //是否开启时间选择
-			//minDate:"2014-09-19 00:00:00",//最小日期
+			minDate:$('#form-beginTime').val(),//最小日期
 			maxDate:jeDate.now(0), //设定最大日期为当前日期
 		});
 		

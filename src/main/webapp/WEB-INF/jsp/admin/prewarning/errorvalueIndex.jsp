@@ -816,6 +816,8 @@
 		});
     	
     	$("#add-series").change(function(){
+    		$('#addValueInfoForm').data('bootstrapValidator').updateStatus('star', 'NOT_VALIDATED', null);
+    		
 		 	var seriesId = $('#add-series').val();	
 		 	  $.get('<%=request.getContextPath()%>/admin/prewarning/getStarList', {'seriesId':seriesId},  function (res) {
 				  if(res.result == "true") {
@@ -841,6 +843,7 @@
 	           		    }
 						});
 	           	  $("#add-parameter").select2().val("").trigger("change");
+	           	  $('#addValueInfoForm').data('bootstrapValidator').updateStatus('parameter', 'NOT_VALIDATED', null);
 	             }
 	             else {
 	           	  top.showMsg('提示', res.msg);
@@ -849,6 +852,8 @@
 		});
     	
     	$("#edit-series").change(function(){
+    		$('#editValueInfoForm').data('bootstrapValidator').updateStatus('star', 'NOT_VALIDATED', null);
+    		
 		 	var seriesId = $('#edit-series').val();	
 		 	  $.get('<%=request.getContextPath()%>/admin/prewarning/getStarList', {'seriesId':seriesId},  function (res) {
 				  if(res.result == "true") {
@@ -874,6 +879,7 @@
 	           		    }
 						});
 	           	  $("#edit-parameter").select2().val("").trigger("change");
+	           	$('#editValueInfoForm').data('bootstrapValidator').updateStatus('parameter', 'NOT_VALIDATED', null);
 	             }
 	             else {
 	           	  top.showMsg('提示', res.msg);
@@ -916,6 +922,7 @@
 	            		    }
 						});
 	            	  $("#add-parameter").select2().val("").trigger("change");
+	            	  $('#addValueInfoForm').data('bootstrapValidator').updateStatus('parameter', 'NOT_VALIDATED', null);
 	              }
 	              else {
 	            	  top.showMsg('提示', res.msg);
@@ -936,6 +943,7 @@
 	            		    }
 						});
 	            	  $("#edit-parameter").select2().val("").trigger("change");
+	            	  $('#editValueInfoForm').data('bootstrapValidator').updateStatus('parameter', 'NOT_VALIDATED', null);
 	              }
 	              else {
 	            	  top.showMsg('提示', res.msg);

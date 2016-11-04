@@ -22,5 +22,4 @@
 <!-- 	<mapping path="/admin/file/toUploadFile"  exclue="true"/> -->
 	<mapping path="/admin/login/index"  exclue="true"/>
 	<mapping path="graphicShow"  exclue="true"/>
-	graphicShow
 </sitemesh>

@@ -223,6 +223,11 @@ input[type=text]::-webkit-focus-inner {
     margin-top: 10px;
 }
 </style>
+<script type="text/javascript">
+	$(function(){
+		$("#uploadFile-img").attr("src","${pageContext.request.contextPath}/static/new/img/images/a_30.png");
+	})
+</script>
 </head>
   <body>
 	<div class="main-content">

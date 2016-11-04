@@ -71,35 +71,36 @@ public class SaveFileToKafka implements Runnable {
 				nodeWorker.acquire();
 				System.out.println(nodeWorker.getId()+ " get lock , wait some time.");
 				
-				final WorkerPathVal workerPathVal=
-						JJSON.get().parse(new String(executor.getPath(nodeWorker.path()), Charset.forName("utf-8"))
-								,WorkerPathVal.class);
-				
-				long sequence=workerPathVal.getSequence(); 
-				
-				Communication communication = FlowUtils.getBegin(executor,sequence);
-				
-				String filePath=communication.getFilePath();
-				String series, star, name,versions;
-				series=communication.getSeries();
-				star=communication.getStar();
-				name=communication.getName();
-				versions=communication.getVersions();
-				
 				InputStream in = null;
 				BufferedReader reader = null;
+				Communication communication=null;
 				try {
+					
+					final WorkerPathVal workerPathVal=
+							JJSON.get().parse(new String(executor.getPath(nodeWorker.path()), Charset.forName("utf-8"))
+									,WorkerPathVal.class);
+					
+					long sequence=workerPathVal.getSequence(); 
+					
+					communication = FlowUtils.getBegin(executor,sequence);
+					
+					String filePath=communication.getFilePath();
+					String series, star, name,versions;
+					series=communication.getSeries();
+					star=communication.getStar();
+					name=communication.getName();
+					versions=communication.getVersions();
+					
 //					IParameterService paramService = (IParameterService) SpringUtil.getSpringService("parameterService");
 					in = new BufferedInputStream(new FileInputStream(new File(filePath)));
 					reader = new BufferedReader(new InputStreamReader(in, "gb2312"));// 换成你的文件名
 					String title = reader.readLine();// 第一行信息，为标题信息，不用,如果需要，注释掉
 					//CSV格式文件为逗号分隔符文件，这里根据逗号切分
 					String[] array = title.split(",");
-					String[] properties = new String[array.length + 1];
-					properties[0] = "versions";
-					for (int i = 0; i < array.length; i++) {
+					String[] properties = new String[array.length - 1];
+					for (int i = 1; i < array.length; i++) {
 						//将中文字符串转换为英文
-						properties[i + 1] = paramService.getParameter_en_by_allZh(series, star, name, array[i]);
+						properties[i - 1] = paramService.getParameter_en_by_allZh(series, star, name, array[i]);
 					}
 					String line = null;
 					String date = "";
@@ -112,7 +113,7 @@ public class SaveFileToKafka implements Runnable {
 					//
 					InnerProducer innerProducer=new InnerProducer(conf);
 					BoundProducer boundProducer=new BoundProducer(innerProducer);
-					String topic="data-prototype-"+disAtomicLong.getSequence();
+					String topic="data-prototype-"+disAtomicLong.getSequence() + "-" + new Date().getTime();
 					boundProducer.send(new Beginning(),topic);
 					
 					while ((line = reader.readLine()) != null) {
@@ -125,12 +126,10 @@ public class SaveFileToKafka implements Runnable {
 						}
 						count ++;
 						
-						propertyVals = new String[array.length + 1];
-						propertyVals[0] = versions;
-						propertyVals[1] = DateUtil.format(dateTime);
+						propertyVals = new String[array.length - 1];
 						for (int i = 1; i < items.length; i++) {
 							//获取值除时间外
-							propertyVals[i + 1] = items[i];
+							propertyVals[i - 1] = items[i];
 						}
 						//
 						defaultFetchObj = new DefaultFetchObj();
@@ -138,10 +137,11 @@ public class SaveFileToKafka implements Runnable {
 						defaultFetchObj.setName(name);
 						defaultFetchObj.setSeries(series);
 						defaultFetchObj.setStar(star);
-						defaultFetchObj.setTime(propertyVals[1]);
+						defaultFetchObj.setTime(DateUtil.format(dateTime));
 						defaultFetchObj.set_time(dateTime.getTime());
 						defaultFetchObj.setProperties(properties);
 						defaultFetchObj.setPropertyVals(propertyVals);
+						defaultFetchObj.setVersions(versions);
 						
 						//发送到kafka
 						boundProducer.send(defaultFetchObj,topic);
@@ -157,7 +157,9 @@ public class SaveFileToKafka implements Runnable {
 					FlowUtils.setDenoise(executor, communication);
 					
 				} catch (Exception e) {
+					FlowUtils.setError(executor, communication, e.getMessage());
 					e.printStackTrace();
+					throw e;
 				} finally{
 					if(reader != null){
 						try {

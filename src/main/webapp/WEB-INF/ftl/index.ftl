@@ -18,11 +18,11 @@
 	            	<span>
 						欢迎,${activeUser.userName}
 					</span>
+	                <span>|</span>
+	                <span><a href='${base}/loginOut'>退出</a></span>
             	<#else>
 			        <span><a href="login" id="loginLink">登录</a></span>
 	        	</#if>
-                <span>|</span>
-                <span><a href='${base}/loginOut'>注销</a></span>
             </div>
         </div>
     </div>

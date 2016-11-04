@@ -27,6 +27,7 @@
     font-size: 15px;
     color: #525252;
     border-bottom: 1px solid #DEDEDE;
+    padding-left: 0px;
 }
 .DataImport_manage .data_import .left .content .tab_li {
     height: 40px;
@@ -36,13 +37,19 @@
     color: #525252;
     background-color: rgba(255, 255, 255, 0.15);
     border-bottom: 1px solid #DEDEDE;
-    padding-left: 5px;
+    padding-left: 15px;
 }
 .DataImport_manage .data_import .left .content .tab_li.level2 {
     padding-left: 15px;
 }
 .DataImport_manage .data_import .left .content .tab_li.level3 {
     padding-left: 30px;
+}
+.DataImport_manage .data_import .left .content .tab_li.level4 {
+    padding-left: 45px;
+}
+.DataImport_manage .data_import .left .content .tab_li.level5 {
+    padding-left: 60px;
 }
 .DataImport_manage .data_import .left .content {
      height: 0px; 
@@ -125,70 +132,70 @@
 			</a>
 			<ul class="submenu">
 				<li>
-					<a href="admin/file/toUploadFile" class="tab_title"> 
-						<img class="img_head" src="${pageContext.request.contextPath}/static/new/img/images/images/A_30.png">
+					<a href="admin/file/toUploadFile" class="tab_li"> 
+						<img class="img_head" id="uploadFile-img"
+						src="${pageContext.request.contextPath}/static/new/img/images/images/A_30.png">
 						<span class="menu-text"> 数据导入 </span>
 					</a>
 				</li>
 				<li id="status-li">
-					<a href="#" class="dropdown-toggle tab_title"> 
+					<a href="#" class="dropdown-toggle tab_li"> 
 						<img class="img_head" src="${pageContext.request.contextPath}/static/new/img/images/images/A_34.png">
 						<span class="menu-text"> 文件状态</span> 
 						<img class="img_down" src="${pageContext.request.contextPath}/static/new/img/DataImport/xiala.png">
 					</a>
 					<ul class="submenu">
 						<li>
-							<a href="${pageContext.request.contextPath}/admin/status/startingIndex" class="tab_li"> 
+							<a href="${pageContext.request.contextPath}/admin/status/startingIndex" class="tab_li level2"> 
 								<img class="img_head" src="${pageContext.request.contextPath}/static/new/img/DataImport/xuxian.png">
 								<span>进行中</span>
-								<img class="img_down" src="${pageContext.request.contextPath}/static/new/img/DataImport/xiala.png">
 							</a>
 						</li>
 						<li>
-							<a href="${pageContext.request.contextPath}/admin/status/endIndex" class="tab_li"> 
+							<a href="${pageContext.request.contextPath}/admin/status/endIndex" class="tab_li level2"> 
 								<img class="img_head" src="${pageContext.request.contextPath}/static/new/img/DataImport/xuxian.png">
 								<span>已结束</span>
-								<img class="img_down" src="${pageContext.request.contextPath}/static/new/img/DataImport/xiala.png">
 							</a>
 						</li>
 					</ul>
 				</li>
 				<li>
-					<a href="#" class="dropdown-toggle tab_title"> 
+					<a href="#" class="dropdown-toggle tab_li"> 
 						<img class="img_head" src="${pageContext.request.contextPath}/static/new/img/images/images/A_46.png">
 						<span class="menu-text"> 文件查看</span> 
 						<img class="img_down" src="${pageContext.request.contextPath}/static/new/img/DataImport/xiala.png">
 					</a>
 					<ul class="submenu">
 						<li>
-							<a href="javascript:void(0)" class="tab_li"> 
-								<img class="img_head" src="${pageContext.request.contextPath}/static/new/img/DataImport/xuxian.png">
+							<a href="javascript:void(0)" class="tab_li level2"> 
+								<img class="img_head" src="${pageContext.request.contextPath}/static/new/img/images/images/A_14.png">
 								<span>其他系列</span>
 								<img class="img_down" src="${pageContext.request.contextPath}/static/new/img/DataImport/xiala.png">
 							</a>
 						</li>
 						<li>
-							<a href="#" class="dropdown-toggle tab_li"> 
-								<img class="img_head" src="${pageContext.request.contextPath}/static/new/img/DataImport/xuxian.png"> 
+							<a href="#" class="dropdown-toggle tab_li level2"> 
+								<img class="img_head"
+								src="${pageContext.request.contextPath}/static/new/img/images/images/A_14.png"> 
 		                		<span>j9系列</span>
 		                		<img class="img_down" src="${pageContext.request.contextPath}/static/new/img/DataImport/xiala.png">
 							</a>
 							<ul class="submenu">
 								<li>
-									<a href="#" class="dropdown-toggle tab_li level2"> 
+									<a href="#" class="dropdown-toggle tab_li level3"> 
 						                <img class="img_head" src="${pageContext.request.contextPath}/static/new/img/DataImport/xuxian.png">
 						                <span>Ⅰ号星</span>
 						                <img class="img_down" src="${pageContext.request.contextPath}/static/new/img/DataImport/xiala.png">
 									</a>
 									<ul class="submenu">
 										<li class="flywheel-li">
-											<a href="admin/file/index/j9/01/flywheel/0/" class="tab_li level3"> 
+											<a href="admin/file/index/j9/01/flywheel/0/" class="tab_li level4"> 
 												<img class="img_head" src="${pageContext.request.contextPath}/static/new/img/DataImport/xuxian.png">
 												<span>飞轮</span>
 											</a>
 										</li>
 										<li class="top-li">
-											<a href="admin/file/index/j9/01/top/0/" class="tab_li level3">
+											<a href="admin/file/index/j9/01/top/0/" class="tab_li level4">
 								                <img class="img_head" src="${pageContext.request.contextPath}/static/new/img/DataImport/xuxian.png">
 								                <span>陀螺</span>
 											</a>
@@ -196,20 +203,20 @@
 									</ul>
 								</li>
 								<li>
-									<a href="#" class="dropdown-toggle tab_li level2"> 
+									<a href="#" class="dropdown-toggle tab_li level3"> 
 						                <img class="img_head" src="${pageContext.request.contextPath}/static/new/img/DataImport/xuxian.png">
 						                <span>Ⅱ号星</span>
 						                <img class="img_down" src="${pageContext.request.contextPath}/static/new/img/DataImport/xiala.png">
 									</a>
 									<ul class="submenu">
 										<li class="flywheel-li">
-											<a href="admin/file/index/j9/02/flywheel/0/" class="tab_li level3"> 
+											<a href="admin/file/index/j9/02/flywheel/0/" class="tab_li level4"> 
 												<img class="img_head" src="${pageContext.request.contextPath}/static/new/img/DataImport/xuxian.png">
 												<span>飞轮</span>
 											</a>
 										</li>
 										<li class="top-li">
-											<a href="admin/file/index/j9/02/top/0/" class="tab_li level3">
+											<a href="admin/file/index/j9/02/top/0/" class="tab_li level4">
 								                <img class="img_head" src="${pageContext.request.contextPath}/static/new/img/DataImport/xuxian.png">
 								                <span>陀螺</span>
 											</a>
@@ -217,20 +224,20 @@
 									</ul>
 								</li>
 								<li>
-									<a href="#" class="dropdown-toggle tab_li level2"> 
+									<a href="#" class="dropdown-toggle tab_li level3"> 
 						                <img class="img_head" src="${pageContext.request.contextPath}/static/new/img/DataImport/xuxian.png">
 						                <span>Ⅲ号星</span>
 						                <img class="img_down" src="${pageContext.request.contextPath}/static/new/img/DataImport/xiala.png">
 									</a>
 									<ul class="submenu">
 										<li class="flywheel-li">
-											<a href="admin/file/index/j9/03/flywheel/0/" class="tab_li level3"> 
+											<a href="admin/file/index/j9/03/flywheel/0/" class="tab_li level4"> 
 												<img class="img_head" src="${pageContext.request.contextPath}/static/new/img/DataImport/xuxian.png">
 												<span>飞轮</span>
 											</a>
 										</li>
 										<li class="top-li">
-											<a href="admin/file/index/j9/03/top/0/" class="tab_li level3">
+											<a href="admin/file/index/j9/03/top/0/" class="tab_li level4">
 								                <img class="img_head" src="${pageContext.request.contextPath}/static/new/img/DataImport/xuxian.png">
 								                <span>陀螺</span>
 											</a>
@@ -238,20 +245,20 @@
 									</ul>
 								</li>
 								<li>
-									<a href="#" class="dropdown-toggle tab_li level2"> 
+									<a href="#" class="dropdown-toggle tab_li level3"> 
 						                <img class="img_head" src="${pageContext.request.contextPath}/static/new/img/DataImport/xuxian.png">
 						                <span>Ⅳ号星</span>
 						                <img class="img_down" src="${pageContext.request.contextPath}/static/new/img/DataImport/xiala.png">
 									</a>
 									<ul class="submenu">
 										<li class="flywheel-li">
-											<a href="admin/file/index/j9/04/flywheel/0/" class="tab_li level3"> 
+											<a href="admin/file/index/j9/04/flywheel/0/" class="tab_li level4"> 
 												<img class="img_head" src="${pageContext.request.contextPath}/static/new/img/DataImport/xuxian.png">
 												<span>飞轮</span>
 											</a>
 										</li>
 										<li class="top-li">
-											<a href="admin/file/index/j9/04/top/0/" class="tab_li level3">
+											<a href="admin/file/index/j9/04/top/0/" class="tab_li level4">
 								                <img class="img_head" src="${pageContext.request.contextPath}/static/new/img/DataImport/xuxian.png">
 								                <span>陀螺</span>
 											</a>
@@ -259,20 +266,20 @@
 									</ul>
 								</li>
 								<li>
-									<a href="#" class="dropdown-toggle tab_li level2"> 
+									<a href="#" class="dropdown-toggle tab_li level3"> 
 						                <img class="img_head" src="${pageContext.request.contextPath}/static/new/img/DataImport/xuxian.png">
 						                <span>Ⅴ号星</span>
 						                <img class="img_down" src="${pageContext.request.contextPath}/static/new/img/DataImport/xiala.png">
 									</a>
 									<ul class="submenu">
 										<li class="flywheel-li">
-											<a href="admin/file/index/j9/05/flywheel/0/" class="tab_li level3"> 
+											<a href="admin/file/index/j9/05/flywheel/0/" class="tab_li level4"> 
 												<img class="img_head" src="${pageContext.request.contextPath}/static/new/img/DataImport/xuxian.png">
 												<span>飞轮</span>
 											</a>
 										</li>
 										<li class="top-li">
-											<a href="admin/file/index/j9/05/top/0/" class="tab_li level3">
+											<a href="admin/file/index/j9/05/top/0/" class="tab_li level4">
 								                <img class="img_head" src="${pageContext.request.contextPath}/static/new/img/DataImport/xuxian.png">
 								                <span>陀螺</span>
 											</a>
@@ -295,53 +302,55 @@
 			</a>
 			<ul class="submenu">
 				<li>
-					<a href="${pageContext.request.contextPath}/starParam/index" class="tab_li"> 
-						<img class="img_head" src="${pageContext.request.contextPath}/static/new/img/images/images/A_22.png">
+					<a href="${pageContext.request.contextPath}/starParam/index" class="tab_li level2"> 
+						<img class="img_head"
+						src="${pageContext.request.contextPath}/static/new/img/images/images/A_22.png">
 						<span>参数管理</span>
 					</a>
 				</li>
 				<li>
-					<a href="${pageContext.request.contextPath}/report/reportDownLoad" class="tab_li"> 
-						<img class="img_head" src="${pageContext.request.contextPath}/static/new/img/images/images/A_18.png">
+					<a href="${pageContext.request.contextPath}/report/reportDownLoad" class="tab_li level2"> 
+						<img class="img_head"
+						src="${pageContext.request.contextPath}/static/new/img/images/images/A_18.png">
 						<span>报告生成</span>
 					</a>
 				</li>
 				<li>
-					<a href="#" class="dropdown-toggle tab_title"> 
+					<a href="#" class="dropdown-toggle tab_li level2"> 
 						<img class="img_head" src="${pageContext.request.contextPath}/static/new/img/images/images/A_10.png">
 						<span class="menu-text"> 定时报告</span> 
 						<img class="img_down" src="${pageContext.request.contextPath}/static/new/img/DataImport/xiala.png">
 					</a>
 					<ul class="submenu">
 						<li>
-							<a href="javascript:void(0)" class="tab_li"> 
-								<img class="img_head" src="${pageContext.request.contextPath}/static/new/img/DataImport/xuxian.png">
+							<a href="javascript:void(0)" class="tab_li level3"> 
+								<img class="img_head" src="${pageContext.request.contextPath}/static/new/img/images/images/A_14.png">
 								<span>其他系列</span>
-								<img class="img_down" src="${pageContext.request.contextPath}/static/new/img/DataImport/xiala.png">
+<!-- 								<img class="img_down" src="${pageContext.request.contextPath}/static/new/img/DataImport/xiala.png"> -->
 							</a>
 						</li>
 						<li>
-							<a href="#" class="dropdown-toggle tab_li"> 
-								<img class="img_head" src="${pageContext.request.contextPath}/static/new/img/DataImport/xuxian.png"> 
+							<a href="#" class="dropdown-toggle tab_li level3"> 
+								<img class="img_head" src="${pageContext.request.contextPath}/static/new/img/images/images/A_14.png"> 
 		                		<span>j9报告</span>
-		                		<img class="img_down" src="${pageContext.request.contextPath}/static/new/img/DataImport/xiala.png">
+<!-- 		                		<img class="img_down" src="${pageContext.request.contextPath}/static/new/img/DataImport/xiala.png"> -->
 							</a>
 							<ul class="submenu">
 								<li>
-									<a href="#" class="dropdown-toggle tab_li level2"> 
+									<a href="#" class="dropdown-toggle tab_li level3"> 
 						                <img class="img_head" src="${pageContext.request.contextPath}/static/new/img/DataImport/xuxian.png">
 						                <span>Ⅰ号星</span>
 						                <img class="img_down" src="${pageContext.request.contextPath}/static/new/img/DataImport/xiala.png">
 									</a>
 									<ul class="submenu">
 										<li class="flywheel-li">
-											<a href="report/index/j9/01/flywheel/0/" class="tab_li level3"> 
+											<a href="report/index/j9/01/flywheel/0/" class="tab_li level4"> 
 												<img class="img_head" src="${pageContext.request.contextPath}/static/new/img/DataImport/xuxian.png">
 												<span>飞轮</span>
 											</a>
 										</li>
 										<li class="top-li">
-											<a href="report/index/j9/01/top/0/" class="tab_li level3">
+											<a href="report/index/j9/01/top/0/" class="tab_li level4">
 								                <img class="img_head" src="${pageContext.request.contextPath}/static/new/img/DataImport/xuxian.png">
 								                <span>陀螺</span>
 											</a>
@@ -349,20 +358,20 @@
 									</ul>
 								</li>
 								<li>
-									<a href="#" class="dropdown-toggle tab_li level2"> 
+									<a href="#" class="dropdown-toggle tab_li level3"> 
 						                <img class="img_head" src="${pageContext.request.contextPath}/static/new/img/DataImport/xuxian.png">
 						                <span>Ⅱ号星</span>
 						                <img class="img_down" src="${pageContext.request.contextPath}/static/new/img/DataImport/xiala.png">
 									</a>
 									<ul class="submenu">
 										<li class="flywheel-li">
-											<a href="report/index/j9/02/flywheel/0/" class="tab_li level3"> 
+											<a href="report/index/j9/02/flywheel/0/" class="tab_li level4"> 
 												<img class="img_head" src="${pageContext.request.contextPath}/static/new/img/DataImport/xuxian.png">
 												<span>飞轮</span>
 											</a>
 										</li>
 										<li class="top-li">
-											<a href="report/index/j9/02/top/0/" class="tab_li level3">
+											<a href="report/index/j9/02/top/0/" class="tab_li level4">
 								                <img class="img_head" src="${pageContext.request.contextPath}/static/new/img/DataImport/xuxian.png">
 								                <span>陀螺</span>
 											</a>
@@ -370,20 +379,20 @@
 									</ul>
 								</li>
 								<li>
-									<a href="#" class="dropdown-toggle tab_li level2"> 
+									<a href="#" class="dropdown-toggle tab_li level3"> 
 						                <img class="img_head" src="${pageContext.request.contextPath}/static/new/img/DataImport/xuxian.png">
 						                <span>Ⅲ号星</span>
 						                <img class="img_down" src="${pageContext.request.contextPath}/static/new/img/DataImport/xiala.png">
 									</a>
 									<ul class="submenu">
 										<li class="flywheel-li">
-											<a href="report/index/j9/03/flywheel/0/" class="tab_li level3"> 
+											<a href="report/index/j9/03/flywheel/0/" class="tab_li level4"> 
 												<img class="img_head" src="${pageContext.request.contextPath}/static/new/img/DataImport/xuxian.png">
 												<span>飞轮</span>
 											</a>
 										</li>
 										<li class="top-li">
-											<a href="report/index/j9/03/top/0/" class="tab_li level3">
+											<a href="report/index/j9/03/top/0/" class="tab_li level4">
 								                <img class="img_head" src="${pageContext.request.contextPath}/static/new/img/DataImport/xuxian.png">
 								                <span>陀螺</span>
 											</a>
@@ -391,20 +400,20 @@
 									</ul>
 								</li>
 								<li>
-									<a href="#" class="dropdown-toggle tab_li level2"> 
+									<a href="#" class="dropdown-toggle tab_li level3"> 
 						                <img class="img_head" src="${pageContext.request.contextPath}/static/new/img/DataImport/xuxian.png">
 						                <span>Ⅳ号星</span>
 						                <img class="img_down" src="${pageContext.request.contextPath}/static/new/img/DataImport/xiala.png">
 									</a>
 									<ul class="submenu">
 										<li class="flywheel-li">
-											<a href="report/index/j9/04/flywheel/0/" class="tab_li level3"> 
+											<a href="report/index/j9/04/flywheel/0/" class="tab_li level4"> 
 												<img class="img_head" src="${pageContext.request.contextPath}/static/new/img/DataImport/xuxian.png">
 												<span>飞轮</span>
 											</a>
 										</li>
 										<li class="top-li">
-											<a href="report/index/j9/04/top/0/" class="tab_li level3">
+											<a href="report/index/j9/04/top/0/" class="tab_li level4">
 								                <img class="img_head" src="${pageContext.request.contextPath}/static/new/img/DataImport/xuxian.png">
 								                <span>陀螺</span>
 											</a>
@@ -412,20 +421,20 @@
 									</ul>
 								</li>
 								<li>
-									<a href="#" class="dropdown-toggle tab_li level2"> 
+									<a href="#" class="dropdown-toggle tab_li level3"> 
 						                <img class="img_head" src="${pageContext.request.contextPath}/static/new/img/DataImport/xuxian.png">
 						                <span>Ⅴ号星</span>
 						                <img class="img_down" src="${pageContext.request.contextPath}/static/new/img/DataImport/xiala.png">
 									</a>
 									<ul class="submenu">
 										<li class="flywheel-li">
-											<a href="report/index/j9/05/flywheel/0/" class="tab_li level3"> 
+											<a href="report/index/j9/05/flywheel/0/" class="tab_li level4"> 
 												<img class="img_head" src="${pageContext.request.contextPath}/static/new/img/DataImport/xuxian.png">
 												<span>飞轮</span>
 											</a>
 										</li>
 										<li class="top-li">
-											<a href="report/index/j9/05/top/0/" class="tab_li level3">
+											<a href="report/index/j9/05/top/0/" class="tab_li level4">
 								                <img class="img_head" src="${pageContext.request.contextPath}/static/new/img/DataImport/xuxian.png">
 								                <span>陀螺</span>
 											</a>
@@ -453,7 +462,7 @@
 					</a>
 				</li>
 				<li id="prewarning-li">
-					<a href="#" class="dropdown-toggle tab_title"> 
+					<a href="#" class="dropdown-toggle tab_li"> 
 						<img class="img_head" src="${pageContext.request.contextPath}/static/new/img/images/images/A_58.png">
 						<span class="menu-text"> 预警管理</span> 
 						<img class="img_down" src="${pageContext.request.contextPath}/static/new/img/DataImport/xiala.png">
@@ -500,13 +509,13 @@
 			</ul>
 		</li>
 		<li>
-			<a href="${pageContext.request.contextPath}/admin/galaxy/index" class="tab_li"> 
+			<a href="${pageContext.request.contextPath}/admin/galaxy/index" class="tab_title"> 
 				<img class="img_head" src="${pageContext.request.contextPath}/static/new/img/images/images/A_82.png">
 				<span>星系管理</span>
 			</a>
 		</li>
 		<li>
-			<a href="${pageContext.request.contextPath}/conditionMonitoring" class="tab_li"> 
+			<a href="${pageContext.request.contextPath}/conditionMonitoring" class="tab_title"> 
 				<img class="img_head" src="${pageContext.request.contextPath}/static/new/img/images/images/A_86.png">
 				<span>数据分析</span>
 			</a>

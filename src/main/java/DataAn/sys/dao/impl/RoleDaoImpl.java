@@ -29,7 +29,7 @@ implements IRoleDao{
 	@SuppressWarnings("unchecked")
 	@Override
 	public Pager<Role> selectByPager(int pageIndex, int pageSize) {
-		String hql = "from Role order by createDate";
+		String hql = "from Role order by createDate desc";
 		String countHQL = "select count(*) from Role";
 		List<Role> list = this.getSession().createQuery(hql)
 										   .setMaxResults(pageSize)

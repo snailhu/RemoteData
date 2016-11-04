@@ -22,7 +22,7 @@ public class StatusTrackingDaoImpl extends BaseDaoImpl<StatusTracking> implement
 		if (StringUtils.isNotBlank(userType)) {
 			hql += " and userType = '" + userType + "'";
 		}
-		hql += " order by createDate";
+		hql += " order by createDate desc";
 		List<StatusTracking> statusTrackings = this.getSession().createQuery(hql).list();
 		return statusTrackings;
 	}
@@ -61,7 +61,7 @@ public class StatusTrackingDaoImpl extends BaseDaoImpl<StatusTracking> implement
 			hql += " and createDate <= '" + createdatetimeEnd + "'";
 			countHQL += " and createDate <= '" + createdatetimeEnd + "'";
 		}
-		hql += "order by createDate";
+		hql += "order by createDate desc";
 
 		List<StatusTracking> list = this.getSession().createQuery(hql).setMaxResults(pageSize)
 				.setFirstResult(pageSize * (pageIndex - 1)).list();

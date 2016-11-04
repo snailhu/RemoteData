@@ -339,7 +339,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				<div class="col-xs-12 col-sm-12">
 					<!-- PAGE CONTENT BEGINS -->
 					<div class="widget-box">
-						<div class="widget-header" id="change-search-box" data-action="collapse">
+						<div class="widget-header">
 							<h4>搜索</h4>
 							<div class="selftoolbar">
 								<a href="javascript:void(0);" >

@@ -164,7 +164,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				<div class="col-xs-12 col-sm-12">
 					<!-- PAGE CONTENT BEGINS -->
 					<div class="widget-box" id = "downloadReport">
-						<div class="widget-header" id="change-search-box" data-action="collapse">
+						<div class="widget-header">
 							<h4>参数</h4>
 							<!-- <div class="widget-toolbar">
 								<a href="javascript:void(0);" >
@@ -357,7 +357,7 @@ $(function(){
 			}
 			var t = dateDiff(QendTime, QbeginTime);
 			if(t<=0) {
-				 top.showMsg('提示', "结束日期不能小于开始日期");
+				 top.showMsg('提示', "结束日期需大于开始日期");
 				  return false;
 			}
 			if(t>6) {

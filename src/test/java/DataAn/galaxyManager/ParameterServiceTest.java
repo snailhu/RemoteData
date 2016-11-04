@@ -2,6 +2,8 @@ package DataAn.galaxyManager;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import javax.annotation.Resource;
 
@@ -19,6 +21,7 @@ import DataAn.galaxyManager.dto.ParameterDto;
 import DataAn.galaxyManager.option.J9SeriesType;
 import DataAn.galaxyManager.option.J9Series_Star_ParameterType;
 import DataAn.galaxyManager.option.SeriesType;
+import DataAn.galaxyManager.service.IJ9Series_Star_Service;
 import DataAn.galaxyManager.service.IParameterService;
 import DataAn.storm.kafka.Beginning;
 import DataAn.storm.kafka.BoundProducer;
@@ -30,12 +33,31 @@ import DataAn.storm.kafka.InnerProducer;
 public class ParameterServiceTest {
 
 	@Resource
+	private IJ9Series_Star_Service j9Series_Star_Service;
+	@Resource
 	private IParameterService parameterService;
 	@Resource
 	private ICSVService csvService;
 	
 	private String filePath = "C:\\j9-02--2016-02-01.csv";
 
+	@Test
+	public void initJ9SeriesParameterData() throws Exception {
+		//初始化飞轮参数数据
+		String type = J9Series_Star_ParameterType.TOP.getName();
+		String paramType = J9Series_Star_ParameterType.TOP.getValue();
+		//"电流","转速","温度","指令","供电状态","角动量"
+		List<String> params = J9Series_Star_ParameterType.getFlywheelTypeOnDataType();
+		Map<String,String> map =  j9Series_Star_Service.getAllParameterList_allZh_and_enByOption(type,null);
+		Set<String> keys = map.keySet();
+		String series = SeriesType.J9_SERIES.getName();
+		String star = J9SeriesType.STRA2.getValue();
+		for (String key : keys) {
+			String param_en = parameterService.getParameter_en_by_allZh(series, star,paramType, key);
+			System.out.println(param_en);
+		}
+	}
+	
 	@Test
 	public void getParameterList(){
 		String series = SeriesType.J9_SERIES.getName();

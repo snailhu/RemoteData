@@ -75,7 +75,7 @@ public class SaveFileToKafka implements Runnable {
 						JJSON.get().parse(new String(executor.getPath(nodeWorker.path()), Charset.forName("utf-8"))
 								,WorkerPathVal.class);
 				
-				long sequence=1000;//workerPathVal.getSequence();
+				long sequence=workerPathVal.getSequence(); 
 				
 				Communication communication = FlowUtils.getBegin(executor,sequence);
 				

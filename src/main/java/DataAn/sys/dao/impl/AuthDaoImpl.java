@@ -51,9 +51,9 @@ implements IAuthDao{
 		String hql = "from Auth a where a.auth.authId is null";
 		String countHQL = "select count(*) from Auth a where a.auth.authId is null";
 		if(StringUtils.isNotBlank(order)){
-			hql += " order by " + order;
+			hql += " order by " + order + " desc";
 		}else{
-			hql += " order by createDate";
+			hql += " order by createDate desc";
 		}
 		List<Auth> list = this.getSession().createQuery(hql)
 										   .setMaxResults(pageSize)
@@ -73,9 +73,9 @@ implements IAuthDao{
 	public List<Auth> selectByParentAuthIdByOrder(long parentAuthId, String order) {
 		String o = "";
 		if(StringUtils.isNotBlank(order)){
-			o += " order by " + order;
+			o += " order by " + order + " desc";
 		}else{
-			o += " order by createDate";
+			o += " order by createDate desc";
 		}
 		if(parentAuthId == 0){
 			String hql = "from Auth a where a.auth.authId is null" + o;

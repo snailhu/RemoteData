@@ -984,7 +984,7 @@
 			}
 			var maxval = Number($("#add-maxVal").val());
 			var minval = Number($("#add-minVal").val());
-			if(maxval<minval){
+			if(maxval<=minval){
 				top.alertMsg('错误', '最大值必须大于最小值！');
 				return false;
 			}
@@ -1025,7 +1025,7 @@
 			}
 			var maxval = Number($("#edit-maxVal").val());
 			var minval = Number($("#edit-minVal").val());
-			if(maxval<minval){
+			if(maxval<=minval){
 				top.alertMsg('错误', '最大值必须大于最小值！');
 				return false;
 			}

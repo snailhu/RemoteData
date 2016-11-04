@@ -55,14 +55,14 @@ public class RoleController  extends BaseController{
 //		System.out.println("come in createRole");
 //		System.out.println(role);
 		JsonMessage jsonMsg = new JsonMessage();
-//		boolean flag = roleService.existRole(role);
-//		if(flag){
-//			String msg = "角色名称已存在";
-//			jsonMsg.setSuccess(false);
-//			jsonMsg.setMsg(msg);
-//			jsonMsg.setObj(null);
-//			return jsonMsg;
-//		}
+		boolean flag = roleService.existRole(role);
+		if(flag){
+			String msg = "角色名称已存在";
+			jsonMsg.setSuccess(false);
+			jsonMsg.setMsg(msg);
+			jsonMsg.setObj(null);
+			return jsonMsg;
+		}
 		try {
 			roleService.save(role);
 		} catch (Exception e) {

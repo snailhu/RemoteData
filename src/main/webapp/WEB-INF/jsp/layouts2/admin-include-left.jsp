@@ -24,7 +24,7 @@
     height: 40px;
     line-height: 40px;
     padding: 0 40px 0 5px;
-    font-size: 15px;
+    font-size: 14px;
     color: #525252;
     border-bottom: 1px solid #DEDEDE;
     padding-left: 0px;
@@ -33,7 +33,7 @@
     height: 40px;
     line-height: 40px;
     padding: 0 40px;
-    font-size: 14px;
+    font-size: 13px;
     color: #525252;
     background-color: rgba(255, 255, 255, 0.15);
     border-bottom: 1px solid #DEDEDE;
@@ -109,6 +109,14 @@
 					$("#sysPermission-li").show();
 				}
 			}
+			$("a").click(function(){
+				var flag = $(this).find(".img_down").attr("src");
+				if(flag = "${pageContext.request.contextPath}/static/new/img/DataImport/xiala.png"){
+					$(this).find(".img_down").attr("src","${pageContext.request.contextPath}/static/new/img/DataImport/shangla.png");
+				}else{
+					$(this).find(".img_down").attr("src","${pageContext.request.contextPath}/static/new/img/DataImport/xiala.png");
+				}
+			})
 		});
 	</script> 
 
@@ -333,7 +341,7 @@
 							<a href="#" class="dropdown-toggle tab_li level3"> 
 								<img class="img_head" src="${pageContext.request.contextPath}/static/new/img/images/images/A_14.png"> 
 		                		<span>j9报告</span>
-<!-- 		                		<img class="img_down" src="${pageContext.request.contextPath}/static/new/img/DataImport/xiala.png"> -->
+		                		<img class="img_down" src="${pageContext.request.contextPath}/static/new/img/DataImport/xiala.png">
 							</a>
 							<ul class="submenu">
 								<li>

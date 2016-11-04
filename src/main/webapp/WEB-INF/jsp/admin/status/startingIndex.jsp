@@ -114,11 +114,6 @@
 	position: relative;
 	/*     padding-left: 20px; */
 }
-
-p, span, b, div {
-	text-align: center;
-}
-
 .icon-remove {
 	background: url('') no-repeat center center;
 }
@@ -155,6 +150,7 @@ p, span, b, div {
 .breadcrumb {
     margin-top: 10px;
 }
+
 </style>
 <script type="text/javascript">
 	
@@ -173,8 +169,9 @@ p, span, b, div {
 			<ul class="breadcrumb">
 				<li>
 					<img src="${pageContext.request.contextPath}/static/imgs/DataImport/home.png" style="margin-bottom: 3px;">
-					<span>状态跟踪</span>
+					<span>文件管理</span>
 				</li>
+				<li class="active">文件状态</li>
 				<li class="active">正在进行中</li>
 			</ul><!--  .breadcrumb -->
 		</div>

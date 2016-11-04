@@ -156,7 +156,9 @@ public class SaveFileToKafka implements Runnable {
 					
 					FlowUtils.setDenoise(executor, communication);
 					
+					System.out.println(nodeWorker.getId()+ " finish!!!!!!!!");
 				} catch (Exception e) {
+					System.out.println(nodeWorker.getId()+ " Exception!!!!!!");
 					FlowUtils.setError(executor, communication, e.getMessage());
 					e.printStackTrace();
 					throw e;

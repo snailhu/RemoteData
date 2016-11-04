@@ -25,8 +25,8 @@ public interface IPrewarningService {
 
 	public void deleteWarningValue(long valueId) throws Exception;
 
-	public Pager<QueryValueDTO> pageQueryWarningValue(int pageIndex, int pageSize, String series, String star,
-			String parameter, String parameterType, String warningType) throws Exception;
+	public Pager<QueryValueDTO> pageQueryWarningValue(int pageIndex, int pageSize, String sort, String order,
+			String series, String star, String parameter, String parameterType, String warningType) throws Exception;
 
 	public WarningValue getWarningValueById(long valueId) throws Exception;
 

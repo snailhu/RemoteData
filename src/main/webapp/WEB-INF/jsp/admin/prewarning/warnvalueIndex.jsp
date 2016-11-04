@@ -1036,8 +1036,12 @@
 			valueGrid.datagrid('clearChecked');
 			valueGrid.datagrid('reload');
 		}
-		function returnLoadDataGrid(){
+		function returnLoadDataGrid(series,star,parameterType,parameter){
 			valueGrid.datagrid('load', {
+				series : series,
+				star : star,
+				parameterType : parameterType,
+				parameter : parameter,
 				warningType : "0"
 			});
 		}
@@ -1074,6 +1078,10 @@
 // 				top.alertMsg('错误', '最大值必须大于最小值！');
 // 				return false;
 // 			}
+			var series = $('#add-series').val();
+			var star = $('#add-star').val();
+			var parameterType = $('#add-parameterType').val();
+			var parameter = $('#add-parameter').val();
 			var toUrl = '${pageContext.request.contextPath}/admin/prewarning/createWarnValue';
 			f.form('submit', {url : toUrl,
 				onsubmit : function() {
@@ -1088,7 +1096,7 @@
 					var map = $.parseJSON(data);
 					if (map.success) {
 						top.showMsg('提示', map.msg);
-						returnLoadDataGrid();
+						returnLoadDataGrid(series,star,parameterType,parameter);
 					} else {
 						top.alertMsg('错误', map.msg + "\n"+ map.obj == null ? "": map.obj);
 					}

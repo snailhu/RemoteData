@@ -84,11 +84,11 @@ public class PrewarningServiceImpl implements IPrewarningService {
 	}
 
 	@Override
-	public Pager<QueryValueDTO> pageQueryWarningValue(int pageIndex, int pageSize, String series, String star,
-			String parameter, String parameterType, String warningType) throws Exception {
+	public Pager<QueryValueDTO> pageQueryWarningValue(int pageIndex, int pageSize, String sort, String order,
+			String series, String star, String parameter, String parameterType, String warningType) throws Exception {
 		List<QueryValueDTO> valueDTOs = new ArrayList<QueryValueDTO>();
-		Pager<WarningValue> warningPger = warningValueDao.selectByOption(pageIndex, pageSize, series, star, parameter,
-				parameterType, warningType);
+		Pager<WarningValue> warningPger = warningValueDao.selectByOption(pageIndex, pageSize, sort, order, series, star,
+				parameter, parameterType, warningType);
 		List<WarningValue> warningValues = warningPger.getDatas();
 		if (warningValues != null && warningValues.size() > 0) {
 			for (WarningValue value : warningValues) {

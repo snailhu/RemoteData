@@ -11,8 +11,8 @@ public interface IWarningValueDao extends IBaseDao<WarningValue> {
 	public List<WarningValue> getWarningValueByParams(String series, String star, String parameter,
 			String parameterType, String warningType);
 
-	public Pager<WarningValue> selectByOption(int pageIndex, int pageSize, String series, String star, String parameter,
-			String parameterType, String warningType);
+	public Pager<WarningValue> selectByOption(int pageIndex, int pageSize, String sort, String order, String series,
+			String star, String parameter, String parameterType, String warningType);
 
 	public boolean cherkWarningValue(String series, String star, String parameter, String parameterType,
 			String warningType);

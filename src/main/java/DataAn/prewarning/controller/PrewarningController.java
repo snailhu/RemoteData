@@ -96,8 +96,8 @@ public class PrewarningController extends BaseController {
 		System.out.println("order: " + order);
 		Pager<QueryValueDTO> pager = null;
 		try {
-			pager = prewarningService.pageQueryWarningValue(page, rows, series, star, parameter, parameterType,
-					warningType);
+			pager = prewarningService.pageQueryWarningValue(page, rows, sort, order, series, star, parameter,
+					parameterType, warningType);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

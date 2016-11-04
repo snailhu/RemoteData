@@ -704,32 +704,32 @@
 									field : 'series',
 									title : '星系',
 									width : 100,
-									//sortable:true
+									sortable:true
 								},{
 									field : 'star',
 									title : '星',
 									width : 100,
-									//sortable:true
+									sortable:true
 								}, {
 									field : 'parameterType',
 									title : '设备',
 									width : 100,
-									//sortable:true
+									sortable:true
 								}, {
 									field : 'parameter',
 									title : '参数',
 									width : 200,
-									//sortable:true
+									sortable:true
 								}, {
 									field : 'maxVal',
 									title : '最大值',
 									width : 100,
-									//sortable:true
+									sortable:true
 								}, {
 									field : 'minVal',
 									title : '最小值',
 									width : 100,
-									//sortable:true
+									sortable:true
 								} ] ],
 
 								toolbar : [ {
@@ -955,8 +955,13 @@
 			valueGrid.datagrid('clearChecked');
 			valueGrid.datagrid('reload');
 		}
-		function returnLoadDataGrid(){
+		function returnLoadDataGrid(series,star,parameterType,parameter){
+			valueGrid.datagrid('clearChecked');
 			valueGrid.datagrid('load', {
+				series : series,
+				star : star,
+				parameterType : parameterType,
+				parameter : parameter,
 				warningType : "1"
 			});
 		}
@@ -987,6 +992,10 @@
 				top.alertMsg('错误', '请满足提交条件！');
 				return false;
 			}
+			var series = $('#add-series').val();
+			var star = $('#add-star').val();
+			var parameterType = $('#add-parameterType').val();
+			var parameter = $('#add-parameter').val();
 			var maxval = Number($("#add-maxVal").val());
 			var minval = Number($("#add-minVal").val());
 			if(maxval<=minval){
@@ -1008,7 +1017,7 @@
 					var map = $.parseJSON(data);
 					if (map.success) {
 						top.showMsg('提示', map.msg);
-						returnLoadDataGrid();
+						returnLoadDataGrid(series,star,parameterType,parameter);
 					} else {
 						top.alertMsg('错误', map.msg + "\n"+ map.obj == null ? "": map.obj);
 					}

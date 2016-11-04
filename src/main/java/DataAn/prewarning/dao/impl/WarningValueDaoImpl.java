@@ -41,8 +41,8 @@ public class WarningValueDaoImpl extends BaseDaoImpl<WarningValue> implements IW
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public Pager<WarningValue> selectByOption(int pageIndex, int pageSize, String series, String star, String parameter,
-			String parameterType, String warningType) {
+	public Pager<WarningValue> selectByOption(int pageIndex, int pageSize, String sort, String order, String series,
+			String star, String parameter, String parameterType, String warningType) {
 		String hql = "from WarningValue where 1=1";
 		String countHQL = "select count(*) from WarningValue where 1=1";
 		if (StringUtils.isNotBlank(series)) {
@@ -65,7 +65,11 @@ public class WarningValueDaoImpl extends BaseDaoImpl<WarningValue> implements IW
 			hql += " and warningType = " + warningType;
 			countHQL += " and warningType = " + warningType;
 		}
-		hql += "order by createDate desc";
+		if (StringUtils.isNotBlank(sort) && StringUtils.isNoneBlank(order)) {
+			hql += "order by " + sort + " " + order;
+		} else {
+			hql += "order by createDate desc";
+		}
 
 		List<WarningValue> list = this.getSession().createQuery(hql).setMaxResults(pageSize)
 				.setFirstResult(pageSize * (pageIndex - 1)).list();

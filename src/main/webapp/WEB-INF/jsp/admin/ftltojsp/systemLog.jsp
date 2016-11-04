@@ -12,7 +12,7 @@
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/static/jqwidgets/styles/jqx.base.css" type="text/css" />
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/static/jqwidgets/styles/jqx.energyblue.css" type="text/css" />
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/static/content/css/default.css"  type="text/css"/>
-
+	    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/all.css" type="text/css" />
     <script type="text/javascript" src="${pageContext.request.contextPath}/static/jqwidgets/jqxcore.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/static/jqwidgets/jqxdatetimeinput.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/static/jqwidgets/jqxcalendar.js"></script>
@@ -112,12 +112,12 @@
 									</div>
 									<div class="space-4"></div>
 									<div class="form-group">
-			                           <div class="col-lg-4 col-lg-offset-6">
-					                        <button type="button" id="btn-search" class="btn btn-primary start">
+			                           <div class="col-lg-4 col-lg-offset-5">
+					                        <button type="button" id="btn-search" class="subbutton_1">
 							                    <i></i>
 							                    <span>搜索</span>
 							                </button>
-							                <button type="reset" class="btn btn-warning cancel">
+							                <button type="reset" id="btn-cancel" class="cancelbutton_1">
 							                    <i></i>
 							                    <span>取消</span>
 							                </button>
@@ -143,8 +143,8 @@
 		</div> <!--/.page-content -->		
 	</div><!-- /.main-content -->
  <script type="text/javascript">
-    var beginTime ="1800-01-01";
-    var endTime = "9999-01-01";
+    var beginTime ="1900-01-01 00:00:01";
+    var endTime = "3000-01-01 11:59:01";
     //请求日志URL
     //var logurl  = "${pageContext.request.contextPath}/showSystemLog/"+beginTime+"+"/"+"+endTime+";
     var logurl  ="${pageContext.request.contextPath}/admin/showSystemLog/"+beginTime+"/"+endTime;
@@ -155,11 +155,11 @@
 			datatype: "json",
 			datafields: [
 				{ name: 'userName',  type: 'string' },
-				{ name: 'loginTime',  type: 'String' },
-				{ name: 'logOutTime', type: 'string' },
+				{ name: 'operateTime',  type: 'String' },
+				//{ name: 'logOutTime', type: 'string' },
 				{ name: 'loginIp', type: 'string' },
 				{ name: 'operateJob', type: 'string' }
-			  //  { name: 'role', type: 'string' }
+			    //{ name: 'role', type: 'string' }
 			],     
 			id: 'UserId',
 			url: logurl,
@@ -182,10 +182,10 @@
 			pagermode: 'simple',
 			columns: [
 			  { text: '用户名', datafield: 'userName', width: 150 },
-			  { text: '登录时间', datafield: 'loginTime', width: 150, cellsformat: 'D' },
-			  { text: '退出时间', datafield: 'logOutTime', width: 150, cellsformat: 'F2', cellsalign: 'right' },
+			  { text: '操作时间', datafield: 'operateTime', width: 200, cellsformat: 'D' },
+			//{ text: '退出时间', datafield: 'logOutTime', width: 150, cellsformat: 'F2', cellsalign: 'right' },
 			  { text: '登录ip', datafield: 'loginIp', width: 250 },
-			  { text: '操作', datafield: 'operateJob', width: 200 }
+			  { text: '操作', datafield: 'operateJob', width: 300 }
 			//{ text: '角色', datafield: 'role', width: 100 }
 			]
 		});
@@ -195,19 +195,19 @@
 	$(function () {
 		jeDate({
 			dateCell:"#form-beginTime",//直接显示日期层的容器，可以是ID  CLASS
-			format:"YYYY-MM-DD",//日期格式
+			format:"YYYY-MM-DD hh:mm:ss",//日期格式
 			isinitVal:false, //是否初始化时间
 			festival:false, //是否显示节日
-			isTime:false, //是否开启时间选择
+			isTime:true, //是否开启时间选择
 			//minDate:"2014-09-19 00:00:00",//最小日期
 			maxDate:jeDate.now(0), //设定最大日期为当前日期
 		});
 		jeDate({
 			dateCell:"#form-endTime",//直接显示日期层的容器，可以是ID  CLASS
-			format:"YYYY-MM-DD",//日期格式
+			format:"YYYY-MM-DD hh:mm:ss",//日期格式
 			isinitVal:false, //是否初始化时间
 			festival:false, //是否显示节日
-			isTime:false, //是否开启时间选择
+			isTime:true, //是否开启时间选择
 			//minDate:"2014-09-19 00:00:00",//最小日期
 			maxDate:jeDate.now(0), //设定最大日期为当前日期
 		});
@@ -242,7 +242,12 @@
 				  				'endTime' : endTime
 				  			},
 				  			function(data){intlogList();}
-				  );*/
+				  );*/			  
+		if((beginTime.length==0)|(endTime.length==0))		
+		{
+			beginTime="1950-01-01 00:00:01";
+			endTime="9999-01-01 00:00:01";
+		}
 				  logurl  = "${pageContext.request.contextPath}/admin/showSystemLog/"+beginTime+"/"+endTime;
 				  intlogList();			  			  
 			 });

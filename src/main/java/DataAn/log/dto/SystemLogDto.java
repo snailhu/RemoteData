@@ -14,6 +14,8 @@ public class SystemLogDto {
 	private String logoutTime;
 
 	private String operateJob;
+	
+	private String operateTime;
 
 	public Integer getUserId() {
 		return UserId;
@@ -61,6 +63,14 @@ public class SystemLogDto {
 
 	public void setOperateJob(String operateJob) {
 		this.operateJob = operateJob;
+	}
+
+	public String getOperateTime() {
+		return operateTime;
+	}
+
+	public void setOperateTime(String operateTime) {
+		this.operateTime = operateTime;
 	}
 	
 	

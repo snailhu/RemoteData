@@ -19,6 +19,7 @@ import DataAn.common.utils.GetIpUtil;
 import DataAn.log.domain.SystemLog;
 import DataAn.log.service.SystemLogService;
 import DataAn.prewarning.service.IPrewarningService;
+import DataAn.sys.domain.User;
 import DataAn.sys.dto.ActiveUserDto;
 import DataAn.sys.service.IUserService;
 
@@ -65,18 +66,23 @@ public class LoginController {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
+				User user = new User();
+				user.setUserName(username);
 				session.setAttribute("warnCount", warnCount);
-				// session.setAttribute("user", user);
+				session.setAttribute("user", user);
 				session.setAttribute("userName", username);
 				String ip = GetIpUtil.getIpAddress(request);
 				SystemLog slog = new SystemLog();
 				slog.setLoginIp(ip);
 				slog.setUserName(username);
+				slog.setOperateJob("登录系统");
+				
 				Date loginTime = new Date();
 				// SimpleDateFormat dateFormat = new
 				// SimpleDateFormat("yyyy/MM/dd HH:mm:ss");//可以方便地修改日期格式
 				// String loginTime = dateFormat.format( now );
 				slog.setLoginTime(loginTime);
+				slog.setOperateTime(loginTime);
 				systemLogService.saveObject(slog);
 				session.setAttribute("activeUser", acticeUser);
 
@@ -94,6 +100,21 @@ public class LoginController {
 	@RequestMapping(value = "/loginOut", method = { RequestMethod.GET })
 	public String loginOut(HttpServletResponse response, HttpServletRequest request) {
 		HttpSession session = request.getSession();
+		String ip="";
+		try {
+			ip = GetIpUtil.getIpAddress(request);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		SystemLog slog = new SystemLog();
+		slog.setLoginIp(ip);
+		User user = (User)session.getAttribute("user");
+		String username = user.getUserName();
+		slog.setUserName(username);
+		slog.setOperateJob("退出系统");
+		slog.setOperateTime(new Date());
+		systemLogService.saveObject(slog);
 		session.invalidate();
 		return "redirect:/login";
 	}

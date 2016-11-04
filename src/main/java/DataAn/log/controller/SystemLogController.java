@@ -63,15 +63,16 @@ public class SystemLogController {
 			@PathVariable String endTime
 			)
 	{
-		if(beginTime==null)		
+		//System.out.println(beginTime+"()"+endTime);
+		/*if((beginTime==null) || (endTime==null))		
 		{
-			beginTime="1800-01-01 00:00:01";
+			beginTime="1950-01-01 00:00:01";
 			endTime="9999-01-01 00:00:01";
 		}
 		else{
 			beginTime =beginTime+" 00:00:01";
-			endTime=endTime+" 00:00:01";
-		}
+			endTime=endTime+" 23:59:59";
+		}*/
 		List<SystemLogDto> sLDtos = new ArrayList<SystemLogDto>();
 		List<SystemLog> sLogs;
 		try {	
@@ -82,8 +83,8 @@ public class SystemLogController {
 				sDto.setLoginTime(changeDateStyle(sl.getLoginTime()));
 				sDto.setUserName(sl.getUserName());
 				//sDto.setLogoutTime(sl.getLogoutTime().toString());
-				sDto.setLogoutTime("空");
-				sDto.setOperateJob("待定");
+				sDto.setOperateTime(changeDateStyle(sl.getOperateTime()));
+				sDto.setOperateJob(sl.getOperateJob());
 				sLDtos.add(sDto);
 			}
 			return sLDtos;

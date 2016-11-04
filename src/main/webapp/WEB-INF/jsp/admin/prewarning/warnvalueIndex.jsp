@@ -454,8 +454,8 @@
 							data-action="collapse">
 							<h4>搜索</h4>
 							<div class="selftoolbar">
-								<a href="javascript:void(0);">
-									<img id="toolimg" src="${pageContext.request.contextPath}/static/imgs/DataImport_manage/xia2.png">
+								<a href="javascript:void(0);"> <img id="toolimg"
+									src="${pageContext.request.contextPath}/static/imgs/DataImport_manage/xia2.png">
 								</a>
 							</div>
 						</div>
@@ -900,6 +900,8 @@
 	});
 	
 	$("#add-series").change(function(){
+		$('#addValueInfoForm').data('bootstrapValidator').updateStatus('star', 'NOT_VALIDATED', null);
+		
 	 	var seriesId = $('#add-series').val();	
 	 	  $.get('<%=request.getContextPath()%>/admin/prewarning/getStarList', {'seriesId':seriesId},  function (res) {
 			  if(res.result == "true") {
@@ -924,6 +926,7 @@
            		    }
 					});
            	  $("#add-parameter").select2().val("").trigger("change");
+           	  $('#addValueInfoForm').data('bootstrapValidator').updateStatus('parameter', 'NOT_VALIDATED', null);
              }
              else {
            	  top.showMsg('提示', res.msg);
@@ -932,6 +935,8 @@
 	});
 	
 	$("#edit-series").change(function(){
+		$('#editValueInfoForm').data('bootstrapValidator').updateStatus('star', 'NOT_VALIDATED', null);
+		
 	 	var seriesId = $('#edit-series').val();	
 	 	  $.get('<%=request.getContextPath()%>/admin/prewarning/getStarList', {'seriesId':seriesId},  function (res) {
 			  if(res.result == "true") {
@@ -957,6 +962,7 @@
            		    }
 					});
            	  $("#edit-parameter").select2().val("").trigger("change");
+           	  $('#editValueInfoForm').data('bootstrapValidator').updateStatus('parameter', 'NOT_VALIDATED', null);
              }
              else {
            	  top.showMsg('提示', res.msg);
@@ -997,6 +1003,7 @@
 	            		    }
 						});
 	            	  $("#add-parameter").select2().val("").trigger("change");
+	            	  $('#addValueInfoForm').data('bootstrapValidator').updateStatus('parameter', 'NOT_VALIDATED', null);
 	              }
 	              else {
 	            	  top.showMsg('提示', res.msg);
@@ -1017,6 +1024,7 @@
 	            		    }
 						});
 	            	  $("#edit-parameter").select2().val("").trigger("change");
+	            	  $('#editValueInfoForm').data('bootstrapValidator').updateStatus('parameter', 'NOT_VALIDATED', null);
 	              }
 	              else {
 	            	  top.showMsg('提示', res.msg);
@@ -1027,6 +1035,11 @@
 		function reloadDataGrid() {
 			valueGrid.datagrid('clearChecked');
 			valueGrid.datagrid('reload');
+		}
+		function returnLoadDataGrid(){
+			valueGrid.datagrid('load', {
+				warningType : "0"
+			});
 		}
 		
 		//快速搜索按钮
@@ -1075,7 +1088,7 @@
 					var map = $.parseJSON(data);
 					if (map.success) {
 						top.showMsg('提示', map.msg);
-						reloadDataGrid();
+						returnLoadDataGrid();
 					} else {
 						top.alertMsg('错误', map.msg + "\n"+ map.obj == null ? "": map.obj);
 					}

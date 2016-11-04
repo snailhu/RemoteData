@@ -108,8 +108,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			<ul class="breadcrumb">
 				<li>
 					<img src="${pageContext.request.contextPath}/static/imgs/DataImport/home.png" style="margin-bottom: 3px;">
-					<span>系统管理</span>
+					<span>文件管理</span>
 				</li>
+				<li class="active">文件查看</li>
 				<li class="active">${nowSeries}系列-${nowStar}星-${nowParameterTypeName}文件列表</li>
 			</ul><!--  .breadcrumb -->
 		</div>

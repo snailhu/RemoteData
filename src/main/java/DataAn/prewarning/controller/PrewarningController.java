@@ -24,6 +24,7 @@ import DataAn.common.pageModel.JsonMessage;
 import DataAn.galaxyManager.domain.Star;
 import DataAn.galaxyManager.dto.StarDto;
 import DataAn.galaxyManager.option.J9Series_Star_ParameterType;
+import DataAn.prewarning.domain.WarningLog;
 import DataAn.prewarning.domain.WarningValue;
 import DataAn.prewarning.dto.ErrorValueDTO;
 import DataAn.prewarning.dto.QueryLogDTO;
@@ -75,7 +76,7 @@ public class PrewarningController extends BaseController {
 	// 获取参数列表
 	@RequestMapping(value = "/getValueList", method = RequestMethod.POST)
 	@ResponseBody
-	public EasyuiDataGridJson getValueList(int page, int rows, HttpServletRequest request,
+	public EasyuiDataGridJson getValueList(int page, int rows, String sort, String order, HttpServletRequest request,
 			HttpServletResponse response) {
 		EasyuiDataGridJson json = new EasyuiDataGridJson();
 		String series = request.getParameter("series");
@@ -91,6 +92,8 @@ public class PrewarningController extends BaseController {
 		System.out.println("parameter: " + parameter);
 		System.out.println("parameterType: " + parameterType);
 		System.out.println("warningType: " + warningType);
+		System.out.println("sort: " + sort);
+		System.out.println("order: " + order);
 		Pager<QueryValueDTO> pager = null;
 		try {
 			pager = prewarningService.pageQueryWarningValue(page, rows, series, star, parameter, parameterType,
@@ -247,6 +250,20 @@ public class PrewarningController extends BaseController {
 	public JsonMessage editWarnValue(WarnValueDTO warnValue, HttpServletRequest request, HttpServletResponse response) {
 		JsonMessage jsonMsg = new JsonMessage();
 		try {
+			WarningValue value = prewarningService.getWarningValueById(warnValue.getValueId().longValue());
+			if (!(value.getParameter().equals(warnValue.getParameter())
+					&& value.getParameterType().equals(warnValue.getParameterType())
+					&& value.getSeries().equals(warnValue.getSeries())
+					&& value.getStar().equals(warnValue.getStar()))) {
+				boolean falg = prewarningService.cherkWarningValue(warnValue.getSeries().toString(),
+						warnValue.getStar().toString(), warnValue.getParameter(), warnValue.getParameterType(), "0");
+				if (falg) {
+					jsonMsg.setSuccess(false);
+					jsonMsg.setMsg("参数已存在！");
+					jsonMsg.setObj("参数已存在！");
+					return jsonMsg;
+				}
+			}
 			warnValue.setMinVal(0.0);
 			prewarningService.updateWarnValue(warnValue);
 		} catch (Exception e) {
@@ -268,6 +285,20 @@ public class PrewarningController extends BaseController {
 			HttpServletResponse response) {
 		JsonMessage jsonMsg = new JsonMessage();
 		try {
+			WarningValue value = prewarningService.getWarningValueById((errorValue.getValueId().longValue()));
+			if (!(value.getParameter().equals(errorValue.getParameter())
+					&& value.getParameterType().equals(errorValue.getParameterType())
+					&& value.getSeries().equals(errorValue.getSeries())
+					&& value.getStar().equals(errorValue.getStar()))) {
+				boolean falg = prewarningService.cherkWarningValue(errorValue.getSeries().toString(),
+						errorValue.getStar().toString(), errorValue.getParameter(), errorValue.getParameterType(), "1");
+				if (falg) {
+					jsonMsg.setSuccess(false);
+					jsonMsg.setMsg("参数已存在！");
+					jsonMsg.setObj("参数已存在！");
+					return jsonMsg;
+				}
+			}
 			prewarningService.updateErrorValue(errorValue);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -356,27 +387,31 @@ public class PrewarningController extends BaseController {
 	}
 
 	private String getUserType(String parameterType, HttpServletRequest request) {
-		HttpSession session = request.getSession();
-		ActiveUserDto acticeUser = (ActiveUserDto) session.getAttribute("activeUser");
-		String flywheel = J9Series_Star_ParameterType.FLYWHEEL.getValue();
-		String top = J9Series_Star_ParameterType.TOP.getValue();
-		String userType = "";
-		int i = 0;
-		if (acticeUser == null) {
-			return null;
+		if (StringUtils.isNotBlank(parameterType)) {
+			return parameterType;
+		} else {
+			HttpSession session = request.getSession();
+			ActiveUserDto acticeUser = (ActiveUserDto) session.getAttribute("activeUser");
+			String flywheel = J9Series_Star_ParameterType.FLYWHEEL.getValue();
+			String top = J9Series_Star_ParameterType.TOP.getValue();
+			String userType = "";
+			int i = 0;
+			if (acticeUser == null) {
+				return null;
+			}
+			if (StringUtils.isNotBlank(acticeUser.getPermissionItems().get(flywheel))) {
+				userType = J9Series_Star_ParameterType.FLYWHEEL.getValue();
+				i++;
+			}
+			if (StringUtils.isNotBlank(acticeUser.getPermissionItems().get(top))) {
+				userType = J9Series_Star_ParameterType.TOP.getValue();
+				i++;
+			}
+			if (i > 1) {
+				userType = "";
+			}
+			return userType;
 		}
-		if (StringUtils.isNotBlank(acticeUser.getPermissionItems().get(flywheel))) {
-			userType = J9Series_Star_ParameterType.FLYWHEEL.getValue();
-			i++;
-		}
-		if (StringUtils.isNotBlank(acticeUser.getPermissionItems().get(top))) {
-			userType = J9Series_Star_ParameterType.TOP.getValue();
-			i++;
-		}
-		if (i > 1) {
-			userType = "";
-		}
-		return userType;
 	}
 
 }

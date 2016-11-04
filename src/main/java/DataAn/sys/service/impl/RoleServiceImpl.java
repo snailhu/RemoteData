@@ -92,8 +92,11 @@ public class RoleServiceImpl implements IRoleService {
 	
 	@Override
 	public boolean existRole(RoleDto role) {
-		roleDao.findByParam("roleName", role.getName());
-		return true;
+		List<Role> list = roleDao.findByParam("roleName", role.getName());
+		if(list != null && list.size() > 0){
+			return true;
+		}
+		return false;
 	}
 	@Override
 	public Pager<RoleDto> getRoleList(int pageIndex, int pageSize) {

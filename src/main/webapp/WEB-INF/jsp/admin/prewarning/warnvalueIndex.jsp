@@ -286,6 +286,11 @@
 						notEmpty : {
 							message : '时间区间不能为空'
 						},
+						stringLength : {
+							min : 1,
+							max : 8,
+							message : '时间区间不能超过8位'
+						},
 						regexp : {
 							regexp : /^[0-9]*[1-9][0-9]*$/,
 							message : '时间区间必须为正整数'
@@ -296,6 +301,11 @@
 					validators : {
 						notEmpty : {
 							message : '限定次数不能为空'
+						},
+						stringLength : {
+							min : 1,
+							max : 8,
+							message : '限定次数不能超过8位'
 						},
 						regexp : {
 							regexp : /^[0-9]*[1-9][0-9]*$/,
@@ -308,9 +318,14 @@
 						notEmpty : {
 							message : '最大值不能为空'
 						},
-						
-						numeric : {
-							message : '最大值必须为数字'
+						regexp : {
+							regexp : /^[\-\+]?\d+(\.\d{0,5})?$/,
+							message : '最大值必须为小数点最多保留5位的数字'
+						},
+						stringLength : {
+							min : 1,
+							max : 12,
+							message : '最大值不能超过12个字符'
 						}
 					}
 				}
@@ -366,6 +381,11 @@
 						notEmpty : {
 							message : '时间区间不能为空'
 						},
+						stringLength : {
+							min : 1,
+							max : 8,
+							message : '时间区间不能超过8位'
+						},
 						regexp : {
 							regexp : /^[0-9]*[1-9][0-9]*$/,
 							message : '时间区间必须为正整数'
@@ -376,6 +396,11 @@
 					validators : {
 						notEmpty : {
 							message : '限定次数不能为空'
+						},
+						stringLength : {
+							min : 1,
+							max : 8,
+							message : '限定次数不能超过8位'
 						},
 						regexp : {
 							regexp : /^[0-9]*[1-9][0-9]*$/,
@@ -388,8 +413,14 @@
 						notEmpty : {
 							message : '最大值不能为空'
 						},
-						numeric : {
-							message : '最大值必须为数字'
+						regexp : {
+							regexp : /^[\-\+]?\d+(\.\d{0,5})?$/,
+							message : '最大值必须为小数点最多保留5位的数字'
+						},
+						stringLength : {
+							min : 1,
+							max : 12,
+							message : '最大值不能超过12个字符'
 						}
 					}
 				}

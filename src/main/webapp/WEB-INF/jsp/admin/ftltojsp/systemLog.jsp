@@ -68,6 +68,7 @@
 			</ul><!--  .breadcrumb -->
 		</div>
 		<div class="page-content">
+		<div class="row">
 		<div>
 				<div class="col-xs-12 col-sm-12">
 					<!-- PAGE CONTENT BEGINS -->
@@ -119,11 +120,12 @@
 								</form>
 							</div>
 						</div>
-					</div>
-				</div>
+					</div>	
 			<div class="col-xs-12"><hr/></div>		
 			<div class="col-xs-12">
 				<div id="jqxgrid"></div>
+			</div>
+			</div>
 			</div>
 		</div>
 		</div> <!--/.page-content -->		

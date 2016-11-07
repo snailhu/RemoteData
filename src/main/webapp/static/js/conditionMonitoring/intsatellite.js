@@ -127,7 +127,7 @@ function intsatellite(seriesId) {
 			$("[data-toggle='popover']").popover({  
 	        html : true,    
 	        title: title(),    
-	        delay:{show:10, hide:10},  
+	        delay:{show:1, hide:100},  
 	        content: function() { 
 	        	timeout = true;
 		        time();

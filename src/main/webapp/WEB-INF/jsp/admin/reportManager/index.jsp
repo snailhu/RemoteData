@@ -114,16 +114,18 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 									</div>
 									<div class="space-4"></div>
 									<div class="form-group">
-			                           <div class="col-lg-4 col-lg-offset-5">
-					                        <button type="button" id="btn-search" class="subbutton_1">
+									<div class="col-sm-6 control-label no-padding-right">
+											<button type="button" id="btn-search" class="subbutton_1">
 							                    <i></i>
 							                    <span>搜索</span>
 							                </button>
-							                <button type="reset" class="cancelbutton_1">
+										</div>
+										<div class="col-sm-1 control-label no-padding-right">
+											  <button type="reset" class="cancelbutton_1">
 							                    <i></i>
 							                    <span>取消</span>
 							                </button>
-			                           </div>
+										</div>
 			                       </div>
 								</form>
 							</div>

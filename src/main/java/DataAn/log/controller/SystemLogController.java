@@ -80,7 +80,7 @@ public class SystemLogController {
 			for(SystemLog sl:sLogs){
 				SystemLogDto sDto = new SystemLogDto();
 				sDto.setLoginIp(sl.getLoginIp());
-				sDto.setLoginTime(changeDateStyle(sl.getLoginTime()));
+				//sDto.setLoginTime(changeDateStyle(sl.getLoginTime()));
 				sDto.setUserName(sl.getUserName());
 				//sDto.setLogoutTime(sl.getLogoutTime().toString());
 				sDto.setOperateTime(changeDateStyle(sl.getOperateTime()));

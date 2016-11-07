@@ -89,7 +89,7 @@
 	  //clearTimeout(timeoutProcess);
 	  //clearTimeout(time);
 	  fun_animat();
-	  setTimeout(time,100); //time是指本身,延时递归调用自己,100为间隔调用时间,单位毫秒
+	  setTimeout(time,300); //time是指本身,延时递归调用自己,100为间隔调用时间,单位毫秒
 	};
 	
 	$(function(){

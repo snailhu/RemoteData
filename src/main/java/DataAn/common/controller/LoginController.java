@@ -113,7 +113,8 @@ public class LoginController {
 		String username = user.getUserName();
 		slog.setUserName(username);
 		slog.setOperateJob("退出系统");
-		slog.setOperateTime(new Date());
+		Date logouttime =new Date();
+		slog.setOperateTime(logouttime);
 		systemLogService.saveObject(slog);
 		session.invalidate();
 		return "redirect:/login";

@@ -207,11 +207,42 @@
 }
 
 .breadcrumb {
-    margin-top: 10px;
+	margin-top: 10px;
 }
 </style>
 <script type="text/javascript">
+	var activeUser = '${activeUser}';
 	$(function() {
+		if(activeUser != ''){
+			var permissionItemsJSON = '${activeUser.permissionItemsJSON}';
+			var map = $.parseJSON(permissionItemsJSON); 
+			if(map.flywheel == 'flywheel'){
+				$("#search-parameterType").append("<option value = 'flywheel'>飞轮</option>"); 
+				$("#add-parameterType").append("<option value = 'flywheel'>飞轮</option>"); 
+				$("#edit-parameterType").append("<option value = 'flywheel'>飞轮</option>"); 
+			}
+			if(map.top == 'top'){
+				$("#search-parameterType").append("<option value = 'top'>陀螺</option>"); 
+				$("#add-parameterType").append("<option value = 'top'>陀螺</option>"); 
+				$("#edit-parameterType").append("<option value = 'top'>陀螺</option>"); 
+			}
+		}
+		
+		var flag=false;
+		$(".widget-body").hide();
+		$(".selftoolbar").click(function(){
+		 if(flag){
+			$("#toolimg").attr("src","${pageContext.request.contextPath}/static/imgs/DataImport_manage/xia2.png")
+			$(".widget-body").hide();
+			flag=false;
+		 }else{
+			$("#toolimg").attr("src","${pageContext.request.contextPath}/static/imgs/DataImport_manage/xia.png")
+			$(".widget-body").css("border","1px solid #ccc");
+    		$(".widget-body").show();
+			flag=true;
+		 }
+		});
+		
 		$('#addValueInfoForm').bootstrapValidator({
 			message : '这个值不能为空！',
 			feedbackIcons : {
@@ -252,8 +283,14 @@
 						notEmpty : {
 							message : '最大值不能为空'
 						},
-						numeric : {
-							message : '最大值必须为数字'
+						regexp : {
+							regexp : /^[\-\+]?\d+(\.\d{0,5})?$/,
+							message : '最大值必须为小数点最多保留5位的数字'
+						},
+						stringLength : {
+							min : 1,
+							max : 12,
+							message : '最大值不能超过12个字符'
 						}
 					}
 				},
@@ -262,8 +299,14 @@
 						notEmpty : {
 							message : '最小值不能为空'
 						},
-						numeric : {
-							message : '最小值必须为数字'
+						regexp : {
+							regexp : /^[\-\+]?\d+(\.\d{0,5})?$/,
+							message : '最小值必须为小数点最多保留5位的数字'
+						},
+						stringLength : {
+							min : 1,
+							max : 12,
+							message : '最小值不能超过12个字符'
 						}
 					}
 				}
@@ -310,8 +353,14 @@
 						notEmpty : {
 							message : '最大值不能为空'
 						},
-						numeric : {
-							message : '最大值必须为数字'
+						regexp : {
+							regexp : /^[\-\+]?\d+(\.\d{0,5})?$/,
+							message : '最大值必须为小数点最多保留5位的数字'
+						},
+						stringLength : {
+							min : 1,
+							max : 12,
+							message : '最大值不能超过12个字符'
 						}
 					}
 				},
@@ -320,8 +369,14 @@
 						notEmpty : {
 							message : '最小值不能为空'
 						},
-						numeric : {
-							message : '最小值必须为数字'
+						regexp : {
+							regexp : /^[\-\+]?\d+(\.\d{0,5})?$/,
+							message : '最小值必须为小数点最多保留5位的数字'
+						},
+						stringLength : {
+							min : 1,
+							max : 12,
+							message : '最小值不能超过12个字符'
 						}
 					}
 				}
@@ -342,7 +397,7 @@
 // 		$('#vss').click(function() {
 // 			$('#addValueInfoForm').bootstrapValidator('validate');
 // 		});
-		$('#change-search-box').click();
+// 		$('#change-search-box').click();
 		
 		$.fn.modal.Constructor.prototype.enforceFocus = function() {};
 		$(".select2").select2();
@@ -360,12 +415,12 @@
 				}
 			</script>
 			<ul class="breadcrumb">
-				<li>
-					<img src="${pageContext.request.contextPath}/static/imgs/DataImport/home.png" style="margin-bottom: 3px;">
-					<span>预警管理</span>
-				</li>
+				<li><img
+					src="${pageContext.request.contextPath}/static/imgs/DataImport/home.png"
+					style="margin-bottom: 3px;"> <span>预警管理</span></li>
 				<li class="active">异常参数配置</li>
-			</ul><!--  .breadcrumb -->
+			</ul>
+			<!--  .breadcrumb -->
 		</div>
 		<div class="page-content">
 			<!-- /.page-header -->
@@ -376,8 +431,9 @@
 						<div class="widget-header" id="change-search-box"
 							data-action="collapse">
 							<h4>搜索</h4>
-							<div class="widget-toolbar">
-								<a href="javascript:void(0);"> <i class="icon-chevron-up"></i>
+							<div class="selftoolbar">
+								<a href="javascript:void(0);">
+									<img id="toolimg" src="${pageContext.request.contextPath}/static/imgs/DataImport_manage/xia2.png">
 								</a>
 							</div>
 						</div>
@@ -416,8 +472,6 @@
 											<select class="col-xs-10 col-sm-5" id="search-parameterType"
 												name="parameterType">
 												<option value="">--请选择--</option>
-												<option value="flywheel">飞轮</option>
-												<option value="top">陀螺</option>
 											</select>
 										</div>
 									</div>
@@ -500,8 +554,6 @@
 										<select class="form-control" id="add-parameterType"
 											name="parameterType">
 											<option value="">--请选择--</option>
-											<option value="flywheel">飞轮</option>
-											<option value="top">陀螺</option>
 										</select>
 									</div>
 								</div>
@@ -590,8 +642,6 @@
 										<select class="form-control" id="edit-parameterType"
 											name="parameterType">
 											<option value="">--请选择--</option>
-											<option value="flywheel">飞轮</option>
-											<option value="top">陀螺</option>
 										</select>
 									</div>
 								</div>
@@ -678,32 +728,32 @@
 									field : 'series',
 									title : '星系',
 									width : 100,
-									//sortable:true
+									sortable:true
 								},{
 									field : 'star',
 									title : '星',
 									width : 100,
-									//sortable:true
+									sortable:true
 								}, {
 									field : 'parameterType',
 									title : '设备',
 									width : 100,
-									//sortable:true
+									sortable:true
 								}, {
 									field : 'parameter',
 									title : '参数',
 									width : 200,
-									//sortable:true
+									sortable:true
 								}, {
 									field : 'maxVal',
 									title : '最大值',
 									width : 100,
-									//sortable:true
+									sortable:true
 								}, {
 									field : 'minVal',
 									title : '最小值',
 									width : 100,
-									//sortable:true
+									sortable:true
 								} ] ],
 
 								toolbar : [ {
@@ -790,6 +840,8 @@
 		});
     	
     	$("#add-series").change(function(){
+    		$('#addValueInfoForm').data('bootstrapValidator').updateStatus('star', 'NOT_VALIDATED', null);
+    		
 		 	var seriesId = $('#add-series').val();	
 		 	  $.get('<%=request.getContextPath()%>/admin/prewarning/getStarList', {'seriesId':seriesId},  function (res) {
 				  if(res.result == "true") {
@@ -815,6 +867,7 @@
 	           		    }
 						});
 	           	  $("#add-parameter").select2().val("").trigger("change");
+	           	  $('#addValueInfoForm').data('bootstrapValidator').updateStatus('parameter', 'NOT_VALIDATED', null);
 	             }
 	             else {
 	           	  top.showMsg('提示', res.msg);
@@ -823,6 +876,8 @@
 		});
     	
     	$("#edit-series").change(function(){
+    		$('#editValueInfoForm').data('bootstrapValidator').updateStatus('star', 'NOT_VALIDATED', null);
+    		
 		 	var seriesId = $('#edit-series').val();	
 		 	  $.get('<%=request.getContextPath()%>/admin/prewarning/getStarList', {'seriesId':seriesId},  function (res) {
 				  if(res.result == "true") {
@@ -848,6 +903,7 @@
 	           		    }
 						});
 	           	  $("#edit-parameter").select2().val("").trigger("change");
+	           	$('#editValueInfoForm').data('bootstrapValidator').updateStatus('parameter', 'NOT_VALIDATED', null);
 	             }
 	             else {
 	           	  top.showMsg('提示', res.msg);
@@ -890,6 +946,7 @@
 	            		    }
 						});
 	            	  $("#add-parameter").select2().val("").trigger("change");
+	            	  $('#addValueInfoForm').data('bootstrapValidator').updateStatus('parameter', 'NOT_VALIDATED', null);
 	              }
 	              else {
 	            	  top.showMsg('提示', res.msg);
@@ -910,6 +967,7 @@
 	            		    }
 						});
 	            	  $("#edit-parameter").select2().val("").trigger("change");
+	            	  $('#editValueInfoForm').data('bootstrapValidator').updateStatus('parameter', 'NOT_VALIDATED', null);
 	              }
 	              else {
 	            	  top.showMsg('提示', res.msg);
@@ -920,6 +978,16 @@
 		function reloadDataGrid() {
 			valueGrid.datagrid('clearChecked');
 			valueGrid.datagrid('reload');
+		}
+		function returnLoadDataGrid(series,star,parameterType,parameter){
+			valueGrid.datagrid('clearChecked');
+			valueGrid.datagrid('load', {
+				series : series,
+				star : star,
+				parameterType : parameterType,
+				parameter : parameter,
+				warningType : "1"
+			});
 		}
 
 		//快速搜索按钮
@@ -948,9 +1016,13 @@
 				top.alertMsg('错误', '请满足提交条件！');
 				return false;
 			}
+			var series = $('#add-series').val();
+			var star = $('#add-star').val();
+			var parameterType = $('#add-parameterType').val();
+			var parameter = $('#add-parameter').val();
 			var maxval = Number($("#add-maxVal").val());
 			var minval = Number($("#add-minVal").val());
-			if(maxval<minval){
+			if(maxval<=minval){
 				top.alertMsg('错误', '最大值必须大于最小值！');
 				return false;
 			}
@@ -969,7 +1041,7 @@
 					var map = $.parseJSON(data);
 					if (map.success) {
 						top.showMsg('提示', map.msg);
-						reloadDataGrid();
+						returnLoadDataGrid(series,star,parameterType,parameter);
 					} else {
 						top.alertMsg('错误', map.msg + "\n"+ map.obj == null ? "": map.obj);
 					}
@@ -991,7 +1063,7 @@
 			}
 			var maxval = Number($("#edit-maxVal").val());
 			var minval = Number($("#edit-minVal").val());
-			if(maxval<minval){
+			if(maxval<=minval){
 				top.alertMsg('错误', '最大值必须大于最小值！');
 				return false;
 			}
@@ -1070,7 +1142,6 @@
 							}
 						});
 			} else {
-				alert("请选择要删除的用户");
 				top.showMsg("提示", "请选择要删除的参数！");
 			}
 		}

@@ -186,12 +186,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				}
 			}
 		});
-		$('#reset_editRoleInfo').click(function() {
-			$('#editRoleInfoForm').data('bootstrapValidator').resetForm(true);
-		});
-		$('#close_editRoleInfo').click(function() {
-			$('#editRoleInfoForm').data('bootstrapValidator').resetForm(true);
-		});
+// 		$('#reset_editRoleInfo').click(function() {
+// 			$('#editRoleInfoForm').data('bootstrapValidator').resetForm(true);
+// 		});
+// 		$('#close_editRoleInfo').click(function() {
+// 			$('#editRoleInfoForm').data('bootstrapValidator').resetForm(true);
+// 		});
 	});
 </script>
   </head>
@@ -306,7 +306,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							</div>
 							<div class="modal-footer">
 								<div class="col-lg-4 col-lg-offset-5">
-									<button type="submit" class="btn btn-primary" data-dismiss="modal" id="submit_editRoleInfo">确定</button>
+									<button type="button" class="btn btn-primary" id="submit_editRoleInfo">确定</button>
 									<button type="button" class="btn btn-default" data-dismiss="modal" id="reset_editRoleInfo">关闭</button>
 								</div>
 							</div>
@@ -486,40 +486,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	      if (rows.length > 0) {
 	          if (rows.length == 1) {
 	        	//赋值
-				var oldName = rows[0].name;
-				var oldDescription = rows[0].description;
-				$('#edit-role-name').val(oldName);
-				$('#edit-role-description').val(oldDescription);
+				$('#edit-role-id').val(rows[0].id);
+				$('#edit-role-name').val(rows[0].name);
+				$('#edit-role-description').val(rows[0].description);
 				//弹出编辑框
 				$('#editRoleModal').modal('show');
-				$('#submit_editRoleInfo').click(function(){
-					var isValid = $('#editRoleInfoForm').data('bootstrapValidator').isValid();
-					if(isValid){
-						var name = $('#edit-role-name').val();
-						var description = $('#edit-role-description').val();
-						if(oldName != name || oldDescription != description){
-							
-							$.post('${pageContext.request.contextPath}/admin/role/editRole', 
-									{
-										id : rows[0].id,
-										name : name,
-										description : description 
-									},
-									function(data){
-										top.showProcess(false);
-										if (data.success) {
-											top.showMsg('提示', data.msg);
-											reloadDataGrid();
-										} else {
-											top.alertMsg('警告', data.msg);
-										}
-								});
-							
-						}else{
-							top.showMsg('提示', "权限组信息没有被修改！");
-						}
-					}
-				});	               
+				           
 	          }else {
 	              var names = [];
 	              for (var i = 0; i < rows.length; i++) {
@@ -531,6 +503,37 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	          top.showMsg("提示", "请选择要编辑的记录！");
 	      }
 	  }	
+	  
+	$('#editRoleModal').on('hide.bs.modal', function () {
+		$('#editRoleInfoForm').data('bootstrapValidator').resetForm(true);
+	});
+	  $('#submit_editRoleInfo').click(function(){
+		    var f = $('#editRoleInfoForm');
+			f.data('bootstrapValidator').validate();
+			var isValid = f.data('bootstrapValidator').isValid();
+			if(!isValid){
+				return false;
+			}
+			var id = $('#edit-role-id').val();
+			var name = $('#edit-role-name').val();
+			var description = $('#edit-role-description').val();
+			$.post('${pageContext.request.contextPath}/admin/role/editRole', 
+				{
+					id : id,
+					name : name,
+					description : description 
+				},
+				function(data){
+					$('#editRoleModal').modal('hide');
+					top.showProcess(false);
+					if (data.success) {
+						top.showMsg('提示', data.msg);
+						reloadDataGrid();
+					} else {
+						top.alertMsg('警告', data.msg);
+					}
+			});
+		});	    
 	  //删除系统角色
 	  function deleteRole() {
 	      var ids = [];

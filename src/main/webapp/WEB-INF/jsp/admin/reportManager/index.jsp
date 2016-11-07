@@ -45,6 +45,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 .breadcrumb {
     margin-top: 10px;
 }
+  .selftoolbar {
+    display: inline-block;
+    padding: 0 10px;
+    line-height: 37px;
+    float: right;
+    position: relative;
+  }
   </style>
   </head>
   <body>
@@ -71,15 +78,15 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <!-- 					<span>位置:</span> <span>报告管理></span> <span>报告查看</span> -->
 <!-- 			</div> -->
 			<!-- /.page-header -->
-			<div >
+			<div>
 				<div class="col-xs-12 col-sm-12">
 					<!-- PAGE CONTENT BEGINS -->
 					<div class="widget-box">
 						<div class="widget-header" id="change-search-box" data-action="collapse">
 							<h4>搜索</h4>
-							<div class="widget-toolbar">
+							<div class="selftoolbar">
 								<a href="javascript:void(0);" >
-									<i class="icon-chevron-up"></i>
+									<img id="toolimg" src="${pageContext.request.contextPath}/static/imgs/DataImport_manage/xia2.png">
 								</a>
 							</div>
 						</div>
@@ -107,16 +114,18 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 									</div>
 									<div class="space-4"></div>
 									<div class="form-group">
-			                           <div class="col-lg-4 col-lg-offset-5">
-					                        <button type="button" id="btn-search" class="subbutton_1">
+									<div class="col-sm-6 control-label no-padding-right">
+											<button type="button" id="btn-search" class="subbutton_1">
 							                    <i></i>
 							                    <span>搜索</span>
 							                </button>
-							                <button type="reset" class="cancelbutton_1">
+										</div>
+										<div class="col-sm-1 control-label no-padding-right">
+											  <button type="reset" class="cancelbutton_1">
 							                    <i></i>
 							                    <span>取消</span>
 							                </button>
-			                           </div>
+										</div>
 			                       </div>
 								</form>
 							</div>
@@ -191,6 +200,21 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	  
 	  $(function () {
 		  
+		  var  flag=false;
+			$(".widget-body").hide();
+			$(".selftoolbar").click(function(){
+			 if(flag){
+				$("#toolimg").attr("src","${pageContext.request.contextPath}/static/imgs/DataImport_manage/xia2.png")
+				$(".widget-body").hide();
+				flag=false;
+			 }else{
+				$("#toolimg").attr("src","${pageContext.request.contextPath}/static/imgs/DataImport_manage/xia.png")
+				$(".widget-body").css("border","1px solid #ccc");
+	    		$(".widget-body").show();
+				flag=true;
+			 }
+			});
+		  
 			jeDate({
 				dateCell:"#form-beginTime",//直接显示日期层的容器，可以是ID  CLASS
 				format:"YYYY-MM-DD hh:mm:ss",//日期格式
@@ -209,7 +233,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				//minDate:"2014-09-19 00:00:00",//最小日期
 				maxDate:jeDate.now(0), //设定最大日期为当前日期
 			});
-			  $('#change-search-box').click();
 	      fsGrid = $('#fsList').datagrid({
 	          url: url,
 	          title: '文件列表',

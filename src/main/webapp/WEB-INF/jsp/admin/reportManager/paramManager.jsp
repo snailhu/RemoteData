@@ -164,7 +164,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     padding-top: 2px;
     margin-bottom: 0px;
 }
-
+  .selftoolbar {
+    display: inline-block;
+    padding: 0 10px;
+    line-height: 37px;
+    float: right;
+    position: relative;
+  }
 </style>
 
 <script type="text/javascript">
@@ -212,7 +218,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						},
 						numeric: {
 							message: '最大值只能输入数字'
-						}
+						}, 
+						stringLength: {
+                            max: 8,
+                            message: '最大值不能超过8位'
+                        }
 					}
 				},
 				effeMin : {
@@ -222,7 +232,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						},
 						numeric: {
 							message: '最小值只能输入数字'
-						}  
+						},
+						 stringLength: {
+                            max: 8,
+                            message: '最小值不能超过8位'
+                        }
 					}
 				}
 			}
@@ -277,7 +291,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						},
 						numeric: {
 							message: '最大值只能输入数字'
-						}  
+						},
+						 stringLength: {
+                            max: 8,
+                            message: '最大值不能超过8位'
+                        }
 					}
 				},
 				effeMin : {
@@ -287,7 +305,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						},
 						numeric: {
 							message: '最小值只能输入数字'
-						}  
+						},
+						 stringLength: {
+                            max: 8,
+                            message: '最小值不能超过8位'
+                        }
 					}
 				}
 			}
@@ -329,15 +351,15 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <!-- 					src="<%=request.getContextPath()%>/static/imgs/DataImport/home.png"> -->
 <!-- 				<span>位置:</span> <span>报告管理></span> <span>报告参数配置</span> -->
 <!-- 			</div> -->
-			<div >
+			<div>
 				<div class="col-xs-12 col-sm-12">
 					<!-- PAGE CONTENT BEGINS -->
 					<div class="widget-box">
-						<div class="widget-header" id="change-search-box" data-action="collapse">
+						<div class="widget-header">
 							<h4>搜索</h4>
-							<div class="widget-toolbar">
+							<div class="selftoolbar">
 								<a href="javascript:void(0);" >
-									<i class="icon-chevron-up"></i>
+									<img id="toolimg" src="${pageContext.request.contextPath}/static/imgs/DataImport_manage/xia2.png">
 								</a>
 							</div>
 						</div>
@@ -385,16 +407,18 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 									
 									<div class="space-4"></div>
 									<div class="form-group">
-			                           <div class="col-lg-4 col-lg-offset-5">
-					                        <button type="button" id="btn-search" class="subbutton_1">
+									<div class="col-sm-6 control-label no-padding-right">
+											<button type="button" id="btn-search" class="subbutton_1">
 							                    <i></i>
 							                    <span>搜索</span>
 							                </button>
-							                <button type="reset" id="btn-cancel" class="cancelbutton_1">
+										</div>
+										<div class="col-sm-1 control-label no-padding-right">
+											 <button type="reset" id="btn-cancel" class="cancelbutton_1">
 							                    <i></i>
 							                    <span>取消</span>
 							                </button>
-			                           </div>
+										</div>
 			                       </div>
 								</form>
 							</div>
@@ -590,11 +614,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	</div><!-- /.main-content -->
 <script type="text/javascript">
 
+
 		var activeUser = '${activeUser}';
 		var StarParamGrid;
 		var deptTree;
         $(function () {
-      	  $('#change-search-box').click();
+        
             StarParamGrid = $("#StarParamList").datagrid({
                 url: '<%=request.getContextPath()%>/starParam/getStarParamList',
                 rownumbers: true,
@@ -668,6 +693,21 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                     }
                 }]
             });
+		
+		var  flag=false;
+		$(".widget-body").hide();
+		$(".selftoolbar").click(function(){
+		 if(flag){
+			$("#toolimg").attr("src","${pageContext.request.contextPath}/static/imgs/DataImport_manage/xia2.png")
+			$(".widget-body").hide();
+			flag=false;
+		 }else{
+			$("#toolimg").attr("src","${pageContext.request.contextPath}/static/imgs/DataImport_manage/xia.png")
+			$(".widget-body").css("border","1px solid #ccc");
+    		$(".widget-body").show();
+			flag=true;
+		 }
+		});
 		
 		if(activeUser != ''){
 				var permissionItemsJSON = '${activeUser.permissionItemsJSON}';

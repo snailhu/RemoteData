@@ -8,7 +8,8 @@ var addTabs = function (options) {
   //如果TAB不存在，创建一个新的TAB
   if (!$("#" + id)[0]) {
     //固定TAB中IFRAME高度
-    mainHeight = $(document.body).height();
+    //mainHeight = $(document.body).height();
+	  mainHeight = $(document.body).height();
     //创建新TAB的title
     title = '<li role="presentation" id="tab_' + id + '"><a href="#' + id + '" aria-controls="' + id + '" role="tab" data-toggle="tab">' + options.title;
     //是否允许关闭
@@ -20,8 +21,9 @@ var addTabs = function (options) {
     if (options.content) {
       content = '<div role="tabpanel" class="tab-pane" id="' + id + '">' + options.content + '</div>';
     } else {//没有内容，使用IFRAME打开链接
-      content = '<div role="tabpanel" class="tab-pane" id="' + id + '"><iframe src="' + options.url + '" width="100%" height="' + mainHeight +
-          '" frameborder="no" border="0" marginwidth="0" marginheight="0" scrolling="yes" allowtransparency="yes"></iframe></div>';
+      //content = '<div role="tabpanel" class="tab-pane" id="' + id + '"><iframe src="' + options.url + '" width="100%" height="' + mainHeight +
+      //    '" frameborder="no" border="0" marginwidth="0" marginheight="0" scrolling="yes" allowtransparency="yes"></iframe></div>';
+    	content = '<div role="tabpanel" class="tab-pane" id="' + id + '"><iframe src="' + options.url + '" width="100%" height="100%" frameborder="no" border="0" marginwidth="0" marginheight="0" scrolling="no" allowtransparency="yes"></iframe></div>';
     }
     //加入TABS
     $(".nav-tabs").append(title);

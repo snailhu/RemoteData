@@ -223,6 +223,11 @@ input[type=text]::-webkit-focus-inner {
     margin-top: 10px;
 }
 </style>
+<script type="text/javascript">
+	$(function(){
+		$("#uploadFile-img").attr("src","${pageContext.request.contextPath}/static/new/img/images/a_30.png");
+	})
+</script>
 </head>
   <body>
 	<div class="main-content">
@@ -238,7 +243,7 @@ input[type=text]::-webkit-focus-inner {
 					<img src="${pageContext.request.contextPath}/static/imgs/DataImport/home.png" style="margin-bottom: 3px;">
 					<span>文件管理</span>
 				</li>
-				<li class="active">文件上传</li>
+				<li class="active">数据导入</li>
 			</ul><!--  .breadcrumb -->
 		</div>
 		<div class="page-content" id="page-content">

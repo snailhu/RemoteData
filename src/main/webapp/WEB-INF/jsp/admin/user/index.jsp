@@ -135,6 +135,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 .breadcrumb {
     margin-top: 10px;
 }
+
 </style>
 <script type="text/javascript">
 	$(function() {
@@ -285,7 +286,21 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		$('#vss').click(function() {
 			$('#addUserInfoForm').bootstrapValidator('validate');
 		});
-		$('#change-search-box').click();
+		//修改搜索框图标
+		var flag=false;
+		$("#change-search-box").click(function(){		
+			if(flag){
+				
+				$("#toolimg").attr("src","${pageContext.request.contextPath}/static/imgs/DataImport_manage/xia.png")
+				$(".widget-body").slideUp("slow");
+				flag=false;
+			}else{
+				$("#toolimg").attr("src","${pageContext.request.contextPath}/static/imgs/DataImport_manage/xia2.png")
+		 		$(".widget-body").slideDown("slow");
+				flag=true;
+			}
+		});
+		$("#change-search-box").click();
 	});
 </script>
   </head>
@@ -321,7 +336,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							<h4 >搜索</h4>
 							<div class="widget-toolbar">
 								<a href="javascript:void(0);">
-									<i class="icon-chevron-up"></i>
+									<div hidden="hidden"><i class="icon-chevron-up" hidden="hidden"></i></div>
+									<img id="toolimg" style="margin-top: 3px;"
+									src="${pageContext.request.contextPath}/static/imgs/DataImport_manage/xia.png">
 								</a>
 							</div>
 						</div>
@@ -331,7 +348,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								<form id="searchUserForm" action="" class="form-horizontal" role="form" >
 									<div class="space-1"></div>
 									<div class="form-group">
-										<label class="col-sm-3 control-label no-padding-right" for="search-userName"> 开始时间 </label>
+										<label class="col-sm-3 control-label no-padding-right" for="search-userName"> 用户名 </label>
 										<div class="col-sm-9">
 											<input type="text" id="search-userName" name="userName" placeholder="用户名" class="col-xs-10 col-sm-5" />
 										</div>
@@ -533,6 +550,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			<div class="row">
 				<div class="col-xs-12">
 					<!-- PAGE CONTENT BEGINS -->
+					
+					
 					<!-- PAGE CONTENT ENDS -->
 				</div><!-- /.col -->
 			</div><!-- /.row -->
@@ -582,7 +601,6 @@ jeDate({
                     field: 'userName',
                     title: '用户名',
                     width: 100,
-                    sortable: true
                 }]],
                 columns: [[ {
                     field: 'mobile',

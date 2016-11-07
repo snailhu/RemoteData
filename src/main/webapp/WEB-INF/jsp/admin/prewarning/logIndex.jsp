@@ -168,12 +168,39 @@
 }
 
 .breadcrumb {
-    margin-top: 10px;
+	margin-top: 10px;
 }
 </style>
 <script type="text/javascript">
+	var activeUser = '${activeUser}';
 	$(function() {
-		$('#change-search-box').click();
+		if(activeUser != ''){
+			var permissionItemsJSON = '${activeUser.permissionItemsJSON}';
+			var map = $.parseJSON(permissionItemsJSON); 
+			if(map.flywheel == 'flywheel'){
+				$("#search-parameterType").append("<option value = 'flywheel'>飞轮</option>"); 
+			}
+			if(map.top == 'top'){
+				$("#search-parameterType").append("<option value = 'top'>陀螺</option>"); 
+			}
+		}
+		
+		var flag=false;
+		$(".widget-body").hide();
+		$(".selftoolbar").click(function(){
+		 if(flag){
+			$("#toolimg").attr("src","${pageContext.request.contextPath}/static/imgs/DataImport_manage/xia2.png")
+			$(".widget-body").hide();
+			flag=false;
+		 }else{
+			$("#toolimg").attr("src","${pageContext.request.contextPath}/static/imgs/DataImport_manage/xia.png")
+			$(".widget-body").css("border","1px solid #ccc");
+    		$(".widget-body").show();
+			flag=true;
+		 }
+		});
+		
+// 		$('#change-search-box').click();
 		$(".select2").select2();
 	});
 </script>
@@ -188,12 +215,12 @@
 				}
 			</script>
 			<ul class="breadcrumb">
-				<li>
-					<img src="${pageContext.request.contextPath}/static/imgs/DataImport/home.png" style="margin-bottom: 3px;">
-					<span>预警管理</span>
-				</li>
+				<li><img
+					src="${pageContext.request.contextPath}/static/imgs/DataImport/home.png"
+					style="margin-bottom: 3px;"> <span>预警管理</span></li>
 				<li class="active">预警查询</li>
-			</ul><!--  .breadcrumb -->
+			</ul>
+			<!--  .breadcrumb -->
 		</div>
 		<div class="page-content">
 			<!-- /.page-header -->
@@ -204,8 +231,9 @@
 						<div class="widget-header" id="change-search-box"
 							data-action="collapse">
 							<h4>搜索</h4>
-							<div class="widget-toolbar">
-								<a href="javascript:void(0);"> <i class="icon-chevron-up"></i>
+							<div class="selftoolbar">
+								<a href="javascript:void(0);">
+									<img id="toolimg" src="${pageContext.request.contextPath}/static/imgs/DataImport_manage/xia2.png">
 								</a>
 							</div>
 						</div>
@@ -257,8 +285,6 @@
 											<select class="col-xs-10 col-sm-5" id="search-parameterType"
 												name="parameterType">
 												<option value="">--请选择--</option>
-												<option value="flywheel">飞轮</option>
-												<option value="top">陀螺</option>
 											</select> <label class="mustchoose">*</label>
 										</div>
 									</div>

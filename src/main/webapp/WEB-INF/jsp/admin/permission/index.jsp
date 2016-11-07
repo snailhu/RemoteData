@@ -675,9 +675,6 @@ $(function() {
 		}
 	}
 	$('#submit_editPermissionGroupInfo').click(function(){
-		var id = $('#edit-permissionGroup-id').val();
-		var name = $('#edit-permissionGroup-name').val();
-		var description = $('#edit-permissionGroup-description').val();
 		var f = $('#editPermissionGroupInfoForm');
 		f.data('bootstrapValidator').validate();
 		var isValid = f.data('bootstrapValidator').isValid();
@@ -685,10 +682,13 @@ $(function() {
 			//top.alertMsg('错误', '请满足提交条件！');
 			return false;
 		}
+		var id = $('#edit-permissionGroup-id').val();
+		var name = $('#edit-permissionGroup-name').val();
+		var description = $('#edit-permissionGroup-description').val();
 		$.ajax({
             url : '${pageContext.request.contextPath}/admin/permission/editPermissionGroup',
             data : {
-                id : rows[0].id,
+                id : id,
                 name : name,
                 description : description
             },

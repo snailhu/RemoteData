@@ -28,25 +28,33 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<link rel="stylesheet" href="<%=request.getContextPath()%>/static/css/all.css" type="text/css" />
 	
   <style type="text/css">
-  .widget-toolbar>a {
-    font-size: 36px;
-    margin: 0 1px;
-    display: inline-block;
-    padding: 0;
-/*     line-height: 24px; */
+.widget-toolbar>a {
+	font-size: 36px;
+	margin: 0 1px;
+	display: inline-block;
+	padding: 0;
+	/*     line-height: 24px; */
 }
+
 .form-group {
-    margin-bottom: 0px;
+	margin-bottom: 0px;
 }
+
 .form-group>label[class*="col-"] {
-    padding-top: 2px;
-    margin-bottom: 0px;
+	padding-top: 2px;
+	margin-bottom: 0px;
 }
 
 .breadcrumb {
-    margin-top: 10px;
+	margin-top: 10px;
 }
-  </style>
+
+.row {
+	margin-right: -12px;
+	margin-left: -12px;
+	height: 100%;
+}
+</style>
   <script type="text/javascript">
   $(function(){
 	  
@@ -69,7 +77,21 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			maxDate:jeDate.now(0), //设定最大日期为当前日期
 		});
 	  
-	  $('#change-search-box').click();
+	//修改搜索框图标
+	var flag=false;
+	$("#change-search-box").click(function(){		
+		if(flag){
+			
+			$("#toolimg").attr("src","${pageContext.request.contextPath}/static/imgs/DataImport_manage/xia.png")
+			$(".widget-body").slideUp("slow");
+			flag=false;
+		}else{
+			$("#toolimg").attr("src","${pageContext.request.contextPath}/static/imgs/DataImport_manage/xia2.png")
+	 		$(".widget-body").slideDown("slow");
+			flag=true;
+		}
+	});
+	$("#change-search-box").click();
   })
   </script>
   </head>
@@ -86,8 +108,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			<ul class="breadcrumb">
 				<li>
 					<img src="${pageContext.request.contextPath}/static/imgs/DataImport/home.png" style="margin-bottom: 3px;">
-					<span>系统管理</span>
+					<span>文件管理</span>
 				</li>
+				<li class="active">文件查看</li>
 				<li class="active">${nowSeries}系列-${nowStar}星-${nowParameterTypeName}文件列表</li>
 			</ul><!--  .breadcrumb -->
 		</div>
@@ -105,12 +128,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							<h4>搜索</h4>
 							<div class="widget-toolbar">
 								<a href="javascript:void(0);" >
-									<i class="icon-chevron-up"></i>
+									<div hidden="hidden"><i class="icon-chevron-up" hidden="hidden"></i></div>
+									<img id="toolimg" style="margin-top: 3px;"
+									src="${pageContext.request.contextPath}/static/imgs/DataImport_manage/xia.png">
 								</a>
 							</div>
-<!-- 							<div class="right_content"> -->
-<!-- 								<img src="${pageContext.request.contextPath}/static/new/img/DataImport_manage/xia2.png"> -->
-<!-- 							</div> -->
 						</div>
 						<div class="widget-body">
 							<div class="widget-main">

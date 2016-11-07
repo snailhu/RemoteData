@@ -39,6 +39,10 @@ public class SystemLog {
 	@Temporal(TemporalType.TIMESTAMP) 
 	private Date logoutTime;
 	
+	@Column(length = 32,nullable = true)
+	@Temporal(TemporalType.TIMESTAMP) 
+	private Date operateTime;
+	
 	@Column(length = 250,nullable = true)
 	private String operateJob;
 	
@@ -97,6 +101,14 @@ public class SystemLog {
 
 	public void setId(Integer id) {
 		this.id = id;
+	}
+
+	public Date getOperateTime() {
+		return operateTime;
+	}
+
+	public void setOperateTime(Date operateTime) {
+		this.operateTime = operateTime;
 	}
 			
 }

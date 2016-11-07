@@ -7,17 +7,17 @@
 <head>
 <base href="<%=basePath%>">
 <title>参数曲线分析</title>
-</head>
-<body>
-
-	
-	<!--Table面板JS-->
-	<script src="${pageContext.request.contextPath}/static/js/conditionMonitoring/showGraphic/sidebar-menu.js"></script>
-	<script src="${pageContext.request.contextPath}/static/js/conditionMonitoring/showGraphic/bootstrap-tab.js"></script>
+<!--Table面板JS-->
+<script src="${pageContext.request.contextPath}/static/js/conditionMonitoring/showGraphic/sidebar-menu.js"></script>
+<script src="${pageContext.request.contextPath}/static/js/conditionMonitoring/showGraphic/bootstrap-tab.js"></script>
 
 <style type="text/css">
-.seriesbutton{position:absolute;width:100%;height:50px; margin:0 auto;z-index:1}
-
+<!--.seriesbutton{position:absolute;width:986px;height:50px; margin:0 auto;z-index:1}-->
+.seriesbutton{width:986px;height:50px}
+.btngroup{
+    	margin-left: 80px;
+    	margin-top: 25px;
+    }
 .shujufenxibutton {
     /*height: 31px;
     width: 80px;
@@ -34,29 +34,50 @@
     margin-right: 15px;
 }
 </style>
-	
+</head>
+<body>	
 	<div class="main-content">
+		<div class="breadcrumbs" id="breadcrumbs">
+			<script type="text/javascript">
+				try {
+					ace.settings.check('breadcrumbs', 'fixed')
+				} catch (e) {
+				}
+			</script>
+			<ul class="breadcrumb">
+				<br/>
+				<li>
+					<img src="${pageContext.request.contextPath}/static/imgs/DataImport/home.png" style="margin-bottom: 3px;">
+					<span>数据分析</span>
+				</li>
+				<li class="active">查看曲线</li>
+			</ul>
+		</div>
+
 		<div class="page-content">
-		
-			<div class="page-header" style="margin: 0px;float: left;">
-				<h1>查看曲线</h1>	
-			</div>
 			
-			<div class="col-xs-12">
+			<div  style="margin:0px height:31px !important">
 				<div id="menu"></div>
 			</div>
-			<!--<div class="row" style="margin:0px !important"></div>-->
-				<div class="col-xs-12"><hr/></div>
-			
+			<span> &amp;</span>
+			<div class="col-xs-12"><hr/></div>
+			<!--<div class="row" style="margin:0px height:31px!important"></div>-->
 	           <div class="col-xs-12">
 	             <ul class="nav nav-tabs" role="tablist">
 	               <!--<li class="active"><a href="#Index" role="tab" data-toggle="tab">首页</a></li>-->
 	             </ul>
-	             <div class="tab-content" style="height:100% !important">
+	             <div class="tab-content" style="height:600px !important">
 	               <div role="tabpanel" class="tab-pane active" id="Index"></div>
 	             </div>
 	           </div>
 	         
+	    	<div class="row">
+				<div class="col-xs-12">
+					<!-- PAGE CONTENT BEGINS -->
+					<!-- PAGE CONTENT ENDS -->
+				</div>
+				<!-- /.col -->
+			</div>
 		</div><!-- /.page-content -->		
 	</div><!-- /.main-content -->
 	<script type="text/javascript">
@@ -64,7 +85,5 @@
 	    	$('#menu').sidebarMenu({ url: "${base}/DataRemote/getMenus"});                	 
 	    })
     </script>
- 
-	</script>
 </body>
 </html>

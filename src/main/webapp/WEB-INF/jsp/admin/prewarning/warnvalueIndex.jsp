@@ -209,11 +209,42 @@
 }
 
 .breadcrumb {
-    margin-top: 10px;
+	margin-top: 10px;
 }
 </style>
 <script type="text/javascript">
+	var activeUser = '${activeUser}';
 	$(function() {
+		if(activeUser != ''){
+			var permissionItemsJSON = '${activeUser.permissionItemsJSON}';
+			var map = $.parseJSON(permissionItemsJSON); 
+			if(map.flywheel == 'flywheel'){
+				$("#search-parameterType").append("<option value = 'flywheel'>飞轮</option>"); 
+				$("#add-parameterType").append("<option value = 'flywheel'>飞轮</option>"); 
+				$("#edit-parameterType").append("<option value = 'flywheel'>飞轮</option>"); 
+			}
+			if(map.top == 'top'){
+				$("#search-parameterType").append("<option value = 'top'>陀螺</option>"); 
+				$("#add-parameterType").append("<option value = 'top'>陀螺</option>"); 
+				$("#edit-parameterType").append("<option value = 'top'>陀螺</option>"); 
+			}
+		}
+		
+		var flag=false;
+		$(".widget-body").hide();
+		$(".selftoolbar").click(function(){
+		 if(flag){
+			$("#toolimg").attr("src","${pageContext.request.contextPath}/static/imgs/DataImport_manage/xia2.png")
+			$(".widget-body").hide();
+			flag=false;
+		 }else{
+			$("#toolimg").attr("src","${pageContext.request.contextPath}/static/imgs/DataImport_manage/xia.png")
+			$(".widget-body").css("border","1px solid #ccc");
+    		$(".widget-body").show();
+			flag=true;
+		 }
+		});
+		
 		$('#addValueInfoForm').bootstrapValidator({
 			message : '这个值不能为空！',
 			feedbackIcons : {
@@ -255,8 +286,14 @@
 						notEmpty : {
 							message : '时间区间不能为空'
 						},
-						integer : {
-							message : '时间区间必须为整数'
+						stringLength : {
+							min : 1,
+							max : 8,
+							message : '时间区间不能超过8位'
+						},
+						regexp : {
+							regexp : /^[0-9]*[1-9][0-9]*$/,
+							message : '时间区间必须为正整数'
 						}
 					}
 				},
@@ -265,8 +302,14 @@
 						notEmpty : {
 							message : '限定次数不能为空'
 						},
-						integer : {
-							message : '限定次数必须为整数'
+						stringLength : {
+							min : 1,
+							max : 8,
+							message : '限定次数不能超过8位'
+						},
+						regexp : {
+							regexp : /^[0-9]*[1-9][0-9]*$/,
+							message : '限定次数必须为正整数'
 						}
 					}
 				},
@@ -275,21 +318,27 @@
 						notEmpty : {
 							message : '最大值不能为空'
 						},
-						numeric : {
-							message : '最大值必须为数字'
-						}
-					}
-				},
-				minVal : {
-					validators : {
-						notEmpty : {
-							message : '最小值不能为空',
+						regexp : {
+							regexp : /^[\-\+]?\d+(\.\d{0,5})?$/,
+							message : '最大值必须为小数点最多保留5位的数字'
 						},
-						numeric : {
-							message : '最小值必须为数字'
+						stringLength : {
+							min : 1,
+							max : 12,
+							message : '最大值不能超过12个字符'
 						}
 					}
 				}
+// 				minVal : {
+// 					validators : {
+// 						notEmpty : {
+// 							message : '最小值不能为空',
+// 						},
+// 						numeric : {
+// 							message : '最小值必须为数字'
+// 						}
+// 					}
+// 				}
 			}
 		});
 		$('#editValueInfoForm').bootstrapValidator({
@@ -332,8 +381,14 @@
 						notEmpty : {
 							message : '时间区间不能为空'
 						},
-						integer : {
-							message : '时间区间必须为整数'
+						stringLength : {
+							min : 1,
+							max : 8,
+							message : '时间区间不能超过8位'
+						},
+						regexp : {
+							regexp : /^[0-9]*[1-9][0-9]*$/,
+							message : '时间区间必须为正整数'
 						}
 					}
 				},
@@ -342,8 +397,14 @@
 						notEmpty : {
 							message : '限定次数不能为空'
 						},
-						integer : {
-							message : '限定次数必须为整数'
+						stringLength : {
+							min : 1,
+							max : 8,
+							message : '限定次数不能超过8位'
+						},
+						regexp : {
+							regexp : /^[0-9]*[1-9][0-9]*$/,
+							message : '限定次数必须为正整数'
 						}
 					}
 				},
@@ -352,21 +413,27 @@
 						notEmpty : {
 							message : '最大值不能为空'
 						},
-						numeric : {
-							message : '最大值必须为数字'
-						}
-					}
-				},
-				minVal : {
-					validators : {
-						notEmpty : {
-							message : '最小值不能为空'
+						regexp : {
+							regexp : /^[\-\+]?\d+(\.\d{0,5})?$/,
+							message : '最大值必须为小数点最多保留5位的数字'
 						},
-						numeric : {
-							message : '最小值必须为数字'
+						stringLength : {
+							min : 1,
+							max : 12,
+							message : '最大值不能超过12个字符'
 						}
 					}
 				}
+// 				minVal : {
+// 					validators : {
+// 						notEmpty : {
+// 							message : '最小值不能为空'
+// 						},
+// 						numeric : {
+// 							message : '最小值必须为数字'
+// 						}
+// 					}
+// 				}
 			}
 		});
 		$('#addValueModal').on('hide.bs.modal', function () {
@@ -384,7 +451,7 @@
 // 			$('#addValueInfoForm').bootstrapValidator('validate');
 // 		});
 		
-		$('#change-search-box').click();
+// 		$('#change-search-box').click();
 		$.fn.modal.Constructor.prototype.enforceFocus = function() {};
 		$(".select2").select2();
 	});
@@ -401,12 +468,12 @@
 				}
 			</script>
 			<ul class="breadcrumb">
-				<li>
-					<img src="${pageContext.request.contextPath}/static/imgs/DataImport/home.png" style="margin-bottom: 3px;">
-					<span>预警管理</span>
-				</li>
+				<li><img
+					src="${pageContext.request.contextPath}/static/imgs/DataImport/home.png"
+					style="margin-bottom: 3px;"> <span>预警管理</span></li>
 				<li class="active">特殊工况参数配置</li>
-			</ul><!--  .breadcrumb -->
+			</ul>
+			<!--  .breadcrumb -->
 		</div>
 		<div class="page-content">
 			<!-- /.page-header -->
@@ -417,8 +484,9 @@
 						<div class="widget-header" id="change-search-box"
 							data-action="collapse">
 							<h4>搜索</h4>
-							<div class="widget-toolbar">
-								<a href="javascript:void(0);"> <i class="icon-chevron-up"></i>
+							<div class="selftoolbar">
+								<a href="javascript:void(0);"> <img id="toolimg"
+									src="${pageContext.request.contextPath}/static/imgs/DataImport_manage/xia2.png">
 								</a>
 							</div>
 						</div>
@@ -457,8 +525,6 @@
 											<select class="col-xs-10 col-sm-5" id="search-parameterType"
 												name="parameterType">
 												<option value="">--请选择--</option>
-												<option value="flywheel">飞轮</option>
-												<option value="top">陀螺</option>
 											</select>
 										</div>
 									</div>
@@ -541,8 +607,6 @@
 										<select class="form-control" id="add-parameterType"
 											name="parameterType">
 											<option value="">--请选择--</option>
-											<option value="flywheel">飞轮</option>
-											<option value="top">陀螺</option>
 										</select>
 									</div>
 								</div>
@@ -584,15 +648,15 @@
 											placeholder="最大值" class="form-control" />
 									</div>
 								</div>
-								<div class="space-4"></div>
-								<div class="form-group">
-									<label class="col-lg-3 control-label no-padding-right"
-										for="add-minVal"> 最小值： </label>
-									<div class="col-sm-8">
-										<input type="text" name="minVal" id="add-minVal"
-											placeholder="最小值" class="form-control" />
-									</div>
-								</div>
+								<!-- 								<div class="space-4"></div> -->
+								<!-- 								<div class="form-group"> -->
+								<!-- 									<label class="col-lg-3 control-label no-padding-right" -->
+								<!-- 										for="add-minVal"> 最小值： </label> -->
+								<!-- 									<div class="col-sm-8"> -->
+								<!-- 										<input type="text" name="minVal" id="add-minVal" -->
+								<!-- 											placeholder="最小值" class="form-control" /> -->
+								<!-- 									</div> -->
+								<!-- 								</div> -->
 							</div>
 							<div class="modal-footer">
 								<div class="col-lg-7 col-lg-offset-3">
@@ -649,8 +713,6 @@
 										<select class="form-control" id="edit-parameterType"
 											name="parameterType">
 											<option value="">--请选择--</option>
-											<option value="flywheel">飞轮</option>
-											<option value="top">陀螺</option>
 										</select>
 									</div>
 								</div>
@@ -692,15 +754,15 @@
 											placeholder="最大值" class="form-control" />
 									</div>
 								</div>
-								<div class="space-4"></div>
-								<div class="form-group">
-									<label class="col-lg-3 control-label no-padding-right"
-										for="edit-minVal"> 最小值： </label>
-									<div class="col-sm-8">
-										<input type="text" name="minVal" id="edit-minVal"
-											placeholder="最小值" class="form-control" />
-									</div>
-								</div>
+								<!-- 								<div class="space-4"></div> -->
+								<!-- 								<div class="form-group"> -->
+								<!-- 									<label class="col-lg-3 control-label no-padding-right" -->
+								<!-- 										for="edit-minVal"> 最小值： </label> -->
+								<!-- 									<div class="col-sm-8"> -->
+								<!-- 										<input type="text" name="minVal" id="edit-minVal" -->
+								<!-- 											placeholder="最小值" class="form-control" /> -->
+								<!-- 									</div> -->
+								<!-- 								</div> -->
 							</div>
 							<div class="modal-footer">
 								<div class="col-lg-7 col-lg-offset-3">
@@ -786,12 +848,13 @@
 									title : '最大值',
 									width : 100,
 									sortable:true
-								}, {
-									field : 'minVal',
-									title : '最小值',
-									width : 100,
-									sortable:true
 								} ] ],
+// 								}, {
+// 									field : 'minVal',
+// 									title : '最小值',
+// 									width : 100,
+// 									sortable:true
+						
 
 								toolbar : [ {
 									text : '创建',
@@ -833,7 +896,6 @@
                  	  top.showMsg('提示', res.msg);
                    }
                });
-        
         });
         
         $("#search-series").change(function(){
@@ -869,6 +931,8 @@
 	});
 	
 	$("#add-series").change(function(){
+		$('#addValueInfoForm').data('bootstrapValidator').updateStatus('star', 'NOT_VALIDATED', null);
+		
 	 	var seriesId = $('#add-series').val();	
 	 	  $.get('<%=request.getContextPath()%>/admin/prewarning/getStarList', {'seriesId':seriesId},  function (res) {
 			  if(res.result == "true") {
@@ -893,6 +957,7 @@
            		    }
 					});
            	  $("#add-parameter").select2().val("").trigger("change");
+           	  $('#addValueInfoForm').data('bootstrapValidator').updateStatus('parameter', 'NOT_VALIDATED', null);
              }
              else {
            	  top.showMsg('提示', res.msg);
@@ -901,6 +966,8 @@
 	});
 	
 	$("#edit-series").change(function(){
+		$('#editValueInfoForm').data('bootstrapValidator').updateStatus('star', 'NOT_VALIDATED', null);
+		
 	 	var seriesId = $('#edit-series').val();	
 	 	  $.get('<%=request.getContextPath()%>/admin/prewarning/getStarList', {'seriesId':seriesId},  function (res) {
 			  if(res.result == "true") {
@@ -926,6 +993,7 @@
            		    }
 					});
            	  $("#edit-parameter").select2().val("").trigger("change");
+           	  $('#editValueInfoForm').data('bootstrapValidator').updateStatus('parameter', 'NOT_VALIDATED', null);
              }
              else {
            	  top.showMsg('提示', res.msg);
@@ -966,6 +1034,7 @@
 	            		    }
 						});
 	            	  $("#add-parameter").select2().val("").trigger("change");
+	            	  $('#addValueInfoForm').data('bootstrapValidator').updateStatus('parameter', 'NOT_VALIDATED', null);
 	              }
 	              else {
 	            	  top.showMsg('提示', res.msg);
@@ -986,6 +1055,7 @@
 	            		    }
 						});
 	            	  $("#edit-parameter").select2().val("").trigger("change");
+	            	  $('#editValueInfoForm').data('bootstrapValidator').updateStatus('parameter', 'NOT_VALIDATED', null);
 	              }
 	              else {
 	            	  top.showMsg('提示', res.msg);
@@ -996,6 +1066,15 @@
 		function reloadDataGrid() {
 			valueGrid.datagrid('clearChecked');
 			valueGrid.datagrid('reload');
+		}
+		function returnLoadDataGrid(series,star,parameterType,parameter){
+			valueGrid.datagrid('load', {
+				series : series,
+				star : star,
+				parameterType : parameterType,
+				parameter : parameter,
+				warningType : "0"
+			});
 		}
 		
 		//快速搜索按钮
@@ -1024,12 +1103,16 @@
 				top.alertMsg('错误', '请满足提交条件！');
 				return false;
 			}
-			var maxval = Number($("#add-maxVal").val());
-			var minval = Number($("#add-minVal").val());
-			if(maxval<minval){
-				top.alertMsg('错误', '最大值必须大于最小值！');
-				return false;
-			}
+// 			var maxval = Number($("#add-maxVal").val());
+// 			var minval = Number($("#add-minVal").val());
+// 			if(maxval<minval){
+// 				top.alertMsg('错误', '最大值必须大于最小值！');
+// 				return false;
+// 			}
+			var series = $('#add-series').val();
+			var star = $('#add-star').val();
+			var parameterType = $('#add-parameterType').val();
+			var parameter = $('#add-parameter').val();
 			var toUrl = '${pageContext.request.contextPath}/admin/prewarning/createWarnValue';
 			f.form('submit', {url : toUrl,
 				onsubmit : function() {
@@ -1044,7 +1127,7 @@
 					var map = $.parseJSON(data);
 					if (map.success) {
 						top.showMsg('提示', map.msg);
-						reloadDataGrid();
+						returnLoadDataGrid(series,star,parameterType,parameter);
 					} else {
 						top.alertMsg('错误', map.msg + "\n"+ map.obj == null ? "": map.obj);
 					}
@@ -1064,12 +1147,12 @@
 				top.alertMsg('错误', '请满足提交条件！');
 				return false;
 			}
-			var maxval = Number($("#edit-maxVal").val());
-			var minval = Number($("#edit-minVal").val());
-			if(maxval<minval){
-				top.alertMsg('错误', '最大值必须大于最小值！');
-				return false;
-			}
+// 			var maxval = Number($("#edit-maxVal").val());
+// 			var minval = Number($("#edit-minVal").val());
+// 			if(maxval<minval){
+// 				top.alertMsg('错误', '最大值必须大于最小值！');
+// 				return false;
+// 			}
 			var toUrl = '${pageContext.request.contextPath}/admin/prewarning/editWarnValue';
 			f.form('submit',{url : toUrl,onsubmit : function() {
 				var flag = $(this).form('validate');

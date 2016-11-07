@@ -16,7 +16,7 @@ public class SystemLogDaoImpl extends BaseDaoImpl<SystemLog> implements
 	@Override
 	public List<SystemLog> getSystemLogsByTime(Date startDate, Date endDate) {
 		// TODO Auto-generated method stub
-		String hql = "from SystemLog sl where sl.loginTime between ? and ? ";
+		String hql = "from SystemLog sl where sl.operateTime between ? and ? ";
 		List<SystemLog> list = this.list(hql, new Object[]{startDate,endDate});
 		return list;
 		

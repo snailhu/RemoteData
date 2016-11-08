@@ -22,6 +22,7 @@ import DataAn.common.pageModel.JsonMessage;
 import DataAn.common.pageModel.Pager;
 import DataAn.common.utils.DateUtil;
 import DataAn.fileSystem.dto.MongoFSDto;
+import DataAn.galaxyManager.option.J9Series_Star_ParameterType;
 import DataAn.jfreechart.service.IJfreechartServcie;
 import DataAn.mongo.init.InitMongo;
 import DataAn.reportManager.dao.IStarParamDao;
@@ -57,6 +58,7 @@ public class ReportController {
 		model.addAttribute("nowStar", star);
 		model.addAttribute("nowDirId", dirId);
 		model.addAttribute("nowParameterTypeValue", paramType);
+		model.addAttribute("nowParameterTypeName", J9Series_Star_ParameterType.getJ9SeriesStarParameterType(paramType).getName());
 		
 		return "/admin/reportManager/index";
 	}

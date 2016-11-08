@@ -151,7 +151,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					<img src="${pageContext.request.contextPath}/static/imgs/DataImport/home.png" style="margin-bottom: 3px;">
 					<span>报告管理</span>
 				</li>
-				<li class="active">实时报告下载</li>
+				<li class="active">报告生成</li>
 			</ul><!--  .breadcrumb -->
 		</div>
 		<div class="page-content">
@@ -363,7 +363,7 @@ $(function(){
 				  return false;
 			}
 			if(t>6) {
-				 top.showMsg('提示', "日期区间不能大于一周");
+				 top.showMsg('提示', "日期区间需小于一周");
 				  return false;
 			}
 			

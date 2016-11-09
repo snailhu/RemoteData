@@ -803,15 +803,15 @@
 							$.each(res.data.data, function() {
 								$('#search-series').append(
 										"<option value='"+ this.id+"'>"
-												+ this.description
+												+ this.name
 												+ "</option>");
 								$('#add-series').append(
 										"<option value='"+ this.id+"'>"
-												+ this.description
+												+ this.name
 												+ "</option>");
 								$('#edit-series').append(
 										"<option value='"+ this.id+"'>"
-												+ this.description
+												+ this.name
 												+ "</option>");
 							});
 						} else {
@@ -827,7 +827,7 @@
 						  $('#search-star').find("option").remove();
 						 $('#search-star').append("<option value=''>--请选择--</option>"); 
 		            	  $.each(res.data.data ,function(){
-								$('#search-star').append("<option value='"+ this.id+"'>"+ this.description +"</option>"); 
+								$('#search-star').append("<option value='"+ this.id+"'>"+ this.name +"</option>"); 
 							});
 		              }
 		              else {
@@ -862,7 +862,7 @@
 					  $('#add-star').find("option").remove();
 					 $('#add-star').append("<option value=''>--请选择--</option>"); 
 	            	  $.each(res.data.data ,function(){
-							$('#add-star').append("<option value='"+ this.id+"'>"+ this.description +"</option>"); 
+							$('#add-star').append("<option value='"+ this.id+"'>"+ this.name +"</option>"); 
 						});
 	              }
 	              else {
@@ -898,7 +898,7 @@
 					  $('#edit-star').find("option").remove();
 					 $('#edit-star').append("<option value=''>--请选择--</option>"); 
 	            	  $.each(res.data.data ,function(){
-							$('#edit-star').append("<option value='"+ this.id+"'>"+ this.description +"</option>"); 
+							$('#edit-star').append("<option value='"+ this.id+"'>"+ this.name +"</option>"); 
 						});
 	              }
 	              else {
@@ -1224,14 +1224,14 @@
 																									'#edit-star')
 																									.append(
 																											"<option value='"+ this.id+"' selected = 'selected'>"
-																													+ this.description
+																													+ this.name
 																													+ "</option>");
 																						} else {
 																							$(
 																									'#edit-star')
 																									.append(
 																											"<option value='"+ this.id+"'>"
-																													+ this.description
+																													+ this.name
 																													+ "</option>");
 																						}
 																					}

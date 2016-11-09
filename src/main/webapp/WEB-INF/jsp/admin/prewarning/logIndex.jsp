@@ -413,7 +413,7 @@ jeDate({
         	$.get('<%=request.getContextPath()%>/starParam/getSeriesList', {}, function (res) {
    			  if(res.result == "true") {
                	  $.each(res.data.data ,function(){
-   						$('#search-series').append("<option value='"+ this.id+"'>"+ this.description +"</option>"); 
+   						$('#search-series').append("<option value='"+ this.id+"'>"+ this.name +"</option>"); 
    					});
                  }
                  else {
@@ -429,7 +429,7 @@ jeDate({
 					  $('#search-star').find("option").remove();
 					 $('#search-star').append("<option value=''>--请选择--</option>"); 
 	            	  $.each(res.data.data ,function(){
-							$('#search-star').append("<option value='"+ this.id+"'>"+ this.description +"</option>"); 
+							$('#search-star').append("<option value='"+ this.id+"'>"+ this.name +"</option>"); 
 						});
 	              }
 	              else {

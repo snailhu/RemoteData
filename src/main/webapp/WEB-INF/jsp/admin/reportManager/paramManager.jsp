@@ -1126,8 +1126,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					for ( var i = 0; i < rows.length; i++) {
 						names.push(rows[i].paramName);
 					}
-					top.showMsg("提示", '只能选择一个参数进行编辑！您已经选择了【' + names.join(',')
-							+ '】' + rows.length + '个参数');
+					top.showMsg("提示", '只能选择一个参数进行编辑！您已经选择了' + rows.length + '个参数');
 				}
 			} else {
 				top.showMsg("提示", "请选择要编辑的参数！");

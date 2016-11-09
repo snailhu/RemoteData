@@ -102,7 +102,7 @@ function intsatellite(seriesId) {
 			 fun_animat = function(){
 				speed = speed<360?speed:2;
 				//运运的速度
-				speed+=2;
+				speed+=1;
 				//运动距离，即运动的弧度数;
 				var ainhd = speed*Math.PI/180;
 				//按速度来定位DIV元素
@@ -141,7 +141,8 @@ function intsatellite(seriesId) {
 			//悬浮窗口消失时继续旋转
 			$("[data-toggle='popover']").on('hidden.bs.popover', function() {
 		        //clearTimeout(timeoutProcess);
-				timeout = false;
-				time();
+					clearTimeout(timeoutProcess);
+					timeout = false;
+					time();	
 				});
   }

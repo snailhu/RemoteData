@@ -64,7 +64,7 @@
 					<img src="${pageContext.request.contextPath}/static/imgs/DataImport/home.png" style="margin-bottom: 3px;">
 					<span>系统管理</span>
 				</li>
-				<li class="active">系统日志</li>
+				<li class="active">日志管理</li>
 			</ul><!--  .breadcrumb -->
 		</div>
 		<div class="page-content">

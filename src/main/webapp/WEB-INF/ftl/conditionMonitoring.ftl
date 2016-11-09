@@ -82,14 +82,18 @@
 	//延时函数
 	var timeout = false; //启动及关闭按钮为fals时开始定时器 | 为true时停止计时
 	var timestate = false; //标记定时器状态 false时停止计时 |true时开始计时
-	var sportstate = false;//图片运动状态，运动为true;	
+	var sportstate = false;//图片运动状态，运动为true;
+	var timeoutProcess;
+	var number=0;
 	function time()
 	{
-	  if(timeout) return;
+	  if(timeout) {console.log("暂停"+number);return};
 	  //clearTimeout(timeoutProcess);
 	  //clearTimeout(time);
 	  fun_animat();
-	  setTimeout(time,300); //time是指本身,延时递归调用自己,100为间隔调用时间,单位毫秒
+	  number++;
+	  console.log("执行延时函数"+number);
+	  timeoutProcess = setTimeout(time,200); //time是指本身,延时递归调用自己,100为间隔调用时间,单位毫秒
 	};
 	
 	$(function(){
@@ -108,7 +112,7 @@
 		//每一个BOX对应的弧度;
 		var ahd = avd*Math.PI/180;
 		//运动的速度
-		var speed = 2;
+		var speed = 1;
 		//图片的宽高
 		//var wid = $(".container img").width();
 		//var hei = $(".container img").height();
@@ -163,7 +167,7 @@
 		this.runtimeStyle.filter = "progid:DXImageTransform.Microsoft.AlphaImageLoader(src='" + this.origBg + "', sizingMethod='crop')",
 		this.runtimeStyle.backgroundImage = "none")),this.pngSet=true);
 		}
-	.imagediv{position:absolute;width:293px;height:144px;z-index:2}
+	.imagediv{position:absolute;width:150px;height:144px;z-index:2}
 	.imagediv span{font-size:16px;color:red;position:absolute;left:0px;top:0px;padding:0px;margin:0px}
 	.background{position:absolute; width:100%; height:100%; z-index:-1}
 	.seriesbutton{position:absolute;width:1000px;height:50px; margin:0 auto;z-index:1}

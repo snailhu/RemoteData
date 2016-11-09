@@ -174,6 +174,16 @@
 <script type="text/javascript">
 	var activeUser = '${activeUser}';
 	$(function() {
+		//左菜单栏
+		$("#warnlog-img").attr("src","${pageContext.request.contextPath}/static/new/img/images/a_70.png");
+		$("#warnmanage-img").attr("src","${pageContext.request.contextPath}/static/new/img/images/a_58.png");
+		$("#sysmanage-img").attr("src","${pageContext.request.contextPath}/static/new/img/images/a_50.png");
+		$("#warnlog-text").css("color", "#5d90d6");
+		$("#warnmanage-text").css("color", "#5d90d6");
+		$("#sysmanage-text").css("color", "#5d90d6");
+		$("#warnmanageUL").css("display","block");
+		$("#sysmanageUL").css("display", "block");
+		
 		if(activeUser != ''){
 			var permissionItemsJSON = '${activeUser.permissionItemsJSON}';
 			var map = $.parseJSON(permissionItemsJSON); 
@@ -185,23 +195,23 @@
 			}
 		}
 		
+		//修改搜索框图标
 		var flag=false;
-		$(".widget-body").hide();
-		$(".selftoolbar").click(function(){
-		 if(flag){
-			$("#toolimg").attr("src","${pageContext.request.contextPath}/static/imgs/DataImport_manage/xia2.png")
-			$(".widget-body").hide();
-			flag=false;
-		 }else{
-			$("#toolimg").attr("src","${pageContext.request.contextPath}/static/imgs/DataImport_manage/xia.png")
-			$(".widget-body").css("border","1px solid #ccc");
-    		$(".widget-body").show();
-			flag=true;
-		 }
+		$("#change-search-box").click(function(){		
+			if(flag){
+				$("#toolimg").attr("src","${pageContext.request.contextPath}/static/imgs/DataImport_manage/xia.png")
+				$(".widget-body").slideUp("slow");
+				flag=false;
+			}else{
+				$("#toolimg").attr("src","${pageContext.request.contextPath}/static/imgs/DataImport_manage/xia2.png")
+		 		$(".widget-body").slideDown("slow");
+				flag=true;
+			}
 		});
 		
-// 		$('#change-search-box').click();
 		$(".select2").select2();
+		
+		$("#logList").hide();
 	});
 </script>
 </head>
@@ -217,7 +227,8 @@
 			<ul class="breadcrumb">
 				<li><img
 					src="${pageContext.request.contextPath}/static/imgs/DataImport/home.png"
-					style="margin-bottom: 3px;"> <span>预警管理</span></li>
+					style="margin-bottom: 3px;"> <span>系统管理</span></li>
+				<li class="active">预警管理</li>
 				<li class="active">预警查询</li>
 			</ul>
 			<!--  .breadcrumb -->
@@ -231,9 +242,13 @@
 						<div class="widget-header" id="change-search-box"
 							data-action="collapse">
 							<h4>搜索</h4>
-							<div class="selftoolbar">
-								<a href="javascript:void(0);">
-									<img id="toolimg" src="${pageContext.request.contextPath}/static/imgs/DataImport_manage/xia2.png">
+							<div class="widget-toolbar">
+								<div hidden="hidden">
+									<i class="icon-chevron-up" hidden="hidden"></i>
+								</div>
+								<a href="javascript:void(0);"> <img id="toolimg"
+									style="margin-top: 3px;"
+									src="${pageContext.request.contextPath}/static/imgs/DataImport_manage/xia.png">
 								</a>
 							</div>
 						</div>
@@ -362,6 +377,13 @@
 	</div>
 	<!-- /.main-content -->
 	<script type="text/javascript">
+$("#search-createdatetimeStart").keypress(function(){
+	  return false;
+});
+$("#search-createdatetimeEnd").keypress(function(){
+	   return false;
+});	
+	
 jeDate({
 	dateCell:"#search-createdatetimeStart",//直接显示日期层的容器，可以是ID  CLASS
 	format:"YYYY-MM-DD hh:mm:ss",//日期格式
@@ -388,89 +410,16 @@ jeDate({
 		}
 		var logGrid;
         $(function () {
-        	logGrid = $("#logList").datagrid({
-                url: '<%=request.getContextPath()%>/admin/prewarning/getLogList?hadRead='
-										+ hadRead,
-								rownumbers : true,
-								fitColumns : true,
-								idField : 'logId',//'logId',
-								pageSize : 10,
-								pagination : true,
-								pageList : [ 10, 20, 30, 40, 50, 60, 70, 80,
-										90, 100 ],
-								onLoadError : function(data) {
-									$.messager.alert("预警信息", "暂无预警数据信息",
-											"error");
-
-								},
-								frozenColumns : [ [ {
-									title : 'logId',
-									field : 'logId',//'logId',
-									width : 50,
-									checkbox : true
-								} ] ],
-								columns : [ [ {
-									field : 'series',
-									title : '星系',
-									width : 100,
-									//sortable:true
-								},{
-									field : 'star',
-									title : '星',
-									width : 100,
-									//sortable:true
-								}, {
-									field : 'parameterType',
-									title : '设备',
-									width : 100,
-									//sortable:true
-								}, {
-									field : 'parameter',
-									title : '参数',
-									width : 200,
-									//sortable:true
-								}, {
-									field : 'timeValue',
-									title : '时间点',
-									width : 200,
-									//sortable:true
-								}, {
-									field : 'paramValue',
-									title : '参数值',
-									width : 100,
-									//sortable:true
-								}, {
-									field : 'warningType',
-									title : '预警类型',
-									width : 100,
-									//sortable:true
-								}, {
-									field : 'warnRemark',
-									title : '备注',
-									width : 300,
-									//sortable:true
-								} ] ],
-
-								toolbar : [ {
-									text : '删除',
-									iconCls : 'icon-remove',
-									handler : function() {
-										deleteLog();
-									}
-								} ]
-							});
-        	
         	$.get('<%=request.getContextPath()%>/starParam/getSeriesList', {}, function (res) {
    			  if(res.result == "true") {
                	  $.each(res.data.data ,function(){
-   						$('#search-series').append("<option value='"+ this.id+"'>"+ this.description +"</option>"); 
+   						$('#search-series').append("<option value='"+ this.id+"'>"+ this.name +"</option>"); 
    					});
                  }
                  else {
                	  top.showMsg('提示', res.msg);
                  }
              });
-
 		});
         
         $("#search-series").change(function(){
@@ -480,7 +429,7 @@ jeDate({
 					  $('#search-star').find("option").remove();
 					 $('#search-star').append("<option value=''>--请选择--</option>"); 
 	            	  $.each(res.data.data ,function(){
-							$('#search-star').append("<option value='"+ this.id+"'>"+ this.description +"</option>"); 
+							$('#search-star').append("<option value='"+ this.id+"'>"+ this.name +"</option>"); 
 						});
 	              }
 	              else {
@@ -550,6 +499,7 @@ jeDate({
 			$("#search-parameter").select2().val("").trigger("change");
 		});
 
+		var clickTotal = 0;
 		//快速搜索按钮
 		$('#btn-search').click(function() {
 			var series = $('#search-series').val();
@@ -575,17 +525,102 @@ jeDate({
 				top.alertMsg('提示', '请选择设备！');
 				return;
 			}
-			logGrid.datagrid('load', {
-				series : series,
-				star : star,
-				parameterType : parameterType,
-				parameter : parameter,
-				warningType : warningType,
-				createdatetimeStart : createdatetimeStart,
-				createdatetimeEnd : createdatetimeEnd,
-				clickCount : 1
-			});
-		});
+			if(clickTotal == 0){
+				logGrid = $("#logList").datagrid({
+	                url: '<%=request.getContextPath()%>/admin/prewarning/getLogList?hadRead='
+															+ hadRead,
+													rownumbers : true,
+													fitColumns : true,
+													idField : 'logId',//'logId',
+													pageSize : 10,
+													pagination : true,
+													pageList : [ 10, 20, 30,
+															40, 50, 60, 70, 80,
+															90, 100 ],
+													onLoadError : function(data) {
+														$.messager.alert(
+																"预警信息",
+																"暂无预警数据信息",
+																"error");
+
+													},
+													frozenColumns : [ [ {
+														title : 'logId',
+														field : 'logId',//'logId',
+														width : 50,
+														checkbox : true
+													} ] ],
+													columns : [ [
+															{
+																field : 'series',
+																title : '星系',
+																width : 100,
+															//sortable:true
+															},
+															{
+																field : 'star',
+																title : '星',
+																width : 100,
+															//sortable:true
+															},
+															{
+																field : 'parameterType',
+																title : '设备',
+																width : 100,
+															//sortable:true
+															},
+															{
+																field : 'parameter',
+																title : '参数',
+																width : 200,
+															//sortable:true
+															},
+															{
+																field : 'timeValue',
+																title : '时间点',
+																width : 200,
+															//sortable:true
+															},
+															{
+																field : 'paramValue',
+																title : '参数值',
+																width : 100,
+															//sortable:true
+															},
+															{
+																field : 'warningType',
+																title : '预警类型',
+																width : 100,
+															//sortable:true
+															},
+															{
+																field : 'warnRemark',
+																title : '备注',
+																width : 300,
+															//sortable:true
+															} ] ],
+
+													toolbar : [ {
+														text : '删除',
+														iconCls : 'icon-remove',
+														handler : function() {
+															deleteLog();
+														}
+													} ]
+												});
+								clickTotal = clickTotal + 1;
+							}
+							logGrid.datagrid('load', {
+								series : series,
+								star : star,
+								parameterType : parameterType,
+								parameter : parameter,
+								warningType : warningType,
+								createdatetimeStart : createdatetimeStart,
+								createdatetimeEnd : createdatetimeEnd,
+								clickCount : 1
+							});
+						});
 		//删除用户
 		function deleteLog() {
 			var ids = [];
@@ -648,7 +683,7 @@ jeDate({
 							}
 						});
 			} else {
-				top.showMsg("提示", "请选择要删除的用户！");
+				top.showMsg("提示", "请选择要删除的信息！");
 			}
 		}
 		function getSelectId() {

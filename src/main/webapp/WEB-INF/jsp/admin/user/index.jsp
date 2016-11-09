@@ -139,6 +139,15 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 </style>
 <script type="text/javascript">
 	$(function() {
+		$(function(){
+			//左菜单栏
+			$("#usermanage-img").attr("src","${pageContext.request.contextPath}/static/new/img/images/a_74.png");
+			$("#sysmanage-img").attr("src","${pageContext.request.contextPath}/static/new/img/images/a_50.png");
+			$("#usermanage-text").css("color","#5d90d6");
+			$("#sysmanage-text").css("color", "#5d90d6");
+			$("#sysmanageUL").css("display","block");
+		})
+		
 		$('#addUserInfoForm').bootstrapValidator({
 			message : '这个值不能为空！',
 			feedbackIcons : {

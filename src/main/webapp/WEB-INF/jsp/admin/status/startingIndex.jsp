@@ -114,6 +114,7 @@
 	position: relative;
 	/*     padding-left: 20px; */
 }
+
 .icon-remove {
 	background: url('') no-repeat center center;
 }
@@ -148,12 +149,26 @@
 }
 
 .breadcrumb {
-    margin-top: 10px;
+	margin-top: 10px;
 }
-
 </style>
 <script type="text/javascript">
-	
+	$(function() {
+		$("#starting-img")
+				.attr("src",
+						"${pageContext.request.contextPath}/static/new/img/images/a_38.png");
+		$("#statustracking-img")
+				.attr("src",
+						"${pageContext.request.contextPath}/static/new/img/images/a_34.png");
+		$("#filemanage-img")
+				.attr("src",
+						"${pageContext.request.contextPath}/static/new/img/images/a_26.png");
+		$("#starting-text").css("color", "#5d90d6");
+		$("#statustracking-text").css("color", "#5d90d6");
+		$("#filemange-text").css("color", "#5d90d6");
+		$("#statustrackingUL").css("display", "block");
+		$("#filemanageUL").css("display", "block");
+	})
 </script>
 </head>
 
@@ -167,21 +182,22 @@
 				}
 			</script>
 			<ul class="breadcrumb">
-				<li>
-					<img src="${pageContext.request.contextPath}/static/imgs/DataImport/home.png" style="margin-bottom: 3px;">
-					<span>文件管理</span>
-				</li>
+				<li><img
+					src="${pageContext.request.contextPath}/static/imgs/DataImport/home.png"
+					style="margin-bottom: 3px;"> <span>文件管理</span></li>
 				<li class="active">文件状态</li>
 				<li class="active">正在进行中</li>
-			</ul><!--  .breadcrumb -->
+			</ul>
+			<!--  .breadcrumb -->
 		</div>
 		<div class="page-content">
-<!-- 			<div class="page-header" style="padding-bottom: 10px;"> -->
-<!-- 				<h1>正在处理中的流程</h1> -->
-<!-- 			</div> -->
-			<div class="row">
-				<br/><br/>
-				<div class="col-xs-12 col-sm-12" id="ystepDiv" style="height: 450px; height: auto;">
+			<!-- 			<div class="page-header" style="padding-bottom: 10px;"> -->
+			<!-- 				<h1>正在处理中的流程</h1> -->
+			<!-- 			</div> -->
+			<div class="row" style="margin-left: 20%;">
+				<br /> <br />
+				<div class="col-xs-12 col-sm-12" id="ystepDiv"
+					style="height: 450px; height: auto;">
 					<!-- ystep容器 -->
 				</div>
 				<!-- /.col -->

@@ -161,22 +161,31 @@
 </style>
 <script type="text/javascript">
 	$(function() {
-		var flag=false;
-		$(".widget-body").hide();
-		$(".selftoolbar").click(function(){
-		 if(flag){
-			$("#toolimg").attr("src","${pageContext.request.contextPath}/static/imgs/DataImport_manage/xia2.png")
-			$(".widget-body").hide();
-			flag=false;
-		 }else{
-			$("#toolimg").attr("src","${pageContext.request.contextPath}/static/imgs/DataImport_manage/xia.png")
-			$(".widget-body").css("border","1px solid #ccc");
-    		$(".widget-body").show();
-			flag=true;
-		 }
-		});
+		//左菜单栏
+		$("#ending-img").attr("src","${pageContext.request.contextPath}/static/new/img/images/a_30.png");
+		$("#statustracking-img").attr("src","${pageContext.request.contextPath}/static/new/img/images/a_34.png");
+		$("#filemanage-img").attr("src","${pageContext.request.contextPath}/static/new/img/images/a_26.png");
+		$("#ending-text").css("color", "#5d90d6");
+		$("#statustracking-text").css("color", "#5d90d6");
+		$("#filemange-text").css("color", "#5d90d6");
+		$("#statustrackingUL").css("display","block");
+		$("#filemanageUL").css("display", "block");
 		
-// 		$('#change-search-box').click();
+		
+		//修改搜索框图标
+		var flag=false;
+		$("#change-search-box").click(function(){		
+			if(flag){
+				$("#toolimg").attr("src","${pageContext.request.contextPath}/static/imgs/DataImport_manage/xia.png")
+				$(".widget-body").slideUp("slow");
+				flag=false;
+			}else{
+				$("#toolimg").attr("src","${pageContext.request.contextPath}/static/imgs/DataImport_manage/xia2.png")
+		 		$(".widget-body").slideDown("slow");
+				flag=true;
+			}
+		});
+		$("#change-search-box").click();
 	});
 </script>
 </head>
@@ -207,9 +216,13 @@
 						<div class="widget-header" id="change-search-box"
 							data-action="collapse">
 							<h4>搜索</h4>
-							<div class="selftoolbar">
-								<a href="javascript:void(0);">
-									<img id="toolimg" src="${pageContext.request.contextPath}/static/imgs/DataImport_manage/xia2.png">
+							<div class="widget-toolbar">
+								<div hidden="hidden">
+									<i class="icon-chevron-up" hidden="hidden"></i>
+								</div>
+								<a href="javascript:void(0);"> <img id="toolimg"
+									style="margin-top: 3px;"
+									src="${pageContext.request.contextPath}/static/imgs/DataImport_manage/xia.png">
 								</a>
 							</div>
 						</div>
@@ -336,6 +349,13 @@
 	</div>
 	<!-- /.main-content -->
 	<script type="text/javascript">
+$("#search-createdatetimeStart").keypress(function(){
+	  return false;
+});
+$("#search-createdatetimeEnd").keypress(function(){
+	   return false;
+});	
+	
 jeDate({
 	dateCell:"#search-createdatetimeStart",//直接显示日期层的容器，可以是ID  CLASS
 	format:"YYYY-MM-DD hh:mm:ss",//日期格式

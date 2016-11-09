@@ -215,6 +215,16 @@
 <script type="text/javascript">
 	var activeUser = '${activeUser}';
 	$(function() {
+		//左菜单栏
+		$("#warnparam-img").attr("src","${pageContext.request.contextPath}/static/new/img/images/a_62.png");
+		$("#warnmanage-img").attr("src","${pageContext.request.contextPath}/static/new/img/images/a_58.png");
+		$("#sysmanage-img").attr("src","${pageContext.request.contextPath}/static/new/img/images/a_50.png");
+		$("#warnparam-text").css("color", "#5d90d6");
+		$("#warnmanage-text").css("color", "#5d90d6");
+		$("#sysmanage-text").css("color", "#5d90d6");
+		$("#warnmanageUL").css("display","block");
+		$("#sysmanageUL").css("display", "block");
+		
 		if(activeUser != ''){
 			var permissionItemsJSON = '${activeUser.permissionItemsJSON}';
 			var map = $.parseJSON(permissionItemsJSON); 
@@ -230,20 +240,20 @@
 			}
 		}
 		
+		//修改搜索框图标
 		var flag=false;
-		$(".widget-body").hide();
-		$(".selftoolbar").click(function(){
-		 if(flag){
-			$("#toolimg").attr("src","${pageContext.request.contextPath}/static/imgs/DataImport_manage/xia2.png")
-			$(".widget-body").hide();
-			flag=false;
-		 }else{
-			$("#toolimg").attr("src","${pageContext.request.contextPath}/static/imgs/DataImport_manage/xia.png")
-			$(".widget-body").css("border","1px solid #ccc");
-    		$(".widget-body").show();
-			flag=true;
-		 }
+		$("#change-search-box").click(function(){		
+			if(flag){
+				$("#toolimg").attr("src","${pageContext.request.contextPath}/static/imgs/DataImport_manage/xia.png")
+				$(".widget-body").slideUp("slow");
+				flag=false;
+			}else{
+				$("#toolimg").attr("src","${pageContext.request.contextPath}/static/imgs/DataImport_manage/xia2.png")
+		 		$(".widget-body").slideDown("slow");
+				flag=true;
+			}
 		});
+		$("#change-search-box").click();
 		
 		$('#addValueInfoForm').bootstrapValidator({
 			message : '这个值不能为空！',
@@ -451,7 +461,6 @@
 // 			$('#addValueInfoForm').bootstrapValidator('validate');
 // 		});
 		
-// 		$('#change-search-box').click();
 		$.fn.modal.Constructor.prototype.enforceFocus = function() {};
 		$(".select2").select2();
 	});
@@ -470,7 +479,8 @@
 			<ul class="breadcrumb">
 				<li><img
 					src="${pageContext.request.contextPath}/static/imgs/DataImport/home.png"
-					style="margin-bottom: 3px;"> <span>预警管理</span></li>
+					style="margin-bottom: 3px;"> <span>系统管理</span></li>
+				<li class="active">预警管理</li>
 				<li class="active">特殊工况参数配置</li>
 			</ul>
 			<!--  .breadcrumb -->
@@ -484,9 +494,13 @@
 						<div class="widget-header" id="change-search-box"
 							data-action="collapse">
 							<h4>搜索</h4>
-							<div class="selftoolbar">
+							<div class="widget-toolbar">
+								<div hidden="hidden">
+									<i class="icon-chevron-up" hidden="hidden"></i>
+								</div>
 								<a href="javascript:void(0);"> <img id="toolimg"
-									src="${pageContext.request.contextPath}/static/imgs/DataImport_manage/xia2.png">
+									style="margin-top: 3px;"
+									src="${pageContext.request.contextPath}/static/imgs/DataImport_manage/xia.png">
 								</a>
 							</div>
 						</div>
@@ -887,9 +901,9 @@
        	  		$.get('<%=request.getContextPath()%>/starParam/getSeriesList', {}, function (res) {
      			  if(res.result == "true") {
                  	  $.each(res.data.data ,function(){
-     						$('#search-series').append("<option value='"+ this.id+"'>"+ this.description +"</option>"); 
-     						$('#add-series').append("<option value='"+ this.id+"'>"+ this.description +"</option>"); 
-     						$('#edit-series').append("<option value='"+ this.id+"'>"+ this.description +"</option>"); 
+     						$('#search-series').append("<option value='"+ this.id+"'>"+ this.name +"</option>"); 
+     						$('#add-series').append("<option value='"+ this.id+"'>"+ this.name +"</option>"); 
+     						$('#edit-series').append("<option value='"+ this.id+"'>"+ this.name +"</option>"); 
      					});
                    }
                    else {
@@ -905,7 +919,7 @@
 					  $('#search-star').find("option").remove();
 					 $('#search-star').append("<option value=''>--请选择--</option>"); 
 	            	  $.each(res.data.data ,function(){
-							$('#search-star').append("<option value='"+ this.id+"'>"+ this.description +"</option>"); 
+							$('#search-star').append("<option value='"+ this.id+"'>"+ this.name +"</option>"); 
 						});
 	              }
 	              else {
@@ -939,7 +953,7 @@
 				  $('#add-star').find("option").remove();
 				 $('#add-star').append("<option value=''>--请选择--</option>"); 
             	  $.each(res.data.data ,function(){
-						$('#add-star').append("<option value='"+ this.id+"'>"+ this.description +"</option>"); 
+						$('#add-star').append("<option value='"+ this.id+"'>"+ this.name +"</option>"); 
 					});
               }
               else {
@@ -974,7 +988,7 @@
 				  $('#edit-star').find("option").remove();
 				 $('#edit-star').append("<option value=''>--请选择--</option>"); 
             	  $.each(res.data.data ,function(){
-						$('#edit-star').append("<option value='"+ this.id+"'>"+ this.description +"</option>"); 
+						$('#edit-star').append("<option value='"+ this.id+"'>"+ this.name +"</option>"); 
 					});
               }
               else {
@@ -1109,10 +1123,6 @@
 // 				top.alertMsg('错误', '最大值必须大于最小值！');
 // 				return false;
 // 			}
-			var series = $('#add-series').val();
-			var star = $('#add-star').val();
-			var parameterType = $('#add-parameterType').val();
-			var parameter = $('#add-parameter').val();
 			var toUrl = '${pageContext.request.contextPath}/admin/prewarning/createWarnValue';
 			f.form('submit', {url : toUrl,
 				onsubmit : function() {
@@ -1127,7 +1137,7 @@
 					var map = $.parseJSON(data);
 					if (map.success) {
 						top.showMsg('提示', map.msg);
-						returnLoadDataGrid(series,star,parameterType,parameter);
+						reloadDataGrid();
 					} else {
 						top.alertMsg('错误', map.msg + "\n"+ map.obj == null ? "": map.obj);
 					}
@@ -1294,14 +1304,14 @@
 																									'#edit-star')
 																									.append(
 																											"<option value='"+ this.id+"' selected = 'selected'>"
-																													+ this.description
+																													+ this.name
 																													+ "</option>");
 																						} else {
 																							$(
 																									'#edit-star')
 																									.append(
 																											"<option value='"+ this.id+"'>"
-																													+ this.description
+																													+ this.name
 																													+ "</option>");
 																						}
 																					}

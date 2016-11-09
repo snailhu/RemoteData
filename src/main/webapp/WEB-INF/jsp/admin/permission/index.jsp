@@ -131,6 +131,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 </style>
 <script type="text/javascript">
 	$(function() {
+		//左菜单栏
+		$("#permissionmanage-img").attr("src","${pageContext.request.contextPath}/static/new/img/images/a_03.png");
+		$("#sysmanage-img").attr("src","${pageContext.request.contextPath}/static/new/img/images/a_50.png");
+		$("#permissionmanage-text").css("color","#5d90d6");
+		$("#sysmanage-text").css("color", "#5d90d6");
+		$("#sysmanageUL").css("display","block");
+		
+		
 		$('#addPermissionGroupInfoForm').bootstrapValidator({
 			message : '权限组名称不能为空',
 			feedbackIcons : {

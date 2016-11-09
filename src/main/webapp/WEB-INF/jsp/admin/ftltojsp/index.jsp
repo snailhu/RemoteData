@@ -60,6 +60,10 @@
 		}
 	}
 		$(function () {
+		//左菜单栏
+		$("#conditionmonitoring-img").attr("src","${pageContext.request.contextPath}/static/new/img/images/a_86.png");
+		$("#conditionmonitoring-text").css("color","#5d90d6");	
+		
 		var activeUser = '${activeUser}';
 		if(activeUser != ''){
 			var permissionItemsJSON = '${activeUser.permissionItemsJSON}';

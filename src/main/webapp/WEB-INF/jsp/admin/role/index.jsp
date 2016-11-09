@@ -136,6 +136,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 </style>
 <script type="text/javascript">
 	$(function() {
+		//左菜单栏
+		$("#rolemanage-img").attr("src","${pageContext.request.contextPath}/static/new/img/images/a_03.png");
+		$("#sysmanage-img").attr("src","${pageContext.request.contextPath}/static/new/img/images/a_50.png");
+		$("#rolemanage-text").css("color","#5d90d6");
+		$("#sysmanage-text").css("color", "#5d90d6");
+		$("#sysmanageUL").css("display","block");
+		
 		//创建角色表单验证
 		$('#addRoleInfoForm').bootstrapValidator({
 			message : '这个值不能为空！',

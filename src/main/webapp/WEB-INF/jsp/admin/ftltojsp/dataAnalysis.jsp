@@ -381,6 +381,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		maxDate:jeDate.now(0), //设定最大日期为当前日期
 	});
 	$(function() {	
+		//左菜单栏
+		$("#conditionmonitoring-img").attr("src","${pageContext.request.contextPath}/static/new/img/images/a_86.png");
+		$("#conditionmonitoring-text").css("color","#5d90d6");	
+		
 		var  flag=false;
 		$(".selftoolbar").click(function(){
 		

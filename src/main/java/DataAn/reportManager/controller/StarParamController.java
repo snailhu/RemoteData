@@ -58,20 +58,22 @@ public class StarParamController  extends BaseController {
 		String partsType = request.getParameter("partsType");
 		String paramCode = request.getParameter("paramCode");
 		HttpSession session = request.getSession();
-		ActiveUserDto acticeUser = (ActiveUserDto) session.getAttribute("activeUser");
-		String flywheel = J9Series_Star_ParameterType.FLYWHEEL.getValue();
-		String flywheelRole = acticeUser.getPermissionItems().get(flywheel);
-		String top = J9Series_Star_ParameterType.TOP.getValue();
-		String topRole = acticeUser.getPermissionItems().get(top);
-		
-		String value = "";
-		if (StringUtils.isNotBlank(flywheelRole) && StringUtils.isBlank(topRole)) {
-			value = J9Series_Star_ParameterType.FLYWHEEL.getValue();
+		if(StringUtils.isBlank(partsType)) {
+			String value = "";
+			ActiveUserDto acticeUser = (ActiveUserDto) session.getAttribute("activeUser");
+			String flywheel = J9Series_Star_ParameterType.FLYWHEEL.getValue();
+			String flywheelRole = acticeUser.getPermissionItems().get(flywheel);
+			String top = J9Series_Star_ParameterType.TOP.getValue();
+			String topRole = acticeUser.getPermissionItems().get(top);
+			
+			if (StringUtils.isNotBlank(flywheelRole) && StringUtils.isBlank(topRole)) {
+				value = J9Series_Star_ParameterType.FLYWHEEL.getValue();
+			}
+			if (StringUtils.isNotBlank(topRole)&& StringUtils.isBlank(flywheelRole) ) {
+				value = J9Series_Star_ParameterType.TOP.getValue();
+			}
+			partsType = value;
 		}
-		if (StringUtils.isNotBlank(topRole)&& StringUtils.isBlank(flywheelRole) ) {
-			value = J9Series_Star_ParameterType.TOP.getValue();
-		}
-		partsType = value;
 		Pager<StarParamDto> pager;
 		try {
 			pager = starParamService.getStarParamList(page, rows, series,star, 
@@ -109,6 +111,13 @@ public class StarParamController  extends BaseController {
 	public JsonMessage createStarParam(StarParamDto starParamDto,HttpServletRequest request,HttpServletResponse response) {
 		JsonMessage jsonMsg = new JsonMessage();
 		try {
+			boolean falg = starParamService.cherkStarParam(starParamDto.getSeries(),starParamDto.getStar(),
+					starParamDto.getPartsType(),starParamDto.getParamCode());
+			 if(falg) {
+				 jsonMsg.setSuccess(false);
+				 jsonMsg.setMsg("参数已存在！");
+				 return jsonMsg;
+			 } 
 			String currentUserName = getCurrentUserName(request);
 			starParamDto.setCreater(currentUserName);
 			starParamService.save(starParamDto);

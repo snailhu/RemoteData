@@ -178,9 +178,14 @@ public class JfreechartServiceImpl implements IJfreechartServcie {
 				}
 			}
 		}
-
-		MongoCursor<Document> cursor = mongoService.findByDate(series, star,
-				paramType, beginDate, endDate);
+		
+		MongoCursor<Document> cursor = null;
+		try {
+			cursor = mongoService.findByDate(series, star,
+					paramType, beginDate, endDate);
+		} catch (NullPointerException e) {
+			throw new RuntimeException(DateUtil.format(beginDate) + " 到 "+ DateUtil.format(endDate) +" 未找到报告数据！");
+		}
 		Document doc = null;
 		int count = 0;
 		Map<Date, List<Document>> tempMap = new LinkedHashMap<Date, List<Document>>();

@@ -11,6 +11,7 @@ import java.nio.charset.Charset;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+
 import DataAn.common.utils.DateUtil;
 import DataAn.common.utils.JJSON;
 import DataAn.common.utils.UUIDGeneratorUtil;
@@ -18,12 +19,14 @@ import DataAn.galaxyManager.service.IParameterService;
 import DataAn.mongo.service.IMongoService;
 import DataAn.storm.Communication;
 import DataAn.storm.FlowUtils;
+import DataAn.storm.StormNames;
 import DataAn.storm.kafka.Beginning;
 import DataAn.storm.kafka.BoundProducer;
 import DataAn.storm.kafka.DefaultFetchObj;
 import DataAn.storm.kafka.Ending;
 import DataAn.storm.kafka.InnerProducer;
 import DataAn.storm.kafka.KafkaNameKeys;
+import DataAn.storm.zookeeper.CommunicationUtils;
 import DataAn.storm.zookeeper.DisAtomicLong;
 import DataAn.storm.zookeeper.NodeSelector.WorkerPathVal;
 import DataAn.storm.zookeeper.NodeWorker;
@@ -50,6 +53,7 @@ public class SaveFileToKafka implements Runnable {
 		
 		KafkaNameKeys.setKafkaServer(conf, "192.168.0.97:9092");
 		ZooKeeperNameKeys.setZooKeeperServer(conf, "nim1.storm.com:2182,nim2.storm.com");
+		ZooKeeperNameKeys.setNamespace(conf, StormNames.TEST_NAMESPACE);
 		executor=new ZooKeeperClient()
 		.connectString(ZooKeeperNameKeys.getZooKeeperServer(conf))
 		.namespace(ZooKeeperNameKeys.getNamespace(conf))
@@ -57,6 +61,8 @@ public class SaveFileToKafka implements Runnable {
 		disAtomicLong=new DisAtomicLong(executor);
 		NodeWorkers.startup(executor,conf);
 		nodeWorker=NodeWorkers.get(0);
+		
+		CommunicationUtils.get(executor);
 		
 		this.paramService = paramService;
 		this.mongoService = mongoService;
@@ -113,7 +119,7 @@ public class SaveFileToKafka implements Runnable {
 					//
 					InnerProducer innerProducer=new InnerProducer(conf);
 					BoundProducer boundProducer=new BoundProducer(innerProducer);
-					String topic="data-prototype-"+disAtomicLong.getSequence() + "-" + new Date().getTime();
+					String topic=communication.getTopicPartition();
 					boundProducer.send(new Beginning(),topic);
 					
 					while ((line = reader.readLine()) != null) {
@@ -150,11 +156,6 @@ public class SaveFileToKafka implements Runnable {
 					
 					// mongo...
 					mongoService.updateCSVDataByDate(series, star, name, dateTime1, dateTime);
-					
-					
-					communication.setTopicPartition(topic+":0");
-					
-					FlowUtils.setDenoise(executor, communication);
 					
 					System.out.println(nodeWorker.getId()+ " finish!!!!!!!!");
 				} catch (Exception e) {

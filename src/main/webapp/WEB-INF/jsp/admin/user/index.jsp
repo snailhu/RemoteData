@@ -256,9 +256,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				},
 				mobile : {
 					validators : {
-						notEmpty : {
-							message : '手机号码不能为空'
-						},
 						regexp : {
 							regexp : /^1[3578]\d{9}$/,
 							message : '手机号码格式不对'
@@ -267,9 +264,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				},
 				email : {
 					validators : {
-						notEmpty : {
-							message : '手机号码不能为空'
-						},
 						emailAddress : {
 							message : '请输入正确的邮箱地址'
 						}

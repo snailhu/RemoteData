@@ -342,7 +342,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					<img src="${pageContext.request.contextPath}/static/imgs/DataImport/home.png" style="margin-bottom: 3px;">
 					<span>报告管理</span>
 				</li>
-				<li class="active">报告参数配置</li>
+				<li class="active">报告参数</li>
 			</ul><!--  .breadcrumb -->
 		</div>
 		<div class="page-content">
@@ -355,10 +355,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				<div class="col-xs-12 col-sm-12">
 					<!-- PAGE CONTENT BEGINS -->
 					<div class="widget-box">
-						<div class="widget-header">
+						<div class="widget-header" id="change-search-box" data-action="collapse">
 							<h4>搜索</h4>
-							<div class="selftoolbar">
+							<div class="widget-toolbar">
 								<a href="javascript:void(0);" >
+									<div hidden="hidden"><i class="icon-chevron-up" hidden="hidden"></i></div>
 									<img id="toolimg" src="${pageContext.request.contextPath}/static/imgs/DataImport_manage/xia2.png">
 								</a>
 							</div>
@@ -694,20 +695,19 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                 }]
             });
 		
-		var  flag=false;
-		$(".widget-body").hide();
-		$(".selftoolbar").click(function(){
-		 if(flag){
-			$("#toolimg").attr("src","${pageContext.request.contextPath}/static/imgs/DataImport_manage/xia2.png")
-			$(".widget-body").hide();
-			flag=false;
-		 }else{
-			$("#toolimg").attr("src","${pageContext.request.contextPath}/static/imgs/DataImport_manage/xia.png")
-			$(".widget-body").css("border","1px solid #ccc");
-    		$(".widget-body").show();
-			flag=true;
-		 }
-		});
+	  var flag=false;
+			$("#change-search-box").click(function(){		
+				if(flag){
+					$("#toolimg").attr("src","${pageContext.request.contextPath}/static/imgs/DataImport_manage/xia.png")
+					$(".widget-body").slideUp("slow");
+					flag=false;
+				}else{
+					$("#toolimg").attr("src","${pageContext.request.contextPath}/static/imgs/DataImport_manage/xia2.png")
+			 		$(".widget-body").slideDown("slow");
+					flag=true;
+				}
+			});
+			$("#change-search-box").click();
 		
 		if(activeUser != ''){
 				var permissionItemsJSON = '${activeUser.permissionItemsJSON}';
@@ -821,39 +821,39 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		  
 		function  validator (series,star,partsType,paramCode,effeMin,effeMax) {
 			if(series == "") {
-				  top.showMsg('提示', "星系不能为空");
+				 top.alertMsg('错误', "星系不能为空");
 				  return false;
 			}
 			if(star == "") {
-				  top.showMsg('提示', "星号不能为空");
+				  top.alertMsg('错误',"星号不能为空");
 				  return false;
 			}
 			if(partsType == "") {
-				  top.showMsg('提示', "设备不能为空");
+				  top.alertMsg('错误', "设备不能为空");
 				  return false;
 			}
 			if(paramCode == "") {
-				  top.showMsg('提示', "参数不能为空");
+				  top.alertMsg('错误', "参数不能为空");
 				  return false;
 			}
 			if(effeMin == "") {
-				 top.showMsg('提示', "最小值不能为空");
+				 top.alertMsg('错误', "最小值不能为空");
 				 return false;
 			}
 			if(effeMax == "") {
-			 	 top.showMsg('提示', "最大值不能为空");
+			 	 top.alertMsg('错误',"最大值不能为空");
 				 return false;
 			}
 			if(	isNaN(effeMin)) {
-				 top.showMsg('提示', "最小值必须为数字");
+				top.alertMsg('错误',"最小值必须为数字");
 				 return false;
 			}
 			if(isNaN(effeMax)) {
-			 	 top.showMsg('提示', "最大值必须为数字");
+			 	 top.alertMsg('错误', "最大值必须为数字");
 				 return false;
 			}
 			if(Number(effeMax) <= Number(effeMin)) {
-			 	 top.showMsg('提示', "最大值不能小于最小值");
+			 	 top.alertMsg('错误', "最大值不能小于最小值");
 				 return false;
 			}
 			return true;
@@ -935,7 +935,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				  if(res.result == "true") {
 					  return true;	
 	              }else {
-					  top.showMsg('提示', res.msg);
+					  top.alertMsg('错误', res.msg);
 					  return false;
 	              }
 	          });

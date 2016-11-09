@@ -676,7 +676,7 @@ jeDate({
 							}
 						});
 			} else {
-				top.showMsg("提示", "请选择要删除的用户！");
+				top.showMsg("提示", "请选择要删除的信息！");
 			}
 		}
 		function getSelectId() {

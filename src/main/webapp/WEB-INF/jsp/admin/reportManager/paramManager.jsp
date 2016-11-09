@@ -696,7 +696,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                 }]
             });
 		
-	  var flag=false;
+	        var flag=false;
 			$("#change-search-box").click(function(){		
 				if(flag){
 					$("#toolimg").attr("src","${pageContext.request.contextPath}/static/imgs/DataImport_manage/xia.png")
@@ -770,14 +770,15 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
       		 var partstype = $('#form-partsType').val();	
 			 var seriesId = $('#form-series').val();
 			 var starId = $('#form-star').val();
+			 console.log(partstype);
+			 $("#form-paramCode").select2().val("").trigger("change");
 			 $.get('<%=request.getContextPath()%>/starParam/getConstraintList', {'seriesId':seriesId,'starId':starId,'partstype':partstype},  function (res) {
+					$('#form-paramCode').find("option").remove();
+					$('#form-paramCode').append("<option value=''>--请选择--</option>"); 
 					if(res.result == "true") {
-						$('#form-paramCode').find("option").remove();
-						$('#form-paramCode').append("<option value=''>--请选择--</option>"); 
 			          	$.each(res.data.data ,function(){
 								$('#form-paramCode').append("<option value='"+ this.value+"'>"+ this.name +"</option>"); 
 						});
-			            $("#form-paramCode").select2().val("").trigger("change");
 		             } 
 		      });
       }
@@ -810,6 +811,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			  var partstype = $('#add-starParam-partsType').val();	
 			  var seriesId = $('#add-starParam-series').val();
 			  var starId = $('#add-starParam-star').val();
+			  $("#add-starParam-paramCode").select2().val("").trigger("change");
 				  $.get('<%=request.getContextPath()%>/starParam/getConstraintList', {'seriesId':seriesId,'starId':starId,'partstype':partstype},  function (res) {
 					      $('#add-starParam-paramCode').find("option").remove();
 					      $('#add-starParam-paramCode').append("<option value=''>--请选择--</option>"); 
@@ -817,7 +819,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			          	 	 $.each(res.data.data ,function(){
 									$('#add-starParam-paramCode').append("<option value='"+ this.value+"'>"+ this.name +"</option>"); 
 							 });
-							$("#add-starParam-paramCode").select2().val("").trigger("change");
 		              }
 		          });
 		  }
@@ -1126,7 +1127,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						names.push(rows[i].paramName);
 					}
 					top.showMsg("提示", '只能选择一个参数进行编辑！您已经选择了【' + names.join(',')
-							+ '】' + rows.length + '个用户');
+							+ '】' + rows.length + '个参数');
 				}
 			} else {
 				top.showMsg("提示", "请选择要编辑的参数！");

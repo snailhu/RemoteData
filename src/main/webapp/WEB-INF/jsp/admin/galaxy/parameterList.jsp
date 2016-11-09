@@ -129,6 +129,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 </style>
 <script type="text/javascript">
 $(function() {
+	//左菜单栏
+	$("#galaxymanage-img").attr("src","${pageContext.request.contextPath}/static/new/img/images/a_82.png");
+	$("#galaxymanage-text").css("color","#5d90d6");
+	
     //创建参数验证
     $('#addParamInfoForm').bootstrapValidator({
         message : '这个值不能为空！',
@@ -206,9 +210,9 @@ $(function() {
 			<ul class="breadcrumb">
 				<li>
 					<img src="${pageContext.request.contextPath}/static/imgs/DataImport/home.png" style="margin-bottom: 3px;">
-					<span>系统管理</span>
+					<span>星系管理</span>
 				</li>
-				<li class="active">遥测节点</li>
+				<li class="active">参数列表</li>
 			</ul><!--  .breadcrumb -->
 		</div>
 		<div class="page-content">

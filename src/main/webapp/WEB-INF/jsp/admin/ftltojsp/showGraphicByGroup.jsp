@@ -82,7 +82,11 @@
 	</div><!-- /.main-content -->
 	<script type="text/javascript">
 	    $(function(){   
-	    	$('#menu').sidebarMenu({ url: "${base}/DataRemote/getMenus"});                	 
+	    	$('#menu').sidebarMenu({ url: "${base}/DataRemote/getMenus"});   
+	    	
+	    	//左菜单栏
+			$("#conditionmonitoring-img").attr("src","${pageContext.request.contextPath}/static/new/img/images/a_86.png");
+			$("#conditionmonitoring-text").css("color","#5d90d6");
 	    })
     </script>
 </body>

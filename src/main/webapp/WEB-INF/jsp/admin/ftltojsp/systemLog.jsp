@@ -49,6 +49,16 @@
 			padding:0px !important
 		}
 	</style>
+<script type="text/javascript">
+	$(function(){
+		//左菜单栏
+		$("#logmanage-img").attr("src","${pageContext.request.contextPath}/static/new/img/images/a_54.png");
+		$("#sysmanage-img").attr("src","${pageContext.request.contextPath}/static/new/img/images/a_50.png");
+		$("#logmanage-text").css("color","#5d90d6");
+		$("#sysmanage-text").css("color", "#5d90d6");
+		$("#sysmanageUL").css("display","block");
+	})
+</script>
 </head>
 <body>
 	<div class="main-content">

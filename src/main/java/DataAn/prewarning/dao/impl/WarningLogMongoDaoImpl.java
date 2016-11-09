@@ -3,6 +3,8 @@ package DataAn.prewarning.dao.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Resource;
+
 import org.apache.commons.lang3.StringUtils;
 import org.bson.Document;
 import org.bson.types.ObjectId;
@@ -15,6 +17,8 @@ import com.mongodb.client.model.Updates;
 
 import DataAn.common.dao.Pager;
 import DataAn.common.utils.DateUtil;
+import DataAn.galaxyManager.dao.ISeriesDao;
+import DataAn.galaxyManager.dao.IStarDao;
 import DataAn.mongo.client.MongodbUtil;
 import DataAn.mongo.init.InitMongo;
 import DataAn.prewarning.dao.IWarningLogMongoDao;
@@ -22,10 +26,10 @@ import DataAn.prewarning.dto.QueryLogDTO;
 
 @Repository
 public class WarningLogMongoDaoImpl implements IWarningLogMongoDao {
-
+	
 	@Override
 	public void deleteWainingById(String logId, String series, String star, String parameterType, String warningType) {
-		String databaseName = InitMongo.getDataBaseNameBySeriesAndStar(series, star);
+		String databaseName = getDataBaseNameBySeriesAndStar(series, star);
 		String collectionName = getCollectionName(parameterType, warningType);
 		MongodbUtil.getInstance().deleteMany(databaseName, collectionName, "_id", logId);
 	}
@@ -158,7 +162,7 @@ public class WarningLogMongoDaoImpl implements IWarningLogMongoDao {
 
 	private void updateHadRead(QueryLogDTO queryLogDTO) {
 		MongodbUtil mongodbUtil = MongodbUtil.getInstance();
-		String databaseName = InitMongo.getDataBaseNameBySeriesAndStar(queryLogDTO.getSeries(), queryLogDTO.getStar());
+		String databaseName = getDataBaseNameBySeriesAndStar(queryLogDTO.getSeries(), queryLogDTO.getStar().substring(1));
 		String collectionName = getCollectionName(queryLogDTO.getParameterType(), queryLogDTO.getWarningType());
 		MongoCollection<Document> collection = mongodbUtil.getCollectionNotShard(databaseName, collectionName);
 		if (collection != null) {
@@ -202,7 +206,7 @@ public class WarningLogMongoDaoImpl implements IWarningLogMongoDao {
 					queryLogResultDTOs);
 			return pager;
 		} else {
-			String databaseName = InitMongo.getDataBaseNameBySeriesAndStar(series, star);
+			String databaseName = getDataBaseNameBySeriesAndStar(series, star);
 			String collectionName = getCollectionName(parameterType, warningType);
 			MongoCollection<Document> collection = mongodbUtil.getCollectionNotShard(databaseName, collectionName);
 			FindIterable<Document> document_It = null;
@@ -295,6 +299,10 @@ public class WarningLogMongoDaoImpl implements IWarningLogMongoDao {
 				return pager;
 			}
 		}
+	}
+	
+	private String getDataBaseNameBySeriesAndStar(String series, String star){
+		return  "db_" + series + "_star" + star;
 	}
 
 }

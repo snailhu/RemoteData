@@ -135,6 +135,16 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 }
 
 </style>
+<script type="text/javascript">
+	$(function(){
+		//左菜单栏
+		$("#reportcreate-img").attr("src","${pageContext.request.contextPath}/static/new/img/images/a_18.png");
+		$("#reportmanage-img").attr("src","${pageContext.request.contextPath}/static/new/img/images/a_05.png");
+		$("#reportcreate-text").css("color","#5d90d6");
+		$("#reportmanage-text").css("color", "#5d90d6");
+		$("#reportmanageUL").css("display","block");
+	})
+</script>
   </head>
   <body>
 

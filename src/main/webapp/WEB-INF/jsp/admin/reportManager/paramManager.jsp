@@ -175,6 +175,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
 <script type="text/javascript">
 	$(function() {
+		//左菜单栏
+		$("#parammanage-img").attr("src","${pageContext.request.contextPath}/static/new/img/images/a_22.png");
+		$("#reportmanage-img").attr("src","${pageContext.request.contextPath}/static/new/img/images/a_05.png");
+		$("#parammanage-text").css("color","#5d90d6");
+		$("#reportmanage-text").css("color", "#5d90d6");
+		$("#reportmanageUL").css("display","block");
+		
+		
 		$('#addStarParamInfoForm').bootstrapValidator({
 			message : '这个值不能为空！',
 			feedbackIcons : {
@@ -342,7 +350,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					<img src="${pageContext.request.contextPath}/static/imgs/DataImport/home.png" style="margin-bottom: 3px;">
 					<span>报告管理</span>
 				</li>
-				<li class="active">报告参数</li>
+				<li class="active">参数管理</li>
 			</ul><!--  .breadcrumb -->
 		</div>
 		<div class="page-content">

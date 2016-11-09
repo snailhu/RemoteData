@@ -183,7 +183,8 @@ public class PrewarningServiceImpl implements IPrewarningService {
 		if (StringUtils.isNotBlank(star)) {
 			starDomain = starDao.get(Long.parseLong(star));
 			if (starDomain != null) {
-				starName = starDomain.getCode();
+//				starName = starDomain.getCode();
+				starName = starDomain.getName().substring(1);
 			}
 		}
 		Pager<QueryLogDTO> logPager = warningLogMongoDao.selectByOption(pageIndex, pageSize, seriesName, starName,

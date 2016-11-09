@@ -225,7 +225,12 @@ input[type=text]::-webkit-focus-inner {
 </style>
 <script type="text/javascript">
 	$(function(){
+		//左菜单栏
 		$("#uploadFile-img").attr("src","${pageContext.request.contextPath}/static/new/img/images/a_30.png");
+		$("#filemanage-img").attr("src","${pageContext.request.contextPath}/static/new/img/images/a_26.png");
+		$("#uploadFile-text").css("color","#5d90d6");
+		$("#filemange-text").css("color", "#5d90d6");
+		$("#filemanageUL").css("display","block");
 	})
 </script>
 </head>

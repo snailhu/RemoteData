@@ -349,6 +349,13 @@
 	</div>
 	<!-- /.main-content -->
 	<script type="text/javascript">
+$("#search-createdatetimeStart").keypress(function(){
+	  return false;
+});
+$("#search-createdatetimeEnd").keypress(function(){
+	   return false;
+});	
+	
 jeDate({
 	dateCell:"#search-createdatetimeStart",//直接显示日期层的容器，可以是ID  CLASS
 	format:"YYYY-MM-DD hh:mm:ss",//日期格式

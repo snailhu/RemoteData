@@ -636,7 +636,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                 },
                 frozenColumns: [[{
                     title: 'id',
-                    field: 'id',//'StarParamId',
+                    field: 'id',
                     width: 50,
                     checkbox: true
                 }, {

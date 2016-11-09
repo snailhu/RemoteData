@@ -65,11 +65,19 @@ public class StarParamServiceImpl implements IStarParamService {
 		starParamDto.setParameterType(starParam.getParameterType());
 		starParamDto.setProductName(starParam.getProductName());
 		starParamDto.setPartsType(J9Series_Star_ParameterType.getJ9SeriesStarParameterType(starParam.getPartsType()).getName());
-		starParamDto.setSeries(starParam.getSeries());
-		starParamDto.setStar(starParam.getStar());
+		starParamDto.setSeries(getSeriesName(starParam.getSeries()));
+		starParamDto.setStar(getStarName(starParam.getStar()));
 		starParamDto.setCreater(starParam.getCreater());
 		starParamDto.setCreateDate(starParam.getCreateDate());
 		return starParamDto;
+	}
+
+	private String getStarName(String star) {
+		return starDao.getStarName(star);
+	}
+
+	private String getSeriesName(String series) {
+		return seriesDao.getSeriesName(series);
 	}
 
 	@Override

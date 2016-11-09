@@ -12,7 +12,6 @@ import DataAn.common.dao.BaseDaoImpl;
 import DataAn.common.dao.Pager;
 import DataAn.reportManager.dao.IStarParamDao;
 import DataAn.reportManager.domain.StarParam;
-import DataAn.reportManager.dto.StarParamDto;
 
 @Repository
 public class StarParamDao extends BaseDaoImpl<StarParam> implements IStarParamDao {

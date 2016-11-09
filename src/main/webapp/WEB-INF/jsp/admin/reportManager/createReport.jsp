@@ -255,6 +255,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	var activeUser = '${activeUser}';
 $(function(){
 	  
+	   $("#form-beginTime").keypress(function(){
+			  return false;
+		});
+		$("#form-endTime").keypress(function(){
+			   return false;
+		});
 	  jeDate({
 			dateCell:"#form-beginTime",//直接显示日期层的容器，可以是ID  CLASS
 			format:"YYYY-MM-DD",//日期格式

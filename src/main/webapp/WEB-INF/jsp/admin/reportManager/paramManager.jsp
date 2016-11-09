@@ -619,6 +619,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		var activeUser = '${activeUser}';
 		var StarParamGrid;
 		var deptTree;
+		var check;
         $(function () {
         
             StarParamGrid = $("#StarParamList").datagrid({
@@ -712,6 +713,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		if(activeUser != ''){
 				var permissionItemsJSON = '${activeUser.permissionItemsJSON}';
 				var map = $.parseJSON(permissionItemsJSON); 
+				 $('#form-partsType').find("option").remove();
+  			      $('#form-partsType').append("<option value=''>--请选择--</option>"); 
 				if(map.flywheel == 'flywheel'){
 					$("#form-partsType").append(" <option value = 'flywheel'>飞轮</option>"); 
 				}
@@ -896,6 +899,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
           if(activeUser != ''){
 				var permissionItemsJSON = '${activeUser.permissionItemsJSON}';
 				var map = $.parseJSON(permissionItemsJSON); 
+			    $('#add-starParam-partsType').find("option").remove();
+  			    $('#add-starParam-partsType').append("<option value=''>--请选择--</option>"); 
 				if(map.flywheel == 'flywheel'){
 					$("#add-starParam-partsType").append(" <option value = 'flywheel'>飞轮</option>"); 
 				}
@@ -933,10 +938,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		function checkParam(series,star,partsType,paramCode) {
 			 $.get('<%=request.getContextPath()%>/starParam/checkParam', {'series':series,'star':star,'partsType':partsType,'paramCode':paramCode},  function (res) {
 				  if(res.result == "true") {
-					  return true;	
+					  check =  "true";	
 	              }else {
 					  top.alertMsg('错误', res.msg);
-					  return false;
+					  check = "false";
 	              }
 	          });
 		}
@@ -951,10 +956,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		    var effeMax = $('#add-starParam-effeMax').val();
 			var flag =	validator(series,star,partsType,paramCode,effeMin,effeMax);
 			if(!flag) {
-				return false;
-			} 
-			var check =  checkParam(series,star,partsType,paramCode);
-			if(!check) {
 				return false;
 			} 
 			var toUrl='${pageContext.request.contextPath}/starParam/createStarParam';
@@ -976,7 +977,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			                     reloadDataGrid();
 			                 }
 			                 else {
-			                 	top.alertMsg('错误', map.msg+"\n"+map.obj==null?"":map.obj);
+			                 	top.alertMsg('错误', map.msg);
 			                 }
 			             },
 			             onLoadError: function () {

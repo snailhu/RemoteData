@@ -109,6 +109,13 @@ public class StarParamController  extends BaseController {
 	public JsonMessage createStarParam(StarParamDto starParamDto,HttpServletRequest request,HttpServletResponse response) {
 		JsonMessage jsonMsg = new JsonMessage();
 		try {
+			boolean falg = starParamService.cherkStarParam(starParamDto.getSeries(),starParamDto.getStar(),
+					starParamDto.getPartsType(),starParamDto.getParamCode());
+			 if(falg) {
+				 jsonMsg.setSuccess(false);
+				 jsonMsg.setMsg("参数已存在！");
+				 return jsonMsg;
+			 } 
 			String currentUserName = getCurrentUserName(request);
 			starParamDto.setCreater(currentUserName);
 			starParamService.save(starParamDto);

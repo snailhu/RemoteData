@@ -133,7 +133,7 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 		// 调用文件队列API，  zookeeper 
 		Map conf=new HashMap<>();
 		ZooKeeperNameKeys.setZooKeeperServer(conf, "nim1.storm.com:2182,nim2.storm.com");
-		ZooKeeperNameKeys.setNamespace(conf, StormNames.TEST_NAMESPACE);
+		ZooKeeperNameKeys.setNamespace(conf, "sit-test");
 		ZookeeperExecutor executor=new ZooKeeperClient()
 		.connectString(ZooKeeperNameKeys.getZooKeeperServer(conf))
 		.namespace(ZooKeeperNameKeys.getNamespace(conf))

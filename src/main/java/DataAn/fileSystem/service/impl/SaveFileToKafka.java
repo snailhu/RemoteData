@@ -53,7 +53,7 @@ public class SaveFileToKafka implements Runnable {
 		
 		KafkaNameKeys.setKafkaServer(conf, "192.168.0.97:9092");
 		ZooKeeperNameKeys.setZooKeeperServer(conf, "nim1.storm.com:2182,nim2.storm.com");
-		ZooKeeperNameKeys.setNamespace(conf, StormNames.TEST_NAMESPACE);
+		ZooKeeperNameKeys.setNamespace(conf, "sit-test");
 		executor=new ZooKeeperClient()
 		.connectString(ZooKeeperNameKeys.getZooKeeperServer(conf))
 		.namespace(ZooKeeperNameKeys.getNamespace(conf))

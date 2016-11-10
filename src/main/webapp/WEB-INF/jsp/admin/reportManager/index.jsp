@@ -23,8 +23,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<!-- 时间选择器 -->
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/static/content/jQueryCalendar/calendar.css">
 	<script src="${pageContext.request.contextPath}/static/content/jQueryCalendar/calendar.js"></script> 
+	<!-- 弹出框 -->
+	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/static/content/sweetalert/dist/sweetalert.css">
+	<script src="${pageContext.request.contextPath}/static/content/sweetalert/dist/sweetalert.min.js"></script>
 	
-	    <link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/static/content/jeDate/jedate/skin/jedate.css">
+	<link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/static/content/jeDate/jedate/skin/jedate.css">
     <script type="text/javascript" src="${pageContext.request.contextPath}/static/content/jeDate/jedate/jedate.js"></script>
 	       <link rel="stylesheet" href="<%=request.getContextPath()%>/static/css/all.css" type="text/css" />
   <style type="text/css">
@@ -52,6 +55,90 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     float: right;
     position: relative;
   }
+  
+  .sweet-alert h2 {
+	color: rgb(87, 87, 87);
+	font-size: 30px;
+	text-align: center;
+	font-weight: 600;
+	text-transform: none;
+	position: relative;
+	line-height: 40px;
+	display: block;
+	margin: 25px 0px;
+	padding: 0px;
+}
+
+.sweet-alert p {
+	color: rgb(121, 121, 121);
+	font-size: 16px;
+	font-weight: 300;
+	position: relative;
+	text-align: inherit;
+	float: none;
+	line-height: normal;
+	margin: 0px;
+	padding: 0px;
+}
+
+.sweet-alert .sa-error-container {
+	background-color: rgb(241, 241, 241);
+	margin-left: -17px;
+	margin-right: -17px;
+	max-height: 0px;
+	overflow: hidden;
+	padding: 0px 10px;
+	transition: padding 0.15s, max-height 0.15s;
+}
+
+.sweet-alert button.cancel {
+	background-color: rgb(193, 193, 193);
+}
+
+.sweet-alert button {
+	font-size: 14px;
+	width: 100px;
+	height: 32px;
+	border-width: 0;
+	margin-right: 20px;
+}
+
+.sweet-alert .sa-confirm-button-container {
+	display: inline-block;
+	position: relative;
+	/*     padding-left: 20px; */
+}
+  .icon-remove {
+	background: url('') no-repeat center center;
+}
+
+.icon-edit {
+	background: url('') no-repeat center center;
+}
+
+.glyphicon {
+	position: relative;
+	top: -23px;
+	padding-right: 10px;
+	display: inline-block;
+	font-family: 'Glyphicons Halflings';
+	-webkit-font-smoothing: antialiased;
+	font-style: normal;
+	font-weight: normal;
+	line-height: 1;
+	float: right;
+}
+
+.help-block {
+	display: block;
+	margin-top: 10px;
+	margin-bottom: 0px;
+	color: #737373;
+}
+.sa-button-container{
+	margin-top: 30px;
+	text-align: center;
+}
   </style>
   <script type="text/javascript">
 	$(function(){
@@ -385,35 +472,51 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	    	 top.showMsg("提示", "请选择要下载的文件");
 	     }  
 	  }
-	  function deleteFS() {
-	      var ids = [];
-	      var rows = fsGrid.datagrid('getSelections');
-	      if (rows.length>0) {
-	          $.messager.confirm('提示', '确定删除吗？', function (r) {
-	              if (r) {
-	                  for (var i = 0; i < rows.length; i++) {
-	                      ids.push(rows[i].id +"/"+rows[i].type);
-	                  }
-	                  $.post('<%=request.getContextPath()%>/report/deleteFiles', { "itemIds": ids.join(',')}, function (data) {
-	                      if (data.success) {
-	                          reloadDataGrid();
-	                          top.showMsg('提示', data.msg);
-	                      }
-	                      else {
-	                          top.alertMsg('错误', data.msg+"\n"+(data.obj==null?"":data.obj));
-	                      }
-	
-	                  }, "json");
-	              }
-	          });
-	      }
-	      else {
-	          top.showMsg("提示", "请选择要删除的记录！");
-	
-	      }
-	  }
-
-		
+	  
+		//删除用户
+		function deleteFS() {
+			 var ids = [];
+		      var rows = fsGrid.datagrid('getSelections');
+		      if (rows.length>0) {
+				swal({
+					title : "你是否确定删除?",
+					type : "warning",
+					showCancelButton : true,
+					confirmButtonColor : "#DD6B55",
+					confirmButtonText : "删除",
+					cancelButtonText : "取消",
+					closeOnConfirm : false,
+					closeOnCancel : false
+				},
+				function(isConfirm) {
+					if (isConfirm) {
+						 for (var i = 0; i < rows.length; i++) {
+		                      ids.push(rows[i].id +"/"+rows[i].type);
+		                  }
+						$.ajax({
+							url : '${pageContext.request.contextPath}/report/deleteFiles',
+							data : {
+								 "itemIds": ids.join(',')
+							},
+							cache : false,
+							dataType : "json",
+							success : function(data) {
+								if (data.success) {
+									swal("删除成功!","","success");
+									reloadDataGrid();
+								} else {
+									swal("删除失败", data.obj,"error");
+								}
+							}
+						});
+					} else {
+						swal("取消删除", "","error");
+					}
+				});
+			} else {
+				top.showMsg("提示", "请选择要删除的报告");
+			}
+		}
 	  
 	  function createReport() {
 		  $.get('<%=request.getContextPath()%>/report/createReportTest', {}, function (data) {

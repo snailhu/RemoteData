@@ -104,7 +104,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 }
 
 .sweet-alert button {
-	background-color: rgb(140, 212, 245);
+	font-size: 14px;
+	width: 100px;
+	height: 32px;
+	border-width: 0;
+	margin-right: 20px;
+/* 	background-color: rgb(140, 212, 245);
 	color: white;
 	box-shadow: none;
 	font-size: 17px;
@@ -113,8 +118,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	border: none;
 	border-radius: 5px;
 	padding: 10px 32px;
-	margin: 26px 30px 0px;
-	/*     width: 150px; */
+	margin: 26px 30px 0px; */
 }
 
 .sweet-alert .sa-confirm-button-container {
@@ -149,6 +153,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	margin-top: 10px;
 	margin-bottom: 0px;
 	color: #737373;
+}
+.sa-button-container {
+    margin-top: 20px;
+	text-align: center;
+}
+.sa-confirm-button-container{
+	text-align: center;
 }
 .widget-toolbar>a {
     font-size: 36px;
@@ -528,7 +539,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								<div class="form-group">
 									<label class="col-sm-3 control-label no-padding-right" for="edit-starParam-series"> 星系: </label>
 									<div class="col-sm-8">
-										<select name="series"  id="edit-starParam-series" class="form-control " disabled="disabled">
+										<select name="series"  id="edit-starParam-series" class="form-control " >
 				                       	</select>
 									</div>
 								</div>
@@ -536,7 +547,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								<div class="form-group">
 									<label class="col-sm-3 control-label no-padding-right" for="edit-starParam-star"> 星号： </label>
 									<div class="col-sm-8">
-										<select name="star"  id="edit-starParam-star" class="form-control " disabled="disabled">
+										<select name="star"  id="edit-starParam-star" class="form-control " >
 				                       </select>
 									</div>
 								</div>
@@ -544,10 +555,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								<div class="form-group">
 									<label class="col-sm-3 control-label no-padding-right" for="edit-starParam-partsType">  设备： </label>
 									<div class="col-sm-8">
-										<select name="partsType"  id="edit-starParam-partsType" class="form-control " disabled="disabled">
-										   <option selected="selected" value="">--请选择--</option>
-				                           <option value = "flywheel">飞轮</option>
-				                           <option value = "top">陀螺</option>
+										<select name="partsType"  id="edit-starParam-partsType" class="form-control " >
 				                       </select>
 									</div>
 								</div>
@@ -555,7 +563,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								<div class="form-group">
 									<label class="col-sm-3 control-label no-padding-right" for="edit-starParam-paramCode"> 参数： </label>
 									<div class="col-sm-8">
-										<select name="paramCode"  id="edit-starParam-paramCode" class="form-control  select2" style="width: 100%;" disabled="disabled">
+										<select name="paramCode"  id="edit-starParam-paramCode" class="form-control  select2" style="width: 100%;">
 				                       </select>
 									</div>
 								</div>
@@ -819,7 +827,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			  var partstype = $('#add-starParam-partsType').val();	
 			  var seriesId = $('#add-starParam-series').val();
 			  var starId = $('#add-starParam-star').val();
-			  $("#add-starParam-paramCode").select2().val("").trigger("change");
 				  $.get('<%=request.getContextPath()%>/starParam/getConstraintList', {'seriesId':seriesId,'starId':starId,'partstype':partstype},  function (res) {
 					      $('#add-starParam-paramCode').find("option").remove();
 					      $('#add-starParam-paramCode').append("<option value=''>--请选择--</option>"); 
@@ -827,6 +834,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			          	 	 $.each(res.data.data ,function(){
 									$('#add-starParam-paramCode').append("<option value='"+ this.value+"'>"+ this.name +"</option>"); 
 							 });
+			  				//$("#add-starParam-paramCode").select2().val("").trigger("change");
 		              }
 		          });
 		  }
@@ -1050,16 +1058,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			  	  var seriesId = $('#edit-starParam-series').val();
 			 	  var starId = $('#edit-starParam-star').val();
 				  $.get('<%=request.getContextPath()%>/starParam/getConstraintList', {'seriesId':seriesId,'starId':starId,'partstype':partstype},  function (res) {
+					  $('#edit-starParam-paramCode').find("option").remove();
+					  $('#edit-starParam-paramCode').append("<option value=''>--请选择--</option>"); 
+					  $("#edit-starParam-paramCode").select2().val("").trigger("change");
 					  if(res.result == "true") {
-					  		 $('#edit-starParam-paramCode').find("option").remove();
-					  		 $('#edit-starParam-paramCode').append("<option value=''>--请选择--</option>"); 
 			          	 	 $.each(res.data.data ,function(){
 									$('#edit-starParam-paramCode').append("<option value='"+ this.value+"'>"+ this.name +"</option>"); 
 								});
-								 $("#edit-starParam-paramCode").select2().val("").trigger("change");
-		              }
-		              else {
-		            	  top.showMsg('提示', res.msg);
 		              }
 		          });
 		  }
@@ -1071,31 +1076,33 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			if (rows.length > 0) {
 				if (rows.length == 1) {
 					//弹出编辑框
-					  $.get('<%=request.getContextPath()%>/starParam/getSeriesList', {}, function (res) {
-						  if(res.result == "true") {
+					 $.get('<%=request.getContextPath()%>/starParam/getParamById', {'id':rows[0].id}, function (sp) {
+						 if(sp.result == "true") {
+							$.get('<%=request.getContextPath()%>/starParam/getSeriesList', {}, function (res) {
+						 	 if(res.result == "true") {
 							  $('#edit-starParam-series').find("option").remove();
 							  $('#edit-starParam-series').append("<option value=''>--请选择--</option>"); 
 			            	  $.each(res.data.data ,function(){
-			            		  if(rows[0].series == this.id) {
+			            		  if(sp.data.starParam.series == this.id) {
 			            			  $('#edit-starParam-series').append("<option value='"+ this.code+"' selected>"+ this.name +"</option>"); 
 			            		  } else {
 									$('#edit-starParam-series').append("<option value='"+ this.code+"'>"+ this.name +"</option>"); 
 			            		  }
 								});
-								 $('#edit-starParam-series').val(rows[0].series);
+								 $('#edit-starParam-series').val(sp.data.starParam.series);
 			            		var seriesId = $('#edit-starParam-series').val();	
 			    				  $.get('<%=request.getContextPath()%>/starParam/getStarList', {'seriesId':seriesId},  function (res) {
 			    					  if(res.result == "true") {
 			    						  $('#edit-starParam-star').find("option").remove();
 			    						  $('#edit-starParam-star').append("<option value=''>--请选择--</option>"); 
 			    		            	  $.each(res.data.data ,function(){
-			    		            		  if(rows[0].star == this.id) {
+			    		            		  if(sp.data.starParam.star == this.id) {
 			    		            			  $('#edit-starParam-star').append("<option value='"+ this.code+"' selected>"+ this.name +"</option>"); 
 			    		            		  }else {
 			    								$('#edit-starParam-star').append("<option value='"+ this.code+"'>"+ this.name +"</option>"); 
 			    		            		  }
 			    							});
-			    							
+			    							 $('#edit-starParam-star').val(sp.data.starParam.star);
 			    		              }
 			    		              else {
 			    		            	  top.showMsg('提示', res.msg);
@@ -1106,29 +1113,36 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			            	  top.showMsg('提示', res.msg);
 			              }
 			          });
-					var parts = '';
-					if(rows[0].partsType == "飞轮") {
-						parts = "flywheel";
-					}else if(rows[0].partsType == "陀螺") {
-						parts = "top";
-					}
-					 $.get('<%=request.getContextPath()%>/starParam/getConstraintList', {'seriesId':rows[0].series,'starId':rows[0].star,'partstype':parts},  function (res) {
-					  if(res.result == "true") {
-					  		 $('#edit-starParam-paramCode').find("option").remove();
-					  		 $('#edit-starParam-paramCode').append("<option value=''>--请选择--</option>"); 
-			          	 	 $.each(res.data.data ,function(){
-									$('#edit-starParam-paramCode').append("<option value='"+ this.value+"'>"+ this.name +"</option>"); 
-								});
-			    			$("#edit-starParam-paramCode").select2().val(rows[0].paramCode).trigger("change");
-		              }
-		          });
-				 $('#edit-starParam-id').val(rows[0].id);
-				
-				 $('#edit-starParam-star').val(rows[0].star);
-				 $('#edit-starParam-partsType').val(parts);
-				 $('#edit-starParam-effeMin').val(rows[0].effeMin);
-				 $('#edit-starParam-effeMax').val(rows[0].effeMax);
-				 $('#editStarParamModal').modal('show');
+							 $.get('<%=request.getContextPath()%>/starParam/getConstraintList', {'seriesId':sp.data.starParam.series,'starId':sp.data.starParam.star,'partstype':sp.data.starParam.partsType},  function (res) {
+								  if(res.result == "true") {
+								  		 $('#edit-starParam-paramCode').find("option").remove();
+								  		 $('#edit-starParam-paramCode').append("<option value=''>--请选择--</option>"); 
+						          	 	 $.each(res.data.data ,function(){
+												$('#edit-starParam-paramCode').append("<option value='"+ this.value+"'>"+ this.name +"</option>"); 
+											});
+						    			$("#edit-starParam-paramCode").select2().val(sp.data.starParam.paramCode).trigger("change");
+					              }
+					          });
+							  if(activeUser != ''){
+									var permissionItemsJSON = '${activeUser.permissionItemsJSON}';
+									var map = $.parseJSON(permissionItemsJSON); 
+								    $('#edit-starParam-partsType').find("option").remove();
+					  			    $('#edit-starParam-partsType').append("<option value=''>--请选择--</option>"); 
+									if(map.flywheel == 'flywheel'){
+										$("#edit-starParam-partsType").append(" <option value = 'flywheel'>飞轮</option>"); 
+									}
+									if(map.top == 'top'){
+										$("#edit-starParam-partsType").append(" <option value = 'top'>陀螺</option>"); 
+									}
+								 $('#edit-starParam-partsType').val(sp.data.starParam.partsType);
+								}
+							 
+							 $('#edit-starParam-id').val(sp.data.starParam.id);
+							 $('#edit-starParam-effeMin').val(sp.data.starParam.effeMin);
+							 $('#edit-starParam-effeMax').val(sp.data.starParam.effeMax);
+						  }
+					  });
+					 $('#editStarParamModal').modal('show');
 				} else {
 					var names = [];
 					for ( var i = 0; i < rows.length; i++) {

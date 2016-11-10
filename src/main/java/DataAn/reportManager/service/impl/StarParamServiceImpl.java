@@ -176,4 +176,9 @@ public class StarParamServiceImpl implements IStarParamService {
 		}
 		return constraintDtoList;
 	}
+
+	@Override
+	public StarParam getParamById(Long id) {
+		return  starParamDao.get(id);
+	}
 }

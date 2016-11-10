@@ -29,6 +29,7 @@ import DataAn.galaxyManager.dto.SeriesDto;
 import DataAn.galaxyManager.dto.StarDto;
 import DataAn.galaxyManager.option.J9Series_Star_ParameterType;
 import DataAn.galaxyManager.service.IJ9Series_Star_Service;
+import DataAn.reportManager.domain.StarParam;
 import DataAn.reportManager.dto.StarParamDto;
 import DataAn.reportManager.service.IStarParamService;
 import DataAn.reportManager.util.CommonsConstant;
@@ -106,6 +107,23 @@ public class StarParamController  extends BaseController {
 		 return res;
 	}
 	
+	@RequestMapping(value = "/getParamById")
+	@ResponseBody
+	public ResultJSON getParamById(String id) {
+		ResultJSON res = ResultJSON.getSuccessResultJSON();
+		try {
+			 StarParam starParam = starParamService.getParamById(Long.parseLong(id)); 
+			 Map<String, Object> data = new HashMap<String, Object>();
+			 data.put("starParam", starParam);
+			 res.setData(data);
+		 } catch (Exception ex) {
+			 res.setMsg("参数查询失败");
+			 res.setResult(CommonsConstant.RESULT_FALSE);
+		 }
+		 return res;
+	}
+	
+	
 	@RequestMapping(value = "/createStarParam")
 	@ResponseBody
 	public JsonMessage createStarParam(StarParamDto starParamDto,HttpServletRequest request,HttpServletResponse response) {
@@ -139,6 +157,20 @@ public class StarParamController  extends BaseController {
 		
 		JsonMessage jsonMsg = new JsonMessage();
 		try {
+			StarParam value = starParamService.getParamById(starParamDto.getId().longValue());
+			if (!(value.getParamCode().equals(starParamDto.getParamCode())
+					&& value.getPartsType().equals(starParamDto.getPartsType())
+					&& value.getSeries().equals(starParamDto.getSeries())
+					&& value.getStar().equals(starParamDto.getStar()))) {
+				boolean falg = starParamService.cherkStarParam(starParamDto.getSeries(),starParamDto.getStar(),
+						starParamDto.getPartsType(),starParamDto.getParamCode());
+				if (falg) {
+					jsonMsg.setSuccess(false);
+					jsonMsg.setMsg("参数已存在！");
+					jsonMsg.setObj("参数已存在！");
+					return jsonMsg;
+				}
+			}
 			String currentUserName = getCurrentUserName(request);
 			starParamDto.setCreater(currentUserName);
 			starParamService.update(starParamDto);

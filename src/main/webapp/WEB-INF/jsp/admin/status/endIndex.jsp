@@ -430,7 +430,7 @@ jeDate({
 		});
 
 		function formatOper(val, row, index) {
-			if (row.exceptionInfo == null) {
+			if (row.statusType == "结束") {
 				return '<input type="hidden" id="search-fileName" value = "'+row.exceptionInfo+'"/>'
 			} else {
 				return '<a href="javascript:ShowexceptionInfo('

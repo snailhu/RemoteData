@@ -100,7 +100,7 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 		dataMap.put("versions", versions);
 		
 		//保存文件前
-		statusTrackingService.updateStatusTracking(csvFileDto.getFileName(), StatusTrackingType.START.getValue(),
+		statusTrackingService.updateStatusTracking(csvFileDto.getFileName(), StatusTrackingType.IMPORT.getValue(),
 				csvFileDto.getParameterType(), "");
 		
 		try {

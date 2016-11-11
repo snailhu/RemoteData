@@ -17,9 +17,11 @@ import DataAn.common.utils.JJSON;
 import DataAn.common.utils.UUIDGeneratorUtil;
 import DataAn.galaxyManager.service.IParameterService;
 import DataAn.mongo.service.IMongoService;
+import DataAn.storm.BaseConfig;
 import DataAn.storm.Communication;
 import DataAn.storm.FlowUtils;
 import DataAn.storm.StormNames;
+import DataAn.storm.StormUtils;
 import DataAn.storm.kafka.Beginning;
 import DataAn.storm.kafka.BoundProducer;
 import DataAn.storm.kafka.DefaultFetchObj;
@@ -50,10 +52,15 @@ public class SaveFileToKafka implements Runnable {
 	private IMongoService mongoService;
 
 	public SaveFileToKafka(IParameterService paramService, IMongoService mongoService) {
-		
-		KafkaNameKeys.setKafkaServer(conf, "192.168.0.97:9092");
-		ZooKeeperNameKeys.setZooKeeperServer(conf, "nim1.storm.com:2182,nim2.storm.com");
-		ZooKeeperNameKeys.setNamespace(conf, "sit-test");
+		BaseConfig baseConfig=null;
+		try {
+			baseConfig= StormUtils.getBaseConfig(BaseConfig.class);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		KafkaNameKeys.setKafkaServer(conf, baseConfig.getKafka());
+		ZooKeeperNameKeys.setZooKeeperServer(conf, baseConfig.getZooKeeper());
+		ZooKeeperNameKeys.setNamespace(conf, baseConfig.getNamespace());
 		executor=new ZooKeeperClient()
 		.connectString(ZooKeeperNameKeys.getZooKeeperServer(conf))
 		.namespace(ZooKeeperNameKeys.getNamespace(conf))

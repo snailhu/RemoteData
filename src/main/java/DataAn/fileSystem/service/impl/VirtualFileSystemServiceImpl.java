@@ -47,8 +47,11 @@ import DataAn.mongo.service.IMongoService;
 import DataAn.mongo.zip.ZipCompressorByAnt;
 import DataAn.status.option.StatusTrackingType;
 import DataAn.status.service.IStatusTrackingService;
+import DataAn.storm.BaseConfig;
 import DataAn.storm.Communication;
 import DataAn.storm.StormNames;
+import DataAn.storm.StormUtils;
+import DataAn.storm.kafka.KafkaNameKeys;
 import DataAn.storm.zookeeper.CommunicationUtils;
 import DataAn.storm.zookeeper.ZooKeeperClient;
 import DataAn.storm.zookeeper.ZooKeeperClient.ZookeeperExecutor;
@@ -132,8 +135,14 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 		
 		// 调用文件队列API，  zookeeper 
 		Map conf=new HashMap<>();
-		ZooKeeperNameKeys.setZooKeeperServer(conf, "nim1.storm.com:2182,nim2.storm.com");
-		ZooKeeperNameKeys.setNamespace(conf, "sit-test");
+		BaseConfig baseConfig=null;
+		try {
+			baseConfig= StormUtils.getBaseConfig(BaseConfig.class);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		ZooKeeperNameKeys.setZooKeeperServer(conf, baseConfig.getZooKeeper());
+		ZooKeeperNameKeys.setNamespace(conf, baseConfig.getNamespace());
 		ZookeeperExecutor executor=new ZooKeeperClient()
 		.connectString(ZooKeeperNameKeys.getZooKeeperServer(conf))
 		.namespace(ZooKeeperNameKeys.getNamespace(conf))

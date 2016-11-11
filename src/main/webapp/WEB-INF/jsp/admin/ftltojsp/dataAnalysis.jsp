@@ -140,7 +140,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     	margin-top:-32px 	
     }
     #id_dplist_template{
-    	margin-left:560px;
+    	margin-left:630px;
     	margin-top:-32px;
     }
     .groupButton{
@@ -340,11 +340,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   					<!--<button onclick="getCleared()">清空已选参数</button>-->
   					<div id="id_dplist_template"></div>
   		 	</div>
-  		 	<div class="parameter-list col-xs-12">	
+  		 		
   				<div id='jqxWidgett'>
 			        <div id="treeGrid"></div>			       	
 			     </div>
-			</div>	      		     
+				      		     
 			</div><!-- /.row -->
 			
 			<div class="new_hr hr hr32 hr-dotted"></div>
@@ -384,7 +384,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		//左菜单栏
 		$("#conditionmonitoring-img").attr("src","${pageContext.request.contextPath}/static/new/img/images/a_86.png");
 		$("#conditionmonitoring-text").css("color","#5d90d6");	
-		
+		intTemplateList();
 		var  flag=false;
 		$(".selftoolbar").click(function(){
 		

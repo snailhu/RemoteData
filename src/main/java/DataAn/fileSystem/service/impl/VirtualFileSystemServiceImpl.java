@@ -142,7 +142,7 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 			e.printStackTrace();
 		}
 		ZooKeeperNameKeys.setZooKeeperServer(conf, baseConfig.getZooKeeper());
-		ZooKeeperNameKeys.setNamespace(conf, "sit-test");
+		ZooKeeperNameKeys.setNamespace(conf, baseConfig.getNamespace());
 		ZookeeperExecutor executor=new ZooKeeperClient()
 		.connectString(ZooKeeperNameKeys.getZooKeeperServer(conf))
 		.namespace(ZooKeeperNameKeys.getNamespace(conf))

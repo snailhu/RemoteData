@@ -20,6 +20,7 @@ import DataAn.mongo.service.IMongoService;
 import DataAn.storm.BaseConfig;
 import DataAn.storm.Communication;
 import DataAn.storm.FlowUtils;
+import DataAn.storm.StormNames;
 import DataAn.storm.StormUtils;
 import DataAn.storm.kafka.Beginning;
 import DataAn.storm.kafka.BoundProducer;
@@ -59,7 +60,7 @@ public class SaveFileToKafka implements Runnable {
 		}
 		KafkaNameKeys.setKafkaServer(conf, baseConfig.getKafka());
 		ZooKeeperNameKeys.setZooKeeperServer(conf, baseConfig.getZooKeeper());
-		ZooKeeperNameKeys.setNamespace(conf, "sit-test");
+		ZooKeeperNameKeys.setNamespace(conf, baseConfig.getNamespace());
 		executor=new ZooKeeperClient()
 		.connectString(ZooKeeperNameKeys.getZooKeeperServer(conf))
 		.namespace(ZooKeeperNameKeys.getNamespace(conf))

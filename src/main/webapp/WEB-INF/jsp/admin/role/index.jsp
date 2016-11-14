@@ -531,9 +531,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					description : description 
 				},
 				function(data){
-					$('#editRoleModal').modal('hide');
 					top.showProcess(false);
 					if (data.success) {
+						$('#editRoleModal').modal('hide');
 						top.showMsg('提示', data.msg);
 						reloadDataGrid();
 					} else {

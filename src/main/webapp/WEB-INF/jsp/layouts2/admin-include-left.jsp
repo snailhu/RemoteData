@@ -124,23 +124,18 @@ a {
 					$("#sysPermission-li").show();
 				}
 			}
-			$("a")
-					.click(
-							function() {
-								var flag = $(this).find(".img_down")
-										.attr("src");
-								if (flag == "${pageContext.request.contextPath}/static/new/img/DataImport/xiala.png") {
-									$(this)
-											.find(".img_down")
-											.attr("src",
-													"${pageContext.request.contextPath}/static/new/img/DataImport/shangla.png");
-								} else {
-									$(this)
-											.find(".img_down")
-											.attr("src",
-													"${pageContext.request.contextPath}/static/new/img/DataImport/xiala.png");
-								}
-							})
+			$("a").click(function() {
+				var flag = $(this).find(".img_down").attr("src");
+				if (flag == "${pageContext.request.contextPath}/static/new/img/DataImport/xiala.png") {
+					$(this).find(".img_down")
+							.attr("src",
+									"${pageContext.request.contextPath}/static/new/img/DataImport/shangla.png");
+				} else {
+					$(this).find(".img_down")
+							.attr("src",
+									"${pageContext.request.contextPath}/static/new/img/DataImport/xiala.png");
+				}
+			})
 		});
 	</script>
 

@@ -61,6 +61,13 @@ public class StarDto {
 	public void setSeriesId(long seriesId) {
 		this.seriesId = seriesId;
 	}
+
+	@Override
+	public String toString() {
+		return "StarDto [id=" + id + ", name=" + name + ", code=" + code
+				+ ", description=" + description + ", beginDate=" + beginDate
+				+ ", seriesId=" + seriesId + "]";
+	}
 	
 	
 }

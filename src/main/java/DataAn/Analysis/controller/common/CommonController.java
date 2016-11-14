@@ -3,6 +3,7 @@ package DataAn.Analysis.controller.common;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -37,6 +38,7 @@ import DataAn.galaxyManager.option.J9SeriesType;
 import DataAn.galaxyManager.option.J9Series_Star_ParameterType;
 import DataAn.galaxyManager.option.SeriesType;
 import DataAn.galaxyManager.service.IJ9Series_Star_Service;
+import DataAn.galaxyManager.service.IParameterService;
 import DataAn.galaxyManager.service.ISeriesService;
 import DataAn.galaxyManager.service.IStarService;
 import DataAn.mongo.db.MongoService;
@@ -50,7 +52,8 @@ public class CommonController {
 
 	@Resource
 	private IJ9Series_Star_Service j9Series_Star_Service;
-	
+	@Resource
+	private IParameterService parameter_Service;
 	@Resource 
 	private MongoService mongoService;
 	
@@ -80,11 +83,11 @@ public class CommonController {
 			HttpServletRequest request,
 			HttpServletResponse response,
 			@RequestParam(value="JsonG",required = true) String JsonG) throws Exception {	
-		System.out.println("JsonG: " + JsonG);
+		System.out.println("执行了showPanel的POST的请求方法，提交分组按钮把参数传递给showPanel按钮，JsonG: " + JsonG);
 		Map<String, Class<SingleParamDto>> classMap = new HashMap<String, Class<SingleParamDto>>();
 		classMap.put("secectRow", SingleParamDto.class);
 		List<ParamGroup> pgs =JsonStringToObj.jsonArrayToListObject(JsonG,ParamGroup.class,classMap);
-		System.out.println(pgs);
+		System.out.println("将js的Json对象转换成列表对象List<ParamGroup> pgs："+pgs);
 		EhCache ehCache = new EhCache(); 
 		String sessionId = request.getSession().getId();
 		ehCache.addToCache(sessionId+"AllJsonData", pgs);		
@@ -101,6 +104,7 @@ public class CommonController {
 		//ModelAndView mv = new ModelAndView("/secondStyle/showGraphicByGroup");
 		ModelAndView mv = new ModelAndView("/admin/ftltojsp/showGraphicByGroup");
 		mv.addObject("lPs", lPs);
+		System.out.println("提交分组按钮提交参数成功，页面将跳转到showpanel（showGraphicByGroup）页面");
 		return mv;
 		}
 	
@@ -143,7 +147,8 @@ public class CommonController {
 		return lgm;
 	}
 	
-	//获取 参数组	
+	//获取 参数组	在当页面跳转到showpanel页面后，通过点击分组按钮，将本组别的所需要的
+	//系列、星、设备、参数、开始时间、结束时间传递给相应的tab页面，用于绘制曲线。
 	@RequestMapping(value = "/showGraphic/{id}", method = RequestMethod.GET)
 	@ResponseBody
 	public ModelAndView showGraphic(
@@ -156,14 +161,30 @@ public class CommonController {
 		@SuppressWarnings("unchecked")
 		List<ParamGroup> lPs = (List<ParamGroup>) ehCache.getCacheElement(sessionId+"AllJsonData");
 		List<SingleParamDto> params = new ArrayList<SingleParamDto>();
-		Map<String,String> map = j9Series_Star_Service.getAllParameterList_simplyZh_and_en();
+		/*Map<String,String> map = j9Series_Star_Service.getAllParameterList_simplyZh_and_en();
+
+		
+		Iterator it = map.keySet().iterator();  
+        while(it.hasNext()){  
+             String key;     
+             String value;     
+             key=it.next().toString();     
+             value=(String) map.get(key);     
+             System.out.println(key+"--"+value);     
+        }*/
+        
 		ModelAndView mv = new ModelAndView("/secondStyle/graphicShow");
 		//ModelAndView mv = new ModelAndView("/admin/ftltojsp/graphicShow");
 		for(ParamGroup  pg :lPs){		
 			if(pg.getId()==id){
 				List<SingleParamDto> spds = pg.getSecectRow();
 				for(SingleParamDto spd : spds){
-					spd.setValue(map.get(spd.getName()));
+					//spd.setValue(map.get(spd.getName()));
+					String sequencevalue =parameter_Service.getParameter_en_by_simpleZh(pg.getNowSeries(),pg.getNowStar(),pg.getComponent(),spd.getName());
+					//String sequencevalue =parameter_Service.getParameter_en_by_simpleZh("j9","02","flywhell",spd.getName());
+					System.out.println(sequencevalue);
+					spd.setValue(sequencevalue);
+					System.out.println("根据参数名名字设置参数的value值(sequence):"+spd.getName()+"对应的value:"+sequencevalue);
 					params.add(spd);
 				}	
 				mv.addObject("beginDate", pg.getBeginDate());
@@ -171,7 +192,8 @@ public class CommonController {
 				mv.addObject("nowSeries",pg.getNowSeries());
 				mv.addObject("nowStar", pg.getNowStar());
 				mv.addObject("component", pg.getComponent());
-				mv.addObject("params", params);			
+				mv.addObject("params", params);	
+				System.out.println("点击分组按钮时添加到tabl页的参数组的属性"+params);
 			}
 		}
 		return mv;
@@ -200,11 +222,13 @@ public class CommonController {
 //					result.setParamValue(parm_list);
 //					result.setYearValue(year_list);	
 //					return result;	
-//				}   
-	System.out.println("paramObject: " + paramObject);
+//				} 
+	//paramObiect的结构eg:{"nowSeries":"j9name","nowStar":"02","component":"flywheel","startTime":"2016-06-22 13:02:08","endTime":"2016-06-23 13:02:23","paramAttribute":[{"name":"飞轮温度Xa(00815)","value":"","y":"0"},{"name":"飞轮温度Ya(00817)","value":"","y":"0"},{"name":"飞轮温度Za(00819)","value":"","y":"0"}]}
+	System.out.println("需要展现的曲线的信息paramObject: " + paramObject);
 	Map<String, Class<ParamAttributeDto>> classMap = new HashMap<String, Class<ParamAttributeDto>>();
 	classMap.put("paramAttribute", ParamAttributeDto.class);
 	ParamBatchDto pbd =JsonStringToObj.jsonToObject(paramObject,ParamBatchDto.class,classMap);
+	System.out.println("将paramAttrribute转换成对象pbd");
 //	 YearAndParamDataDto result = mongoService.getList(paramSize,new String[]{start,end,paramNames,nowSeries,nowStar,component});				
 //		ThreadPoolExecutor executor = new ThreadPoolExecutor(5, 10, 200, TimeUnit.SECONDS,new ArrayBlockingQueue<Runnable>(5));
 //		executor.execute(new Runnable() {
@@ -218,10 +242,14 @@ public class CommonController {
 	RequestConfig requestConfig=new RequestConfig();
 	requestConfig.setPropertyCount(pbd.getParamAttribute().size());
 	String[] properties=new String[pbd.getParamAttribute().size()];
+	System.out.println("pbd.getParamAttribute().size()的值为："+pbd.getParamAttribute().size());
 	int i=0;
-	for(ParamAttributeDto paramAttributeDto: pbd.getParamAttribute()){
+	List<ParamAttributeDto> listparam=pbd.getParamAttribute();
+	for(ParamAttributeDto paramAttributeDto: listparam){
 		properties[i++]=paramAttributeDto.getValue();
+		System.out.println("添加到requestConfig的参数值"+paramAttributeDto.getValue()+"nanme属性为："+paramAttributeDto.getName());
 	}
+	System.out.println("设置requestConfig的Properties属性为："+properties);
 	requestConfig.setProperties(properties);
 	requestConfig.setSeries(pbd.getNowSeries());
 	requestConfig.setStar(pbd.getNowStar());
@@ -230,9 +258,31 @@ public class CommonController {
 	requestConfig.setTimeEnd(pbd.getEndTime());
 	
 	Map<String, YearAndParamDataDto> result = routingService.getData(requestConfig);	
-	
+	for (Object obj : result.keySet()) {
+        String key = (String) obj;
+        YearAndParamDataDto value =  result.get(key);
+        List paramlist =value.getParamValue();
+        System.out.println("key:"+key + ";;;参数集合对象的大小" + paramlist.size());
+        for(Object li : paramlist)
+        {System.out.println("参数值为："+li);}
+    }
 	return result;			
-	}	
+	}
+	
+/*	//鼠标滚轮滚动时
+		@RequestMapping(value = "/getData", method = RequestMethod.GET)
+		@ResponseBody
+		public Map<String,YearAndParamDataDto> getDataDependDataZoom(
+				HttpServletRequest request,
+				HttpServletResponse response,
+				String start,
+				String end,
+				String paramSize,
+				String filename
+				) throws Exception{
+
+		return null;			
+		}*/
 	
 	@RequestMapping(value = "/showtab", method = RequestMethod.GET)
 	public String showtab(

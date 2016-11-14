@@ -21,7 +21,9 @@ public interface IParameterService {
 	public Pager<ParameterDto> getParameterListByPager(String series, int pageIndex, int pageSize);
 
 	public String getParameter_en_by_allZh(String series, String star, String paramType, String param_zh);
-	
+
+	public String getParameter_en_by_simpleZh(String series, String star, String paramType, String param_zh);
+
 	public String getParameter_allZh_by_en(String series, String star, String paramType, String param_en);
 	
 	/** 通过参数的英文返回参数的类型

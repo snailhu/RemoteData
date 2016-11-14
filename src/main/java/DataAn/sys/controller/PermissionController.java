@@ -97,6 +97,13 @@ public class PermissionController {
 //		System.out.println("come in editPermissionGroup....");
 //		System.out.println(permissionGroup);
 		JsonMessage jsonMsg = new JsonMessage();
+		//判断此权限组是否存在
+		boolean flag = permissionService.isExistPermissionGroup(permissionGroup);
+		if(flag){
+			jsonMsg.setSuccess(false);
+			jsonMsg.setMsg("权限组已存在！");
+			return jsonMsg;
+		}
 		try {
 			permissionService.update(permissionGroup);
 		} catch (Exception e) {
@@ -185,6 +192,13 @@ public class PermissionController {
 //		System.out.println("come in editPermissionItem..");
 //		System.out.println(permissionItem);
 		JsonMessage jsonMsg = new JsonMessage();
+		//判断权限项是否存在
+		boolean flag = permissionService.isExistPermissionItem(permissionItem);
+		if(flag){
+			jsonMsg.setSuccess(false);
+			jsonMsg.setMsg("权限项已存在！");
+			return jsonMsg;
+		}
 		try {
 			permissionService.update(permissionItem);
 		} catch (Exception e) {

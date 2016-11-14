@@ -649,6 +649,7 @@ $(function() {
                dataType : "json",
                success : function(data) {
                    if (data.success) {
+                	   $('#addPermissionGroupModal').modal('hide');
                        permissionGrid.datagrid("unselectAll");
                        permissionGrid.datagrid('reload');
                        top.showMsg('提示', data.msg);
@@ -657,7 +658,6 @@ $(function() {
                    }
                }
            });
-       	$('#addPermissionGroupModal').modal('hide');
 	}	
 	
 	$('#editPermissionGroupModal').on('hide.bs.modal', function () {
@@ -704,6 +704,7 @@ $(function() {
             dataType : "json",
             success : function(data) {
                 if (data.success) {
+                	$('#editPermissionGroupModal').modal('hide');
                     permissionGrid.datagrid("unselectAll");
                     permissionGrid.datagrid('reload');
                     top.showMsg('提示', data.msg);
@@ -712,7 +713,6 @@ $(function() {
                 }
             }
         });
-		$('#editPermissionGroupModal').modal('hide');
 	});
 	
 	//删除已选中的权限组

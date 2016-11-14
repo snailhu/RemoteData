@@ -30,5 +30,7 @@ public interface ISeriesService {
 	
 	public boolean checkSeriesAndStar(String series, String star);
 	
+	public boolean isExistSeries(SeriesDto dto);
+	
 	public void initJ9Series();
 }

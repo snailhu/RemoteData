@@ -103,7 +103,7 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 		dataMap.put("versions", versions);
 		
 		//保存文件前
-		statusTrackingService.updateStatusTracking(csvFileDto.getFileName(), StatusTrackingType.IMPORT.getValue(),
+		statusTrackingService.updateStatusTracking(csvFileDto.getFileName(), StatusTrackingType.FILEUPLOAD.getValue(),
 				csvFileDto.getParameterType(), "");
 		
 		try {
@@ -126,11 +126,11 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 			}
 		} catch (Exception e) {
 //			e.printStackTrace();
-			statusTrackingService.updateStatusTracking(csvFileDto.getFileName(), StatusTrackingType.IMPORTFAIL.getValue(),
-					csvFileDto.getParameterType(), "");
+			statusTrackingService.updateStatusTracking(csvFileDto.getFileName(), StatusTrackingType.FILEUPLOADFAIL.getValue(),
+					csvFileDto.getParameterType(), e.getMessage());
 		}
 		
-		statusTrackingService.updateStatusTracking(csvFileDto.getFileName(), StatusTrackingType.PREHANDLE.getValue(),
+		statusTrackingService.updateStatusTracking(csvFileDto.getFileName(), StatusTrackingType.IMPORT.getValue(),
 				csvFileDto.getParameterType(), "");
 		
 		// 调用文件队列API，  zookeeper 
@@ -140,6 +140,8 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 			baseConfig= StormUtils.getBaseConfig(BaseConfig.class);
 		} catch (Exception e) {
 			e.printStackTrace();
+			statusTrackingService.updateStatusTracking(csvFileDto.getFileName(), StatusTrackingType.IMPORTFAIL.getValue(),
+					csvFileDto.getParameterType(), e.getMessage());
 		}
 		ZooKeeperNameKeys.setZooKeeperServer(conf, baseConfig.getZooKeeper());
 		ZooKeeperNameKeys.setNamespace(conf, baseConfig.getNamespace());
@@ -156,7 +158,8 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 		communication.setStar(nowStar);
 		communication.setName(csvFileDto.getParameterType());
 		communicationUtils.add(communication);
-		
+		statusTrackingService.updateStatusTracking(csvFileDto.getFileName(), StatusTrackingType.PREHANDLE.getValue(),
+				csvFileDto.getParameterType(), "");
 		return versions;
 	}
 	

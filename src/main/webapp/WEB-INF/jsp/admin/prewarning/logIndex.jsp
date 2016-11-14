@@ -402,13 +402,94 @@ jeDate({
 	//minDate:"2014-09-19 00:00:00",//最小日期
 	maxDate:jeDate.now(0), //设定最大日期为当前日期
 });
+		var logGrid;
 		var hadReadFlag = '${hadReadFlag}';
 		var hadRead = "";
 		if(hadReadFlag == 0){
 			$("#searchFormDiv").hide();
 			hadRead = 0;
+			logGrid = $("#logList").datagrid({
+                url: '<%=request.getContextPath()%>/admin/prewarning/getLogList?hadRead='+ hadRead,
+				rownumbers : true,
+				fitColumns : true,
+				idField : 'logId',//'logId',
+				pageSize : 10,
+				pagination : true,
+				pageList : [ 10, 20, 30,
+						40, 50, 60, 70, 80,
+						90, 100 ],
+				onLoadError : function(data) {
+					$.messager.alert(
+							"预警信息",
+							"暂无预警数据信息",
+							"error");
+
+				},
+				frozenColumns : [ [ {
+					title : 'logId',
+					field : 'logId',//'logId',
+					width : 50,
+					checkbox : true
+				} ] ],
+				columns : [ [
+						{
+							field : 'series',
+							title : '星系',
+							width : 100,
+						//sortable:true
+						},
+						{
+							field : 'star',
+							title : '星',
+							width : 100,
+						//sortable:true
+						},
+						{
+							field : 'parameterType',
+							title : '设备',
+							width : 100,
+						//sortable:true
+						},
+						{
+							field : 'parameter',
+							title : '参数',
+							width : 200,
+						//sortable:true
+						},
+						{
+							field : 'timeValue',
+							title : '时间点',
+							width : 200,
+						//sortable:true
+						},
+						{
+							field : 'paramValue',
+							title : '参数值',
+							width : 100,
+						//sortable:true
+						},
+						{
+							field : 'warningType',
+							title : '预警类型',
+							width : 100,
+						//sortable:true
+						},
+						{
+							field : 'warnRemark',
+							title : '备注',
+							width : 300,
+						//sortable:true
+						} ] ],
+
+				toolbar : [ {
+					text : '删除',
+					iconCls : 'icon-remove',
+					handler : function() {
+						deleteLog();
+					}
+				} ]
+			});
 		}
-		var logGrid;
         $(function () {
         	$.get('<%=request.getContextPath()%>/starParam/getSeriesList', {}, function (res) {
    			  if(res.result == "true") {
@@ -527,100 +608,99 @@ jeDate({
 			}
 			if(clickTotal == 0){
 				logGrid = $("#logList").datagrid({
-	                url: '<%=request.getContextPath()%>/admin/prewarning/getLogList?hadRead='
-															+ hadRead,
-													rownumbers : true,
-													fitColumns : true,
-													idField : 'logId',//'logId',
-													pageSize : 10,
-													pagination : true,
-													pageList : [ 10, 20, 30,
-															40, 50, 60, 70, 80,
-															90, 100 ],
-													onLoadError : function(data) {
-														$.messager.alert(
-																"预警信息",
-																"暂无预警数据信息",
-																"error");
+	                url: '<%=request.getContextPath()%>/admin/prewarning/getLogList?hadRead='+ hadRead,
+					rownumbers : true,
+					fitColumns : true,
+					idField : 'logId',//'logId',
+					pageSize : 10,
+					pagination : true,
+					pageList : [ 10, 20, 30,
+							40, 50, 60, 70, 80,
+							90, 100 ],
+					onLoadError : function(data) {
+						$.messager.alert(
+								"预警信息",
+								"暂无预警数据信息",
+								"error");
 
-													},
-													frozenColumns : [ [ {
-														title : 'logId',
-														field : 'logId',//'logId',
-														width : 50,
-														checkbox : true
-													} ] ],
-													columns : [ [
-															{
-																field : 'series',
-																title : '星系',
-																width : 100,
-															//sortable:true
-															},
-															{
-																field : 'star',
-																title : '星',
-																width : 100,
-															//sortable:true
-															},
-															{
-																field : 'parameterType',
-																title : '设备',
-																width : 100,
-															//sortable:true
-															},
-															{
-																field : 'parameter',
-																title : '参数',
-																width : 200,
-															//sortable:true
-															},
-															{
-																field : 'timeValue',
-																title : '时间点',
-																width : 200,
-															//sortable:true
-															},
-															{
-																field : 'paramValue',
-																title : '参数值',
-																width : 100,
-															//sortable:true
-															},
-															{
-																field : 'warningType',
-																title : '预警类型',
-																width : 100,
-															//sortable:true
-															},
-															{
-																field : 'warnRemark',
-																title : '备注',
-																width : 300,
-															//sortable:true
-															} ] ],
+					},
+					frozenColumns : [ [ {
+						title : 'logId',
+						field : 'logId',//'logId',
+						width : 50,
+						checkbox : true
+					} ] ],
+					columns : [ [
+							{
+								field : 'series',
+								title : '星系',
+								width : 100,
+							//sortable:true
+							},
+							{
+								field : 'star',
+								title : '星',
+								width : 100,
+							//sortable:true
+							},
+							{
+								field : 'parameterType',
+								title : '设备',
+								width : 100,
+							//sortable:true
+							},
+							{
+								field : 'parameter',
+								title : '参数',
+								width : 200,
+							//sortable:true
+							},
+							{
+								field : 'timeValue',
+								title : '时间点',
+								width : 200,
+							//sortable:true
+							},
+							{
+								field : 'paramValue',
+								title : '参数值',
+								width : 100,
+							//sortable:true
+							},
+							{
+								field : 'warningType',
+								title : '预警类型',
+								width : 100,
+							//sortable:true
+							},
+							{
+								field : 'warnRemark',
+								title : '备注',
+								width : 300,
+							//sortable:true
+							} ] ],
 
-													toolbar : [ {
-														text : '删除',
-														iconCls : 'icon-remove',
-														handler : function() {
-															deleteLog();
-														}
-													} ]
-												});
-								clickTotal = clickTotal + 1;
-							}
-							logGrid.datagrid('load', {
-								series : series,
-								star : star,
-								parameterType : parameterType,
-								parameter : parameter,
-								warningType : warningType,
-								createdatetimeStart : createdatetimeStart,
-								createdatetimeEnd : createdatetimeEnd,
-								clickCount : 1
-							});
-						});
+					toolbar : [ {
+						text : '删除',
+						iconCls : 'icon-remove',
+						handler : function() {
+							deleteLog();
+						}
+					} ]
+				});
+				clickTotal = clickTotal + 1;
+			}
+			logGrid.datagrid('load', {
+				series : series,
+				star : star,
+				parameterType : parameterType,
+				parameter : parameter,
+				warningType : warningType,
+				createdatetimeStart : createdatetimeStart,
+				createdatetimeEnd : createdatetimeEnd,
+				clickCount : 1
+			});
+		});
 		//删除用户
 		function deleteLog() {
 			var ids = [];

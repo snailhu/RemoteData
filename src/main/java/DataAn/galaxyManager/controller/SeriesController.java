@@ -57,6 +57,12 @@ public class SeriesController {
 		System.out.println("come in createSeries..");
 		System.out.println(dto);
 		JsonMessage jsonMsg = new JsonMessage();
+		if (seriesService.isExistSeries(dto)) {
+			jsonMsg.setSuccess(false);
+			jsonMsg.setMsg("在系列名称已存在！");
+			jsonMsg.setObj("在系列名称已存在！");
+			return jsonMsg;
+		} 
 		try {
 			seriesService.saveSeries(dto);
 		} catch (Exception e) {
@@ -92,6 +98,12 @@ public class SeriesController {
 		System.out.println(dto);
 		
 		JsonMessage jsonMsg = new JsonMessage();
+		if (seriesService.isExistSeries(dto)) {
+			jsonMsg.setSuccess(false);
+			jsonMsg.setMsg("在系列名称已存在！");
+			jsonMsg.setObj("在系列名称已存在！");
+			return jsonMsg;
+		} 
 		try {
 			seriesService.updateSeries(dto);
 		} catch (Exception e) {

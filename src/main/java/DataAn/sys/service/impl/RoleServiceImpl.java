@@ -69,10 +69,10 @@ public class RoleServiceImpl implements IRoleService {
 		Role role = roleDao.get(roleDto.getId());
 		if (StringUtils.isNotBlank(roleDto.getName())){
 			role.setRoleName(roleDto.getName());	
-			
-			if (StringUtils.isNotBlank(roleDto.getDescription())){
-				role.setDescription(roleDto.getDescription());		
-			}
+//			if (StringUtils.isNotBlank(roleDto.getDescription())){
+//				role.setDescription(roleDto.getDescription());		
+//			}
+			role.setDescription(roleDto.getDescription());	
 			role.setUpdateDate(new Date());
 			role.setVersion(role.getVersion() + 1);
 			roleDao.update(role);

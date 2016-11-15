@@ -160,6 +160,7 @@
 		dateCell:"#dateStart",//直接显示日期层的容器，可以是ID  CLASS
 		format:"YYYY-MM-DD hh:mm:ss",//日期格式
 		isinitVal:false, //是否初始化时间
+		startMin:"",//清除日期后返回到预设的最小日期
 		festival:false, //是否显示节日
 		isTime:true, //是否开启时间选择
 		minDate:'${beginDate}',//最小日期
@@ -367,13 +368,15 @@
               	var xAxis = myChart.getModel().option.xAxis[0]
 				var startDate = xAxis.data[xAxis.rangeStart]
 				var endDate = xAxis.data[xAxis.rangeEnd]
-              
+              	console.log("开始日期"+startDate+"结束日期："+endDate);
                 if(endDate && startDate){
 					var seriesCounter_new = 0    
 					var seriesOptionsDam = []	
 	                $.each(names, function (i, n) {
-	                    $.getJSON('${base}/getData?start='+startDate+'&end='+endDate+'&paramSize='+paramSize+'&filename=' + n.value, function (data) {
-	                    	console.log(data)
+	                    //$.getJSON('${base}/getData?start='+startDate+'&end='+endDate+'&paramSize='+paramSize+'&filename=' + n.value, function (data) {
+	                    $.getJSON('${base}/getData', function (data) {
+	                    	//console.log(data);
+	                    	console.log("开始日期"+startDate+"结束日期："+endDate);
 	                        seriesOptionsDam[i] = {
 	                            type: 'line',
 	                            smooth:true,
@@ -433,7 +436,7 @@
 		           };
         	  }
         	});
-        	console.log(seriesOptionsDam);
+        	//console.log(seriesOptionsDam);
         	options.series = eval(seriesOptionsDam);
             myChart.setOption(options);
         })

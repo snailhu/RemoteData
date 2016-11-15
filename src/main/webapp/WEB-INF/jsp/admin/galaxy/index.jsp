@@ -251,12 +251,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
           }
       }
   	});  
-  	$('#reset_addStarInfo').click(function() {
-	    $('#addStarInfoForm').data('bootstrapValidator').resetForm(true);
-	});	
-	$('#close_addStarInfo').click(function() {
-	    $('#addStarInfoForm').data('bootstrapValidator').resetForm(true);
-	});	
+//   	$('#reset_addStarInfo').click(function() {
+// 	    $('#addStarInfoForm').data('bootstrapValidator').resetForm(true);
+// 	});	
+// 	$('#close_addStarInfo').click(function() {
+// 	    $('#addStarInfoForm').data('bootstrapValidator').resetForm(true);
+// 	});	
     $('#editStarInfoForm').bootstrapValidator({
         message: 'This value is not valid',
         feedbackIcons: {
@@ -410,6 +410,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								<h4 class="modal-title" id="editSeriesInfoModalLabel">编辑系列</h4>
 							</div>
 							<div class="modal-body">
+									<input type="hidden" name="id" id="edit-series-id"/>
 									<div class="space-4"></div>
 									<div class="form-group">
 										<label class="col-sm-3 control-label no-padding-right" for="edit-series-name"> 系列名称:</label>
@@ -434,7 +435,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							</div>
 							<div class="modal-footer">
 								<div class="col-lg-4 col-lg-offset-5">
-									<button type="submit" class="btn btn-primary" data-dismiss="modal" id="submit_editSeriesInfo">确定</button>
+									<button type="button" class="btn btn-primary" id="submit_editSeriesInfo">确定</button>
 									<button type="button" class="btn btn-default" data-dismiss="modal" id="reset_editSeriesInfo">关闭</button>
 								</div>
 							</div>
@@ -455,6 +456,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								<h4 class="modal-title" id="addStarInfoModalLabel">添加星</h4>
 							</div>
 							<div class="modal-body">
+								<input type="hidden" name="datagridId" id="add-star-datagridId"/>
+								<input type="hidden" name="seriesId" id="add-star-seriesId"/>
 								<div class="space-4"></div>
 								<div class="form-group">
 									<label class="col-sm-3 control-label no-padding-right" for="add-star-name"> 星名称:</label>
@@ -488,7 +491,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							</div>
 							<div class="modal-footer">
 								<div class="col-lg-4 col-lg-offset-5">
-									<button type="submit" class="btn btn-primary" data-dismiss="modal" id="submit_addStarInfo">确定</button>
+									<button type="button" class="btn btn-primary" id="submit_addStarInfo">确定</button>
 									<button type="button" class="btn btn-default" data-dismiss="modal" id="reset_addStarInfo">关闭</button>
 								</div>
 							</div>
@@ -739,53 +742,23 @@ $(function() {
 			}
 		});
 	}	
+	
 	//编辑系列信息
+	$('#editSeriesInfoModal').on('hide.bs.modal', function () {
+		$('#editSeriesInfoForm').data('bootstrapValidator').resetForm(true);
+	});
 	function editSeries(){
 		var rows = galaxyGrid.datagrid('getSelections');
 		if (rows.length > 0) {
 			if (rows.length == 1) {
 				//赋值
-				var oldName = rows[0].name;
-				var oldCode = rows[0].code;
-				var oldDescription = rows[0].description;
-				$('#edit-series-name').val(oldName);
-				$('#edit-series-code').val(oldCode);
-				$('#edit-series-description').val(oldDescription);
+				$('#edit-series-id').val(rows[0].id);
+				$('#edit-series-name').val(rows[0].name);
+				$('#edit-series-code').val(rows[0].code);
+				$('#edit-series-description').val(rows[0].description);
 				//弹出编辑框
 				$('#editSeriesInfoModal').modal('show');
-				$('#submit_editSeriesInfo').click(function(){
-					var name = $('#edit-series-name').val();
-					var code = $('#edit-series-code').val();
-					var description = $('#edit-series-description').val();
-					var isValid = $('#editSeriesInfoForm').data('bootstrapValidator').isValid();
-					if(isValid){
-						if(name != oldName || code != oldCode || description != oldDescription){
-	                        $.ajax({
-	                            url : '${pageContext.request.contextPath}/admin/series/editSeries',
-	                            data : {
-	                                id : rows[0].id,
-	                                name : name,
-	                                code : code,
-	                                description : description
-	                            },
-	                            cache : false,
-	                            dataType : "json",
-	                            success : function(data) {
-	                                if (data.success) {
-	                                    galaxyGrid.datagrid("unselectAll");
-	                                    galaxyGrid.datagrid('reload');
-	                                    top.showMsg('提示', data.msg);
-	                                } else {
-	                                    top.alertMsg('警告', data.msg);
-	                                }
-	                            }
-	                        });
-	                    }else{
-	                        top.showMsg('提示', "系列信息没有被修改！");
-	                    }
-					}
-					$('#editSeriesInfoForm').data('bootstrapValidator').resetForm(true);
-				});
+				
 			}else{
 				top.showMsg("提示", "只能编辑一列！");
 			}
@@ -793,6 +766,41 @@ $(function() {
 			top.showMsg("提示", "请选择要编辑的系列！");
 		}
 	}
+	$('#submit_editSeriesInfo').click(function(){
+		var f = $('#editSeriesInfoForm');
+		f.data('bootstrapValidator').validate();
+		var isValid = f.data('bootstrapValidator').isValid();
+		if(!isValid){
+			return false;
+		}
+		
+		var id = $('#edit-series-id').val();
+		var name = $('#edit-series-name').val();
+		var code = $('#edit-series-code').val();
+		var description = $('#edit-series-description').val();
+		$.ajax({
+            url : '${pageContext.request.contextPath}/admin/series/editSeries',
+            data : {
+                id : id,
+                name : name,
+                code : code,
+                description : description
+            },
+            cache : false,
+            dataType : "json",
+            success : function(data) {
+                if (data.success) {
+                	$('#editSeriesInfoModal').modal('hide');
+                    galaxyGrid.datagrid("unselectAll");
+                    galaxyGrid.datagrid('reload');
+                    top.showMsg('提示', data.msg);
+                } else {
+                    top.alertMsg('警告', data.msg);
+                }
+            }
+        });
+	});
+	
 	//删除已选中的系列
 	function deleteSeries(){
 		var ids = [];
@@ -847,17 +855,17 @@ $(function() {
 		}
 	}
 	
-	$('#add-star-beginDate').click(function(){
-		jeDate({
- 			dateCell:"#add-star-beginDate",//直接显示日期层的容器，可以是ID  CLASS
- 			format:"YYYY-MM-DD hh:mm:ss",//日期格式
- 			isinitVal:false, //是否初始化时间
- 			festival:false, //是否显示节日
- 			isTime:true, //是否开启时间选择
- 			minDate:"2014-09-19 00:00:00",//最小日期
- 			maxDate:jeDate.now(0), //设定最大日期为当前日期
- 		});
-	});
+// 	$('#add-star-beginDate').click(function(){
+// 		jeDate({
+//  			dateCell:"#add-star-beginDate",//直接显示日期层的容器，可以是ID  CLASS
+//  			format:"YYYY-MM-DD hh:mm:ss",//日期格式
+//  			isinitVal:false, //是否初始化时间
+//  			festival:false, //是否显示节日
+//  			isTime:true, //是否开启时间选择
+//  			minDate:"2014-09-19 00:00:00",//最小日期
+//  			maxDate:jeDate.now(0), //设定最大日期为当前日期
+//  		});
+// 	});
 	
 // 	$('#getBeginTime').calendar({
 //         trigger: '#add-star-beginDate',
@@ -870,39 +878,50 @@ $(function() {
 //     });
 	
 	//在一个系列下创建一颗星
+	$('#addStarInfoModal').on('hide.bs.modal', function () {
+		$('#addStarInfoForm').data('bootstrapValidator').resetForm(true);
+	});
 	function createStar(datagridId, seriesId){
+		$('#add-star-datagridId').val(datagridId);
+		$('#add-star-seriesId').val(seriesId);
  		$('#addStarInfoModal').modal('show');
- 		
- 		$('#submit_addStarInfo').click(function(){
-			var name = $('#add-star-name').val();
-			var code = $('#add-star-code').val();
-			var beginDate = $('#add-star-beginDate').val();
-			var description = $('#add-star-description').val();
-			var isValid = $('#addStarInfoForm').data('bootstrapValidator').isValid();
-			if(isValid){
-				$.ajax({
-					url : '${pageContext.request.contextPath}/admin/star/createStar',
-					data : {
-						seriesId : seriesId,
-						name : name,
-						beginDate : beginDate,
-						description : description
-					},
-					cache : false,
-					dataType : "json",
-					success : function(data) {
-						if (data.success) {
-							reloadDatagrid(datagridId);
-							top.showMsg('提示', data.msg);
-						} else {
-							top.alertMsg('警告', data.msg);
-						}
-					}
-				});
-			}
-			$('#addStarInfoForm').data('bootstrapValidator').resetForm(true);
- 		});
 	}
+	$('#submit_addStarInfo').click(function(){
+		var f = $('#addStarInfoForm');
+		f.data('bootstrapValidator').validate();
+		var isValid = f.data('bootstrapValidator').isValid();
+		if(!isValid){
+			return false;
+		}
+		var datagridId = $('#add-star-datagridId').val();
+		var seriesId = $('#add-star-seriesId').val();
+		var name = $('#add-star-name').val();
+		var code = $('#add-star-code').val();
+		var beginDate = $('#add-star-beginDate').val();
+		var description = $('#add-star-description').val();
+		$.ajax({
+			url : '${pageContext.request.contextPath}/admin/star/createStar',
+			data : {
+				seriesId : seriesId,
+				name : name,
+				code : code,
+				beginDate : beginDate,
+				description : description
+			},
+			cache : false,
+			dataType : "json",
+			success : function(data) {
+				if (data.success) {
+					$('#addStarInfoModal').modal('hide');
+					reloadDatagrid(datagridId);
+					top.showMsg('提示', data.msg);
+				} else {
+					top.alertMsg('警告', data.msg);
+				}
+			}
+		});
+	});
+ 		
 	function editStarInfo(datagridId, starId) {
 		var rows = $('#' + datagridId).datagrid("getSelections");
 		var oldName = rows[0].name;

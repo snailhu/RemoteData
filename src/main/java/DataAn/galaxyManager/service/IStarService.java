@@ -31,5 +31,5 @@ public interface IStarService {
 	
 	public StarDto getStarDto(long starId);
 	
-
+	public boolean isExistStarByName(StarDto starDto);
 }

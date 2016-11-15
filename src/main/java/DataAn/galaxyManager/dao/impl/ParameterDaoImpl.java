@@ -34,7 +34,7 @@ implements IParameterDao{
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public Parameter selectBySeriesAndStarAndName(String series, String star,
+	public Parameter selectBySeriesAndStarAndFullName(String series, String star,
 			String param_zh) {
 		String hql = "from Parameter param where param.series=? and param.star=? and param.fullName=?";
 		List<Parameter> list = this.getSession().createQuery(hql)
@@ -47,6 +47,20 @@ implements IParameterDao{
 		return null;
 	}
 
+	@SuppressWarnings("unchecked")
+	@Override
+	public Parameter selectBySeriesAndStarAndSimplyName(String series,
+			String star, String param_zh) {
+		String hql = "from Parameter param where param.series=? and param.star=? and param.simplyName=?";
+		List<Parameter> list = this.getSession().createQuery(hql)
+												.setParameter(0, series)
+												.setParameter(1, star)
+												.setParameter(2, param_zh).list();
+		if(list != null && list.size() > 0){
+			return list.get(0);
+		}
+		return null;
+	}
 	@SuppressWarnings("unchecked")
 	@Override
 	public Parameter selectBySeriesAndName(String series, String param_zh) {
@@ -97,5 +111,6 @@ implements IParameterDao{
 								.setParameter(0, series)
 								.setParameter(1, parameterType).list();
 	}
+
 
 }

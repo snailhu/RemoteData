@@ -10,7 +10,9 @@ public interface IParameterDao extends IBaseDao<Parameter>{
 
 	Pager<Parameter> selectByPager(String series, int pageIndex, int pageSize);
 
-	Parameter selectBySeriesAndStarAndName(String series, String star, String param_zh);
+	Parameter selectBySeriesAndStarAndFullName(String series, String star, String param_zh);
+	
+	Parameter selectBySeriesAndStarAndSimplyName(String series, String star, String param_zh);
 	
 	Parameter selectBySeriesAndName(String series, String param_zh);
 	

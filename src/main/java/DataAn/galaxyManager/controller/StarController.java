@@ -47,6 +47,12 @@ public class StarController {
 		System.out.println("come in createStar..");
 		System.out.println(starDto);
 		JsonMessage jsonMsg = new JsonMessage();
+		if (starService.isExistStarByName(starDto)) {
+			jsonMsg.setSuccess(false);
+			jsonMsg.setMsg("在此星系下的星名称已存在！");
+			jsonMsg.setObj("在此星系下的星名称已存在！");
+			return jsonMsg;
+		} 
 		try {
 			starService.saveStar(starDto);
 		} catch (Exception e) {
@@ -84,6 +90,12 @@ public class StarController {
 		System.out.println("come in editStar..");
 		System.out.println(starDto);
 		JsonMessage jsonMsg = new JsonMessage();
+		if (starService.isExistStarByName(starDto)) {
+			jsonMsg.setSuccess(false);
+			jsonMsg.setMsg("在此星系下的星名称已存在！");
+			jsonMsg.setObj("在此星系下的星名称已存在！");
+			return jsonMsg;
+		} 
 		try {
 			starService.updateStar(starDto);
 		} catch (Exception e) {

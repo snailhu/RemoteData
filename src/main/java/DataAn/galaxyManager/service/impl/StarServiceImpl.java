@@ -87,6 +87,15 @@ public class StarServiceImpl implements IStarService{
 		return this.pojoToDto(star);
 	}
 
+	@Override
+	public boolean isExistStarByName(StarDto starDto) {
+		List<Star> list = starDao.getStarBySeriesIdAndName(starDto.getSeriesId(), starDto.getName());
+		if(list != null && list.size() > 0){
+			return true;
+		}
+		return false;
+	}
+	
 	private StarDto pojoToDto(Star star){
 		StarDto dto = new StarDto();
 		dto.setId(star.getId());
@@ -96,4 +105,5 @@ public class StarServiceImpl implements IStarService{
 		dto.setDescription(star.getDescription());
 		return dto;
 	}
+
 }

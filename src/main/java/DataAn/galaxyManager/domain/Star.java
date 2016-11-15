@@ -34,7 +34,7 @@ public class Star {
 	@Column(name = "name", nullable = false, length = 64)
 	private String name;
 	
-	@Column(name = "code", nullable = false, length = 64, unique = true)
+	@Column(name = "code", nullable = false, length = 64)
 	private String code;
 	
 	@Column(name = "description", nullable = true, length = 512)

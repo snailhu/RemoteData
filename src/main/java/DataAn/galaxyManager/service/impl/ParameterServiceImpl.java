@@ -163,6 +163,15 @@ public class ParameterServiceImpl implements IParameterService{
 		return param_en;
 	}
 
+	public String getParameter_en_by_simpleZh(String series, String star,
+			String paramType, String param_zh){
+		Parameter param = parameterDao.selectBySeriesAndStarAndSimplyName(series,star, param_zh);
+		if(param != null){
+			return param.getCode();			
+		}
+		return null;
+	}
+
 	@Override
 	public String getParameter_allZh_by_en(String series, String star,
 			 String paramType, String param_en) {

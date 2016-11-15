@@ -108,7 +108,8 @@ public class ParamGroup implements Serializable{
 	public String toString() {
 		return "ParamGroup [id=" + id + ", Ycount=" + Ycount + ", Y1name="
 				+ Y1name + ", Y2name=" + Y2name + ", beginDate=" + beginDate
-				+ ", endDate=" + endDate + ", secectRow=" + secectRow + "]";
+				+ ", endDate=" + endDate + ", nowSeries="+nowSeries+", nowStar="
+				+nowStar+",component="+component+",secectRow=" + secectRow + "]";
 	}
 
 	

@@ -143,9 +143,10 @@ public class PermissionServiceImpl implements IPermissionService{
 		if (StringUtils.isNotBlank(permissionGroup.getName())) {
 			auth.setAuthName(permissionGroup.getName());	
 			
-			if (StringUtils.isNotBlank(permissionGroup.getDescription())) {
-				auth.setDescription(permissionGroup.getDescription());			
-			}
+//			if (StringUtils.isNotBlank(permissionGroup.getDescription())) {
+//				auth.setDescription(permissionGroup.getDescription());			
+//			}
+			auth.setDescription(permissionGroup.getDescription());	
 			auth.setUpdateDate(new Date());
 			auth.setVersion(auth.getVersion() + 1);
 			authDao.update(auth);

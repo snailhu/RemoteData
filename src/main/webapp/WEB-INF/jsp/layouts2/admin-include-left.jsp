@@ -124,23 +124,18 @@ a {
 					$("#sysPermission-li").show();
 				}
 			}
-			$("a")
-					.click(
-							function() {
-								var flag = $(this).find(".img_down")
-										.attr("src");
-								if (flag == "${pageContext.request.contextPath}/static/new/img/DataImport/xiala.png") {
-									$(this)
-											.find(".img_down")
-											.attr("src",
-													"${pageContext.request.contextPath}/static/new/img/DataImport/shangla.png");
-								} else {
-									$(this)
-											.find(".img_down")
-											.attr("src",
-													"${pageContext.request.contextPath}/static/new/img/DataImport/xiala.png");
-								}
-							})
+			$("a").click(function() {
+				var flag = $(this).find(".img_down").attr("src");
+				if (flag == "${pageContext.request.contextPath}/static/new/img/DataImport/xiala.png") {
+					$(this).find(".img_down")
+							.attr("src",
+									"${pageContext.request.contextPath}/static/new/img/DataImport/shangla.png");
+				} else {
+					$(this).find(".img_down")
+							.attr("src",
+									"${pageContext.request.contextPath}/static/new/img/DataImport/xiala.png");
+				}
+			})
 		});
 	</script>
 
@@ -323,6 +318,14 @@ a {
 					</ul></li>
 
 			</ul></li>
+			
+		<li><a
+			href="${pageContext.request.contextPath}/conditionMonitoring"
+			class="tab_title"> <img class="img_head"
+				id="conditionmonitoring-img"
+				src="${pageContext.request.contextPath}/static/new/img/images/images/A_86.png">
+				<span id="conditionmonitoring-text">数据分析</span>
+		</a></li>
 
 		<li><a href="#" class="dropdown-toggle tab_title"> <img
 				class="img_head"
@@ -468,6 +471,41 @@ a {
 					</ul> --%>
 					</li>
 			</ul></li>
+		
+		<li id="prewarning-li">
+			<a href="#" class="dropdown-toggle tab_title"> 
+				<img class="img_head" id="warnmanage-img" src="${pageContext.request.contextPath}/static/new/img/images/images/A_58.png">
+				<span class="menu-text" id="warnmanage-text"> 预警管理</span> 
+				<img class="img_down" src="${pageContext.request.contextPath}/static/new/img/DataImport/xiala.png">
+			</a>
+			<ul class="submenu" id="warnmanageUL">
+				<li>
+					<a href="${pageContext.request.contextPath}/admin/prewarning/warnvalueIndex" class="tab_li"> 
+						<img class="img_head" id="warnparam-img" src="${pageContext.request.contextPath}/static/new/img/images/images/A_62.png">
+						<span id="warnparam-text">特殊工况配置</span>
+					</a>
+				</li>
+				<li>
+					<a href="${pageContext.request.contextPath}/admin/prewarning/errorvalueIndex" class="tab_li"> 
+						<img class="img_head" id="errorparam-img" src="${pageContext.request.contextPath}/static/new/img/images/images/A_66.png">
+						<span id="errorparam-text">异常配置</span>
+					</a>
+				</li>
+				<li>
+					<a href="${pageContext.request.contextPath}/admin/prewarning/logIndex?hadReadFlag=1" class="tab_li">
+					    <img class="img_head" id="warnlog-img" src="${pageContext.request.contextPath}/static/new/img/images/images/A_70.png">
+						<span id="warnlog-text">预警查询</span>
+					</a>
+				</li>
+			</ul>
+		</li>
+	
+		<li><a
+			href="${pageContext.request.contextPath}/admin/galaxy/index"
+			class="tab_title"> <img class="img_head" id="galaxymanage-img"
+				src="${pageContext.request.contextPath}/static/new/img/images/images/A_82.png">
+				<span id="galaxymanage-text">星系管理</span>
+		</a></li>
 
 		<li id="sysPermission-li"><a href="#"
 			class="dropdown-toggle tab_title"> <img class="img_head"
@@ -484,34 +522,6 @@ a {
 						src="${pageContext.request.contextPath}/static/new/img/images/images/A_54.png">
 						<span id="logmanage-text">日志管理</span>
 				</a></li>
-				<li id="prewarning-li"><a href="#"
-					class="dropdown-toggle tab_li"> <img class="img_head"
-						id="warnmanage-img"
-						src="${pageContext.request.contextPath}/static/new/img/images/images/A_58.png">
-						<span class="menu-text" id="warnmanage-text"> 预警管理</span> <img
-						class="img_down"
-						src="${pageContext.request.contextPath}/static/new/img/DataImport/xiala.png">
-				</a>
-					<ul class="submenu" id="warnmanageUL">
-						<li><a
-							href="${pageContext.request.contextPath}/admin/prewarning/warnvalueIndex"
-							class="tab_li"> <img class="img_head" id="warnparam-img"
-								src="${pageContext.request.contextPath}/static/new/img/images/images/A_62.png">
-								<span id="warnparam-text">特殊工况配置</span>
-						</a></li>
-						<li><a
-							href="${pageContext.request.contextPath}/admin/prewarning/errorvalueIndex"
-							class="tab_li"> <img class="img_head" id="errorparam-img"
-								src="${pageContext.request.contextPath}/static/new/img/images/images/A_66.png">
-								<span id="errorparam-text">异常配置</span>
-						</a></li>
-						<li><a
-							href="${pageContext.request.contextPath}/admin/prewarning/logIndex?hadReadFlag=1"
-							class="tab_li"> <img class="img_head" id="warnlog-img"
-								src="${pageContext.request.contextPath}/static/new/img/images/images/A_70.png">
-								<span id="warnlog-text">预警查询</span>
-						</a></li>
-					</ul></li>
 				<li><a
 					href="${pageContext.request.contextPath}/admin/user/index"
 					class="tab_li"> <img class="img_head" id="usermanage-img"
@@ -531,20 +541,6 @@ a {
 						<span id="permissionmanage-text">权限管理</span>
 				</a></li>
 			</ul></li>
-		<li><a
-			href="${pageContext.request.contextPath}/admin/galaxy/index"
-			class="tab_title"> <img class="img_head" id="galaxymanage-img"
-				src="${pageContext.request.contextPath}/static/new/img/images/images/A_82.png">
-				<span id="galaxymanage-text">星系管理</span>
-		</a></li>
-		<li><a
-			href="${pageContext.request.contextPath}/conditionMonitoring"
-			class="tab_title"> <img class="img_head"
-				id="conditionmonitoring-img"
-				src="${pageContext.request.contextPath}/static/new/img/images/images/A_86.png">
-				<span id="conditionmonitoring-text">数据分析</span>
-		</a></li>
-
 		<!-- 		<li>
 			<a href="#" class="dropdown-toggle"> <i class="icon-list"></i>
 				<span class="menu-text"> 图表管理</span>

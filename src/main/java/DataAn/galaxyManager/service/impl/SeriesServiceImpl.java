@@ -138,6 +138,14 @@ public class SeriesServiceImpl implements ISeriesService{
 	}
 
 	@Override
+	public boolean isExistSeries(SeriesDto dto) {
+		Series series = seriesDao.selectByName(dto.getName());
+		if(series != null){
+			return true;
+		}
+		return false;
+	}
+	@Override
 	public void initJ9Series() {
 		List<Series> seriesList = seriesDao.findAll();
 		if(seriesList == null || seriesList.size() == 0){
@@ -170,5 +178,6 @@ public class SeriesServiceImpl implements ISeriesService{
 		dto.setDescription(series.getDescription());
 		return dto;
 	}
+
 	
 }

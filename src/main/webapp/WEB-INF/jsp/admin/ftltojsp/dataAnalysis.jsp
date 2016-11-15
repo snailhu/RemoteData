@@ -140,7 +140,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     	margin-top:-32px 	
     }
     #id_dplist_template{
-    	margin-left:560px;
+    	margin-left:630px;
     	margin-top:-32px;
     }
     .groupButton{
@@ -340,11 +340,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   					<!--<button onclick="getCleared()">清空已选参数</button>-->
   					<div id="id_dplist_template"></div>
   		 	</div>
-  		 	<div class="parameter-list col-xs-12">	
+  		 		
   				<div id='jqxWidgett'>
 			        <div id="treeGrid"></div>			       	
 			     </div>
-			</div>	      		     
+				      		     
 			</div><!-- /.row -->
 			
 			<div class="new_hr hr hr32 hr-dotted"></div>
@@ -364,12 +364,18 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <script type="text/javascript">
 	jeDate({
 		dateCell:"#dateStart",//直接显示日期层的容器，可以是ID  CLASS
-		format:"YYYY-MM-DD hh:mm:ss",//日期格式
-		isinitVal:false, //是否初始化时间
-		festival:false, //是否显示节日
-		isTime:true, //是否开启时间选择
-		//minDate:"2014-09-19 00:00:00",//最小日期
-		maxDate:jeDate.now(0), //设定最大日期为当前日期
+		ormat:"YYYY-MM-DD hh:mm:ss", //日期格式
+minDate:"1900-01-01 00:00:00", //最小日期
+maxDate:"2099-12-31 23:59:59", //最大日期
+isinitVal:false, //是否初始化时间
+isTime:false, //是否开启时间选择
+isClear:true, //是否显示清空
+festival:false, //是否显示节日
+zIndex:999,  //弹出层的层级高度
+marks:null, //给日期做标注
+choosefun:function(val) {},  //选中日期后的回调
+clearfun:function(val) {},   //清除日期后的回调
+okfun:function(val) {}       //点击确定后的回调
 	});
 	jeDate({
 		dateCell:"#dateEnd",//直接显示日期层的容器，可以是ID  CLASS
@@ -377,6 +383,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		isinitVal:false, //是否初始化时间
 		festival:false, //是否显示节日
 		isTime:true, //是否开启时间选择
+		ishmsLimit:false,                     //时分秒限制
+		ishmsVal:true,                        //是否限制时分秒输入框输入，默认可以直接输入时间
 		//minDate:"2014-09-19 00:00:00",//最小日期
 		maxDate:jeDate.now(0), //设定最大日期为当前日期
 	});
@@ -384,7 +392,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		//左菜单栏
 		$("#conditionmonitoring-img").attr("src","${pageContext.request.contextPath}/static/new/img/images/a_86.png");
 		$("#conditionmonitoring-text").css("color","#5d90d6");	
-		
+		intTemplateList();
 		var  flag=false;
 		$(".selftoolbar").click(function(){
 		

@@ -32,6 +32,7 @@ import com.aspose.words.net.System.Data.DataRelation;
 import com.aspose.words.net.System.Data.DataRow;
 import com.aspose.words.net.System.Data.DataSet;
 import com.aspose.words.net.System.Data.DataTable;
+import com.ctc.wstx.util.StringUtil;
 
 import DataAn.common.config.CommonConfig;
 import DataAn.common.pageModel.Pager;
@@ -80,7 +81,7 @@ public class ReportServiceImpl implements IReoportService {
 	
 	
 	@Override
-	public void reportNullDoc(String filename,String templateUrl,String docPath,String beginDate ,String endDate) throws Exception {
+	public void reportNullDoc(String filename,String templateUrl,String docPath,String beginDate ,String endDate,String msg) throws Exception {
 
 		// 验证License		
         if (!AsposeLicenseManage.getAsposeLicense()) {
@@ -89,16 +90,16 @@ public class ReportServiceImpl implements IReoportService {
     	//1 读取模板  
 		Document doc = new Document(templateUrl);  
 		 
-		doc.getMailMerge().executeWithRegions(new MapMailMergeDataSource(getNullDoc(beginDate,endDate), "nullTab"));
+		doc.getMailMerge().executeWithRegions(new MapMailMergeDataSource(getNullDoc(beginDate,endDate,msg), "nullTab"));
 		//3生成报告
        doc.save(docPath, SaveFormat.DOC); 
 	
 	}
 	
-	private List<Map<String, Object>> getNullDoc(String beginDate ,String endDate) {
+	private List<Map<String, Object>> getNullDoc(String beginDate ,String endDate,String msg) {
 		   List<Map<String, Object>> dataList = new ArrayList<Map<String,Object>>();  
 	        Map<String, Object> record = new HashMap<String, Object>();  
-	        record.put("title", "日期区间"+beginDate+"到"+endDate+"没有找到对应的数据！");  
+	        record.put("title", "日期区间"+beginDate+"到"+endDate+"导出报告失败，失败原因："+msg);  
 	        dataList.add(record);  
 	        return dataList;  
 	}
@@ -200,10 +201,12 @@ public class ReportServiceImpl implements IReoportService {
 		String startTime = dataMap.get("startTime");
 		String endTime = dataMap.get("endTime");
 		String partsType = dataMap.get("partsType");
+		String partsName = dataMap.get("partsName");
 		String databaseName = dataMap.get("databaseName");
 		
+		
 		saveDocToMongoDFs(reportFileDto, uuId,databaseName);
-		ReportFileSystem docDir = createDocDir(series, star, partsType);
+		ReportFileSystem docDir = createDocDir(series, star, partsType,partsName);
 		ReportFileSystem yearDir = createYearDir(series, star, year, partsType, docDir);
 		ReportFileSystem monthDir = createMonthDir(series, star, year, month, partsType, yearDir);
 		return saveFile(reportFileDto, uuId, series, star, date, startTime, endTime, partsType, monthDir);
@@ -263,15 +266,15 @@ public class ReportServiceImpl implements IReoportService {
 		}
 		return yearDir;
 	}
-	private ReportFileSystem createDocDir(String series, String star, String partsType) {
-		ReportFileSystem docDir = fileDao.selectByParentIdisNullAndFileName("doc");
+	private ReportFileSystem createDocDir(String series, String star, String partsType,String partsName) {
+		ReportFileSystem docDir = fileDao.selectByParentIdisNullAndFileName(partsName);
 		if(docDir == null){
 			docDir = new ReportFileSystem();
 			docDir.setSeries(series);
 			docDir.setPartsType(partsType);
 			docDir.setStar(star);
 			docDir.setDataType(ReportDataType.DOC);
-			docDir.setFileName("doc");
+			docDir.setFileName(partsName);
 			docDir.setFileType(FileType.DIR);
 			docDir = fileDao.add(docDir);
 		}
@@ -285,7 +288,7 @@ public class ReportServiceImpl implements IReoportService {
 			ReportFileDto fileDto = downloadFile(fileId,databaseName);
 			response.setCharacterEncoding("utf-8");
 			response.setContentType("multipart/form-data");
-			response.setHeader("Content-Disposition", "attachment;fileName="+ fileDto.getFileName());
+			response.setHeader("Content-Disposition", "attachment;fileName="+new String( fileDto.getFileName().getBytes("gb2312"), "ISO8859-1" ));
 			inputStream = fileDto.getIn();
 			os = response.getOutputStream();
 			byte[] b = new byte[2048];
@@ -366,13 +369,8 @@ public class ReportServiceImpl implements IReoportService {
 			// 写明要下载的文件的大小
 			response.setContentLength((int) file.length());
 
-			// 设置附加文件名
-			String filename = fileDto.getFileName();
-			byte[] bt;
-			bt = filename.getBytes("UTF-8");
-			filename = new String(bt, "8859_1");
 			// 解决中文乱码
-			response.setHeader("Content-Disposition", "attachment;filename="+ filename);
+			response.setHeader("Content-Disposition", "attachment;filename="+ new String( fileDto.getFileName().getBytes("gb2312"), "ISO8859-1" ));
 			// 读出文件到i/o流
 			fis = new FileInputStream(file);
 			buff = new BufferedInputStream(fis);
@@ -817,8 +815,8 @@ public class ReportServiceImpl implements IReoportService {
 		return Integer.parseInt(String.valueOf(mnum));
 	}
 	@Override
-	public ReportFileSystem insertReportToDB(String filename, String docPath,String seriesId,String starId, String partsType,String startTime,String endTime,String databaseName)
-			throws FileNotFoundException, IOException {
+	public ReportFileSystem insertReportToDB(String filename, String docPath,String seriesId,String starId, String partsType,String startTime,
+			String endTime,String databaseName,String partsName) throws FileNotFoundException, IOException {
 		/********************************保存报告到db***********************************/
 		Map<String,String> dataMap = new HashMap<String,String>();
 		dataMap.put("series", seriesId);
@@ -834,6 +832,7 @@ public class ReportServiceImpl implements IReoportService {
 		dataMap.put("startTime", startTime);
 		dataMap.put("endTime", endTime);
 		dataMap.put("partsType",partsType);
+		dataMap.put("partsName",partsName);
 		dataMap.put("databaseName",databaseName); 
 		
 		InputStream input = new FileInputStream(docPath);

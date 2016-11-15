@@ -346,14 +346,12 @@ a {
 						src="${pageContext.request.contextPath}/static/new/img/images/images/A_18.png">
 						<span id="reportcreate-text">报告生成</span>
 				</a></li>
-				<li><a href="#" class="dropdown-toggle tab_li level2"> <img
+				<li><a href="${pageContext.request.contextPath}/report/index" class=" tab_li level2"> <img
 						class="img_head" id="reportview-img"
 						src="${pageContext.request.contextPath}/static/new/img/images/images/A_10.png">
-						<span class="menu-text" id="reportview-text"> 定时报告</span> <img
-						class="img_down"
-						src="${pageContext.request.contextPath}/static/new/img/DataImport/xiala.png">
+						<span  id="reportview-text"> 定时报告</span> 
 				</a>
-					<ul class="submenu" id="reportviewUL">
+					<%-- <ul class="submenu" id="reportviewUL">
 						<li><a href="javascript:void(0)" class="tab_li level3"> <img
 								class="img_head" id="otherreport-img"
 								src="${pageContext.request.contextPath}/static/new/img/images/images/A_14.png">
@@ -394,7 +392,7 @@ a {
 								</a>
 									<ul class="submenu" id="j902reportUL">
 										<li class="flywheel-li"><a
-											href="report/index/j9/02/flywheel/0/" class="tab_li level4">
+											href="report/index" class="tab_li level4">
 												<img class="img_head" id="j902flywheelreport-img"
 												src="${pageContext.request.contextPath}/static/new/img/DataImport/xuxian.png">
 												<span id="j902flywheelreport-text">飞轮</span>
@@ -467,7 +465,8 @@ a {
 										</a></li>
 									</ul></li>
 							</ul></li>
-					</ul></li>
+					</ul> --%>
+					</li>
 			</ul></li>
 
 		<li id="sysPermission-li"><a href="#"

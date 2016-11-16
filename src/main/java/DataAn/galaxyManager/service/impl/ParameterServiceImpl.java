@@ -52,7 +52,7 @@ public class ParameterServiceImpl implements IParameterService{
 				param.setStar(star);
 				if(StringUtils.isNotBlank(paramType)){
 					param.setParameterType(paramType);					
-				}else{
+				}else{//TODO 通过数据库判断参数类型
 					param.setParameterType(J9Series_Star_ParameterType.getJ9SeriesStarParameterTypeByName(param_zh).getValue());	
 				}
 				param.setFullName(param_zh);

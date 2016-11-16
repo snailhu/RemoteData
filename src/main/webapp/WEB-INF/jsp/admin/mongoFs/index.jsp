@@ -45,10 +45,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	margin-bottom: 0px;
 }
 
-.breadcrumb {
-	margin-top: 10px;
-}
-
 .row {
 	margin-right: -12px;
 	margin-left: -12px;
@@ -118,7 +114,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				} catch (e) {
 				}
 			</script>
-			<ul class="breadcrumb">
+			<ul class="breadcrumb" style="margin-top: 10px;">
 				<li>
 					<img src="${pageContext.request.contextPath}/static/imgs/DataImport/home.png" style="margin-bottom: 3px;">
 					<span>文件管理</span>

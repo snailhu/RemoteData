@@ -102,72 +102,6 @@
 	src="<%=request.getContextPath()%>/static/select2/select2.full.min.js"></script>
 
 <style type="text/css">
-.sweet-alert h2 {
-	color: rgb(87, 87, 87);
-	font-size: 30px;
-	text-align: center;
-	font-weight: 600;
-	text-transform: none;
-	position: relative;
-	line-height: 40px;
-	display: block;
-	margin: 25px 0px;
-	padding: 0px;
-}
-
-.sweet-alert p {
-	color: rgb(121, 121, 121);
-	font-size: 16px;
-	font-weight: 300;
-	position: relative;
-	text-align: inherit;
-	float: none;
-	line-height: normal;
-	margin: 0px;
-	padding: 0px;
-}
-
-.sweet-alert .sa-error-container {
-	background-color: rgb(241, 241, 241);
-	margin-left: -17px;
-	margin-right: -17px;
-	max-height: 0px;
-	overflow: hidden;
-	padding: 0px 10px;
-	transition: padding 0.15s, max-height 0.15s;
-}
-
-.sweet-alert button.cancel {
-	background-color: rgb(193, 193, 193);
-}
-
-.sweet-alert button {
-	background-color: rgb(140, 212, 245);
-	color: white;
-	box-shadow: none;
-	font-size: 17px;
-	font-weight: 500;
-	cursor: pointer;
-	border: none;
-	border-radius: 5px;
-	padding: 10px 32px;
-	margin: 26px 30px 0px;
-	/*     width: 150px; */
-}
-
-.sweet-alert .sa-confirm-button-container {
-	display: inline-block;
-	position: relative;
-	/*     padding-left: 20px; */
-}
-
-.icon-remove {
-	background: url('') no-repeat center center;
-}
-
-.icon-edit {
-	background: url('') no-repeat center center;
-}
 
 .glyphicon {
 	position: relative;
@@ -206,9 +140,6 @@
 	margin-bottom: 0px;
 }
 
-.breadcrumb {
-	margin-top: 10px;
-}
 </style>
 <script type="text/javascript">
 	var activeUser = '${activeUser}';
@@ -420,7 +351,7 @@
 				} catch (e) {
 				}
 			</script>
-			<ul class="breadcrumb">
+			<ul class="breadcrumb" style="margin-top: 10px;">
 				<li><img
 					src="${pageContext.request.contextPath}/static/imgs/DataImport/home.png"
 					style="margin-bottom: 3px;"> <span>系统管理</span></li>

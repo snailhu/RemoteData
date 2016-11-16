@@ -12,6 +12,7 @@ encoding//src/main/webapp/WEB-INF/ftl/secondStyle/dataAnalysis.ftl=UTF-8
 encoding//src/main/webapp/WEB-INF/jsp/admin/account/login.jsp=UTF-8
 encoding//src/main/webapp/WEB-INF/jsp/admin/ftltojsp/conditionMonitoring.jsp=UTF-8
 encoding//src/main/webapp/WEB-INF/jsp/admin/new/index.jsp=UTF-8
+encoding//src/main/webapp/WEB-INF/jsp/inc/include-easyUI.jsp=UTF-8
 encoding//src/test/java=UTF-8
 encoding//src/test/resources=UTF-8
 encoding//src/test/resources/mongoDB.properties=UTF-8

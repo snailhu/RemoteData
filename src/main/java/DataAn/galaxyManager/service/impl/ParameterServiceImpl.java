@@ -33,13 +33,15 @@ public class ParameterServiceImpl implements IParameterService{
 	@Override
 	@Transactional
 	public Parameter saveOne(String series, String star, String paramType, String param_zh) {
-		Parameter param = parameterDao.selectBySeriesAndName(series, param_zh.trim());
+		Parameter param = parameterDao.selectBySeriesAndFullName(series, param_zh.trim());
 		if(param == null){
 			param = new Parameter();
 			if(param_zh.equals("接收地方时")){ // || param_zh.equals("时间")
 				param.setSeries(series);
 				param.setStar(star);
-				param.setParameterType(paramType);
+//				if(StringUtils.isNotBlank(paramType)){
+//					param.setParameterType(paramType);					
+//				}
 				param.setFullName(param_zh);
 				param.setCode("datetime");
 			}else{
@@ -50,15 +52,13 @@ public class ParameterServiceImpl implements IParameterService{
 				param.setStar(star);
 				if(StringUtils.isNotBlank(paramType)){
 					param.setParameterType(paramType);					
-				}else{
+				}else{//TODO 通过数据库判断参数类型
 					param.setParameterType(J9Series_Star_ParameterType.getJ9SeriesStarParameterTypeByName(param_zh).getValue());	
 				}
 				param.setFullName(param_zh);
 				param.setSimplyName(param_zh.split(":")[1]);
 				param.setCode(code);
 			}
-//			parameterList_allZh_and_en.put(param.getName(), param.getCode());
-//			parameterList_en_and_allZh.put(param.getCode(), param.getName());
 			param = parameterDao.add(param);
 		}
 		return param;
@@ -92,16 +92,29 @@ public class ParameterServiceImpl implements IParameterService{
 	@Transactional
 	public void updateParamter(long paramId, String param_zh) {
 		Parameter param = parameterDao.get(paramId);
-		if(param_zh.equals("接收地方时")){ // || param_zh.equals("时间")
-			param.setFullName(param_zh);
-			param.setCode("datetime");
-		}else{
-			param.setFullName(param_zh);
-			param.setSimplyName(param_zh.split(":")[1]);
+		if(StringUtils.isNotBlank(param_zh)){
+			if(param_zh.equals("接收地方时")){ // || param_zh.equals("时间")
+				param.setFullName(param_zh);
+				param.setCode("datetime");
+			}else{
+				param.setFullName(param_zh);
+				param.setSimplyName(param_zh.split(":")[1]);
+			}			
 		}
 		parameterDao.update(param);
 	}
 
+
+	@Override
+	public boolean isExistParameter(String series, String star,String param_zh) {
+		Parameter param = parameterDao.selectBySeriesAndStarAndFullName(series,star, param_zh);
+		if(param != null){
+			return true;
+		}
+		return false;
+	}
+
+	
 	@Override
 	public List<ParameterDto> getParameterList(String series, String star, String paramType) {
 		List<ParameterDto> paramDtoList = new ArrayList<ParameterDto>();
@@ -115,12 +128,12 @@ public class ParameterServiceImpl implements IParameterService{
 	}
 	
 	@Override
-	public Pager<ParameterDto> getParameterListByPager(String series, int pageIndex, int pageSize) {
+	public Pager<ParameterDto> getParameterListByPager(String series, String star, int pageIndex, int pageSize) {
 		if(pageIndex == 0){
 			pageIndex = 1;
 		}
 		List<ParameterDto> paramDtoList = new ArrayList<ParameterDto>();
-		Pager<Parameter> paramPager = parameterDao.selectByPager(series, pageIndex, pageSize);
+		Pager<Parameter> paramPager = parameterDao.selectByPager(series,star, pageIndex, pageSize);
 		if(paramPager != null){
 			List<Parameter> paramList = paramPager.getDatas();
 			if(paramList != null && paramList.size() > 0){
@@ -152,7 +165,7 @@ public class ParameterServiceImpl implements IParameterService{
 		String param_en = parameterList_allZh_and_en.get(param_zh);
 		if(param_en == null){
 			//Map集合里面没有再从数据库中查找
-			Parameter param = parameterDao.selectBySeriesAndName(series, param_zh);
+			Parameter param = parameterDao.selectBySeriesAndFullName(series, param_zh);
 			if(param == null){
 				//数据库中没有此集合
 				param = this.saveOne(series, star,paramType, param_zh);

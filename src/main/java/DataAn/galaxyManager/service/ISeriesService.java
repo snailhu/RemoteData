@@ -26,7 +26,7 @@ public interface ISeriesService {
 	
 	public SeriesDto getSeriesDto(long seriesId);
 
-	public List<Combo> getSeriesComboData(long seriesId);
+	public List<Combo> getSeriesComboData(String seriesCode);
 	
 	public boolean checkSeriesAndStar(String series, String star);
 	

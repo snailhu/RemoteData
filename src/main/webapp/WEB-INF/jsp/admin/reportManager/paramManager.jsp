@@ -127,14 +127,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	/*     padding-left: 20px; */
 }
 
-.icon-remove {
-	background: url('') no-repeat center center;
-}
-
-.icon-edit {
-	background: url('') no-repeat center center;
-}
-
 .glyphicon {
 	position: relative;
 	top: -23px;

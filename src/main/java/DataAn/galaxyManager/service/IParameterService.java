@@ -16,9 +16,11 @@ public interface IParameterService {
 	
 	public void updateParamter(long paramId, String param_zh);
 	
+	public boolean isExistParameter(String series, String star, String param_zh);
+	
 	public List<ParameterDto> getParameterList(String series, String star, String paramType);
 	
-	public Pager<ParameterDto> getParameterListByPager(String series, int pageIndex, int pageSize);
+	public Pager<ParameterDto> getParameterListByPager(String series, String star, int pageIndex, int pageSize);
 
 	public String getParameter_en_by_allZh(String series, String star, String paramType, String param_zh);
 

@@ -35,63 +35,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	
 	<script src="${pageContext.request.contextPath}/static/assets/js/bootstrap.min.js"></script>
 <style type="text/css">
-  .sweet-alert h2 {
-    color: rgb(87, 87, 87);
-    font-size: 30px;
-    text-align: center;
-    font-weight: 600;
-    text-transform: none;
-    position: relative;
-    line-height: 40px;
-    display: block;
-    margin: 25px 0px;
-    padding: 0px;
-}
- .sweet-alert p {
-    color: rgb(121, 121, 121);
-    font-size: 16px;
-    font-weight: 300;
-    position: relative;
-    text-align: inherit;
-    float: none;
-    line-height: normal;
-    margin: 0px;
-    padding: 0px;
-}
-.sweet-alert .sa-error-container {
-    background-color: rgb(241, 241, 241);
-    margin-left: -17px;
-    margin-right: -17px;
-    max-height: 0px;
-    overflow: hidden;
-    padding: 0px 10px;
-    transition: padding 0.15s, max-height 0.15s;
-}
-.sweet-alert button.cancel {
-    background-color: rgb(193, 193, 193);
-}
-.sweet-alert button {
-    background-color: rgb(140, 212, 245);
-    color: white;
-    box-shadow: none;
-    font-size: 17px;
-    font-weight: 500;
-    cursor: pointer;
-    border: none;
-    border-radius: 5px;
-    padding: 10px 32px;
-    margin: 26px 30px 0px;
-/*     width: 150px; */
-}
-.sweet-alert .sa-confirm-button-container {
-    display: inline-block;
-    position: relative;
-/*     padding-left: 20px; */
-}
-
-.sa-button-container {
-	float: right;
-}
 
 .glyphicon {
 	position: relative;
@@ -112,6 +55,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	margin-bottom: 0px;
 	color: #737373;
 }
+
 .widget-toolbar>a {
     font-size: 36px;
     margin: 0 1px;
@@ -123,9 +67,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     margin-bottom: 0px;
 }
 
-.breadcrumb {
-    margin-top: 10px;
-}
 </style>
 <script type="text/javascript">
 $(function() {
@@ -150,11 +91,23 @@ $(function() {
                     },
                 }
             },
+            star : {
+                message: '请选择一个星',
+                validators : {
+                    notEmpty : {
+                        message : '请选择一个系列'
+                    },
+                }
+            },
             fullName : {
                 message : '参数名不能为空',
                 validators : {
                     notEmpty : {
                         message : '参数名不能为空'
+                    },
+                    regexp : { 
+                        regexp : /^[\u4E00-\u9FA5A-Za-z0-9_:\u4E00-\u9FA5A-Za-z0-9_]+(\([0-9]*\))+$/,
+                        message : '参数名格式不对'
                     },
                 }
             },
@@ -167,7 +120,7 @@ $(function() {
 //         $('#addParamInfoForm').data('bootstrapValidator').resetForm(true);
 //     });
     //编辑角色表单验证
-    $('#editRoleInfoForm').bootstrapValidator({
+    $('#editParamInfoForm').bootstrapValidator({
         message : '这个值不能为空！',
         feedbackIcons : {
             valid : 'glyphicon glyphicon-ok',
@@ -175,25 +128,42 @@ $(function() {
             validating : 'glyphicon glyphicon-refresh'
         },
         fields : {
+        	series : {
+                message: '请选择一个系列',
+                validators : {
+                    notEmpty : {
+                        message : '请选择一个系列'
+                    },
+                }
+            },
+            star : {
+                message: '请选择一个星',
+                validators : {
+                    notEmpty : {
+                        message : '请选择一个系列'
+                    },
+                }
+            },
         	fullName : {
                 message : '参数名不能为空',
                 validators : {
                     notEmpty : {
                         message : '参数名不能为空'
                     },
+                    regexp : { 
+                        regexp : /^[\u4E00-\u9FA5A-Za-z0-9_:\u4E00-\u9FA5A-Za-z0-9_]+(\([0-9]*\))+$/,
+                        message : '参数名格式不对'
+                    },
                 }
             },
-            description : {
-              message: '',
-            }
         }
     });
-    $('#reset_editParamInfo').click(function() {
-        $('#editRoleInfoForm').data('bootstrapValidator').resetForm(true);
-    });
-    $('#close_editParamInfo').click(function() {
-        $('#editRoleInfoForm').data('bootstrapValidator').resetForm(true);
-    });
+//     $('#reset_editParamInfo').click(function() {
+//         $('#editRoleInfoForm').data('bootstrapValidator').resetForm(true);
+//     });
+//     $('#close_editParamInfo').click(function() {
+//         $('#editRoleInfoForm').data('bootstrapValidator').resetForm(true);
+//     });
 });
 </script>
   </head>
@@ -207,12 +177,12 @@ $(function() {
 				} catch (e) {
 				}
 			</script>
-			<ul class="breadcrumb">
+			<ul class="breadcrumb" style="margin-top: 10px;">
 				<li>
 					<img src="${pageContext.request.contextPath}/static/imgs/DataImport/home.png" style="margin-bottom: 3px;">
 					<span>星系管理</span>
 				</li>
-				<li class="active">参数列表</li>
+				<li class="active">${nowSeries}系列${nowStar}星的参数列表</li>
 			</ul><!--  .breadcrumb -->
 		</div>
 		<div class="page-content">
@@ -227,7 +197,7 @@ $(function() {
 							id="addParamModal-btn">创建</button>
 						<div class="datagrid-btn-separator"></div>
 						<button class="easyui-linkbutton" iconcls="icon-remove" plain="true" style="float: left;"
-							onclick="deleteRole();">删除</button>
+							onclick="deleteParam();">删除</button>
 						<div class="datagrid-btn-separator"></div>
 						<button class="easyui-linkbutton" iconcls="icon-edit" plain="true" style="float: left;"
 							onclick="editParam();">编辑</button>
@@ -256,8 +226,14 @@ $(function() {
 								<div class="form-group">
 									<label class="col-sm-3 control-label no-padding-right" for="add-param-series"> 系列： </label>
 									<div class="col-sm-8">
-										<input name="series" id="add-param-series" class="form-control" style="width: 357px;height: 34px" 
-										placeholder="系列" />
+										<input name="series" id="add-param-series" class="form-control" value="${nowSeries}" readonly="true"/>
+									</div>
+								</div>
+								<div class="space-4"></div>
+								<div class="form-group">
+									<label class="col-sm-3 control-label no-padding-right" for="add-param-series"> 星： </label>
+									<div class="col-sm-8">
+										<input name="star" id="add-param-star" class="form-control" value="${nowStar}" readonly="true"/>
 									</div>
 								</div>
 								<div class="space-4"></div>
@@ -290,13 +266,19 @@ $(function() {
 								<h4 class="modal-title" id="editParamModalLabel">参数信息</h4>
 							</div>
 							<div class="modal-body">
-								<input type="hidden" name="id" id="edit-role-id"/>
+								<input type="hidden" name="id" id="edit-param-id"/>
                                 <div class="space-8"></div>
                                 <div class="form-group">
                                     <label class="col-sm-3 control-label no-padding-right" for="edit-param-series"> 系列： </label>
                                     <div class="col-sm-8">
-                                        <input name="series" id="edit-param-series" class="form-control" style="width: 357px;height: 34px" 
-                                        placeholder="系列"/>
+                                        <input name="series" id="edit-param-series" class="form-control" value="${nowSeries}" readonly="true"/>
+                                    </div>
+                                </div>
+                                <div class="space-4"></div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label no-padding-right" for="edit-param-series"> 系列： </label>
+                                    <div class="col-sm-8">
+                                        <input name="series" id="edit-param-star" class="form-control" value="${nowStar}" readonly="true"/>
                                     </div>
                                 </div>
                                 <div class="space-4"></div>
@@ -309,7 +291,7 @@ $(function() {
 							</div>
 							<div class="modal-footer">
 								<div class="col-lg-4 col-lg-offset-5">
-									<button type="submit" class="btn btn-primary" data-dismiss="modal" id="submit_editParamInfo">确定</button>
+									<button type="button" class="btn btn-primary" id="submit_editParamInfo">确定</button>
 									<button type="button" class="btn btn-default" data-dismiss="modal" id="reset_editParamInfo">关闭</button>
 								</div>
 							</div>
@@ -329,9 +311,10 @@ $(function() {
 	
 	<script type="text/javascript">
 	  var nowSeries = '${nowSeries}';
+	  var nowStar = '${nowStar}';
 	  //console.log('nowSeries:' + nowSeries);
 	  var paramGrid;
-	  var url='<%=request.getContextPath()%>/admin/parameter/getList/'+nowSeries;
+	  var url='<%=request.getContextPath()%>/admin/parameter/getList/'+nowSeries+'/'+nowStar;
 	  $(function () {
 	      paramGrid = $('#roleList').datagrid({
 	          url: url,
@@ -363,11 +346,11 @@ $(function() {
 	      });
 	  });
 	
-	$("#add-param-series").combobox({
-          url:'${pageContext.request.contextPath}/admin/series/getSeriesComboData?seriesId=0',
-          valueField:'value',
-          textField:'text'
-      }); 
+// 	$("#add-param-series").combobox({
+//           url:'${pageContext.request.contextPath}/admin/series/getSeriesComboData?seriesId=0',
+//           valueField:'value',
+//           textField:'text'
+//       }); 
 // 	$("#add-param-series").combobox('setValues', '${nowSeries}');
 	
 	$('#addParamModal-btn').click(function(){
@@ -382,15 +365,16 @@ $(function() {
 		f.data('bootstrapValidator').validate();
 		var isValid = f.data('bootstrapValidator').isValid();
 		if(!isValid){
-			//top.alertMsg('错误', '请满足提交条件！');
 			return false;
 		}
-		var series = $("#add-param-series").combobox('getValue');
+// 		var series = $("#add-param-series").val();
+// 		var star = $("#add-param-star").val();
 		var name = $('#add-param-fullName').val();
 		$.ajax({
 			url : '${pageContext.request.contextPath}/admin/parameter/createParam',
 			data : {
-				series : series,
+				series : nowSeries,
+				star : nowStar,
 				name : name
 			},
 			cache : false,
@@ -406,64 +390,70 @@ $(function() {
 			}
 		});
 	});
-	  //编辑参数信息
-	  function editParam(){
-	      var rows = paramGrid.datagrid('getSelections');
-	      if (rows.length > 0) {
-	          if (rows.length == 1) {
-	        	//赋值
-				var oldName = rows[0].name;
-				var oldDescription = rows[0].description;
-				$('#edit-param-fullName').val(oldName);
-				$('#edit-param-description').val(oldDescription);
-				//弹出编辑框
-				$('#editParamModal').modal('show');
-				$('#submit_editParamInfo').click(function(){
-					if(isValid){
-						var name = $('#edit-param-fullName').val();
-						var description = $('#edit-param-description').val();
-						if(oldName != name){
-							$.post('${pageContext.request.contextPath}/admin/parameter/editParam', 
-									{
-										id : rows[0].id,
-										name : name,
-										description : description 
-									},
-									function(data){
-										top.showProcess(false);
-										if (data.success) {
-											top.showMsg('提示', data.msg);
-											reloadDataGrid();
-										} else {
-											top.alertMsg('警告', data.msg);
-										}
-								});
-							
-						}else{
-							top.showMsg('提示', "权限组信息没有被修改！");
-						}
-						var isValid = $('#editParamInfoForm').data('bootstrapValidator').isValid();
-					}
-				});	               
-	          }else {
-	              var names = [];
-	              for (var i = 0; i < rows.length; i++) {
-	                  names.push(rows[i].name);
-	              }
-	              top.showMsg("提示", '只能选择一个角色进行编辑！您已经选择了【'+names.join(',')+'】'+rows.length+'个角色');
-	          }
-	      }else {
-	          top.showMsg("提示", "请选择要编辑的记录！");
-	      }
-	  }	
-	  //删除系统角色
-	  function deleteRole() {
+	//编辑参数信息
+	$('#editParamModal').on('hide.bs.modal', function () {
+		$('#editParamInfoForm').data('bootstrapValidator').resetForm(true);
+	});
+	function editParam(){
+	    var rows = paramGrid.datagrid('getSelections');
+	    if (rows.length > 0) {
+	        if (rows.length == 1) {
+	      	//赋值
+			$('#edit-param-id').val(rows[0].id);
+			$('#edit-param-fullName').val(rows[0].fullName);
+			//弹出编辑框
+			$('#editParamModal').modal('show');
+	        }else {
+	            var names = [];
+	            for (var i = 0; i < rows.length; i++) {
+	                names.push(rows[i].name);
+	            }
+	            top.showMsg("提示", '只能选择一个角色进行编辑！您已经选择了【'+names.join(',')+'】'+rows.length+'个角色');
+	        }
+	    }else {
+	        top.showMsg("提示", "请选择要编辑的记录！");
+	    }
+	}	
+	
+	$('#submit_editParamInfo').click(function(){
+		var f = $('#editParamInfoForm');
+		f.data('bootstrapValidator').validate();
+		var isValid = f.data('bootstrapValidator').isValid();
+		if(!isValid){
+			return false;
+		}
+		var id = $('#edit-param-id').val();
+		var name = $('#edit-param-fullName').val();
+		$.ajax({
+			url : '${pageContext.request.contextPath}/admin/parameter/editParam',
+			data : {
+				id : id,
+				series : nowSeries,
+				star : nowStar,
+				name : name
+			},
+			cache : false,
+			dataType : "json",
+			success : function(data) {
+				if (data.success) {
+					$('#editParamModal').modal('hide');
+					top.showMsg('提示', data.msg);
+					reloadDataGrid();
+				} else {
+					top.alertMsg('警告', data.msg);
+				}
+			}
+		});
+	});	 
+	  
+	  //删除
+	  function deleteParam() {
 	      var ids = [];
 	      var rows = paramGrid.datagrid('getSelections');
 	      if (rows.length>0) {
 	    	  	var names = [];
 				for ( var i = 0; i < rows.length; i++) {
-					names.push(rows[i].name);
+					names.push(rows[i].fullName);
 					ids.push(rows[i].id);
 				}
 				swal({
@@ -480,9 +470,9 @@ $(function() {
 				function(isConfirm) {
 					if (isConfirm) {
 						$.ajax({
-							url : '${pageContext.request.contextPath}/admin/role/deleteRole',
+							url : '${pageContext.request.contextPath}/admin/parameter/deleteParam',
 							data : {
-								roleIds : ids.join(',')
+								paramIds : ids.join(',')
 							},
 							cache : false,
 							dataType : "json",

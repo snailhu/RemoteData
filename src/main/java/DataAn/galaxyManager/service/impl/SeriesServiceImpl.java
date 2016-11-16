@@ -107,7 +107,7 @@ public class SeriesServiceImpl implements ISeriesService{
 	}
 
 	@Override
-	public List<Combo> getSeriesComboData(long seriesId) {
+	public List<Combo> getSeriesComboData(String seriesCode) {
 		List<Combo> comboList = new ArrayList<Combo>();
 		List<Series> list = seriesDao.findAll();
 		if(list != null && list.size() > 0){
@@ -115,8 +115,8 @@ public class SeriesServiceImpl implements ISeriesService{
 			for (Series series : list) {
 				combo = new Combo();
 				combo.setText(series.getName());
-				combo.setValue(series.getName());
-				if(series.getId() == seriesId){
+				combo.setValue(series.getCode());
+				if(series.getCode().equals(seriesCode)){
 					combo.setSelected(true);
 				}
 				comboList.add(combo);
@@ -178,6 +178,5 @@ public class SeriesServiceImpl implements ISeriesService{
 		dto.setDescription(series.getDescription());
 		return dto;
 	}
-
 	
 }

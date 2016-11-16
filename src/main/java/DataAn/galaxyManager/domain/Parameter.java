@@ -2,11 +2,15 @@ package DataAn.galaxyManager.domain;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 /**
 * Title: Parameter
@@ -32,7 +36,7 @@ public class Parameter {
 	private String star;
 	
 	//参数 如: flywheel、top
-	@Column(name = "parameterType", nullable = false, length = 16)
+	@Column(name = "parameterType", nullable = true, length = 16)
 	private String parameterType;
 		
 	//参数名全称
@@ -47,6 +51,10 @@ public class Parameter {
 	@Column(name = "code", unique = true, nullable = false, length = 64)
 	private String code;
 
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "createDate", nullable = true)
+	private Date createDate = new Date();
+	
 	public Long getId() {
 		return id;
 	}
@@ -101,6 +109,14 @@ public class Parameter {
 
 	public void setCode(String code) {
 		this.code = code;
+	}
+
+	public Date getCreateDate() {
+		return createDate;
+	}
+
+	public void setCreateDate(Date createDate) {
+		this.createDate = createDate;
 	}
 	
 	

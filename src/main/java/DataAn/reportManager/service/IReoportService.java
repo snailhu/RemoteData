@@ -44,8 +44,8 @@ public interface IReoportService {
 /*	public void createReport(String nowDate, String filename, String imgUrl, String templateUrl, String templateName,
 			String docPath, String seriesId, String starId, String partsType) throws Exception;*/
 	
-	public ReportFileSystem insertReportToDB(String filename, String docPath,String seriesId,String starId, String partsType,String startTime,String endTime,String databaseName)
-			throws FileNotFoundException, IOException;
+	public ReportFileSystem insertReportToDB(String filename, String docPath,String seriesId,String starId, String partsType,
+			String startTime,String endTime,String databaseName,String partsName) throws FileNotFoundException, IOException;
 	
 	public void removeDoc(String docPath);
 	
@@ -56,5 +56,5 @@ public interface IReoportService {
 	
 	public Map<String,List<ConstraintDto>> getConstraintDtoList(String seriesId, String starId,String partsType);
 	
-	public void reportNullDoc(String filename,String templateUrl,String docPath,String beginDate ,String endDate) throws Exception;
+	public void reportNullDoc(String filename,String templateUrl,String docPath,String beginDate ,String endDat,String msg) throws Exception;
 }

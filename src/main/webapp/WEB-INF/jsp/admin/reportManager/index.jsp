@@ -30,6 +30,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/static/content/jeDate/jedate/skin/jedate.css">
     <script type="text/javascript" src="${pageContext.request.contextPath}/static/content/jeDate/jedate/jedate.js"></script>
 	       <link rel="stylesheet" href="<%=request.getContextPath()%>/static/css/all.css" type="text/css" />
+	  <script type="text/javascript" src="<%=request.getContextPath()%>/static/select2/select2.full.min.js"></script>
+	  	<link rel="stylesheet" href="<%=request.getContextPath()%>/static/select2/select2.min.css" type="text/css" />     
+	       
   <style type="text/css">
   .widget-toolbar>a {
     font-size: 36px;
@@ -173,7 +176,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					<span>报告管理</span>
 				</li>
 				<li class="active">定时报告</li>
-				<li class="active">${nowSeries}系列-${nowStar}星-${nowParameterTypeName}报告列表</li>
+				<li class="active titleReport">${nowSeries}系列-${nowStar}星-${nowParameterTypeName}报告列表</li>
 			</ul><!--  .breadcrumb -->
 		</div>
 		<div class="page-content">
@@ -200,6 +203,34 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							<div class="widget-main">
 								<!-- 搜索form -->
 								<form id="fileupload" action="" class="form-horizontal" role="form" >
+								<div class="space-4"></div>
+									<div class="form-group">
+										<label class="col-sm-5 control-label no-padding-right" for="form-series">星系：</label>
+										<div class="col-sm-3"  >
+										<select name="series"  id="form-series" class="form-control " >
+										<option value="">--请选择--</option>
+				                       </select>
+									</div>
+									</div>
+									<div class="space-4"></div>
+									<div class="form-group">
+										<label class="col-sm-5 control-label no-padding-right" for="form-star">星号：</label>
+										<div class="col-sm-3">
+												<select name="star"  id="form-star" class="form-control " >
+												<option value="">--请选择--</option>
+				                       			</select>
+										</div>
+									</div>
+									<div class="space-4"></div>
+									<div class="form-group">
+										<label class="col-sm-5 control-label no-padding-right" for="form-partsType">设备：</label>
+										<div class="col-sm-3">
+											<select name="partsType"  id="form-partsType" class="form-control " >
+				                           		<option selected="selected" value="">--请选择--</option>
+				                       		</select>
+										</div>
+									</div>
+								
 									<div class="space-4"></div>
 									<div class="form-group">
 										<label class="col-sm-5 control-label no-padding-right" for="form-beginTime"> 开始时间 </label>
@@ -227,7 +258,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							                </button>
 										</div>
 										<div class="col-sm-1 control-label no-padding-right">
-											  <button type="reset" class="cancelbutton_1">
+											  <button type="reset" id = "btn-cancel" class="cancelbutton_1">
 							                    <i></i>
 							                    <span>取消</span>
 							                </button>
@@ -260,9 +291,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							onclick="fsGrid.datagrid('unselectAll');" plain="true"
 							href="javascript:void(0);" style="float: left;">取消选中</a>
 						
-					<!-- 	<a class="easyui-linkbutton" iconcls="icon-cloud-download"
+					<a class="easyui-linkbutton" iconcls="icon-cloud-download"
 							onclick="createReport();" plain="true" href="javascript:void(0);"
-							style="float: left;">生成</a> -->
+							style="float: left;">生成</a> 
 							
 					</div>
 				</div>
@@ -286,23 +317,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<script type="text/javascript">
 	  var fsGrid;
 	  var url
-	  var nowSeries = '${nowSeries}';
-	  var nowStar = '${nowStar}';
-	  var nowDirId = '${nowDirId}';
-	  var nowParamType = '${nowParameterTypeValue}';
-	  if(nowSeries == ''){
-		nowSeries = 'j9';
-	  }
-	  if(nowStar == ''){
-		nowStar =  '02';
-	  }
-	  if(nowDirId == ''){
-		nowDirId = 0;		  
-	  }
-	  if(nowParamType == ''){
-		  nowParamType = 'flywheel';		  
-	  }
-	  url='<%=request.getContextPath()%>/report/getList/'+nowSeries+'/'+nowStar+'/'+nowParamType+'/'+nowDirId+'/';
+	  var nowSeries;
+	  var nowStar;
+	  var nowDirId;
+	  var nowParamType;
+	  var activeUser;
+	  url='<%=request.getContextPath()%>/report/getList';
 	  
 	  $(function () {
 		  var flag=false;
@@ -327,19 +347,19 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			  });
 			jeDate({
 				dateCell:"#form-beginTime",//直接显示日期层的容器，可以是ID  CLASS
-				format:"YYYY-MM-DD hh:mm:ss",//日期格式
+				format:"YYYY-MM-DD",//日期格式
 				isinitVal:false, //是否初始化时间
 				festival:false, //是否显示节日
-				isTime:true, //是否开启时间选择
+				isTime:false, //是否开启时间选择
 				//minDate:"2014-09-19 00:00:00",//最小日期
 				maxDate:jeDate.now(0), //设定最大日期为当前日期
 			});
 			jeDate({
 				dateCell:"#form-endTime",//直接显示日期层的容器，可以是ID  CLASS
-				format:"YYYY-MM-DD hh:mm:ss",//日期格式
+				format:"YYYY-MM-DD",//日期格式
 				isinitVal:false, //是否初始化时间
 				festival:false, //是否显示节日
-				isTime:true, //是否开启时间选择
+				isTime:false, //是否开启时间选择
 				//minDate:"2014-09-19 00:00:00",//最小日期
 				maxDate:jeDate.now(0), //设定最大日期为当前日期
 			});
@@ -382,18 +402,72 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	          ]]
 	      });
 	      $('#btn-search').click(function(){
+	    	  var Qseries =  $('#form-series').val();
+			  var Qstar = $('#form-star').val();
+			  var QpartsType = $('#form-partsType').val();
 	    	  var beginTime = $('#form-beginTime').val();
 	    	  var endTime = $('#form-endTime').val();
+	    	   nowSeries = Qseries;
+	    	   nowStar = Qstar;
+	    	   nowParamType = QpartsType;
 	    	  fsGrid.datagrid('load', {
-				  series: nowSeries,
-				  star: nowStar,
-				  paramType: nowParamType,
+				  series: Qseries,
+				  star: Qstar,
+				  paramType: QpartsType,
 				  beginTime: beginTime,
 				  endTime: endTime
-		        });
+		     });
 		  });
+
+			if(activeUser != ''){
+					var permissionItemsJSON = '${activeUser.permissionItemsJSON}';
+					var map = $.parseJSON(permissionItemsJSON); 
+					 $('#form-partsType').find("option").remove();
+	  			      $('#form-partsType').append("<option value=''>--请选择--</option>"); 
+					if(map.flywheel == 'flywheel'){
+						$("#form-partsType").append(" <option value = 'flywheel'>飞轮</option>"); 
+					}
+					if(map.top == 'top'){
+						$("#form-partsType").append(" <option value = 'top'>陀螺</option>"); 
+					}
+				}
+
+	            $.get('<%=request.getContextPath()%>/starParam/getSeriesList', {}, function (res) {
+	  			  if(res.result == "true") {
+	  			      $('#form-series').find("option").remove();
+	  			      $('#form-series').append("<option value=''>--请选择--</option>"); 
+	              	  $.each(res.data.data ,function(){
+	  						$('#form-series').append("<option value='"+ this.code+"'>"+ this.name +"</option>"); 
+	  					});
+	              		  var seriesId = $('#form-series').val();
+	              			$.get('<%=request.getContextPath()%>/starParam/getStarList', {'seriesId':seriesId},  function (res) {
+	        					  if(res.result == "true") {
+	        						  $('#form-star').find("option").remove();
+	        						  $('#form-star').append("<option value=''>--请选择--</option>"); 
+	        		            	  $.each(res.data.data ,function(){
+	        								$('#form-star').append("<option value='"+ this.code+"'>"+ this.name +"</option>"); 
+	        							});
+	        		              	}
+	        		          });	
+	                }
+	            });
+	  		$("#form-series").change(function(){
+	  			 	var seriesId = $('#form-series').val();	
+	  			 	  $.get('<%=request.getContextPath()%>/starParam/getStarList', {'seriesId':seriesId},  function (res) {
+	  					  if(res.result == "true") {
+	  						  $('#form-star').find("option").remove();
+	  						  $('#form-star').append("<option value=''>--请选择--</option>"); 
+	  		            	  $.each(res.data.data ,function(){
+	  								$('#form-star').append("<option value='"+ this.code+"'>"+ this.name +"</option>"); 
+	  							});
+	  		              }
+	  		          });	
+	  		});
 	  });
-	
+	  $('#btn-cancel').click(function(){
+		      $('#form-star').find("option").remove();
+			  $('#form-star').append("<option value=''>--请选择--</option>"); 
+		});
 	  function doGetChildDir(dirId){
 		  fsGrid.datagrid('unselectAll');
 		  nowDirId = dirId;
@@ -402,7 +476,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			  star: nowStar,
 			  paramType: nowParamType,
 			  dirId: dirId
-	              });
+	      });
 		  var fileCatalog = $('#fileCatalog');
 		  fileCatalog.empty();
 		  if(dirId != 0){

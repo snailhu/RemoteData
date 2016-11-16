@@ -39,63 +39,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<script src="${pageContext.request.contextPath}/static/content/jQueryCalendar/calendar.js"></script>   
     
   <style type="text/css">
-  .sweet-alert h2 {
-    color: rgb(87, 87, 87);
-    font-size: 30px;
-    text-align: center;
-    font-weight: 600;
-    text-transform: none;
-    position: relative;
-    line-height: 40px;
-    display: block;
-    margin: 25px 0px;
-    padding: 0px;
-}
- .sweet-alert p {
-    color: rgb(121, 121, 121);
-    font-size: 16px;
-    font-weight: 300;
-    position: relative;
-    text-align: inherit;
-    float: none;
-    line-height: normal;
-    margin: 0px;
-    padding: 0px;
-}
-.sweet-alert .sa-error-container {
-    background-color: rgb(241, 241, 241);
-    margin-left: -17px;
-    margin-right: -17px;
-    max-height: 0px;
-    overflow: hidden;
-    padding: 0px 10px;
-    transition: padding 0.15s, max-height 0.15s;
-}
-.sweet-alert button.cancel {
-    background-color: rgb(193, 193, 193);
-}
-.sweet-alert button {
-    background-color: rgb(140, 212, 245);
-    color: white;
-    box-shadow: none;
-    font-size: 17px;
-    font-weight: 500;
-    cursor: pointer;
-    border: none;
-    border-radius: 5px;
-    padding: 10px 32px;
-    margin: 26px 30px 0px;
-/*     width: 150px; */
-}
-.sweet-alert .sa-confirm-button-container {
-    display: inline-block;
-    position: relative;
-/*     padding-left: 20px; */
-}
-
-.sa-button-container {
-	float: right;
-}
 
 .glyphicon {
     position: relative;
@@ -118,11 +61,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 .form-horizontal {
     margin-bottom: 0px;
 }
-
-.breadcrumb {
-    margin-top: 10px;
-}
-  </style>
+</style>
   <script type="text/javascript">
   	$(function(){
   		//左菜单栏
@@ -322,7 +261,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				} catch (e) {
 				}
 			</script>
-			<ul class="breadcrumb">
+			<ul class="breadcrumb" style="margin-top: 10px;">
 				<li>
 					<img src="${pageContext.request.contextPath}/static/imgs/DataImport/home.png" style="margin-bottom: 3px;">
 					<span>星系管理</span>
@@ -596,13 +535,6 @@ $(function() {
             field: 'description',
             title: '描述',
             width: 100
-        }, {
-            field: 'editParam',
-            title: '参数列表',
-            width: 80,
-            formatter: function (value, row, index) {
-                return "<a href=\"javascript:doEditParam('" + row.code +  "');\"" + " title='参数列表'>参数列表</a>";
-            }
         }
         ]],
 		onLoadError:function(data){
@@ -612,6 +544,7 @@ $(function() {
 			return '<div><table id="ddv-' + index + '"></table></div>';
 		},
 		onExpandRow : function(index, row) {
+			var seriesCode = row.code;
 			var subgridId = 'ddv-' + index;
 			$('#' + subgridId).datagrid({
 				url : '${pageContext.request.contextPath}/admin/star/getStars?seriesId='+ row.id,
@@ -634,12 +567,12 @@ $(function() {
 								{
 									field : 'name',
 									title : '名称',
-									width : 50
+									width : 30
 								},
 								{
                                     field : 'code',
                                     title : '星编码',
-                                    width : 50
+                                    width : 30
                                 },
 								{
 									field : 'beginDate',
@@ -649,8 +582,16 @@ $(function() {
 								{
 									field : 'description',
 									title : '描述',
-									width : 80
+									width : 60
 								},
+								{
+						            field: 'editParam',
+						            title: '参数列表',
+						            width: 50,
+						            formatter: function (value, row, index) {
+						                return "<a href=\"javascript:doEditParam('" + seriesCode + "','" + row.code +"');\"" + " title='参数列表'>参数列表</a>";
+						            }
+						        },
 								{
 									field : 'operation',
 									title : '操作选项',
@@ -691,8 +632,8 @@ $(function() {
 		});
 	});
 	
-	function doEditParam(code){
-		 window.location.href='${pageContext.request.contextPath}/admin/parameter/index/' + code; 
+	function doEditParam(series,star){
+		 window.location.href='${pageContext.request.contextPath}/admin/parameter/index/'+series+'/'+star+'/'; 
 	}
 	
 	function reloadDatagrid(datagridId) {

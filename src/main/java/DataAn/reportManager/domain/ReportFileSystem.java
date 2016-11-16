@@ -29,52 +29,52 @@ public class ReportFileSystem {
 	@Column(name = "parentId", nullable = true)
 	private Long parentId;
 	
-	@Column(name = "fileName", nullable = false, length = 64)
+	@Column(name = "fileName", nullable = true, length = 64)
 	private String fileName;
 	
 	//系列 如：j9
-	@Column(name = "series", nullable = false, length = 16)
+	@Column(name = "series", nullable = true, length = 16)
 	private String series;
 	
 	//星 如: 02
-	@Column(name = "star", nullable = false, length = 16)
+	@Column(name = "star", nullable = true, length = 16)
 	private String star;
 	
 	//参数 如: flywheel、top
-	@Column(name = "partsType", nullable = false, length = 32)
+	@Column(name = "partsType", nullable = true, length = 32)
 	private String partsType;
 	
 	@Enumerated(EnumType.STRING)
-	@Column(name = "dataType", nullable = false, length = 16)
+	@Column(name = "dataType", nullable = true, length = 16)
 	private ReportDataType dataType;
 	
 	@Enumerated(EnumType.STRING)
-	@Column(name = "fileType", nullable = false, length = 16)
+	@Column(name = "fileType", nullable = true, length = 16)
 	private FileType fileType;
 	
-	@Column(name = "fileSize", nullable = false)
+	@Column(name = "fileSize", nullable = true)
 	private Float fileSize;
 	
 	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "updateDate", nullable = false)
+	@Column(name = "updateDate", nullable = true)
 	private Date updateDate = new Date();
 	
-	@Column(name = "mongoFSUUId", nullable = false, length = 32)
+	@Column(name = "mongoFSUUId", nullable = true, length = 32)
 	private String mongoFSUUId;
 	
-	@Column(name = "year_month_day", nullable = false, length = 32)
+	@Column(name = "year_month_day", nullable = true, length = 32)
 	private String year_month_day;
 	
-	@Column(name = "cachePath", nullable = false, length = 512)
+	@Column(name = "cachePath", nullable = true, length = 512)
 	private String cachePath;
 
-	@Column(name = "creater", nullable = false, length = 32)
+	@Column(name = "creater", nullable = true, length = 32)
 	private String creater;//创建人
 	
-	@Column(name = "startTime", nullable = false, length = 32)
+	@Column(name = "startTime", nullable = true, length = 32)
 	private String startTime;
 	
-	@Column(name = "endTime", nullable = false, length = 32)
+	@Column(name = "endTime", nullable = true, length = 32)
 	private String endTime ;
 	
 	public String getCreater() {

@@ -2,6 +2,8 @@ package DataAn.galaxyManager.dao.impl;
 
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
+import org.hibernate.Query;
 import org.springframework.stereotype.Repository;
 
 import DataAn.common.dao.BaseDaoImpl;
@@ -16,15 +18,30 @@ implements IParameterDao{
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public Pager<Parameter> selectByPager(String series, int pageIndex, int pageSize) {
+	public Pager<Parameter> selectByPager(String series, String star, int pageIndex, int pageSize) {
 		
-		String hql = "from Parameter param where param.series=?";
-		String countHQL = "select count(*) from Parameter param where param.series=?";
-		List<Parameter> list = this.getSession().createQuery(hql).setParameter(0, series)
-										   .setMaxResults(pageSize)
-										   .setFirstResult(pageSize * (pageIndex -1)).list();
+		String hql = "from Parameter param where param.series=:series";
+		String countHQL = "select count(*) from Parameter param where param.series=:series";
+		
+		if(StringUtils.isNotBlank(star)){
+			hql += " and param.star=:star";
+			countHQL += " and param.star=:star";
+		}
+		
+		hql += " order by param.createDate desc";
+		
+		Query query = this.getSession().createQuery(hql).setParameter("series", series);
+		Query countQuery = this.getSession().createQuery(countHQL).setParameter("series", series);
+		
+		if(StringUtils.isNotBlank(star)){
+			query.setParameter("star", star);
+			countQuery.setParameter("star", star);
+		}
+		
+		List<Parameter> list = query.setMaxResults(pageSize)
+									.setFirstResult(pageSize * (pageIndex -1)).list();
 		Long totalCount = 0l; 
-		Object obj = this.getSession().createQuery(countHQL).setParameter(0, series).uniqueResult();
+		Object obj = countQuery.uniqueResult();
 		if(obj != null){
 			totalCount = (Long) obj;
 		}
@@ -63,7 +80,7 @@ implements IParameterDao{
 	}
 	@SuppressWarnings("unchecked")
 	@Override
-	public Parameter selectBySeriesAndName(String series, String param_zh) {
+	public Parameter selectBySeriesAndFullName(String series, String param_zh) {
 		String hql = "from Parameter param where param.series=? and param.fullName=?";
 		List<Parameter> list = this.getSession().createQuery(hql)
 												.setParameter(0, series)

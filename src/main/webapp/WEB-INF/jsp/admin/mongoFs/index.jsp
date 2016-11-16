@@ -17,6 +17,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
 	<meta http-equiv="description" content="This is my page">
 	<jsp:include page="/WEB-INF/jsp/inc/include-easyUI.jsp"></jsp:include>
+		<!-- 弹出框 -->
+	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/static/content/sweetalert/dist/sweetalert.css">
+	<script src="${pageContext.request.contextPath}/static/content/sweetalert/dist/sweetalert.min.js"></script>
+	
 	<link href="<%=request.getContextPath()%>/static/content/css/default.css" rel="stylesheet" type="text/css"/>
 	<script src="<%=request.getContextPath()%>/static/content/js/outlook2.js" type="text/javascript"></script>
   	<script src="<%=request.getContextPath()%>/static/content/jQuery-AjaxFileUpload/jquery.ajaxfileupload.js" type="text/javascript"></script>
@@ -44,11 +48,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	padding-top: 2px;
 	margin-bottom: 0px;
 }
-
-.row {
-	margin-right: -12px;
-	margin-left: -12px;
-	height: 100%;
+.form-horizontal .form-group {
+    margin-right: 0px;
+    margin-left: 100px;
 }
 </style>
   <script type="text/javascript">
@@ -68,7 +70,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		$("#filemanageUL").css("display", "block");
 	  
 	  jeDate({
-			dateCell:"#form-beginTime",//直接显示日期层的容器，可以是ID  CLASS
+			dateCell:"#search-beginTime",//直接显示日期层的容器，可以是ID  CLASS
 			format:"YYYY-MM-DD",//日期格式
 			isinitVal:false, //是否初始化时间
 			festival:false, //是否显示节日
@@ -77,7 +79,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			maxDate:jeDate.now(0), //设定最大日期为当前日期
 		});
 		jeDate({
-			dateCell:"#form-endTime",//直接显示日期层的容器，可以是ID  CLASS
+			dateCell:"#search-endTime",//直接显示日期层的容器，可以是ID  CLASS
 			format:"YYYY-MM-DD",//日期格式
 			isinitVal:false, //是否初始化时间
 			festival:false, //是否显示节日
@@ -100,7 +102,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			flag=true;
 		}
 	});
-	$("#change-search-box").click();
+// 	$("#change-search-box").click();
   })
   </script>
   </head>
@@ -149,17 +151,40 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								<form id="fileupload" action="" class="form-horizontal" role="form" >
 									<div class="space-1"></div>
 									<div class="form-group">
-										<label class="col-sm-3 control-label no-padding-right" for="form-beginTime"> 开始时间 </label>
+										<label class="col-sm-3 control-label no-padding-right" for="search-series"> 系列 </label>
 										<div class="col-sm-9">
-											<input type="text" id="form-beginTime" name="beginTime" placeholder="开始时间" class="col-xs-10 col-sm-5" />
+											<input type="text" id="search-series" name="series" placeholder="系列" class="col-xs-10 col-sm-5" 
+											style="height: 28px;width: 231px"/>
+										</div>
+									</div>
+									<div class="space-4"></div>
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="search-star"> 星 </label>
+										<div class="col-sm-9">
+											<input type="text" id="search-star" name="star" placeholder="星" class="col-xs-10 col-sm-5" 
+											style="height: 28px;width: 231px"/>
+										</div>
+									</div>
+									<div class="space-4"></div>
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="search-paramType"> 设备 </label>
+										<div class="col-sm-9">
+											<input type="text" id="search-paramType" name="paramType" placeholder="设备" class="col-xs-10 col-sm-5" />
+										</div>
+									</div>
+									<div class="space-4"></div>
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="search-beginTime"> 开始时间 </label>
+										<div class="col-sm-9">
+											<input type="text" id="search-beginTime" name="beginTime" placeholder="开始时间" class="col-xs-10 col-sm-5" />
 											<div id="getBeginTime"></div>
 										</div>
 									</div>
 									<div class="space-4"></div>
 									<div class="form-group">
-										<label class="col-sm-3 control-label no-padding-right" for="form-endTime"> 结束时间 </label>
+										<label class="col-sm-3 control-label no-padding-right" for="search-endTime"> 结束时间 </label>
 										<div class="col-sm-9">
-											<input type="text" id="form-endTime" name="endTime" placeholder="结束时间" class="col-xs-10 col-sm-5" />
+											<input type="text" id="search-endTime" name="endTime" placeholder="结束时间" class="col-xs-10 col-sm-5" />
 											<div id="getEndTime"></div>
 										</div>
 									</div>
@@ -229,7 +254,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				</div>
 			</div>
 
-			<div class="row">
+			<div class="row" id="div-fsList">
 				<div class="col-xs-12 col-sm-12">
 					<ul class="breadcrumb" id="fileCatalog">
 						<li class="active">全部文件</li>
@@ -245,27 +270,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		</div><!-- /.page-content -->
 	</div><!-- /.main-content -->
 	<script type="text/javascript">
+	  
 	  var fsGrid;
-	  var url
-	  var nowSeries = '${nowSeries}';
-	  var nowStar = '${nowStar}';
-	  var nowDirId = '${nowDirId}';
-	  var nowParamType = '${nowParameterTypeValue}';
-	  if(nowSeries == ''){
-		nowSeries = 'j9';
-	  }
-	  if(nowStar == ''){
-		nowStar =  '02';
-	  }
-	  if(nowDirId == ''){
-		nowDirId = 0;		  
-	  }
-	  if(nowParamType == ''){
-		  nowParamType = 'flywheel';		  
-	  }
-	  url='<%=request.getContextPath()%>/admin/file/getList/'+nowSeries+'/'+nowStar+'/'+nowParamType+'/'+nowDirId+'/';
+	  var url;
+	  
 	  $(function () {
-	      fsGrid = $('#fsList').datagrid({
+		  
+		  url='<%=request.getContextPath()%>/admin/file/getList';
+		  fsGrid = $('#fsList').datagrid({
 	          url: url,
 	          title: '文件列表',
 	          rownumbers: true,
@@ -284,28 +296,37 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	          columns: [[ {
 	              field: 'name',
 	              title: '文件名',
-	              width: 200,
+	              width: 80,
 	              formatter: function (value, row, index) {
 	            	  if(row.type == 'dir'){
-                      	return "<a href=\"javascript:doGetChildDir('" + row.id +  "');\"" + " title='"+row.name+"'>"+row.name+"</a>";	            		  
+	                  	return "<a href=\"javascript:doGetChildDir('" + row.id +  "');\"" + " title='"+row.name+"'>"+row.name+"</a>";	            		  
 	            	  }else{
 	            		return row.name;
 	            	  }
-                  }
+	              }
 	          }, {
 	              field: 'fileSize',
 	              title: '大小',
-	              width: 100
+	              width: 50
 	          },  {
 	              field: 'createDate',
 	              title: '上传时间',
-	              width: 150
+	              width: 100
 	          }
 	          ]]
 	      });
+		  
+	      //隐藏文件列表
+	      $("#div-fsList").hide();
 	      $('#btn-search').click(function(){
-	    	  var beginTime = $('#form-beginTime').val();
-	    	  var endTime = $('#form-endTime').val();
+	    	  var nowSeries = $("#search-series").combobox('getValue');
+	    	  var nowStar = $("#search-star").combobox('getValue');
+	    	  var nowParamType = 'flywheel';
+	    	  var nowDirId = '';
+	    	  //显示文件列表
+	    	  $("#div-fsList").show();
+	    	  var beginTime = $('#search-beginTime').val();
+	    	  var endTime = $('#search-endTime').val();
 	    	  var fileTypes = [];
 	    	  $("[name='form-fileType-checkbox']:checked").each(function(){
 	    		  fileTypes.push($(this).val());
@@ -320,9 +341,30 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				  fileTypes:fileTypes.join(',')
 		        });
 		  });
+		$("#search-series").combobox({
+		    url:'${pageContext.request.contextPath}/admin/series/getSeriesComboData',
+		    valueField:'value',
+		    textField:'text',
+		    onSelect: function(node){
+		    	$("#search-star").combobox({
+				    url:'${pageContext.request.contextPath}/admin/star/getStarComboData?seriesCode='+node.value,
+				    valueField:'value',
+				    textField:'text',
+				    onSelect: function(node){
+				    	//alert(node.value);
+				    }
+				    
+				});
+		    }
+		    
+		});
 	  });
 	
 	  function doGetChildDir(dirId){
+		  var nowSeries = $("#search-series").combobox('getValue');
+    	  var nowStar = $("#search-star").combobox('getValue');
+    	  var nowParamType = 'flywheel';
+    	  
 		  fsGrid.datagrid('unselectAll');
 		  nowDirId = dirId;
 		  fsGrid.datagrid('load', {

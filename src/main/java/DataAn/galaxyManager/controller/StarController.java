@@ -1,12 +1,16 @@
 package DataAn.galaxyManager.controller;
 
 import java.util.List;
+
 import javax.annotation.Resource;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import DataAn.common.pageModel.Combo;
 import DataAn.common.pageModel.JsonMessage;
 import DataAn.galaxyManager.dto.StarDto;
 import DataAn.galaxyManager.service.IStarService;
@@ -128,5 +132,18 @@ public class StarController {
 		jsonMsg.setSuccess(true);
 		jsonMsg.setMsg("删除星成功！");
 	    return jsonMsg;
+	}
+	
+	@RequestMapping("/getStarComboData")
+	@ResponseBody
+	public List<Combo> getStarComboData(String seriesCode, String starCode) {
+		System.out.println("getStarComboData..");
+		System.out.println("seriesId: " + seriesCode);
+		System.out.println("starId: " + starCode);
+		List<Combo> list = starService.getStarComboData(seriesCode, starCode);
+//		for (Combo combo : list) {
+//			System.out.println(combo);
+//		}
+		return list;
 	}
 }

@@ -12,6 +12,8 @@ public interface ISeriesDao extends IBaseDao<Series> {
 	
 	Series selectByName(String name);
 	
+	Series selectByCode(String code);
+	
 	Pager<Series> selectByPager(int pageIndex, int pageSize);
 	
 }

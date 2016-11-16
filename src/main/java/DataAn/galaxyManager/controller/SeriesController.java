@@ -140,10 +140,10 @@ public class SeriesController {
 	
 	@RequestMapping("/getSeriesComboData")
 	@ResponseBody
-	public List<Combo> getSeriesComboData(long seriesId) {
+	public List<Combo> getSeriesComboData(String seriesCode) {
 //		System.out.println("getSeriesComboData..");
 //		System.out.println("seriesId: " + seriesId);
-		List<Combo> list = seriesService.getSeriesComboData(seriesId);
+		List<Combo> list = seriesService.getSeriesComboData(seriesCode);
 //		for (Combo combo : list) {
 //			System.out.println(combo);
 //		}

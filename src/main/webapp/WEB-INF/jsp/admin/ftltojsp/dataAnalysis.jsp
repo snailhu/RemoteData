@@ -140,7 +140,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     	margin-top:-32px 	
     }
     #id_dplist_template{
-    	margin-left:630px;
+    	margin-left:550px;
     	margin-top:-32px;
     }
     .groupButton{
@@ -368,7 +368,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 minDate:"1900-01-01 00:00:00", //最小日期
 maxDate:"2099-12-31 23:59:59", //最大日期
 isinitVal:false, //是否初始化时间
-isTime:false, //是否开启时间选择
+isTime:true, //是否开启时间选择
 isClear:true, //是否显示清空
 festival:false, //是否显示节日
 zIndex:999,  //弹出层的层级高度
@@ -697,7 +697,7 @@ okfun:function(val) {}       //点击确定后的回调
 	                valueMember: "id",
 	                placeHolder:"请选择模板",
 	                //theme: 'energyblue',
-	                width: 120, 
+	                width: 200, 
 	                height: 30
 	            });
 	

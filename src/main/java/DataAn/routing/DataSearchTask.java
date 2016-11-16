@@ -39,12 +39,20 @@ public class DataSearchTask extends RecursiveTask<YearAndParamDataDto> {
 		
 		FindIterable<Document> document_It = collection.find(Filters.and(Filters.gte("datetime", startDate),Filters.lte("datetime", endDate)));						
 		for (Document doc : document_It) {
-			String paraVal = doc.getString(dataSearchTaskConfig.getProperty());
+			/*String paraVal = doc.getString(dataSearchTaskConfig.getProperty());
 			if (paraVal != null) {
 				yearValue.add(DateUtil.format(doc.getDate("datetime")));
 				paramValue.add(paraVal);
+			}*/
+			String paraVal = doc.getString(dataSearchTaskConfig.getProperty());
+			if (paraVal == null) {
+				paraVal = "\'-\'";
 			}
+			yearValue.add(DateUtil.format(doc.getDate("datetime")));
+			paramValue.add(paraVal);
+			
 		}
+		yearAndParam.setParamCount(yearValue.size());
 		yearAndParam.setParamValue(paramValue);
 	    yearAndParam.setYearValue(yearValue);
 		return yearAndParam;

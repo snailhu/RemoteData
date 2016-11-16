@@ -481,8 +481,8 @@ jeDate({
 							type : "warning",
 							showCancelButton : true,
 							confirmButtonColor : "#DD6B55",
-							confirmButtonText : "删除!",
-							cancelButtonText : "取消!",
+							confirmButtonText : "删除",
+							cancelButtonText : "取消",
 							closeOnConfirm : false,
 							closeOnCancel : false
 						},

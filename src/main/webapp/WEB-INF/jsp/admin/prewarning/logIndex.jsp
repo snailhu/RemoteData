@@ -155,8 +155,7 @@
 			<ul class="breadcrumb" style="margin-top: 10px;">
 				<li><img
 					src="${pageContext.request.contextPath}/static/imgs/DataImport/home.png"
-					style="margin-bottom: 3px;"> <span>系统管理</span></li>
-				<li class="active">预警管理</li>
+					style="margin-bottom: 3px;"> <span>预警管理</span></li>
 				<li class="active">预警查询</li>
 			</ul>
 			<!--  .breadcrumb -->
@@ -641,8 +640,8 @@ jeDate({
 							type : "warning",
 							showCancelButton : true,
 							confirmButtonColor : "#DD6B55",
-							confirmButtonText : "删除!",
-							cancelButtonText : "取消!",
+							confirmButtonText : "删除",
+							cancelButtonText : "取消",
 							closeOnConfirm : false,
 							closeOnCancel : false
 						},

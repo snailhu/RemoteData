@@ -596,13 +596,6 @@ $(function() {
             field: 'description',
             title: '描述',
             width: 100
-        }, {
-            field: 'editParam',
-            title: '参数列表',
-            width: 80,
-            formatter: function (value, row, index) {
-                return "<a href=\"javascript:doEditParam('" + row.code +  "');\"" + " title='参数列表'>参数列表</a>";
-            }
         }
         ]],
 		onLoadError:function(data){
@@ -612,6 +605,7 @@ $(function() {
 			return '<div><table id="ddv-' + index + '"></table></div>';
 		},
 		onExpandRow : function(index, row) {
+			var seriesCode = row.code;
 			var subgridId = 'ddv-' + index;
 			$('#' + subgridId).datagrid({
 				url : '${pageContext.request.contextPath}/admin/star/getStars?seriesId='+ row.id,
@@ -634,12 +628,12 @@ $(function() {
 								{
 									field : 'name',
 									title : '名称',
-									width : 50
+									width : 30
 								},
 								{
                                     field : 'code',
                                     title : '星编码',
-                                    width : 50
+                                    width : 30
                                 },
 								{
 									field : 'beginDate',
@@ -649,8 +643,16 @@ $(function() {
 								{
 									field : 'description',
 									title : '描述',
-									width : 80
+									width : 60
 								},
+								{
+						            field: 'editParam',
+						            title: '参数列表',
+						            width: 50,
+						            formatter: function (value, row, index) {
+						                return "<a href=\"javascript:doEditParam('" + seriesCode + "','" + row.code +"');\"" + " title='参数列表'>参数列表</a>";
+						            }
+						        },
 								{
 									field : 'operation',
 									title : '操作选项',
@@ -691,8 +693,8 @@ $(function() {
 		});
 	});
 	
-	function doEditParam(code){
-		 window.location.href='${pageContext.request.contextPath}/admin/parameter/index/' + code; 
+	function doEditParam(series,star){
+		 window.location.href='${pageContext.request.contextPath}/admin/parameter/index/'+series+'/'+star+'/'; 
 	}
 	
 	function reloadDatagrid(datagridId) {

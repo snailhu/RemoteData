@@ -177,12 +177,9 @@
 		//左菜单栏
 		$("#warnlog-img").attr("src","${pageContext.request.contextPath}/static/new/img/images/a_70.png");
 		$("#warnmanage-img").attr("src","${pageContext.request.contextPath}/static/new/img/images/a_58.png");
-		$("#sysmanage-img").attr("src","${pageContext.request.contextPath}/static/new/img/images/a_50.png");
 		$("#warnlog-text").css("color", "#5d90d6");
 		$("#warnmanage-text").css("color", "#5d90d6");
-		$("#sysmanage-text").css("color", "#5d90d6");
 		$("#warnmanageUL").css("display","block");
-		$("#sysmanageUL").css("display", "block");
 		
 		if(activeUser != ''){
 			var permissionItemsJSON = '${activeUser.permissionItemsJSON}';

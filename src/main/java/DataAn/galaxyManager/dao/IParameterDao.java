@@ -21,4 +21,6 @@ public interface IParameterDao extends IBaseDao<Parameter>{
 	Parameter selectBySeriesAndCode(String series, String param_en);
 	
 	List<Parameter> selectBySeriesAndParameterType(String series, String parameterType);
+	
+	List<Parameter> selectBySeriesAndStarAndParameterType(String series, String star, String parameterType);
 }

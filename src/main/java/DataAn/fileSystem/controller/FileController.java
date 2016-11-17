@@ -104,16 +104,16 @@ public class FileController {
 		String beginTime = request.getParameter("beginTime");
 		String endTime = request.getParameter("endTime");
 		String fileTypes= request.getParameter("fileTypes");
-		System.out.println("getMongoFSList...");
-		System.out.println("series : " + series);
-		System.out.println("star : " + star);
-		System.out.println("paramType : " + paramType);
-		System.out.println("strDirId : " + strDirId);
-		System.out.println("strPage : " + strPage);
-		System.out.println("strRows : " + strRows);
-		System.out.println("beginTime : " + beginTime);
-		System.out.println("endTime : " + endTime);
-		System.out.println("fileTypes : " + fileTypes);
+//		System.out.println("getMongoFSList...");
+//		System.out.println("series : " + series);
+//		System.out.println("star : " + star);
+//		System.out.println("paramType : " + paramType);
+//		System.out.println("strDirId : " + strDirId);
+//		System.out.println("strPage : " + strPage);
+//		System.out.println("strRows : " + strRows);
+//		System.out.println("beginTime : " + beginTime);
+//		System.out.println("endTime : " + endTime);
+//		System.out.println("fileTypes : " + fileTypes);
 		int page = 1;
 		int rows = 10;
 		if(StringUtils.isBlank(series) || StringUtils.isBlank(star) || StringUtils.isBlank(paramType)){
@@ -252,15 +252,15 @@ public class FileController {
 			map.put("dat", datFileDto);			
 		}
 		//打开另外一个线程处理文件
-//		new Thread(new Runnable(){
-//			@Override
-//			public void run() {
-//				try {
-//				} catch (Exception e) {
-//					e.printStackTrace();
-//				}				
-//			}}).start();
-		fileService.saveFile(map);
+		new Thread(new Runnable(){
+			@Override
+			public void run() {
+				try {
+				} catch (Exception e) {
+					e.printStackTrace();
+				}				
+			}}).start();
+//		fileService.saveFile(map);
 		long end = System.currentTimeMillis();
 		System.out.println("time: " + (end - begin));
 //		jsonMsg.setSuccess(true);

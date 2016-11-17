@@ -99,7 +99,7 @@ public class J9Series_Star_ServiceImpl implements IJ9Series_Star_Service{
 			for (String param_zh : paramSet) {
 				param_en = paramService.getParameter_en_by_allZh(series, star,paramType, param_zh);
 				simplyZh_and_enMap.put(param_zh.split(":")[1], param_en);
-			}
+			} //TODO 参数分类显示
 			List<String> dataTypes = null;
 			if(paramType.equals(J9Series_Star_ParameterType.FLYWHEEL.getValue())){
 				dataTypes = J9Series_Star_ParameterType.getFlywheelTypeOnParamTypeName();

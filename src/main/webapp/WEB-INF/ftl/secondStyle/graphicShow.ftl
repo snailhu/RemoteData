@@ -476,6 +476,8 @@ $.post("getDatabytap",
 				//var endDate = xAxis.data[xAxis.rangeEnd];
 				startDate = xAxis.data[xAxis.rangeStart]
 				endDate = xAxis.data[xAxis.rangeEnd];
+				$('#dateStart').val(startDate);
+       			$('#dateEnd').val(endDate);
               	console.log("开始日期"+startDate+"结束日期："+endDate);
               	var a= stringToDate(startDate);
               	var b= stringToDate(endDate);

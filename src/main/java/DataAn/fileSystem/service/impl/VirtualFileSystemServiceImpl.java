@@ -354,7 +354,7 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 	@Override
 	@Transactional(readOnly = true)
 	public Pager<MongoFSDto> getMongoFSList(int pageIndex, int pageSize, String series,String star, String parameterType, 
-			long dirId, String beginTime, String endTime,String dataTypes) {
+			Long dirId, String beginTime, String endTime,String dataTypes) {
 		Pager<VirtualFileSystem> pager = fileDao.selectByOption(series, star,parameterType, dirId, beginTime, endTime, dataTypes, "updateDate",pageIndex,pageSize);
 		return this.returnPager(pageIndex, pageSize, pager.getRows(),pager.getTotalCount());
 	}

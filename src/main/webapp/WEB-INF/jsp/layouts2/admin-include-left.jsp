@@ -188,7 +188,7 @@ a {
 								<span id="ending-text">已结束</span>
 						</a></li>
 					</ul></li>
-				<li><a href="#" class="tab_li"> <img id="fileview-img" class="img_head"
+				<li><a href="${pageContext.request.contextPath}/admin/file/index" class="tab_li"> <img id="fileview-img" class="img_head"
 						src="${pageContext.request.contextPath}/static/new/img/images/images/A_46.png">
 						<span class="menu-text" id="fileview-text"> 文件查看</span> 
 <!-- 						<img class="img_down" src="${pageContext.request.contextPath}/static/new/img/DataImport/xiala.png"> -->

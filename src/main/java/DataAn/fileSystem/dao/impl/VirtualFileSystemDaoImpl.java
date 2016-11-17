@@ -140,18 +140,21 @@ implements IVirtualFileSystemDao{
 	}
 	@SuppressWarnings("unchecked")
 	@Override
-	public Pager<VirtualFileSystem> selectByOption(String series, String star, String parameterType, long parentId, 
+	public Pager<VirtualFileSystem> selectByOption(String series, String star, String parameterType, Long parentId, 
 			String beginTime, String endTime, String dataTypes,String order, int pageIndex, int pageSize) {
 		String hql = "from VirtualFileSystem fs where fs.fileType=:fileType and fs.series=:series and fs.star=:star and fs.parameterType=:parameterType";
 		String countHql = "select count (*) from VirtualFileSystem fs where fs.fileType=:fileType and fs.series=:series and fs.star=:star and fs.parameterType=:parameterType";
 		
-		if(parentId != 0){
-			hql += " and fs.parentId=:parentId";
-			countHql += " and fs.parentId=:parentId";
-		}else{
-			hql += " and fs.parentId is null";
-			countHql += " and fs.parentId is null";
+		if(parentId != null){
+			if(parentId != 0){
+				hql += " and fs.parentId=:parentId";
+				countHql += " and fs.parentId=:parentId";
+			}else{
+				hql += " and fs.parentId is null";
+				countHql += " and fs.parentId is null";
+			}
 		}
+		
 		if(StringUtils.isNotBlank(beginTime)){
 			hql += " and fs.year_month_day>=:beginTime";
 			countHql += " and fs.year_month_day>=:beginTime";
@@ -178,7 +181,7 @@ implements IVirtualFileSystemDao{
 														.setParameter("star", star)
 														.setParameter("parameterType", parameterType);
 		
-		if(parentId != 0){
+		if(parentId != null && parentId != 0){
 			query.setParameter("parentId", parentId);
 			countQuery.setParameter("parentId", parentId);
 		}

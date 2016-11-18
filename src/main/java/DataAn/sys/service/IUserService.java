@@ -24,10 +24,10 @@ public interface IUserService {
 	public abstract ActiveUserDto getActiveUserByName(String userName);
 	
 	public abstract Pager<UserDto> getUserList(int pageIndex, int pageSize, String userName,
-			  String createdateStart, String createdateEnd,
-			  String updatedateStart, String updatedateEnd, String[] deptIds);
+			String createdateStart, String createdateEnd,String updatedateStart, 
+			String updatedateEnd, String[] deptIds,String sort, String order);
 
-	public abstract boolean existUserName(String userName);
+	public abstract boolean existUserName(UserDto user);
 
 	public abstract String getUserNameByRole(String roleName);
 

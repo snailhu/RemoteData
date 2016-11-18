@@ -102,7 +102,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						},
 						regexp : {
 							regexp : /^[a-zA-Z0-9_\.]+$/,
-							message : '用户名只能由字母、数字、数字和下划线组成'
+							message : '用户名只能由字母、数字和下划线组成'
 						},
 
 					}
@@ -176,7 +176,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						},
 						regexp : {
 							regexp : /^[a-zA-Z0-9_\.]+$/,
-							message : '用户名只能由字母、数字、数字和下划线组成'
+							message : '用户名只能由字母、数字和下划线组成'
 						},
 					}
 				},
@@ -387,9 +387,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								</div>
 							</div>
 							<div class="modal-footer">
-								<div class="col-lg-4 col-lg-offset-5">
-									<button type="button" class="btn btn-primary" id="submit_addUserInfo">确定</button>
-									<button type="button" class="btn btn-default" data-dismiss="modal" id="reset_addUserInfo">关闭</button>
+								<div class="col-lg-7 col-lg-offset-3">
+									<button type="button" class="subbutton_1" id="submit_addUserInfo">确定</button>
+									<button type="button" class="cancelbutton_1" data-dismiss="modal" id="reset_addUserInfo">关闭</button>
 								</div>
 							</div>
 						</form>
@@ -445,9 +445,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								</div>
 							</div>
 							<div class="modal-footer">
-								<div class="col-lg-4 col-lg-offset-5">
-									<button type="submit" class="btn btn-primary" id="submit_editUserInfo" data-dismiss="modal">确定</button>
-									<button type="button" class="btn btn-default" id="reset_editUserInfo" data-dismiss="modal">关闭</button>
+								<div class="col-lg-7 col-lg-offset-3">
+									<button type="submit" class="subbutton_1" id="submit_editUserInfo" data-dismiss="modal">确定</button>
+									<button type="button" class="cancelbutton_1" id="reset_editUserInfo" data-dismiss="modal">关闭</button>
 								</div>
 							</div>
 						</form>
@@ -473,9 +473,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					</form>
 			      </div>
 			      <div class="modal-footer">
-			      	<div class="col-lg-4 col-lg-offset-5">
-				        <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="submit_editUserRole()">确定</button>
-				        <button type="button" class="btn btn-default" data-dismiss="modal" id="reset_editUserRole">关闭</button>
+			      	<div class="col-lg-7 col-lg-offset-3">
+				        <button type="button" class="subbutton_1" data-dismiss="modal" onclick="submit_editUserRole()">确定</button>
+				        <button type="button" class="cancelbutton_1" data-dismiss="modal" id="reset_editUserRole">关闭</button>
                     </div>
 			      </div>
 			    </div>
@@ -537,6 +537,7 @@ jeDate({
                     field: 'userName',
                     title: '用户名',
                     width: 100,
+                    sortable:true
                 }]],
                 columns: [[ {
                     field: 'mobile',
@@ -553,7 +554,8 @@ jeDate({
                 }, {
                     field: 'createDate',
                     title: '创建时间',
-                    width: 100
+                    width: 100,
+                    sortable:true
                 }, 
 //                 {
 //                     field: 'loginLimit',
@@ -735,7 +737,7 @@ jeDate({
 					confirmButtonText : "删除!",
 					cancelButtonText : "取消!",
 					closeOnConfirm : false,
-					closeOnCancel : false
+// 					closeOnCancel : false
 				},
 				function(isConfirm) {
 					if (isConfirm) {
@@ -758,9 +760,10 @@ jeDate({
 								}
 							}
 						});
-					} else {
-						swal("取消删除", "","error");
-					}
+					} 
+// 					else {
+// 						swal("取消删除", "","error");
+// 					}
 				});
 			} else {
 				top.showMsg("提示", "请选择要删除的用户！");

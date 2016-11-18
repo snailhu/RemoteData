@@ -36,6 +36,5 @@ public class UserServiceTest {
 	
 	@Test
 	public void existUserName(){
-		System.out.println(userService.existUserName("admin123"));
 	}
 }

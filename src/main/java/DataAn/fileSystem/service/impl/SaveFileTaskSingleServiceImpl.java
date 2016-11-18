@@ -46,7 +46,7 @@ public class SaveFileTaskSingleServiceImpl implements ISaveFileTaskSingleService
 	public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
 		if(!flag){
 			//开另外一个线程处理存入kafka的数据
-			new Thread(new SaveFileToKafka(paramService, mongoService)).start();
+			//new Thread(new SaveFileToKafka(paramService, mongoService)).start();
 			flag=true;
 		}
 		return bean;

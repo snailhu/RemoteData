@@ -93,12 +93,12 @@ public class ParameterController {
 		System.out.println("id: " + id);
 		System.out.println("name: " + name);
 		JsonMessage jsonMsg = new JsonMessage();
-		if (parameterService.isExistParameter(series, series, name)) {
-			jsonMsg.setSuccess(false);
-			jsonMsg.setMsg("参数名已存在！");
-			jsonMsg.setObj("参数名已存在！");
-			return jsonMsg;
-		} 
+//		if (parameterService.isExistParameter(series, series, name)) {
+//			jsonMsg.setSuccess(false);
+//			jsonMsg.setMsg("参数名已存在！");
+//			jsonMsg.setObj("参数名已存在！");
+//			return jsonMsg;
+//		} 
 		try {
 			parameterService.updateParamter(id, name);
 		} catch (Exception e) {

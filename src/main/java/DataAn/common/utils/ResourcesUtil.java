@@ -21,6 +21,7 @@ public class ResourcesUtil {
 			reslist.add("user");
 			reslist.add("role");
 			reslist.add("permission");
+			//reslist.add("permission");
 			return reslist;
 		default:
 			return null;

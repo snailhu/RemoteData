@@ -62,7 +62,7 @@ public class UserDaoImpl extends BaseDaoImpl<User> implements IUserDao {
 			countHql += " and u.userId in (:userIds)";
 		}
 		if(StringUtils.isNotBlank(order)){
-			hql += " order by u." + order + " desc";
+			hql += " order by u." + order;
 		}else{
 			hql += " order by u.createDate desc";
 		}

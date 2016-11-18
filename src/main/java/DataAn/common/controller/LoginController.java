@@ -66,8 +66,12 @@ public class LoginController {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}	
+				User user = new User();
+				user.setUserName(username);
+				session.setAttribute("warnCount", warnCount);
+				session.setAttribute("user", user);
+				session.setAttribute("userName", username);
 				session.setAttribute("activeUser", acticeUser);
-
 				//添加登录日志到日志数据库
 				String operatejob = "登录系统";
 				systemLogService.addOneSystemlogs(request,operatejob);

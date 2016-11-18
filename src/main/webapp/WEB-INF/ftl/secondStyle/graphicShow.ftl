@@ -6,7 +6,9 @@
     <title>Title</title>
     <script src="${base}/static/js/jquery-2.0.3.min.js"></script>
 
-    <script type="text/javascript" src="${base}/static/scripts/echarts.js"></script>
+    <script type="text/javascript" src="${base}/static/scripts/customed1.js"></script>
+    <script type="text/javascript" src="${base}/static/scripts/echarts.min.js"></script>
+    <script type="text/javascript" src="${base}/static/js/conditionMonitoring/datediff.js"></script>
     <!--<script type="text/javascript" src="${base}/static/scripts/test.js"></script>-->
     <!-- 时间选择器 -->
     <link type="text/css" rel="stylesheet" href="${base}/static/content/jeDate/jedate/skin/jedate.css">
@@ -177,8 +179,15 @@
 	});
 
     $(function(){   
-    	var paramObject={};			
-    	var myChart = echarts.init(document.getElementById('main'),'customed');
+    	var paramObject={};	
+    	//从滚轮处获取到的画布开始时间和结束时间
+    	var startDate ="";
+		var endDate ="";
+		//从加载画布的tap页面上的日历控件中获取到的时间
+		var startDate_tap ="";
+		var endDate_tap ="";
+		 		
+    	var myChart = echarts.init(document.getElementById('main'),'customed1');
     	var seriesOptions = []
     	var pSeriesOptions = []
         var seriesCounter = 0
@@ -193,6 +202,7 @@
         		n.name = '${param.name}';
         		n.value = '${param.value}';
         		n.y = '${param.yname}';
+        		console.log("每条曲线的参数：参数名"+n.name+"*参数值"+n.value+"*Y轴"+n.y);
         		names.push(n);
         	</#list>       	
         <#else>
@@ -200,20 +210,23 @@
 		</#if>
         
          var options = {
-       //  color:['green'],
+       		//color:['green'],
             tooltip: {
                 trigger: 'axis'
-           //      formatter: function (params) {
+           	//      formatter: function (params) {
 			//	     mouseover_message = params;
  			//		}           
             },
             title: {
-                left: 'center'
+            	text: '折线图',
+                //left: 'center'
             },
+           	// 图例	
             legend: {
                 top: 'bottom', 
-                data:names
+                data: names
             },
+            //工具栏
             toolbox: {
                 feature: {
                     dataZoom: {
@@ -224,8 +237,6 @@
                     saveAsImage: {}
                 }
             },
-
-            
             xAxis: {
             	// axisLabel: {					
 				//	rotate: 10
@@ -235,23 +246,60 @@
                 data:[]              
             },
             yAxis: [{
+            		name: 'Y1轴',
                 	type: 'value',
                 	splitLine : {
 		                show: true
 		            }
             	},{
+            		name: 'Y2轴',
 		            type : 'value',
 		            splitLine : {
-		                show: true
+		                show: false
 		            }
 	        	}
             ],
-            dataZoom: [{
+            /*dataZoom: [{
                 type: 'inside',
                 start:0,
                 end:100,
                 realtime:false
-            }],
+            }],*/
+            dataZoom: [
+        	{
+            	show: true,
+            	realtime: true,
+            	start: 1,
+            	end: 99
+        	},
+        	{
+            	type: 'inside',
+            	realtime: true,
+            	start: 1,
+            	end: 99
+        	}],
+        	
+        	//时间轴
+        	/*timeline: {
+            show : true,
+            type: 'slider',
+            axisType: 'category',
+            currentIndex:0,
+            data:[
+				    '1S',
+				    '5S',
+				    '15s',
+				    '30s',
+				    '1m',
+				    '15m',
+				    '30m',
+				    '1h',
+				    '6d',
+				    '12d',
+				    '30d',
+				]
+        	},*/
+            
             series: []
         };    	     	
    
@@ -277,18 +325,23 @@
              	//  var json = eval(data);
              	  var i=0
              	  //debugger;
+             	  var yname = 0;
              	  for(var param in data){
+             	  yname  = names[i].y;
+             	  console.log(yname)
              	  	seriesOptions[i++] = {
 			            	type: 'line',
 			                name: param,
 			                smooth:false,
-			               // yAxisIndex: n.y,
+			               	yAxisIndex: yname,
 			                lineStyle:{
 		                    	normal:{
-		                    		width:0.5                    	}
+		                    		width:0.5 
+		                    		}
 		                    },
 			                data: data[param].paramValue
 			            };
+			            //设置X轴，注意，这里X轴存在问题，默认使用了最后一组参数的X轴
 			            date =  data[param].yearValue;
              	  }
              	  	pSeriesOptions = seriesOptions
@@ -328,10 +381,10 @@
     //	});   
        	
        	$("#getData").click(function(){
-       		var startDate =  $('#dateStart').val();
-       		var endDate =  $('#dateEnd').val();
+       		startDate =  $('#dateStart').val();
+       		endDate =  $('#dateEnd').val();
        		if(endDate && startDate){
-       			var seriesCounter_date = 0  
+       			/*var seriesCounter_date = 0  
        			var seriesOptionsDate = []	
        			  $.each(names, function (i, n) {       
 			        $.getJSON('${base}/getData?start='+startDate+'&end='+endDate+'&paramSize='+paramSize+'&filename=' + n.value, function (data) {	
@@ -339,7 +392,7 @@
 			            	type: 'line',
 			                name: n.name,
 			                smooth:true,
-			                yAxisIndex: n.y,
+			                yAxisIndex: 1,
 			                data: data["paramValue"]
 			            };
 			            seriesCounter_date += 1;
@@ -349,7 +402,58 @@
 			                myChart.setOption(options);	                
 			            }
 			        });
-		    	});   
+		    	});*/
+//修改之后
+$.post("getDatabytap", 
+		{
+			'startDate' : startDate,
+			'endDate' : endDate
+		},
+	function(data){
+/*		console.log("开始日期"+startDate+"结束日期："+endDate);
+        seriesOptionsDam[i] = {
+            type: 'line',
+            smooth:true,
+            name: n.name,
+            yAxisIndex: n.y,
+            data: data["paramValue"]
+        };
+        seriesCounter_new += 1;
+        if (seriesCounter_new === names.length) {
+            options.series = eval(seriesOptionsDam);
+            date=options.xAxis.data = data["yearValue"];	
+            myChart.setOption(options);
+        }
+*/
+//  var json = eval(data);
+  var i=0
+  //debugger;
+  var yname = 0;
+  for(var param in data){
+  yname  = names[i].y;
+  console.log(yname)
+  	seriesOptions[i++] = {
+        	type: 'line',
+            name: param,
+            smooth:false,
+           	yAxisIndex: yname,
+            lineStyle:{
+            	normal:{
+            		width:0.5 
+            		}
+            },
+            data: data[param].paramValue
+        };
+        //设置X轴，注意，这里X轴存在问题，默认使用了最后一组参数的X轴
+        date =  data[param].yearValue;
+  }
+  	pSeriesOptions = seriesOptions
+	options.series = eval(seriesOptions);
+	pDate=options.xAxis.data = date;
+    myChart.setOption(options);
+	
+	});
+		    	   
        		}       		      	             	
        	})
        	
@@ -360,21 +464,36 @@
             myChart.setOption(options);
        		
        	})
-       			  	      
+       	
+       	
+       	//数据缩放区域事件	  	      
         myChart.on('dataZoom', function (params) {
               //  console.log(params);
                // var endDate = date[params.batch[0].endValue];
               //  var startDate = date[params.batch[0].startValue];
-              	var xAxis = myChart.getModel().option.xAxis[0]
-				var startDate = xAxis.data[xAxis.rangeStart]
-				var endDate = xAxis.data[xAxis.rangeEnd]
+              	var xAxis = myChart.getModel().option.xAxis[0];
+				//var startDate = xAxis.data[xAxis.rangeStart]
+				//var endDate = xAxis.data[xAxis.rangeEnd];
+				startDate = xAxis.data[xAxis.rangeStart]
+				endDate = xAxis.data[xAxis.rangeEnd];
+				$('#dateStart').val(startDate);
+       			$('#dateEnd').val(endDate);
               	console.log("开始日期"+startDate+"结束日期："+endDate);
-                if(endDate && startDate){
+              	var a= stringToDate(startDate);
+              	var b= stringToDate(endDate);
+              	console.log(a+b);
+              	console.log(b-a);
+              	var timespace = (b-a)/60000;
+                //var time =DateDiff("s", a, b);
+              	console.log(timespace);
+              	//alert(time);
+              	if(timespace<0){ 
+                //if(endDate && startDate){
 					var seriesCounter_new = 0    
 					var seriesOptionsDam = []	
 	                $.each(names, function (i, n) {
-	                    //$.getJSON('${base}/getData?start='+startDate+'&end='+endDate+'&paramSize='+paramSize+'&filename=' + n.value, function (data) {
-	                    $.getJSON('${base}/getData', function (data) {
+	                    /*//$.getJSON('${base}/getData?start='+startDate+'&end='+endDate+'&paramSize='+paramSize+'&filename=' + n.value, function (data) {
+	                    $.getJSON('${base}/getData?start='+startDate+'&end='+endDate, function (data) {
 	                    	//console.log(data);
 	                    	console.log("开始日期"+startDate+"结束日期："+endDate);
 	                        seriesOptionsDam[i] = {
@@ -390,7 +509,42 @@
 	                            date=options.xAxis.data = data["yearValue"];	
 	                            myChart.setOption(options);
 	                        }
-	                    });
+	                    });*/
+$.post("getDatabytap", 
+		{
+			'startDate' : startDate,
+			'endDate' : endDate
+		},
+	function(data){
+//  var json = eval(data);
+  var i=0
+  //debugger;
+  var yname = 0;
+  for(var param in data){
+  yname  = names[i].y;
+  console.log(yname)
+  	seriesOptions[i++] = {
+        	type: 'line',
+            name: param,
+            smooth:false,
+           	yAxisIndex: yname,
+            lineStyle:{
+            	normal:{
+            		width:0.5 
+            		}
+            },
+            data: data[param].paramValue
+        };
+        //设置X轴，注意，这里X轴存在问题，默认使用了最后一组参数的X轴
+        date =  data[param].yearValue;
+  }
+  	pSeriesOptions = seriesOptions
+	options.series = eval(seriesOptions);
+	pDate=options.xAxis.data = date;
+    myChart.setOption(options);
+	
+	});
+	
 	                });
                 }
                

@@ -340,32 +340,21 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 	}
 	
 	@Override
-	public Pager<MongoFSDto> getMongoFSList(int pageIndex, int pageSize, long dirId) {
-		List<VirtualFileSystem> fileList = null;
-		if(dirId == 0){
-			fileList = fileDao.selectByParentIdisNullAndOrder("updateDate");
-		}else{
-			fileList = fileDao.findByParam("parentId", dirId, "updateDate");
-		}
-		return this.returnPager(pageIndex, pageSize, fileList,0);
-	}
-	
-	@Override
-	public Pager<MongoFSDto> getMongoFSList(int pageIndex, int pageSize, String series,
-			String star, String parameterType, long dirId) {
-		Pager<VirtualFileSystem> pager = null;
-		if(dirId == 0){
-			pager = fileDao.selectBySeriesAndStarAndParameterTypeAndParentIdisNullAndOrder(series, star, parameterType, "updateDate", pageIndex, pageSize);
-		}else{
-			pager = fileDao.selectBySeriesAndStarAndParameterTypeAndParentIdAndOrder(series, star, parameterType, dirId, "updateDate", pageIndex, pageSize);
-		}
-		return this.returnPager(pageIndex, pageSize, pager.getRows(),pager.getTotalCount());
+	public Pager<MongoFSDto> getMongoFSList(int pageIndex, int pageSize,
+			String series, String star, String parameterType, long dirId) {
+		Pager<VirtualFileSystem> pager = fileDao
+				.selectBySeriesAndStarAndParameterTypeAndParentIdAndOrder(
+						series, star, parameterType, dirId, "updateDate",
+						pageIndex, pageSize);
+
+		return this.returnPager(pageIndex, pageSize, pager.getRows(),
+				pager.getTotalCount());
 	}
 	
 	@Override
 	@Transactional(readOnly = true)
 	public Pager<MongoFSDto> getMongoFSList(int pageIndex, int pageSize, String series,String star, String parameterType, 
-			long dirId, String beginTime, String endTime,String dataTypes) {
+			Long dirId, String beginTime, String endTime,String dataTypes) {
 		Pager<VirtualFileSystem> pager = fileDao.selectByOption(series, star,parameterType, dirId, beginTime, endTime, dataTypes, "updateDate",pageIndex,pageSize);
 		return this.returnPager(pageIndex, pageSize, pager.getRows(),pager.getTotalCount());
 	}
@@ -455,6 +444,9 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 		dateParameters.setParameters(title);
 		dateParameters.setYear_month_day(date);
 		parametersDao.add(dateParameters);
+		
+		//保存参数
+		paramService.saveMany(series, star, parameterType, title);
 		
 		//查找csv的文件夹是否存在
 //		VirtualFileSystem csvDir = fileDao.selectByParentIdisNullAndFileName("csv");

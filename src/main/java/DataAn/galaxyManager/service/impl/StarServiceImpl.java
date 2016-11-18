@@ -9,6 +9,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import DataAn.common.pageModel.Combo;
 import DataAn.common.utils.DateUtil;
 import DataAn.galaxyManager.dao.ISeriesDao;
 import DataAn.galaxyManager.dao.IStarDao;
@@ -104,6 +105,28 @@ public class StarServiceImpl implements IStarService{
 		dto.setBeginDate(DateUtil.format(star.getStartRunDate()));
 		dto.setDescription(star.getDescription());
 		return dto;
+	}
+
+	@Override
+	public List<Combo> getStarComboData(String seriesCode, String starCode) {
+		List<Combo> comboList = new ArrayList<Combo>();
+		Series series = seriesDao.selectByCode(seriesCode);
+		if(series != null){
+			List<Star> list = starDao.getStarListBySeriesId(series.getId());
+			if(list != null && list.size() > 0){
+				Combo combo = null;
+				for (Star star : list) {
+					combo = new Combo();
+					combo.setText(star.getName());
+					combo.setValue(star.getCode());
+					if(star.getCode().equals(starCode)){
+						combo.setSelected(true);
+					}
+					comboList.add(combo);
+				}
+			}
+		}
+		return comboList;
 	}
 
 }

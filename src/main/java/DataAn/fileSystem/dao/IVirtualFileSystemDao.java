@@ -22,18 +22,12 @@ public interface IVirtualFileSystemDao extends IBaseDao<VirtualFileSystem> {
 
 	public VirtualFileSystem selectByyear_month_day(String year_month_day);
 
-	public List<VirtualFileSystem> selectByParentIdisNullAndOrder(String order);
-
-	public Pager<VirtualFileSystem> selectBySeriesAndStarAndParameterTypeAndParentIdisNullAndOrder(
-			String series, String star, String parameterType, String order, int pageIndex,
-			int pageSize);
-
 	public Pager<VirtualFileSystem> selectBySeriesAndStarAndParameterTypeAndParentIdAndOrder(
 			String series, String star, String parameterType, long parentId, String order,
 			int pageIndex, int pageSize);
 
 	public Pager<VirtualFileSystem> selectByOption(String series, String star, String parameterType,
-			long parentId, String beginTime, String endTime, String dataTypes,
+			Long parentId, String beginTime, String endTime, String dataTypes,
 			String order, int pageIndex, int pageSize);
 
 	public List<VirtualFileSystem> selectByFileTypeIsFileAndCachePathISNotNull();

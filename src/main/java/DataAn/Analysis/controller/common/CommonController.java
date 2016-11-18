@@ -225,6 +225,11 @@ public class CommonController {
 //				} 
 	//paramObiect的结构eg:{"nowSeries":"j9name","nowStar":"02","component":"flywheel","startTime":"2016-06-22 13:02:08","endTime":"2016-06-23 13:02:23","paramAttribute":[{"name":"飞轮温度Xa(00815)","value":"","y":"0"},{"name":"飞轮温度Ya(00817)","value":"","y":"0"},{"name":"飞轮温度Za(00819)","value":"","y":"0"}]}
 	System.out.println("需要展现的曲线的信息paramObject: " + paramObject);
+	//将参数信息放进缓存，供绘制曲线tab自己在读取
+	EhCache ehCache = new EhCache(); 
+	String sessionId = request.getSession().getId();
+	ehCache.addToCache(sessionId+"paramObject", paramObject);
+	System.out.println("在选择曲线组别页面保存参数信息时的sessionid："+sessionId);
 	Map<String, Class<ParamAttributeDto>> classMap = new HashMap<String, Class<ParamAttributeDto>>();
 	classMap.put("paramAttribute", ParamAttributeDto.class);
 	ParamBatchDto pbd =JsonStringToObj.jsonToObject(paramObject,ParamBatchDto.class,classMap);
@@ -258,31 +263,57 @@ public class CommonController {
 	requestConfig.setTimeEnd(pbd.getEndTime());
 	
 	Map<String, YearAndParamDataDto> result = routingService.getData(requestConfig);	
-	for (Object obj : result.keySet()) {
+/*	for (Object obj : result.keySet()) {
         String key = (String) obj;
         YearAndParamDataDto value =  result.get(key);
         List paramlist =value.getParamValue();
-        System.out.println("key:"+key + ";;;参数集合对象的大小" + paramlist.size());
+        System.out.println("key:"+key + "参数集合对象的大小" + paramlist.size());
         for(Object li : paramlist)
         {System.out.println("参数值为："+li);}
-    }
+    }*/
 	return result;			
 	}
 	
-/*	//鼠标滚轮滚动时
-		@RequestMapping(value = "/getData", method = RequestMethod.GET)
+	//鼠标滚轮滚动时
+		@RequestMapping(value = "/showGraphic/getDatabytap", method = RequestMethod.POST)
 		@ResponseBody
 		public Map<String,YearAndParamDataDto> getDataDependDataZoom(
 				HttpServletRequest request,
-				HttpServletResponse response,
-				String start,
-				String end,
-				String paramSize,
-				String filename
+				@RequestParam(value="startDate",required = true) String startDate,
+				@RequestParam(value="endDate",required = true) String endDate
+
 				) throws Exception{
 
-		return null;			
-		}*/
+			//paramObiect的结构eg:{"nowSeries":"j9name","nowStar":"02","component":"flywheel","startTime":"2016-06-22 13:02:08","endTime":"2016-06-23 13:02:23","paramAttribute":[{"name":"飞轮温度Xa(00815)","value":"","y":"0"},{"name":"飞轮温度Ya(00817)","value":"","y":"0"},{"name":"飞轮温度Za(00819)","value":"","y":"0"}]}
+			Map<String, Class<ParamAttributeDto>> classMap = new HashMap<String, Class<ParamAttributeDto>>();
+			classMap.put("paramAttribute", ParamAttributeDto.class);					
+EhCache ehCache = new EhCache();
+String sessionId = request.getSession().getId();
+System.out.println("在Tap页鼠标滚动时 sessionid:"+sessionId);
+String paramObject =  (String) ehCache.getCacheElement(sessionId+"paramObject");
+ParamBatchDto pbd =JsonStringToObj.jsonToObject(paramObject,ParamBatchDto.class,classMap);
+			RoutingService routingService=new RoutingService();
+			RequestConfig requestConfig=new RequestConfig();
+			requestConfig.setPropertyCount(pbd.getParamAttribute().size());
+			String[] properties=new String[pbd.getParamAttribute().size()];
+			System.out.println("pbd.getParamAttribute().size()的值为："+pbd.getParamAttribute().size());
+			int i=0;
+			List<ParamAttributeDto> listparam=pbd.getParamAttribute();
+			for(ParamAttributeDto paramAttributeDto: listparam){
+				properties[i++]=paramAttributeDto.getValue();
+				System.out.println("添加到requestConfig的参数值"+paramAttributeDto.getValue()+"nanme属性为："+paramAttributeDto.getName());
+			}
+			System.out.println("设置requestConfig的Properties属性为："+properties);
+			requestConfig.setProperties(properties);
+			requestConfig.setSeries(pbd.getNowSeries());
+			requestConfig.setStar(pbd.getNowStar());
+			requestConfig.setDevice(pbd.getComponent());
+			requestConfig.setTimeStart(startDate);
+			requestConfig.setTimeEnd(endDate);
+			
+			Map<String, YearAndParamDataDto> result = routingService.getData(requestConfig);	
+			return result;						
+		}
 	
 	@RequestMapping(value = "/showtab", method = RequestMethod.GET)
 	public String showtab(
@@ -347,7 +378,9 @@ public class CommonController {
 		}
 		SeriesDto  nowSeries = seriesService.getSeriesDto(Long.parseLong(nowSeriesId));
 		//当前所在系列
-		modelview.addObject("nowSeries", nowSeries.getName());
+		//modelview.addObject("nowSeries", nowSeries.getName());
+		//把卫星所在系列的系列编码传递到参数选择页面，供参数查询时使用
+		modelview.addObject("nowSeries", nowSeries.getCode());
 		//当前所在星号
 		modelview.addObject("nowStar", nowStar);
 		

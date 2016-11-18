@@ -21,7 +21,79 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<script src="${pageContext.request.contextPath}/static/content/sweetalert/dist/sweetalert.min.js"></script>
 	
 <style type="text/css">
-  .form-horizontal .has-feedback .form-control-feedback {
+/* 弹出框居中样式  */
+.sweet-alert h2 {
+	color: rgb(87, 87, 87);
+	font-size: 30px;
+	text-align: center;
+	font-weight: 600;
+	text-transform: none;
+	position: relative;
+	line-height: 40px;
+	display: block;
+	margin: 25px 0px;
+	padding: 0px;
+}
+
+.sweet-alert p {
+	color: rgb(121, 121, 121);
+	font-size: 16px;
+	font-weight: 300;
+	position: relative;
+	text-align: inherit;
+	float: none;
+	line-height: normal;
+	margin: 0px;
+	padding: 0px;
+}
+
+.sweet-alert .sa-error-container {
+	background-color: rgb(241, 241, 241);
+	margin-left: -17px;
+	margin-right: -17px;
+	max-height: 0px;
+	overflow: hidden;
+	padding: 0px 10px;
+	transition: padding 0.15s, max-height 0.15s;
+}
+
+.sweet-alert button.cancel {
+	background-color: rgb(193, 193, 193);
+}
+
+.sweet-alert button {
+	font-size: 14px;
+	width: 100px;
+	height: 32px;
+	border-width: 0;
+	margin-right: 20px;
+/* 	background-color: rgb(140, 212, 245);
+	color: white;
+	box-shadow: none;
+	font-size: 17px;
+	font-weight: 500;
+	cursor: pointer;
+	border: none;
+	border-radius: 5px;
+	padding: 10px 32px;
+	margin: 26px 30px 0px; */
+}
+
+.sweet-alert .sa-confirm-button-container {
+	display: inline-block;
+	position: relative;
+	/*     padding-left: 20px; */
+}
+
+.sa-button-container {
+    margin-top: 20px;
+	text-align: center;
+}
+
+.sa-confirm-button-container{
+	text-align: center;
+}
+.form-horizontal .has-feedback .form-control-feedback {
     top: 0;
     right: 15px;
 	}
@@ -357,7 +429,7 @@ input[type=text]::-webkit-focus-inner {
     				});
     				if(flag){
 	   	 				$.post("${pageContext.request.contextPath}/admin/file/existFile", { fileName: fileName},function(data){
-	    					console.log("flag: " + data.success);
+// 	    					console.log("flag: " + data.success);
 	    					if (data.success) {
 	    						$("#returnMsg").html("<img src='${pageContext.request.contextPath}/static/imgs/error.png'/><font color='red'>"+data.msg+"</font>");
 	    					}else{
@@ -367,8 +439,8 @@ input[type=text]::-webkit-focus-inner {
 	    							type : "warning",
 	    							showCancelButton : true,
 	    							confirmButtonColor : "#DD6B55",
-	    							confirmButtonText : "上传!",
-	    							cancelButtonText : "取消!",
+	    							confirmButtonText : "上传",
+	    							cancelButtonText : "取消",
 	    							closeOnConfirm : false,
 	    							closeOnCancel : false
 	    						},
@@ -396,6 +468,7 @@ input[type=text]::-webkit-focus-inner {
     $('#resetBtn').click(function() {
     	$("#returnMsg").empty();
     });	
+    
   });
   </script>
   </body>

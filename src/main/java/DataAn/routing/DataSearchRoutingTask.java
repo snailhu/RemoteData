@@ -42,7 +42,9 @@ public class DataSearchRoutingTask extends RecursiveTask<Map<String, YearAndPara
 		}
 		
 		for (DataSearchTask task : forks) {
-		    vals.put(task.getDataSearchTaskConfig().getProperty(), task.join());
+		    //把参数对应的squence值转换为简写中文simplezh
+			//需要实现vals.put(task.getDataSearchTaskConfig().getProperty(), task.join());
+			vals.put(task.getDataSearchTaskConfig().getProperty(), task.join());
 		}
 		return vals;
 	}

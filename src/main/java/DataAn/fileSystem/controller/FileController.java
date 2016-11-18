@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -33,7 +34,6 @@ import DataAn.fileSystem.dto.MongoFSDto;
 import DataAn.fileSystem.service.IVirtualFileSystemService;
 import DataAn.galaxyManager.option.J9Series_Star_ParameterType;
 import DataAn.galaxyManager.service.ISeriesService;
-import DataAn.storm.Communication;
 import DataAn.sys.dto.ActiveUserDto;
 
 @Controller
@@ -48,95 +48,99 @@ public class FileController {
 	@RequestMapping("/index")
 	public String mongoFSIndex(Model model,HttpServletRequest request,HttpServletResponse response) {
 //		System.out.println("mongoFSIndex..");
-		//当前所在系列
-		model.addAttribute("nowSeries", "j9");
-		//当前所在星号
-		model.addAttribute("nowStar", "02");
-		
-		HttpSession session = request.getSession();
-		ActiveUserDto acticeUser = (ActiveUserDto) session.getAttribute("activeUser");
-		String flywheel = J9Series_Star_ParameterType.FLYWHEEL.getValue();
-		String type = acticeUser.getPermissionItems().get(flywheel);
-		String value = "";
-		String name = "";
-		if (StringUtils.isNotBlank(type)) {
-			value = J9Series_Star_ParameterType.getJ9SeriesStarParameterType(type).getValue();
-			name = J9Series_Star_ParameterType.getJ9SeriesStarParameterType(type).getName();
-		}else{
-			value = J9Series_Star_ParameterType.TOP.getValue();
-			name = J9Series_Star_ParameterType.TOP.getName();
-		}
-		//当前所在参数名称
-		model.addAttribute("nowParameterTypeValue", value);
-		model.addAttribute("nowParameterTypeName", name);			
-		//当前所在目录
-		model.addAttribute("nowDirId", 0);
+//		//当前所在系列
+//		model.addAttribute("nowSeries", "j9");
+//		//当前所在星号
+//		model.addAttribute("nowStar", "02");
+//		
+//		HttpSession session = request.getSession();
+//		ActiveUserDto acticeUser = (ActiveUserDto) session.getAttribute("activeUser");
+//		String flywheel = J9Series_Star_ParameterType.FLYWHEEL.getValue();
+//		String type = acticeUser.getPermissionItems().get(flywheel);
+//		String value = "";
+//		String name = "";
+//		if (StringUtils.isNotBlank(type)) {
+//			value = J9Series_Star_ParameterType.getJ9SeriesStarParameterType(type).getValue();
+//			name = J9Series_Star_ParameterType.getJ9SeriesStarParameterType(type).getName();
+//		}else{
+//			value = J9Series_Star_ParameterType.TOP.getValue();
+//			name = J9Series_Star_ParameterType.TOP.getName();
+//		}
+//		//当前所在参数名称
+//		model.addAttribute("nowParameterTypeValue", value);
+//		model.addAttribute("nowParameterTypeName", name);			
+//		//当前所在目录
+//		model.addAttribute("nowDirId", 0);
 		return "/admin/mongoFs/index";
 	}
 	
-	@RequestMapping("/index/{series}/{star}/{paramType}/{dirId}/")
-	public String mongoFSIndex(@PathVariable String series, 
-							   @PathVariable String star, 
-							   @PathVariable String paramType,
-							   @PathVariable long dirId,Model model) {
-		//当前所在系列
-		model.addAttribute("nowSeries", series);
-		//当前所在星号
-		model.addAttribute("nowStar", star);
-		//当前所在参数名称
-		model.addAttribute("nowParameterTypeValue", paramType);
-		model.addAttribute("nowParameterTypeName", J9Series_Star_ParameterType.getJ9SeriesStarParameterType(paramType).getName());
-		//当前所在目录
-		model.addAttribute("nowDirId", dirId);
-		return "admin/mongoFs/index";
-	}
+//	@RequestMapping("/index/{series}/{star}/{paramType}/{dirId}/")
+//	public String mongoFSIndex(@PathVariable String series, 
+//							   @PathVariable String star, 
+//							   @PathVariable String paramType,
+//							   @PathVariable long dirId,Model model) {
+//		//当前所在系列
+//		model.addAttribute("nowSeries", series);
+//		//当前所在星号
+//		model.addAttribute("nowStar", star);
+//		//当前所在参数名称
+//		model.addAttribute("nowParameterTypeValue", paramType);
+////		model.addAttribute("nowParameterTypeName", J9Series_Star_ParameterType.getJ9SeriesStarParameterType(paramType).getName());
+//		//当前所在目录
+//		model.addAttribute("nowDirId", dirId);
+//		return "admin/mongoFs/index";
+//	}
 	
-	@RequestMapping(value = "getList/{series}/{star}/{paramType}/{dirId}/", method = RequestMethod.POST)
+	@RequestMapping(value = "getList", method = RequestMethod.POST)
 	@ResponseBody
-	public EasyuiDataGridJson getMongoFSList(@PathVariable String series, 
-			   								 @PathVariable String star,
-			   								 @PathVariable String paramType,
-			   								 @PathVariable long dirId ,
-			   								 HttpServletRequest request,HttpServletResponse response) {
+	public EasyuiDataGridJson getMongoFSList(HttpServletRequest request,HttpServletResponse response) {
 		EasyuiDataGridJson json = new EasyuiDataGridJson();
-		String strSeries = request.getParameter("series");
-		String strStar = request.getParameter("star");
-		String strParamType = request.getParameter("paramType");
+		String series = request.getParameter("series");
+		String star = request.getParameter("star");
+		String paramType = request.getParameter("paramType");
 		String strDirId = request.getParameter("dirId");
 		String strPage = request.getParameter("page");
 		String strRows= request.getParameter("rows");
 		String beginTime = request.getParameter("beginTime");
 		String endTime = request.getParameter("endTime");
 		String fileTypes= request.getParameter("fileTypes");
+//		System.out.println("getMongoFSList...");
+//		System.out.println("series : " + series);
+//		System.out.println("star : " + star);
+//		System.out.println("paramType : " + paramType);
+//		System.out.println("strDirId : " + strDirId);
+//		System.out.println("strPage : " + strPage);
+//		System.out.println("strRows : " + strRows);
+//		System.out.println("beginTime : " + beginTime);
+//		System.out.println("endTime : " + endTime);
+//		System.out.println("fileTypes : " + fileTypes);
 		int page = 1;
 		int rows = 10;
-		if (StringUtils.isNotBlank(strSeries)) {
-			series = strSeries;
-		}
-		if (StringUtils.isNotBlank(strStar)) {
-			star = strStar;
-		}
-		if (StringUtils.isNotBlank(strParamType)) {
-			paramType = strParamType;
-		}
-		if (StringUtils.isNotBlank(strDirId)) {
-			dirId = Long.parseLong(strDirId);
-		}
-		if (StringUtils.isNotBlank(strPage)) {
-			page = Integer.parseInt(strPage);
-		}
-		if (StringUtils.isNotBlank(strRows)) {
-			rows = Integer.parseInt(strRows);
-		}
-
-		Pager<MongoFSDto> pager = null;
-		if(StringUtils.isNotBlank(beginTime) || StringUtils.isNotBlank(endTime) || StringUtils.isNotBlank(fileTypes)){
-			pager = fileService.getMongoFSList(page, rows, series, star, paramType, dirId, beginTime, endTime, fileTypes);			
+		if(StringUtils.isBlank(series) || StringUtils.isBlank(star) || StringUtils.isBlank(paramType)){
+			json.setRows(new ArrayList<MongoFSDto>());
+			json.setTotal(0l);
 		}else{
-			pager = fileService.getMongoFSList(page, rows, series, star, paramType, dirId);			
+			if (StringUtils.isNotBlank(strPage)) {
+				page = Integer.parseInt(strPage);
+			}
+			if (StringUtils.isNotBlank(strRows)) {
+				rows = Integer.parseInt(strRows);
+			}
+			
+			Pager<MongoFSDto> pager = null;
+			if (StringUtils.isNotBlank(strDirId)) {
+				long dirId = Long.parseLong(strDirId);
+				if(StringUtils.isNotBlank(beginTime) || StringUtils.isNotBlank(endTime)){
+					pager = fileService.getMongoFSList(page, rows, series, star, paramType, dirId, beginTime, endTime, fileTypes);			
+				}else{
+					pager = fileService.getMongoFSList(page, rows, series, star, paramType, dirId);			
+				}
+			}else{
+				pager = fileService.getMongoFSList(page, rows, series, star, paramType, null, beginTime, endTime, fileTypes);
+			}
+			json.setRows(pager.getRows());
+			json.setTotal(pager.getTotalCount());	
 		}
-		json.setRows(pager.getRows());
-		json.setTotal(pager.getTotalCount());	
 		return json;
 	}
 	
@@ -248,15 +252,15 @@ public class FileController {
 			map.put("dat", datFileDto);			
 		}
 		//打开另外一个线程处理文件
-//		new Thread(new Runnable(){
-//			@Override
-//			public void run() {
-//				try {
-//				} catch (Exception e) {
-//					e.printStackTrace();
-//				}				
-//			}}).start();
-		fileService.saveFile(map);
+		new Thread(new Runnable(){
+			@Override
+			public void run() {
+				try {
+				} catch (Exception e) {
+					e.printStackTrace();
+				}				
+			}}).start();
+//		fileService.saveFile(map);
 		long end = System.currentTimeMillis();
 		System.out.println("time: " + (end - begin));
 //		jsonMsg.setSuccess(true);

@@ -98,44 +98,39 @@ implements IVirtualFileSystemDao{
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<VirtualFileSystem> selectByParentIdisNullAndOrder(String order) {
-		String hql = "from VirtualFileSystem fs where fs.parentId is null order by " + order;
-		return this.getSession().createQuery(hql).list();
-	}
-	@SuppressWarnings("unchecked")
-	@Override
-	public Pager<VirtualFileSystem> selectBySeriesAndStarAndParameterTypeAndParentIdisNullAndOrder(
-			String series, String star, String parameterType, String order, int pageIndex, int pageSize) {
-		String hql = "from VirtualFileSystem fs where fs.series=? and fs.star=? and fs.parameterType=? and fs.parentId is null order by " + order;
-		String countHQl = "select count(*) from VirtualFileSystem fs where fs.series=? and fs.star=? and fs.parameterType=? and fs.parentId is null";
-		Query query = this.getSession().createQuery(hql).setParameter(0, series).setParameter(1, star).setParameter(2, parameterType);
-		Query countQuery = this.getSession().createQuery(countHQl).setParameter(0, series).setParameter(1, star).setParameter(2, parameterType);
-		Long totalCount = (Long) countQuery.uniqueResult();
-		//设置每页显示多少个，设置多大结果。  
-        query.setMaxResults(pageSize);  
-        //设置起点  
-        query.setFirstResult(pageSize*(pageIndex-1));  
-        Pager<VirtualFileSystem> pager = new Pager<VirtualFileSystem>(pageIndex,pageSize,totalCount,query.list());
-		return pager;
-	}
-	@SuppressWarnings("unchecked")
-	@Override
 	public Pager<VirtualFileSystem> selectBySeriesAndStarAndParameterTypeAndParentIdAndOrder(
 			String series, String star, String parameterType, long parentId, String order, int pageIndex, int pageSize) {
-		String hql = "from VirtualFileSystem fs where fs.series=? and fs.star=? and fs.parameterType=? and fs.parentId=?";
-		String countHQl = "select count(*) from VirtualFileSystem fs where fs.series=? and fs.star=? and fs.parameterType=? and fs.parentId=?";
-		if(order != null && !"".equals(order)){
-			hql += " order by " + order;
+		String hql = "from VirtualFileSystem fs where fs.series=:series and fs.star=:star and fs.parameterType=:parameterType";
+		String countHQl = "select count(*) from VirtualFileSystem fs where fs.series=:series and fs.star=:star and fs.parameterType=:parameterType";
+		
+		if(parentId != 0){
+			hql += " and fs.parentId=:parentId";
+			countHQl += " and fs.parentId=:parentId";
+		}else{
+			hql += " and fs.parentId is null";
+			countHQl += " and fs.parentId is null";
 		}
-		Query query = this.getSession().createQuery(hql).setParameter(0, series)
-														.setParameter(1, star)
-														.setParameter(2, parameterType)
-														.setParameter(3, parentId);
-		Query countQuery = this.getSession().createQuery(countHQl).setParameter(0, series)
-																  .setParameter(1, star)
-																  .setParameter(2, parameterType)
-																  .setParameter(3, parentId);
-		Long totalCount = (Long) countQuery.uniqueResult();
+		if(StringUtils.isNotBlank(order)){
+			hql += " order by fs." + order;
+		}else{
+			hql += " order by fs.updateDate desc";
+		}
+		Query query = this.getSession().createQuery(hql).setParameter("series", series)
+														.setParameter("star", star)
+														.setParameter("parameterType", parameterType);
+		Query countQuery = this.getSession().createQuery(countHQl).setParameter("series", series)
+																  .setParameter("star", star)
+																  .setParameter("parameterType", parameterType);
+		if(parentId != 0){
+			query.setParameter("parentId", parentId);
+			countQuery.setParameter("parentId", parentId);
+		}
+		
+		Long totalCount = 0l;
+		Object obj = countQuery.uniqueResult();
+		if(obj != null){
+			totalCount = (Long) obj;
+		}
 		//设置每页显示多少个，设置多大结果。  
         query.setMaxResults(pageSize);  
         //设置起点  
@@ -145,15 +140,21 @@ implements IVirtualFileSystemDao{
 	}
 	@SuppressWarnings("unchecked")
 	@Override
-	public Pager<VirtualFileSystem> selectByOption(String series, String star, String parameterType, long parentId, 
+	public Pager<VirtualFileSystem> selectByOption(String series, String star, String parameterType, Long parentId, 
 			String beginTime, String endTime, String dataTypes,String order, int pageIndex, int pageSize) {
 		String hql = "from VirtualFileSystem fs where fs.fileType=:fileType and fs.series=:series and fs.star=:star and fs.parameterType=:parameterType";
 		String countHql = "select count (*) from VirtualFileSystem fs where fs.fileType=:fileType and fs.series=:series and fs.star=:star and fs.parameterType=:parameterType";
 		
-		if(parentId != 0){
-			hql += " and fs.parentId=:parentId";
-			countHql += " and fs.parentId=:parentId";
+		if(parentId != null){
+			if(parentId != 0){
+				hql += " and fs.parentId=:parentId";
+				countHql += " and fs.parentId=:parentId";
+			}else{
+				hql += " and fs.parentId is null";
+				countHql += " and fs.parentId is null";
+			}
 		}
+		
 		if(StringUtils.isNotBlank(beginTime)){
 			hql += " and fs.year_month_day>=:beginTime";
 			countHql += " and fs.year_month_day>=:beginTime";
@@ -166,7 +167,11 @@ implements IVirtualFileSystemDao{
 			hql += " and fs.dataType in (:datatype)";	
 			countHql += " and fs.dataType in (:datatype)";
 		}
-		hql += " order by " + order;
+		if(StringUtils.isNotBlank(order)){
+			hql += " order by fs." + order;
+		}else{
+			hql += " order by fs.updateDate desc";
+		}
 		Query query = this.getSession().createQuery(hql).setParameter("fileType", FileType.FILE)
 														.setParameter("series", series)
 														.setParameter("star", star)
@@ -176,7 +181,7 @@ implements IVirtualFileSystemDao{
 														.setParameter("star", star)
 														.setParameter("parameterType", parameterType);
 		
-		if(parentId != 0){
+		if(parentId != null && parentId != 0){
 			query.setParameter("parentId", parentId);
 			countQuery.setParameter("parentId", parentId);
 		}
@@ -197,7 +202,11 @@ implements IVirtualFileSystemDao{
 			query.setParameterList("datatype", list);
 			countQuery.setParameterList("datatype", list);
 		}
-		Long totalCount = (Long) countQuery.uniqueResult();
+		Long totalCount = 0l;
+		Object obj = countQuery.uniqueResult();
+		if(obj != null){
+			totalCount = (Long) obj;
+		}
 		//设置每页显示多少个，设置多大结果。  
         query.setMaxResults(pageSize);  
         //设置起点  

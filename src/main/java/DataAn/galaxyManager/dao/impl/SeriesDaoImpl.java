@@ -27,10 +27,16 @@ public class SeriesDaoImpl extends BaseDaoImpl<Series> implements ISeriesDao {
 
 	@Override
 	public Series selectByName(String name) {
-		String hql = "form Series s where s.name=?";
+		String hql = "from Series s where s.name=?";
 		return (Series) this.getSession().createQuery(hql).setParameter(0, name).uniqueResult();
 	}
 
+	@Override
+	public Series selectByCode(String code) {
+		String hql = "from Series s where s.code=?";
+		return (Series) this.getSession().createQuery(hql).setParameter(0, code).uniqueResult();
+	}
+	
 	@SuppressWarnings("unchecked")
 	@Override
 	public Pager<Series> selectByPager(int pageIndex, int pageSize) {
@@ -47,4 +53,5 @@ public class SeriesDaoImpl extends BaseDaoImpl<Series> implements ISeriesDao {
 		Pager<Series> pager = new Pager<Series>(pageIndex,pageSize,totalCount,list);
 		return pager;
 	}
+
 }

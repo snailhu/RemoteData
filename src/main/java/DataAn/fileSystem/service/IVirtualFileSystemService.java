@@ -93,12 +93,10 @@ public interface IVirtualFileSystemService {
 	* @author Shenwp
 	* @date 2016年7月8日
 	* @version 1.0
-	*/
-	public Pager<MongoFSDto> getMongoFSList(int pageIndex, int pageSize,long dirId);
-	
+	*/	
 	public Pager<MongoFSDto> getMongoFSList(int pageIndex, int pageSize,String series, String star, String parameterType, long dirId);
 	
-	public Pager<MongoFSDto> getMongoFSList(int pageIndex, int pageSize,String series, String star, String parameterType, long dirId,
+	public Pager<MongoFSDto> getMongoFSList(int pageIndex, int pageSize,String series, String star, String parameterType, Long dirId,
 			String beginTime,String endTime,String dataTypes);
 	
 	/**

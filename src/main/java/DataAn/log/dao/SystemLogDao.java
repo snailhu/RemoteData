@@ -5,10 +5,13 @@ import java.util.List;
 
 import DataAn.common.dao.IBaseDao;
 import DataAn.log.domain.SystemLog;
+import DataAn.log.dto.SystemLogDto;
 
 public interface SystemLogDao extends IBaseDao<SystemLog> {
 	
 	
 	public List<SystemLog> getSystemLogsByTime(Date startDate, Date endDate); 
+	
+	public List<SystemLog> getSystemLogsBykeyWord(Date startDate, Date endDate,String keyWord);
 	
 }

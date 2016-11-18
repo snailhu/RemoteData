@@ -34,6 +34,7 @@ import DataAn.fileSystem.dto.MongoFSDto;
 import DataAn.fileSystem.service.IVirtualFileSystemService;
 import DataAn.galaxyManager.option.J9Series_Star_ParameterType;
 import DataAn.galaxyManager.service.ISeriesService;
+import DataAn.log.service.SystemLogService;
 import DataAn.sys.dto.ActiveUserDto;
 
 @Controller
@@ -44,6 +45,8 @@ public class FileController {
 	private IVirtualFileSystemService fileService;
 	@Resource
 	private ISeriesService seriesService;
+	@Resource
+	private SystemLogService systemLogService;
 	
 	@RequestMapping("/index")
 	public String mongoFSIndex(Model model,HttpServletRequest request,HttpServletResponse response) {
@@ -214,7 +217,8 @@ public class FileController {
 //			@RequestParam(value = "files[]", required = false) List<MultipartFile> files
 			@RequestParam(value = "datFile", required = false) MultipartFile datFile,
 			@RequestParam(value = "csvFile", required = false) MultipartFile csvFile,
-			@RequestParam(value = "paramType", required = true) String paramType
+			@RequestParam(value = "paramType", required = true) String paramType,
+			HttpServletRequest request
 			) throws Exception {
 		System.out.println("come in uploadFiles...");
 		System.out.println("datFile...");
@@ -240,7 +244,11 @@ public class FileController {
 			csvFileDto.setFileSize(Float.parseFloat(strSize));
 			csvFileDto.setIn(csvFile.getInputStream());
 			csvFileDto.setParameterType(paramType);
-			map.put("csv", csvFileDto);			
+			map.put("csv", csvFileDto);	
+			//TODO 这里的operateJob为日志操作的具体内容格式应该为：上传文件+文件名
+			String operateJob;
+			operateJob = "上传文件"+csvFile.getName();
+			systemLogService.addOneSystemlogs( request,operateJob);
 		}
 		if(datFile.getSize() != 0){
 			FileDto datFileDto = new FileDto();
@@ -249,7 +257,11 @@ public class FileController {
 			String strSize = df.format(size);
 			datFileDto.setFileSize(Float.parseFloat(strSize));
 			datFileDto.setIn(datFile.getInputStream());
-			map.put("dat", datFileDto);			
+			map.put("dat", datFileDto);	
+			//TODO 这里的operateJob为日志操作的具体内容格式应该为：上传文件+文件名
+			String operateJob;
+			operateJob = "上传文件"+datFile.getName();
+			systemLogService.addOneSystemlogs( request,operateJob);
 		}
 		//打开另外一个线程处理文件
 //		new Thread(new Runnable(){
@@ -263,6 +275,9 @@ public class FileController {
 		fileService.saveFile(map);
 		long end = System.currentTimeMillis();
 		System.out.println("time: " + (end - begin));
+		
+		
+		
 //		jsonMsg.setSuccess(true);
 //		jsonMsg.setMsg("上传成功");
 //		return jsonMsg;
@@ -398,11 +413,15 @@ public class FileController {
  
 	@RequestMapping(value="/deleteFiles",method = { RequestMethod.POST })
 	@ResponseBody
-	public JsonMessage deleteFiles(String itemIds) {
+	public JsonMessage deleteFiles(HttpServletRequest request,String itemIds) {
 		System.out.println("deleteFiles...");
 		System.out.println("itemIds: " + itemIds);
 		JsonMessage jsonMsg = new JsonMessage();
 		try {
+			//TODO 这里的operateJob为日志操作的具体内容格式应该为：删除文件+文件名
+			String operateJob;
+			operateJob = "删除文件"+itemIds;
+			systemLogService.addOneSystemlogs( request,operateJob);
 			fileService.deleteFile(itemIds);
 			jsonMsg.setSuccess(true);
 			jsonMsg.setMsg("删除成功！");

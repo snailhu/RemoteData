@@ -65,26 +65,12 @@ public class LoginController {
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
-				}
-				User user = new User();
-				user.setUserName(username);
-				session.setAttribute("warnCount", warnCount);
-				session.setAttribute("user", user);
-				session.setAttribute("userName", username);
-				String ip = GetIpUtil.getIpAddress(request);
-				SystemLog slog = new SystemLog();
-				slog.setLoginIp(ip);
-				slog.setUserName(username);
-				slog.setOperateJob("登录系统");
-				
-				Date loginTime = new Date();
-				// SimpleDateFormat dateFormat = new
-				// SimpleDateFormat("yyyy/MM/dd HH:mm:ss");//可以方便地修改日期格式
-				// String loginTime = dateFormat.format( now );
-				slog.setLoginTime(loginTime);
-				slog.setOperateTime(loginTime);
-				systemLogService.saveObject(slog);
+				}	
 				session.setAttribute("activeUser", acticeUser);
+
+				//添加登录日志到日志数据库
+				String operatejob = "登录系统";
+				systemLogService.addOneSystemlogs(request,operatejob);
 
 				return "redirect:/Index";
 			} else {
@@ -107,15 +93,10 @@ public class LoginController {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		SystemLog slog = new SystemLog();
-		slog.setLoginIp(ip);
-		User user = (User)session.getAttribute("user");
-		String username = user.getUserName();
-		slog.setUserName(username);
-		slog.setOperateJob("退出系统");
-		Date logouttime =new Date();
-		slog.setOperateTime(logouttime);
-		systemLogService.saveObject(slog);
+		
+		//添加退出日志到日志数据库
+		String operatejob = "退出系统";
+		systemLogService.addOneSystemlogs(request,operatejob);
 		session.invalidate();
 		return "redirect:/login";
 	}

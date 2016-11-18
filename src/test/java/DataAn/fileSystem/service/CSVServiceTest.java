@@ -141,7 +141,7 @@ public class CSVServiceTest {
 			count++;
 		}
 		//目录
-		String dirPath = "E:\\data\\flywheel\\" + year + "\\" + "-0" + month;
+		String dirPath = "E:\\data\\flywheel\\" + year + "\\" + "0" + month;
 		//文件路径
 		String outputFile = dirPath +"\\" +"j9-02--" + year +"-0" + month +"-0" + day +".csv";
 		if(month > 9){
@@ -230,9 +230,5 @@ public class CSVServiceTest {
 		}
 	}
 	
-	@Test
-	public void testMath(){
-		Double data = Math.random() * Math.random();
-		System.out.println(data.floatValue());
-	}
+	
 }

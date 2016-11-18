@@ -445,6 +445,9 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 		dateParameters.setYear_month_day(date);
 		parametersDao.add(dateParameters);
 		
+		//保存参数
+		paramService.saveMany(series, star, parameterType, title);
+		
 		//查找csv的文件夹是否存在
 //		VirtualFileSystem csvDir = fileDao.selectByParentIdisNullAndFileName("csv");
 		VirtualFileSystem csvDir = fileDao.selectByParentIdAndFileNameAndParameterType(0, "csv", parameterType);

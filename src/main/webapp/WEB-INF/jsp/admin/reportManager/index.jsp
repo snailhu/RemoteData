@@ -291,9 +291,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							onclick="fsGrid.datagrid('unselectAll');" plain="true"
 							href="javascript:void(0);" style="float: left;">取消选中</a>
 						
-					<a class="easyui-linkbutton" iconcls="icon-cloud-download"
+					<!-- <a class="easyui-linkbutton" iconcls="icon-cloud-download"
 							onclick="createReport();" plain="true" href="javascript:void(0);"
-							style="float: left;">生成</a> 
+							style="float: left;">生成</a>  -->
 							
 					</div>
 				</div>

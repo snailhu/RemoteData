@@ -873,7 +873,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				 return false;
 			}
 			if(Number(effeMax) <= Number(effeMin)) {
-			 	 top.alertMsg('错误', "最大值不能小于最小值");
+			 	 top.alertMsg('错误', "最大有效值需大于最小有效值");
 				 return false;
 			}
 			return true;

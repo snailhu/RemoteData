@@ -159,6 +159,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			</ul><!--  .breadcrumb -->
 		</div>
 		<div class="page-content">
+<!-- 		<input type="text" name="endDate" id="edit-device-endDate1" placeholder="yyyy-MM-dd" /> -->
 			<table id="deviceTypeList" fit="false" border="false" height="450px">
 				
 			</table>
@@ -273,14 +274,16 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	</div><!-- /.main-content -->
 <script type="text/javascript">
 jeDate({
-	dateCell:"#edit-device-endDate",//直接显示日期层的容器，可以是ID  CLASS
+	dateCell:"#stop-device-endDate",//直接显示日期层的容器，可以是ID  CLASS
 	format:"YYYY-MM-DD",//日期格式
 	isinitVal:false, //是否初始化时间
 	festival:false, //是否显示节日
-	isTime:true, //是否开启时间选择
 	maxDate:jeDate.now(0), //设定最大日期为当前日期
+	zIndex:2000, 
 });
-
+$("#stop-device-endDate").keypress(function(){
+	   return false;
+});	
 var deviceTypeGrid;
 var nowSeries = "${nowSeries}";
 var nowStar = "${nowStar}";
@@ -489,6 +492,7 @@ $(function() {
 		});
 	}
 	$('#submit_editDevice').click(function(){
+		var datagridId = $('#edit-device-datagridId').val();
 		var f = $('#editDeviceForm');
 		f.data('bootstrapValidator').validate();
 		var isValid = f.data('bootstrapValidator').isValid();
@@ -546,6 +550,7 @@ $(function() {
 		});
 	}
 	$('#submit_stopDevice').click(function(){
+		var datagridId = $('#stop-device-datagridId').val();
 		var f = $('#stopDeviceForm');
 		f.data('bootstrapValidator').validate();
 		var isValid = f.data('bootstrapValidator').isValid();

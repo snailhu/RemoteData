@@ -33,11 +33,11 @@
                 <img src="${base}/static/imgs/home/logo.png" width="380" height="70">
             </div>
             <div class="top_text">
-                <span class="blue"><a href="${base}/admin/systemLog">系统管理</a></span>
-                <span><a href="${base}/report/reportDownLoad">报告管理</a></span>
                 <span><a href="${base}/admin/file/index">文件管理</a></span>
                 <span><a href="${base}/conditionMonitoring">数据分析</a></span>
+                <span><a href="${base}/report/reportDownLoad">报告管理</a></span>
                 <span><a href="${base}/admin/galaxy/index">星系管理</a></span>
+                <span class="blue"><a href="${base}/admin/systemLog">系统管理</a></span>
             </div>
         </div>
     </div>

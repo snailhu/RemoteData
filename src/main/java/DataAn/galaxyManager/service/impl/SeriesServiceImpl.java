@@ -21,6 +21,7 @@ import DataAn.galaxyManager.dto.SeriesDto;
 import DataAn.galaxyManager.option.J9SeriesType;
 import DataAn.galaxyManager.option.SeriesType;
 import DataAn.galaxyManager.service.ISeriesService;
+import DataAn.sys.domain.User;
 
 @Service
 public class SeriesServiceImpl implements ISeriesService{
@@ -139,9 +140,15 @@ public class SeriesServiceImpl implements ISeriesService{
 
 	@Override
 	public boolean isExistSeries(SeriesDto dto) {
-		Series series = seriesDao.selectByName(dto.getName());
-		if(series != null){
-			return true;
+		List<Series> list = seriesDao.findByParam("name", dto.getName());
+		if(list != null && list.size() > 0){
+			if(dto.getId() == 0){
+				return true;				
+			}else{
+				if(dto.getId() != list.get(0).getId()){
+					return true;
+				}
+			}
 		}
 		return false;
 	}

@@ -339,8 +339,8 @@ input[type=text]::-webkit-focus-inner {
 							<label class="col-sm-3 control-label no-padding-right" > DAT文件:  </label>
 							<div class="col-sm-8">
 								<div class="uploader white">
-									<input type="text" class="filename" name="showDatFileName" placeholder="No file selected..." readonly/>
-									<input type="button" class="button" value="Browse..."/>
+									<input type="text" class="filename" name="showDatFileName" placeholder="请选择文件..." readonly/>
+									<input type="button" class="button" value=" 浏  览 "/>
 									<input type="file" accept=".DAT" name="datFile" id="datFile"/>
 								</div>
 							</div>
@@ -350,8 +350,8 @@ input[type=text]::-webkit-focus-inner {
 							<label class="col-sm-3 control-label no-padding-right"> CSV文件:  </label>
 							<div class="col-sm-8">
 								<div class="uploader blue">
-									<input type="text" class="filename" placeholder="No file selected..." readonly/>
-									<input type="button" class="button" value="Browse..."/>
+									<input type="text" class="filename" placeholder="请选择文件..." readonly/>
+									<input type="button" class="button" value=" 浏  览 "/>
 									<input type="file" accept=".csv" name="csvFile" id="csvFile"/>
 								</div>
 							</div>
@@ -403,7 +403,7 @@ input[type=text]::-webkit-focus-inner {
 		});
 		$("input[type=file]").each(function() {
 			if ($(this).val() == "") {
-				$(this).parents(".uploader").find(".filename").val("No file selected...");
+				$(this).parents(".uploader").find(".filename").val("请选择文件...");
 			}
 		});
   		

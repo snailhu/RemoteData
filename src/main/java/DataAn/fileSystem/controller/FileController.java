@@ -107,16 +107,16 @@ public class FileController {
 		String beginTime = request.getParameter("beginTime");
 		String endTime = request.getParameter("endTime");
 		String fileTypes= request.getParameter("fileTypes");
-//		System.out.println("getMongoFSList...");
-//		System.out.println("series : " + series);
-//		System.out.println("star : " + star);
-//		System.out.println("paramType : " + paramType);
-//		System.out.println("strDirId : " + strDirId);
-//		System.out.println("strPage : " + strPage);
-//		System.out.println("strRows : " + strRows);
-//		System.out.println("beginTime : " + beginTime);
-//		System.out.println("endTime : " + endTime);
-//		System.out.println("fileTypes : " + fileTypes);
+		System.out.println("getMongoFSList...");
+		System.out.println("series : " + series);
+		System.out.println("star : " + star);
+		System.out.println("paramType : " + paramType);
+		System.out.println("strDirId : " + strDirId);
+		System.out.println("strPage : " + strPage);
+		System.out.println("strRows : " + strRows);
+		System.out.println("beginTime : " + beginTime);
+		System.out.println("endTime : " + endTime);
+		System.out.println("fileTypes : " + fileTypes);
 		int page = 1;
 		int rows = 10;
 		if(StringUtils.isBlank(series) || StringUtils.isBlank(star) || StringUtils.isBlank(paramType)){
@@ -131,15 +131,19 @@ public class FileController {
 			}
 			
 			Pager<MongoFSDto> pager = null;
-			if (StringUtils.isNotBlank(strDirId)) {
-				long dirId = Long.parseLong(strDirId);
-				if(StringUtils.isNotBlank(beginTime) || StringUtils.isNotBlank(endTime)){
-					pager = fileService.getMongoFSList(page, rows, series, star, paramType, dirId, beginTime, endTime, fileTypes);			
+			if(StringUtils.isNotBlank(beginTime) || StringUtils.isNotBlank(endTime)){
+				if (StringUtils.isNotBlank(strDirId)) {
+					long dirId = Long.parseLong(strDirId);
+					pager = fileService.getMongoFSList(page, rows, series, star, paramType, dirId, beginTime, endTime, fileTypes);								
 				}else{
-					pager = fileService.getMongoFSList(page, rows, series, star, paramType, dirId);			
+					pager = fileService.getMongoFSList(page, rows, series, star, paramType, null, beginTime, endTime, fileTypes);
 				}
 			}else{
-				pager = fileService.getMongoFSList(page, rows, series, star, paramType, null, beginTime, endTime, fileTypes);
+				long dirId = 0;
+				if (StringUtils.isNotBlank(strDirId)) {
+					dirId = Long.parseLong(strDirId);
+				}
+				pager = fileService.getMongoFSList(page, rows, series, star, paramType, dirId);			
 			}
 			json.setRows(pager.getRows());
 			json.setTotal(pager.getTotalCount());	
@@ -268,6 +272,7 @@ public class FileController {
 			@Override
 			public void run() {
 				try {
+					fileService.saveFile(map);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}				

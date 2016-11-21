@@ -13,6 +13,13 @@ import DataAn.common.utils.DateUtil;
 
 public class UtilTest {
 
+	private long id;
+	
+	@Test
+	public void test2(){
+		System.out.println(id);
+	}
+	
 	@Test
 	public void test(){
 		Date startDate = DateUtil.format("2010-01-01 00:00:00");

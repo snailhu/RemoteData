@@ -191,6 +191,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 										<label class="col-sm-5 control-label no-padding-right" for="form-series">星系：</label>
 										<div class="col-sm-3"  >
 										<select name="series"  id="form-series" class="form-control " >
+											<option selected="selected" value="">--请选择--</option>
 				                       </select>
 									</div>
 									</div>
@@ -199,6 +200,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 										<label class="col-sm-5 control-label no-padding-right" for="form-star">星号：</label>
 										<div class="col-sm-3">
 												<select name="star"  id="form-star" class="form-control " >
+													<option selected="selected" value="">--请选择--</option>
 				                       			</select>
 										</div>
 									</div>
@@ -207,6 +209,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 										<label class="col-sm-5 control-label no-padding-right" for="form-partsType">设备：</label>
 										<div class="col-sm-3">
 											<select name="partsType"  id="form-partsType" class="form-control " >
+												<option selected="selected" value="">--请选择--</option>
 				                       		</select>
 										</div>
 									</div>
@@ -283,6 +286,8 @@ $(function(){
 		 if(activeUser != ''){
 				var permissionItemsJSON = '${activeUser.permissionItemsJSON}';
 				var map = $.parseJSON(permissionItemsJSON); 
+				$('#form-partsType').find("option").remove();
+  			    $('#form-partsType').append("<option value=''>--请选择--</option>"); 
 				if(map.flywheel == 'flywheel'){
 					$("#form-partsType").append(" <option value = 'flywheel'>飞轮</option>"); 
 				}
@@ -293,6 +298,8 @@ $(function(){
 
       $.get('<%=request.getContextPath()%>/starParam/getSeriesList', {}, function (res) {
 		  if(res.result == "true") {
+		      $('#form-series').find("option").remove();
+  			  $('#form-series').append("<option value=''>--请选择--</option>"); 
         	  $.each(res.data.data ,function(){
 					$('#form-series').append("<option value='"+ this.code+"'>"+ this.name +"</option>"); 
 				});
@@ -300,17 +307,12 @@ $(function(){
         			$.get('<%=request.getContextPath()%>/starParam/getStarList', {'seriesId':seriesId},  function (res) {
   					  if(res.result == "true") {
   						  $('#form-star').find("option").remove();
+        				  $('#form-star').append("<option value=''>--请选择--</option>"); 
   		            	  $.each(res.data.data ,function(){
   								$('#form-star').append("<option value='"+ this.code+"'>"+ this.name +"</option>"); 
   							});
   		              }
-  		              else {
-  		            	  top.showMsg('提示', res.msg);
-  		              }
   		          });	
-          }
-          else {
-        	  top.showMsg('提示', res.msg);
           }
       });
 	$("#form-series").change(function(){
@@ -318,6 +320,7 @@ $(function(){
 		 	  $.get('<%=request.getContextPath()%>/starParam/getStarList', {'seriesId':seriesId},  function (res) {
 				  if(res.result == "true") {
 					  $('#form-star').find("option").remove();
+					  $('#form-star').append("<option value=''>--请选择--</option>"); 
 	            	  $.each(res.data.data ,function(){
 							$('#form-star').append("<option value='"+ this.code+"'>"+ this.name +"</option>"); 
 						});
@@ -365,6 +368,18 @@ $(function(){
 			var QpartsType = $('#form-partsType').val();
 			var QbeginTime = $("#form-beginTime").val();
 			var QendTime = $("#form-endTime").val();
+			if(Qseries == '') {
+				  top.showMsg('提示', "星系不能为空");
+				  return false;
+			}
+			if(Qstar == '') {
+				  top.showMsg('提示', "星不能为空");
+				  return false;
+			}
+			if(QpartsType == '') {
+				  top.showMsg('提示', "设备不能为空");
+				  return false;
+			}
 			if(QbeginTime == '') {
 				  top.showMsg('提示', "开始日期不能为空");
 				  return false;

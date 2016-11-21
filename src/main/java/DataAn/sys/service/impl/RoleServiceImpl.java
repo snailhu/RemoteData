@@ -94,7 +94,13 @@ public class RoleServiceImpl implements IRoleService {
 	public boolean existRole(RoleDto role) {
 		List<Role> list = roleDao.findByParam("roleName", role.getName());
 		if(list != null && list.size() > 0){
-			return true;
+			if(role.getId() == 0){
+				return true;				
+			}else{
+				if(role.getId() != list.get(0).getRoleId()){
+					return true;
+				}
+			}
 		}
 		return false;
 	}

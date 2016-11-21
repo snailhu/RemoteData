@@ -65,11 +65,9 @@ public class CommonController {
 	//根据用户选择的星系时间区间判断在 参数列表里显示的参数
 	@RequestMapping(value = "/getConstraint", method = RequestMethod.GET)
 	@ResponseBody
-	public List<ConstraintDto> getConstraint(String beginDate,String endDate,String Series_current,String Star_current,String type) 
+	public List<ConstraintDto> getConstraint(String beginDate,String endDate,String Series_current,String Star_current,String type_current) 
 			throws Exception{
-		System.out.println("获取参数列表所需要的信息"+beginDate+endDate+Series_current+Star_current+type);
-
-		return j9Series_Star_Service.getAllParameterList(beginDate, endDate, Series_current, Star_current, type);
+		return j9Series_Star_Service.getAllParameterList(beginDate, endDate, Series_current, Star_current, type_current);
 	}
 	
 	

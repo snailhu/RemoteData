@@ -392,12 +392,11 @@ okfun:function(val) {}       //点击确定后的回调
 		//左菜单栏
 		$("#conditionmonitoring-img").attr("src","${pageContext.request.contextPath}/static/new/img/images/a_86.png");
 		$("#conditionmonitoring-text").css("color","#5d90d6");	
-		intTemplateList();
+		//intTemplateList();
 		var  flag=false;
 		//$(".selftoolbar").click(function(){
 		$('#change-search-box').click(function(){
 		if(flag){
-			
 			$("#toolimg").attr("src","${pageContext.request.contextPath}/static/imgs/DataImport_manage/xia.png")
 			$(".widget-body").slideUp("slow");
 			flag=false;
@@ -427,7 +426,7 @@ okfun:function(val) {}       //点击确定后的回调
 		 	//var type_current="${nowParameterTypeName}";
 		 	var type_current="${nowParameterTypeValue}";
 		 	console.log("当前"+Series_current+"----"+Star_current);
-            var url = "${pageContext.request.contextPath}/getConstraint?beginDate="+beginDate+"&endDate="+endDate+"&Series_current"+Series_current+"&Star_current="+Star_current+"&type_current="+type_current;
+            var url = "${pageContext.request.contextPath}/getConstraint?beginDate="+beginDate+"&endDate="+endDate+"&Series_current="+Series_current+"&Star_current="+Star_current+"&type_current="+type_current;
             updateParamTree(url);
 		 });
 		 
@@ -441,10 +440,10 @@ okfun:function(val) {}       //点击确定后的回调
 		 	submitGroup();
 		 });
 		 
-		 
-		 $('#change-search-box').click();
 		 initTemplateTree();
 		 intTemplateList();
+		 $(".widget-body").slideUp("slow"); 
+		 //$('#change-search-box').click();
 	});
 		
 	//刷新参数列表树

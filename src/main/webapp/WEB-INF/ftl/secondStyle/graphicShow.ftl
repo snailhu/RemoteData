@@ -6,8 +6,9 @@
     <title>Title</title>
     <script src="${base}/static/js/jquery-2.0.3.min.js"></script>
 
-    <script type="text/javascript" src="${base}/static/scripts/customed1.js"></script>
+    
     <script type="text/javascript" src="${base}/static/scripts/echarts.min.js"></script>
+    <script type="text/javascript" src="${base}/static/scripts/vintage.js"></script>
     <script type="text/javascript" src="${base}/static/js/conditionMonitoring/datediff.js"></script>
     <!--<script type="text/javascript" src="${base}/static/scripts/test.js"></script>-->
     <!-- 时间选择器 -->
@@ -89,11 +90,6 @@
 		<input class="btn btn-default getData-btn" id="getData"  type="button" name="getData" value="获取数据">
 		<input class="btn btn-default getData-btn" id="changeColor" type="button" name="changeColor" value="配置图信息" data-toggle="modal" data-target="#configChartModal" >
 	</div>
-	<!--
-	<div style="margin-top: -30px;float: right;margin-right: 300px;">
-		<input type="button" class="btn btn-default getData-btn" id="changeColor" name="changeColor" value="配置图信息" data-toggle="modal" data-target="#configChartModal" >
-	</div>
-	-->
 	<div class="changeColor-div">
 <!--         <#if (params?size>0) > -->
 <!-- 	       	<#list params as param> -->
@@ -152,8 +148,8 @@
 		  </div>
 		</div>
 	</div>
-	
-	<div id="main" style="width: 800px;height:450px;"></div>
+	<hr/>
+	<div id="main" style="width: 850px;height:480px;"></div>
 </div><!-- /.page-content -->		
 </div><!-- /.main-content -->	
 </body>
@@ -187,13 +183,14 @@
 		var startDate_tap ="";
 		var endDate_tap ="";
 		 		
-    	var myChart = echarts.init(document.getElementById('main'),'customed1');
+    	var myChart = echarts.init(document.getElementById('main'),'vintage');
     	var seriesOptions = []
     	var pSeriesOptions = []
         var seriesCounter = 0
         var date = [];
         var pDate = [];
         var names = [];
+        var tuli=[];
         var mouseover_message=[];
         var paramSize= ${params?size};
         <#if (params?size>0) >
@@ -202,7 +199,7 @@
         		n.name = '${param.name}';
         		n.value = '${param.value}';
         		n.y = '${param.yname}';
-        		console.log("每条曲线的参数：参数名"+n.name+"*参数值"+n.value+"*Y轴"+n.y);
+        		console.log("每条曲线的参数：参数名"+n.name+"*参数值:"+n.value+"*Y轴:"+n.y);
         		names.push(n);
         	</#list>       	
         <#else>
@@ -218,12 +215,12 @@
  			//		}           
             },
             title: {
-            	text: '折线图',
+            	text: '分析图',
                 //left: 'center'
             },
            	// 图例	
             legend: {
-                top: 'bottom', 
+                top: 'auto', 
                 data: names
             },
             //工具栏
@@ -267,6 +264,7 @@
             }],*/
             dataZoom: [
         	{
+        		type:'slider',
             	show: true,
             	realtime: true,
             	start: 1,
@@ -322,16 +320,19 @@
              data: {'paramObject':JSON.stringify(paramObject)},
               //成功执行方法
              success: function(data){
-             	//  var json = eval(data);
+             	  //var json = eval(data);
              	  var i=0
              	  //debugger;
              	  var yname = 0;
+             	  var legendname ="";
              	  for(var param in data){
              	  yname  = names[i].y;
-             	  console.log(yname)
+             	  legendname =names[i].name;
+             	  console.log(yname+legendname)
              	  	seriesOptions[i++] = {
 			            	type: 'line',
-			                name: param,
+			                //name: param,
+			                name:legendname,
 			                smooth:false,
 			               	yAxisIndex: yname,
 			                lineStyle:{
@@ -399,7 +400,8 @@
 			            if (seriesCounter_date === names.length) {			            	
 			            	options.series = eval(seriesOptionsDate);
 			            	date=options.xAxis.data = data["yearValue"];	            
-			                myChart.setOption(options);	                
+			                myChart.setOption(options);
+			                //myChart.setTheme(vintage);             
 			            }
 			        });
 		    	});*/

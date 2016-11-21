@@ -148,14 +148,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		//左菜单栏
 		$("#reportview-img").attr("src","${pageContext.request.contextPath}/static/new/img/images/a_10.png");
 		$("#reportmanage-img").attr("src","${pageContext.request.contextPath}/static/new/img/images/a_05.png");
-		$("#${nowSeries}report-img").attr("src","${pageContext.request.contextPath}/static/new/img/images/a_14.png");
-		$("#${nowSeries}${nowStar}${nowParameterTypeValue}report-text").css("color", "#5d90d6");
 		$("#reportview-text").css("color", "#5d90d6");
 		$("#reportmanage-text").css("color", "#5d90d6");
-		$("#${nowSeries}report-text").css("color", "#5d90d6");
-		$("#${nowSeries}${nowStar}report-text").css("color", "#5d90d6");
-		$("#${nowSeries}${nowStar}reportUL").css("display","block");
-		$("#${nowSeries}reportUL").css("display", "block");
 		$("#reportviewUL").css("display", "block");
 		$("#reportmanageUL").css("display", "block");
 	})

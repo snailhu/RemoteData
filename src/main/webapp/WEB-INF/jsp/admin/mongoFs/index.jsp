@@ -63,14 +63,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		//左菜单栏
 		$("#fileview-img").attr("src","${pageContext.request.contextPath}/static/new/img/images/a_46.png");
 		$("#filemanage-img").attr("src","${pageContext.request.contextPath}/static/new/img/images/a_26.png");
-		$("#${nowSeries}file-img").attr("src","${pageContext.request.contextPath}/static/new/img/images/a_14.png");
-		$("#${nowSeries}${nowStar}${nowParameterTypeValue}file-text").css("color", "#5d90d6");
 		$("#fileview-text").css("color", "#5d90d6");
 		$("#filemange-text").css("color", "#5d90d6");
-		$("#${nowSeries}file-text").css("color", "#5d90d6");
-		$("#${nowSeries}${nowStar}file-text").css("color", "#5d90d6");
-		$("#${nowSeries}${nowStar}fileviewUL").css("display","block");
-		$("#${nowSeries}fileviewUL").css("display", "block");
 		$("#fileviewUL").css("display", "block");
 		$("#filemanageUL").css("display", "block");
 	  

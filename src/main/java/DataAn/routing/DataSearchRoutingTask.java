@@ -30,12 +30,16 @@ public class DataSearchRoutingTask extends RecursiveTask<Map<String, YearAndPara
 	protected Map<String, YearAndParamDataDto> compute() {
 		Map<String, YearAndParamDataDto> vals=new HashMap<String, YearAndParamDataDto>();
 		List<DataSearchTask> forks = new LinkedList<>();
+		//获取系列、星、设备
+		String series = requestConfig.getSeries();
+		String star = requestConfig.getStar();
+		String paramType =requestConfig.getDevice();
 		for (String property : requestConfig.getProperties()) {
 			DataSearchTaskConfig dataSearchTaskConfig=new DataSearchTaskConfig();
 			dataSearchTaskConfig.setProperty(property);
 			dataSearchTaskConfig.setStartDate(mongoFilter.getStartDate());
 			dataSearchTaskConfig.setEndDate(mongoFilter.getEndDate());
-			dataSearchTaskConfig.setRepo(routingRepoService.getTargetRepo(property, repo.index()));
+			dataSearchTaskConfig.setRepo(routingRepoService.getTargetRepo(requestConfig,property,repo.index()));
 			DataSearchTask task = new DataSearchTask(dataSearchTaskConfig);
 		    forks.add(task);
 		    task.fork();

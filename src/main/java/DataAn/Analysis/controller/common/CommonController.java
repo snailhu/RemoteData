@@ -62,19 +62,12 @@ public class CommonController {
 		return "index";
 	}
 	
+	//根据用户选择的星系时间区间判断在 参数列表里显示的参数
 	@RequestMapping(value = "/getConstraint", method = RequestMethod.GET)
 	@ResponseBody
-	public List<ConstraintDto> getConstraint(String beginDate,String endDate,String type) throws Exception{
-		
-		System.out.println("beginDate； " + beginDate);
-		System.out.println("endDate: " + endDate);
-		System.out.println("type: " + type);
-		//test
-	//	return j9Series_Star_Service.getFlyWheelParameterList();
-		String series = SeriesType.J9_SERIES.getName();
-		String star = J9SeriesType.STRA2.getValue();
-		String paramType = J9Series_Star_ParameterType.FLYWHEEL.getValue();
-		return j9Series_Star_Service.getAllParameterList(beginDate, endDate, series, star, paramType);
+	public List<ConstraintDto> getConstraint(String beginDate,String endDate,String Series_current,String Star_current,String type_current) 
+			throws Exception{
+		return j9Series_Star_Service.getAllParameterList(beginDate, endDate, Series_current, Star_current, type_current);
 	}
 	
 	
@@ -367,7 +360,6 @@ ParamBatchDto pbd =JsonStringToObj.jsonToObject(paramObject,ParamBatchDto.class,
 				){
 	    //ModelAndView modelview = new ModelAndView("/secondStyle/dataAnalysis");	
 		ModelAndView modelview = new ModelAndView("/admin/ftltojsp/dataAnalysis");
-		//ModelAndView modelview = new ModelAndView("/layouts2/admin-home");
 		String nowSeriesId=null;
 		String nowStar=null;
 		try {

@@ -35,6 +35,7 @@ import DataAn.fileSystem.service.IVirtualFileSystemService;
 import DataAn.galaxyManager.option.J9Series_Star_ParameterType;
 import DataAn.galaxyManager.service.ISeriesService;
 import DataAn.sys.dto.ActiveUserDto;
+import DataAn.sys.service.SystemLogService;
 
 @Controller
 @RequestMapping("/admin/file")
@@ -44,6 +45,8 @@ public class FileController {
 	private IVirtualFileSystemService fileService;
 	@Resource
 	private ISeriesService seriesService;
+	@Resource
+	private SystemLogService systemLogService;
 	
 	@RequestMapping("/index")
 	public String mongoFSIndex(Model model,HttpServletRequest request,HttpServletResponse response) {
@@ -104,16 +107,16 @@ public class FileController {
 		String beginTime = request.getParameter("beginTime");
 		String endTime = request.getParameter("endTime");
 		String fileTypes= request.getParameter("fileTypes");
-//		System.out.println("getMongoFSList...");
-//		System.out.println("series : " + series);
-//		System.out.println("star : " + star);
-//		System.out.println("paramType : " + paramType);
-//		System.out.println("strDirId : " + strDirId);
-//		System.out.println("strPage : " + strPage);
-//		System.out.println("strRows : " + strRows);
-//		System.out.println("beginTime : " + beginTime);
-//		System.out.println("endTime : " + endTime);
-//		System.out.println("fileTypes : " + fileTypes);
+		System.out.println("getMongoFSList...");
+		System.out.println("series : " + series);
+		System.out.println("star : " + star);
+		System.out.println("paramType : " + paramType);
+		System.out.println("strDirId : " + strDirId);
+		System.out.println("strPage : " + strPage);
+		System.out.println("strRows : " + strRows);
+		System.out.println("beginTime : " + beginTime);
+		System.out.println("endTime : " + endTime);
+		System.out.println("fileTypes : " + fileTypes);
 		int page = 1;
 		int rows = 10;
 		if(StringUtils.isBlank(series) || StringUtils.isBlank(star) || StringUtils.isBlank(paramType)){
@@ -128,15 +131,19 @@ public class FileController {
 			}
 			
 			Pager<MongoFSDto> pager = null;
-			if (StringUtils.isNotBlank(strDirId)) {
-				long dirId = Long.parseLong(strDirId);
-				if(StringUtils.isNotBlank(beginTime) || StringUtils.isNotBlank(endTime)){
-					pager = fileService.getMongoFSList(page, rows, series, star, paramType, dirId, beginTime, endTime, fileTypes);			
+			if(StringUtils.isNotBlank(beginTime) || StringUtils.isNotBlank(endTime)){
+				if (StringUtils.isNotBlank(strDirId)) {
+					long dirId = Long.parseLong(strDirId);
+					pager = fileService.getMongoFSList(page, rows, series, star, paramType, dirId, beginTime, endTime, fileTypes);								
 				}else{
-					pager = fileService.getMongoFSList(page, rows, series, star, paramType, dirId);			
+					pager = fileService.getMongoFSList(page, rows, series, star, paramType, null, beginTime, endTime, fileTypes);
 				}
 			}else{
-				pager = fileService.getMongoFSList(page, rows, series, star, paramType, null, beginTime, endTime, fileTypes);
+				long dirId = 0;
+				if (StringUtils.isNotBlank(strDirId)) {
+					dirId = Long.parseLong(strDirId);
+				}
+				pager = fileService.getMongoFSList(page, rows, series, star, paramType, dirId);			
 			}
 			json.setRows(pager.getRows());
 			json.setTotal(pager.getTotalCount());	
@@ -214,7 +221,8 @@ public class FileController {
 //			@RequestParam(value = "files[]", required = false) List<MultipartFile> files
 			@RequestParam(value = "datFile", required = false) MultipartFile datFile,
 			@RequestParam(value = "csvFile", required = false) MultipartFile csvFile,
-			@RequestParam(value = "paramType", required = true) String paramType
+			@RequestParam(value = "paramType", required = true) String paramType,
+			HttpServletRequest request
 			) throws Exception {
 		System.out.println("come in uploadFiles...");
 		System.out.println("datFile...");
@@ -240,7 +248,11 @@ public class FileController {
 			csvFileDto.setFileSize(Float.parseFloat(strSize));
 			csvFileDto.setIn(csvFile.getInputStream());
 			csvFileDto.setParameterType(paramType);
-			map.put("csv", csvFileDto);			
+			map.put("csv", csvFileDto);	
+			//TODO 这里的operateJob为日志操作的具体内容格式应该为：上传文件+文件名
+			String operateJob;
+			operateJob = "上传文件"+csvFile.getName();
+			systemLogService.addOneSystemlogs( request,operateJob);
 		}
 		if(datFile.getSize() != 0){
 			FileDto datFileDto = new FileDto();
@@ -249,13 +261,18 @@ public class FileController {
 			String strSize = df.format(size);
 			datFileDto.setFileSize(Float.parseFloat(strSize));
 			datFileDto.setIn(datFile.getInputStream());
-			map.put("dat", datFileDto);			
+			map.put("dat", datFileDto);	
+			//TODO 这里的operateJob为日志操作的具体内容格式应该为：上传文件+文件名
+			String operateJob;
+			operateJob = "上传文件"+datFile.getName();
+			systemLogService.addOneSystemlogs( request,operateJob);
 		}
 		//打开另外一个线程处理文件
 		new Thread(new Runnable(){
 			@Override
 			public void run() {
 				try {
+					fileService.saveFile(map);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}				
@@ -263,6 +280,9 @@ public class FileController {
 //		fileService.saveFile(map);
 		long end = System.currentTimeMillis();
 		System.out.println("time: " + (end - begin));
+		
+		
+		
 //		jsonMsg.setSuccess(true);
 //		jsonMsg.setMsg("上传成功");
 //		return jsonMsg;
@@ -398,11 +418,15 @@ public class FileController {
  
 	@RequestMapping(value="/deleteFiles",method = { RequestMethod.POST })
 	@ResponseBody
-	public JsonMessage deleteFiles(String itemIds) {
+	public JsonMessage deleteFiles(HttpServletRequest request,String itemIds) {
 		System.out.println("deleteFiles...");
 		System.out.println("itemIds: " + itemIds);
 		JsonMessage jsonMsg = new JsonMessage();
 		try {
+			//TODO 这里的operateJob为日志操作的具体内容格式应该为：删除文件+文件名
+			String operateJob;
+			operateJob = "删除文件"+itemIds;
+			systemLogService.addOneSystemlogs( request,operateJob);
 			fileService.deleteFile(itemIds);
 			jsonMsg.setSuccess(true);
 			jsonMsg.setMsg("删除成功！");

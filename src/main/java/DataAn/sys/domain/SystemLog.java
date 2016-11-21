@@ -1,4 +1,4 @@
-package DataAn.log.domain;
+package DataAn.sys.domain;
 
 import static javax.persistence.GenerationType.IDENTITY;
 

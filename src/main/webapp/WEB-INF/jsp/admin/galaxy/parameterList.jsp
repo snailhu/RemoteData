@@ -245,9 +245,9 @@ $(function() {
 								</div>
 							</div>
 							<div class="modal-footer">
-							<div class="col-lg-4 col-lg-offset-5">
-								<button type="button" class="btn btn-primary" id="submit_addParamInfo">确定</button>
-								<button type="button" class="btn btn-default" data-dismiss="modal" id="reset_addParamInfo">关闭</button>
+							<div class="col-lg-7 col-lg-offset-3">
+								<button type="button" class="subbutton_1" id="submit_addParamInfo">确定</button>
+								<button type="button" class="cancelbutton_1" data-dismiss="modal" id="reset_addParamInfo">关闭</button>
 							</div>
 						</div>
 					</form>
@@ -290,9 +290,9 @@ $(function() {
                                 </div>
 							</div>
 							<div class="modal-footer">
-								<div class="col-lg-4 col-lg-offset-5">
-									<button type="button" class="btn btn-primary" id="submit_editParamInfo">确定</button>
-									<button type="button" class="btn btn-default" data-dismiss="modal" id="reset_editParamInfo">关闭</button>
+								<div class="col-lg-7 col-lg-offset-3">
+									<button type="button" class="subbutton_1" id="submit_editParamInfo">确定</button>
+									<button type="button" class="cancelbutton_1" data-dismiss="modal" id="reset_editParamInfo">关闭</button>
 								</div>
 							</div>
 						</form>
@@ -465,7 +465,7 @@ $(function() {
 					confirmButtonText : "删除!",
 					cancelButtonText : "取消!",
 					closeOnConfirm : false,
-					closeOnCancel : false
+// 					closeOnCancel : false
 				},
 				function(isConfirm) {
 					if (isConfirm) {
@@ -485,9 +485,10 @@ $(function() {
 								}
 							}
 						});
-					} else {
-						swal("取消删除", "","error");
-					}
+					} 
+// 					else {
+// 						swal("取消删除", "","error");
+// 					}
 				});
 	      }
 	      else {

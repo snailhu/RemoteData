@@ -230,19 +230,19 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                         message: '开始运行时间不能为空'
                     },
                 regexp: {
-                    regexp: /^(\d{4})-(0\d{1}|1[0-2])-(0\d{1}|[12]\d{1}|3[01])$/,
+	                regexp: /^(?:(?!0000)[0-9]{4}-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1[0-9]|2[0-8])|(?:0[13-9]|1[0-2])-(?:29|30)|(?:0[13578]|1[02])-31)|(?:[0-9]{2}(?:0[48]|[2468][048]|[13579][26])|(?:0[48]|[2468][048]|[13579][26])00)-02-29)\s+([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]$/,
                     message: '时间格式不对'
                 },
                 }
             }
         }
     });  	
-    $('#reset_editStarInfo').click(function() {
-	    $('#editStarInfoForm').data('bootstrapValidator').resetForm(true);
-	});	
-	$('#close_editStarInfo').click(function() {
-	    $('#editStarInfoForm').data('bootstrapValidator').resetForm(true);
-	});
+//     $('#reset_editStarInfo').click(function() {
+// 	    $('#editStarInfoForm').data('bootstrapValidator').resetForm(true);
+// 	});	
+// 	$('#close_editStarInfo').click(function() {
+// 	    $('#editStarInfoForm').data('bootstrapValidator').resetForm(true);
+// 	});
 	$('#add-series11-close').click(function() {
         $('#defaultForm').bootstrapValidator('validate');
     });
@@ -327,9 +327,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								</div>
 							</div>
 							<div class="modal-footer">
-								<div class="col-lg-4 col-lg-offset-5">
-									<button type="button" class="btn btn-primary" onclick="submit_addSeriesInfo()">确定</button>
-									<button type="button" class="btn btn-default" data-dismiss="modal" id="reset_addSeriesInfo">关闭</button>
+								<div class="col-lg-7 col-lg-offset-3">
+									<button type="button" class="subbutton_1" onclick="submit_addSeriesInfo()">确定</button>
+									<button type="button" class="cancelbutton_1" data-dismiss="modal" id="reset_addSeriesInfo">关闭</button>
 								</div>
 							</div>
 						</form>
@@ -373,9 +373,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 									</div>
 							</div>
 							<div class="modal-footer">
-								<div class="col-lg-4 col-lg-offset-5">
-									<button type="button" class="btn btn-primary" id="submit_editSeriesInfo">确定</button>
-									<button type="button" class="btn btn-default" data-dismiss="modal" id="reset_editSeriesInfo">关闭</button>
+								<div class="col-lg-7 col-lg-offset-3">
+									<button type="button" class="subbutton_1" id="submit_editSeriesInfo">确定</button>
+									<button type="button" class="cancelbutton_1" data-dismiss="modal" id="reset_editSeriesInfo">关闭</button>
 								</div>
 							</div>
 						</form>
@@ -429,9 +429,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								</div>
 							</div>
 							<div class="modal-footer">
-								<div class="col-lg-4 col-lg-offset-5">
-									<button type="button" class="btn btn-primary" id="submit_addStarInfo">确定</button>
-									<button type="button" class="btn btn-default" data-dismiss="modal" id="reset_addStarInfo">关闭</button>
+								<div class="col-lg-7 col-lg-offset-3">
+									<button type="button" class="subbutton_1" id="submit_addStarInfo">确定</button>
+									<button type="button" class="cancelbutton_1" data-dismiss="modal" id="reset_addStarInfo">关闭</button>
 								</div>
 							</div>
 						</form>
@@ -450,6 +450,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								<h4 class="modal-title" id="editStarInfoModalLabel">添加星</h4>
 							</div>
 							<div class="modal-body">
+								<input type="hidden" name="datagridId" id="edit-star-datagridId"/>
+								<input type="hidden" name="seriesId" id="edit-star-seriesId"/>
+								<input type="hidden" name="id" id="edit-star-id"/>
 								<div class="space-4"></div>
 								<div class="form-group">
 									<label class="col-sm-3 control-label no-padding-right" for="edit-star-name"> 星名称:</label>
@@ -481,9 +484,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								</div>
 							</div>
 							<div class="modal-footer">
-								<div class="col-lg-4 col-lg-offset-5">
-									<button type="submit" class="btn btn-primary" data-dismiss="modal" id="submit_editStarInfo">确定</button>
-									<button type="button" class="btn btn-default" data-dismiss="modal" id="reset_editStarInfo">关闭</button>
+								<div class="col-lg-7 col-lg-offset-3">
+									<button type="button" class="subbutton_1" id="submit_editStarInfo">确定</button>
+									<button type="button" class="cancelbutton_1" data-dismiss="modal" id="reset_editStarInfo">关闭</button>
 								</div>
 							</div>
 						</form>
@@ -782,7 +785,7 @@ $(function() {
 				confirmButtonText : "删除!",
 				cancelButtonText : "取消!",
 				closeOnConfirm : false,
-				closeOnCancel : false
+// 				closeOnCancel : false
 			},
 			function(isConfirm) {
 				if (isConfirm) {
@@ -809,9 +812,10 @@ $(function() {
 						}
 					});
 					
-				} else {
-					swal("取消删除", "","error");
-				}
+				} 
+// 				else {
+// 					swal("取消删除", "","error");
+// 				}
 			});
 		} else {
 			top.showMsg("提示", "请选择要删除的系列！");
@@ -885,50 +889,53 @@ $(function() {
 		});
 	});
  		
+	$('#editStarInfoModal').on('hide.bs.modal', function () {
+		$('#editStarInfoForm').data('bootstrapValidator').resetForm(true);
+	});
 	function editStarInfo(datagridId, starId) {
-		var rows = $('#' + datagridId).datagrid("getSelections");
-		var oldName = rows[0].name;
-		var oldBeginDate = rows[0].beginDate;
-		var oldDescription = rows[0].description;
-		$('#edit-star-name').val(oldName);
-		$('#edit-star-beginDate').val(oldBeginDate);
-		$('#edit-star-description').val(oldDescription);
+		$('#edit-star-datagridId').val(datagridId);
+		$('#editStarInfoForm').form('load', '${pageContext.request.contextPath}/admin/star/getStarForm' + '?starId=' + starId);
 		$('#editStarInfoModal').modal('show');
-		//$('#editStarInfoForm').form('load', '${pageContext.request.contextPath}/admin/star/getStarForm' + '?starId=' + starId);
- 		$('#submit_editStarInfo').click(function(){
-			var name = $('#edit-star-name').val();
-			var beginDate = $('#edit-star-beginDate').val();
-			var description = $('#edit-star-description').val();
-			var isValid = $('#editStarInfoForm').data('bootstrapValidator').isValid();
-			if(isValid){
-				if(oldName != name || oldDescription != description || oldBeginDate != oldBeginDate){
-					$.ajax({
-						url : '${pageContext.request.contextPath}/admin/star/editStar',
-						data : {
-							id : starId,
-							name : name,
-							beginDate : beginDate,
-							description : description
-						},
-						cache : false,
-						dataType : "json",
-						success : function(data) {
-							if (data.success) {
-								reloadDatagrid(datagridId);
-								top.showMsg('提示', data.msg);
-							} else {
-								top.alertMsg('警告', data.msg);
-							}
-						}
-					});
-				}else{
-					top.showMsg('提示', "星信息没有被修改！");
+ 		
+	}
+	
+	$('#submit_editStarInfo').click(function(){
+		var f = $('#editStarInfoForm');
+		f.data('bootstrapValidator').validate();
+		var isValid = f.data('bootstrapValidator').isValid();
+		if(!isValid){
+			return false;
+		}
+		var datagridId = $('#edit-star-datagridId').val();
+		var starId = $('#edit-star-id').val();
+		var name = $('#edit-star-name').val();
+		var code = $('#edit-star-code').val();
+		var beginDate = $('#edit-star-beginDate').val();
+		var description = $('#edit-star-description').val();
+		
+		$.ajax({
+			url : '${pageContext.request.contextPath}/admin/star/editStar',
+			data : {
+				id : starId,
+				name : name,
+				code : code,
+				beginDate : beginDate,
+				description : description
+			},
+			cache : false,
+			dataType : "json",
+			success : function(data) {
+				if (data.success) {
+					$('#editStarInfoModal').modal('hide');
+					reloadDatagrid(datagridId);
+					top.showMsg('提示', data.msg);
+				} else {
+					top.alertMsg('警告', data.msg);
 				}
 			}
-			$('#editStarInfoForm').data('bootstrapValidator').resetForm(true);
- 		});
-
-	}
+		});
+	});
+	
 	function deleteStarInfo(datagridId, starId,starName){
 // 		console.log('datagridId:' + datagridId);
 // 		console.log('starId:'+starId);
@@ -942,7 +949,7 @@ $(function() {
 			confirmButtonText : "删除!",
 			cancelButtonText : "取消!",
 			closeOnConfirm : false,
-			closeOnCancel : false
+// 			closeOnCancel : false
 		},
 		function(isConfirm) {
 			if (isConfirm) {
@@ -966,9 +973,10 @@ $(function() {
 					}
 				});
 				
-			} else {
-				swal("取消删除", "","error");
-			}
+			} 
+// 			else {
+// 				swal("取消删除", "","error");
+// 			}
 		});
 	}
 </script>

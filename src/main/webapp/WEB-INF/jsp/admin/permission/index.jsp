@@ -18,6 +18,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<meta http-equiv="description" content="This is my page">
 	
 	<jsp:include page="/WEB-INF/jsp/inc/include-easyUI.jsp"></jsp:include>
+		
     <!-- 弹出框 -->
 	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/static/content/sweetalert/dist/sweetalert.css">
 	<script src="${pageContext.request.contextPath}/static/content/sweetalert/dist/sweetalert.min.js"></script>
@@ -172,12 +173,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				}
 			}
 		});
-		$('#reset_addPermissionItemInfo').click(function() {
-			$('#addPermissionItemInfoForm').data('bootstrapValidator').resetForm(true);
-		});
-		$('#close_addPermissionItemInfo').click(function() {
-			$('#addPermissionItemInfoForm').data('bootstrapValidator').resetForm(true);
-		});
+// 		$('#reset_addPermissionItemInfo').click(function() {
+// 			$('#addPermissionItemInfoForm').data('bootstrapValidator').resetForm(true);
+// 		});
+// 		$('#close_addPermissionItemInfo').click(function() {
+// 			$('#addPermissionItemInfoForm').data('bootstrapValidator').resetForm(true);
+// 		});
 		$('#editPermissionItemInfoForm').bootstrapValidator({
 			//        live: 'disabled',
 			message : 'This value is not valid',
@@ -214,12 +215,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				}
 			}
 		});
-		$('#reset_editPermissionItemInfo').click(function() {
-			$('#editPermissionItemInfoForm').data('bootstrapValidator').resetForm(true);
-		});
-		$('#close_editPermissionItemInfo').click(function() {
-			$('#editPermissionItemInfoForm').data('bootstrapValidator').resetForm(true);
-		});
+// 		$('#reset_editPermissionItemInfo').click(function() {
+// 			$('#editPermissionItemInfoForm').data('bootstrapValidator').resetForm(true);
+// 		});
+// 		$('#close_editPermissionItemInfo').click(function() {
+// 			$('#editPermissionItemInfoForm').data('bootstrapValidator').resetForm(true);
+// 		});
 	});
 </script>  
   </head>
@@ -301,9 +302,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								</div>
 							</div>
 							<div class="modal-footer">
-								<div class="col-lg-4 col-lg-offset-5">
-									<button type="button" class="btn btn-primary" onclick="submit_addPermissionGroupInfo()">确定</button>
-									<button type="button" class="btn btn-default" data-dismiss="modal" id="reset_addPermissionGroupInfo">关闭</button>
+								<div class="col-lg-7 col-lg-offset-3">
+									<button type="button" class="subbutton_1" onclick="submit_addPermissionGroupInfo()">确定</button>
+									<button type="button" class="cancelbutton_1" data-dismiss="modal" id="reset_addPermissionGroupInfo">关闭</button>
 								</div>
 							</div>
 						</form>
@@ -340,9 +341,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								</div>
 							</div>
 							<div class="modal-footer">
-								<div class="col-lg-4 col-lg-offset-5">
-									<button type="button" class="btn btn-primary" id="submit_editPermissionGroupInfo">确定</button>
-									<button type="button" class="btn btn-default" data-dismiss="modal" id="reset_editPermissionGroupInfo">关闭</button>
+								<div class="col-lg-7 col-lg-offset-3">
+									<button type="button" class="subbutton_1" id="submit_editPermissionGroupInfo">确定</button>
+									<button type="button" class="cancelbutton_1" data-dismiss="modal" id="reset_editPermissionGroupInfo">关闭</button>
 								</div>
 							</div>
 						</form>
@@ -362,6 +363,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								<h4 class="modal-title" id="addPermissionItemModalLabel">权限项信息</h4>
 							</div>
 							<div class="modal-body">
+								<input type="hidden" name="datagridId" id="add-permissionItem-datagridId"/>
+								<input type="hidden" name="permissionGroupId" id="add-permissionItem-permissionGroupId"/>
 								<div class="space-4"></div>
 								<div class="form-group">
 									<label class="col-sm-3 control-label no-padding-right" for="add-permissionItem-permissionGroupName"> 所属权限组:</label>
@@ -394,9 +397,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								</div>
 							</div>
 							<div class="modal-footer">
-								<div class="col-lg-4 col-lg-offset-5">
-									<button type="submit" class="btn btn-primary" data-dismiss="modal" id="submit_addPermissionItemInfo">确定</button>
-									<button type="button" class="btn btn-default" data-dismiss="modal" id="reset_addPermissionItemInfo">关闭</button>
+								<div class="col-lg-7 col-lg-offset-3">
+									<button type="button" class="subbutton_1" id="submit_addPermissionItemInfo">确定</button>
+									<button type="button" class="cancelbutton_1" data-dismiss="modal" id="reset_addPermissionItemInfo">关闭</button>
 								</div>
 							</div>
 						</form>
@@ -416,6 +419,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								<h4 class="modal-title" id="editPermissionItemInfoModalLabel">权限项信息</h4>
 							</div>
 							<div class="modal-body">
+								<input type="hidden" name="datagridId" id="edit-permissionItem-datagridId"/>
+								<input type="hidden" name="id" id="edit-permissionItem-id"/>
 								<div class="space-4"></div>
 								<div class="form-group">
 									<label class="col-sm-3 control-label no-padding-right" for="edit-permissionItem-displayName"> 显示名称:</label>
@@ -440,9 +445,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								</div>
 							</div>
 							<div class="modal-footer">
-								<div class="col-lg-4 col-lg-offset-5">
-									<button type="submit" class="btn btn-primary" data-dismiss="modal" id="submit_editPermissionItemInfo">确定</button>
-									<button type="button" class="btn btn-default" data-dismiss="modal" id="reset_editPermissionItemInfo">关闭</button>
+								<div class="col-lg-7 col-lg-offset-3">
+									<button type="button" class="subbutton_1" id="submit_editPermissionItemInfo">确定</button>
+									<button type="button" class="cancelbutton_1" data-dismiss="modal" id="reset_editPermissionItemInfo">关闭</button>
 								</div>
 							</div>
 						</form>
@@ -670,7 +675,7 @@ $(function() {
 				confirmButtonText : "删除!",
 				cancelButtonText : "取消!",
 				closeOnConfirm : false,
-				closeOnCancel : false
+				//closeOnCancel : false
 			},
 			function(isConfirm) {
 				if (isConfirm) {
@@ -696,9 +701,10 @@ $(function() {
 							}
 						}
 					});
-				} else {
-					swal("取消删除", "","error");
-				}
+				} 
+// 				else {
+// 					swal("取消删除", "","error");
+// 				}
 			});
 		} else {
 			top.showMsg("提示", "请选择要删除的权限组！");
@@ -706,85 +712,94 @@ $(function() {
 	}
 	
 	//在一个权限组下创建权限
-	function createPermissionItem(datagridId, permissionGroupId, permissionGroupName){
-		$('#add-permissionItem-permissionGroupName').val(permissionGroupName);
- 		$('#addPermissionItemModal').modal('show');
- 		$('#submit_addPermissionItemInfo').click(function(){
-			var displayName = $('#add-permissionItem-displayName').val();
-			var code = $('#add-permissionItem-code').val();
-			var description = $('#add-permissionItem-description').val();
-			var isValid = $('#addPermissionItemInfoForm').data('bootstrapValidator').isValid();
-	        if(isValid){
-	        	$.ajax({
-	                url : '${pageContext.request.contextPath}/admin/permission/createPermissionItem',
-	                data : {
-	                    permissionGroupId : permissionGroupId,
-	                    displayName : displayName,
-	                    code : code,
-	                    description : description
-	                },
-	                cache : false,
-	                dataType : "json",
-	                success : function(data) {
-	                    if (data.success) {
-	                        reloadDatagrid(datagridId);
-	                        top.showMsg('提示', data.msg);
-	                    } else {
-	                        top.alertMsg('警告', data.msg);
-	                    }
-	                }
-	            });
-	        }
- 		});
+	$('#addPermissionItemModal').on('hide.bs.modal', function () {
 		$('#addPermissionItemInfoForm').data('bootstrapValidator').resetForm(true);
+	});
+	function createPermissionItem(datagridId, permissionGroupId, permissionGroupName){
+		$('#add-permissionItem-datagridId').val(datagridId);
+		$('#add-permissionItem-permissionGroupId').val(permissionGroupId);
+		$('#add-permissionItem-permissionGroupName').val(permissionGroupName);
+ 		$('#addPermissionItemModal').modal('show'); 		
 	}
 	
+	$('#submit_addPermissionItemInfo').click(function(){
+		var f = $('#addPermissionItemInfoForm');
+		f.data('bootstrapValidator').validate();
+		var isValid = f.data('bootstrapValidator').isValid();
+		if(!isValid){
+			return false;
+		}
+		var datagridId = $('#add-permissionItem-datagridId').val();
+		var permissionGroupId = $('#add-permissionItem-permissionGroupId').val();
+		var displayName = $('#add-permissionItem-displayName').val();
+		var code = $('#add-permissionItem-code').val();
+		var description = $('#add-permissionItem-description').val();
+		$.ajax({
+            url : '${pageContext.request.contextPath}/admin/permission/createPermissionItem',
+            data : {
+                permissionGroupId : permissionGroupId,
+                displayName : displayName,
+                code : code,
+                description : description
+            },
+            cache : false,
+            dataType : "json",
+            success : function(data) {
+                if (data.success) {
+                	$('#addPermissionItemModal').modal('hide'); 
+                    reloadDatagrid(datagridId);
+                    top.showMsg('提示', data.msg);
+                } else {
+                    top.alertMsg('警告', data.msg);
+                }
+            }
+        });
+	});
+	
+	$('#editPermissionItemInfoModal').on('hide.bs.modal', function () {
+		$('#editPermissionItemInfoForm').data('bootstrapValidator').resetForm(true);
+	});
 	function editPermissionItemInfo(datagridId, permissionItemId) {
 // 		console.log('datagridId:' + datagridId);
 // 		console.log('permissionItemId:'+permissionItemId);
+		$('#edit-permissionItem-datagridId').val(datagridId);
 		var rows = $('#' + datagridId).datagrid("getSelections");
-		var oldName = rows[0].displayName;
-		var oldCode = rows[0].code;
-		var oldDescription = rows[0].description;
-		$('#edit-permissionItem-displayName').val(oldName);
-		$('#edit-permissionItem-code').val(oldCode);
-		$('#edit-permissionItem-description').val(oldDescription);
+		$('#edit-permissionItem-id').val(rows[0].id);
+		$('#edit-permissionItem-displayName').val(rows[0].displayName);
+		$('#edit-permissionItem-code').val(rows[0].code);
+		$('#edit-permissionItem-description').val(rows[0].description);
+// 		$('#editPermissionItemInfoForm').form('load', '${pageContext.request.contextPath}/admin/permissionItem/getPermissionItemForm' + '?permissionItemId=' + permissionItemId);
 		$('#editPermissionItemInfoModal').modal('show');
-		//$('#editPermissionItemInfoForm').form('load', '${pageContext.request.contextPath}/admin/permissionItem/getPermissionItemForm' + '?permissionItemId=' + permissionItemId);
- 		$('#submit_editPermissionItemInfo').click(function(){
-			var name = $('#edit-permissionItem-displayName').val();
-			var code = $('#edit-permissionItem-code').val();
-			var description = $('#edit-permissionItem-description').val();
-			if(oldName != name || oldDescription != description || oldCode != code){
-				var isValid = $('#addPermissionItemInfoForm').data('bootstrapValidator').isValid();
-				if(isValid){
-					$.ajax({
-						url : '${pageContext.request.contextPath}/admin/permission/editPermissionItem',
-						data : {
-							id : permissionItemId,
-							displayName : name,
-							code : code,
-							description : description
-						},
-						cache : false,
-						dataType : "json",
-						success : function(data) {
-							if (data.success) {
-								reloadDatagrid(datagridId);
-								top.showMsg('提示', data.msg);
-							} else {
-								top.alertMsg('警告', data.msg);
-							}
-						}
-					});
-				}
-			}else{
-				top.showMsg('提示', "信息没有被修改！");
-			}
-			$('#editPermissionItemInfoForm').data('bootstrapValidator').resetForm(true);
- 		});
-
 	}
+	
+	$('#submit_editPermissionItemInfo').click(function(){
+		var datagridId = $('#edit-permissionItem-datagridId').val();
+		var id = $('#edit-permissionItem-id').val();
+		var name = $('#edit-permissionItem-displayName').val();
+		var code = $('#edit-permissionItem-code').val();
+		var description = $('#edit-permissionItem-description').val();
+		$.ajax({
+			url : '${pageContext.request.contextPath}/admin/permission/editPermissionItem',
+			data : {
+				id : id,
+				displayName : name,
+				code : code,
+				description : description
+			},
+			cache : false,
+			dataType : "json",
+			success : function(data) {
+				if (data.success) {
+					$('#editPermissionItemInfoModal').modal('hide');
+					reloadDatagrid(datagridId);
+					top.showMsg('提示', data.msg);
+				} else {
+					top.alertMsg('警告', data.msg);
+				}
+			}
+		});
+	});
+	
 	function deletePermissionItemInfo(datagridId, permissionItemId,permissionItemName){
 // 		console.log('datagridId:' + datagridId);
 // 		console.log('permissionItemId:'+permissionItemId);
@@ -798,7 +813,7 @@ $(function() {
 			confirmButtonText : "删除!",
 			cancelButtonText : "取消!",
 			closeOnConfirm : false,
-			closeOnCancel : false
+			//closeOnCancel : false
 		},
 		function(isConfirm) {
 			if (isConfirm) {
@@ -821,10 +836,10 @@ $(function() {
 						}
 					}
 				});
-				
-			} else {
-				swal("取消删除", "","error");
-			}
+			} 
+// 			else {
+// 				swal("取消删除", "","error");
+// 			}
 		});
 	}
 </script>

@@ -94,8 +94,14 @@ public class StarServiceImpl implements IStarService {
 	@Override
 	public boolean isExistStarByName(StarDto starDto) {
 		List<Star> list = starDao.getStarBySeriesIdAndName(starDto.getSeriesId(), starDto.getName());
-		if (list != null && list.size() > 0) {
-			return true;
+		if(list != null && list.size() > 0){
+			if(starDto.getId() == 0){
+				return true;				
+			}else{
+				if(starDto.getId() != list.get(0).getId()){
+					return true;
+				}
+			}
 		}
 		return false;
 	}

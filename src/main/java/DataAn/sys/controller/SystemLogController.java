@@ -1,5 +1,6 @@
-package DataAn.log.controller;
+package DataAn.sys.controller;
 
+import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -17,9 +18,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import DataAn.log.domain.SystemLog;
-import DataAn.log.dto.SystemLogDto;
-import DataAn.log.service.SystemLogService;
+import DataAn.sys.domain.SystemLog;
+import DataAn.sys.dto.SystemLogDto;
+import DataAn.sys.service.SystemLogService;
 
 
 @Controller
@@ -56,33 +57,31 @@ public class SystemLogController {
 		return sLDtos;				
 	}*/
 	
-	@RequestMapping(value = "showSystemLog/{beginTime}/{endTime}")
+	@RequestMapping(value = "showSystemLog/{beginTime}/{endTime}/{keyWord}")
 	@ResponseBody
 	public List<SystemLogDto> getSystemLogByTime(
 			@PathVariable String beginTime, 
-			@PathVariable String endTime
+			@PathVariable String endTime,
+			@PathVariable String keyWord
 			)
 	{
-		//System.out.println(beginTime+"()"+endTime);
-		/*if((beginTime==null) || (endTime==null))		
-		{
-			beginTime="1950-01-01 00:00:01";
-			endTime="9999-01-01 00:00:01";
+		try {
+			keyWord =java.net.URLDecoder.decode(new String(keyWord.getBytes("ISO-8859-1"), "UTF-8"), "UTF-8");
+			System.out.println(keyWord);
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
 		}
-		else{
-			beginTime =beginTime+" 00:00:01";
-			endTime=endTime+" 23:59:59";
-		}*/
+		
+		System.out.println(beginTime+"()"+endTime+"()"+keyWord);
 		List<SystemLogDto> sLDtos = new ArrayList<SystemLogDto>();
 		List<SystemLog> sLogs;
-		try {	
-			sLogs = systemLogService.getSyetemLogsByTime(beginTime, endTime);
+		try {
+			//sLogs = systemLogService.getSyetemLogsByTime(beginTime, endTime);
+			sLogs = systemLogService.getSyetemLogsByTimeAndkeyWord(beginTime, endTime,keyWord);
 			for(SystemLog sl:sLogs){
 				SystemLogDto sDto = new SystemLogDto();
 				sDto.setLoginIp(sl.getLoginIp());
-				//sDto.setLoginTime(changeDateStyle(sl.getLoginTime()));
 				sDto.setUserName(sl.getUserName());
-				//sDto.setLogoutTime(sl.getLogoutTime().toString());
 				sDto.setOperateTime(changeDateStyle(sl.getOperateTime()));
 				sDto.setOperateJob(sl.getOperateJob());
 				sLDtos.add(sDto);

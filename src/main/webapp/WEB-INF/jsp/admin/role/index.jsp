@@ -208,9 +208,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							</div>
 						</div>
 						<div class="modal-footer">
-							<div class="col-lg-4 col-lg-offset-5">
-								<button type="button" class="btn btn-primary" id="submit_addRoleInfo">确定</button>
-								<button type="button" class="btn btn-default" data-dismiss="modal" id="reset_addRoleInfo">关闭</button>
+							<div class="col-lg-7 col-lg-offset-3">
+								<button type="button" class="subbutton_1" id="submit_addRoleInfo">确定</button>
+								<button type="button" class="cancelbutton_1" data-dismiss="modal" id="reset_addRoleInfo">关闭</button>
 							</div>
 						</div>
 					</form>
@@ -246,9 +246,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								</div>
 							</div>
 							<div class="modal-footer">
-								<div class="col-lg-4 col-lg-offset-5">
-									<button type="button" class="btn btn-primary" id="submit_editRoleInfo">确定</button>
-									<button type="button" class="btn btn-default" data-dismiss="modal" id="reset_editRoleInfo">关闭</button>
+								<div class="col-lg-7 col-lg-offset-3">
+									<button type="button" class="subbutton_1" id="submit_editRoleInfo">确定</button>
+									<button type="button" class="cancelbutton_1" data-dismiss="modal" id="reset_editRoleInfo">关闭</button>
 								</div>
 							</div>
 						</form>
@@ -270,9 +270,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			      	</div>
 			      </div>
 			      <div class="modal-footer">
-			      	<div class="col-lg-4 col-lg-offset-5">
-				        <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="submit_editRolePermission()">确定</button>
-				        <button type="button" class="btn btn-default" data-dismiss="modal" id="reset_editRolePermission">关闭</button>
+			      	<div class="col-lg-7 col-lg-offset-3">
+				        <button type="button" class="subbutton_1" data-dismiss="modal" onclick="submit_editRolePermission()">确定</button>
+				        <button type="button" class="cancelbutton_1" data-dismiss="modal" id="reset_editRolePermission">关闭</button>
                     </div>
 			      </div>
 			    </div>
@@ -494,7 +494,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					confirmButtonText : "删除!",
 					cancelButtonText : "取消!",
 					closeOnConfirm : false,
-					closeOnCancel : false
+// 					closeOnCancel : false
 				},
 				function(isConfirm) {
 					if (isConfirm) {
@@ -514,9 +514,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								}
 							}
 						});
-					} else {
-						swal("取消删除", "","error");
-					}
+					} 
+// 					else {
+// 						swal("取消删除", "","error");
+// 					}
 				});
 	      }
 	      else {

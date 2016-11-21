@@ -1,4 +1,4 @@
-package DataAn.log.dao.impl;
+package DataAn.sys.dao.impl;
 
 import java.util.Date;
 import java.util.List;
@@ -6,8 +6,8 @@ import java.util.List;
 import org.springframework.stereotype.Repository;
 
 import DataAn.common.dao.BaseDaoImpl;
-import DataAn.log.dao.SystemLogDao;
-import DataAn.log.domain.SystemLog;
+import DataAn.sys.dao.SystemLogDao;
+import DataAn.sys.domain.SystemLog;
 
 @Repository
 public class SystemLogDaoImpl extends BaseDaoImpl<SystemLog> implements

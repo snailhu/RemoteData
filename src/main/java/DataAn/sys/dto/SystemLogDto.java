@@ -1,4 +1,4 @@
-package DataAn.log.dto;
+package DataAn.sys.dto;
 
 
 public class SystemLogDto {

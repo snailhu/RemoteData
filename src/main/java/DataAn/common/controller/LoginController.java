@@ -16,12 +16,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import DataAn.common.utils.GetIpUtil;
-import DataAn.log.domain.SystemLog;
-import DataAn.log.service.SystemLogService;
 import DataAn.prewarning.service.IPrewarningService;
+import DataAn.sys.domain.SystemLog;
 import DataAn.sys.domain.User;
 import DataAn.sys.dto.ActiveUserDto;
 import DataAn.sys.service.IUserService;
+import DataAn.sys.service.SystemLogService;
 
 @Controller
 public class LoginController {

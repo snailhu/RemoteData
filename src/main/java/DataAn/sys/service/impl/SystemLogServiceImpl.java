@@ -1,4 +1,4 @@
-package DataAn.log.service.impl;
+package DataAn.sys.service.impl;
 
 import java.io.IOException;
 import java.text.DateFormat;
@@ -14,11 +14,11 @@ import javax.servlet.http.HttpSession;
 import org.springframework.stereotype.Service;
 
 import DataAn.common.utils.GetIpUtil;
-import DataAn.log.dao.SystemLogDao;
-import DataAn.log.domain.SystemLog;
-import DataAn.log.dto.SystemLogDto;
-import DataAn.log.service.SystemLogService;
+import DataAn.sys.dao.SystemLogDao;
+import DataAn.sys.domain.SystemLog;
 import DataAn.sys.domain.User;
+import DataAn.sys.dto.SystemLogDto;
+import DataAn.sys.service.SystemLogService;
 
 @Service
 public class SystemLogServiceImpl implements SystemLogService{

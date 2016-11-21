@@ -1,12 +1,12 @@
-package DataAn.log.service;
+package DataAn.sys.service;
 
 import java.text.ParseException;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
-import DataAn.log.domain.SystemLog;
-import DataAn.log.dto.SystemLogDto;
+import DataAn.sys.domain.SystemLog;
+import DataAn.sys.dto.SystemLogDto;
 
 public interface SystemLogService {
 	

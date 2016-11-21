@@ -1,4 +1,4 @@
-package DataAn.log.controller;
+package DataAn.sys.controller;
 
 import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
@@ -18,9 +18,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import DataAn.log.domain.SystemLog;
-import DataAn.log.dto.SystemLogDto;
-import DataAn.log.service.SystemLogService;
+import DataAn.sys.domain.SystemLog;
+import DataAn.sys.dto.SystemLogDto;
+import DataAn.sys.service.SystemLogService;
 
 
 @Controller

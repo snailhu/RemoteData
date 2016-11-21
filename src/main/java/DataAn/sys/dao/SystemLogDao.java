@@ -1,11 +1,11 @@
-package DataAn.log.dao;
+package DataAn.sys.dao;
 
 import java.util.Date;
 import java.util.List;
 
 import DataAn.common.dao.IBaseDao;
-import DataAn.log.domain.SystemLog;
-import DataAn.log.dto.SystemLogDto;
+import DataAn.sys.domain.SystemLog;
+import DataAn.sys.dto.SystemLogDto;
 
 public interface SystemLogDao extends IBaseDao<SystemLog> {
 	

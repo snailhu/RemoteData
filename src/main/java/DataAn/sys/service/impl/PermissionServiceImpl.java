@@ -300,7 +300,13 @@ public class PermissionServiceImpl implements IPermissionService{
 	public boolean isExistPermissionGroup(PermissionGroupDto permissionGroup) {
 		List<Auth> list = authDao.findByParam("authName", permissionGroup.getName());
 		if (list != null && list.size() > 0) {
-			return true;
+			if(permissionGroup.getId() == 0){
+				return true;				
+			}else{
+				if(permissionGroup.getId() != list.get(0).getAuthId()){
+					return true;
+				}
+			}
 		}
 		return false;
 	}
@@ -309,7 +315,13 @@ public class PermissionServiceImpl implements IPermissionService{
 	public boolean isExistPermissionItem(PermissionItemDto permissionItem) {
 		List<Auth> list = authDao.findByParam("authName", permissionItem.getDisplayName());
 		if (list != null && list.size() > 0) {
-			return true;
+			if(permissionItem.getId() == 0){
+				return true;				
+			}else{
+				if(permissionItem.getId() != list.get(0).getAuthId()){
+					return true;
+				}
+			}
 		}
 		return false;
 	}

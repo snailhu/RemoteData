@@ -52,6 +52,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     margin-right: 0px;
     margin-left: 100px;
 }
+.mustchoose {
+    padding-top: 5px;
+    padding-left: 5px;
+    color: red;
+}
 </style>
   <script type="text/javascript">
   $(function(){
@@ -154,6 +159,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 										<div class="col-sm-9">
 											<input type="text" id="search-series" name="series" placeholder="系列" class="col-xs-10 col-sm-5" 
 											style="height: 28px;width: 231px"/>
+											<label class="mustchoose">*</label>
 										</div>
 									</div>
 									<div class="space-4"></div>
@@ -162,6 +168,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 										<div class="col-sm-9">
 											<input type="text" id="search-star" name="star" placeholder="星" class="col-xs-10 col-sm-5" 
 											style="height: 28px;width: 231px"/>
+											<label class="mustchoose">*</label>
 										</div>
 									</div>
 									<div class="space-4"></div>
@@ -169,6 +176,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 										<label class="col-sm-3 control-label no-padding-right" for="search-paramType"> 设备 </label>
 										<div class="col-sm-9">
 											<input type="text" id="search-paramType" name="paramType" placeholder="设备" class="col-xs-10 col-sm-5" />
+											<label class="mustchoose">*</label>
 										</div>
 									</div>
 									<div class="space-4"></div>
@@ -269,12 +277,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		</div><!-- /.page-content -->
 	</div><!-- /.main-content -->
 	<script type="text/javascript">
-	  
 	  var fsGrid;
 	  var url;
-	  
 	  $(function () {
-		  
 		  url='<%=request.getContextPath()%>/admin/file/getList';
 		  fsGrid = $('#fsList').datagrid({
 	          url: url,
@@ -315,13 +320,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	          ]]
 	      });
 		  
+		  var nowDirId = '';
 	      //隐藏文件列表
 	      $("#div-fsList").hide();
 	      $('#btn-search').click(function(){
 	    	  var nowSeries = $("#search-series").combobox('getValue');
 	    	  var nowStar = $("#search-star").combobox('getValue');
 	    	  var nowParamType = 'flywheel';
-	    	  var nowDirId = '';
 	    	  //显示文件列表
 	    	  $("#div-fsList").show();
 	    	  var beginTime = $('#search-beginTime').val();
@@ -443,26 +448,64 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	  }
 	  function deleteFS() {
 	      var ids = [];
+	      var names = [];
 	      var rows = fsGrid.datagrid('getSelections');
 	      if (rows.length>0) {
-	          $.messager.confirm('提示', '确定删除吗？', function (r) {
-	              if (r) {
-	                  for (var i = 0; i < rows.length; i++) {
-	                      ids.push(rows[i].id +"/"+rows[i].type);
-	                  }
-	                 // "ids": ids.join(','),"type":rows.type
-	                  $.post('<%=request.getContextPath()%>/admin/file/deleteFiles', { "itemIds": ids.join(',')}, function (data) {
-	                      if (data.success) {
-	                          reloadDataGrid();
-	                          top.showMsg('提示', data.msg);
-	                      }
-	                      else {
-	                          top.alertMsg('错误', data.msg+"\n"+(data.obj==null?"":data.obj));
-	                      }
+// 	          $.messager.confirm('提示', '确定删除吗？', function (r) {
+// 	              if (r) {
+// 	                  for (var i = 0; i < rows.length; i++) {
+// 	                      ids.push(rows[i].id +"/"+rows[i].type);
+// 	                  }
+// 	                  $.post('${pageContext.request.contextPath}/admin/file/deleteFiles', { "itemIds": ids.join(',')}, function (data) {
+// 	                      if (data.success) {
+// 	                          reloadDataGrid();
+// 	                          top.showMsg('提示', data.msg);
+// 	                      }
+// 	                      else {
+// 	                          top.alertMsg('错误', data.msg+"\n"+(data.obj==null?"":data.obj));
+// 	                      }
 	
-	                  }, "json");
-	              }
-	          });
+// 	                  }, "json");
+// 	              }
+// 	          });
+	          for (var i = 0; i < rows.length; i++) {
+	        	  names.push(rows[i].name);
+                  ids.push(rows[i].id +"/"+rows[i].type);
+              }
+	          swal({
+					title : "你是否确定删除?",
+					text : names.join(','),
+					type : "warning",
+					showCancelButton : true,
+					confirmButtonColor : "#DD6B55",
+					confirmButtonText : "删除!",
+					cancelButtonText : "取消!",
+					closeOnConfirm : false,
+//					closeOnCancel : false
+				},
+				function(isConfirm) {
+					if (isConfirm) {
+						$.ajax({
+							url : '${pageContext.request.contextPath}/admin/file/deleteFiles',
+							data : {
+								itemIds : ids.join(',')
+							},
+							cache : false,
+							dataType : "json",
+							success : function(data) {
+								if (data.success) {
+									swal("删除成功!","","success");
+									reloadDataGrid();
+								} else {
+									swal("删除失败", data.msg,"error");
+								}
+							}
+						});
+					} 
+//					else {
+//						swal("取消删除", "","error");
+//					}
+				});
 	      }
 	      else {
 	          top.showMsg("提示", "请选择要删除的记录！");

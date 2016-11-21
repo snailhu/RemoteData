@@ -3,27 +3,13 @@ package DataAn.log.dto;
 
 public class SystemLogDto {
 		
-	private Integer UserId;
-	
 	private String userName;
 	
 	private String loginIp;	
-
-	private String loginTime;
-	
-	private String logoutTime;
-
-	private String operateJob;
 	
 	private String operateTime;
 
-	public Integer getUserId() {
-		return UserId;
-	}
-
-	public void setUserId(Integer userId) {
-		UserId = userId;
-	}
+	private String operateJob;
 
 	public String getUserName() {
 		return userName;
@@ -41,20 +27,12 @@ public class SystemLogDto {
 		this.loginIp = loginIp;
 	}
 
-	public String getLoginTime() {
-		return loginTime;
+	public String getOperateTime() {
+		return operateTime;
 	}
 
-	public void setLoginTime(String loginTime) {
-		this.loginTime = loginTime;
-	}
-
-	public String getLogoutTime() {
-		return logoutTime;
-	}
-
-	public void setLogoutTime(String logoutTime) {
-		this.logoutTime = logoutTime;
+	public void setOperateTime(String operateTime) {
+		this.operateTime = operateTime;
 	}
 
 	public String getOperateJob() {
@@ -64,14 +42,5 @@ public class SystemLogDto {
 	public void setOperateJob(String operateJob) {
 		this.operateJob = operateJob;
 	}
-
-	public String getOperateTime() {
-		return operateTime;
-	}
-
-	public void setOperateTime(String operateTime) {
-		this.operateTime = operateTime;
-	}
-	
 	
 }

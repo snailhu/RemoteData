@@ -13,6 +13,7 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
+import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
@@ -108,12 +109,27 @@ public class VirtualFileSystemServiceTest {
 		int pageSize = 100;
 		String series = "j9";
 		String star = "02";
-		long dirId = 0;
-		String beginTime = "2009-11-17";
-		String endTime = "2016-11-17";
-		String dataTypes = "dat,csv";
+		String strDirId = "1";
+//		long dirId = 0;
+		String beginTime = "";//"2009-11-17";
+		String endTime = "";//"2016-11-17";
+		String dataTypes = null;//"dat,csv";
 		String paramType = J9Series_Star_ParameterType.FLYWHEEL.getValue();
-		Pager<MongoFSDto> pager = fileService.getMongoFSList(pageIndex, pageSize, series, star, paramType, null, beginTime, endTime, dataTypes);
+		Pager<MongoFSDto> pager = null;//fileService.getMongoFSList(pageIndex, pageSize, series, star, paramType, null, null, null, dataTypes);
+		if(StringUtils.isNotBlank(beginTime) || StringUtils.isNotBlank(endTime)){
+			if (StringUtils.isNotBlank(strDirId)) {
+				long dirId = Long.parseLong(strDirId);
+				pager = fileService.getMongoFSList(pageIndex, pageSize, series, star, paramType, dirId, beginTime, endTime, dataTypes);								
+			}else{
+				pager = fileService.getMongoFSList(pageIndex, pageSize, series, star, paramType, null, beginTime, endTime, dataTypes);
+			}
+		}else{
+			long dirId = 0;
+			if (StringUtils.isNotBlank(strDirId)) {
+				dirId = Long.parseLong(strDirId);
+			}
+			pager = fileService.getMongoFSList(pageIndex, pageSize, series, star, paramType, dirId);			
+		}
 		List<MongoFSDto> list =pager.getRows();
 		for (MongoFSDto fs : list) {
 			System.out.println(fs);

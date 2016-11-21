@@ -102,4 +102,22 @@
 .sa-confirm-button-container{
 	text-align: center;
 }
+/* 按钮 */
+.subbutton_1 {
+	color: white;
+	font-size: 14px;
+	width: 100px;
+	background-color: #1d76c5;
+	height: 32px;
+	border-width: 0;
+	margin-right: 20px;
+}
+.cancelbutton_1 {
+	color: white;
+    font-size: 14px;
+    width: 100px;
+    background-color: #9C9C9C;
+    height: 32px;
+    border-width: 0;
+}
 </style>

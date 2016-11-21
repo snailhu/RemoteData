@@ -106,6 +106,7 @@
 											<div id="getBeginTime"></div> -->
 										</div>
 									</div>
+									
 									<div class="space-4"></div>
 									<div class="form-group">
 										<label class="col-sm-5 control-label no-padding-right" for="form-endTime"> 结束时间 </label>
@@ -114,19 +115,31 @@
 											<div id="getEndTime"></div>
 										</div>
 									</div>
+									
 									<div class="space-4"></div>
 									<div class="form-group">
-			                           <div class="col-lg-4 col-lg-offset-5">
-					                        <button type="button" id="btn-search" class="subbutton_1">
+										<label class="col-sm-5 control-label no-padding-right" for="form-beginTime"> 关键字&nbsp&nbsp </label>
+										<div class="col-sm-3">
+											<input class="form-control"  id="form-keyWord"   name="keyWord" type="text" placeholder="输入关键字">
+										</div>
+									</div>
+									
+									<div class="space-4"></div>
+									<div class="form-group">
+			                        	<div class="col-sm-6 control-label no-padding-right">
+											<button type="button" id="btn-search" class="subbutton_1">
 							                    <i></i>
 							                    <span>搜索</span>
 							                </button>
-							                <button type="reset" id="btn-cancel" class="cancelbutton_1">
+										</div>
+										<div class="col-sm-1 control-label no-padding-right">
+											  <button type="reset" id = "btn-cancel" class="cancelbutton_1">
 							                    <i></i>
 							                    <span>取消</span>
 							                </button>
-			                           </div>
+										</div>
 									</div>
+									
 								</form>
 							</div>
 						</div>
@@ -143,9 +156,11 @@
  <script type="text/javascript">
     var beginTime ="1900-01-01 00:00:01";
     var endTime = "3000-01-01 11:59:01";
+    var keyWord = "all";
     //请求日志URL
     //var logurl  = "${pageContext.request.contextPath}/showSystemLog/"+beginTime+"+"/"+"+endTime+";
-    var logurl  ="${pageContext.request.contextPath}/admin/showSystemLog/"+beginTime+"/"+endTime;
+    var logurl  ="${pageContext.request.contextPath}/admin/showSystemLog/"+beginTime+"/"+endTime+"/all";
+    
     //刷新日志列表   
 	function intlogList(){
 		var source =
@@ -154,10 +169,8 @@
 			datafields: [
 				{ name: 'userName',  type: 'string' },
 				{ name: 'operateTime',  type: 'String' },
-				//{ name: 'logOutTime', type: 'string' },
 				{ name: 'loginIp', type: 'string' },
 				{ name: 'operateJob', type: 'string' }
-			    //{ name: 'role', type: 'string' }
 			],     
 			id: 'UserId',
 			url: logurl,
@@ -227,13 +240,14 @@
 		})
 		
 		 $('#change-search-box').click();
-		 logurl  ="${pageContext.request.contextPath}/admin/showSystemLog/"+beginTime+"/"+endTime;
+		 logurl  ="${pageContext.request.contextPath}/admin/showSystemLog/"+beginTime+"/"+endTime+"/"+keyWord;
 		 intlogList();
 		 //$.post("${pageContext.request.contextPath}/admin/systemLog", {'beginTime':"1800-01-01",'endTime':"9999-01-01"},function(data){intlogList()});
 		  
 		 $('#btn-search').click(function(){
 				  beginTime = $('#form-beginTime').val();
 				  endTime = $('#form-endTime').val();
+				  keyWord = $('#form-keyWord').val();
 				  /*$.post(	'${pageContext.request.contextPath}/admin/showSystemLog', 
 				  			{
 				  				'beginTime' : beginTime,
@@ -246,7 +260,9 @@
 			beginTime="1950-01-01 00:00:01";
 			endTime="9999-01-01 00:00:01";
 		}
-				  logurl  = "${pageContext.request.contextPath}/admin/showSystemLog/"+beginTime+"/"+endTime;
+		if(keyWord=="")
+		{keyWord="all"}
+				  logurl  = "${pageContext.request.contextPath}/admin/showSystemLog/"+beginTime+"/"+endTime+"/"+keyWord;
 				  intlogList();			  			  
 			 });
 				  

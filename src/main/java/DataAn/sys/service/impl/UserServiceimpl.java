@@ -180,8 +180,8 @@ public class UserServiceimpl implements IUserService{
 	
 	@Override
 	public Pager<UserDto> getUserList(int pageIndex, int pageSize, String userName,
-			String createdateStart, String createdateEnd,
-			String updatedateStart, String updatedateEnd, String[] deptIds) {
+			String createdateStart, String createdateEnd,String updatedateStart, 
+			String updatedateEnd, String[] deptIds,String sort, String order) {
 		if(pageIndex == 0){
 			pageIndex = 1;
 		}
@@ -198,9 +198,13 @@ public class UserServiceimpl implements IUserService{
 				}
 			}
 		}
+		String sort_order = "";
+		if(StringUtils.isNotBlank(sort) || StringUtils.isNotBlank(order)){
+			sort_order = sort + " " + order;
+		}
 		List<UserDto> userModelList = new ArrayList<UserDto>();
 		Pager<User> userPager = userDao.selectByOption(pageIndex, pageSize, userName, 
-				createdateStart, createdateEnd, updatedateStart, updatedateEnd,userIdSet, null);
+				createdateStart, createdateEnd, updatedateStart, updatedateEnd,userIdSet, sort_order);
 		List<User> userList = userPager.getDatas();
 		if(userList != null && userList.size() > 0){
 			for (User user : userList) {
@@ -212,10 +216,16 @@ public class UserServiceimpl implements IUserService{
 	}
 	
 	@Override
-	public boolean existUserName(String userName) {
-		User user = userDao.getUserByName(userName);
-		if(user != null){
-			return true;
+	public boolean existUserName(UserDto user) {
+		List<User> list = userDao.findByParam("userName", user.getUserName());
+		if(list != null && list.size() > 0){
+			if(user.getId() == 0){
+				return true;				
+			}else{
+				if(user.getId() != list.get(0).getUserId()){
+					return true;
+				}
+			}
 		}
 		return false;
 	}

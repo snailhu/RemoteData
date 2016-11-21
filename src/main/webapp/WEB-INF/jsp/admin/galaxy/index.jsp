@@ -531,7 +531,11 @@ $(function() {
             field: 'code',
             title: '编码',
             width: 50
-        }, {
+        },{
+			field : 'runDays',
+			title : '设备累计工作时间(天)',
+			width : 50
+		}, {
             field: 'description',
             title: '描述',
             width: 100
@@ -545,6 +549,7 @@ $(function() {
 		},
 		onExpandRow : function(index, row) {
 			var seriesCode = row.code;
+			var seriesId = row.id;
 			var subgridId = 'ddv-' + index;
 			$('#' + subgridId).datagrid({
 				url : '${pageContext.request.contextPath}/admin/star/getStars?seriesId='+ row.id,
@@ -563,6 +568,12 @@ $(function() {
 						}
 
 						],
+						frozenColumns: [[{
+				            title: 'id',
+				            field: 'id',
+				            width: 20,
+				            checkbox: false
+				        }]],
 						columns : [ [
 								{
 									field : 'name',
@@ -580,9 +591,17 @@ $(function() {
 									width : 80
 								},
 								{
-									field : 'description',
-									title : '描述',
-									width : 60
+									field : 'runDays',
+									title : '设备累计工作时间(天)',
+									width : 80
+								},
+								{
+									field : 'editDevice',
+									title : '设备管理',
+									width : 50,
+									formatter: function (value, row, index) {
+						                return "<a href=\"javascript:doEditDevice('" + seriesId + "','" + row.id +"');\"" + " title='设备管理'>设备管理</a>";
+						            }
 								},
 								{
 						            field: 'editParam',
@@ -596,7 +615,7 @@ $(function() {
 									field : 'operation',
 									title : '操作选项',
 									align : 'center',
-									width : 80,
+									width : 120,
 									formatter : function(value,row,index) {
 										// var editStr = "<a name=\"operButton\"  class=\"easyui-linkbutton\" iconcls=\"icon-edit\"  plain=\"true\" href=\"javascript:EditPermissionItem('" + row.Id + "');\">编辑</a>";
 										var editStr = "<a class=\"l-btn l-btn-plain\" href=\"javascript:editStarInfo('"
@@ -634,6 +653,9 @@ $(function() {
 	
 	function doEditParam(series,star){
 		 window.location.href='${pageContext.request.contextPath}/admin/parameter/index/'+series+'/'+star+'/'; 
+	}
+	function doEditDevice(series,star){
+		 window.location.href='${pageContext.request.contextPath}/admin/device/index/'+series+'/'+star+'/'; 
 	}
 	
 	function reloadDatagrid(datagridId) {

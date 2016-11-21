@@ -198,27 +198,47 @@ public class DateUtil {
 		c.setTime(date);
 		return c.get(Calendar.YEAR);
 	}
-	
+
 	public static String getBeforeDate() {
-		Calendar  c = Calendar.getInstance();   
-		c.add(Calendar.DAY_OF_MONTH, -1);  
-		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd"); 
-		String mDateTime=formatter.format(c.getTime());  
+		Calendar c = Calendar.getInstance();
+		c.add(Calendar.DAY_OF_MONTH, -1);
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+		String mDateTime = formatter.format(c.getTime());
 		return mDateTime;
 	}
+
 	public static String getYesterdayTime() {
-		Calendar  c = Calendar.getInstance();   
-		c.add(Calendar.DAY_OF_MONTH, -1);  
-		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); 
-		String mDateTime=formatter.format(c.getTime());  
+		Calendar c = Calendar.getInstance();
+		c.add(Calendar.DAY_OF_MONTH, -1);
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		String mDateTime = formatter.format(c.getTime());
 		return mDateTime;
 	}
+
 	public static String getLastWeekTime() {
-		Calendar  c = Calendar.getInstance();   
-		c.add(Calendar.DAY_OF_MONTH, -7);  
-		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); 
-		String mDateTime=formatter.format(c.getTime());  
+		Calendar c = Calendar.getInstance();
+		c.add(Calendar.DAY_OF_MONTH, -7);
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		String mDateTime = formatter.format(c.getTime());
 		return mDateTime;
 	}
-	
+
+	/**
+	 * daysOfTwo:(两个日期相差的天数).
+	 * 
+	 * @return_type:int
+	 * @author wj
+	 * @param fDate
+	 * @param oDate
+	 * @return
+	 */
+	public static int daysOfTwo(Date fDate, Date oDate) {
+		Calendar aCalendar = Calendar.getInstance();
+		aCalendar.setTime(fDate);
+		int day1 = aCalendar.get(Calendar.DAY_OF_YEAR);
+		aCalendar.setTime(oDate);
+		int day2 = aCalendar.get(Calendar.DAY_OF_YEAR);
+		return day2 - day1;
+	}
+
 }

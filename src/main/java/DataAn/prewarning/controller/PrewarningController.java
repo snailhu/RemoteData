@@ -366,19 +366,21 @@ public class PrewarningController extends BaseController {
 	public ResultJSON getStarList(HttpServletRequest request, String seriesId) {
 		ResultJSON res = ResultJSON.getSuccessResultJSON();
 		try {
-			List<Star> starList = prewarningService.getStarList(seriesId);
-			List<StarDto> starDtoList = new ArrayList<StarDto>();
-			for (Star star : starList) {
-				StarDto starDto = new StarDto();
-				starDto.setName(star.getName());
-				starDto.setDescription(star.getDescription());
-				starDto.setId(star.getId());
-				starDto.setSeriesId(star.getSeries().getId());
-				starDtoList.add(starDto);
+			if (StringUtils.isNotBlank(seriesId)) {
+				List<Star> starList = prewarningService.getStarList(seriesId);
+				List<StarDto> starDtoList = new ArrayList<StarDto>();
+				for (Star star : starList) {
+					StarDto starDto = new StarDto();
+					starDto.setName(star.getName());
+					starDto.setDescription(star.getDescription());
+					starDto.setId(star.getId());
+					starDto.setSeriesId(star.getSeries().getId());
+					starDtoList.add(starDto);
+				}
+				Map<String, Object> data = new HashMap<String, Object>();
+				data.put("data", starDtoList);
+				res.setData(data);
 			}
-			Map<String, Object> data = new HashMap<String, Object>();
-			data.put("data", starDtoList);
-			res.setData(data);
 		} catch (Exception ex) {
 			res.setMsg("下载失败！");
 			res.setResult(CommonsConstant.RESULT_FALSE);

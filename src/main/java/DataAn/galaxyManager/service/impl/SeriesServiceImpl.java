@@ -1,7 +1,6 @@
 package DataAn.galaxyManager.service.impl;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -13,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import DataAn.common.dao.Pager;
 import DataAn.common.pageModel.Combo;
 import DataAn.common.utils.DateUtil;
+import DataAn.galaxyManager.dao.IDeviceDao;
 import DataAn.galaxyManager.dao.ISeriesDao;
 import DataAn.galaxyManager.dao.IStarDao;
 import DataAn.galaxyManager.domain.Series;
@@ -23,13 +23,15 @@ import DataAn.galaxyManager.option.SeriesType;
 import DataAn.galaxyManager.service.ISeriesService;
 
 @Service
-public class SeriesServiceImpl implements ISeriesService{
+public class SeriesServiceImpl implements ISeriesService {
 
 	@Resource
 	private ISeriesDao seriesDao;
 	@Resource
 	private IStarDao starDao;
-	
+	@Resource
+	private IDeviceDao deviceDao;
+
 	@Override
 	@Transactional
 	public void saveSeries(SeriesDto dto) {
@@ -39,7 +41,7 @@ public class SeriesServiceImpl implements ISeriesService{
 		series.setDescription(dto.getDescription());
 		seriesDao.add(series);
 	}
-	
+
 	@Override
 	@Transactional
 	public void deleteSeries(String seriesIds) {
@@ -55,24 +57,24 @@ public class SeriesServiceImpl implements ISeriesService{
 	@Transactional
 	public void updateSeries(SeriesDto dto) {
 		Series series = seriesDao.get(dto.getId());
-		if(StringUtils.isNotBlank(dto.getName())){
-			series.setName(dto.getName());			
+		if (StringUtils.isNotBlank(dto.getName())) {
+			series.setName(dto.getName());
 		}
-		if(StringUtils.isNotBlank(dto.getCode())){
-			series.setCode(dto.getCode());			
+		if (StringUtils.isNotBlank(dto.getCode())) {
+			series.setCode(dto.getCode());
 		}
-		if(StringUtils.isNotBlank(dto.getDescription())){
+		if (StringUtils.isNotBlank(dto.getDescription())) {
 			series.setDescription(dto.getDescription());
 		}
 		seriesDao.update(series);
 	}
-	
+
 	@Override
 	public Pager<SeriesDto> getSeriesList(int pageIndex, int pageSize) {
 		List<SeriesDto> seriesDtoList = new ArrayList<SeriesDto>();
 		Pager<Series> seriesPager = seriesDao.selectByPager(pageIndex, pageSize);
 		List<Series> list = seriesPager.getDatas();
-		if(list != null && list.size() > 0){
+		if (list != null && list.size() > 0) {
 			for (Series series : list) {
 				SeriesDto dto = new SeriesDto();
 				dto.setId(series.getId());
@@ -80,21 +82,22 @@ public class SeriesServiceImpl implements ISeriesService{
 				dto.setCode(series.getCode());
 				dto.setCreateDate(DateUtil.format(series.getCreateDate()));
 				dto.setDescription(series.getDescription());
+				int rundays = deviceDao.getTotalRuntimeBySeries(series.getId().toString());
+				dto.setRunDays(rundays);
 				seriesDtoList.add(dto);
 			}
 		}
-		Pager<SeriesDto> pager = new Pager<SeriesDto>(pageIndex, pageSize, seriesPager.getTotalCount() , seriesDtoList);
+		Pager<SeriesDto> pager = new Pager<SeriesDto>(pageIndex, pageSize, seriesPager.getTotalCount(), seriesDtoList);
 		return pager;
 	}
-
 
 	@Override
 	public List<SeriesDto> getAllSeries() {
 		List<SeriesDto> seriesDtoList = new ArrayList<SeriesDto>();
 		List<Series> list = seriesDao.findAll();
-		if(list != null && list.size() > 0){
+		if (list != null && list.size() > 0) {
 			for (Series series : list) {
-				seriesDtoList.add(this.pojoToDto(series));				
+				seriesDtoList.add(this.pojoToDto(series));
 			}
 		}
 		return seriesDtoList;
@@ -110,13 +113,13 @@ public class SeriesServiceImpl implements ISeriesService{
 	public List<Combo> getSeriesComboData(String seriesCode) {
 		List<Combo> comboList = new ArrayList<Combo>();
 		List<Series> list = seriesDao.findAll();
-		if(list != null && list.size() > 0){
+		if (list != null && list.size() > 0) {
 			Combo combo = null;
 			for (Series series : list) {
 				combo = new Combo();
 				combo.setText(series.getName());
 				combo.setValue(series.getCode());
-				if(series.getCode().equals(seriesCode)){
+				if (series.getCode().equals(seriesCode)) {
 					combo.setSelected(true);
 				}
 				comboList.add(combo);
@@ -128,9 +131,9 @@ public class SeriesServiceImpl implements ISeriesService{
 	@Override
 	public boolean checkSeriesAndStar(String series, String star) {
 		List<Series> seriesList = seriesDao.findByParam("code", series);
-		if(seriesList != null && seriesList.size() > 0){
+		if (seriesList != null && seriesList.size() > 0) {
 			List<Star> starList = starDao.findByParam("code", star);
-			if(starList != null && starList.size() > 0){
+			if (starList != null && starList.size() > 0) {
 				return true;
 			}
 		}
@@ -140,15 +143,16 @@ public class SeriesServiceImpl implements ISeriesService{
 	@Override
 	public boolean isExistSeries(SeriesDto dto) {
 		Series series = seriesDao.selectByName(dto.getName());
-		if(series != null){
+		if (series != null) {
 			return true;
 		}
 		return false;
 	}
+
 	@Override
 	public void initJ9Series() {
 		List<Series> seriesList = seriesDao.findAll();
-		if(seriesList == null || seriesList.size() == 0){
+		if (seriesList == null || seriesList.size() == 0) {
 			Series series = new Series();
 			series.setName(SeriesType.J9_SERIES.getName());
 			series.setCode(SeriesType.J9_SERIES.getValue());
@@ -161,7 +165,7 @@ public class SeriesServiceImpl implements ISeriesService{
 				star.setSeries(series);
 				star.setName(j9SeriesType.getValue());
 				star.setCode(j9SeriesType.getValue());
-				star.setDescription(j9SeriesType.getValue()+"星");
+				star.setDescription(j9SeriesType.getValue() + "星");
 				star.setStartRunDate(j9SeriesType.getStartRunDate());
 				list.add(star);
 			}
@@ -169,7 +173,7 @@ public class SeriesServiceImpl implements ISeriesService{
 		}
 	}
 
-	private SeriesDto pojoToDto(Series series){
+	private SeriesDto pojoToDto(Series series) {
 		SeriesDto dto = new SeriesDto();
 		dto.setId(series.getId());
 		dto.setName(series.getName());
@@ -178,5 +182,5 @@ public class SeriesServiceImpl implements ISeriesService{
 		dto.setDescription(series.getDescription());
 		return dto;
 	}
-	
+
 }

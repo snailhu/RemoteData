@@ -24,7 +24,7 @@ import DataAn.sys.service.SystemLogService;
 
 
 @Controller
-@RequestMapping("/admin")
+@RequestMapping("/admin/log")
 public class SystemLogController {
 	 
 	@Resource 

@@ -37,7 +37,7 @@
                 <span><a href="${base}/conditionMonitoring">数据分析</a></span>
                 <span><a href="${base}/report/reportDownLoad">报告管理</a></span>
                 <span><a href="${base}/admin/galaxy/index">星系管理</a></span>
-                <span class="blue"><a href="${base}/admin/systemLog">系统管理</a></span>
+                <span class="blue"><a href="${base}/admin/log/systemLog">系统管理</a></span>
             </div>
         </div>
     </div>
@@ -54,7 +54,7 @@
                 <div class="block"></div>
             </div>
             <div class="div2_content">
-            	<a href="admin/systemLog">
+            	<a href="admin/log/systemLog">
                 <div class="content-1 hover-effect">
                     <div class="content_img">
                         <img src="${base}/static/imgs/home/20160923_13.png">

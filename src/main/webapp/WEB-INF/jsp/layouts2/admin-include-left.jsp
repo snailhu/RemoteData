@@ -395,7 +395,7 @@ a {
 		</a>
 			<ul class="submenu" id="sysmanageUL">
 				<li><a
-					href="${pageContext.request.contextPath}/admin/systemLog"
+					href="${pageContext.request.contextPath}/admin/log/systemLog"
 					class="tab_li"> <img class="img_head" id="logmanage-img"
 						src="${pageContext.request.contextPath}/static/new/img/images/images/A_54.png">
 						<span id="logmanage-text">日志管理</span>

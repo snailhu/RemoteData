@@ -56,6 +56,22 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	}
 	.breadcrumbs .breadcrumb li a{		
 		padding:0px;
+	}
+	.flywheel-li{
+		height: 30px;
+    	width: 80px;
+    	color: white;
+    	background-color: #94A732;
+    	border-width: 1px;
+    	cursor: pointer;
+	}
+	.top-li{
+		height: 30px;
+    	width: 80px;
+    	color: white;
+    	background-color: #94A732;
+    	border-width: 1px;
+    	cursor: pointer;
 	}	
 	.dateStyle{
 		float:left;
@@ -92,7 +108,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		padding:0px !important;
 		border-top: 1px solid #DEDEDE;
     	background-color: white;
-    	height: 100px;
+    	height: 90px;
     	margin-left: -20px;
     	width:950px;
 	}
@@ -287,12 +303,18 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				<li class="active"  value="">
 					<span class="menu-text" id="SatelliteComponents" name="${nowParameterTypeValue}">${nowParameterTypeName}</span>					
 				</li>
-			</ul><!-- .breadcrumb -->	
+			</ul><!-- .breadcrumb -->		
 		</div>	
 		<div class="page-content">
 			<div class="page-header">
-				<div class="dateRange">日期范围</div>
+			<div class="dateRange">日期范围</div>
 				<div class="dateSelect">
+				<button id="btn_flywheel"  style="display:none;">
+					飞轮
+				</button>
+				<button id="btn_top"  style="display:none;">
+					陀螺
+				</button>
 				<div class="dateStyle">
 					<span>开始日期</span>
 					<div id="dateStart-div">
@@ -362,6 +384,20 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	</div><!-- /.main-content -->
 	
 <script type="text/javascript">
+		//管理员通过点击按钮选择陀螺或者飞轮
+		function setSatelliteComponents(type){
+		if(type == 'flywheel'){
+			$('#SatelliteComponents').html('飞轮');
+			$('#SatelliteComponents').attr('name','flywheel');			
+			}
+			else
+			{
+				$('#SatelliteComponents').html('陀螺');
+				$('#SatelliteComponents').attr('name','top');	
+			}
+		}
+		
+		
 	jeDate({
 		dateCell:"#dateStart",//直接显示日期层的容器，可以是ID  CLASS
 		ormat:"YYYY-MM-DD hh:mm:ss", //日期格式
@@ -410,21 +446,44 @@ okfun:function(val) {}       //点击确定后的回调
 		
 		})
 		
+
+		//陀螺或者飞轮权限选择按钮的显示与否
+		var activeUser = '${activeUser}';
+		if(activeUser != ''){
+			var permissionItemsJSON = '${activeUser.permissionItemsJSON}';
+			var map = $.parseJSON(permissionItemsJSON); 
+			if((map.flywheel == 'flywheel') & (map.top == 'top')){
+				$("#btn_flywheel").show();
+				$("#btn_top").show();
+			}
+			else{
+			$("#btn_flywheel").hide();
+			$("#btn_top").hide();
+			}
+		}
 		
+		 $("#btn_flywheel").click( function ()  {    
+		 	setSatelliteComponents('flywheel');
+		 });
+		 $("#btn_top").click( function ()  {    
+		 	setSatelliteComponents('top');
+		 });
 	
 	
 //     	$("#dateStart").jqxDateTimeInput({width: '175px', height: '30px'});
 //     	$("#dateEnd").jqxDateTimeInput({width: '175px', height: '30px'});
         
+         $("#btn_flywheel").jqxButton({ width: '60', height: '30'});
+         $("#btn_top").jqxButton({ width: '60', height: '30'});
 		 $("#jqxButton-getParameters").jqxButton({ width: '100', height: '30'});	
 		 $("#jqxButton-getParameters").click( function ()  {    
 		 	var beginDate = $("#dateStart").val();
-		 	var endDate = $("#dateEnd").val();
-		 	//var type = $('#SatelliteComponents').attr('name');
+		 	var endDate = $("#dateEnd").val();		 	
 		 	var Series_current="${nowSeries}";
 		 	var Star_current="${nowStar}";
 		 	//var type_current="${nowParameterTypeName}";
-		 	var type_current="${nowParameterTypeValue}";
+		 	//var type_current="${nowParameterTypeValue}";
+		 	var type_current = $('#SatelliteComponents').attr('name');
 		 	console.log("当前"+Series_current+"----"+Star_current);
             var url = "${pageContext.request.contextPath}/getConstraint?beginDate="+beginDate+"&endDate="+endDate+"&Series_current="+Series_current+"&Star_current="+Star_current+"&type_current="+type_current;
             updateParamTree(url);

@@ -58,8 +58,12 @@ public class RoutingRepoService {
 				right=current;
 				break;
 			}
+			
+			System.out.println("当前仓库分级为(共11 0-10级):"+i);
 			left=current;
 		}
+		
+		//left=当前分级仓库，感觉不会为null
 		if(left==null){
 			left=right;
 			expectedOne=right;
@@ -70,6 +74,8 @@ public class RoutingRepoService {
 			// one case .... 
 			if(right.period()-period>=period-left.period()){
 				expectedOne=left;
+			}else{
+				expectedOne=right;
 			}
 			//maybe other cases ... 
 		}

@@ -50,9 +50,12 @@ public class DataSearchTask extends RecursiveTask<YearAndParamDataDto> {
 				paramValue.add(paraVal);
 			}*/
 			String paraVal = doc.getString(dataSearchTaskConfig.getProperty());
-			Double paraValtemp=Double.valueOf(paraVal);
-			if ((paraVal == null)|(paraValtemp>maxtemp) | (paraValtemp<mintemp)) {
+			if(paraVal==null){
 				paraVal = "\'-\'";
+			}else{
+				Double paraValtemp=Double.valueOf(paraVal);	
+				if((paraValtemp>maxtemp) | (paraValtemp<mintemp))
+				{paraVal = "\'-\'";}
 			}
 			yearValue.add(DateUtil.format(doc.getDate("datetime")));
 			paramValue.add(paraVal);

@@ -423,11 +423,8 @@ public class FileController {
 		System.out.println("itemIds: " + itemIds);
 		JsonMessage jsonMsg = new JsonMessage();
 		try {
-			//TODO 这里的operateJob为日志操作的具体内容格式应该为：删除文件+文件名
-			String operateJob;
-			operateJob = "删除文件"+itemIds;
-			systemLogService.addOneSystemlogs( request,operateJob);
-			fileService.deleteFile(itemIds);
+
+			fileService.deleteFile(request,itemIds);
 			jsonMsg.setSuccess(true);
 			jsonMsg.setMsg("删除成功！");
 		} catch (Exception e) {

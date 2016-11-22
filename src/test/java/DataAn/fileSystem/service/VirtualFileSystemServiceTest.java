@@ -83,7 +83,7 @@ public class VirtualFileSystemServiceTest {
 	@Test
 	public void deleteFile(){
 		String str = "1/dir,8/file";
-		fileService.deleteFile(str);
+		//fileService.deleteFile(str);
 	}
 	
 	@Test

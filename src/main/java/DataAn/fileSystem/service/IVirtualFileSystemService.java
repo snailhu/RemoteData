@@ -2,6 +2,8 @@ package DataAn.fileSystem.service;
 
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import DataAn.common.pageModel.Pager;
 import DataAn.fileSystem.dto.FileDto;
 import DataAn.fileSystem.dto.MongoFSDto;
@@ -33,7 +35,7 @@ public interface IVirtualFileSystemService {
 	* @date 2016年8月9日
 	* @version 1.0
 	*/
-	public void deleteFile(String ids);
+	public void deleteFile(HttpServletRequest request,String ids);
 	
 	public void deleteFileByUUId(String uuId);
 	/**

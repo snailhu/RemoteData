@@ -16,6 +16,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 
 import org.bson.Document;
 import org.springframework.stereotype.Service;
@@ -56,6 +57,7 @@ import DataAn.storm.zookeeper.CommunicationUtils;
 import DataAn.storm.zookeeper.ZooKeeperClient;
 import DataAn.storm.zookeeper.ZooKeeperClient.ZookeeperExecutor;
 import DataAn.storm.zookeeper.ZooKeeperNameKeys;
+import DataAn.sys.service.SystemLogService;
 
 
 @Service("virtualFileSystemServiceImpl")
@@ -73,6 +75,8 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 	private IStatusTrackingService statusTrackingService;
 	@Resource
 	private IParameterService paramService;
+	@Resource
+	private SystemLogService systemLogService;
 	
 	@Override
 	@Transactional
@@ -165,13 +169,17 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 	
 	@Override
 	@Transactional
-	public void deleteFile(String ids) {
+	public void deleteFile(HttpServletRequest request,String ids) {
 		String[] arrayIds = ids.split(",");
 		
 		for (String id : arrayIds) {
 			String[] items = id.split("/");
 			//遍历目录写文件
 			VirtualFileSystem file = fileDao.get(Long.parseLong(items[0]));
+			//TODO 这里的operateJob为日志操作的具体内容格式应该为：删除文件+文件名
+			String operateJob;
+			operateJob = "删除文件"+file.getFileName();
+			systemLogService.addOneSystemlogs( request,operateJob);
 			this.deleteFile(file);
 		}
 	}

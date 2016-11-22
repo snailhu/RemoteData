@@ -25,9 +25,9 @@ public class StarDaoImpl extends BaseDaoImpl<Star> implements IStarDao {
 	}
 
 	@Override
-	public String getStarName(String starId) {
-		String hql = "select star.name from Star star where star.code=?";
-		return (String) getSession().createQuery(hql).setParameter(0, starId).uniqueResult();
+	public String getStarName(String series,String star) {
+		String hql = "select star.name from Star star where star.code=? and star.series.code = ?";
+		return (String) getSession().createQuery(hql).setParameter(0, star).setParameter(1, series).uniqueResult();
 	}
 
 	@Override

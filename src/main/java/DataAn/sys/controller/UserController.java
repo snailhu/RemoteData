@@ -128,7 +128,7 @@ public class UserController extends BaseController{
 	}
 
 	// 编辑用户
-	@RequestMapping(value = "/editUser")
+	@RequestMapping(value = "/editUser", method = RequestMethod.POST)
 	@ResponseBody
 	public JsonMessage editUser(UserDto user, HttpServletRequest request, HttpServletResponse response) {
 		System.out.println("update user： "+ user.toString());

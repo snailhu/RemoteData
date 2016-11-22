@@ -66,7 +66,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 .form-horizontal {
 	margin-bottom: 0px;
 }
-
+a {
+    color: #428bca;
+}
 </style>
 <script type="text/javascript">
 	$(function() {

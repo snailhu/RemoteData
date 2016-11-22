@@ -59,21 +59,21 @@ public class StarParamServiceImpl implements IStarParamService {
 		StarParamDto starParamDto = new StarParamDto();
 		starParamDto.setId(starParam.getId());
 		starParamDto.setParamCode(starParam.getParamCode());
-		starParamDto.setParamName(getParamCNname(starParamDto.getSeries(),starParamDto.getStar(),starParamDto.getParamCode()));
+		starParamDto.setParamName(getParamCNname(starParam.getSeries(),starParam.getStar(),starParam.getParamCode()));
 		starParamDto.setEffeMin(starParam.getEffeMin());
 		starParamDto.setEffeMax(starParam.getEffeMax());
 		starParamDto.setParameterType(starParam.getParameterType());
 		starParamDto.setProductName(starParam.getProductName());
 		starParamDto.setPartsType(J9Series_Star_ParameterType.getJ9SeriesStarParameterType(starParam.getPartsType()).getName());
 		starParamDto.setSeries(getSeriesName(starParam.getSeries()));
-		starParamDto.setStar(getStarName(starParam.getStar()));
+		starParamDto.setStar(getStarName(starParam.getSeries(),starParam.getStar()));
 		starParamDto.setCreater(starParam.getCreater());
 		starParamDto.setCreateDate(starParam.getCreateDate());
 		return starParamDto;
 	}
 
-	private String getStarName(String star) {
-		return starDao.getStarName(star);
+	private String getStarName(String series,String star) {
+		return starDao.getStarName(series,star);
 	}
 
 	private String getSeriesName(String series) {

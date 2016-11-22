@@ -3,16 +3,26 @@ package DataAn.galaxyManager.dto;
 public class StarDto {
 
 	private long id;
-	
+
 	private String name;
-	
+
 	private String code;
-	
+
 	private String description;
-	
+
 	private String beginDate;
-	
+
 	private long seriesId;
+
+	private int runDays;
+
+	public int getRunDays() {
+		return runDays;
+	}
+
+	public void setRunDays(int runDays) {
+		this.runDays = runDays;
+	}
 
 	public long getId() {
 		return id;
@@ -64,10 +74,8 @@ public class StarDto {
 
 	@Override
 	public String toString() {
-		return "StarDto [id=" + id + ", name=" + name + ", code=" + code
-				+ ", description=" + description + ", beginDate=" + beginDate
-				+ ", seriesId=" + seriesId + "]";
+		return "StarDto [id=" + id + ", name=" + name + ", code=" + code + ", description=" + description
+				+ ", beginDate=" + beginDate + ", seriesId=" + seriesId + "]";
 	}
-	
-	
+
 }

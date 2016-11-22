@@ -183,7 +183,7 @@ public class PrewarningServiceImpl implements IPrewarningService {
 		if (StringUtils.isNotBlank(star)) {
 			starDomain = starDao.get(Long.parseLong(star));
 			if (starDomain != null) {
-//				starName = starDomain.getCode();
+				// starName = starDomain.getCode();
 				starName = starDomain.getName().substring(1);
 			}
 		}
@@ -250,26 +250,27 @@ public class PrewarningServiceImpl implements IPrewarningService {
 	}
 
 	@Override
-	public SelectOptionDTO getSelectOption(String series, String paramaterType) throws Exception {
+	public SelectOptionDTO getSelectOption(String series, String paramaterType, String star) throws Exception {
 		SelectOptionDTO selectOptionDTO = new SelectOptionDTO();
-		if (StringUtils.isBlank(series)) {
+		if (StringUtils.isBlank(series) || StringUtils.isBlank(star)) {
 			return selectOptionDTO;
 		}
 		Series seriesDomain = seriersDao.get(Long.parseLong(series));
-		if (seriesDomain != null) {
-			selectOptionDTO
-					.setParamaters(parameterService.getParameterList(seriesDomain.getCode(), null, paramaterType));
+		Star starDomain = starDao.get(Long.parseLong(star));
+		if (seriesDomain != null && starDomain != null) {
+			selectOptionDTO.setParamaters(
+					parameterService.getParameterList(seriesDomain.getCode(), starDomain.getCode(), paramaterType));
 		}
 		List<StarDto> starDtoList = new ArrayList<StarDto>();
 		List<Star> list = starDao.findByParam("series.id", Long.parseLong(series));
 		if (list != null && list.size() > 0) {
 			StarDto dto = null;
-			for (Star star : list) {
+			for (Star starBean : list) {
 				dto = new StarDto();
-				dto.setId(star.getId());
-				dto.setName(star.getDescription());
-				dto.setBeginDate(DateUtil.format(star.getStartRunDate()));
-				dto.setDescription(star.getDescription());
+				dto.setId(starBean.getId());
+				dto.setName(starBean.getDescription());
+				dto.setBeginDate(DateUtil.format(starBean.getStartRunDate()));
+				dto.setDescription(starBean.getDescription());
 				starDtoList.add(dto);
 			}
 		}

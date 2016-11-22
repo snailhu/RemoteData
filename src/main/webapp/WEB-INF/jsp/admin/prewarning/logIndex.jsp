@@ -112,16 +112,23 @@
 		$("#warnmanage-text").css("color", "#5d90d6");
 		$("#warnmanageUL").css("display","block");
 		
-		if(activeUser != ''){
-			var permissionItemsJSON = '${activeUser.permissionItemsJSON}';
-			var map = $.parseJSON(permissionItemsJSON); 
-			if(map.flywheel == 'flywheel'){
-				$("#search-parameterType").append("<option value = 'flywheel'>飞轮</option>"); 
-			}
-			if(map.top == 'top'){
-				$("#search-parameterType").append("<option value = 'top'>陀螺</option>"); 
-			}
-		}
+// 		if(activeUser != ''){
+// 			var permissionItemsJSON = '${activeUser.permissionItemsJSON}';
+// 			var map = $.parseJSON(permissionItemsJSON); 
+// 			if(map.flywheel == 'flywheel'){
+// 				$("#search-parameterType").append("<option value = 'flywheel'>飞轮</option>"); 
+// 			}
+// 			if(map.top == 'top'){
+// 				$("#search-parameterType").append("<option value = 'top'>陀螺</option>"); 
+// 			}
+// 		}
+		$.get('<%=request.getContextPath()%>/admin/device/getDeviceTypeList', {}, function (data) {
+	 	 	if(data) {
+          	  	$.each(data ,function(){
+	          	  	$("#search-parameterType").append("<option value = '"+ this.deviceCode+"'>"+ this.deviceName+"</option>"); 
+				});
+            }
+        });
 		
 		//修改搜索框图标
 		var flag=false;
@@ -446,7 +453,8 @@ jeDate({
 	          });	
 		 	  
 		 	 var parameterType = $('#search-parameterType').val();
-			  $.get('<%=request.getContextPath()%>/admin/prewarning/getParamList', {'parameterType':parameterType , 'series':seriesId},  function (res) {
+		 	var starId = $('#search-star').val();
+			  $.get('<%=request.getContextPath()%>/admin/prewarning/getParamList', {'parameterType':parameterType , 'series':seriesId ,  'star':starId}, function (res) {
 				  if(res) {
 					  $('#search-parameter').find("option").remove();
 					  $('#search-parameter').append("<option value=''>--请选择--</option>"); 
@@ -466,10 +474,12 @@ jeDate({
         $("#search-parameterType").change(function(){
 		 	var parameterType = $('#search-parameterType').val();	
 		 	var seriesId = $('#search-series').val();
+		 	var starId = $('#search-star').val();
 			  $.get('<%=request.getContextPath()%>/admin/prewarning/getParamList',
 											{
 												'parameterType' : parameterType,
-												'series' : seriesId
+												'series' : seriesId,
+												'star':starId
 											},
 											function(res) {
 												if (res) {

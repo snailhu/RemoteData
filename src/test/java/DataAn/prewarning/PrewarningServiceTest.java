@@ -20,10 +20,10 @@ public class PrewarningServiceTest {
 	
 	@Test
 	public void test() throws Exception{
-		String series = SeriesType.J9_SERIES.getName();
-		String parameterType = "flywheel";
-		SelectOptionDTO selectOptionDTO = prewarningService.getSelectOption(series, parameterType);
-		System.out.println(selectOptionDTO);
+//		String series = SeriesType.J9_SERIES.getName();
+//		String parameterType = "flywheel";
+//		SelectOptionDTO selectOptionDTO = prewarningService.getSelectOption(series, parameterType);
+//		System.out.println(selectOptionDTO);
 	}
 	
 }

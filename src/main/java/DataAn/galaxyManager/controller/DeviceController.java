@@ -5,7 +5,9 @@ import java.util.List;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,9 +24,11 @@ import DataAn.galaxyManager.dto.QueryDeviceDTO;
 import DataAn.galaxyManager.dto.QueryDeviceTypeDTO;
 import DataAn.galaxyManager.dto.SeriesDto;
 import DataAn.galaxyManager.dto.StarDto;
+import DataAn.galaxyManager.option.J9Series_Star_ParameterType;
 import DataAn.galaxyManager.service.IDeviceService;
 import DataAn.galaxyManager.service.ISeriesService;
 import DataAn.galaxyManager.service.IStarService;
+import DataAn.sys.dto.ActiveUserDto;
 
 /**
  * Title: DeviceController
@@ -99,6 +103,14 @@ public class DeviceController {
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}
+		String userType = getUserType(null, request);
+		if (StringUtils.isNotBlank(userType)) {
+			for (DeviceType deviceType : deviceTypes) {
+				if (!userType.equals(deviceType.getDeviceCode())) {
+					deviceTypes.remove(deviceType);
+				}
+			}
 		}
 		return deviceTypes;
 	}
@@ -185,5 +197,33 @@ public class DeviceController {
 		jsonMsg.setSuccess(true);
 		jsonMsg.setMsg("删除参数成功!");
 		return jsonMsg;
+	}
+
+	private String getUserType(String parameterType, HttpServletRequest request) {
+		if (StringUtils.isNotBlank(parameterType)) {
+			return parameterType;
+		} else {
+			HttpSession session = request.getSession();
+			ActiveUserDto acticeUser = (ActiveUserDto) session.getAttribute("activeUser");
+			String flywheel = J9Series_Star_ParameterType.FLYWHEEL.getValue();
+			String top = J9Series_Star_ParameterType.TOP.getValue();
+			String userType = "";
+			int i = 0;
+			if (acticeUser == null) {
+				return null;
+			}
+			if (StringUtils.isNotBlank(acticeUser.getPermissionItems().get(flywheel))) {
+				userType = J9Series_Star_ParameterType.FLYWHEEL.getValue();
+				i++;
+			}
+			if (StringUtils.isNotBlank(acticeUser.getPermissionItems().get(top))) {
+				userType = J9Series_Star_ParameterType.TOP.getValue();
+				i++;
+			}
+			if (i > 1) {
+				userType = "";
+			}
+			return userType;
+		}
 	}
 }

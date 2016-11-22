@@ -48,7 +48,7 @@ public interface IPrewarningService {
 	public Long getNotReadCount(String series, String star, String parameterType, String parameter, String warningType)
 			throws Exception;
 
-	public SelectOptionDTO getSelectOption(String series, String paramaterType) throws Exception;
+	public SelectOptionDTO getSelectOption(String series, String paramaterType, String star) throws Exception;
 
 	public boolean cherkWarningValue(String series, String star, String parameter, String parameterType,
 			String warningType) throws Exception;

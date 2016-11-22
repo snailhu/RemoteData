@@ -7,14 +7,14 @@ import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import DataAn.common.service.IInitDataServie;
+import DataAn.common.service.IInitDataService;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:applicationContext-hibernate.xml","classpath:applicationContext-*.xml"})
 public class IInitDataServieTest {
 
 	@Resource
-	private IInitDataServie initDataServie;
+	private IInitDataService initDataServie;
 	
 	@Test
 	public void test() throws Exception{

@@ -4,14 +4,13 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import DataAn.common.service.IInitDataServie;
+import DataAn.common.service.IInitDataService;
 import DataAn.galaxyManager.service.IJ9Series_Star_Service;
 import DataAn.galaxyManager.service.ISeriesService;
 import DataAn.sys.service.IPermissionService;
 
-@Service("initDataSerice")
-public class InitDataServieImpl implements IInitDataServie{
+@Service
+public class InitDataServiceImpl implements IInitDataService{
 
 	@Resource
 	private ISeriesService seriesService;
@@ -22,7 +21,7 @@ public class InitDataServieImpl implements IInitDataServie{
 	
 	@Override
 	@Transactional
-	public void initDataBase() throws Exception {
+	public void initDataBase(){
 		//初始化j9星系库数据
 		seriesService.initJ9Series();
 		//初始化j9系列参数

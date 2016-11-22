@@ -63,7 +63,7 @@ public class ParameterController {
 		System.out.println("star: " + star);
 		System.out.println("name: " + name);
 		JsonMessage jsonMsg = new JsonMessage();
-		if (parameterService.isExistParameter(series, series, name)) {
+		if (parameterService.isExistParameter(0, series, star, name)) {
 			jsonMsg.setSuccess(false);
 			jsonMsg.setMsg("参数名已存在！");
 			jsonMsg.setObj("参数名已存在！");
@@ -91,14 +91,18 @@ public class ParameterController {
 
 		System.out.println("come in editParam");
 		System.out.println("id: " + id);
+		System.out.println("series: " + series);
+		System.out.println("star: " + star);
 		System.out.println("name: " + name);
 		JsonMessage jsonMsg = new JsonMessage();
-//		if (parameterService.isExistParameter(series, series, name)) {
-//			jsonMsg.setSuccess(false);
-//			jsonMsg.setMsg("参数名已存在！");
-//			jsonMsg.setObj("参数名已存在！");
-//			return jsonMsg;
-//		} 
+		boolean flag = parameterService.isExistParameter(0, series, star, name);
+		System.out.println("flag: " + flag);
+		if (flag) {
+			jsonMsg.setSuccess(false);
+			jsonMsg.setMsg("参数名已存在！");
+			jsonMsg.setObj("参数名已存在！");
+			return jsonMsg;
+		} 
 		try {
 			parameterService.updateParamter(id, name);
 		} catch (Exception e) {

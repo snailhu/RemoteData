@@ -129,5 +129,5 @@ public interface IJ9Series_Star_Service {
 	public Map<String,String> getAllParameterList_allZh_and_enByOption(String type, 
 			List<String> params) throws Exception;
 
-	public void initJ9SeriesParameterData() throws Exception;
+	public void initJ9SeriesParameterData();
 }

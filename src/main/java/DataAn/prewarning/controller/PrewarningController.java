@@ -62,10 +62,10 @@ public class PrewarningController extends BaseController {
 
 	@RequestMapping(value = "/getParamList")
 	@ResponseBody
-	public SelectOptionDTO getParamList(HttpServletRequest request, String series, String parameterType) {
+	public SelectOptionDTO getParamList(HttpServletRequest request, String series, String parameterType, String star) {
 		SelectOptionDTO selectOptionDTO = null;
 		try {
-			selectOptionDTO = prewarningService.getSelectOption(series, parameterType);
+			selectOptionDTO = prewarningService.getSelectOption(series, parameterType, star);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -382,7 +382,7 @@ public class PrewarningController extends BaseController {
 				res.setData(data);
 			}
 		} catch (Exception ex) {
-			res.setMsg("下载失败！");
+			res.setMsg("获取星失败！");
 			res.setResult(CommonsConstant.RESULT_FALSE);
 		}
 		return res;

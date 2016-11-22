@@ -1,6 +1,6 @@
 package DataAn.common.service;
 
-public interface IInitDataServie {
+public interface IInitDataService {
 
 	/**
 	* @Title: initDataBase
@@ -10,5 +10,5 @@ public interface IInitDataServie {
 	* @version 1.0
 	 * @throws Exception 
 	*/
-	public abstract void initDataBase() throws Exception;
+	public abstract void initDataBase();
 }

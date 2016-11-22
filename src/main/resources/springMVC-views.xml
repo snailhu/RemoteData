@@ -32,7 +32,6 @@
 	<context:component-scan base-package="DataAn.fileSystem.controller"/>
 	<context:component-scan base-package="DataAn.galaxyManager.controller"/>
 	<context:component-scan base-package="DataAn.linegraph.controller"/>
-	<context:component-scan base-package="DataAn.log.controller"/>
 	
 	<aop:aspectj-autoproxy proxy-target-class="true" />
 	<context:component-scan base-package="DataAn.wordManager.controller"/>

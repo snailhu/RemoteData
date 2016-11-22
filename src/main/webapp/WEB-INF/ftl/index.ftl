@@ -54,7 +54,7 @@
                 <div class="block"></div>
             </div>
             <div class="div2_content">
-            	<a href="admin/systemLog">
+            	<a href="admin/log/systemLog">
                 <div class="content-1 hover-effect">
                     <div class="content_img">
                         <img src="${base}/static/imgs/home/20160923_13.png">

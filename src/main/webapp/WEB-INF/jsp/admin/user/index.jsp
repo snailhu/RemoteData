@@ -213,12 +213,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				},
 			}
 		});
-		$('#reset_editUserInfo').click(function() {
-			$('#editUserInfoForm').data('bootstrapValidator').resetForm(true);
-		});
-		$('#close_editUserInfo').click(function() {
-			$('#editUserInfoForm').data('bootstrapValidator').resetForm(true);
-		});
+// 		$('#reset_editUserInfo').click(function() {
+// 			$('#editUserInfoForm').data('bootstrapValidator').resetForm(true);
+// 		});
+// 		$('#close_editUserInfo').click(function() {
+// 			$('#editUserInfoForm').data('bootstrapValidator').resetForm(true);
+// 		});
 		$('#vss').click(function() {
 			$('#addUserInfoForm').bootstrapValidator('validate');
 		});
@@ -446,7 +446,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							</div>
 							<div class="modal-footer">
 								<div class="col-lg-7 col-lg-offset-3">
-									<button type="submit" class="subbutton_1" id="submit_editUserInfo" data-dismiss="modal">确定</button>
+									<button type="submit" class="subbutton_1" id="submit_editUserInfo">确定</button>
 									<button type="button" class="cancelbutton_1" id="reset_editUserInfo" data-dismiss="modal">关闭</button>
 								</div>
 							</div>
@@ -465,7 +465,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			      <div class="modal-body">
 			      	<form id="editUserRoleForm" class="form-horizontal" role="form" style="margin: 0px;">
 			      		<div class="form-group">
-					      	<div class="col-sm-9">
+					      	<div class="col-lg-7 col-lg-offset-2">
 					      		<input type="hidden" id="editUserRole-userId">
 								<input id="roleList" name="roleId" style="width: 300px;height: 35px"/>
 							</div>
@@ -770,6 +770,9 @@ jeDate({
 			}
 		}
 		//编辑用户
+		$('#editUserModal').on('hide.bs.modal', function () {
+			$('#editUserInfoForm').data('bootstrapValidator').resetForm(true);
+		});
 		function editUser() {
 			var rows = userGrid.datagrid('getSelections');
 			if (rows.length > 0) {
@@ -793,36 +796,37 @@ jeDate({
 			}
 		}
 		$('#submit_editUserInfo').click(function(){
-			var isValid = $('#editUserInfoForm').data('bootstrapValidator').isValid();
-			if(isValid){
-				$('#editUserModal').modal('hide');
-				var toUrl='${pageContext.request.contextPath}/admin/user/editUser';
-				var f = $('#editUserInfoForm');
-	            f.form('submit', {
-	                url: toUrl,
-	                onsubmit: function () {
-	                    var flag = $(this).form('validate');
-	                    if (flag) {
-	                        top.showProcess(true, '温馨提示', '正在提交数据...');
-	                    }
-	                    return flag;
-	                },
-	                success: function (data) {
-	                    top.showProcess(false);
-	                    var map = $.parseJSON(data);
-	                    if (map.success) {
-	                        top.showMsg('提示', map.msg);
-	                        reloadDataGrid();
-	                    } else {
-	                    	top.alertMsg('错误', map.msg+"\n"+map.obj==null?"":map.obj);
-	                    }
-	                },
-	                onLoadError: function () {
-	                    top.showProcess(false);
-	                    top.$.messager.alert('温馨提示', '由于网络或服务器太忙，提交失败，请重试！');
-	                }
-	            });
+			var f = $('#editUserInfoForm');
+			f.data('bootstrapValidator').validate();
+			var isValid = f.data('bootstrapValidator').isValid();
+			if(!isValid){
+				return false;
 			}
+			var id = $('#edit-user-id').val()
+			var userName = $('#edit-user-name').val();
+			var passWord = $('#edit-user-passWord').val();
+			var mobile = $('#edit-user-mobile').val();
+			var email = $('#edit-user-email').val();
+			var toUrl='${pageContext.request.contextPath}/admin/user/editUser';
+			$.post(toUrl, 
+					{
+						id : id,
+						userName : userName,
+						passWord : passWord,
+						mobile : mobile,
+						email : email,
+					},
+					function(data){
+						top.showProcess(false);
+						if (data.success) {
+							$('#editUserModal').modal('hide');
+							top.showMsg('提示', data.msg);
+							reloadDataGrid();
+						} else {
+							top.alertMsg('警告', data.msg);
+						}
+			});
+			
 		});
 		function getSelectId() {
 			var row = userGrid.datagrid('getSelected');

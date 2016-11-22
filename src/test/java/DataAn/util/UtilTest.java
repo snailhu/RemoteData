@@ -17,7 +17,9 @@ public class UtilTest {
 	
 	@Test
 	public void test2(){
-		System.out.println(id);
+		Long id = new Long(94);
+		long id2 = 94;
+		System.out.println(id == id2);
 	}
 	
 	@Test

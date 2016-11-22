@@ -1,39 +1,23 @@
 package DataAn.fileSystem.service.impl;
 
+import javax.annotation.Resource;
 import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.stereotype.Service;
-
+import DataAn.common.service.IInitDataService;
 import DataAn.fileSystem.service.ISaveFileTaskSingleService;
 import DataAn.galaxyManager.service.IParameterService;
 import DataAn.mongo.service.IMongoService;
 
 @Service
 public class SaveFileTaskSingleServiceImpl implements ISaveFileTaskSingleService, BeanPostProcessor {
-
 	
-	@Autowired
+	@Resource
 	private IParameterService paramService;
-	
-	@Autowired
+	@Resource
 	private  IMongoService mongoService;
-
-	public IParameterService getParamService() {
-		return paramService;
-	}
-
-	public void setParamService(IParameterService paramService) {
-		this.paramService = paramService;
-	}
-
-	public IMongoService getMongoService() {
-		return mongoService;
-	}
-
-	public void setMongoService(IMongoService mongoService) {
-		this.mongoService = mongoService;
-	}
+	@Resource
+	private IInitDataService initDataService;
 
 	@Override
 	public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
@@ -46,7 +30,9 @@ public class SaveFileTaskSingleServiceImpl implements ISaveFileTaskSingleService
 	public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
 		if(!flag){
 			//开另外一个线程处理存入kafka的数据
-			new Thread(new SaveFileToKafka(paramService, mongoService)).start();
+			//new Thread(new SaveFileToKafka(paramService, mongoService)).start();
+			//初始化数据
+			initDataService.initDataBase();
 			flag=true;
 		}
 		return bean;

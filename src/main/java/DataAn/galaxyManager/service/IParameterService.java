@@ -16,7 +16,7 @@ public interface IParameterService {
 	
 	public void updateParamter(long paramId, String param_zh);
 	
-	public boolean isExistParameter(String series, String star, String param_zh);
+	public boolean isExistParameter(long paramId, String series, String star, String param_zh);
 	
 	public List<ParameterDto> getParameterList(String series, String star, String paramType);
 	

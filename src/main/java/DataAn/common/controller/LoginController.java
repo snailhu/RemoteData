@@ -3,21 +3,16 @@ package DataAn.common.controller;
 import java.io.IOException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
-import java.util.Date;
-
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-
 import DataAn.common.utils.GetIpUtil;
 import DataAn.prewarning.service.IPrewarningService;
-import DataAn.sys.domain.SystemLog;
 import DataAn.sys.domain.User;
 import DataAn.sys.dto.ActiveUserDto;
 import DataAn.sys.service.IUserService;
@@ -25,9 +20,6 @@ import DataAn.sys.service.SystemLogService;
 
 @Controller
 public class LoginController {
-
-	// @Resource
-	// private IUserService userService;
 
 	@Resource
 	private SystemLogService systemLogService;
@@ -52,9 +44,10 @@ public class LoginController {
 	public String loginPost(@RequestParam(value = "username", required = true) String username,
 			@RequestParam(value = "password", required = true) String password, HttpServletResponse response,
 			HttpServletRequest request) throws InvalidKeyException, NoSuchAlgorithmException, IOException {
-		// System.out.println("login...");
-		// System.out.println("username: " + username);
-		// System.out.println("password: " + password);
+//		 System.out.println("login...");
+//		 System.out.println("username: " + username);
+//		 System.out.println("password: " + password);
+//		 System.out.println("userService: " + userService);
 		ActiveUserDto acticeUser = userService.getActiveUserByName(username);
 		if (acticeUser != null) {
 			if (password.equals(acticeUser.getPassWord())) {

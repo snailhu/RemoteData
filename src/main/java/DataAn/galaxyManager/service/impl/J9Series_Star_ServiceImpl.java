@@ -401,18 +401,22 @@ public class J9Series_Star_ServiceImpl implements IJ9Series_Star_Service{
 	}
 
 	@Override
-	public void initJ9SeriesParameterData() throws Exception {
-		//初始化飞轮参数数据
-		String type = J9Series_Star_ParameterType.FLYWHEEL.getName();
-		String paramType = J9Series_Star_ParameterType.FLYWHEEL.getValue();
-		//"电流","转速","温度","指令","供电状态","角动量"
-		List<String> params = J9Series_Star_ParameterType.getFlywheelTypeOnDataType();
-		Map<String,String> map =  this.getAllParameterList_allZh_and_enByOption(type,null);
-		Set<String> keys = map.keySet();
-		String series = SeriesType.J9_SERIES.getName();
-		String star = J9SeriesType.STRA2.getValue();
-		for (String key : keys) {
-			paramService.getParameter_en_by_allZh(series, star,paramType, key);
+	public void initJ9SeriesParameterData() {
+		try {
+			String type = J9Series_Star_ParameterType.FLYWHEEL.getName();
+			String paramType = J9Series_Star_ParameterType.FLYWHEEL.getValue();
+			//"电流","转速","温度","指令","供电状态","角动量"
+			List<String> params = J9Series_Star_ParameterType.getFlywheelTypeOnDataType();
+			//初始化飞轮参数数据
+			Map<String, String> map = this.getAllParameterList_allZh_and_enByOption(type,null);
+			Set<String> keys = map.keySet();
+			String series = SeriesType.J9_SERIES.getName();
+			String star = J9SeriesType.STRA2.getValue();
+			for (String key : keys) {
+				paramService.getParameter_en_by_allZh(series, star,paramType, key);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 

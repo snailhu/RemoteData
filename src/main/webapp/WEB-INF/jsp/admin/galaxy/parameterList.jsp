@@ -271,14 +271,14 @@ $(function() {
                                 <div class="form-group">
                                     <label class="col-sm-3 control-label no-padding-right" for="edit-param-series"> 系列： </label>
                                     <div class="col-sm-8">
-                                        <input name="series" id="edit-param-series" class="form-control" value="${nowSeries}" readonly="true"/>
+                                        <input name="series" id="edit-param-series" class="form-control" readonly="true"/>
                                     </div>
                                 </div>
                                 <div class="space-4"></div>
                                 <div class="form-group">
                                     <label class="col-sm-3 control-label no-padding-right" for="edit-param-series"> 系列： </label>
                                     <div class="col-sm-8">
-                                        <input name="series" id="edit-param-star" class="form-control" value="${nowStar}" readonly="true"/>
+                                        <input name="series" id="edit-param-star" class="form-control" readonly="true"/>
                                     </div>
                                 </div>
                                 <div class="space-4"></div>
@@ -399,6 +399,8 @@ $(function() {
 	    if (rows.length > 0) {
 	        if (rows.length == 1) {
 	      	//赋值
+	      	$('#edit-param-series').val(nowSeries);
+	      	$('#edit-param-star').val(nowStar);
 			$('#edit-param-id').val(rows[0].id);
 			$('#edit-param-fullName').val(rows[0].fullName);
 			//弹出编辑框
@@ -406,9 +408,9 @@ $(function() {
 	        }else {
 	            var names = [];
 	            for (var i = 0; i < rows.length; i++) {
-	                names.push(rows[i].name);
+	                names.push(rows[i].fullName);
 	            }
-	            top.showMsg("提示", '只能选择一个角色进行编辑！您已经选择了【'+names.join(',')+'】'+rows.length+'个角色');
+	            top.showMsg("提示", '只能选择一个角色进行编辑！您已经选择了【'+names.join(',')+'】'+rows.length+'个参数');
 	        }
 	    }else {
 	        top.showMsg("提示", "请选择要编辑的记录！");

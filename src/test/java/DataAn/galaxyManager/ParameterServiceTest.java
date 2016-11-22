@@ -87,4 +87,14 @@ public class ParameterServiceTest {
 			System.out.println(str);
 		}
 	}
+	
+	@Test
+	public void isExistParameter(){
+		long id =  95;
+		String series = "j9";
+		String star = "02";
+		String name = "F4W120:飞轮温度Xa(00274)";
+		boolean flag = parameterService.isExistParameter(id, series, star, name);
+		System.out.println("flag: " + flag);
+	}
 }

@@ -73,9 +73,8 @@ public class ParameterServiceImpl implements IParameterService{
 				}
 			}
 			for (String param_zh : paramSet) {
-				Parameter param = parameterDao.selectBySeriesAndStarAndFullName(series,star, param_zh.trim());
-				if(param == null){
-					this.saveOne(series, star, paramType, param_zh);
+				if(this.isExistParameter(0, series, star, param_zh.trim())){
+					this.saveOne(series, star, paramType, param_zh);					
 				}
 			}
 		} catch (Exception e) {
@@ -110,10 +109,16 @@ public class ParameterServiceImpl implements IParameterService{
 
 
 	@Override
-	public boolean isExistParameter(String series, String star,String param_zh) {
+	public boolean isExistParameter(long paramId, String series, String star,String param_zh) {
 		Parameter param = parameterDao.selectBySeriesAndStarAndFullName(series,star, param_zh);
 		if(param != null){
-			return true;
+			if(paramId == 0){
+				return true;				
+			}else{
+				if(param.getId() != paramId){
+					return true;
+				}
+			}
 		}
 		return false;
 	}

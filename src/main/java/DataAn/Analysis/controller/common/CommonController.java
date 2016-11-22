@@ -239,12 +239,18 @@ public class CommonController {
 	RoutingService routingService=new RoutingService();
 	RequestConfig requestConfig=new RequestConfig();
 	requestConfig.setPropertyCount(pbd.getParamAttribute().size());
-	String[] properties=new String[pbd.getParamAttribute().size()];
+	//将propeities从字符串数据转换成对象数组
+	//String[] properties=new String[pbd.getParamAttribute().size()];
+	ParamAttributeDto properties[]=new ParamAttributeDto[pbd.getParamAttribute().size()];
 	System.out.println("pbd.getParamAttribute().size()的值为："+pbd.getParamAttribute().size());
 	int i=0;
 	List<ParamAttributeDto> listparam=pbd.getParamAttribute();
 	for(ParamAttributeDto paramAttributeDto: listparam){
-		properties[i++]=paramAttributeDto.getValue();
+		//properties[i++]=paramAttributeDto.getValue();
+		String value =paramAttributeDto.getValue();
+		properties[i++]=paramAttributeDto;
+		
+		System.out.println(paramAttributeDto.getMax()+"最小值"+paramAttributeDto.getMin());
 		System.out.println("添加到requestConfig的参数值"+paramAttributeDto.getValue()+"nanme属性为："+paramAttributeDto.getName());
 	}
 	System.out.println("设置requestConfig的Properties属性为："+properties);
@@ -288,12 +294,16 @@ ParamBatchDto pbd =JsonStringToObj.jsonToObject(paramObject,ParamBatchDto.class,
 			RoutingService routingService=new RoutingService();
 			RequestConfig requestConfig=new RequestConfig();
 			requestConfig.setPropertyCount(pbd.getParamAttribute().size());
-			String[] properties=new String[pbd.getParamAttribute().size()];
+			//String[] properties=new String[pbd.getParamAttribute().size()];
+			ParamAttributeDto[] properties=new ParamAttributeDto[pbd.getParamAttribute().size()];
 			System.out.println("pbd.getParamAttribute().size()的值为："+pbd.getParamAttribute().size());
 			int i=0;
 			List<ParamAttributeDto> listparam=pbd.getParamAttribute();
 			for(ParamAttributeDto paramAttributeDto: listparam){
-				properties[i++]=paramAttributeDto.getValue();
+				properties[i++]=paramAttributeDto;
+				System.out.println(paramAttributeDto.getMax()+"最小值"+paramAttributeDto.getMin());
+				System.out.println(paramAttributeDto.getMax()+"最大值"+paramAttributeDto.getMin());
+				//properties[i++].setValue(paramAttributeDto.getValue());
 				System.out.println("添加到requestConfig的参数值"+paramAttributeDto.getValue()+"nanme属性为："+paramAttributeDto.getName());
 			}
 			System.out.println("设置requestConfig的Properties属性为："+properties);

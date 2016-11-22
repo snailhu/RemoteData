@@ -45,7 +45,8 @@ public class RoutingRepoService {
 		String paramType =requestConfig.getDevice(); 
 		
 		//List<? extends Repo> repos=getAllRepos(requestConfig.getProperties()[0]);
-		List<? extends Repo> repos=getAllRepos(requestConfig.getProperties()[0],series,star,paramType);
+		//List<? extends Repo> repos=getAllRepos(requestConfig.getProperties()[0],series,star,paramType);
+		List<? extends Repo> repos=getAllRepos(requestConfig.getProperties()[0].getValue(),series,star,paramType);
 		System.out.println("getAllRepo获取到的参数："+requestConfig.getProperties()[0]);
 		Repo expectedOne=null;
 		Repo left=null;

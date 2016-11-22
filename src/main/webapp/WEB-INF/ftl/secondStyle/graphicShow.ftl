@@ -199,7 +199,9 @@
         		n.name = '${param.name}';
         		n.value = '${param.value}';
         		n.y = '${param.yname}';
-        		console.log("每条曲线的参数：参数名"+n.name+"*参数值:"+n.value+"*Y轴:"+n.y);
+        		n.max = '${param.max}';
+        		n.min = '${param.min}'
+        		console.log("每条曲线的参数：参数名"+n.name+"*参数值:"+n.value+"*Y轴:"+n.y+"*最大值:"+n.max+"*最小值："+n.min);
         		names.push(n);
         	</#list>       	
         <#else>
@@ -308,6 +310,7 @@
    		paramObject.startTime='${beginDate}';
    		paramObject.endTime='${endDate}';
    		paramObject.paramAttribute=names;
+
  
    		  		
      	//一次性组装所有参数的x和y值

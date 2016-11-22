@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.RecursiveTask;
 
+import DataAn.Analysis.dto.ParamAttributeDto;
+import DataAn.Analysis.dto.SingleParamDto;
 import DataAn.Analysis.dto.YearAndParamDataDto;
 
 public class DataSearchRoutingTask extends RecursiveTask<Map<String, YearAndParamDataDto>> {
@@ -34,12 +36,15 @@ public class DataSearchRoutingTask extends RecursiveTask<Map<String, YearAndPara
 		String series = requestConfig.getSeries();
 		String star = requestConfig.getStar();
 		String paramType =requestConfig.getDevice();
-		for (String property : requestConfig.getProperties()) {
+		//for (String property : requestConfig.getProperties()) {
+		for (ParamAttributeDto property : requestConfig.getProperties()) {
 			DataSearchTaskConfig dataSearchTaskConfig=new DataSearchTaskConfig();
-			dataSearchTaskConfig.setProperty(property);
+			dataSearchTaskConfig.setProperty(property.getValue());
 			dataSearchTaskConfig.setStartDate(mongoFilter.getStartDate());
 			dataSearchTaskConfig.setEndDate(mongoFilter.getEndDate());
-			dataSearchTaskConfig.setRepo(routingRepoService.getTargetRepo(requestConfig,property,repo.index()));
+			dataSearchTaskConfig.setMaxvalue(property.getMax());
+			dataSearchTaskConfig.setMinvalue(property.getMin());
+			dataSearchTaskConfig.setRepo(routingRepoService.getTargetRepo(requestConfig,property.getValue(),repo.index()));
 			DataSearchTask task = new DataSearchTask(dataSearchTaskConfig);
 		    forks.add(task);
 		    task.fork();

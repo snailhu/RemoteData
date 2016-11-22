@@ -29,6 +29,9 @@ public class DataSearchTask extends RecursiveTask<YearAndParamDataDto> {
 		Repo repo=dataSearchTaskConfig.getRepo();
 		Date startDate=dataSearchTaskConfig.getStartDate();
 		Date endDate=dataSearchTaskConfig.getEndDate();
+		Double maxtemp=Double.valueOf(dataSearchTaskConfig.getMaxvalue());
+		Double mintemp=Double.valueOf(dataSearchTaskConfig.getMinvalue());
+		
 		
 		MongodbUtil mg = MongodbUtil.getInstance();
 		MongoCollection<Document> collection = mg.getCollection(repo.database(), repo.collection());		
@@ -38,6 +41,8 @@ public class DataSearchTask extends RecursiveTask<YearAndParamDataDto> {
 		List<String> paramValue =  new ArrayList<String>();
 		
 		FindIterable<Document> document_It = collection.find(Filters.and(Filters.gte("datetime", startDate),Filters.lte("datetime", endDate)));						
+		
+
 		for (Document doc : document_It) {
 			/*String paraVal = doc.getString(dataSearchTaskConfig.getProperty());
 			if (paraVal != null) {
@@ -45,7 +50,8 @@ public class DataSearchTask extends RecursiveTask<YearAndParamDataDto> {
 				paramValue.add(paraVal);
 			}*/
 			String paraVal = doc.getString(dataSearchTaskConfig.getProperty());
-			if (paraVal == null) {
+			Double paraValtemp=Double.valueOf(paraVal);
+			if ((paraVal == null)|(paraValtemp>maxtemp) | (paraValtemp<mintemp)) {
 				paraVal = "\'-\'";
 			}
 			yearValue.add(DateUtil.format(doc.getDate("datetime")));

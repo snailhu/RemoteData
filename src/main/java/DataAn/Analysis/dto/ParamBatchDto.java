@@ -19,7 +19,7 @@ public class ParamBatchDto implements Serializable {
 		private  String startTime;
 		
 		private String  endTime;
-		
+		//参数格式为 name value y max min()
 		private List<ParamAttributeDto> paramAttribute;
 
 		public String getNowSeries() {
@@ -69,6 +69,8 @@ public class ParamBatchDto implements Serializable {
 		public void setParamAttribute(List<ParamAttributeDto> paramAttribute) {
 			this.paramAttribute = paramAttribute;
 		}
+
+	
 
 			
 }

@@ -3,12 +3,10 @@ package DataAn.galaxyManager.service.impl;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 import javax.annotation.Resource;
-
 import org.springframework.stereotype.Service;
-
 import DataAn.common.dao.Pager;
+import DataAn.common.pageModel.Combo;
 import DataAn.common.utils.DateUtil;
 import DataAn.galaxyManager.dao.IDeviceDao;
 import DataAn.galaxyManager.dao.IDeviceTypeDao;
@@ -137,6 +135,25 @@ public class DeviceServiceImpl implements IDeviceService {
 	@Override
 	public void deleteDevice(Long deviceId) throws Exception {
 		deviceDao.delete(deviceId);
+	}
+
+	@Override
+	public List<Combo> getDeviceTypeComboData(String deviceTypeCode) {
+		List<Combo> comboList = new ArrayList<Combo>();
+		List<DeviceType> list = deviceTypeDao.findAll();
+		if (list != null && list.size() > 0) {
+			Combo combo = null;
+			for (DeviceType deviceType : list) {
+				combo = new Combo();
+				combo.setText(deviceType.getDeviceName());
+				combo.setValue(deviceType.getDeviceCode());
+				if (deviceType.getDeviceCode().equals(deviceTypeCode)) {
+					combo.setSelected(true);
+				}
+				comboList.add(combo);
+			}
+		}
+		return comboList;
 	}
 
 }

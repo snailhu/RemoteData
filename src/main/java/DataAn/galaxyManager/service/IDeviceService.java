@@ -3,6 +3,7 @@ package DataAn.galaxyManager.service;
 import java.util.List;
 
 import DataAn.common.dao.Pager;
+import DataAn.common.pageModel.Combo;
 import DataAn.galaxyManager.domain.DeviceType;
 import DataAn.galaxyManager.dto.DeviceDto;
 import DataAn.galaxyManager.dto.QueryDeviceDTO;
@@ -25,5 +26,7 @@ public interface IDeviceService {
 	public QueryDeviceDTO getDeviceById(Long deviceId) throws Exception;
 
 	public void deleteDevice(Long deviceId) throws Exception;
+	
+	public List<Combo> getDeviceTypeComboData(String deviceTypeCode);
 
 }

@@ -38,7 +38,7 @@ public class CSVServiceTest {
 	
 	
 	
-	private String filePath = "C:\\j9-02--2016-02-01.csv";
+	private String filePath = "E:\\data\\flywheel\\2010\\01\\j9-02--2010-01-01.csv";
 	
 //	private String filePath = "C:\\excel_result\\数管分系统.csv";
 	

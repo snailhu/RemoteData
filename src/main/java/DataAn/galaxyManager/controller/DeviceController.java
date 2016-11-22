@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import DataAn.common.dao.Pager;
+import DataAn.common.pageModel.Combo;
 import DataAn.common.pageModel.EasyuiDataGridJson;
 import DataAn.common.pageModel.JsonMessage;
 import DataAn.galaxyManager.domain.DeviceType;
@@ -225,5 +226,17 @@ public class DeviceController {
 			}
 			return userType;
 		}
+	}
+	
+	@RequestMapping("/getDeviceTypeComboData")
+	@ResponseBody
+	public List<Combo> getDeviceTypeComboData(String deviceTypeCode) {
+//		System.out.println("getDeviceTypeComboData..");
+//		System.out.println("deviceTypeCode: " + deviceTypeCode);
+		List<Combo> list = deviceService.getDeviceTypeComboData(deviceTypeCode);
+//		for (Combo combo : list) {
+//			System.out.println(combo);
+//		}
+		return list;
 	}
 }

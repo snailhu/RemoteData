@@ -325,7 +325,6 @@
              success: function(data){
              	  //var json = eval(data);
              	  var i=0
-             	  //debugger;
              	  var yname = 0;
              	  var legendname ="";
              	  for(var param in data){
@@ -352,7 +351,6 @@
 	            	options.series = eval(seriesOptions);
 	            	pDate=options.xAxis.data = date;
 	                myChart.setOption(options);
-             	 // 	console.log(json);
              }
          })
 
@@ -414,44 +412,30 @@ $.post("getDatabytap",
 			'startDate' : startDate,
 			'endDate' : endDate
 		},
-	function(data){
-/*		console.log("开始日期"+startDate+"结束日期："+endDate);
-        seriesOptionsDam[i] = {
-            type: 'line',
-            smooth:true,
-            name: n.name,
-            yAxisIndex: n.y,
-            data: data["paramValue"]
-        };
-        seriesCounter_new += 1;
-        if (seriesCounter_new === names.length) {
-            options.series = eval(seriesOptionsDam);
-            date=options.xAxis.data = data["yearValue"];	
-            myChart.setOption(options);
-        }
-*/
-//  var json = eval(data);
-  var i=0
-  //debugger;
-  var yname = 0;
-  for(var param in data){
-  yname  = names[i].y;
-  console.log(yname)
-  	seriesOptions[i++] = {
-        	type: 'line',
-            name: param,
-            smooth:false,
-           	yAxisIndex: yname,
-            lineStyle:{
-            	normal:{
-            		width:0.5 
-            		}
-            },
-            data: data[param].paramValue
-        };
-        //设置X轴，注意，这里X轴存在问题，默认使用了最后一组参数的X轴
-        date =  data[param].yearValue;
-  }
+		function(data){
+             	  var i=0
+             	  var yname = 0;
+             	  var legendname ="";
+             	  for(var param in data){
+             	  yname  = names[i].y;
+             	  legendname =names[i].name;
+             	  console.log(yname+legendname)
+             	  	seriesOptions[i++] = {
+			            	type: 'line',
+			                //name: param,
+			                name:legendname,
+			                smooth:false,
+			               	yAxisIndex: yname,
+			                lineStyle:{
+		                    	normal:{
+		                    		width:0.5 
+		                    		}
+		                    },
+			                data: data[param].paramValue
+			            };
+			            //设置X轴，注意，这里X轴存在问题，默认使用了最后一组参数的X轴
+			            date =  data[param].yearValue;
+  		}
   	pSeriesOptions = seriesOptions
 	options.series = eval(seriesOptions);
 	pDate=options.xAxis.data = date;

@@ -204,7 +204,7 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 			// 保存 *.DAT文件
 			this.saveFileOfDAT(datFile, dataMap);
 		}
-		return null;
+		return versions;
 	}
 
 	@Override

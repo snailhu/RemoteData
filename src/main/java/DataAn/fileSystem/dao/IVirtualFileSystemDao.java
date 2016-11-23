@@ -20,7 +20,8 @@ public interface IVirtualFileSystemDao extends IBaseDao<VirtualFileSystem> {
 	public VirtualFileSystem selectByParentIdAndFileNameAndParameterType(
 			long parentId, String fileName, String parameterType);
 
-	public VirtualFileSystem selectByyear_month_day(String year_month_day);
+	public VirtualFileSystem selectBySeriesAndStarAndParameterTypeAndParentIdAndFileName(String series, 
+			String star, String parameterType,long parentId,String fileName);
 
 	public Pager<VirtualFileSystem> selectBySeriesAndStarAndParameterTypeAndParentIdAndOrder(
 			String series, String star, String parameterType, long parentId, String order,

@@ -30,7 +30,9 @@ public interface IStarService {
 	*/
 	public List<StarDto> getStarsBySeriesId(long seriesId);
 	
-	public StarDto getStarDto(long starId);
+	public StarDto getStarDtoById(long starId);
+	
+	public StarDto getStarDtoBySeriesCodeAndStarCode(String seriesCode, String starCode);
 	
 	public boolean isExistStarByName(StarDto starDto);
 	

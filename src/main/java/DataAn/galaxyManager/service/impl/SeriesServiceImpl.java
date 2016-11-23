@@ -105,11 +105,15 @@ public class SeriesServiceImpl implements ISeriesService {
 	}
 
 	@Override
-	public SeriesDto getSeriesDto(long seriesId) {
+	public SeriesDto getSeriesDtoById(long seriesId) {
 		Series series = seriesDao.get(seriesId);
 		return this.pojoToDto(series);
 	}
-
+	@Override
+	public SeriesDto getSeriesDtoByCode(String code){
+		Series series = seriesDao.selectByCode(code);
+		return this.pojoToDto(series);
+	}
 	@Override
 	public List<Combo> getSeriesComboData(String seriesCode) {
 		List<Combo> comboList = new ArrayList<Combo>();

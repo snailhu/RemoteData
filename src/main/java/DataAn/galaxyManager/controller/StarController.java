@@ -75,7 +75,7 @@ public class StarController {
 	@ResponseBody
 	public StarDto getStarForm(long starId){
 		
-		return starService.getStarDto(starId);
+		return starService.getStarDtoById(starId);
 	}
 	
 	@RequestMapping(value="/editStar", method = RequestMethod.POST)

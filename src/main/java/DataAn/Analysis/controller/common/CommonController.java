@@ -378,7 +378,7 @@ ParamBatchDto pbd =JsonStringToObj.jsonToObject(paramObject,ParamBatchDto.class,
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}
-		SeriesDto  nowSeries = seriesService.getSeriesDto(Long.parseLong(nowSeriesId));
+		SeriesDto  nowSeries = seriesService.getSeriesDtoById(Long.parseLong(nowSeriesId));
 		//当前所在系列
 		//modelview.addObject("nowSeries", nowSeries.getName());
 		//把卫星所在系列的系列编码传递到参数选择页面，供参数查询时使用

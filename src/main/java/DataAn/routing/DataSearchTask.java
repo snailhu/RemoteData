@@ -8,7 +8,9 @@ import java.util.concurrent.RecursiveTask;
 import org.bson.Document;
 
 import DataAn.Analysis.dto.YearAndParamDataDto;
+import DataAn.common.Log4jUtilTest;
 import DataAn.common.utils.DateUtil;
+import DataAn.common.utils.Log4jUtil;
 import DataAn.mongo.db.MongodbUtil;
 
 import com.mongodb.client.FindIterable;
@@ -53,8 +55,15 @@ public class DataSearchTask extends RecursiveTask<YearAndParamDataDto> {
 			if(paraVal==null){
 				paraVal = "\'-\'";
 			}else{
-				Double paraValtemp=Double.valueOf(paraVal);	
-				if((paraValtemp>maxtemp) | (paraValtemp<mintemp))
+			
+				Double paraValtemp=null;
+				try{paraValtemp=Double.valueOf(paraVal);}
+				catch(Exception e)
+				{
+					String error = "将字符串转换为Double类型时出错";
+			        Log4jUtil.getInstance().getLogger(DataSearchTask.class).error(error);
+				}
+				if((paraValtemp==null)|(paraValtemp>maxtemp) | (paraValtemp<mintemp))
 				{paraVal = "\'-\'";}
 			}
 			yearValue.add(DateUtil.format(doc.getDate("datetime")));

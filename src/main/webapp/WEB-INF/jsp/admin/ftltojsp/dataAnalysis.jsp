@@ -710,6 +710,8 @@ okfun:function(val) {}       //点击确定后的回调
         		//添加模板后刷新模板下拉框
         		intTemplateList(); 
         	})
+        	$(id_template_name).val("");
+        	$(id_template_description).val("")
         	      	
         }
         //删除已经生成的分组

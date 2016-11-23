@@ -44,7 +44,7 @@ public class Parameter {
 	private String fullName;
 	
 	//参数名简写
-	@Column(name = "simplyName", unique = true, nullable = true, length = 64)
+	@Column(name = "simplyName", nullable = true, length = 64)
 	private String simplyName;
 	
 	//参数码

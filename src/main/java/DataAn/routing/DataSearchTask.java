@@ -7,14 +7,14 @@ import java.util.concurrent.RecursiveTask;
 
 import org.bson.Document;
 
+import com.mongodb.client.FindIterable;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.model.Filters;
+
 import DataAn.Analysis.dto.YearAndParamDataDto;
 import DataAn.common.utils.DateUtil;
 import DataAn.common.utils.Log4jUtil;
 import DataAn.mongo.db.MongodbUtil;
-
-import com.mongodb.client.FindIterable;
-import com.mongodb.client.MongoCollection;
-import com.mongodb.client.model.Filters;
 
 public class DataSearchTask extends RecursiveTask<YearAndParamDataDto> {
 	
@@ -60,7 +60,7 @@ public class DataSearchTask extends RecursiveTask<YearAndParamDataDto> {
 				catch(Exception e)
 				{
 					String error = "将字符串转换为Double类型时出错";
-			        Log4jUtil.getInstance().getLogger(DataSearchTask.class).error(error);
+					Log4jUtil.getInstance().getLogger(DataSearchTask.class).error(error);
 				}
 				if((paraValtemp==null)|(paraValtemp>maxtemp) | (paraValtemp<mintemp))
 				{paraVal = "\'-\'";}

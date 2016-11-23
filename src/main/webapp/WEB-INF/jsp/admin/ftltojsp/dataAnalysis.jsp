@@ -405,7 +405,7 @@ minDate:"1900-01-01 00:00:00", //最小日期
 maxDate:"2099-12-31 23:59:59", //最大日期
 isinitVal:false, //是否初始化时间
 isTime:true, //是否开启时间选择
-isClear:true, //是否显示清空
+//isClear:true, //是否显示清空
 festival:false, //是否显示节日
 zIndex:999,  //弹出层的层级高度
 marks:null, //给日期做标注

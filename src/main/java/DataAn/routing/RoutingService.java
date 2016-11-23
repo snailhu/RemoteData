@@ -70,6 +70,8 @@ public class RoutingService {
 		MongoFilter mongoFilter=new MongoFilter();
 		mongoFilter.setStartDate(startDate);
 		mongoFilter.setEndDate(endDate);
+		if(repo==null)
+		{System.out.println("数据库为空");}
 		Map<String, YearAndParamDataDto> vals=forkJoinPool.invoke(new DataSearchRoutingTask(requestConfig, repo, mongoFilter));
 		return vals;
 		

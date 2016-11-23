@@ -7,15 +7,14 @@ import java.util.concurrent.RecursiveTask;
 
 import org.bson.Document;
 
-import DataAn.Analysis.dto.YearAndParamDataDto;
-import DataAn.common.Log4jUtilTest;
-import DataAn.common.utils.DateUtil;
-import DataAn.common.utils.Log4jUtil;
-import DataAn.mongo.db.MongodbUtil;
-
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.model.Filters;
+
+import DataAn.Analysis.dto.YearAndParamDataDto;
+import DataAn.common.utils.DateUtil;
+import DataAn.common.utils.Log4jUtil;
+import DataAn.mongo.db.MongodbUtil;
 
 public class DataSearchTask extends RecursiveTask<YearAndParamDataDto> {
 	

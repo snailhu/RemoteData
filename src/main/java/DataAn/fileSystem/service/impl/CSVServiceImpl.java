@@ -223,7 +223,8 @@ public class CSVServiceImpl implements ICSVService{
 			doc.append("year_month_day", DateUtil.format(dateTime, "yyyy-MM-dd"));
 			
 			//doc.append(j9SeriesPatameterMap.get(array[0]), DateUtil.formatString(date, "yyyy-MM-dd HH:mm:ss"));
-			doc.append(j9SeriesPatameterMap.get(array[0]), dateTime);
+//			doc.append(j9SeriesPatameterMap.get(array[0]), dateTime);
+			doc.append("datetime", dateTime);
 			for (int i = 1; i < items.length; i++) {
 				colData = items[i].trim();
 				if(colData.indexOf("#") == 0){ //TODO ?

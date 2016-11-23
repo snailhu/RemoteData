@@ -28,6 +28,8 @@ public interface IVirtualFileSystemService {
 	*/
 	public String saveFile(Map<String,FileDto> map) throws Exception;
 	
+	public String saveFileMock(Map<String,FileDto> map) throws Exception;
+	
 	/**
 	* Description: 删除一个或多个文件和目录
 	* @param ids 如："1/dir,2/file";

@@ -11,16 +11,15 @@ import java.nio.charset.Charset;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-
 import DataAn.common.utils.DateUtil;
 import DataAn.common.utils.JJSON;
+import DataAn.common.utils.Log4jUtil;
 import DataAn.common.utils.UUIDGeneratorUtil;
 import DataAn.galaxyManager.service.IParameterService;
 import DataAn.mongo.service.IMongoService;
 import DataAn.storm.BaseConfig;
 import DataAn.storm.Communication;
 import DataAn.storm.FlowUtils;
-import DataAn.storm.StormNames;
 import DataAn.storm.StormUtils;
 import DataAn.storm.kafka.Beginning;
 import DataAn.storm.kafka.BoundProducer;
@@ -80,10 +79,9 @@ public class SaveFileToKafka implements Runnable {
 	public void run() {
 		while(true){
 			try{
-				System.out.println(nodeWorker.getId()+ " to get lock.");
+				Log4jUtil.getInstance().getLogger(SaveFileToKafka.class).info(nodeWorker.getId()+ " to get lock.");
 				nodeWorker.acquire();
-				System.out.println(nodeWorker.getId()+ " get lock , wait some time.");
-				
+				Log4jUtil.getInstance().getLogger(SaveFileToKafka.class).info(nodeWorker.getId()+ " get lock , wait some time.");
 				InputStream in = null;
 				BufferedReader reader = null;
 				Communication communication=null;
@@ -163,10 +161,9 @@ public class SaveFileToKafka implements Runnable {
 					
 					// mongo...
 					mongoService.updateCSVDataByDate(series, star, name, dateTime1, dateTime);
-					
-					System.out.println(nodeWorker.getId()+ " finish!!!!!!!!");
+					Log4jUtil.getInstance().getLogger(SaveFileToKafka.class).info(nodeWorker.getId()+ " finish push data to kafka!!!!!!!!");
 				} catch (Exception e) {
-					System.out.println(nodeWorker.getId()+ " Exception!!!!!!");
+					Log4jUtil.getInstance().getLogger(SaveFileToKafka.class).info(nodeWorker.getId()+ " Exception!!!!!!");
 					FlowUtils.setError(executor, communication, e.getMessage());
 					e.printStackTrace();
 					throw e;
@@ -191,7 +188,7 @@ public class SaveFileToKafka implements Runnable {
 			}finally {
 				try {
 					nodeWorker.release();
-					System.out.println(nodeWorker.getId()+ " release lock");
+					Log4jUtil.getInstance().getLogger(SaveFileToKafka.class).info(nodeWorker.getId()+ " release lock");
 				} catch (Exception e) {
 					e.printStackTrace();
 				}

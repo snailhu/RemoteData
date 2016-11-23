@@ -165,12 +165,13 @@ public class VirtualFileSystemServiceTest {
 			System.out.println("csvPath: " + csvPath);
 			FileDto csvFileDto = new FileDto();
 			File csvFile = new File(csvPath);
-			InputStream csvInput = new FileInputStream(csvFile);
+//			InputStream csvInput = new FileInputStream(csvFile);
+//			csvFileDto.setIn(csvInput);
+			csvFileDto.setFilePath(csvFile.getAbsolutePath());
 			csvFileDto.setFileName(csvFile.getName());
 			double size = csvFile.length() / 1024 /1024;
 			String strSize = df.format(size);
 			csvFileDto.setFileSize(Float.parseFloat(strSize));
-			csvFileDto.setIn(csvInput);
 			csvFileDto.setParameterType(parameterType);
 			map.put("csv", csvFileDto);			
 		}
@@ -178,15 +179,16 @@ public class VirtualFileSystemServiceTest {
 			System.out.println("datPath: " + datPath);
 			FileDto datFileDto = new FileDto();
 			File datFile = new File(datPath);
-			InputStream datInput = new FileInputStream(datFile);
+//			InputStream datInput = new FileInputStream(datFile);
+//			datFileDto.setIn(datInput);
+			datFileDto.setFilePath(datFile.getAbsolutePath());
 			datFileDto.setFileName(datFile.getName());
 			double size = datFile.length() / 1024 /1024;
 			String strSize = df.format(size);
 			datFileDto.setFileSize(Float.parseFloat(strSize));
-			datFileDto.setIn(datInput);
 			datFileDto.setParameterType(parameterType);
 			map.put("dat", datFileDto);			
 		}
-		fileService.saveFile(map);
+		fileService.saveFileMock(map);
 	}
 }

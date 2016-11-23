@@ -351,8 +351,15 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				    onSelect: function(node){
 				    	//alert(node.value);
 				    }
-				    
 				});
+		    }
+		});
+		$("#search-paramType").combobox({
+		    url:'${pageContext.request.contextPath}/admin/device/getDeviceTypeComboData',
+		    valueField:'value',
+		    textField:'text',
+		    onSelect: function(node){
+		    	//alert(node.value);
 		    }
 		    
 		});

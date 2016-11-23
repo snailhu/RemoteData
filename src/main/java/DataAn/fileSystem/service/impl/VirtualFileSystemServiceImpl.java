@@ -166,7 +166,47 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 				csvFileDto.getParameterType(), "");
 		return versions;
 	}
-	
+
+	@Override
+	public String saveFileMock(Map<String, FileDto> map) throws Exception {
+		//获取map中的csv文件
+		FileDto csvFileDto = map.get("csv");
+		Map<String,String> dataMap = new HashMap<String,String>();
+		//解析csv中的文件名称 以获取信息
+		String fileName = csvFileDto.getFileName();
+		String[] strs = fileName.substring(0, fileName.lastIndexOf(".csv")).split("--");
+		String[] ss = strs[0].split("-");
+		String nowSeries = SeriesType.J9_SERIES.getName();
+		dataMap.put("series", nowSeries);
+		String nowStar = J9SeriesType.getJ9SeriesType(ss[1]).getValue();
+		dataMap.put("star", nowStar);
+		String date = strs[1];
+		dataMap.put("date", DateUtil.formatString(date, "yyyy-MM-dd", "yyyy-MM-dd"));
+		String year = DateUtil.formatString(date, "yyyy-MM-dd", "yyyy");
+		dataMap.put("year", year);
+		String month = DateUtil.formatString(date, "yyyy-MM-dd", "MM");
+		dataMap.put("month", month);
+		String versions = UUIDGeneratorUtil.getUUID();
+		dataMap.put("versions", versions);
+		//保存csv临时文件
+//		String csvTempFilePath = CommonConfig.getUplodCachePath() + File.separator + versions;
+//		FileUtil.saveFile(csvTempFilePath, fileName, csvFileDto.getIn());
+//		csvTempFilePath = csvTempFilePath + File.separator + fileName;
+//		csvFileDto.setFilePath(csvTempFilePath);
+		
+		// 保存 *.csv文件
+		//测试分级数据存储
+		this.saveFileOfCSVMock(csvFileDto, dataMap);
+		
+		//获取map中的csv文件
+		FileDto datFile = map.get("dat");
+		if(datFile != null){			
+			// 保存 *.DAT文件
+			this.saveFileOfDAT(datFile, dataMap);
+		}
+		return null;
+	}
+
 	@Override
 	@Transactional
 	public void deleteFile(HttpServletRequest request,String ids) {

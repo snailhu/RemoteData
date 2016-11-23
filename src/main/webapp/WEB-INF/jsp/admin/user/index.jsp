@@ -182,10 +182,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				},
 				passWord : {
 					validators : {
-						different : {
-							field : 'userName',
-							message : '密码不能跟用户名一样'
-						}
+						
 					}
 				},
 				confirmPassword : {
@@ -710,7 +707,7 @@ jeDate({
 				            top.showMsg('提示', map.msg);
 				            reloadDataGrid();
 				        } else {
-				        	top.showMsg('错误', map.msg);
+				        	top.alertMsg('错误', map.msg);
 				        }
 				    },
 				    onLoadError: function () {

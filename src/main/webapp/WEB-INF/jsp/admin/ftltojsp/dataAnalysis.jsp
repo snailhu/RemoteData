@@ -98,6 +98,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     	border-width: 1px;
     	cursor: pointer;
 	}
+	.dateSelect select{
+		height: 35px;
+    	width: 100px;
+    	color: white;
+    	background-color: #2B929D;
+    	border-width: 1px;
+    	cursor: pointer;
+	}
 	#dateStart-div,#dateEnd-div{
 		display:inline;
 	}
@@ -315,6 +323,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				<button id="btn_top"  style="display:none;">
 					陀螺
 				</button>
+				
 				<div class="dateStyle">
 					<span>开始日期</span>
 					<div id="dateStart-div">
@@ -326,6 +335,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					<div id='dateEnd-div'>
 						<input class="datainp" id="dateEnd" type="text" placeholder="--请选择--" readonly>
 					</div>				
+				</div>
+				<div class="dateStyle">
+				<select class="form-control" id="edit_component" name="component" style="display:none;">
+					<option value="">选择设备</option>
+				</select>
 				</div>
 				<button style="height: 35px;"  id='jqxButton-getParameters' onMouseOut="this.style.backgroundColor=''" onMouseOver="this.style.backgroundColor='#00A1CB'">获取参数</button>
 				</div>
@@ -446,19 +460,26 @@ okfun:function(val) {}       //点击确定后的回调
 		
 		})
 		
-
+		$('#edit_component').append("<option value='flywheel'>飞轮</option>");
+		$('#edit_component').append("<option value='top'>陀螺</option>");
+		$("#edit_component").change(function(){		
+		 	var component = $('#edit_component').val();	
+		 	setSatelliteComponents(component);
+	    });
 		//陀螺或者飞轮权限选择按钮的显示与否
 		var activeUser = '${activeUser}';
 		if(activeUser != ''){
 			var permissionItemsJSON = '${activeUser.permissionItemsJSON}';
 			var map = $.parseJSON(permissionItemsJSON); 
 			if((map.flywheel == 'flywheel') & (map.top == 'top')){
-				$("#btn_flywheel").show();
-				$("#btn_top").show();
+				$("#btn_flywheel").hide();
+				$("#btn_top").hide();
+				$("#edit_component").show();
 			}
 			else{
 			$("#btn_flywheel").hide();
 			$("#btn_top").hide();
+			$("#edit_component").hide();
 			}
 		}
 		
@@ -475,6 +496,8 @@ okfun:function(val) {}       //点击确定后的回调
         
          $("#btn_flywheel").jqxButton({ width: '60', height: '30'});
          $("#btn_top").jqxButton({ width: '60', height: '30'});
+         $("#edit_component").jqxButton({ width: '60', height: '20'});
+         
 		 $("#jqxButton-getParameters").jqxButton({ width: '100', height: '30'});	
 		 $("#jqxButton-getParameters").click( function ()  {    
 		 	var beginDate = $("#dateStart").val();

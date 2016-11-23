@@ -106,10 +106,6 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 		String versions = UUIDGeneratorUtil.getUUID();
 		dataMap.put("versions", versions);
 		
-		//保存文件前
-		statusTrackingService.updateStatusTracking(csvFileDto.getFileName(), StatusTrackingType.FILEUPLOAD.getValue(),
-				csvFileDto.getParameterType(), "");
-		
 		try {
 			//保存csv临时文件
 			String csvTempFilePath = CommonConfig.getUplodCachePath() + File.separator + versions;
@@ -119,9 +115,7 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 			
 			// 保存 *.csv文件
 			this.saveFileOfCSV(csvFileDto, dataMap);
-//		//测试分级数据存储
-//		//this.saveFileOfCSVMock(csvFileDto, dataMap);
-//		
+			
 //		//获取map中的csv文件
 			FileDto datFile = map.get("dat");
 			if(datFile != null){			
@@ -494,7 +488,7 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 		parametersDao.add(dateParameters);
 		
 		//保存参数
-		paramService.saveMany(series, star, parameterType, title);
+		//paramService.saveMany(series, star, parameterType, title);
 		
 		//查找csv的文件夹是否存在
 //		VirtualFileSystem csvDir = fileDao.selectByParentIdisNullAndFileName("csv");

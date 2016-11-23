@@ -251,7 +251,7 @@ public class FileController {
 			map.put("csv", csvFileDto);	
 			//TODO 这里的operateJob为日志操作的具体内容格式应该为：上传文件+文件名
 			String operateJob;
-			operateJob = "上传文件"+csvFile.getName();
+			operateJob = "上传文件"+csvFileDto.getFileName();
 			systemLogService.addOneSystemlogs( request,operateJob);
 		}
 		if(datFile.getSize() != 0){
@@ -264,7 +264,7 @@ public class FileController {
 			map.put("dat", datFileDto);	
 			//TODO 这里的operateJob为日志操作的具体内容格式应该为：上传文件+文件名
 			String operateJob;
-			operateJob = "上传文件"+datFile.getName();
+			operateJob = "上传文件"+datFileDto.getFileName();
 			systemLogService.addOneSystemlogs( request,operateJob);
 		}
 		//打开另外一个线程处理文件

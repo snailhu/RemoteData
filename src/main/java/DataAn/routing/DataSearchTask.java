@@ -8,7 +8,6 @@ import java.util.concurrent.RecursiveTask;
 import org.bson.Document;
 
 import DataAn.Analysis.dto.YearAndParamDataDto;
-import DataAn.common.Log4jUtilTest;
 import DataAn.common.utils.DateUtil;
 import DataAn.common.utils.Log4jUtil;
 import DataAn.mongo.db.MongodbUtil;

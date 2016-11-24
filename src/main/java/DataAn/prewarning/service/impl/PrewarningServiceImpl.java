@@ -60,7 +60,7 @@ public class PrewarningServiceImpl implements IPrewarningService {
 		warningValue.setParameterType(errorValueDTO.getParameterType());
 		warningValue.setSeries(errorValueDTO.getSeries());
 		warningValue.setStar(errorValueDTO.getStar());
-		warningValue.setTimeZone(0);
+		warningValue.setTimeZone(errorValueDTO.getTimeZone());
 		warningValue.setLimitTimes(0);
 		warningValue.setWarningType(1);
 		warningValueDao.add(warningValue);
@@ -75,6 +75,7 @@ public class PrewarningServiceImpl implements IPrewarningService {
 		warningValue.setParameterType(errorValueDTO.getParameterType());
 		warningValue.setSeries(errorValueDTO.getSeries());
 		warningValue.setStar(errorValueDTO.getStar());
+		warningValue.setTimeZone(errorValueDTO.getTimeZone());
 		warningValueDao.update(warningValue);
 	}
 
@@ -183,8 +184,8 @@ public class PrewarningServiceImpl implements IPrewarningService {
 		if (StringUtils.isNotBlank(star)) {
 			starDomain = starDao.get(Long.parseLong(star));
 			if (starDomain != null) {
-				// starName = starDomain.getCode();
-				starName = starDomain.getName().substring(1);
+				starName = starDomain.getCode();
+				// starName = starDomain.getName().substring(1);
 			}
 		}
 		Pager<QueryLogDTO> logPager = warningLogMongoDao.selectByOption(pageIndex, pageSize, seriesName, starName,

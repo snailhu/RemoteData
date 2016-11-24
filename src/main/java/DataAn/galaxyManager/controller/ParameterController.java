@@ -1,6 +1,7 @@
 package DataAn.galaxyManager.controller;
 
 import javax.annotation.Resource;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -8,11 +9,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+
 import DataAn.common.dao.Pager;
 import DataAn.common.pageModel.EasyuiDataGridJson;
 import DataAn.common.pageModel.JsonMessage;
 import DataAn.galaxyManager.dto.ParameterDto;
 import DataAn.galaxyManager.service.IParameterService;
+import DataAn.galaxyManager.service.ISeriesService;
+import DataAn.galaxyManager.service.IStarService;
 
 @Controller
 @RequestMapping("/admin/parameter")
@@ -20,6 +24,10 @@ public class ParameterController {
 
 	@Resource
 	private IParameterService parameterService;
+	@Resource
+	private ISeriesService seriesService;
+	@Resource
+	private IStarService starService;
 	
 	// 返回参数管理主页
 	@RequestMapping("/index")
@@ -33,7 +41,9 @@ public class ParameterController {
 	public String indexOfSeries(@PathVariable String series,@PathVariable String star, Model model) {
 		//当前所在系列
 		model.addAttribute("nowSeries", series);
+		model.addAttribute("nowSeriesName", seriesService.getSeriesDtoByCode(series).getName());
 		model.addAttribute("nowStar", star);
+		model.addAttribute("nowStarName", starService.getStarDtoBySeriesCodeAndStarCode(series, star).getName());
 		return "admin/galaxy/parameterList";
 	}
 	

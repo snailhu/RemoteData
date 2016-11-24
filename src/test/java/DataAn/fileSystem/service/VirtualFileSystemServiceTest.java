@@ -108,15 +108,15 @@ public class VirtualFileSystemServiceTest {
 		int pageIndex = 1;
 		int pageSize = 100;
 		String series = "j9";
-		String star = "02";
-		String strDirId = "1";
+		String star = "03";
+		String strDirId = "";
 //		long dirId = 0;
 		String beginTime = "";//"2009-11-17";
 		String endTime = "";//"2016-11-17";
-		String dataTypes = null;//"dat,csv";
+		String dataTypes = "dat,csv";
 		String paramType = J9Series_Star_ParameterType.FLYWHEEL.getValue();
 		Pager<MongoFSDto> pager = null;//fileService.getMongoFSList(pageIndex, pageSize, series, star, paramType, null, null, null, dataTypes);
-		if(StringUtils.isNotBlank(beginTime) || StringUtils.isNotBlank(endTime)){
+		if(StringUtils.isNotBlank(beginTime) || StringUtils.isNotBlank(endTime) || StringUtils.isBlank(paramType)){
 			if (StringUtils.isNotBlank(strDirId)) {
 				long dirId = Long.parseLong(strDirId);
 				pager = fileService.getMongoFSList(pageIndex, pageSize, series, star, paramType, dirId, beginTime, endTime, dataTypes);								

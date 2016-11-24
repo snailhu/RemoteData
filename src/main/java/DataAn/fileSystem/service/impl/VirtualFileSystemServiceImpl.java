@@ -106,10 +106,6 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 		String versions = UUIDGeneratorUtil.getUUID();
 		dataMap.put("versions", versions);
 		
-		//保存文件前
-		statusTrackingService.updateStatusTracking(csvFileDto.getFileName(), StatusTrackingType.FILEUPLOAD.getValue(),
-				csvFileDto.getParameterType(), "");
-		
 		try {
 			//保存csv临时文件
 			String csvTempFilePath = CommonConfig.getUplodCachePath() + File.separator + versions;
@@ -119,9 +115,7 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 			
 			// 保存 *.csv文件
 			this.saveFileOfCSV(csvFileDto, dataMap);
-//		//测试分级数据存储
-//		//this.saveFileOfCSVMock(csvFileDto, dataMap);
-//		
+			
 //		//获取map中的csv文件
 			FileDto datFile = map.get("dat");
 			if(datFile != null){			
@@ -494,11 +488,12 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 		parametersDao.add(dateParameters);
 		
 		//保存参数
-		paramService.saveMany(series, star, parameterType, title);
+		//paramService.saveMany(series, star, parameterType, title);
 		
 		//查找csv的文件夹是否存在
 //		VirtualFileSystem csvDir = fileDao.selectByParentIdisNullAndFileName("csv");
-		VirtualFileSystem csvDir = fileDao.selectByParentIdAndFileNameAndParameterType(0, "csv", parameterType);
+//		VirtualFileSystem csvDir = fileDao.selectByParentIdAndFileNameAndParameterType(0, "csv", parameterType);
+		VirtualFileSystem csvDir = fileDao.selectBySeriesAndStarAndParameterTypeAndParentIdAndFileName(series, star, parameterType, 0, "csv");
 		if(csvDir == null){
 			csvDir = new VirtualFileSystem();
 			csvDir.setSeries(series);
@@ -511,7 +506,8 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 		}
 		//查找年份的文件夹是否存在
 //		VirtualFileSystem yearDir = fileDao.selectByParentIdAndFileName(csvDir.getId(), year);
-		VirtualFileSystem yearDir = fileDao.selectByParentIdAndFileNameAndParameterType(csvDir.getId(), year, parameterType);
+//		VirtualFileSystem yearDir = fileDao.selectByParentIdAndFileNameAndParameterType(csvDir.getId(), year, parameterType);
+		VirtualFileSystem yearDir = fileDao.selectBySeriesAndStarAndParameterTypeAndParentIdAndFileName(series, star, parameterType, csvDir.getId(), year);
 		if(yearDir == null){
 			yearDir = new VirtualFileSystem();
 			yearDir.setSeries(series);
@@ -526,7 +522,8 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 		}
 		//查找月份的文件夹是否存在
 //		VirtualFileSystem monthDir = fileDao.selectByParentIdAndFileName(yearDir.getId(), month);
-		VirtualFileSystem monthDir = fileDao.selectByParentIdAndFileNameAndParameterType(yearDir.getId(), month, parameterType);
+//		VirtualFileSystem monthDir = fileDao.selectByParentIdAndFileNameAndParameterType(yearDir.getId(), month, parameterType);
+		VirtualFileSystem monthDir = fileDao.selectBySeriesAndStarAndParameterTypeAndParentIdAndFileName(series, star, parameterType, yearDir.getId(), month);
 		if(monthDir == null){
 			monthDir = new VirtualFileSystem();
 			monthDir.setSeries(series);
@@ -605,7 +602,8 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 		
 		//查找csv的文件夹是否存在
 //		VirtualFileSystem csvDir = fileDao.selectByParentIdisNullAndFileName("csv");
-		VirtualFileSystem csvDir = fileDao.selectByParentIdAndFileNameAndParameterType(0, "csv", parameterType);
+//		VirtualFileSystem csvDir = fileDao.selectByParentIdAndFileNameAndParameterType(0, "csv", parameterType);
+		VirtualFileSystem csvDir = fileDao.selectBySeriesAndStarAndParameterTypeAndParentIdAndFileName(series, star, parameterType, 0, "csv");
 		if(csvDir == null){
 			csvDir = new VirtualFileSystem();
 			csvDir.setSeries(series);
@@ -618,7 +616,8 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 		}
 		//查找年份的文件夹是否存在
 //		VirtualFileSystem yearDir = fileDao.selectByParentIdAndFileName(csvDir.getId(), year);
-		VirtualFileSystem yearDir = fileDao.selectByParentIdAndFileNameAndParameterType(csvDir.getId(), year, parameterType);
+//		VirtualFileSystem yearDir = fileDao.selectByParentIdAndFileNameAndParameterType(csvDir.getId(), year, parameterType);
+		VirtualFileSystem yearDir = fileDao.selectBySeriesAndStarAndParameterTypeAndParentIdAndFileName(series, star, parameterType, csvDir.getId(), year);
 		if(yearDir == null){
 			yearDir = new VirtualFileSystem();
 			yearDir.setSeries(series);
@@ -633,7 +632,8 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 		}
 		//查找月份的文件夹是否存在
 //		VirtualFileSystem monthDir = fileDao.selectByParentIdAndFileName(yearDir.getId(), month);
-		VirtualFileSystem monthDir = fileDao.selectByParentIdAndFileNameAndParameterType(yearDir.getId(), month, parameterType);
+//		VirtualFileSystem monthDir = fileDao.selectByParentIdAndFileNameAndParameterType(yearDir.getId(), month, parameterType);
+		VirtualFileSystem monthDir = fileDao.selectBySeriesAndStarAndParameterTypeAndParentIdAndFileName(series, star, parameterType, yearDir.getId(), month);
 		if(monthDir == null){
 			monthDir = new VirtualFileSystem();
 			monthDir.setSeries(series);
@@ -666,9 +666,11 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 	
 	private void saveFileOfDAT(FileDto fileDto, Map<String,String> dataMap){
 		
-		String uuId = dataMap.get("versions");
+//		String uuId = dataMap.get("versions");
+		String uuId = UUIDGeneratorUtil.getUUID();
 		String series = dataMap.get("series");
 		String star = dataMap.get("star");
+		String parameterType = fileDto.getParameterType();
 		String date = dataMap.get("date");
 		String year = dataMap.get("year");
 		String month = dataMap.get("month");
@@ -680,22 +682,28 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 		dfs.upload(databaseName,fileDto.getFileName(), uuId, fileDto.getIn());
 
 		//查找dat的文件夹是否存在
-		VirtualFileSystem datDir = fileDao.selectByParentIdisNullAndFileName("dat");
+//		VirtualFileSystem datDir = fileDao.selectByParentIdisNullAndFileName("dat");
+//		VirtualFileSystem datDir = fileDao.selectByParentIdAndFileNameAndParameterType(0, "dat", parameterType);
+		VirtualFileSystem datDir = fileDao.selectBySeriesAndStarAndParameterTypeAndParentIdAndFileName(series, star, parameterType, 0, "dat");
 		if(datDir == null){
 			datDir = new VirtualFileSystem();
 			datDir.setSeries(series);
 			datDir.setStar(star);
+			datDir.setParameterType(parameterType);
 			datDir.setDataType(FileDataType.DAT);
 			datDir.setFileName("dat");
 			datDir.setFileType(FileType.DIR);
 			datDir = fileDao.add(datDir);
 		}
 		//查找年份的文件夹是否存在
-		VirtualFileSystem yearDir = fileDao.selectByParentIdAndFileName(datDir.getId(), year);
+//		VirtualFileSystem yearDir = fileDao.selectByParentIdAndFileName(datDir.getId(), year);
+//		VirtualFileSystem yearDir = fileDao.selectByParentIdAndFileNameAndParameterType(datDir.getId(), year, parameterType);
+		VirtualFileSystem yearDir = fileDao.selectBySeriesAndStarAndParameterTypeAndParentIdAndFileName(series, star, parameterType, datDir.getId(), year);
 		if(yearDir == null){
 			yearDir = new VirtualFileSystem();
 			yearDir.setSeries(series);
 			yearDir.setStar(star);
+			yearDir.setParameterType(parameterType);
 			yearDir.setDataType(FileDataType.DAT);
 			yearDir.setFileName(year);
 			yearDir.setFileType(FileType.DIR);
@@ -704,11 +712,14 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 			yearDir = fileDao.add(yearDir);
 		}
 		//查找月份的文件夹是否存在
-		VirtualFileSystem monthDir = fileDao.selectByParentIdAndFileName(yearDir.getId(), month);
+//		VirtualFileSystem monthDir = fileDao.selectByParentIdAndFileName(yearDir.getId(), month);
+//		VirtualFileSystem monthDir = fileDao.selectByParentIdAndFileNameAndParameterType(yearDir.getId(), month, parameterType);
+		VirtualFileSystem monthDir = fileDao.selectBySeriesAndStarAndParameterTypeAndParentIdAndFileName(series, star, parameterType, yearDir.getId(), month);
 		if(monthDir == null){
 			monthDir = new VirtualFileSystem();
 			monthDir.setSeries(series);
 			monthDir.setStar(star);
+			monthDir.setParameterType(parameterType);
 			monthDir.setDataType(FileDataType.DAT);
 			monthDir.setFileName(month);
 			monthDir.setFileType(FileType.DIR);
@@ -720,6 +731,7 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 		VirtualFileSystem file = new VirtualFileSystem();
 		file.setSeries(series);
 		file.setStar(star);
+		file.setParameterType(parameterType);
 		file.setDataType(FileDataType.DAT);
 		file.setFileName(fileDto.getFileName());
 		file.setFileSize(fileDto.getFileSize());

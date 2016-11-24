@@ -86,11 +86,21 @@ public class StarServiceImpl implements IStarService {
 	}
 
 	@Override
-	public StarDto getStarDto(long starId) {
+	public StarDto getStarDtoById(long starId) {
 		Star star = starDao.get(starId);
 		return this.pojoToDto(star);
 	}
-
+	@Override
+	public StarDto getStarDtoBySeriesCodeAndStarCode(String seriesCode, String starCode){
+		Series series = seriesDao.selectByCode(seriesCode);
+		if (series != null) {
+			List<Star> list = starDao.getStarBySeriesIdAndCode(series.getId(), starCode);
+			if (list != null && list.size() > 0) {
+				return this.pojoToDto(list.get(0));				
+			}
+		}
+		return null;
+	}
 	@Override
 	public boolean isExistStarByName(StarDto starDto) {
 		List<Star> list = starDao.getStarBySeriesIdAndName(starDto.getSeriesId(), starDto.getName());
@@ -120,19 +130,21 @@ public class StarServiceImpl implements IStarService {
 	@Override
 	public List<Combo> getStarComboData(String seriesCode, String starCode) {
 		List<Combo> comboList = new ArrayList<Combo>();
-		Series series = seriesDao.selectByCode(seriesCode);
-		if (series != null) {
-			List<Star> list = starDao.getStarListBySeriesId(series.getId());
-			if (list != null && list.size() > 0) {
-				Combo combo = null;
-				for (Star star : list) {
-					combo = new Combo();
-					combo.setText(star.getName());
-					combo.setValue(star.getCode());
-					if (star.getCode().equals(starCode)) {
-						combo.setSelected(true);
+		if(StringUtils.isNotBlank(seriesCode)){
+			Series series = seriesDao.selectByCode(seriesCode);
+			if (series != null) {
+				List<Star> list = starDao.getStarListBySeriesId(series.getId());
+				if (list != null && list.size() > 0) {
+					Combo combo = null;
+					for (Star star : list) {
+						combo = new Combo();
+						combo.setText(star.getName());
+						combo.setValue(star.getCode());
+						if (star.getCode().equals(starCode)) {
+							combo.setSelected(true);
+						}
+						comboList.add(combo);
 					}
-					comboList.add(combo);
 				}
 			}
 		}

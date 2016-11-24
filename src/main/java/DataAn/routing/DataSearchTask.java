@@ -60,7 +60,7 @@ public class DataSearchTask extends RecursiveTask<YearAndParamDataDto> {
 				catch(Exception e)
 				{
 					String error = "将字符串转换为Double类型时出错";
-			        Log4jUtil.getInstance().getLogger(DataSearchTask.class).error(error);
+					Log4jUtil.getInstance().getLogger(DataSearchTask.class).error(error);
 				}
 				if((paraValtemp==null)|(paraValtemp>maxtemp) | (paraValtemp<mintemp))
 				{paraVal = "\'-\'";}

@@ -80,7 +80,7 @@ public class SeriesController {
 	@RequestMapping(value="/getSeriesForm", method = RequestMethod.POST)
 	public SeriesDto getSeriesForm(long seriesId){
 		
-		return seriesService.getSeriesDto(seriesId);
+		return seriesService.getSeriesDtoById(seriesId);
 	}
 	
 	@RequestMapping(value="/editSeries", method = RequestMethod.POST)

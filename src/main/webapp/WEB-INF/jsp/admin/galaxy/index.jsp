@@ -447,7 +447,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								<button type="button" class="close" data-dismiss="modal" aria-label="Close" id="close_editStarInfo">
 									<span aria-hidden="true">&times;</span>
 								</button>
-								<h4 class="modal-title" id="editStarInfoModalLabel">添加星</h4>
+								<h4 class="modal-title" id="editStarInfoModalLabel">编辑星</h4>
 							</div>
 							<div class="modal-body">
 								<input type="hidden" name="datagridId" id="edit-star-datagridId"/>

@@ -34,6 +34,8 @@ import DataAn.fileSystem.dto.MongoFSDto;
 import DataAn.fileSystem.service.IVirtualFileSystemService;
 import DataAn.galaxyManager.option.J9Series_Star_ParameterType;
 import DataAn.galaxyManager.service.ISeriesService;
+import DataAn.status.option.StatusTrackingType;
+import DataAn.status.service.IStatusTrackingService;
 import DataAn.sys.dto.ActiveUserDto;
 import DataAn.sys.service.SystemLogService;
 
@@ -47,6 +49,8 @@ public class FileController {
 	private ISeriesService seriesService;
 	@Resource
 	private SystemLogService systemLogService;
+	@Resource
+	private IStatusTrackingService statusTrackingService;
 	
 	@RequestMapping("/index")
 	public String mongoFSIndex(Model model,HttpServletRequest request,HttpServletResponse response) {
@@ -249,9 +253,14 @@ public class FileController {
 			csvFileDto.setIn(csvFile.getInputStream());
 			csvFileDto.setParameterType(paramType);
 			map.put("csv", csvFileDto);	
+			
+			//保存文件前
+			statusTrackingService.updateStatusTracking(csvFileDto.getFileName(), StatusTrackingType.FILEUPLOAD.getValue(),
+					csvFileDto.getParameterType(), "");
+			
 			//TODO 这里的operateJob为日志操作的具体内容格式应该为：上传文件+文件名
 			String operateJob;
-			operateJob = "上传文件"+csvFile.getName();
+			operateJob = "上传文件"+csvFileDto.getFileName();
 			systemLogService.addOneSystemlogs( request,operateJob);
 		}
 		if(datFile.getSize() != 0){
@@ -261,10 +270,11 @@ public class FileController {
 			String strSize = df.format(size);
 			datFileDto.setFileSize(Float.parseFloat(strSize));
 			datFileDto.setIn(datFile.getInputStream());
+			datFileDto.setParameterType(paramType);
 			map.put("dat", datFileDto);	
 			//TODO 这里的operateJob为日志操作的具体内容格式应该为：上传文件+文件名
 			String operateJob;
-			operateJob = "上传文件"+datFile.getName();
+			operateJob = "上传文件"+datFileDto.getFileName();
 			systemLogService.addOneSystemlogs( request,operateJob);
 		}
 		//打开另外一个线程处理文件
@@ -277,11 +287,10 @@ public class FileController {
 					e.printStackTrace();
 				}				
 			}}).start();
+		
 //		fileService.saveFile(map);
 		long end = System.currentTimeMillis();
 		System.out.println("time: " + (end - begin));
-		
-		
 		
 //		jsonMsg.setSuccess(true);
 //		jsonMsg.setMsg("上传成功");

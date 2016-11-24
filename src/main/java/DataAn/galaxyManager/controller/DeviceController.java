@@ -50,8 +50,8 @@ public class DeviceController {
 	@RequestMapping("/index/{series}/{star}/")
 	public String indexOfDeviceType(@PathVariable String series, @PathVariable String star, Model model) {
 		// 当前所在系列
-		SeriesDto seriesDto = seriesService.getSeriesDto(Long.parseLong(series));
-		StarDto starDto = starService.getStarDto(Long.parseLong(star));
+		SeriesDto seriesDto = seriesService.getSeriesDtoById(Long.parseLong(series));
+		StarDto starDto = starService.getStarDtoById(Long.parseLong(star));
 		model.addAttribute("nowSeries", seriesDto.getCode());
 		model.addAttribute("nowStar", starDto.getCode());
 		model.addAttribute("nowSeriesId", seriesDto.getId());

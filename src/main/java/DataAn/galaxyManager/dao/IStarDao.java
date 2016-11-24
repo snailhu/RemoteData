@@ -20,4 +20,6 @@ public interface IStarDao extends IBaseDao<Star> {
 	public String getStarIdByName(String starName);
 	
 	public List<Star> getStarBySeriesIdAndName(long seriesId,String name);
+	
+	public List<Star> getStarBySeriesIdAndCode(long seriesId,String code);
 }

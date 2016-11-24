@@ -44,6 +44,9 @@ public class StatusTrackingServiceImpl implements IStatusTrackingService {
 			statusTracking.setStatusType(statusType);
 			statusTracking.setUserType(userType);
 			statusTracking.setExceptionInfo(exceptionInfo);
+			if (statusType.equals(StatusTrackingType.FILEUPLOAD)) {
+				statusTracking.setCreateDate(new Date());
+			}
 			statusTrackingDao.update(statusTracking);
 		} else {
 			// 不存在则新增

@@ -226,14 +226,14 @@ $(function() {
 								<div class="form-group">
 									<label class="col-sm-3 control-label no-padding-right" for="add-param-series"> 系列： </label>
 									<div class="col-sm-8">
-										<input name="series" id="add-param-series" class="form-control" value="${nowSeries}" readonly="true"/>
+										<input name="series" id="add-param-series" class="form-control" readonly="true"/>
 									</div>
 								</div>
 								<div class="space-4"></div>
 								<div class="form-group">
 									<label class="col-sm-3 control-label no-padding-right" for="add-param-series"> 星： </label>
 									<div class="col-sm-8">
-										<input name="star" id="add-param-star" class="form-control" value="${nowStar}" readonly="true"/>
+										<input name="star" id="add-param-star" class="form-control" readonly="true"/>
 									</div>
 								</div>
 								<div class="space-4"></div>
@@ -311,7 +311,9 @@ $(function() {
 	
 	<script type="text/javascript">
 	  var nowSeries = '${nowSeries}';
+	  var nowSeriesName = '${nowSeriesName}';
 	  var nowStar = '${nowStar}';
+	  var nowStarName = '${nowStarName}';
 	  //console.log('nowSeries:' + nowSeries);
 	  var paramGrid;
 	  var url='<%=request.getContextPath()%>/admin/parameter/getList/'+nowSeries+'/'+nowStar;
@@ -354,6 +356,8 @@ $(function() {
 // 	$("#add-param-series").combobox('setValues', '${nowSeries}');
 	
 	$('#addParamModal-btn').click(function(){
+		$('#add-param-series').val(nowSeriesName);
+		$('#add-param-star').val(nowStarName);
 		$('#addParamModal').modal('show');
 	});
 	$('#addParamModal').on('hide.bs.modal', function () {
@@ -399,8 +403,8 @@ $(function() {
 	    if (rows.length > 0) {
 	        if (rows.length == 1) {
 	      	//赋值
-	      	$('#edit-param-series').val(nowSeries);
-	      	$('#edit-param-star').val(nowStar);
+	      	$('#edit-param-series').val(nowSeriesName);
+	      	$('#edit-param-star').val(nowStarName);
 			$('#edit-param-id').val(rows[0].id);
 			$('#edit-param-fullName').val(rows[0].fullName);
 			//弹出编辑框
@@ -410,7 +414,7 @@ $(function() {
 	            for (var i = 0; i < rows.length; i++) {
 	                names.push(rows[i].fullName);
 	            }
-	            top.showMsg("提示", '只能选择一个角色进行编辑！您已经选择了【'+names.join(',')+'】'+rows.length+'个参数');
+	            top.showMsg("提示", '只能选择一个参数进行编辑！您已经选择了【'+names.join(',')+'】'+rows.length+'个参数');
 	        }
 	    }else {
 	        top.showMsg("提示", "请选择要编辑的记录！");
@@ -464,8 +468,8 @@ $(function() {
 					type : "warning",
 					showCancelButton : true,
 					confirmButtonColor : "#DD6B55",
-					confirmButtonText : "删除!",
-					cancelButtonText : "取消!",
+					confirmButtonText : "删除",
+					cancelButtonText : "取消",
 					closeOnConfirm : false,
 // 					closeOnCancel : false
 				},

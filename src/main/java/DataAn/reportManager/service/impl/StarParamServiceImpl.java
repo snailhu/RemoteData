@@ -87,8 +87,8 @@ public class StarParamServiceImpl implements IStarParamService {
 		starParam.setSeries(starParamDto.getSeries());
 		starParam.setStar(starParamDto.getStar());
 		starParam.setPartsType(starParamDto.getPartsType());
-		starParam.setParameterType(j9Series_Star_Service.getFlyWheelParameterType(starParamDto.getSeries(),starParamDto.getStar(),starParamDto.getParamCode()));
-		starParam.setProductName(j9Series_Star_Service.getFlyWheelName(starParamDto.getSeries(),starParamDto.getStar(),starParamDto.getParamCode()));
+		starParam.setParameterType(j9Series_Star_Service.getFlyWheelParameterType(starParamDto.getSeries(),starParamDto.getStar(),starParamDto.getParameterType(),starParamDto.getParamCode()));
+		starParam.setProductName(j9Series_Star_Service.getFlyWheelName(starParamDto.getSeries(),starParamDto.getStar(),starParamDto.getParameterType(),starParamDto.getParamCode()));
 		starParam.setParamCode(starParamDto.getParamCode());
 		starParam.setParamName(getParamCNname(starParamDto.getSeries(),starParamDto.getStar(),starParamDto.getParamCode()));
 		starParam.setEffeMin(starParamDto.getEffeMin());
@@ -135,8 +135,8 @@ public class StarParamServiceImpl implements IStarParamService {
 		if (StringUtils.isNotBlank(starParamDto.getParamCode())) {
 			starParam.setParamCode(starParamDto.getParamCode());
 			starParam.setParamName(getParamCNname(starParamDto.getSeries(),starParamDto.getStar(),starParamDto.getParamCode()));
-			starParam.setParameterType(j9Series_Star_Service.getFlyWheelParameterType(starParamDto.getSeries(),starParamDto.getStar(),starParamDto.getParamCode()));
-			starParam.setProductName(j9Series_Star_Service.getFlyWheelName(starParamDto.getSeries(),starParamDto.getStar(),starParamDto.getParamCode()));
+			starParam.setParameterType(j9Series_Star_Service.getFlyWheelParameterType(starParamDto.getSeries(),starParamDto.getStar(),starParamDto.getPartsType(),starParamDto.getParamCode()));
+			starParam.setProductName(j9Series_Star_Service.getFlyWheelName(starParamDto.getSeries(),starParamDto.getStar(),starParamDto.getPartsType(),starParamDto.getParamCode()));
 		}
 		starParam.setEffeMax(starParamDto.getEffeMax());
 		starParam.setEffeMin(starParamDto.getEffeMin());

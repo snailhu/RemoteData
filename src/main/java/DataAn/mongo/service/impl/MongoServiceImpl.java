@@ -93,14 +93,16 @@ public class MongoServiceImpl implements IMongoService{
 			String paramType, Date beginDate, Date endDate) {
 		String databaseName = InitMongo.getDataBaseNameBySeriesAndStar(series, star);
 		List<String> list = InitMongo.getGradingCollectionNames(J9Series_Star_ParameterType.FLYWHEEL.getValue());
-		Set<String> isexistCols = mg.getExistCollections(databaseName);
-		if(list != null && list.size() > 0 && isexistCols != null && isexistCols.size() > 0){
-			for (String collectionName : list) {
-				if(isexistCols.contains(collectionName)){
-					//设置同一时间段的数据的状态为0
-					mg.updateByDate(databaseName, collectionName, beginDate, endDate);								
-				}
-			}			
+		if(list != null && list.size() > 0){
+			Set<String> isexistCols = mg.getExistCollections(databaseName);
+			if(isexistCols != null && isexistCols.size() > 0){
+				for (String collectionName : list) {
+					if(isexistCols.contains(collectionName)){
+						//设置同一时间段的数据的状态为0
+						mg.updateByDate(databaseName, collectionName, beginDate, endDate);								
+					}
+				}			
+			}
 		}
 	}
 	

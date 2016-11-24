@@ -19,9 +19,19 @@ public class ErrorValueDTO implements java.io.Serializable {
 
 	private String parameterType; // 参数类型
 
+	private Integer timeZone; // 时间跨度（单位min）
+
 	private double maxVal; // 最大值
 
 	private double minVal; // 最小值
+
+	public Integer getTimeZone() {
+		return timeZone;
+	}
+
+	public void setTimeZone(Integer timeZone) {
+		this.timeZone = timeZone;
+	}
 
 	public Long getStar() {
 		return star;

@@ -19,6 +19,8 @@ import DataAn.common.dao.Pager;
 import DataAn.common.utils.DateUtil;
 import DataAn.galaxyManager.dao.ISeriesDao;
 import DataAn.galaxyManager.dao.IStarDao;
+import DataAn.galaxyManager.domain.Series;
+import DataAn.galaxyManager.domain.Star;
 import DataAn.mongo.client.MongodbUtil;
 import DataAn.mongo.init.InitMongo;
 import DataAn.prewarning.dao.IWarningLogMongoDao;
@@ -26,10 +28,14 @@ import DataAn.prewarning.dto.QueryLogDTO;
 
 @Repository
 public class WarningLogMongoDaoImpl implements IWarningLogMongoDao {
-	
+	@Resource
+	private ISeriesDao seriersDao;
+	@Resource
+	private IStarDao starDao;
+
 	@Override
 	public void deleteWainingById(String logId, String series, String star, String parameterType, String warningType) {
-		String databaseName = getDataBaseNameBySeriesAndStar(series, star);
+		String databaseName = InitMongo.getDataBaseNameBySeriesAndStar(series, star);
 		String collectionName = getCollectionName(parameterType, warningType);
 		MongodbUtil.getInstance().deleteMany(databaseName, collectionName, "_id", logId);
 	}
@@ -37,7 +43,7 @@ public class WarningLogMongoDaoImpl implements IWarningLogMongoDao {
 	@Override
 	public Long getNotReadCount(String series, String star, String parameterType, String parameter,
 			String warningType) {
-		List<String> databaseNames = MongodbUtil.getInstance().getDBsBySeriersAndStar(series, star);
+		List<String> databaseNames = getDBsBySeriersAndStar(series, star);
 		MongodbUtil mongodbUtil = MongodbUtil.getInstance();
 		Long sum = 0l;
 		if (StringUtils.isNotBlank(parameterType) && StringUtils.isNotBlank(warningType)) {
@@ -145,7 +151,7 @@ public class WarningLogMongoDaoImpl implements IWarningLogMongoDao {
 	@Override
 	public List<QueryLogDTO> getQueryLogDTOs() {
 		MongodbUtil mongodbUtil = MongodbUtil.getInstance();
-		List<String> databaseNames = mongodbUtil.getDBsBySeriersAndStar("", "");
+		List<String> databaseNames = getDBsBySeriersAndStar("", "");
 		List<QueryLogDTO> queryLogAllDTOs = new ArrayList<QueryLogDTO>();
 		for (String databaseName : databaseNames) {
 			queryLogAllDTOs.addAll(getWarningLogListByCollection(
@@ -162,7 +168,7 @@ public class WarningLogMongoDaoImpl implements IWarningLogMongoDao {
 
 	private void updateHadRead(QueryLogDTO queryLogDTO) {
 		MongodbUtil mongodbUtil = MongodbUtil.getInstance();
-		String databaseName = getDataBaseNameBySeriesAndStar(queryLogDTO.getSeries(), queryLogDTO.getStar().substring(1));
+		String databaseName = InitMongo.getDataBaseNameBySeriesAndStar(queryLogDTO.getSeries(), queryLogDTO.getStar());
 		String collectionName = getCollectionName(queryLogDTO.getParameterType(), queryLogDTO.getWarningType());
 		MongoCollection<Document> collection = mongodbUtil.getCollectionNotShard(databaseName, collectionName);
 		if (collection != null) {
@@ -178,7 +184,7 @@ public class WarningLogMongoDaoImpl implements IWarningLogMongoDao {
 		List<QueryLogDTO> queryLogAllDTOs = new ArrayList<QueryLogDTO>();
 		List<QueryLogDTO> queryLogResultDTOs = new ArrayList<QueryLogDTO>();
 		if ("0".equals(hadRead)) {
-			List<String> databaseNames = MongodbUtil.getInstance().getDBsBySeriersAndStar(series, star);
+			List<String> databaseNames = getDBsBySeriersAndStar(series, star);
 			for (String databaseName : databaseNames) {
 				queryLogAllDTOs.addAll(getWarningLogListByCollection(
 						mongodbUtil.getCollectionNotShard(databaseName, "flywheel_SpecialCase"), "0"));
@@ -206,7 +212,7 @@ public class WarningLogMongoDaoImpl implements IWarningLogMongoDao {
 					queryLogResultDTOs);
 			return pager;
 		} else {
-			String databaseName = getDataBaseNameBySeriesAndStar(series, star);
+			String databaseName = InitMongo.getDataBaseNameBySeriesAndStar(series, star);
 			String collectionName = getCollectionName(parameterType, warningType);
 			MongoCollection<Document> collection = mongodbUtil.getCollectionNotShard(databaseName, collectionName);
 			FindIterable<Document> document_It = null;
@@ -300,9 +306,29 @@ public class WarningLogMongoDaoImpl implements IWarningLogMongoDao {
 			}
 		}
 	}
-	
-	private String getDataBaseNameBySeriesAndStar(String series, String star){
-		return  "db_" + series + "_star" + star;
-	}
 
+	private List<String> getDBsBySeriersAndStar(String series, String star) {
+		List<String> dbName = new ArrayList<String>();
+		List<Series> seriesList = new ArrayList<Series>();
+		if (StringUtils.isBlank(series)) {
+			seriesList = seriersDao.findAll();
+		} else {
+			Series sDomain = seriersDao.selectByCode(series);
+			seriesList.add(sDomain);
+		}
+
+		for (Series s : seriesList) {
+			List<Star> starList = null;
+			if (StringUtils.isBlank(star)) {
+				starList = starDao.getStarListBySeriesId(s.getId());
+			} else {
+				starList = starDao.getStarBySeriesIdAndCode(s.getId(), star);
+			}
+			for (Star str : starList) {
+				String db = InitMongo.getDataBaseNameBySeriesAndStar(s.getCode(), str.getCode());
+				dbName.add(db);
+			}
+		}
+		return dbName;
+	}
 }

@@ -54,4 +54,13 @@ public class VirtualFileSystemDaoTest {
 			System.out.println(fs);
 		}
 	}
+	
+	@Test
+	public void test(){
+		String series = "j9";
+		String star = "03";
+		String parameterType = "flywheel";
+		VirtualFileSystem csvDir = fileDao.selectBySeriesAndStarAndParameterTypeAndParentIdAndFileName(series, star, parameterType, 0, "csv");
+		System.out.println(csvDir);
+	}
 }

@@ -270,6 +270,7 @@ public class FileController {
 			String strSize = df.format(size);
 			datFileDto.setFileSize(Float.parseFloat(strSize));
 			datFileDto.setIn(datFile.getInputStream());
+			datFileDto.setParameterType(paramType);
 			map.put("dat", datFileDto);	
 			//TODO 这里的operateJob为日志操作的具体内容格式应该为：上传文件+文件名
 			String operateJob;

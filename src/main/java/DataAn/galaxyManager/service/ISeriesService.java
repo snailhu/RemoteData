@@ -24,7 +24,9 @@ public interface ISeriesService {
 	
 	public List<SeriesDto> getAllSeries();
 	
-	public SeriesDto getSeriesDto(long seriesId);
+	public SeriesDto getSeriesDtoById(long seriesId);
+	
+	public SeriesDto getSeriesDtoByCode(String code);
 
 	public List<Combo> getSeriesComboData(String seriesCode);
 	

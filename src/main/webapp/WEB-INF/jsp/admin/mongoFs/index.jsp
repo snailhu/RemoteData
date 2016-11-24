@@ -169,7 +169,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 									<div class="form-group">
 										<label class="col-sm-3 control-label no-padding-right" for="search-paramType"> 设备 </label>
 										<div class="col-sm-9">
-											<input type="text" id="search-paramType" name="paramType" placeholder="设备" class="col-xs-10 col-sm-5" />
+											<input type="text" id="search-paramType" name="paramType" placeholder="设备" class="col-xs-10 col-sm-5" 
+											style="height: 28px;width: 231px"/>
 											<label class="mustchoose">*</label>
 										</div>
 									</div>
@@ -352,6 +353,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				    	//alert(node.value);
 				    }
 				});
+		    }
+		});
+		$("#search-star").combobox({
+		    url:'${pageContext.request.contextPath}/admin/star/getStarComboData',
+		    valueField:'value',
+		    textField:'text',
+		    onSelect: function(node){
+		    	//alert(node.value);
 		    }
 		});
 		$("#search-paramType").combobox({

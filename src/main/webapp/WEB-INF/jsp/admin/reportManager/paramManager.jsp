@@ -480,31 +480,30 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				                       </select>
 									</div>
 								</div>
-								
 								<div class="space-4"></div>
 								<div class="form-group">
-									<label class="col-lg-3 control-label no-padding-right" for="add-starParam-paramCode"> 参数： </label>
+									<label class="col-sm-3 control-label no-padding-right" for="add-starParam-paramCode"> 参数： </label>
 									<div class="col-sm-8">
 										<select name="paramCode"  id="add-starParam-paramCode" class="form-control  select2" style="width: 100%;">
 											<option selected="selected" value="">--请选择--</option>
 				                       </select>
 									</div>
 								</div>
-								
 								<div class="space-4"></div>
 								<div class="form-group">
-									<label class="col-lg-3 control-label no-padding-right" for="add-starParam-effeMin"> 最小有效值： </label>
+									<label class="col-sm-3 control-label no-padding-right" for="add-starParam-effeMin"> 最小有效值： </label>
 									<div class="col-sm-8">
 										<input type="text" name="effeMin" id="add-starParam-effeMin" placeholder="最小有效值" class="form-control" />
 									</div>
 								</div>
 								<div class="space-4"></div>
 								<div class="form-group">
-									<label class="col-lg-3 control-label no-padding-right" for="add-starParam-effeMax"> 最大有效值： </label>
+									<label class="col-sm-3 control-label no-padding-right" for="add-starParam-effeMax"> 最大有效值： </label>
 									<div class="col-sm-8">
 										<input type="text" name="effeMax" id="add-starParam-effeMax" placeholder="最大有效值" class="form-control" />
 									</div>
 								</div>
+								
 							</div>
 							<div class="modal-footer">
 								<div class="col-lg-7 col-lg-offset-3">
@@ -562,14 +561,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								
 								<div class="space-4"></div>
 								<div class="form-group">
-									<label class="col-lg-3 control-label no-padding-right" for="edit-starParam-effeMin"> 最小有效值： </label>
+									<label class="col-sm-3 control-label no-padding-right" for="edit-starParam-effeMin"> 最小有效值： </label>
 									<div class="col-sm-8">
 										<input type="text" name="effeMin" id="edit-starParam-effeMin" placeholder="最小有效值" class="form-control" />
 									</div>
 								</div>
 								<div class="space-4"></div>
 								<div class="form-group">
-									<label class="col-lg-3 control-label no-padding-right" for="edit-starParam-effeMax"> 最大有效值： </label>
+									<label class="col-sm-3 control-label no-padding-right" for="edit-starParam-effeMax"> 最大有效值： </label>
 									<div class="col-sm-8">
 										<input type="text" name="effeMax" id="edit-starParam-effeMax" placeholder="最大有效值" class="form-control" />
 									</div>
@@ -718,7 +717,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			});
 			$("#change-search-box").click();
 		
-		if(activeUser != ''){
+/* 		if(activeUser != ''){
 				var permissionItemsJSON = '${activeUser.permissionItemsJSON}';
 				var map = $.parseJSON(permissionItemsJSON); 
 				 $('#form-partsType').find("option").remove();
@@ -730,6 +729,16 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					$("#form-partsType").append(" <option value = 'top'>陀螺</option>"); 
 				}
 			}
+ */		
+		$.get('<%=request.getContextPath()%>/admin/device/getDeviceTypeList', {}, function (data) {
+	 	 	if(data) {
+	 	 		$('#form-partsType').find("option").remove();
+ 			    $('#form-partsType').append("<option value=''>--请选择--</option>"); 
+          	  	$.each(data ,function(){
+	          	  	$("#form-partsType").append("<option value = '"+ this.deviceCode+"'>"+ this.deviceName+"</option>"); 
+				});
+            }
+        });
 
             $.get('<%=request.getContextPath()%>/starParam/getSeriesList', {}, function (res) {
   			  if(res.result == "true") {
@@ -905,7 +914,17 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
             	  top.showMsg('提示', res.msg);
               }
           });
-          if(activeUser != ''){
+		  	 
+		  	$.get('<%=request.getContextPath()%>/admin/device/getDeviceTypeList', {}, function (data) {
+		 	 	if(data) {
+		 	 		$('#add-starParam-partsType').find("option").remove();
+	 			    $('#add-starParam-partsType').append("<option value=''>--请选择--</option>"); 
+	          	  	$.each(data ,function(){
+		          	  	$("#add-starParam-partsType").append("<option value = '"+ this.deviceCode+"'>"+ this.deviceName+"</option>"); 
+					});
+	            }
+	        });	 
+         /*  if(activeUser != ''){
 				var permissionItemsJSON = '${activeUser.permissionItemsJSON}';
 				var map = $.parseJSON(permissionItemsJSON); 
 			    $('#add-starParam-partsType').find("option").remove();
@@ -916,7 +935,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				if(map.top == 'top'){
 					$("#add-starParam-partsType").append(" <option value = 'top'>陀螺</option>"); 
 				}
-			}
+			} */
 			$('#addStarParamModal').modal('show');
 			
 		}
@@ -1115,7 +1134,17 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						    			$("#edit-starParam-paramCode").select2().val(sp.data.starParam.paramCode).trigger("change");
 					              }
 					          });
-							  if(activeUser != ''){
+							 
+							 $.get('<%=request.getContextPath()%>/admin/device/getDeviceTypeList', {}, function (data) {
+							 	 	if(data) {
+							 	 		$('#edit-starParam-partsType').find("option").remove();
+						 			    $('#edit-starParam-partsType').append("<option value=''>--请选择--</option>"); 
+						          	  	$.each(data ,function(){
+							          	  	$("#edit-starParam-partsType").append("<option value = '"+ this.deviceCode+"'>"+ this.deviceName+"</option>"); 
+										});
+						            }
+						        });	 
+							  /* if(activeUser != ''){
 									var permissionItemsJSON = '${activeUser.permissionItemsJSON}';
 									var map = $.parseJSON(permissionItemsJSON); 
 								    $('#edit-starParam-partsType').find("option").remove();
@@ -1127,7 +1156,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 										$("#edit-starParam-partsType").append(" <option value = 'top'>陀螺</option>"); 
 									}
 								 $('#edit-starParam-partsType').val(sp.data.starParam.partsType);
-								}
+								} */
 							 
 							 $('#edit-starParam-id').val(sp.data.starParam.id);
 							 $('#edit-starParam-effeMin').val(sp.data.starParam.effeMin);

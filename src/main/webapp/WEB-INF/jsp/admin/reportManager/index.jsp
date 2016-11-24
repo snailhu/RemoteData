@@ -413,7 +413,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		     });
 		  });
 
-			if(activeUser != ''){
+		/* 	if(activeUser != ''){
 					var permissionItemsJSON = '${activeUser.permissionItemsJSON}';
 					var map = $.parseJSON(permissionItemsJSON); 
 					 $('#form-partsType').find("option").remove();
@@ -424,8 +424,17 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					if(map.top == 'top'){
 						$("#form-partsType").append(" <option value = 'top'>陀螺</option>"); 
 					}
-				}
+				} */
 
+				$.get('<%=request.getContextPath()%>/admin/device/getDeviceTypeList', {}, function (data) {
+			 	 	if(data) {
+			 	 		$('#form-partsType').find("option").remove();
+		 			    $('#form-partsType').append("<option value=''>--请选择--</option>"); 
+		          	  	$.each(data ,function(){
+			          	  	$("#form-partsType").append("<option value = '"+ this.deviceCode+"'>"+ this.deviceName+"</option>"); 
+						});
+		            }
+		        });
 	            $.get('<%=request.getContextPath()%>/starParam/getSeriesList', {}, function (res) {
 	  			  if(res.result == "true") {
 	  			      $('#form-series').find("option").remove();
@@ -528,7 +537,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	    	  }else{
 	              $.messager.confirm('提示', '确定要下载多个文件或目录吗？', function (r) {
     	              if (r) {
-    	            	  top.showMsg("提示", "此功能暂时不支持！");
     	            	  for (var i = 0; i < rows.length; i++) {
     	                      ids.push(rows[i].id +"/"+rows[i].type);
     	                  }

@@ -283,18 +283,16 @@ $(function(){
 			maxDate:jeDate.now(0), //设定最大日期为当前日期
 		});
 
-		 if(activeUser != ''){
-				var permissionItemsJSON = '${activeUser.permissionItemsJSON}';
-				var map = $.parseJSON(permissionItemsJSON); 
-				$('#form-partsType').find("option").remove();
-  			    $('#form-partsType').append("<option value=''>--请选择--</option>"); 
-				if(map.flywheel == 'flywheel'){
-					$("#form-partsType").append(" <option value = 'flywheel'>飞轮</option>"); 
-				}
-				if(map.top == 'top'){
-					$("#form-partsType").append(" <option value = 'top'>陀螺</option>"); 
-				}
-			}
+	$.get('<%=request.getContextPath()%>/admin/device/getDeviceTypeList', {}, function (data) {
+	 	 	if(data) {
+	 	 		$('#form-partsType').find("option").remove();
+ 			    $('#form-partsType').append("<option value=''>--请选择--</option>"); 
+          	  	$.each(data ,function(){
+	          	  	$("#form-partsType").append("<option value = '"+ this.deviceCode+"'>"+ this.deviceName+"</option>"); 
+				});
+            }
+        });
+
 
       $.get('<%=request.getContextPath()%>/starParam/getSeriesList', {}, function (res) {
 		  if(res.result == "true") {

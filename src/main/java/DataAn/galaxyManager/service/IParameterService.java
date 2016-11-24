@@ -28,6 +28,8 @@ public interface IParameterService {
 
 	public String getParameter_allZh_by_en(String series, String star, String paramType, String param_en);
 	
+	public String getParameter_simpleZh_by_en(String series, String star, String paramType, String param_en);
+	
 	/** 通过参数的英文返回参数的类型
 	 * @param series 系列
 	 * @param star 星

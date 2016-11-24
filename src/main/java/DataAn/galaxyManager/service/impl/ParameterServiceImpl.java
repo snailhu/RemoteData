@@ -224,6 +224,14 @@ public class ParameterServiceImpl implements IParameterService{
 	}
 
 	@Override
+	public String getParameter_simpleZh_by_en(String series, String star, String paramType, String param_en) {
+		Parameter param = parameterDao.selectBySeriesAndStarAndCode(series,star, param_en);
+		if(param != null){
+			return param.getSimplyName();
+		}
+		return null;
+	}
+	@Override
 	public String getParameter_dataType_by_en(String series, String star,
 			String paramType, String param_en) {
 		String param_zh = this.getParameter_allZh_by_en(series, star, paramType, param_en);
@@ -258,5 +266,6 @@ public class ParameterServiceImpl implements IParameterService{
 		}
 		return null;
 	}
+
 
 }

@@ -39,8 +39,7 @@ public class SystemLogServiceImpl implements SystemLogService{
 
 	@Override
 	public List<SystemLog> getSystemLogs() {
-		// TODO Auto-generated method stub
-		return systemLogDao.findAll();
+		return systemLogDao.getallSystemLogs();
 	}
 
 

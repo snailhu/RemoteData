@@ -17,6 +17,7 @@ import DataAn.galaxyManager.domain.Series;
 import DataAn.galaxyManager.domain.Star;
 import DataAn.galaxyManager.option.J9Series_Star_ParameterType;
 import DataAn.galaxyManager.service.IJ9Series_Star_Service;
+import DataAn.galaxyManager.service.IParameterService;
 import DataAn.reportManager.dao.IStarParamDao;
 import DataAn.reportManager.domain.StarParam;
 import DataAn.reportManager.dto.StarParamDto;
@@ -36,6 +37,9 @@ public class StarParamServiceImpl implements IStarParamService {
 	
 	@Resource
 	private IJ9Series_Star_Service j9Series_Star_Service;
+	
+	@Resource
+	private IParameterService iParameterService;
 	
 	
 	@Override
@@ -90,7 +94,7 @@ public class StarParamServiceImpl implements IStarParamService {
 		starParam.setParameterType(j9Series_Star_Service.getFlyWheelParameterType(starParamDto.getSeries(),starParamDto.getStar(),starParamDto.getParamCode()));
 		starParam.setProductName(j9Series_Star_Service.getFlyWheelName(starParamDto.getSeries(),starParamDto.getStar(),starParamDto.getParamCode()));
 		starParam.setParamCode(starParamDto.getParamCode());
-		starParam.setParamName(getParamCNname(starParamDto.getSeries(),starParamDto.getStar(),starParamDto.getParamCode()));
+		starParam.setParamName(iParameterService.getParameter_simpleZh_by_en(starParamDto.getSeries(),starParamDto.getStar(),starParamDto.getPartsType(),starParamDto.getParamCode()));
 		starParam.setEffeMin(starParamDto.getEffeMin());
 		starParam.setEffeMax(starParamDto.getEffeMax());
 		starParam.setCreateDate(new Date());

@@ -73,6 +73,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <script type="text/javascript">
 	$(function() {
 		$(function(){
+			//修改页面缩放，界面显示不正常
+			$(".col-lg-3").addClass("col-sm-3");
+			$(".col-lg-7").css("text-align","center");
+			$(".col-lg-4").css("margin-left","25%");
+			$(".modal-dialog").css("margin","20px auto");
+
 			//左菜单栏
 			$("#usermanage-img").attr("src","${pageContext.request.contextPath}/static/new/img/images/a_74.png");
 			$("#sysmanage-img").attr("src","${pageContext.request.contextPath}/static/new/img/images/a_50.png");
@@ -281,24 +287,24 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								<form id="searchUserForm" action="" class="form-horizontal" role="form" >
 									<div class="space-1"></div>
 									<div class="form-group">
-										<label class="col-sm-3 control-label no-padding-right" for="search-userName"> 用户名 </label>
+										<label class="col-sm-3 control-label no-padding-right" for="search-userName"> 用户名：</label>
 										<div class="col-sm-9">
-											<input type="text" id="search-userName" name="userName" placeholder="用户名" class="col-xs-10 col-sm-5" />
+											<input type="text" id="search-userName" name="userName" placeholder="--请输入用户名--" class="col-xs-10 col-sm-5" />
 										</div>
 									</div>
 									<div class="space-4"></div>
 									<div class="form-group">
-										<label class="col-sm-3 control-label no-padding-right" for="search-createdatetimeStart"> 创建开始时间 </label>
+										<label class="col-sm-3 control-label no-padding-right" for="search-createdatetimeStart"> 创建开始时间：</label>
 										<div class="col-sm-9">
-											<input type="text" id="search-createdatetimeStart" name="createdatetimeStart" placeholder="创建开始时间" class="col-xs-10 col-sm-5" />
+											<input type="text" id="search-createdatetimeStart" name="createdatetimeStart" placeholder="--请选择创建开始时间--" class="col-xs-10 col-sm-5" />
 											<div id="getBeginTime"></div>
 										</div>
 									</div>
 									<div class="space-4"></div>
 									<div class="form-group">
-										<label class="col-sm-3 control-label no-padding-right" for="search-createdatetimeEnd"> 创建结束时间 </label>
+										<label class="col-sm-3 control-label no-padding-right" for="search-createdatetimeEnd"> 创建结束时间：</label>
 										<div class="col-sm-9">
-											<input type="text" id="search-createdatetimeEnd" name="createdatetimeEnd" placeholder="创建结束时间" class="col-xs-10 col-sm-5" />
+											<input type="text" id="search-createdatetimeEnd" name="createdatetimeEnd" placeholder="--请选择创建结束时间--" class="col-xs-10 col-sm-5" />
 											<div id="getEndTime"></div>
 										</div>
 									</div>
@@ -349,35 +355,35 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							</div>
 							<div class="modal-body">
 								<div class="form-group">
-									<label class="col-sm-3 control-label no-padding-right" for="add-user-name"> 用户名: </label>
+									<label class="col-sm-3 control-label no-padding-right" for="add-user-name"> 用户名：</label>
 									<div class="col-sm-8">
 										<input type="text" name="userName" id="add-user-name" placeholder="用户名" class="form-control" />
 									</div>
 								</div>
 								<div class="space-4"></div>
 								<div class="form-group">
-									<label class="col-sm-3 control-label no-padding-right" for="add-user-passWord"> 密码： </label>
+									<label class="col-sm-3 control-label no-padding-right" for="add-user-passWord"> 密码：</label>
 									<div class="col-sm-8">
 										<input type="password" name="passWord" id="add-user-passWord" placeholder="密码" class="form-control" />
 									</div>
 								</div>
 								<div class="space-4"></div>
 								<div class="form-group">
-									<label class="col-sm-3 control-label no-padding-right" for="add-user-confirmPassword"> 确认密码： </label>
+									<label class="col-sm-3 control-label no-padding-right" for="add-user-confirmPassword"> 确认密码：</label>
 									<div class="col-sm-8">
 										<input type="password" name="confirmPassword" id="add-user-confirmPassword" placeholder="确认密码" class="form-control" />
 									</div>
 								</div>
 								<div class="space-4"></div>
 								<div class="form-group">
-									<label class="col-sm-3 control-label no-padding-right" for="add-user-mobile"> 联系方式： </label>
+									<label class="col-sm-3 control-label no-padding-right" for="add-user-mobile"> 联系方式：</label>
 									<div class="col-sm-8">
 										<input type="text" name="mobile" id="add-user-mobile" placeholder="联系方式" class="form-control" />
 									</div>
 								</div>
 								<div class="space-4"></div>
 								<div class="form-group">
-									<label class="col-lg-3 control-label no-padding-right" for="add-user-email"> 邮箱： </label>
+									<label class="col-lg-3 control-label no-padding-right" for="add-user-email"> 邮箱：</label>
 									<div class="col-sm-8">
 										<input type="text" name="email" id="add-user-email" placeholder="邮箱" class="form-control" />
 									</div>
@@ -407,35 +413,35 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							<div class="modal-body">
 								<input type="hidden" name="id" id="edit-user-id"/>
 								<div class="form-group">
-									<label class="col-sm-3 control-label no-padding-right" for="edit-user-name"> 用户名: </label>
+									<label class="col-sm-3 control-label no-padding-right" for="edit-user-name"> 用户名：</label>
 									<div class="col-sm-8">
 										<input type="text" name="userName" id="edit-user-name" placeholder="用户名" class="form-control" />
 									</div>
 								</div>
 								<div class="space-4"></div>
 								<div class="form-group">
-									<label class="col-sm-3 control-label no-padding-right" for="edit-user-passWord"> 密码： </label>
+									<label class="col-sm-3 control-label no-padding-right" for="edit-user-passWord"> 密码：</label>
 									<div class="col-sm-8">
 										<input type="password" name="passWord" id="edit-user-passWord" placeholder="密码" class="form-control" />
 									</div>
 								</div>
 								<div class="space-4"></div>
 								<div class="form-group">
-									<label class="col-sm-3 control-label no-padding-right" for="edit-user-confirmPassword"> 确认密码： </label>
+									<label class="col-sm-3 control-label no-padding-right" for="edit-user-confirmPassword"> 确认密码：</label>
 									<div class="col-sm-8">
 										<input type="password" name="confirmPassword" id="edit-user-confirmPassword" placeholder="确认密码" class="form-control" />
 									</div>
 								</div>
 								<div class="space-4"></div>
 								<div class="form-group">
-									<label class="col-sm-3 control-label no-padding-right" for="edit-user-mobile"> 联系方式： </label>
+									<label class="col-sm-3 control-label no-padding-right" for="edit-user-mobile"> 联系方式：</label>
 									<div class="col-sm-8">
 										<input type="text" name="mobile" id="edit-user-mobile" placeholder="联系方式" class="form-control" />
 									</div>
 								</div>
 								<div class="space-4"></div>
 								<div class="form-group">
-									<label class="col-lg-3 control-label no-padding-right" for="edit-user-email"> 邮箱： </label>
+									<label class="col-lg-3 control-label no-padding-right" for="edit-user-email"> 邮箱：</label>
 									<div class="col-sm-8">
 										<input type="text" name="email" id="edit-user-email" placeholder="邮箱" class="form-control" />
 									</div>
@@ -457,7 +463,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			    <div class="modal-content">
 			      <div class="modal-header">
 			        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-			        <h4 class="modal-title" id="editUserRoleModalLabel">编辑角色：</h4>
+			        <h4 class="modal-title" id="editUserRoleModalLabel">编辑角色</h4>
 			      </div>
 			      <div class="modal-body">
 			      	<form id="editUserRoleForm" class="form-horizontal" role="form" style="margin: 0px;">
@@ -726,13 +732,13 @@ jeDate({
 					names.push(rows[i].userName);
 				}
 				swal({
-					title : "你是否确定删除?",
+					title : "你是否确定删除？",
 					text : names.join(','),
 					type : "warning",
 					showCancelButton : true,
 					confirmButtonColor : "#DD6B55",
-					confirmButtonText : "删除!",
-					cancelButtonText : "取消!",
+					confirmButtonText : "删除",
+					cancelButtonText : "取消",
 					closeOnConfirm : false,
 // 					closeOnCancel : false
 				},
@@ -750,7 +756,7 @@ jeDate({
 							dataType : "json",
 							success : function(data) {
 								if (data.success) {
-									swal("删除成功!","","success");
+									swal("删除成功","","success");
 									reloadDataGrid();
 								} else {
 									swal("删除失败", data.obj,"error");

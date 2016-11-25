@@ -144,6 +144,12 @@
 <script type="text/javascript">
 	var activeUser = '${activeUser}';
 	$(function() {
+		//修改页面缩放，界面显示不正常
+		$(".col-lg-3").addClass("col-sm-3");
+		$(".col-lg-7").css("text-align","center");
+		$(".col-lg-4").css("margin-left","33.3%");
+		$(".modal-dialog").css("margin","20px auto");
+
 		//左菜单栏
 		$("#warnparam-img").attr("src","${pageContext.request.contextPath}/static/new/img/images/a_62.png");
 		$("#warnmanage-img").attr("src","${pageContext.request.contextPath}/static/new/img/images/a_58.png");
@@ -415,7 +421,7 @@
 				<li><img
 					src="${pageContext.request.contextPath}/static/imgs/DataImport/home.png"
 					style="margin-bottom: 3px;"> <span>预警管理</span></li>
-				<li class="active">特殊工况参数配置</li>
+				<li class="active">特殊工况配置</li>
 			</ul>
 			<!--  .breadcrumb -->
 		</div>
@@ -446,7 +452,7 @@
 									<div class="space-1"></div>
 									<div class="form-group">
 										<label class="col-sm-4 control-label no-padding-right"
-											for="search-series"> 星系 </label>
+											for="search-series"> 星系：</label>
 										<div class="col-sm-8">
 											<select class="col-xs-10 col-sm-5" id="search-series"
 												name="series">
@@ -457,7 +463,7 @@
 									<div class="space-4"></div>
 									<div class="form-group">
 										<label class="col-sm-4 control-label no-padding-right"
-											for="search-star"> 星</label>
+											for="search-star"> 星号：</label>
 										<div class="col-sm-8">
 											<select class="col-xs-10 col-sm-5" id="search-star"
 												name="star">
@@ -468,7 +474,7 @@
 									<div class="space-4"></div>
 									<div class="form-group">
 										<label class="col-sm-4 control-label no-padding-right"
-											for="search-parameterType"> 设备 </label>
+											for="search-parameterType"> 设备：</label>
 										<div class="col-sm-8">
 											<select class="col-xs-10 col-sm-5" id="search-parameterType"
 												name="parameterType">
@@ -479,7 +485,7 @@
 									<div class="space-4"></div>
 									<div class="form-group">
 										<label class="col-sm-4 control-label no-padding-right"
-											for="search-parameter"> 参数 </label>
+											for="search-parameter"> 参数：</label>
 										<div class="col-sm-8">
 											<select class="col-xs-10 col-sm-5 select2"
 												style="width: 41.7%;" id="search-parameter" name="parameter">
@@ -530,7 +536,7 @@
 							<div class="modal-body">
 								<div class="form-group">
 									<label class="col-sm-3 control-label no-padding-right"
-										for="add-series"> 星系: </label>
+										for="add-series"> 星系：</label>
 									<div class="col-sm-8">
 										<select class="form-control" id="add-series" name="series">
 											<option value="">--请选择--</option>
@@ -540,7 +546,7 @@
 								<div class="space-4"></div>
 								<div class="form-group">
 									<label class="col-sm-3 control-label no-padding-right"
-										for="add-star"> 星: </label>
+										for="add-star"> 星号：</label>
 									<div class="col-sm-8">
 										<select class="form-control" id="add-star" name="star">
 											<option value="">--请选择--</option>
@@ -572,7 +578,7 @@
 								<div class="space-4"></div>
 								<div class="form-group">
 									<label class="col-lg-3 control-label no-padding-right"
-										for="add-timeZone"> 时间区间(min)： </label>
+										for="add-timeZone"> 时间区间(min)：</label>
 									<div class="col-sm-8">
 										<input type="text" name="timeZone" id="add-timeZone"
 											placeholder="时间区间" class="form-control" />
@@ -581,7 +587,7 @@
 								<div class="space-4"></div>
 								<div class="form-group">
 									<label class="col-lg-3 control-label no-padding-right"
-										for="add-limitTimes"> 限定次数： </label>
+										for="add-limitTimes"> 限定次数：</label>
 									<div class="col-sm-8">
 										<input type="text" name="limitTimes" id="add-limitTimes"
 											placeholder="限定次数" class="form-control" />
@@ -590,7 +596,7 @@
 								<div class="space-4"></div>
 								<div class="form-group">
 									<label class="col-lg-3 control-label no-padding-right"
-										for="add-maxVal"> 最大值： </label>
+										for="add-maxVal"> 最大值：</label>
 									<div class="col-sm-8">
 										<input type="text" name="maxVal" id="add-maxVal"
 											placeholder="最大值" class="form-control" />
@@ -636,7 +642,7 @@
 								<input type="hidden" name="valueId" id="edit-value-id" />
 								<div class="form-group">
 									<label class="col-sm-3 control-label no-padding-right"
-										for="edit-series"> 星系: </label>
+										for="edit-series"> 星系：</label>
 									<div class="col-sm-8">
 										<select class="form-control" id="edit-series" name="series">
 											<option value="">--请选择--</option>
@@ -646,7 +652,7 @@
 								<div class="space-4"></div>
 								<div class="form-group">
 									<label class="col-sm-3 control-label no-padding-right"
-										for="edit-star"> 星: </label>
+										for="edit-star"> 星号：</label>
 									<div class="col-sm-8">
 										<select class="form-control" id="edit-star" name="star">
 											<option value="">--请选择--</option>
@@ -656,7 +662,7 @@
 								<div class="space-4"></div>
 								<div class="form-group">
 									<label class="col-sm-3 control-label no-padding-right"
-										for="edit-parameterType"> 设备： </label>
+										for="edit-parameterType"> 设备：</label>
 									<div class="col-sm-8">
 										<select class="form-control" id="edit-parameterType"
 											name="parameterType">
@@ -667,7 +673,7 @@
 								<div class="space-4"></div>
 								<div class="form-group">
 									<label class="col-sm-3 control-label no-padding-right"
-										for="edit-parameter"> 参数： </label>
+										for="edit-parameter"> 参数：</label>
 									<div class="col-sm-8">
 										<select class="form-control select2" style="width: 100%;"
 											id="edit-parameter" name="parameter">
@@ -678,7 +684,7 @@
 								<div class="space-4"></div>
 								<div class="form-group">
 									<label class="col-lg-3 control-label no-padding-right"
-										for="edit-timeZone"> 时间区间(min)： </label>
+										for="edit-timeZone"> 时间区间(min)：</label>
 									<div class="col-sm-8">
 										<input type="text" name="timeZone" id="edit-timeZone"
 											placeholder="时间区间" class="form-control" />
@@ -687,7 +693,7 @@
 								<div class="space-4"></div>
 								<div class="form-group">
 									<label class="col-lg-3 control-label no-padding-right"
-										for="edit-limitTimes"> 限定次数： </label>
+										for="edit-limitTimes"> 限定次数：</label>
 									<div class="col-sm-8">
 										<input type="text" name="limitTimes" id="edit-limitTimes"
 											placeholder="限定次数" class="form-control" />
@@ -696,7 +702,7 @@
 								<div class="space-4"></div>
 								<div class="form-group">
 									<label class="col-lg-3 control-label no-padding-right"
-										for="edit-maxVal"> 最大值： </label>
+										for="edit-maxVal"> 最大值：</label>
 									<div class="col-sm-8">
 										<input type="text" name="maxVal" id="edit-maxVal"
 											placeholder="最大值" class="form-control" />
@@ -768,7 +774,7 @@
 									sortable:true
 								}, {
 									field : 'star',
-									title : '星',
+									title : '星号',
 									width : 100,
 									sortable:true
 								},{

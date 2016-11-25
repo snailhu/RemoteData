@@ -70,6 +70,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 </style>
 <script type="text/javascript">
 $(function() {
+	//修改页面缩放，界面显示不正常
+	$(".col-lg-7").css("text-align","center");
+	$(".modal-dialog").css("margin","20px auto");
+
 	//左菜单栏
 	$("#galaxymanage-img").attr("src","${pageContext.request.contextPath}/static/new/img/images/a_82.png");
 	$("#galaxymanage-text").css("color","#5d90d6");
@@ -224,14 +228,14 @@ $(function() {
 							<div class="modal-body">
 								<div class="space-8"></div>
 								<div class="form-group">
-									<label class="col-sm-3 control-label no-padding-right" for="add-param-series"> 系列： </label>
+									<label class="col-sm-3 control-label no-padding-right" for="add-param-series"> 系列：</label>
 									<div class="col-sm-8">
 										<input name="series" id="add-param-series" class="form-control" readonly="true"/>
 									</div>
 								</div>
 								<div class="space-4"></div>
 								<div class="form-group">
-									<label class="col-sm-3 control-label no-padding-right" for="add-param-series"> 星： </label>
+									<label class="col-sm-3 control-label no-padding-right" for="add-param-series"> 星号：</label>
 									<div class="col-sm-8">
 										<input name="star" id="add-param-star" class="form-control" readonly="true"/>
 									</div>
@@ -269,14 +273,14 @@ $(function() {
 								<input type="hidden" name="id" id="edit-param-id"/>
                                 <div class="space-8"></div>
                                 <div class="form-group">
-                                    <label class="col-sm-3 control-label no-padding-right" for="edit-param-series"> 系列： </label>
+                                    <label class="col-sm-3 control-label no-padding-right" for="edit-param-series"> 系列：</label>
                                     <div class="col-sm-8">
                                         <input name="series" id="edit-param-series" class="form-control" readonly="true"/>
                                     </div>
                                 </div>
                                 <div class="space-4"></div>
                                 <div class="form-group">
-                                    <label class="col-sm-3 control-label no-padding-right" for="edit-param-series"> 系列： </label>
+                                    <label class="col-sm-3 control-label no-padding-right" for="edit-param-series"> 系列：</label>
                                     <div class="col-sm-8">
                                         <input name="series" id="edit-param-star" class="form-control" readonly="true"/>
                                     </div>
@@ -463,7 +467,7 @@ $(function() {
 					ids.push(rows[i].id);
 				}
 				swal({
-					title : "你是否确定删除?",
+					title : "你是否确定删除？",
 					text : names.join(','),
 					type : "warning",
 					showCancelButton : true,
@@ -484,7 +488,7 @@ $(function() {
 							dataType : "json",
 							success : function(data) {
 								if (data.success) {
-									swal("删除成功!","","success");
+									swal("删除成功","","success");
 									reloadDataGrid();
 								} else {
 									swal("删除失败", data.obj,"error");

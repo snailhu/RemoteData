@@ -69,8 +69,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 </style>
 <script type="text/javascript">
 	$(function() {
+		//修改页面缩放，界面显示不正常
+		$(".col-lg-7").css("text-align","center");
+		$(".modal-dialog").css("margin","20px auto");
+		
 		//左菜单栏
-		$("#permissionmanage-img").attr("src","${pageContext.request.contextPath}/static/new/img/images/a_03.png");
+		$("#permissionmanage-img").attr("src","${pageContext.request.contextPath}/static/new/img/images/a_78.png");
 		$("#sysmanage-img").attr("src","${pageContext.request.contextPath}/static/new/img/images/a_50.png");
 		$("#permissionmanage-text").css("color","#5d90d6");
 		$("#sysmanage-text").css("color", "#5d90d6");

@@ -178,6 +178,15 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
 <script type="text/javascript">
 	$(function() {
+		//修改页面缩放，界面显示不正常
+		//$(".col-lg-3").addClass("col-sm-3");
+		$(".modal-dialog").css("margin","20px auto");
+		$(".col-lg-4").css("text-align","center");
+		$(".col-lg-7").css("text-align","center");
+		$(".col-sm-6").css("display","inline");
+		$(".col-sm-1").css("display","inline");		
+		$(".form-group").find("button");
+
 		//左菜单栏
 		$("#parammanage-img").attr("src","${pageContext.request.contextPath}/static/new/img/images/a_22.png");
 		$("#reportmanage-img").attr("src","${pageContext.request.contextPath}/static/new/img/images/a_05.png");
@@ -418,8 +427,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 									</div>
 									
 									<div class="space-4"></div>
-									<div class="form-group">
-									<div class="col-sm-6 control-label no-padding-right">
+									<div class="form-group" style="margin-left:7.8%;">
+										<div class="col-sm-6 control-label no-padding-right">
 											<button type="button" id="btn-search" class="subbutton_1">
 							                    <i></i>
 							                    <span>搜索</span>

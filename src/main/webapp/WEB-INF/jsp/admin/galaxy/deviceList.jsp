@@ -66,6 +66,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 </style>
   <script type="text/javascript">
   	$(function(){
+  		//修改页面缩放，界面显示不正常
+		$(".col-lg-7").css("text-align","center");
+		$(".modal-dialog").css("margin","20px auto");
+		
   		//左菜单栏
 		$("#galaxymanage-img").attr("src","${pageContext.request.contextPath}/static/new/img/images/a_82.png");
 		$("#galaxymanage-text").css("color","#5d90d6");
@@ -183,7 +187,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								
 								<div class="space-4"></div>
 								<div class="form-group">
-									<label class="col-sm-3 control-label no-padding-right" for="add-device-name"> 设备名称:</label>
+									<label class="col-sm-3 control-label no-padding-right" for="add-device-name"> 设备名称：</label>
 									<div class="col-sm-8">
 										<input type="text" name="deviceName" id="add-device-name" placeholder="设备名称" class="form-control" />
 									</div>
@@ -215,7 +219,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								<input type="hidden" name="deviceId" id="edit-device-deviceId"/>
 								<div class="space-4"></div>
 								<div class="form-group">
-									<label class="col-sm-3 control-label no-padding-right" for="edit-device-name"> 设备名称:</label>
+									<label class="col-sm-3 control-label no-padding-right" for="edit-device-name"> 设备名称：</label>
 									<div class="col-sm-8">
 										<input type="text" name="deviceName" id="edit-device-name" placeholder="设备名称" class="form-control" />
 									</div>
@@ -240,14 +244,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								<button type="button" class="close" data-dismiss="modal" aria-label="Close" id="close_stopDevice">
 									<span aria-hidden="true">&times;</span>
 								</button>
-								<h4 class="modal-title" id="stopDeviceModalLabel">编辑设备</h4>
+								<h4 class="modal-title" id="stopDeviceModalLabel">设置结束时间</h4>
 							</div>
 							<div class="modal-body">
 								<input type="hidden" name="datagridId" id="stop-device-datagridId"/>
 								<input type="hidden" name="deviceId" id="stop-device-deviceId"/>
 								<div class="space-4"></div>
 								<div class="form-group">
-									<label class="col-sm-3 control-label no-padding-right" for="stop-device-endDate"> 运行结束时间:</label>
+									<label class="col-sm-3 control-label no-padding-right" for="stop-device-endDate"> 运行结束时间：</label>
 									<div class="col-sm-8">
 										<input type="text" name="endDate" id="stop-device-endDate" placeholder="yyyy-MM-dd" class="form-control" />
 									</div>
@@ -587,7 +591,7 @@ $(function() {
 	
 	function deleteDevice(datagridId,deviceId){
 			swal({
-				title : "你是否确定删除?",
+				title : "你是否确定删除？",
 				text : "确认删除？",
 				type : "warning",
 				showCancelButton : true,
@@ -609,7 +613,7 @@ $(function() {
 						success : function(data) {
 							if (data.success) {
 								reloadDatagrid(datagridId);
-								swal("删除成功!","","success");
+								swal("删除成功","","success");
 							} else {
 // 								top.alertMsg('警告', data.msg);
 								swal("删除失败", data.obj,"error");

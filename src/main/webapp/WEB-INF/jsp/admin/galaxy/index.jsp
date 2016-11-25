@@ -64,6 +64,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 </style>
   <script type="text/javascript">
   	$(function(){
+  		//修改页面缩放，界面显示不正常
+		$(".col-lg-7").css("text-align","center");
+		$(".modal-dialog").css("margin","20px auto");
+
   		//左菜单栏
 		$("#galaxymanage-img").attr("src","${pageContext.request.contextPath}/static/new/img/images/a_82.png");
 		$("#galaxymanage-text").css("color","#5d90d6");
@@ -306,21 +310,21 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							<div class="modal-body">
 								<div class="space-4"></div>
 								<div class="form-group">
-									<label class="col-sm-3 control-label no-padding-right" for="add-series-name"> 系列名称:</label>
+									<label class="col-sm-3 control-label no-padding-right" for="add-series-name"> 系列名称：</label>
 									<div class="col-sm-8">
 										<input type="text" name="name" id="add-series-name" placeholder="系列名称" class="form-control" />
 									</div>
 								</div>
 								<div class="space-4"></div>
 								<div class="form-group">
-									<label class="col-sm-3 control-label no-padding-right" for="add-series-code"> 系列编码:</label>
+									<label class="col-sm-3 control-label no-padding-right" for="add-series-code"> 系列编码：</label>
 									<div class="col-sm-8">
 										<input type="text" name="code" id="add-series-code" placeholder="系列编码" class="form-control" />
 									</div>
 								</div>
 								<div class="space-8"></div>
 								<div class="form-group">
-									<label class="col-sm-3 control-label no-padding-right" for="add-series-description"> 系列描述： </label>
+									<label class="col-sm-3 control-label no-padding-right" for="add-series-description"> 系列描述：</label>
 									<div class="col-sm-8">
 										<textarea class="form-control" name="description" id="add-series-description" placeholder="系列描述"></textarea>
 									</div>
@@ -352,21 +356,21 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 									<input type="hidden" name="id" id="edit-series-id"/>
 									<div class="space-4"></div>
 									<div class="form-group">
-										<label class="col-sm-3 control-label no-padding-right" for="edit-series-name"> 系列名称:</label>
+										<label class="col-sm-3 control-label no-padding-right" for="edit-series-name"> 系列名称：</label>
 										<div class="col-sm-8">
 											<input type="text" name="name" id="edit-series-name" placeholder="系列名称" class="form-control" />
 										</div>
 									</div>
 									<div class="space-4"></div>
 									<div class="form-group">
-										<label class="col-sm-3 control-label no-padding-right" for="edit-series-code"> 系列码:</label>
+										<label class="col-sm-3 control-label no-padding-right" for="edit-series-code"> 系列编码：</label>
 										<div class="col-sm-8">
-											<input type="text" name="code" id="edit-series-code" placeholder="系列码" class="form-control" />
+											<input type="text" name="code" id="edit-series-code" placeholder="系列编码" class="form-control" />
 										</div>
 									</div>
 									<div class="space-8"></div>
 									<div class="form-group">
-										<label class="col-sm-3 control-label no-padding-right" for="edit-series-description"> 系列描述： </label>
+										<label class="col-sm-3 control-label no-padding-right" for="edit-series-description"> 系列描述：</label>
 										<div class="col-sm-8">
 											<textarea class="form-control" name="description" id="edit-series-description" placeholder="系列描述"></textarea>
 										</div>
@@ -399,21 +403,21 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								<input type="hidden" name="seriesId" id="add-star-seriesId"/>
 								<div class="space-4"></div>
 								<div class="form-group">
-									<label class="col-sm-3 control-label no-padding-right" for="add-star-name"> 星名称:</label>
+									<label class="col-sm-3 control-label no-padding-right" for="add-star-name"> 星名称：</label>
 									<div class="col-sm-8">
 										<input type="text" name="name" id="add-star-name" placeholder="星名称" class="form-control" />
 									</div>
 								</div>
 								<div class="space-8"></div>
 								<div class="form-group">
-									<label class="col-sm-3 control-label no-padding-right" for="add-star-code"> 星编码:</label>
+									<label class="col-sm-3 control-label no-padding-right" for="add-star-code"> 星编码：</label>
 									<div class="col-sm-8">
 										<input type="text" name="code" id="add-star-code" placeholder="星编码" class="form-control" />
 									</div>
 								</div>
 								<div class="space-8"></div>
 								<div class="form-group">
-									<label class="col-sm-3 control-label no-padding-right" for="add-star-beginDate"> 开始运行时间:</label>
+									<label class="col-sm-3 control-label no-padding-right" for="add-star-beginDate"> 开始运行时间：</label>
 									<div class="col-sm-8">
 										<input type="text" class="form-control input-mask-date" name="beginDate" id="add-star-beginDate"
 											placeholder="yyyy-MM-dd HH:mm:ss">
@@ -422,7 +426,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								</div>
 								<div class="space-8"></div>
 								<div class="form-group">
-									<label class="col-sm-3 control-label no-padding-right" for="add-star-description"> 星描述： </label>
+									<label class="col-sm-3 control-label no-padding-right" for="add-star-description"> 星描述：</label>
 									<div class="col-sm-8">
 										<textarea class="form-control" name="description" id="add-star-description" placeholder="星描述"></textarea>
 									</div>
@@ -455,21 +459,21 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								<input type="hidden" name="id" id="edit-star-id"/>
 								<div class="space-4"></div>
 								<div class="form-group">
-									<label class="col-sm-3 control-label no-padding-right" for="edit-star-name"> 星名称:</label>
+									<label class="col-sm-3 control-label no-padding-right" for="edit-star-name"> 星名称：</label>
 									<div class="col-sm-8">
 										<input type="text" name="name" id="edit-star-name" placeholder="星名称" class="form-control" />
 									</div>
 								</div>
 								<div class="space-8"></div>
                                 <div class="form-group">
-                                    <label class="col-sm-3 control-label no-padding-right" for="edit-star-code"> 星编码:</label>
+                                    <label class="col-sm-3 control-label no-padding-right" for="edit-star-code"> 星编码：</label>
                                     <div class="col-sm-8">
                                         <input type="text" name="code" id="edit-star-code" placeholder="星编码" class="form-control" />
                                     </div>
                                 </div>
 								<div class="space-8"></div>
 								<div class="form-group">
-									<label class="col-sm-3 control-label no-padding-right" for="edit-star-beginDate"> 开始运行时间:</label>
+									<label class="col-sm-3 control-label no-padding-right" for="edit-star-beginDate"> 开始运行时间：</label>
 									<div class="col-sm-8">
 										<input type="text" class="form-control input-mask-date" name="beginDate" id="edit-star-beginDate"
 											placeholder="yyyy-MM-dd HH:mm:ss">
@@ -477,7 +481,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								</div>
 								<div class="space-8"></div>
 								<div class="form-group">
-									<label class="col-sm-3 control-label no-padding-right" for="edit-star-description"> 星描述： </label>
+									<label class="col-sm-3 control-label no-padding-right" for="edit-star-description"> 星描述：</label>
 									<div class="col-sm-8">
 										<textarea class="form-control" name="description" id="edit-star-description" placeholder="星描述"></textarea>
 									</div>
@@ -777,13 +781,13 @@ $(function() {
 				names.push(rows[i].name);
 			}
 			swal({
-				title : "你是否确定删除?",
+				title : "你是否确定删除？",
 				text : names.join(','),
 				type : "warning",
 				showCancelButton : true,
 				confirmButtonColor : "#DD6B55",
-				confirmButtonText : "删除!",
-				cancelButtonText : "取消!",
+				confirmButtonText : "删除",
+				cancelButtonText : "取消",
 				closeOnConfirm : false,
 // 				closeOnCancel : false
 			},
@@ -804,7 +808,7 @@ $(function() {
 								galaxyGrid.datagrid("unselectAll");
 								galaxyGrid.datagrid('reload');
 // 								top.showMsg('提示', data.msg);
-								swal("删除成功!","","success");
+								swal("删除成功","","success");
 							} else {
 // 								top.alertMsg('警告', data.msg);
 								swal("删除失败", data.obj,"error");
@@ -970,13 +974,13 @@ $(function() {
 // 		console.log('starId:'+starId);
 // 		console.log('starName:'+starName);
 		swal({
-			title : "你是否确定删除?",
+			title : "你是否确定删除？",
 			text : starName,
 			type : "warning",
 			showCancelButton : true,
 			confirmButtonColor : "#DD6B55",
-			confirmButtonText : "删除!",
-			cancelButtonText : "取消!",
+			confirmButtonText : "删除",
+			cancelButtonText : "取消",
 			closeOnConfirm : false,
 // 			closeOnCancel : false
 		},
@@ -992,7 +996,7 @@ $(function() {
 					success : function(data) {
 						if (data.success) {
 //								top.showMsg('提示', data.msg);
-							swal("删除成功!","","success");
+							swal("删除成功","","success");
 							galaxyGrid.datagrid("unselectAll");
 							galaxyGrid.datagrid('reload');
 						} else {

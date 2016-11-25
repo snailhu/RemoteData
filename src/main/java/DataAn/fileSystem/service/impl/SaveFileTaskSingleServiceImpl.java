@@ -24,7 +24,7 @@ public class SaveFileTaskSingleServiceImpl implements ISaveFileTaskSingleService
 		return bean;
 	}
 	
-	private boolean flag;
+	private static volatile boolean flag;
 
 	@Override
 	public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {

@@ -31,8 +31,8 @@ public class SaveFileTaskSingleServiceImpl implements ISaveFileTaskSingleService
 		if(!flag){
 			//开另外一个线程处理存入kafka的数据
 			new Thread(new SaveFileToKafka(paramService, mongoService)).start();
-			//初始化数据
-			initDataService.initDataBase();
+			//初始化数据 //TODO ?
+			//initDataService.initDataBase();
 			flag=true;
 		}
 		return bean;

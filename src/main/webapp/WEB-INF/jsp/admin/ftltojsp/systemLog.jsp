@@ -222,7 +222,13 @@
 			minDate:$('#form-beginTime').val(),//最小日期
 			maxDate:jeDate.now(0), //设定最大日期为当前日期
 		});
-		
+		$("#form-beginTime").keypress(function(){
+		 return false;
+		});
+		$("#form-endTime").keypress(function(){
+		  return false;
+
+		});
 		//修改搜索框图标
 		var  flag=false;
 		$("#change-search-box").click(function(){		

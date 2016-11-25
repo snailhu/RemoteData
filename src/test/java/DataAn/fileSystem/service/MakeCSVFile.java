@@ -81,9 +81,9 @@ public class MakeCSVFile {
 	
 	@Test
 	public void testMakeDataCSV() throws Exception{
-		for (int year = 2000; year <= 2001; year++) {
-			for (int month = 1; month <= 2; month++) {
-				for (int day = 1; day < 2; day++) {
+		for (int year = 2000; year <= 2000; year++) {
+			for (int month = 5; month <= 5; month++) {
+				for (int day = 1; day < 10; day++) {
 					this.writeCSV(year, month, day);							
 				}
 			}
@@ -134,9 +134,11 @@ public class MakeCSVFile {
 		int specialTime = 5 * 1000; //特殊工况时间范围 5秒
 		int count = 1;
 		while(tempDate.before(date2)){
-			if(count == 100)
+			
+			if(count == 2000)
 				break;
 			count++;
+			
 			tempDate = new Date(time);
 			csvOutput.write(DateUtil.format(tempDate, format));
 			if((time - beginTime) % beginExceptionTime <= exceptionTime){ //开始出现异常点

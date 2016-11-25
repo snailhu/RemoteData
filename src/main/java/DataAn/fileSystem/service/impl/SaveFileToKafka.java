@@ -121,12 +121,13 @@ public class SaveFileToKafka implements Runnable {
 					DefaultFetchObj defaultFetchObj = null;
 					String[] propertyVals = null;
 					
-					//
+					//获取配置参数
 					InnerProducer innerProducer=new InnerProducer(conf);
 					BoundProducer boundProducer=new BoundProducer(innerProducer);
 					String topic=communication.getTopicPartition();
-					boundProducer.send(new Beginning(),topic);
 					
+					Log4jUtil.getInstance().getLogger(SaveFileToKafka.class).info(nodeWorker.getId()+ " begin send data kafka..");
+					boundProducer.send(new Beginning(),topic);
 					while ((line = reader.readLine()) != null) {
 						//CSV格式文件为逗号分隔符文件，这里根据逗号切分
 						String[] items = line.split(",");
@@ -158,12 +159,13 @@ public class SaveFileToKafka implements Runnable {
 						boundProducer.send(defaultFetchObj,topic);
 					}
 					boundProducer.send(new Ending(),topic);
-					
+					Log4jUtil.getInstance().getLogger(SaveFileToKafka.class).info(nodeWorker.getId()+ " end send data kafka..");
 					// mongo...
+					Log4jUtil.getInstance().getLogger(SaveFileToKafka.class).info(nodeWorker.getId()+ " to update mongodb data..");
 					mongoService.updateCSVDataByDate(series, star, name, dateTime1, dateTime);
 					Log4jUtil.getInstance().getLogger(SaveFileToKafka.class).info(nodeWorker.getId()+ " finish push data to kafka!!!!!!!!");
 				} catch (Exception e) {
-					Log4jUtil.getInstance().getLogger(SaveFileToKafka.class).info(nodeWorker.getId()+ " Exception!!!!!!");
+					Log4jUtil.getInstance().getLogger(SaveFileToKafka.class).error(nodeWorker.getId()+ " Exception!!!!!!");
 					FlowUtils.setError(executor, communication, e.getMessage());
 					e.printStackTrace();
 					throw e;
@@ -187,8 +189,9 @@ public class SaveFileToKafka implements Runnable {
 				e.printStackTrace();
 			}finally {
 				try {
+					Log4jUtil.getInstance().getLogger(SaveFileToKafka.class).info(nodeWorker.getId()+ " begin release lock");
 					nodeWorker.release();
-					Log4jUtil.getInstance().getLogger(SaveFileToKafka.class).info(nodeWorker.getId()+ " release lock");
+					Log4jUtil.getInstance().getLogger(SaveFileToKafka.class).info(nodeWorker.getId()+ " end release lock");
 				} catch (Exception e) {
 					e.printStackTrace();
 				}

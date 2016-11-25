@@ -37,8 +37,8 @@ public class J9Series_Star_ServiceTest {
 	@Test
 	public void getFlyWheelName() throws Exception{
 		String param_en = "sequence_00814";
-		System.out.println(service.getFlyWheelName(param_en));
-		System.out.println(service.getFlyWheelParameterType(param_en));
+		System.out.println(service.getFlyWheelName(param_en, param_en, param_en, param_en));
+		System.out.println(service.getFlyWheelParameterType(param_en, param_en, param_en, param_en));
 	}
 	@Test
 	public void getAllParameterList() throws Exception{
@@ -66,7 +66,7 @@ public class J9Series_Star_ServiceTest {
 //		service.getFlyWheelParameterList();
 //		EhCache ehCache = new EhCache("j9seriesConfig");
 //		List<ConstraintDto> list = (List<ConstraintDto>) ehCache.getCacheElement("flyWheelParameterList");
-		List<ConstraintDto> list = service.getFlyWheelParameterList();
+		List<ConstraintDto> list = service.getFlyWheelParameterList(null,null);
 		for (ConstraintDto constraintDto : list) {
 			System.out.println(constraintDto);
 		}

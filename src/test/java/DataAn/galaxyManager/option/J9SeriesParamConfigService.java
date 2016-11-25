@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class J9SeriesParamConfig {
+public class J9SeriesParamConfigService {
 
 	public static Map<String,String> getJ9Series_FlywheelParamConfigMap() throws Exception{
 		Map<String,String> map = new HashMap<String,String>();

@@ -72,6 +72,7 @@ public class CommunicateController extends BaseController {
 				jsonObject.put("star", value.getStar());
 				jsonObject.put("parameter", value.getParameter());
 				jsonObject.put("parameterType", value.getParameterType());
+				jsonObject.put("timeZone", value.getTimeZone());
 				jsonObject.put("maxVal", value.getMaxVal());
 				jsonObject.put("minVal", value.getMinVal());
 				jsonArray.add(jsonObject);
@@ -137,6 +138,7 @@ public class CommunicateController extends BaseController {
 			for (WarningValue value : warningValues) {
 				JSONObject jO = new JSONObject();
 				jO.put("paramName", value.getParameter());
+				jO.put("delayTime", value.getTimeZone());
 				jO.put("exceptionMax", value.getMaxVal());
 				jO.put("exceptionMin", value.getMinVal());
 				jsonArray.add(jO);

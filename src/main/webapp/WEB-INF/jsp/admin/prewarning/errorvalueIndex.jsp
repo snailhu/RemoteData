@@ -232,6 +232,22 @@
 						}
 					}
 				},
+				timeZone : {
+					validators : {
+						notEmpty : {
+							message : '时间区间不能为空'
+						},
+						stringLength : {
+							min : 1,
+							max : 8,
+							message : '时间区间不能超过8位'
+						},
+						regexp : {
+							regexp : /^[0-9]*[1-9][0-9]*$/,
+							message : '时间区间必须为正整数'
+						}
+					}
+				},
 				maxVal : {
 					validators : {
 						notEmpty : {
@@ -299,6 +315,22 @@
 					validators : {
 						notEmpty : {
 							message : '参数不能为空'
+						}
+					}
+				},
+				timeZone : {
+					validators : {
+						notEmpty : {
+							message : '时间区间不能为空'
+						},
+						stringLength : {
+							min : 1,
+							max : 8,
+							message : '时间区间不能超过8位'
+						},
+						regexp : {
+							regexp : /^[0-9]*[1-9][0-9]*$/,
+							message : '时间区间必须为正整数'
 						}
 					}
 				},
@@ -528,7 +560,20 @@
 								<div class="space-4"></div>
 								<div class="form-group">
 									<label class="col-lg-3 control-label no-padding-right"
+<<<<<<< HEAD
 										for="add-maxVal"> 最大值：</label>
+=======
+										for="add-timeZone"> 时间区间(min)： </label>
+									<div class="col-sm-8">
+										<input type="text" name="timeZone" id="add-timeZone"
+											placeholder="时间区间" class="form-control" />
+									</div>
+								</div>
+								<div class="space-4"></div>
+								<div class="form-group">
+									<label class="col-lg-3 control-label no-padding-right"
+										for="add-maxVal"> 最大值： </label>
+>>>>>>> branch 'master' of https://github.com/snailhu/RemoteData.git
 									<div class="col-sm-8">
 										<input type="text" name="maxVal" id="add-maxVal"
 											placeholder="最大值" class="form-control" />
@@ -611,6 +656,15 @@
 											id="edit-parameter" name="parameter">
 											<option value="">--请选择--</option>
 										</select>
+									</div>
+								</div>
+								<div class="space-4"></div>
+								<div class="form-group">
+									<label class="col-lg-3 control-label no-padding-right"
+										for="edit-timeZone"> 时间区间(min)： </label>
+									<div class="col-sm-8">
+										<input type="text" name="timeZone" id="edit-timeZone"
+											placeholder="时间区间" class="form-control" />
 									</div>
 								</div>
 								<div class="space-4"></div>
@@ -700,6 +754,11 @@
 									field : 'parameter',
 									title : '参数',
 									width : 200,
+									sortable:true
+								}, {
+									field : 'timeZone',
+									title : '时间区间(min)',
+									width : 100,
 									sortable:true
 								}, {
 									field : 'maxVal',
@@ -1260,6 +1319,7 @@
 										$('#edit-series').val(data.series);
 										$('#edit-parameterType').val(
 												data.parameterType);
+										$('#edit-timeZone').val(data.timeZone);
 										$('#edit-maxVal').val(data.maxVal);
 										$('#edit-minVal').val(data.minVal);
 

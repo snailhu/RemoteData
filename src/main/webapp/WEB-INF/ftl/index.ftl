@@ -103,40 +103,6 @@
         </div>
     </div>
 
-    <div class="div3">
-        <div class="container">
-            <div class="block">
-                <dvi class="title">苏州同元合作站点</dvi>
-                <div class="line">
-                    <dvi class="dot"></dvi>
-                </div>
-                <dvi class="content">同元首页</dvi>
-            </div>
-
-            <div class="block">
-                <dvi class="title">同元F计划</dvi>
-                <div class="line">
-                    <dvi class="dot"></dvi>
-                </div>
-                <dvi class="content">移动生活圈构想</dvi>
-            </div>
-
-            <div class="block">
-                <dvi class="title">联系我们</dvi>
-                <div class="line"></div>
-                <dvi class="content">填写联系地址或其他</dvi>
-            </div>
-
-            <div class="block">
-                <div class="qr_img">
-                    <img src="${base}/static/imgs/home/QrCode.png">
-                </div>
-                <dvi class="info">
-                    微信公众号
-                </dvi>
-            </div>
-        </div>
-    </div>
 
     <div class="tail">
         <div class="container">

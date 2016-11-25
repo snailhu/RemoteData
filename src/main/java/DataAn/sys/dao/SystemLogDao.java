@@ -9,6 +9,7 @@ import DataAn.sys.dto.SystemLogDto;
 
 public interface SystemLogDao extends IBaseDao<SystemLog> {
 	
+	public List<SystemLog> getallSystemLogs();
 	
 	public List<SystemLog> getSystemLogsByTime(Date startDate, Date endDate); 
 	

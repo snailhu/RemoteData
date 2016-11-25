@@ -214,7 +214,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								</button>
 								<h4 class="modal-title" id="editDeviceModalLabel">编辑设备</h4>
 							</div>
-							<div class="modal-body">
+							<div class="modal-body" id="editDeviceModalBody">
 								<input type="hidden" name="datagridId" id="edit-device-datagridId"/>
 								<input type="hidden" name="deviceId" id="edit-device-deviceId"/>
 								<div class="space-4"></div>
@@ -224,10 +224,17 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 										<input type="text" name="deviceName" id="edit-device-name" placeholder="设备名称" class="form-control" />
 									</div>
 								</div>
+								<div class="space-4" id="editenddatehead"></div>
+								<div class="form-group" id="editenddatebody">
+									<label class="col-sm-3 control-label no-padding-right" for="edit-device-endDate"> 运行结束时间:</label>
+									<div class="col-sm-8">
+										<input type="text" name="endDate" id="edit-device-endDate" placeholder="yyyy-MM-dd" class="form-control" />
+									</div>
+								</div>
 							</div>
 							<div class="modal-footer">
 								<div class="col-lg-7 col-lg-offset-3">
-									<button type="submit" class="subbutton_1" id="submit_editDevice">确定</button>
+									<button type="button" class="subbutton_1" id="submit_editDevice">确定</button>
 									<button type="button" class="cancelbutton_1" data-dismiss="modal" id="reset_editDevice">关闭</button>
 								</div>
 							</div>
@@ -244,7 +251,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								<button type="button" class="close" data-dismiss="modal" aria-label="Close" id="close_stopDevice">
 									<span aria-hidden="true">&times;</span>
 								</button>
+<<<<<<< HEAD
 								<h4 class="modal-title" id="stopDeviceModalLabel">设置结束时间</h4>
+=======
+								<h4 class="modal-title" id="stopDeviceModalLabel">停止设备</h4>
+>>>>>>> branch 'master' of https://github.com/snailhu/RemoteData.git
 							</div>
 							<div class="modal-body">
 								<input type="hidden" name="datagridId" id="stop-device-datagridId"/>
@@ -259,7 +270,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							</div>
 							<div class="modal-footer">
 								<div class="col-lg-7 col-lg-offset-3">
-									<button type="submit" class="subbutton_1" id="submit_stopDevice">确定</button>
+									<button type="button" class="subbutton_1" id="submit_stopDevice">确定</button>
 									<button type="button" class="cancelbutton_1" data-dismiss="modal" id="reset_stopDevice">关闭</button>
 								</div>
 							</div>
@@ -279,6 +290,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <script type="text/javascript">
 jeDate({
 	dateCell:"#stop-device-endDate",//直接显示日期层的容器，可以是ID  CLASS
+	format:"YYYY-MM-DD",//日期格式
+	isinitVal:false, //是否初始化时间
+	festival:false, //是否显示节日
+	maxDate:jeDate.now(0), //设定最大日期为当前日期
+	zIndex:2000, 
+});
+jeDate({
+	dateCell:"#edit-device-endDate",//直接显示日期层的容器，可以是ID  CLASS
 	format:"YYYY-MM-DD",//日期格式
 	isinitVal:false, //是否初始化时间
 	festival:false, //是否显示节日
@@ -307,7 +326,7 @@ $(function() {
         columns: [[{
             title: 'ID',
             field: 'deviceTypeId',
-            width: 100,
+            hidden : true,
         },{
             field: 'deviceName',
             title: '设备类型名称',
@@ -349,7 +368,7 @@ $(function() {
 								{
 								    title: 'ID',
 								    field: 'deviceId',
-								    width: 50,
+								    hidden : true,
 								},
 								{
 									field : 'deviceName',
@@ -422,11 +441,18 @@ $(function() {
 	});
 	
 	function reloadDatagrid(datagridId) {
-		$('#' + datagridId).datagrid("unselectAll");
-		$('#' + datagridId).datagrid('reload');
-		
+// 		$('#' + datagridId).datagrid("unselectAll");
+// 		$('#' + datagridId).datagrid('reload');
 		var arr = datagridId.split('-');
-		deviceTypeGrid.datagrid('fixDetailRowHeight', arr[1]);
+// 		deviceTypeGrid.datagrid('fixDetailRowHeight', arr[1]);
+// 		alert($('#' + datagridId).parent());
+		
+// 		deviceTypeGrid.datagrid('refreshRow',arr[1]);
+		deviceTypeGrid.datagrid('reload');
+		setTimeout(function () {
+			$('#datagrid-row-r1-1-'+arr[1]).find(".datagrid-row-expand").click();
+			console.log($('#datagrid-row-r1-1-'+arr[1]).find(".datagrid-row-expand"));
+	    }, 500);
 	}
 	
 	function createDevice(datagridId, deviceType){
@@ -486,6 +512,14 @@ $(function() {
 					$('#edit-device-datagridId').val(datagridId);
 					$('#edit-device-deviceId').val(data.deviceId);
 					$('#edit-device-name').val(data.deviceName);
+					$('#edit-device-endDate').val(data.endDate);
+					if(data.endDate){
+						$('#editenddatehead').show();
+						$('#editenddatebody').show();
+					}else{
+						$('#editenddatehead').hide();
+						$('#editenddatebody').hide();
+					}
 					
 					//弹出编辑框
 					$('#editDeviceModal').modal('show');

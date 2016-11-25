@@ -185,7 +185,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		$(".col-lg-7").css("text-align","center");
 		$(".col-sm-6").css("display","inline");
 		$(".col-sm-1").css("display","inline");		
-		$(".form-group").find("button");
+		$(".form-group").find("button").css("width","80px");
 
 		//左菜单栏
 		$("#parammanage-img").attr("src","${pageContext.request.contextPath}/static/new/img/images/a_22.png");

@@ -45,18 +45,31 @@ public class MongoServiceImpl implements IMongoService{
 			String date, Map<String, List<Document>> map, String versions)
 			throws Exception {
 		String databaseName = InitMongo.getDataBaseNameBySeriesAndStar(series, star);
+		
+		Set<String> isexistCols = mg.getExistCollections(databaseName);
+		
 		Set<String> keys = map.keySet();
 		for (String key : keys) {
 			//集合名称： 参数名+等级
-			String collectionName = paramType + key;
+			String collectionName = "";
+			if (key.equals("0s"))
+				collectionName = paramType;
+			else
+				collectionName = paramType + key;
+			
 			List<Document> documents = map.get(key);
 			if(documents != null && documents.size() > 0){
 				long begin = System.currentTimeMillis();
 				
-				//设置同一时间段的数据的状态为0
-				Date beginDate = documents.get(0).getDate("datetime");
-				Date endDate = documents.get(documents.size() - 1).getDate("datetime");
-				mg.updateByDate(databaseName, collectionName, beginDate, endDate);
+				if(isexistCols != null && isexistCols.size() > 0){
+					if(isexistCols.contains(collectionName)){
+						//设置同一时间段的数据的状态为0
+						Date beginDate = documents.get(0).getDate("datetime");
+						Date endDate = documents.get(documents.size() - 1).getDate("datetime");
+						mg.updateByDate(databaseName, collectionName, beginDate, endDate);
+					}
+				}
+				
 				//保存数据到mongodb中
 				mg.insertMany(databaseName, collectionName, documents);
 				

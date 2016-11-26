@@ -31,7 +31,7 @@ public class MongoServiceTest {
 	
 	@Resource
 	private ICSVService csvService;
-	private String filePath = "c:\\j9-02--2016-02-01.csv";
+	private String filePath = "E:\\data\\flywheel\\2000\\01\\j9-02--2000-01-01.csv";
 	
 	@Test
 	public void saveCSVData() throws Exception{

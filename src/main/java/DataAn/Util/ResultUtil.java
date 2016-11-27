@@ -34,7 +34,8 @@ public class ResultUtil {
     	return new ResultInfo(ResultInfo.TYPE_RESULT_FAIL,messageCode,message);
     }
     /**
-     * 创建敬告提示结果
+     * 创建敬告提示结果 
+     * 
      */
     public static ResultInfo createWarning(String fileName,int messageCode,Object[] objs){
     	String message=null;

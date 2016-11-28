@@ -60,6 +60,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 </style>
   <script type="text/javascript">
   $(function(){
+		//修改页面缩放，界面显示不正常
+		$(".col-lg-4").css("margin-left","28.5%");
+		$(".form-group").find("button").css("width","80px");		
+
 		//左菜单栏
 		$("#fileview-img").attr("src","${pageContext.request.contextPath}/static/new/img/images/a_46.png");
 		$("#filemanage-img").attr("src","${pageContext.request.contextPath}/static/new/img/images/a_26.png");
@@ -155,7 +159,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								<form id="fileupload" action="" class="form-horizontal" role="form" >
 									<div class="space-1"></div>
 									<div class="form-group">
-										<label class="col-sm-3 control-label no-padding-right" for="search-series"> 系列 </label>
+										<label class="col-sm-3 control-label no-padding-right" for="search-series"> 系列：</label>
 										<div class="col-sm-9">
 											<input type="text" id="search-series" name="series" placeholder="系列" class="col-xs-10 col-sm-5" 
 											style="height: 28px;width: 231px"/>
@@ -164,7 +168,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 									</div>
 									<div class="space-4"></div>
 									<div class="form-group">
-										<label class="col-sm-3 control-label no-padding-right" for="search-star"> 星 </label>
+										<label class="col-sm-3 control-label no-padding-right" for="search-star"> 星号：</label>
 										<div class="col-sm-9">
 											<input type="text" id="search-star" name="star" placeholder="星" class="col-xs-10 col-sm-5" 
 											style="height: 28px;width: 231px"/>
@@ -173,7 +177,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 									</div>
 									<div class="space-4"></div>
 									<div class="form-group">
-										<label class="col-sm-3 control-label no-padding-right" for="search-paramType"> 设备 </label>
+										<label class="col-sm-3 control-label no-padding-right" for="search-paramType"> 设备：</label>
 										<div class="col-sm-9">
 											<input type="text" id="search-paramType" name="paramType" placeholder="设备" class="col-xs-10 col-sm-5" 
 											style="height: 28px;width: 231px"/>
@@ -182,23 +186,25 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 									</div>
 									<div class="space-4"></div>
 									<div class="form-group">
-										<label class="col-sm-3 control-label no-padding-right" for="search-beginTime"> 开始时间 </label>
+										<label class="col-sm-3 control-label no-padding-right" for="search-beginTime"> 开始时间：</label>
 										<div class="col-sm-9">
-											<input type="text" id="search-beginTime" name="beginTime" placeholder="开始时间" class="col-xs-10 col-sm-5"/>
+										
+											<input type="text" id="search-beginTime" name="beginTime" placeholder="--请选择开始时间--" class="col-xs-10 col-sm-5" />
+
 											<div id="getBeginTime"></div>
 										</div>
 									</div>
 									<div class="space-4"></div>
 									<div class="form-group">
-										<label class="col-sm-3 control-label no-padding-right" for="search-endTime"> 结束时间 </label>
+										<label class="col-sm-3 control-label no-padding-right" for="search-endTime"> 结束时间：</label>
 										<div class="col-sm-9">
-											<input type="text" id="search-endTime" name="endTime" placeholder="结束时间" class="col-xs-10 col-sm-5" />
+											<input type="text" id="search-endTime" name="endTime" placeholder="--请选择结束时间--" class="col-xs-10 col-sm-5" />
 											<div id="getEndTime"></div>
 										</div>
 									</div>
 									<div class="space-4"></div>
 									<div class="form-group">
-										<label class="col-sm-3 control-label no-padding-right" > 文件类型 </label>
+										<label class="col-sm-3 control-label no-padding-right" > 文件类型：</label>
 										<div class="col-sm-9">
 											<label>
 												<input name="form-fileType-checkbox" type="checkbox" value="dat" class="ace" checked="checked"/>
@@ -471,7 +477,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     	          });
 	    	  }
 	     }else {
-	    	 top.showMsg("提示", "请选择要下载的文件");
+	    	 top.showMsg("提示", "请选择要下载的文件！");
 	     }  
 	  }
 	  function deleteFS() {
@@ -501,13 +507,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                   ids.push(rows[i].id +"/"+rows[i].type);
               }
 	          swal({
-					title : "你是否确定删除?",
+					title : "你是否确定删除？",
 					text : names.join(','),
 					type : "warning",
 					showCancelButton : true,
 					confirmButtonColor : "#DD6B55",
-					confirmButtonText : "删除!",
-					cancelButtonText : "取消!",
+					confirmButtonText : "删除",
+					cancelButtonText : "取消",
 					closeOnConfirm : false,
 //					closeOnCancel : false
 				},
@@ -522,7 +528,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							dataType : "json",
 							success : function(data) {
 								if (data.success) {
-									swal("删除成功!","","success");
+									swal("删除成功","","success");
 									reloadDataGrid();
 								} else {
 									swal("删除失败", data.msg,"error");

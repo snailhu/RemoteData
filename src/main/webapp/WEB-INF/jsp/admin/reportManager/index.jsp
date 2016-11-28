@@ -101,7 +101,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 .sweet-alert button {
 	font-size: 14px;
 	width: 100px;
-	height: 32px;
+	height: 100%;
 	border-width: 0;
 	margin-right: 20px;
 }
@@ -145,6 +145,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   </style>
   <script type="text/javascript">
 	$(function(){
+		$(".col-sm-6").css({"display":"inline","margin-left":"4.6%"});
+		$(".col-sm-1").css("display","inline");		
+		$(".form-group").find("button").css("width","80px");
 		//左菜单栏
 		$("#reportview-img").attr("src","${pageContext.request.contextPath}/static/new/img/images/a_10.png");
 		$("#reportmanage-img").attr("src","${pageContext.request.contextPath}/static/new/img/images/a_05.png");
@@ -170,7 +173,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					<span>报告管理</span>
 				</li>
 				<li class="active">定时报告</li>
-				<li class="active titleReport">${nowSeries}系列-${nowStar}星-${nowParameterTypeName}报告列表</li>
+				<!-- <li class="active titleReport">${nowSeries}系列-${nowStar}星-${nowParameterTypeName}报告列表</li> -->
 			</ul><!--  .breadcrumb -->
 		</div>
 		<div class="page-content">
@@ -227,18 +230,18 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								
 									<div class="space-4"></div>
 									<div class="form-group">
-										<label class="col-sm-5 control-label no-padding-right" for="form-beginTime"> 开始时间 </label>
+										<label class="col-sm-5 control-label no-padding-right" for="form-beginTime">开始时间：</label>
 										<div class="col-sm-3">
-											<input class="form-control"  id="form-beginTime"   name="beginTime" type="text" placeholder="请选择开始时间"  >
+											<input class="form-control"  id="form-beginTime"   name="beginTime" type="text" placeholder="--请选择开始时间--"  >
 											<!-- <input type="text" id="form-beginTime" name="beginTime" placeholder="开始时间" class="col-xs-10 col-sm-5" />
 											<div id="getBeginTime"></div> -->
 										</div>
 									</div>
 									<div class="space-4"></div>
 									<div class="form-group">
-										<label class="col-sm-5 control-label no-padding-right" for="form-endTime"> 结束时间 </label>
+										<label class="col-sm-5 control-label no-padding-right" for="form-endTime">结束时间：</label>
 										<div class="col-sm-3">
-											<input  class="form-control"  id="form-endTime" name="endTime"  type="text" placeholder="请选择结束时间"  >
+											<input  class="form-control"  id="form-endTime" name="endTime"  type="text" placeholder="--请选择结束时间--"  >
 											<!-- class="datainp" <input type="text" id="form-endTime" name="endTime" placeholder="结束时间" class="col-xs-10 col-sm-5" />
 											<div id="getEndTime"></div> -->
 										</div>
@@ -555,7 +558,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		      var rows = fsGrid.datagrid('getSelections');
 		      if (rows.length>0) {
 				swal({
-					title : "你是否确定删除?",
+					title : "你是否确定删除？",
 					type : "warning",
 					showCancelButton : true,
 					confirmButtonColor : "#DD6B55",
@@ -578,7 +581,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							dataType : "json",
 							success : function(data) {
 								if (data.success) {
-									swal("删除成功!","","success");
+									swal("删除成功","","success");
 									reloadDataGrid();
 								} else {
 									swal("删除失败", data.obj,"error");

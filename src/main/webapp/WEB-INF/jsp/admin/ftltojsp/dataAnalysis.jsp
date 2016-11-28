@@ -8,10 +8,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
   <head>
-    	
-  </head>
+    <title>My JSP 'index.jsp' starting page</title>
+    
+	<meta http-equiv="pragma" content="no-cache">
+	<meta http-equiv="cache-control" content="no-cache">
+	<meta http-equiv="expires" content="0">    
+	<meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
+	<meta http-equiv="description" content="This is my page">
   
-  <body> 
   	 <link href="${pageContext.request.contextPath}/static/assets/css/bootstrap.min.css" rel="stylesheet" />
  
    	<link rel="stylesheet" href="${pageContext.request.contextPath}/static/jqwidgets/styles/jqx.base.css" type="text/css" />
@@ -39,8 +43,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
 	<link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/static/content/jeDate/jedate/skin/jedate.css">
     <script type="text/javascript" src="${pageContext.request.contextPath}/static/content/jeDate/jedate/jedate.js"></script>
-    
-   
     
 <style>
 	.breadcrumbs{
@@ -80,7 +82,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		margin-right: 10px;
 	}
 	.dateStyle input{
-		font-size: 16px;
+		font-size: 14px;
     	text-align: center;
     	width: 175px;
     	height: 30px;
@@ -101,10 +103,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	.dateSelect select{
 		height: 35px;
     	width: 100px;
-    	color: white;
-    	background-color: #2B929D;
+    	color:  #b2b2b2;
+    	/* background-color: #4B92DD; */
     	border-width: 1px;
     	cursor: pointer;
+    	margin-right:20px;
 	}
 	#dateStart-div,#dateEnd-div{
 		display:inline;
@@ -225,7 +228,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     position: relative;
 }
 </style>
-	
+
+	</head>
+  
+<body> 
     <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"  >
 	  <div class="modal-dialog" role="document" style="margin:30px -200px">
 	    <div class="modal-content">
@@ -327,13 +333,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				<div class="dateStyle">
 					<span>开始日期</span>
 					<div id="dateStart-div">
-						<input class="datainp" id="dateStart" type="text" placeholder="--请选择--" readonly>
+						<input class="datainp" id="dateStart" type="text" placeholder="--请选择开始日期--" readonly>
 					</div>
 				</div>
 				<div class="dateStyle">
 					<span>结束日期</span>
 					<div id='dateEnd-div'>
-						<input class="datainp" id="dateEnd" type="text" placeholder="--请选择--" readonly>
+						<input class="datainp" id="dateEnd" type="text" placeholder="--请选择开始日期--" readonly>
 					</div>				
 				</div>
 				<div class="dateStyle">
@@ -439,6 +445,11 @@ okfun:function(val) {}       //点击确定后的回调
 		maxDate:jeDate.now(0), //设定最大日期为当前日期
 	});
 	$(function() {	
+		//修改页面缩放，界面显示不正常
+		$(".modal-footer").css("text-align","center");
+		$(".modal-footer").find("button").css({"margin-right":"20px","width":"80px"});
+		$(".modal-dialog").css("margin","20px auto");
+
 		//左菜单栏
 		$("#conditionmonitoring-img").attr("src","${pageContext.request.contextPath}/static/new/img/images/a_86.png");
 		$("#conditionmonitoring-text").css("color","#5d90d6");	

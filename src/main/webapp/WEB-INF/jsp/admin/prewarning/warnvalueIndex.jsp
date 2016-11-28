@@ -631,18 +631,18 @@
 									<div class="space-4"></div>
 									<div class="form-group">
 										<label class="col-lg-3 control-label no-padding-right"
-											for="add-maxVal"> 最大变化绝对值： </label>
+											for="add-maxValtop"> 最大变化绝对值： </label>
 										<div class="col-sm-8">
-											<input type="text" name="maxVal" id="add-maxVal"
+											<input type="text" name="maxVal" id="add-maxValtop"
 												placeholder="最大变化绝对值" class="form-control" />
 										</div>
 									</div>
 									<div class="space-4"></div>
 									<div class="form-group">
 										<label class="col-lg-3 control-label no-padding-right"
-											for="add-minVal"> 最小变化绝对值： </label>
+											for="add-minValtop"> 最小变化绝对值： </label>
 										<div class="col-sm-8">
-											<input type="text" name="minVal" id="add-minVal"
+											<input type="text" name="minVal" id="add-minValtop"
 												placeholder="最小变化绝对值" class="form-control" />
 										</div>
 									</div>
@@ -759,18 +759,18 @@
 									<div class="space-4"></div>
 									<div class="form-group">
 										<label class="col-lg-3 control-label no-padding-right"
-											for="edit-maxVal"> 最大变化绝对值： </label>
+											for="edit-maxValtop"> 最大变化绝对值： </label>
 										<div class="col-sm-8">
-											<input type="text" name="maxVal" id="add-maxVal"
+											<input type="text" name="maxVal" id="edit-maxValtop"
 												placeholder="最大变化绝对值" class="form-control" />
 										</div>
 									</div>
 									<div class="space-4"></div>
 									<div class="form-group">
 										<label class="col-lg-3 control-label no-padding-right"
-											for="add-minVal"> 最小变化绝对值： </label>
+											for="edit-minValtop"> 最小变化绝对值： </label>
 										<div class="col-sm-8">
-											<input type="text" name="minVal" id="add-minVal"
+											<input type="text" name="minVal" id="edit-minValtop"
 												placeholder="最小变化绝对值" class="form-control" />
 										</div>
 									</div>
@@ -1185,6 +1185,13 @@
 										}
 									} ]
 								});
+				valueGrid.datagrid('load', {
+					series : series,
+					star : star,
+					parameterType : parameterType,
+					parameter : parameter,
+					warningType : "0"
+				});
 			}
 			if(parameterType == "top"){
 				valueGrid = $("#valueList").datagrid({
@@ -1277,16 +1284,14 @@
 										}
 									} ]
 								});
+				valueGrid.datagrid('load', {
+					series : series,
+					star : star,
+					parameterType : parameterType,
+					parameter : parameter,
+					warningType : "0"
+				});
 			}
-			
-			
-			valueGrid.datagrid('load', {
-				series : series,
-				star : star,
-				parameterType : parameterType,
-				parameter : parameter,
-				warningType : "0"
-			});
 		});
 		
 		//创建参数
@@ -1302,8 +1307,8 @@
 			}
 			
 			if($("#add-parameterType").val() == 'top'){
-				var maxval = Number($("#add-maxVal").val());
-				var minval = Number($("#add-minVal").val());
+				var maxval = Number($("#add-maxValtop").val());
+				var minval = Number($("#add-minValtop").val());
 				if(maxval<minval){
 					top.alertMsg('错误', '最大变化绝对值必须大于最小变化绝对值！');
 					return false;
@@ -1352,8 +1357,8 @@
 				return false;
 			}
 			if($("#edit-parameterType").val() == 'top'){
-				var maxval = Number($("#edit-maxVal").val());
-				var minval = Number($("#edit-minVal").val());
+				var maxval = Number($("#edit-maxValtop").val());
+				var minval = Number($("#edit-minValtop").val());
 				if(maxval<minval){
 					top.alertMsg('错误', '最大变化绝对值必须大于最小变化绝对值！');
 					return false;
@@ -1537,8 +1542,20 @@
 										$('#edit-timeZone').val(data.timeZone);
 										$('#edit-limitTimes').val(
 												data.limitTimes);
-										$('#edit-maxVal').val(data.maxVal);
-										$('#edit-minVal').val(data.minVal);
+										
+										if(data.parameterType == 'flywheel'){
+									 		$('#edit-flywheelValDiv').show();
+											$('#edit-topValDiv').hide();
+											$('#edit-maxVal').val(data.maxVal);
+											$('#edit-minVal').val(data.minVal);
+									 	}
+										if(data.parameterType == 'top'){
+											$('#edit-flywheelValDiv').hide();
+											$('#edit-topValDiv').show();
+											$('#edit-maxValtop').val(data.maxVal);
+											$('#edit-minValtop').val(data.minVal);
+									 	}
+										
 
 										//弹出编辑框
 										$('#editValueModal').modal('show');

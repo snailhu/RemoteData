@@ -139,7 +139,12 @@
 	padding-top: 2px;
 	margin-bottom: 0px;
 }
-
+.form-group input,.form-group select{
+	width: 240px;
+	height:30px;
+	line-height:30px;
+	text-align:left;
+}
 </style>
 <script type="text/javascript">
 	var activeUser = '${activeUser}';
@@ -470,7 +475,7 @@
 											for="search-parameter"> 参数：</label>
 										<div class="col-sm-8">
 											<select class="col-xs-10 col-sm-5 select2"
-												style="width: 41.7%;" id="search-parameter" name="parameter">
+												 id="search-parameter" name="parameter">
 												<option value="">--请选择--</option>
 											</select>
 										</div>

@@ -108,7 +108,7 @@ public class PrewarningServiceImpl implements IPrewarningService {
 				}
 				Star starDomain = starDao.get(value.getStar());
 				if (starDomain != null) {
-					valueDTO.setStar(starDomain.getDescription());
+					valueDTO.setStar(starDomain.getName());
 				} else {
 					valueDTO.setStar(value.getStar().toString());
 				}
@@ -198,7 +198,7 @@ public class PrewarningServiceImpl implements IPrewarningService {
 				warnLog.setParameter(getParamCNname(seriesDomain.getCode(), warnLog.getParameter()));
 			}
 			if (starDomain != null) {
-				warnLog.setStar(starDomain.getDescription());
+				warnLog.setStar(starDomain.getName());
 			}
 			if (warnLog.getWarningType().equals("0")) {
 				warnLog.setWarningType("特殊工况");
@@ -269,7 +269,7 @@ public class PrewarningServiceImpl implements IPrewarningService {
 			for (Star starBean : list) {
 				dto = new StarDto();
 				dto.setId(starBean.getId());
-				dto.setName(starBean.getDescription());
+				dto.setName(starBean.getName());
 				dto.setBeginDate(DateUtil.format(starBean.getStartRunDate()));
 				dto.setDescription(starBean.getDescription());
 				starDtoList.add(dto);

@@ -57,12 +57,18 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     padding-left: 5px;
     color: red;
 }
+.form-group input{
+	width: 240px;
+	height:30px;
+	line-height:30px;
+	text-align:left;
+}
+
 </style>
   <script type="text/javascript">
   $(function(){
 		//修改页面缩放，界面显示不正常
-		$(".col-lg-4").css("margin-left","28.5%");
-		$(".form-group").find("button").css("width","80px");		
+		$(".col-lg-4").css("margin-left","25%");		
 
 		//左菜单栏
 		$("#fileview-img").attr("src","${pageContext.request.contextPath}/static/new/img/images/a_46.png");
@@ -160,8 +166,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 									<div class="form-group">
 										<label class="col-sm-3 control-label no-padding-right" for="search-series"> 系列：</label>
 										<div class="col-sm-9">
-											<input type="text" id="search-series" name="series" placeholder="系列" class="col-xs-10 col-sm-5" 
-											style="height: 28px;width: 231px"/>
+											<input type="text" id="search-series" name="series" placeholder="系列" class="col-xs-10 col-sm-5" style="height:30px;"/>
 											<label class="mustchoose">*</label>
 										</div>
 									</div>
@@ -169,8 +174,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 									<div class="form-group">
 										<label class="col-sm-3 control-label no-padding-right" for="search-star"> 星号：</label>
 										<div class="col-sm-9">
-											<input type="text" id="search-star" name="star" placeholder="星" class="col-xs-10 col-sm-5" 
-											style="height: 28px;width: 231px"/>
+											<input type="text" id="search-star" name="star" placeholder="星号" class="col-xs-10 col-sm-5" style="height:30px;"/>
 											<label class="mustchoose">*</label>
 										</div>
 									</div>
@@ -178,8 +182,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 									<div class="form-group">
 										<label class="col-sm-3 control-label no-padding-right" for="search-paramType"> 设备：</label>
 										<div class="col-sm-9">
-											<input type="text" id="search-paramType" name="paramType" placeholder="设备" class="col-xs-10 col-sm-5" 
-											style="height: 28px;width: 231px"/>
+											<input type="text" id="search-paramType" name="paramType" placeholder="设备" class="col-xs-10 col-sm-5" style="height:30px;"/>
 											<label class="mustchoose">*</label>
 										</div>
 									</div>

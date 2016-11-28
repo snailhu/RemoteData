@@ -174,6 +174,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     float: right;
     position: relative;
   }
+  .form-group select{
+	width: 240px;
+	height:30px;
+	line-height:30px;
+	text-align:left;
+}
 </style>
 
 <script type="text/javascript">
@@ -182,9 +188,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		$(".modal-dialog").css("margin","20px auto");
 		$(".col-lg-4").css("text-align","center");
 		$(".col-lg-7").css("text-align","center");
-		$(".col-sm-6").css({"display":"inline","margin-left":"4.6%"});
+		$(".col-sm-6").css({"display":"inline","margin-left":"6.6%"});
 		$(".col-sm-1").css("display","inline");		
-		$(".form-group").find("button").css("width","80px");
 
 		//左菜单栏
 		$("#parammanage-img").attr("src","${pageContext.request.contextPath}/static/new/img/images/a_22.png");
@@ -419,7 +424,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 									<div class="form-group">
 										<label class="col-sm-5 control-label no-padding-right" for="form-paramCode">参数：</label>
 										<div class="col-sm-3">
-											<select name="paramCode"  id="form-paramCode" class="form-control  select2" style="width: 100%;">
+											<select name="paramCode"  id="form-paramCode" class="form-control  select2" >
 				                           		<option value="">--请选择--</option>
 				                       		</select>
 										</div>

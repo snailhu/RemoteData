@@ -17,8 +17,9 @@
     <!-- 颜色选择器 -->
 <!--     <link rel="stylesheet" href="${base}/static/content/minicolors/bootstrap.min.css"> -->
 <!-- 	<script type="text/javascript" src="${base}/static/content/minicolors/bootstrap.min.js"></script> -->
-	<link rel="stylesheet" href="${base}/static/content/minicolors/jquery.minicolors.css">
-    <script type="text/javascript" src="${base}/static/content/minicolors/jquery.minicolors.js"></script>
+<!--	<link rel="stylesheet" href="${base}/static/content/minicolors/jquery.minicolors.css"> -->
+<!--    <script type="text/javascript" src="${base}/static/content/minicolors/jquery.minicolors.js"></script> -->
+<!--    <script type="text/javascript" src="${base}/static/content/minicolors/jquery.colorpicker.js"></script> -->
     
     <!-- ps颜色选择器 -->
 <!--     <link rel="stylesheet" type="text/css" href="${base}/static/content/pscolors/css/colorpicker.css"/> -->
@@ -34,6 +35,8 @@
     <!--<script src=${base}/static/assets/js/bootstrap-tag.min.js"></script>-->
     <script src="${pageContext.request.contextPath}/DataRemote/static/assets/js/bootstrap.min.js"></script>
 	<script src="${pageContext.request.contextPath}/DataRemote/static/assets/js/typeahead-bs2.min.js"></script>
+	
+	<script type="text/javascript" src="${base}/static/content/minicolors/jscolor.js"></script>
     <style type="text/css">
     .dateStyle{
     	margin-left: 80px;
@@ -124,7 +127,7 @@
 							<div class="form-group">
 								<label class="col-sm-5 control-label"> ${param.name} </label>
 								<div class="col-sm-3">
-									<input type="text" id="${param.value}-color" name="${param.value}" dataName="${param.name}" class=" form-control demo" style="border: none;" data-position="bottom left">					       				
+									<input type="text" id="${param.value}-color" name="${param.value}" dataName="${param.name}" class=" form-control demo jscolor" style="border: none;" data-position="bottom left" value="">					       				
 								</div>
 								<div class="col-sm-3">
 									<select class="form-control" id="${param.value}-size">
@@ -543,7 +546,7 @@ $.post("getDatabytap",
                 }
                
         });
-
+/*
     	//设置颜色
     	$('.demo').each( function() {
 			$(this).minicolors({
@@ -588,6 +591,7 @@ $.post("getDatabytap",
         	options.series = eval(seriesOptionsDam);
             myChart.setOption(options);
         })
+ */
     })
  </script>	
 </html>

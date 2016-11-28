@@ -71,7 +71,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		$("#filemange-text").css("color", "#5d90d6");
 		$("#fileviewUL").css("display", "block");
 		$("#filemanageUL").css("display", "block");
-	  
+		$("#search-beginTime").keypress(function(){
+		 return false;
+		});
+		$("#search-endTime").keypress(function(){
+		  return false;
+
+		});
 	  jeDate({
 			dateCell:"#search-beginTime",//直接显示日期层的容器，可以是ID  CLASS
 			format:"YYYY-MM-DD",//日期格式
@@ -182,7 +188,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 									<div class="form-group">
 										<label class="col-sm-3 control-label no-padding-right" for="search-beginTime"> 开始时间：</label>
 										<div class="col-sm-9">
+										
 											<input type="text" id="search-beginTime" name="beginTime" placeholder="--请选择开始时间--" class="col-xs-10 col-sm-5" />
+
 											<div id="getBeginTime"></div>
 										</div>
 									</div>
@@ -325,7 +333,19 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	      $('#btn-search').click(function(){
 	    	  var nowSeries = $("#search-series").combobox('getValue');
 	    	  var nowStar = $("#search-star").combobox('getValue');
-	    	  var nowParamType = 'flywheel';
+	    	  var nowParamType = $("#search-paramType").combobox('getValue');
+			  if (nowSeries == "") {
+				top.alertMsg('提示', '请选择星系！');
+				return;
+			  }
+			  if (nowStar == "") {
+				top.alertMsg('提示', '请选择星！');
+				return;
+			  }
+			  if (nowParamType == "") {
+				top.alertMsg('提示', '请选择设备！');
+				return;
+			  }
 	    	  //显示文件列表
 	    	  $("#div-fsList").show();
 	    	  var beginTime = $('#search-beginTime').val();

@@ -515,6 +515,13 @@ jeDate({
 	//minDate:"2014-09-19 00:00:00",//最小日期
 	maxDate:jeDate.now(0), //设定最大日期为当前日期
 });
+$("#search-createdatetimeStart").keypress(function(){
+ return false;
+});
+$("#search-createdatetimeEnd").keypress(function(){
+  return false;
+
+});
 		var userGrid;
 		var deptTree;
         $(function () {

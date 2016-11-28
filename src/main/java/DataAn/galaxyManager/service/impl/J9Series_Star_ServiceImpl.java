@@ -261,7 +261,7 @@ public class J9Series_Star_ServiceImpl implements IJ9Series_Star_Service{
 		if(map == null || map.size() == 0){
 			System.out.println("getAllParameterList_allZh_and_en cache is null");
 			map = new HashMap<String,String>();
-			Class<?> pojoClass = Class.forName("DataAn.fileSystem.option.J9Series_Star_ParameterConfig");
+			Class<?> pojoClass = Class.forName("DataAn.galaxyManager.option.J9Series_Star_FlywheelParameterConfig");
 			Object obj = pojoClass.newInstance();
 			Field[] fields = pojoClass.getDeclaredFields();
 			for (Field field : fields) {

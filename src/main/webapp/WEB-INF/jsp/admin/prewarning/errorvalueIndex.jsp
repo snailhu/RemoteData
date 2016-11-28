@@ -1101,6 +1101,16 @@
 				top.alertMsg('错误', '最大值必须大于最小值！');
 				return false;
 			}
+			if($("#add-parameterType").val() == 'top'){
+				if(maxval >2.2||maxval<-2.2){
+					top.alertMsg('错误', '最大值不能大于2.2,不能小于-2.2！');
+					return false;
+				}
+				if(minval >2.2||minval<-2.2){
+					top.alertMsg('错误', '最小值不能大于2.2,不能小于-2.2！');
+					return false;
+				}
+			}
 			var toUrl = '${pageContext.request.contextPath}/admin/prewarning/createErrorValue';
 			f.form('submit', {
 				url : toUrl,
@@ -1141,6 +1151,16 @@
 			if(maxval<=minval){
 				top.alertMsg('错误', '最大值必须大于最小值！');
 				return false;
+			}
+			if($("#edit-parameterType").val() == 'top'){
+				if(maxval >2.2||maxval<-2.2){
+					top.alertMsg('错误', '最大值不能大于2.2,不能小于-2.2！');
+					return false;
+				}
+				if(minval >2.2||minval<-2.2){
+					top.alertMsg('错误', '最小值不能大于2.2,不能小于-2.2！');
+					return false;
+				}
 			}
 			var toUrl = '${pageContext.request.contextPath}/admin/prewarning/editErrorValue';
 			f.form('submit',{

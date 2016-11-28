@@ -287,7 +287,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 jeDate({
 	dateCell:"#stop-device-endDate",//直接显示日期层的容器，可以是ID  CLASS
 	format:"YYYY-MM-DD",//日期格式
-	isinitVal:false, //是否初始化时间
+	isinitVal:true, //是否初始化时间
 	festival:false, //是否显示节日
 	maxDate:jeDate.now(0), //设定最大日期为当前日期
 	zIndex:2000, 
@@ -301,6 +301,9 @@ jeDate({
 	zIndex:2000, 
 });
 $("#stop-device-endDate").keypress(function(){
+	   return false;
+});	
+$("#edit-device-endDate").keypress(function(){
 	   return false;
 });	
 var deviceTypeGrid;
@@ -573,7 +576,6 @@ $(function() {
 				if (data) {
 					$('#stop-device-datagridId').val(datagridId);
 					$('#stop-device-deviceId').val(data.deviceId);
-					$('#stop-device-endDate').val(data.endDate);
 					
 					//弹出编辑框
 					$('#stopDeviceModal').modal('show');

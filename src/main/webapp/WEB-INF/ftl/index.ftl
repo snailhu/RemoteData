@@ -8,6 +8,12 @@
     <link type="text/css" rel="stylesheet" href="${base}/static/css/home.css"/>
     <script src="${base}/static/js/jquery-1.8.3.min.js"></script>
     <script src="${base}/static/js/homepage/home.js"></script>
+  <style type="text/css">
+  .home .home .top > div .top_logo {
+    float: left;
+    margin-left: -200px;
+}
+  </style>
 </head>
 <body class="home">
 <div class="home">
@@ -35,7 +41,8 @@
             <div class="top_text">
                 <span><a href="${base}/admin/file/index">文件管理</a></span>
                 <span><a href="${base}/conditionMonitoring">数据分析</a></span>
-                <span><a href="${base}/report/reportDownLoad">报告管理</a></span>
+                <span><a href="${base}/report/index">报告管理</a></span>
+                <span><a href="${base}/admin/prewarning/logIndex?hadReadFlag=1">预警管理</a></span>
                 <span><a href="${base}/admin/galaxy/index">星系管理</a></span>
                 <span class="blue"><a href="${base}/admin/log/systemLog">系统管理</a></span>
             </div>

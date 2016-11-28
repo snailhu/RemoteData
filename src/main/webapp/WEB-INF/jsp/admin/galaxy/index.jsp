@@ -854,7 +854,12 @@ $(function() {
   			zIndex:9999,//弹出层的层级高度
   		});
  	});
-	
+	$("#add-star-beginDate").keypress(function(){
+	  return false;
+	});
+	$("#edit-star-beginDate").keypress(function(){
+	  return false;
+	});
 // 	$('#add-star-beginDate').click(function(){
 // 		jeDate({
 //  			dateCell:"#add-star-beginDate",//直接显示日期层的容器，可以是ID  CLASS

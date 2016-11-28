@@ -414,58 +414,78 @@ input[type=text]::-webkit-focus-inner {
         }else{
         	var regexp = /[a-zA-Z0-9]-\d{1,}--([0-9]{3}[1-9]|[0-9]{2}[1-9][0-9]{1}|[0-9]{1}[1-9][0-9]{2}|[1-9][0-9]{3})-(((0[13578]|1[02])-(0[1-9]|[12][0-9]|3[01]))|((0[469]|11)-(0[1-9]|[12][0-9]|30))|(02-(0[1-9]|[1][0-9]|2[0-8])))/;
         	var datFile = $('#datFile').val();
+        	var flag = true;
         	if(datFile.length != 0){
         		if(!regexp.test(datFile)){
             		$("#returnMsg").html("<img src='${pageContext.request.contextPath}/static/imgs/error.png'/><font color='red'>dat文件名输入不合法</font>");
 					return false;
+        		}else{
+        			$.ajax({  
+        		        url : "${pageContext.request.contextPath}/admin/file/existFile",  
+        		        data : {
+        		        	fileName : datFile
+						},
+						cache : false,
+        		        async : false, // 注意此处需要同步，因为返回完数据后，下面才能让结果的第一条selected  
+        		        type : "POST",  
+        		        dataType : "json",  
+        		        success : function(data) {  
+        		        	if (data.success) {
+	        		        	$("#returnMsg").html("<img src='${pageContext.request.contextPath}/static/imgs/error.png'/><font color='red'>dat"+data.msg+"</font>");
+	    						flag = false;
+        		        	}
+        		        }  
+        		    });  
         		}
         	}
-        	if(regexp.test(fileName)){
-        		var activeUser = '${activeUser}';
-        		if(activeUser != null){
-    				var permissionItemsJSON = '${activeUser.permissionItemsJSON}';
-    				var type=$('input:radio[name="paramType"]:checked').val();
-    				//console.log('type: ' + type);
-    				var obj = eval("(" + permissionItemsJSON + ")");
-    				var flag = false;
-    				$.each(obj, function (n, value) { 
-    					if(value == type){
-    						//console.log(n + ' : ' + value);
-    						flag = true;
-    					}
-    				});
-    				if(flag){
-	   	 				$.post("${pageContext.request.contextPath}/admin/file/existFile", { fileName: fileName},function(data){
-// 	    					console.log("flag: " + data.success);
-	    					if (data.success) {
-	    						$("#returnMsg").html("<img src='${pageContext.request.contextPath}/static/imgs/error.png'/><font color='red'>"+data.msg+"</font>");
-	    					}else{
-	    						swal({
-	    							title : "你是否确定上传？",
-	    							text : fileName,
-	    							type : "warning",
-	    							showCancelButton : true,
-	    							confirmButtonColor : "#DD6B55",
-	    							confirmButtonText : "上传",
-	    							cancelButtonText : "取消",
-	    							closeOnConfirm : false,
-	    							closeOnCancel : false
-	    						},
-	    						function(isConfirm) {
-	    							if (isConfirm) {
-	    								$("#fileupload").submit();
-	    							} else {
-	    								swal("取消上传", "","error");
-	    							}
-	    						});
-	    					}
-	    				});
-    				}else{
-    					swal("无上传权限！");
-    				}
-    			}
-        	}else{
-        		$("#returnMsg").html("<img src='${pageContext.request.contextPath}/static/imgs/error.png'/><font color='red'>csv文件名输入不合法</font>");
+        	if(flag){
+        		if(regexp.test(fileName)){
+            		var activeUser = '${activeUser}';
+            		if(activeUser != null){
+        				var permissionItemsJSON = '${activeUser.permissionItemsJSON}';
+        				var type=$('input:radio[name="paramType"]:checked').val();
+        				//console.log('type: ' + type);
+        				var obj = eval("(" + permissionItemsJSON + ")");
+        				var flag = false;
+        				$.each(obj, function (n, value) { 
+        					if(value == type){
+        						//console.log(n + ' : ' + value);
+        						flag = true;
+        					}
+        				});
+        				if(flag){
+    	   	 				$.post("${pageContext.request.contextPath}/admin/file/existFile", { fileName: fileName},function(data){
+//     	    					console.log("flag: " + data.success);
+    	    					if (data.success) {
+    	    						$("#returnMsg").html("<img src='${pageContext.request.contextPath}/static/imgs/error.png'/><font color='red'>csv"+data.msg+"</font>");
+    	    					}else{
+    	    						swal({
+    	    							title : "你是否确定上传？",
+    	    							text : fileName,
+    	    							type : "warning",
+    	    							showCancelButton : true,
+    	    							confirmButtonColor : "#DD6B55",
+    	    							confirmButtonText : "上传",
+    	    							cancelButtonText : "取消",
+    	    							closeOnConfirm : false,
+    	    							closeOnCancel : false
+    	    						},
+    	    						function(isConfirm) {
+    	    							if (isConfirm) {
+    	    								$("#fileupload").submit();
+    	    							} else {
+    	    								swal("取消上传", "","error");
+    	    							}
+    	    						});
+    	    					}
+    	    				});
+        				}else{
+        					swal("无上传权限！");
+        				}
+        			}
+            	}else{
+            		$("#returnMsg").html("<img src='${pageContext.request.contextPath}/static/imgs/error.png'/><font color='red'>csv文件名输入不合法</font>");
+            	}
         	}
         }
     });

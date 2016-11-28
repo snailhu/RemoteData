@@ -1,30 +1,20 @@
 package DataAn.common.listener;
 
-import javax.servlet.ServletContextEvent;
-import javax.servlet.ServletContextListener;
+import org.springframework.context.ApplicationListener;
+import org.springframework.context.event.ContextRefreshedEvent;
+import org.springframework.stereotype.Service;
 
-import DataAn.common.service.IInitDataService;
-import DataAn.common.utils.SpringUtil;
-
-
-public class InitDataListener implements ServletContextListener{
+@Service
+public class InitDataListener implements ApplicationListener<ContextRefreshedEvent>{
 
 	@Override
-	public void contextInitialized(ServletContextEvent sce) {
-		System.out.println("web 启动");
-//		IInitDataServie initDataServie = (IInitDataServie) SpringUtil.getSpringService("initDataSerice");
-//		try {
-//			initDataServie.initDataBase();
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-		
+	public void onApplicationEvent(ContextRefreshedEvent event) {
+		System.out.println("InitDataListener..." + event);			
+		if(event.getApplicationContext().getParent() == null){
+			System.out.println("加载一次 InitDataListener..." + event);
+		}
 	}
 
-	@Override
-	public void contextDestroyed(ServletContextEvent sce) {
-		System.out.println("web 销毁");
-		
-	}
+	
 
 }

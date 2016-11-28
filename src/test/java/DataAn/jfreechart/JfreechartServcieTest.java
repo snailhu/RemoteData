@@ -70,14 +70,14 @@ public class JfreechartServcieTest {
 		c22.setValue("sequence_00821");
 		list2.add(c22);
 		//无数据
-		ConstraintDto c23 = new ConstraintDto();
-		c23.setName("飞轮温度Xh(22821)");
-		c23.setValue("sequence_22821");
-		list2.add(c23);
+//		ConstraintDto c23 = new ConstraintDto();
+//		c23.setName("飞轮温度Xh(22821)");
+//		c23.setValue("sequence_22821");
+//		list2.add(c23);
 		constraintsMap.put("chart2", list2);
 		
-		Date beginDate = DateUtil.format("2016-02-01 00:00:00");
-		Date endDate = DateUtil.format("2016-02-07 00:00:00");
+		Date beginDate = DateUtil.format("2000-01-01 00:00:00");
+		Date endDate = DateUtil.format("2000-01-02 00:00:00");
 		
 		LineChartDto lineChartDto = jfreechartServcie.createLineChart(series, star, paramType, beginDate, endDate, constraintsMap);
 		System.out.println(lineChartDto);

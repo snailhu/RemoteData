@@ -74,7 +74,8 @@ public class ChartFactory {
 	public static JFreeChart createTimeSeriesChart(String title,
 			String categoryAxisLabel, String valueAxisLabel,
 			List<TimeSeriesCollection> datasetList) {
-        JFreeChart chart = org.jfree.chart.ChartFactory.createTimeSeriesChart(title, categoryAxisLabel, valueAxisLabel, datasetList.get(0));
+		TimeSeriesCollection dataset1 =  datasetList.get(0);
+        JFreeChart chart = org.jfree.chart.ChartFactory.createTimeSeriesChart(title, categoryAxisLabel, valueAxisLabel,dataset1);
         
         XYPlot xyplot = (XYPlot) chart.getPlot();
         //第二个Y轴的数据构造
@@ -98,7 +99,7 @@ public class ChartFactory {
 			xyplot.getRangeAxis(1).setLowerMargin(0.1);// 设置底部Y坐标轴间距
 			
 			XYLineAndShapeRenderer xyrenderer1 =  new XYLineAndShapeRenderer();
-			xyrenderer1.setBaseItemLabelsVisible(false);// 数据点绘制形状
+			xyrenderer1.setBaseItemLabelsVisible(false);// 数据点绘制形状,数据过多,不显示数据
 			xyrenderer1.setBaseShapesVisible(false);// 数据点绘制形状
 			xyplot.setRenderer(1,xyrenderer1);
 			xyrenderer1.setSeriesStroke(0, new BasicStroke(0.5F)); //设置线的大小
@@ -111,6 +112,8 @@ public class ChartFactory {
 			// xyrenderer1.setSeriesPaint(4, Color.BLACK);//黑色
 			xyrenderer1.setSeriesStroke(5, new BasicStroke(0.5F));
 			// xyrenderer1.setSeriesPaint(5, Color.CYAN);
+			
+			
 		}
      // 3:设置抗锯齿，防止字体显示不清楚
         ChartUtils.setAntiAlias(chart);// 抗锯齿
@@ -119,24 +122,37 @@ public class ChartFactory {
         // 5:对其他部分进行渲染
         ChartUtils.setXY_XAixs(xyplot);
         ChartUtils.setXY_YAixs(xyplot);
+        // 数据过多,不显示数据
+        XYLineAndShapeRenderer xyRenderer = (XYLineAndShapeRenderer) xyplot.getRenderer();
+        xyRenderer.setBaseItemLabelsVisible(false);
+        
         // 日期X坐标轴
         DateAxis domainAxis = (DateAxis) xyplot.getDomainAxis();
         domainAxis.setAutoTickUnitSelection(false);
+        
         DateTickUnit dateTickUnit = null;
-        
-//        if (dataset.getItemCount(0) < 16) {
-//            //刻度单位月,半年为间隔
+        if (dataset1.getItemCount(0) < 7*24*60*60*4) {
+            if(dataset1.getItemCount(0) < 24*60*60*4){//一天之内的点显示
+            	if(dataset1.getItemCount(0) < 60*60*4){ //小于一个小时的点显示
+            		dateTickUnit = new DateTickUnit(DateTickUnitType.SECOND, 1, new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")); // 第二个参数是时间轴间距            		
+            	}else{ //一小时 至 一天之内的点显示
+            		//刻度单位小时,1个小时为间隔
+            		dateTickUnit = new DateTickUnit(DateTickUnitType.HOUR, 1, new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")); // 第二个参数是时间轴间距            		
+            	}
+            }else{ //一天到一个星期的点显示
+            	//刻度单位小时,4个小时为间隔
+                dateTickUnit = new DateTickUnit(DateTickUnitType.HOUR, 4, new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")); // 第二个参数是时间轴间距
+            }
 //            dateTickUnit = new DateTickUnit(DateTickUnitType.SECOND, 6, new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")); // 第二个参数是时间轴间距
-//        } else {// 数据过多,不显示数据
-//            XYLineAndShapeRenderer xyRenderer = (XYLineAndShapeRenderer) xyplot.getRenderer();
-//            xyRenderer.setBaseItemLabelsVisible(false);
+        }else { //大于一个星期的点显示
+        	//刻度单位小时,12个小时为间隔
+            dateTickUnit = new DateTickUnit(DateTickUnitType.HOUR, 12, new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")); // 第二个参数是时间轴间距
 //            dateTickUnit = new DateTickUnit(DateTickUnitType.DAY, 1, new SimpleDateFormat("yyyy-MM-dd")); // 第二个参数是时间轴间距
-//        }
+        }
         
-//        XYLineAndShapeRenderer xyRenderer = (XYLineAndShapeRenderer) xyplot.getRenderer();
-//        xyRenderer.setBaseItemLabelsVisible(false);
-        dateTickUnit = new DateTickUnit(DateTickUnitType.HOUR, 4, new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")); // 第二个参数是时间轴间距
-
+        //TODO 设置时间轴
+//        dateTickUnit = new DateTickUnit(DateTickUnitType.HOUR, 4, new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")); // 第二个参数是时间轴间距
+        
         // 设置时间单位
         domainAxis.setTickUnit(dateTickUnit);
         ChartUtils.setLegendEmptyBorder(chart);

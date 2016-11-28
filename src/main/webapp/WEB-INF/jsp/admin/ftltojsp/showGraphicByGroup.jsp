@@ -82,7 +82,11 @@
 	</div><!-- /.main-content -->
 	<script type="text/javascript">
 	    $(function(){   
-	    	$('#menu').sidebarMenu({ url: "${base}/DataRemote/getMenus"});   
+	    	$('#menu').sidebarMenu({ url: "${base}/DataRemote/getMenus"});  
+	    	
+	    	$(".modal-footer").css("text-align","center");
+			$(".modal-dialog").css("margin","20px auto");
+			$(".modal-footer").find("button").css({"margin-right":"20px","width":"80px"});
 	    	
 	    	//左菜单栏
 			$("#conditionmonitoring-img").attr("src","${pageContext.request.contextPath}/static/new/img/images/a_86.png");

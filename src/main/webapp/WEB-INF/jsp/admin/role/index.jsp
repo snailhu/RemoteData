@@ -72,6 +72,10 @@ a {
 </style>
 <script type="text/javascript">
 	$(function() {
+		//修改页面缩放，界面显示不正常
+		$(".col-lg-7").css("text-align","center");
+		$(".modal-dialog").css("margin","20px auto");
+		
 		//左菜单栏
 		$("#rolemanage-img").attr("src","${pageContext.request.contextPath}/static/new/img/images/a_03.png");
 		$("#sysmanage-img").attr("src","${pageContext.request.contextPath}/static/new/img/images/a_50.png");
@@ -488,13 +492,13 @@ a {
 					ids.push(rows[i].id);
 				}
 				swal({
-					title : "你是否确定删除?",
+					title : "你是否确定删除？",
 					text : names.join(','),
 					type : "warning",
 					showCancelButton : true,
 					confirmButtonColor : "#DD6B55",
-					confirmButtonText : "删除!",
-					cancelButtonText : "取消!",
+					confirmButtonText : "删除",
+					cancelButtonText : "取消",
 					closeOnConfirm : false,
 // 					closeOnCancel : false
 				},
@@ -509,7 +513,7 @@ a {
 							dataType : "json",
 							success : function(data) {
 								if (data.success) {
-									swal("删除成功!","","success");
+									swal("删除成功","","success");
 									reloadDataGrid();
 								} else {
 									swal("删除失败", data.obj,"error");

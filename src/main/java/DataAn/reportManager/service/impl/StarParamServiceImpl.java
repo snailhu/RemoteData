@@ -91,8 +91,8 @@ public class StarParamServiceImpl implements IStarParamService {
 		starParam.setSeries(starParamDto.getSeries());
 		starParam.setStar(starParamDto.getStar());
 		starParam.setPartsType(starParamDto.getPartsType());
-		starParam.setParameterType(j9Series_Star_Service.getFlyWheelParameterType(starParamDto.getSeries(),starParamDto.getStar(),starParamDto.getParameterType(),starParamDto.getParamCode()));
-		starParam.setProductName(j9Series_Star_Service.getFlyWheelName(starParamDto.getSeries(),starParamDto.getStar(),starParamDto.getParameterType(),starParamDto.getParamCode()));
+		starParam.setParameterType(j9Series_Star_Service.getFlyWheelParameterType(starParamDto.getSeries(),starParamDto.getStar(),starParamDto.getPartsType(),starParamDto.getParamCode()));
+		starParam.setProductName(j9Series_Star_Service.getFlyWheelName(starParamDto.getSeries(),starParamDto.getStar(),starParamDto.getPartsType(),starParamDto.getParamCode()));
 		starParam.setParamCode(starParamDto.getParamCode());
 		starParam.setParamName(iParameterService.getParameter_simpleZh_by_en(starParamDto.getSeries(),starParamDto.getStar(),starParamDto.getPartsType(),starParamDto.getParamCode()));
 		starParam.setEffeMin(starParamDto.getEffeMin());

@@ -18,6 +18,7 @@ import java.util.zip.ZipOutputStream;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang3.StringUtils;
 import org.bson.Document;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -582,15 +583,14 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 		}
 		
 		CSVFileDataResultDto<Document> result = csvService.readCSVFileToDoc(fileDto.getFilePath(),uuId);
-		List<Document> docList = result.getDatas();		
+		//存储某一天的参数信息
+		String title = result.getTitle();
 		//数据不为空
-		if(docList != null && docList.size() > 0){
+		if(StringUtils.isNotBlank(title)){
 			//test 等级
 			mongoService.saveCSVData(series, star, parameterType, date, result.getMap(), uuId);
 			//保存csv文件数据
 			//mongoService.saveCSVData(series, star,parameterType, date, docList, uuId);
-			//存储某一天的参数信息
-			String title = result.getTitle();
 			DateParameters dateParameters = new DateParameters();
 			dateParameters.setSeries(series);
 			dateParameters.setStar(star);

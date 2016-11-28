@@ -17,6 +17,7 @@ import java.util.Set;
 
 import javax.annotation.Resource;
 
+import org.apache.commons.lang3.StringUtils;
 import org.bson.Document;
 import org.springframework.stereotype.Service;
 
@@ -231,8 +232,13 @@ public class CSVServiceImpl implements ICSVService{
 					flag = true;
 					break;
 				}else{
-					doc.append(j9SeriesPatameterMap.get(array[i]), colData);
+					String key = j9SeriesPatameterMap.get(array[i]);
+					if(StringUtils.isNotBlank(key))
+						doc.append(key, colData);
+					else
+						throw new RuntimeException(array[i] + " 找不到key..");
 				}
+						
 			}
 			//删除前后4行
 			if(flag){
@@ -283,12 +289,12 @@ public class CSVServiceImpl implements ICSVService{
 				//获取时间区间
 				time = (doc.getDate("datetime").getTime() - time0) / 1000;
 				
-//				if(time % 1 == 0){ //1s使用原始数据集
-//					if(datetime_1s.compareTo(doc.getDate("datetime")) != 0){
-//						datetime_1s = doc.getDate("datetime");						
-//						docList_1s.add(doc);
-//					}
-//				}
+				if(time % 1 == 0){ //1s使用原始数据集
+					if(datetime_1s.compareTo(doc.getDate("datetime")) != 0){
+						datetime_1s = doc.getDate("datetime");						
+						docList_1s.add(doc);
+					}
+				}
 				
 				if(time % 5 == 0){
 					if(datetime_5s.compareTo(doc.getDate("datetime")) != 0){
@@ -361,11 +367,12 @@ public class CSVServiceImpl implements ICSVService{
 		
 		//返回读取文件结果集
 		CSVFileDataResultDto<Document> result = new CSVFileDataResultDto<Document>();
-		result.setDatas(docList);
+		//result.setDatas(docList);
 		result.setTitle(title);
 		
 		Map<String,List<Document>> map = new HashMap<String,List<Document>>();
-		map.put("1s", docList);
+		map.put("0s", docList);
+		map.put("1s", docList_1s);
 		map.put("5s", docList_5s);
 		map.put("15s", docList_15s);
 		map.put("30s", docList_30s);

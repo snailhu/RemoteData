@@ -1207,7 +1207,7 @@
 			if (rows.length > 0) {
 				swal(
 						{
-							title : "你是否确定删除?",
+							title : "你是否确定删除？",
 							text : "确认删除？",
 							type : "warning",
 							showCancelButton : true,
@@ -1231,7 +1231,7 @@
 									dataType : "json",
 									success : function(data) {
 										if (data.success) {
-											swal("删除成功!", "", "success");
+											swal("删除成功", "", "success");
 											reloadDataGrid();
 										} else {
 											swal("删除失败", data.obj,

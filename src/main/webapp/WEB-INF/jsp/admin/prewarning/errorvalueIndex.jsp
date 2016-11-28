@@ -559,11 +559,7 @@
 								</div>
 								<div class="space-4"></div>
 								<div class="form-group">
-									<label class="col-lg-3 control-label no-padding-right"
-<<<<<<< HEAD
-										for="add-maxVal"> 最大值：</label>
-=======
-										for="add-timeZone"> 时间区间(min)： </label>
+									<label class="col-lg-3 control-label no-padding-right" for="add-timeZone"> 时间区间(min)： </label>
 									<div class="col-sm-8">
 										<input type="text" name="timeZone" id="add-timeZone"
 											placeholder="时间区间" class="form-control" />
@@ -573,7 +569,6 @@
 								<div class="form-group">
 									<label class="col-lg-3 control-label no-padding-right"
 										for="add-maxVal"> 最大值： </label>
->>>>>>> branch 'master' of https://github.com/snailhu/RemoteData.git
 									<div class="col-sm-8">
 										<input type="text" name="maxVal" id="add-maxVal"
 											placeholder="最大值" class="form-control" />
@@ -1184,7 +1179,7 @@
 			if (rows.length > 0) {
 				swal(
 						{
-							title : "你是否确定删除?",
+							title : "你是否确定删除？",
 							text : "确认删除？",
 							type : "warning",
 							showCancelButton : true,
@@ -1209,7 +1204,7 @@
 											dataType : "json",
 											success : function(data) {
 												if (data.success) {
-													swal("删除成功!", "", "success");
+													swal("删除成功", "", "success");
 													reloadDataGrid();
 												} else {
 													swal("删除失败", data.obj,

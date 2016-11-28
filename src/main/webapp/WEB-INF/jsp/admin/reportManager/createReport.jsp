@@ -137,6 +137,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 </style>
 <script type="text/javascript">
 	$(function(){
+		$(".col-sm-6").css({"display":"inline","margin-left":"4.6%"});
+		$(".col-sm-1").css("display","inline");		
+		$(".form-group").find("button").css("width","80px");
 		//左菜单栏
 		$("#reportcreate-img").attr("src","${pageContext.request.contextPath}/static/new/img/images/a_18.png");
 		$("#reportmanage-img").attr("src","${pageContext.request.contextPath}/static/new/img/images/a_05.png");
@@ -217,7 +220,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 									<div class="form-group">
 										<label class="col-sm-5 control-label no-padding-right" for="form-beginTime"> 开始日期： </label>
 										<div class="col-sm-3">
-											<input type="text" id="form-beginTime" name="beginTime" placeholder="请选择开始日期" class="form-control" />
+											<input type="text" id="form-beginTime" name="beginTime" placeholder="--请选择开始日期--" class="form-control" />
 											<div id="getBeginTime"></div>
 										</div>
 									</div>
@@ -225,13 +228,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 									<div class="form-group">
 										<label class="col-sm-5 control-label no-padding-right" for="form-endTime"> 结束日期： </label>
 										<div class="col-sm-3">
-											<input type="text" id="form-endTime" name="endTime" placeholder="请选择结束日期" class="form-control" />
+											<input type="text" id="form-endTime" name="endTime" placeholder="--请选择结束日期--" class="form-control" />
 											<div id="getEndTime"></div>
 										</div>
 									</div>
 									
 									<div class="space-12"></div>
-									<div class="form-group">
+									<div class="form-group" style="margin-top:-15px;">
 										<div class="col-sm-6 control-label no-padding-right">
 											<button type="button" id="btn-downLoad" class="subbutton_1">
 							                    <i></i>

@@ -102,6 +102,7 @@
 	border-width: 0;
 	padding: 10px 32px;
 	margin: 26px 30px 0px;
+	height:100%;
 	/*     width: 150px; */
 }
 
@@ -163,10 +164,10 @@
 <script type="text/javascript">
 	$(function() {
 		//修改页面缩放，界面显示不正常
-		//$(".col-lg-3").addClass("col-sm-3");
-		$(".modal-footer").find(".col-lg-4").css("text-align","center");
-		$(".form-group").find(".col-lg-4").css("margin-left","33.3%");
 		$(".modal-dialog").css("margin","20px auto");
+		$(".modal-footer").find(".col-lg-4").css("text-align","center");
+		$(".form-group").find(".col-lg-4").css("margin-left","36%");
+		$(".form-group").find("button").css("width","80px");		
 
 		//左菜单栏
 		$("#ending-img").attr("src","${pageContext.request.contextPath}/static/new/img/images/a_42.png");

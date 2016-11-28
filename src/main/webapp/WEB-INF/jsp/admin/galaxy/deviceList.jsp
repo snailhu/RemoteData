@@ -251,11 +251,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								<button type="button" class="close" data-dismiss="modal" aria-label="Close" id="close_stopDevice">
 									<span aria-hidden="true">&times;</span>
 								</button>
-<<<<<<< HEAD
-								<h4 class="modal-title" id="stopDeviceModalLabel">设置结束时间</h4>
-=======
 								<h4 class="modal-title" id="stopDeviceModalLabel">停止设备</h4>
->>>>>>> branch 'master' of https://github.com/snailhu/RemoteData.git
 							</div>
 							<div class="modal-body">
 								<input type="hidden" name="datagridId" id="stop-device-datagridId"/>

@@ -299,7 +299,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								</div>
 								<div class="space-8"></div>
 								<div class="form-group">
-									<label class="col-sm-3 control-label no-padding-right" for="add-permissionGroup-description"> 分组描述： </label>
+									<label class="col-sm-3 control-label no-padding-right" for="add-permissionGroup-description"> 分组描述：</label>
 									<div class="col-sm-8">
 										<textarea class="form-control" name="description" id="add-permissionGroup-description" placeholder="权限组描述"></textarea>
 									</div>
@@ -331,14 +331,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								<input type="hidden" name="id" id="edit-permissionGroup-id"/>
 								<div class="space-4"></div>
 								<div class="form-group">
-									<label class="col-sm-3 control-label no-padding-right" for="edit-permissionGroup-name"> 分组名称:</label>
+									<label class="col-sm-3 control-label no-padding-right" for="edit-permissionGroup-name"> 分组名称：</label>
 									<div class="col-sm-8">
 										<input type="text" name="name" id="edit-permissionGroup-name" placeholder="权限组名称" class="form-control" />
 									</div>
 								</div>
 								<div class="space-8"></div>
 								<div class="form-group">
-									<label class="col-sm-3 control-label no-padding-right" for="edit-permissionGroup-description"> 分组描述： </label>
+									<label class="col-sm-3 control-label no-padding-right" for="edit-permissionGroup-description"> 分组描述：</label>
 									<div class="col-sm-8">
 										<textarea class="form-control" name="description" id="edit-permissionGroup-description" placeholder="分组描述"></textarea>
 									</div>
@@ -371,7 +371,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								<input type="hidden" name="permissionGroupId" id="add-permissionItem-permissionGroupId"/>
 								<div class="space-4"></div>
 								<div class="form-group">
-									<label class="col-sm-3 control-label no-padding-right" for="add-permissionItem-permissionGroupName"> 所属权限组:</label>
+									<label class="col-sm-3 control-label no-padding-right" for="add-permissionItem-permissionGroupName"> 所属权限组：</label>
 									<div class="col-sm-8">
 										<input type="text" name="permissionGroupName" id="add-permissionItem-permissionGroupName"
 											placeholder="所属权限组名称" class="form-control" readonly="true" />
@@ -379,7 +379,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								</div>
 								<div class="space-4"></div>
 								<div class="form-group">
-									<label class="col-sm-3 control-label no-padding-right" for="add-permissionItem-displayName"> 显示名称:</label>
+									<label class="col-sm-3 control-label no-padding-right" for="add-permissionItem-displayName"> 显示名称：</label>
 									<div class="col-sm-8">
 										<input type="text" name="displayName" id="add-permissionItem-displayName" placeholder="显示名称"
 											class="form-control" />
@@ -387,14 +387,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								</div>
 								<div class="space-4"></div>
 								<div class="form-group">
-									<label class="col-sm-3 control-label no-padding-right" for="add-permissionItem-code"> 权限代码:</label>
+									<label class="col-sm-3 control-label no-padding-right" for="add-permissionItem-code"> 权限代码：</label>
 									<div class="col-sm-8">
 										<input type="text" class="form-control" name="code" id="add-permissionItem-code" placeholder="权限代码">
 									</div>
 								</div>
 								<div class="space-4"></div>
 								<div class="form-group">
-									<label class="col-sm-3 control-label no-padding-right" for="add-permissionItem-description"> 权限描述： </label>
+									<label class="col-sm-3 control-label no-padding-right" for="add-permissionItem-description"> 权限描述：</label>
 									<div class="col-sm-8">
 										<textarea class="form-control" name="description" id="add-permissionItem-description" placeholder="分组描述"></textarea>
 									</div>
@@ -427,7 +427,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								<input type="hidden" name="id" id="edit-permissionItem-id"/>
 								<div class="space-4"></div>
 								<div class="form-group">
-									<label class="col-sm-3 control-label no-padding-right" for="edit-permissionItem-displayName"> 显示名称:</label>
+									<label class="col-sm-3 control-label no-padding-right" for="edit-permissionItem-displayName"> 显示名称：</label>
 									<div class="col-sm-8">
 										<input type="text" name="displayName" id="edit-permissionItem-displayName" placeholder="显示名称"
 											class="form-control" />
@@ -435,14 +435,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								</div>
 								<div class="space-4"></div>
 								<div class="form-group">
-									<label class="col-sm-3 control-label no-padding-right" for="edit-permissionItem-code"> 权限代码:</label>
+									<label class="col-sm-3 control-label no-padding-right" for="edit-permissionItem-code"> 权限代码：</label>
 									<div class="col-sm-8">
 										<input type="text" class="form-control" name="code" id="edit-permissionItem-code" placeholder="权限代码">
 									</div>
 								</div>
 								<div class="space-4"></div>
 								<div class="form-group">
-									<label class="col-sm-3 control-label no-padding-right" for="edit-permissionItem-description"> 权限描述： </label>
+									<label class="col-sm-3 control-label no-padding-right" for="edit-permissionItem-description"> 权限描述：</label>
 									<div class="col-sm-8">
 										<textarea class="form-control" name="description" id="edit-permissionItem-description" placeholder="分组描述"></textarea>
 									</div>
@@ -671,13 +671,13 @@ $(function() {
 				names.push(rows[i].name);
 			}
 			swal({
-				title : "你是否确定删除?",
+				title : "你是否确定删除？",
 				text : names.join(','),
 				type : "warning",
 				showCancelButton : true,
 				confirmButtonColor : "#DD6B55",
-				confirmButtonText : "删除!",
-				cancelButtonText : "取消!",
+				confirmButtonText : "删除",
+				cancelButtonText : "取消",
 				closeOnConfirm : false,
 				//closeOnCancel : false
 			},
@@ -698,7 +698,7 @@ $(function() {
 								permissionGrid.datagrid("unselectAll");
 								permissionGrid.datagrid('reload');
 // 								top.showMsg('提示', data.msg);
-								swal("删除成功!","","success");
+								swal("删除成功","","success");
 							} else {
 // 								top.alertMsg('警告', data.msg);
 								swal("删除失败", data.obj,"error");
@@ -809,13 +809,13 @@ $(function() {
 // 		console.log('permissionItemId:'+permissionItemId);
 // 		console.log('permissionItemName:'+permissionItemName);
 		swal({
-			title : "你是否确定删除?",
+			title : "你是否确定删除？",
 			text : permissionItemName,
 			type : "warning",
 			showCancelButton : true,
 			confirmButtonColor : "#DD6B55",
-			confirmButtonText : "删除!",
-			cancelButtonText : "取消!",
+			confirmButtonText : "删除",
+			cancelButtonText : "取消",
 			closeOnConfirm : false,
 			//closeOnCancel : false
 		},
@@ -831,7 +831,7 @@ $(function() {
 					success : function(data) {
 						if (data.success) {
 //								top.showMsg('提示', data.msg);
-							swal("删除成功!","","success");
+							swal("删除成功","","success");
 							permissionGrid.datagrid("unselectAll");
 							permissionGrid.datagrid('reload');
 						} else {

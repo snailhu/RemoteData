@@ -51,6 +51,9 @@
 	</style>
 <script type="text/javascript">
 	$(function(){
+		$(".col-sm-6").css({"display":"inline","margin-left":"4.6%"});
+		$(".col-sm-1").css("display","inline");		
+		$(".form-group").find("button").css("width","80px");
 		//左菜单栏
 		$("#logmanage-img").attr("src","${pageContext.request.contextPath}/static/new/img/images/a_54.png");
 		$("#sysmanage-img").attr("src","${pageContext.request.contextPath}/static/new/img/images/a_50.png");

@@ -492,13 +492,13 @@ a {
 					ids.push(rows[i].id);
 				}
 				swal({
-					title : "你是否确定删除?",
+					title : "你是否确定删除？",
 					text : names.join(','),
 					type : "warning",
 					showCancelButton : true,
 					confirmButtonColor : "#DD6B55",
-					confirmButtonText : "删除!",
-					cancelButtonText : "取消!",
+					confirmButtonText : "删除",
+					cancelButtonText : "取消",
 					closeOnConfirm : false,
 // 					closeOnCancel : false
 				},
@@ -513,7 +513,7 @@ a {
 							dataType : "json",
 							success : function(data) {
 								if (data.success) {
-									swal("删除成功!","","success");
+									swal("删除成功","","success");
 									reloadDataGrid();
 								} else {
 									swal("删除失败", data.obj,"error");

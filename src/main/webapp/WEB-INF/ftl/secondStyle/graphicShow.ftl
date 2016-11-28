@@ -84,9 +84,9 @@
 <div class="page-content">
 	<div class="dateStyle">
 		<label>开始日期</label>
-		<input class="datainp" id="dateStart" type="text" placeholder="请选择" readonly>
+		<input class="datainp" id="dateStart" type="text" placeholder="- -请选择开始时间- -" readonly>
 		<label>结束日期</label>
-		<input class="datainp" id="dateEnd" type="text" placeholder="请选择" readonly>
+		<input class="datainp" id="dateEnd" type="text" placeholder="- -请选择结束时间- -" readonly>
 		<input class="btn btn-default getData-btn" id="getData"  type="button" name="getData" value="获取数据">
 		<input class="btn btn-default getData-btn" id="changeColor" type="button" name="changeColor" value="配置图信息" data-toggle="modal" data-target="#configChartModal" >
 	</div>
@@ -174,7 +174,12 @@
 		maxDate:'${endDate}', //设定最大日期为当前日期
 	});
 
-    $(function(){   
+    $(function(){
+    	//修改页面缩放，界面显示不正常
+    	$(".modal-footer").css("text-align","center");
+    	$(".modal-footer").find("button").css({"margin-right":"20px","width":"80px"});
+    	$(".modal-dialog").css("margin","20px auto");
+    	
     	var paramObject={};	
     	//从滚轮处获取到的画布开始时间和结束时间
     	var startDate ="";

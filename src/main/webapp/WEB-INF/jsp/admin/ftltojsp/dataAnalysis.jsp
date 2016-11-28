@@ -333,18 +333,18 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				<div class="dateStyle">
 					<span>开始日期</span>
 					<div id="dateStart-div">
-						<input class="datainp" id="dateStart" type="text" placeholder="--请选择--" readonly>
+						<input class="datainp" id="dateStart" type="text" placeholder="--请选择开始日期--" readonly>
 					</div>
 				</div>
 				<div class="dateStyle">
 					<span>结束日期</span>
 					<div id='dateEnd-div'>
-						<input class="datainp" id="dateEnd" type="text" placeholder="--请选择--" readonly>
+						<input class="datainp" id="dateEnd" type="text" placeholder="--请选择开始日期--" readonly>
 					</div>				
 				</div>
 				<div class="dateStyle">
 				<select class="form-control" id="edit_component" name="component" style="display:none;">
-					<option value="">选择设备<span class="caret"></span></option>
+					<option value="">选择设备</option>
 				</select>
 				</div>
 				<button style="height: 35px;"  id='jqxButton-getParameters' onMouseOut="this.style.backgroundColor=''" onMouseOver="this.style.backgroundColor='#00A1CB'">获取参数</button>
@@ -445,6 +445,11 @@ okfun:function(val) {}       //点击确定后的回调
 		maxDate:jeDate.now(0), //设定最大日期为当前日期
 	});
 	$(function() {	
+		//修改页面缩放，界面显示不正常
+		$(".modal-footer").css("text-align","center");
+		$(".modal-footer").find("button").css({"margin-right":"20px","width":"80px"});
+		$(".modal-dialog").css("margin","20px auto");
+
 		//左菜单栏
 		$("#conditionmonitoring-img").attr("src","${pageContext.request.contextPath}/static/new/img/images/a_86.png");
 		$("#conditionmonitoring-text").css("color","#5d90d6");	

@@ -76,9 +76,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			//修改页面缩放，界面显示不正常
 			$(".col-lg-3").addClass("col-sm-3");
 			$(".col-lg-7").css("text-align","center");
-			$(".col-lg-4").css("margin-left","25%");
 			$(".modal-dialog").css("margin","20px auto");
-
+			$(".form-group").find("button").css("width","80px");
+			$(".col-lg-4").css("margin-left","30%");
 			//左菜单栏
 			$("#usermanage-img").attr("src","${pageContext.request.contextPath}/static/new/img/images/a_74.png");
 			$("#sysmanage-img").attr("src","${pageContext.request.contextPath}/static/new/img/images/a_50.png");

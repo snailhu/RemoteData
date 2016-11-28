@@ -68,7 +68,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 .form-horizontal {
     margin-bottom: 0px;
 }
-
+.form-group input,.form-group select{
+	width: 240px;
+	height:30px;
+	line-height:30px;
+	text-align:left;
+}
 </style>
 <script type="text/javascript">
 	$(function() {
@@ -77,8 +82,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			$(".col-lg-3").addClass("col-sm-3");
 			$(".col-lg-7").css("text-align","center");
 			$(".modal-dialog").css("margin","20px auto");
-			$(".form-group").find("button").css("width","80px");
-			$(".col-lg-4").css("margin-left","30%");
+			$(".col-lg-4").css({"margin-left":"25%","width":"300px"});
+			//$(".col-lg-4").find("button").css("display","inline");
 			//左菜单栏
 			$("#usermanage-img").attr("src","${pageContext.request.contextPath}/static/new/img/images/a_74.png");
 			$("#sysmanage-img").attr("src","${pageContext.request.contextPath}/static/new/img/images/a_50.png");
@@ -284,7 +289,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						<div class="widget-body">
 							<div class="widget-main">
 								<!-- 搜索form -->
-								<form id="searchUserForm" action="" class="form-horizontal" role="form" >
+								<form id="searchUserForm" action="" class="form-horizontal" role="form" style="margin-left:170px;">
 									<div class="space-1"></div>
 									<div class="form-group">
 										<label class="col-sm-3 control-label no-padding-right" for="search-userName"> 用户名：</label>

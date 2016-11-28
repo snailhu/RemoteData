@@ -151,7 +151,17 @@
 .form-group {
 	margin-bottom: 0px;
 }
-
+.form-group input,.form-group select{
+	width: 240px;
+	height:30px;
+	line-height:30px;
+	text-align:left;
+}
+.form-group select{
+	color:#858585;
+	font-size:14px;
+	padding-left:0px;
+}
 .form-group>label[class*="col-"] {
 	padding-top: 2px;
 	margin-bottom: 0px;
@@ -166,8 +176,7 @@
 		//修改页面缩放，界面显示不正常
 		$(".modal-dialog").css("margin","20px auto");
 		$(".modal-footer").find(".col-lg-4").css("text-align","center");
-		$(".form-group").find(".col-lg-4").css("margin-left","36%");
-		$(".form-group").find("button").css("width","80px");		
+		$(".form-group").find(".col-lg-4").css("margin-left","33.3%");
 
 		//左菜单栏
 		$("#ending-img").attr("src","${pageContext.request.contextPath}/static/new/img/images/a_42.png");
@@ -254,7 +263,7 @@
 										<div class="col-sm-8">
 											<select class="col-xs-10 col-sm-5" id="search-statusType"
 												name="statusType">
-												<option value="">--请选择--</option>
+												<option value="">--请选择文件状态--</option>
 												<option value="0">已成功</option>
 												<option value="1">失败</option>
 											</select>

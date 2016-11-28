@@ -133,13 +133,18 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     padding-top: 2px;
     margin-bottom: 0px;
 }
-
+.form-group input,.form-group select{
+	width: 240px;
+	height:30px;
+	line-height:30px;
+	text-align:left;
+}
 </style>
 <script type="text/javascript">
 	$(function(){
-		$(".col-sm-6").css({"display":"inline","margin-left":"4.6%"});
+		$(".col-sm-6").css({"display":"inline","margin-left":"6.6%"});
 		$(".col-sm-1").css("display","inline");		
-		$(".form-group").find("button").css("width","80px");
+
 		//左菜单栏
 		$("#reportcreate-img").attr("src","${pageContext.request.contextPath}/static/new/img/images/a_18.png");
 		$("#reportmanage-img").attr("src","${pageContext.request.contextPath}/static/new/img/images/a_05.png");

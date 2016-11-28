@@ -41,19 +41,25 @@
 	<link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/static/content/jeDate/jedate/skin/jedate.css">
     <script type="text/javascript" src="${pageContext.request.contextPath}/static/content/jeDate/jedate/jedate.js"></script>
 
-	<style>
-		.dateStyle{
-			float:left;
-		}
-		.page-header{
-			padding:0px !important
-		}
+<style>
+	.dateStyle{
+		float:left;
+	}
+	.page-header{
+		padding:0px !important
+	}
+	.form-group input,.form-group select{
+		width: 240px;
+		height:30px;
+		line-height:30px;
+		text-align:left;
+	}
 	</style>
 <script type="text/javascript">
 	$(function(){
-		$(".col-sm-6").css({"display":"inline","margin-left":"4.6%"});
+		$(".col-sm-6").css({"display":"inline","margin-left":"6.6%"});
 		$(".col-sm-1").css("display","inline");		
-		$(".form-group").find("button").css("width","80px");
+		
 		//左菜单栏
 		$("#logmanage-img").attr("src","${pageContext.request.contextPath}/static/new/img/images/a_54.png");
 		$("#sysmanage-img").attr("src","${pageContext.request.contextPath}/static/new/img/images/a_50.png");

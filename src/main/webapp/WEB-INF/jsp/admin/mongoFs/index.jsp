@@ -71,13 +71,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		$("#filemange-text").css("color", "#5d90d6");
 		$("#fileviewUL").css("display", "block");
 		$("#filemanageUL").css("display", "block");
-		$("#search-beginTime").keypress(function(){
-		 return false;
-		});
-		$("#search-endTime").keypress(function(){
-		  return false;
 
-		});
 	  jeDate({
 			dateCell:"#search-beginTime",//直接显示日期层的容器，可以是ID  CLASS
 			format:"YYYY-MM-DD",//日期格式
@@ -96,7 +90,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			//minDate:"2014-09-19 00:00:00",//最小日期
 			maxDate:jeDate.now(0), //设定最大日期为当前日期
 		});
-	  
+		$("#search-beginTime").keypress(function(){
+		  return false;
+		});
+		$("#search-endTime").keypress(function(){
+		  return false;
+		});
 	//修改搜索框图标
 	var flag=false;
 	$("#change-search-box").click(function(){		

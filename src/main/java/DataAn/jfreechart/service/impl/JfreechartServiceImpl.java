@@ -44,7 +44,18 @@ public class JfreechartServiceImpl implements IJfreechartServcie {
 	public LineChartDto createLineChart(String series, String star,
 			String paramType, Date beginDate, Date endDate,
 			Map<String, List<ConstraintDto>> constraintsMap) throws Exception {
-
+		System.out.println("come in createLineChart..");
+		System.out.println("series: " + series);
+		System.out.println("star: " + star);
+		System.out.println("paramType: " + paramType);
+		System.out.println("beginDate: " + DateUtil.format(beginDate));
+		System.out.println("endDate: " + DateUtil.format(endDate));
+		for (String key : constraintsMap.keySet()) {
+			for (ConstraintDto constraintDto : constraintsMap.get(key)) {
+				System.out.println(constraintDto);
+			}
+			System.out.println();
+		}
 		return this.createTimeSeriesChart(series, star, paramType, beginDate,
 				endDate, constraintsMap);
 	}

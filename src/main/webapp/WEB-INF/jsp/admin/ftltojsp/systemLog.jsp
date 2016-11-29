@@ -41,16 +41,25 @@
 	<link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/static/content/jeDate/jedate/skin/jedate.css">
     <script type="text/javascript" src="${pageContext.request.contextPath}/static/content/jeDate/jedate/jedate.js"></script>
 
-	<style>
-		.dateStyle{
-			float:left;
-		}
-		.page-header{
-			padding:0px !important
-		}
+<style>
+	.dateStyle{
+		float:left;
+	}
+	.page-header{
+		padding:0px !important
+	}
+	.form-group input,.form-group select{
+		width: 240px;
+		height:30px;
+		line-height:30px;
+		text-align:left;
+	}
 	</style>
 <script type="text/javascript">
 	$(function(){
+		$(".col-sm-6").css({"display":"inline","margin-left":"6.6%"});
+		$(".col-sm-1").css("display","inline");		
+		
 		//左菜单栏
 		$("#logmanage-img").attr("src","${pageContext.request.contextPath}/static/new/img/images/a_54.png");
 		$("#sysmanage-img").attr("src","${pageContext.request.contextPath}/static/new/img/images/a_50.png");
@@ -99,9 +108,9 @@
 								<form id="fileupload" action="" class="form-horizontal" role="form" >
 									<div class="space-4"></div>
 									<div class="form-group">
-										<label class="col-sm-5 control-label no-padding-right" for="form-beginTime"> 开始时间 </label>
+										<label class="col-sm-5 control-label no-padding-right" for="form-beginTime"> 开始时间：</label>
 										<div class="col-sm-3">
-											<input class="form-control"  id="form-beginTime"   name="beginTime" type="text" placeholder="输入开始时间">
+											<input class="form-control"  id="form-beginTime"   name="beginTime" type="text" placeholder="--请选择开始时间--">
 											<!-- <input type="text" id="form-beginTime" name="beginTime" placeholder="开始时间" class="col-xs-10 col-sm-5" />
 											<div id="getBeginTime"></div> -->
 										</div>
@@ -109,18 +118,18 @@
 									
 									<div class="space-4"></div>
 									<div class="form-group">
-										<label class="col-sm-5 control-label no-padding-right" for="form-endTime"> 结束时间 </label>
+										<label class="col-sm-5 control-label no-padding-right" for="form-endTime"> 结束时间：</label>
 										<div class="col-sm-3">
-											<input  class="form-control"  id="form-endTime" name="endTime"  type="text" placeholder="输入结束时间" >
+											<input  class="form-control"  id="form-endTime" name="endTime"  type="text" placeholder="--请选择结束时间--" >
 											<div id="getEndTime"></div>
 										</div>
 									</div>
 									
 									<div class="space-4"></div>
 									<div class="form-group">
-										<label class="col-sm-5 control-label no-padding-right" for="form-beginTime"> 关键字&nbsp&nbsp </label>
+										<label class="col-sm-5 control-label no-padding-right" for="form-beginTime"> 关键字：</label>
 										<div class="col-sm-3">
-											<input class="form-control"  id="form-keyWord"   name="keyWord" type="text" placeholder="输入关键字">
+											<input class="form-control"  id="form-keyWord"   name="keyWord" type="text" placeholder="--请输入关键字--">
 										</div>
 									</div>
 									
@@ -222,7 +231,13 @@
 			minDate:$('#form-beginTime').val(),//最小日期
 			maxDate:jeDate.now(0), //设定最大日期为当前日期
 		});
-		
+		$("#form-beginTime").keypress(function(){
+		 return false;
+		});
+		$("#form-endTime").keypress(function(){
+		  return false;
+
+		});
 		//修改搜索框图标
 		var  flag=false;
 		$("#change-search-box").click(function(){		

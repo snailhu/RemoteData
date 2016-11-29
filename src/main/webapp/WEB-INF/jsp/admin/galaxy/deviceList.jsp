@@ -66,6 +66,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 </style>
   <script type="text/javascript">
   	$(function(){
+  		//修改页面缩放，界面显示不正常
+		$(".col-lg-7").css("text-align","center");
+		$(".modal-dialog").css("margin","20px auto");
+		
   		//左菜单栏
 		$("#galaxymanage-img").attr("src","${pageContext.request.contextPath}/static/new/img/images/a_82.png");
 		$("#galaxymanage-text").css("color","#5d90d6");
@@ -183,7 +187,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								
 								<div class="space-4"></div>
 								<div class="form-group">
-									<label class="col-sm-3 control-label no-padding-right" for="add-device-name"> 设备名称:</label>
+									<label class="col-sm-3 control-label no-padding-right" for="add-device-name"> 设备名称：</label>
 									<div class="col-sm-8">
 										<input type="text" name="deviceName" id="add-device-name" placeholder="设备名称" class="form-control" />
 									</div>
@@ -215,7 +219,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								<input type="hidden" name="deviceId" id="edit-device-deviceId"/>
 								<div class="space-4"></div>
 								<div class="form-group">
-									<label class="col-sm-3 control-label no-padding-right" for="edit-device-name"> 设备名称:</label>
+									<label class="col-sm-3 control-label no-padding-right" for="edit-device-name"> 设备名称：</label>
 									<div class="col-sm-8">
 										<input type="text" name="deviceName" id="edit-device-name" placeholder="设备名称" class="form-control" />
 									</div>
@@ -254,7 +258,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								<input type="hidden" name="deviceId" id="stop-device-deviceId"/>
 								<div class="space-4"></div>
 								<div class="form-group">
-									<label class="col-sm-3 control-label no-padding-right" for="stop-device-endDate"> 运行结束时间:</label>
+									<label class="col-sm-3 control-label no-padding-right" for="stop-device-endDate"> 运行结束时间：</label>
 									<div class="col-sm-8">
 										<input type="text" name="endDate" id="stop-device-endDate" placeholder="yyyy-MM-dd" class="form-control" />
 									</div>
@@ -283,7 +287,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 jeDate({
 	dateCell:"#stop-device-endDate",//直接显示日期层的容器，可以是ID  CLASS
 	format:"YYYY-MM-DD",//日期格式
-	isinitVal:false, //是否初始化时间
+	isinitVal:true, //是否初始化时间
 	festival:false, //是否显示节日
 	maxDate:jeDate.now(0), //设定最大日期为当前日期
 	zIndex:2000, 
@@ -297,6 +301,9 @@ jeDate({
 	zIndex:2000, 
 });
 $("#stop-device-endDate").keypress(function(){
+	   return false;
+});	
+$("#edit-device-endDate").keypress(function(){
 	   return false;
 });	
 var deviceTypeGrid;
@@ -569,7 +576,6 @@ $(function() {
 				if (data) {
 					$('#stop-device-datagridId').val(datagridId);
 					$('#stop-device-deviceId').val(data.deviceId);
-					$('#stop-device-endDate').val(data.endDate);
 					
 					//弹出编辑框
 					$('#stopDeviceModal').modal('show');
@@ -617,7 +623,7 @@ $(function() {
 	
 	function deleteDevice(datagridId,deviceId){
 			swal({
-				title : "你是否确定删除?",
+				title : "你是否确定删除？",
 				text : "确认删除？",
 				type : "warning",
 				showCancelButton : true,
@@ -639,7 +645,7 @@ $(function() {
 						success : function(data) {
 							if (data.success) {
 								reloadDatagrid(datagridId);
-								swal("删除成功!","","success");
+								swal("删除成功","","success");
 							} else {
 // 								top.alertMsg('警告', data.msg);
 								swal("删除失败", data.obj,"error");

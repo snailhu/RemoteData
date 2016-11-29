@@ -3,8 +3,12 @@ package DataAn.galaxyManager.service.impl;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
 import javax.annotation.Resource;
+
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
+
 import DataAn.common.dao.Pager;
 import DataAn.common.pageModel.Combo;
 import DataAn.common.utils.DateUtil;
@@ -47,11 +51,11 @@ public class DeviceServiceImpl implements IDeviceService {
 	@Override
 	public void updateDevice(DeviceDto deviceDto) throws Exception {
 		Device device = deviceDao.get(deviceDto.getDeviceId());
-		if (deviceDto.getEndDate() != null) {
+		if (StringUtils.isNotBlank(deviceDto.getEndDate())) {
 			device.setEndDate(DateUtil.format(deviceDto.getEndDate(), "yyyy-MM-dd"));
-		} else {
+		}
+		if (StringUtils.isNotBlank(deviceDto.getDeviceName())) {
 			device.setDeviceName(deviceDto.getDeviceName());
-			device.setEditDate(new Date());
 		}
 		deviceDao.update(device);
 	}

@@ -51,33 +51,40 @@ public class JfreechartServcieTest {
 		Map<String,List<ConstraintDto>> constraintsMap = new HashMap<String,List<ConstraintDto>>();
 		List<ConstraintDto> list1 = new ArrayList<ConstraintDto>();
 		ConstraintDto c11 = new ConstraintDto();
-		c11.setName("飞轮温度Xa(00815)");
-		c11.setValue("sequence_00815");
+		c11.setName("飞轮转速Xa(00423)");
+		c11.setValue("sequence_00423");
 		list1.add(c11);
 		ConstraintDto c12 = new ConstraintDto();
-		c12.setName("飞轮温度Ya(00817)");
-		c12.setValue("sequence_00817");
+		c12.setName("飞轮转速Ya(00424)");
+		c12.setValue("sequence_00424");
 		list1.add(c12);
+		ConstraintDto c13 = new ConstraintDto();
+		c13.setName("飞轮转速Za(00425)");
+		c13.setValue("sequence_00425");
+		list1.add(c13);
 		constraintsMap.put("chart1", list1);
 		
 		List<ConstraintDto> list2 = new ArrayList<ConstraintDto>();
 		ConstraintDto c21 = new ConstraintDto();
-		c21.setName("飞轮温度Za(00819)");
-		c21.setValue("sequence_00819");
+		c21.setName("飞轮转速Za(00425)");
+		c21.setValue("sequence_00425");
 		list2.add(c21);
 		ConstraintDto c22 = new ConstraintDto();
-		c22.setName("飞轮温度Xb(00821)");
-		c22.setValue("sequence_00821");
+		c22.setName("飞轮电流Za(00818)");
+		c22.setValue("sequence_00818");
 		list2.add(c22);
-		//无数据
-		ConstraintDto c23 = new ConstraintDto();
-		c23.setName("飞轮温度Xh(22821)");
-		c23.setValue("sequence_22821");
-		list2.add(c23);
 		constraintsMap.put("chart2", list2);
 		
-		Date beginDate = DateUtil.format("2016-02-01 00:00:00");
-		Date endDate = DateUtil.format("2016-02-07 00:00:00");
+		List<ConstraintDto> list3 = new ArrayList<ConstraintDto>();
+		ConstraintDto c31 = new ConstraintDto();
+		c31.setName("飞轮温度Za(00819)");
+		c31.setValue("sequence_00819");
+		list3.add(c31);
+		constraintsMap.put("chart3", list3);
+		
+		
+		Date beginDate = DateUtil.format("2000-01-01 00:00:00");
+		Date endDate = DateUtil.format("2000-01-02 00:00:00");
 		
 		LineChartDto lineChartDto = jfreechartServcie.createLineChart(series, star, paramType, beginDate, endDate, constraintsMap);
 		System.out.println(lineChartDto);

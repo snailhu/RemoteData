@@ -99,8 +99,10 @@
 	cursor: pointer;
 	border: none;
 	border-radius: 5px;
+	border-width: 0;
 	padding: 10px 32px;
 	margin: 26px 30px 0px;
+	height:100%;
 	/*     width: 150px; */
 }
 
@@ -149,7 +151,17 @@
 .form-group {
 	margin-bottom: 0px;
 }
-
+.form-group input,.form-group select{
+	width: 240px;
+	height:30px;
+	line-height:30px;
+	text-align:left;
+}
+.form-group select{
+	color:#858585;
+	font-size:14px;
+	padding-left:0px;
+}
 .form-group>label[class*="col-"] {
 	padding-top: 2px;
 	margin-bottom: 0px;
@@ -161,16 +173,20 @@
 </style>
 <script type="text/javascript">
 	$(function() {
+		//修改页面缩放，界面显示不正常
+		$(".modal-dialog").css("margin","20px auto");
+		$(".modal-footer").find(".col-lg-4").css("text-align","center");
+		$(".form-group").find(".col-lg-4").css("margin-left","33.3%");
+
 		//左菜单栏
-		$("#ending-img").attr("src","${pageContext.request.contextPath}/static/new/img/images/a_30.png");
+		$("#ending-img").attr("src","${pageContext.request.contextPath}/static/new/img/images/a_42.png");
 		$("#statustracking-img").attr("src","${pageContext.request.contextPath}/static/new/img/images/a_34.png");
 		$("#filemanage-img").attr("src","${pageContext.request.contextPath}/static/new/img/images/a_26.png");
 		$("#ending-text").css("color", "#5d90d6");
 		$("#statustracking-text").css("color", "#5d90d6");
 		$("#filemange-text").css("color", "#5d90d6");
 		$("#statustrackingUL").css("display","block");
-		$("#filemanageUL").css("display", "block");
-		
+		$("#filemanageUL").css("display", "block");		
 		
 		//修改搜索框图标
 		var flag=false;
@@ -234,20 +250,20 @@
 									<div class="space-1"></div>
 									<div class="form-group">
 										<label class="col-sm-4 control-label no-padding-right"
-											for="search-series"> 文件名 </label>
+											for="search-series"> 文件名：</label>
 										<div class="col-sm-8">
 											<input type="text" id="search-fileName" name="fileName"
-												placeholder="文件名" class="col-xs-10 col-sm-5" /> </select>
+												placeholder="--请输入文件名--" class="col-xs-10 col-sm-5" /> </select>
 										</div>
 									</div>
 									<div class="space-4"></div>
 									<div class="form-group">
 										<label class="col-sm-4 control-label no-padding-right"
-											for="search-status"> 状态</label>
+											for="search-status"> 文件状态：</label>
 										<div class="col-sm-8">
 											<select class="col-xs-10 col-sm-5" id="search-statusType"
 												name="statusType">
-												<option value="">--请选择--</option>
+												<option value="">--请选择文件状态--</option>
 												<option value="0">已成功</option>
 												<option value="1">失败</option>
 											</select>
@@ -256,10 +272,10 @@
 									<div class="space-4"></div>
 									<div class="form-group">
 										<label class="col-sm-4 control-label no-padding-right"
-											for="search-createdatetimeStart"> 创建开始时间 </label>
+											for="search-createdatetimeStart"> 创建开始时间：</label>
 										<div class="col-sm-8">
 											<input type="text" id="search-createdatetimeStart"
-												name="createdatetimeStart" placeholder="创建开始时间"
+												name="createdatetimeStart" placeholder="--请选择创建开始时间--"
 												class="col-xs-10 col-sm-5" />
 											<div id="getBeginTime"></div>
 										</div>
@@ -267,10 +283,10 @@
 									<div class="space-4"></div>
 									<div class="form-group">
 										<label class="col-sm-4 control-label no-padding-right"
-											for="search-createdatetimeEnd"> 创建结束时间 </label>
+											for="search-createdatetimeEnd"> 创建结束时间：</label>
 										<div class="col-sm-8">
 											<input type="text" id="search-createdatetimeEnd"
-												name="createdatetimeEnd" placeholder="创建结束时间"
+												name="createdatetimeEnd" placeholder="--请选择创建结束时间--"
 												class="col-xs-10 col-sm-5" />
 											<div id="getEndTime"></div>
 										</div>
@@ -312,7 +328,7 @@
 							<div class="modal-body">
 								<div class="form-group">
 									<label class="col-sm-3 control-label no-padding-right"
-										for="edit-series"> 详情: </label>
+										for="edit-series"> 详情：</label>
 									<div class="col-sm-8">
 										<textarea rows="5" cols="20" id="exceptionInfoModalArea"
 											class="form-control"></textarea>
@@ -476,7 +492,7 @@ jeDate({
 			if (rows.length > 0) {
 				swal(
 						{
-							title : "你是否确定删除?",
+							title : "你是否确定删除？",
 							text : "确认删除？",
 							type : "warning",
 							showCancelButton : true,
@@ -501,7 +517,7 @@ jeDate({
 											dataType : "json",
 											success : function(data) {
 												if (data.success) {
-													swal("删除成功!", "", "success");
+													swal("删除成功", "", "success");
 													reloadDataGrid();
 												} else {
 													swal("删除失败", data.obj,

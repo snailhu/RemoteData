@@ -174,10 +174,23 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     float: right;
     position: relative;
   }
+  .form-group select{
+	width: 240px;
+	height:30px;
+	line-height:30px;
+	text-align:left;
+}
 </style>
 
 <script type="text/javascript">
 	$(function() {
+		//修改页面缩放，界面显示不正常
+		$(".modal-dialog").css("margin","20px auto");
+		$(".col-lg-4").css("text-align","center");
+		$(".col-lg-7").css("text-align","center");
+		$(".col-sm-6").css({"display":"inline","margin-left":"6.6%"});
+		$(".col-sm-1").css("display","inline");		
+
 		//左菜单栏
 		$("#parammanage-img").attr("src","${pageContext.request.contextPath}/static/new/img/images/a_22.png");
 		$("#reportmanage-img").attr("src","${pageContext.request.contextPath}/static/new/img/images/a_05.png");
@@ -204,7 +217,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				star : {
 					validators : {
 						notEmpty : {
-							message : '请选择星'
+							message : '请选择星号'
 						}
 					}
 				},
@@ -277,7 +290,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				},star : {
 					validators : {
 						notEmpty : {
-							message : '请选择星'
+							message : '请选择星号'
 						}
 					}
 				},
@@ -411,7 +424,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 									<div class="form-group">
 										<label class="col-sm-5 control-label no-padding-right" for="form-paramCode">参数：</label>
 										<div class="col-sm-3">
-											<select name="paramCode"  id="form-paramCode" class="form-control  select2" style="width: 100%;">
+											<select name="paramCode"  id="form-paramCode" class="form-control  select2" >
 				                           		<option value="">--请选择--</option>
 				                       		</select>
 										</div>
@@ -419,7 +432,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 									
 									<div class="space-4"></div>
 									<div class="form-group">
-									<div class="col-sm-6 control-label no-padding-right">
+										<div class="col-sm-6 control-label no-padding-right">
 											<button type="button" id="btn-search" class="subbutton_1">
 							                    <i></i>
 							                    <span>搜索</span>
@@ -1025,7 +1038,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					names.push(rows[i].paramName);
 				}
 				swal({
-					title : "你是否确定删除?",
+					title : "你是否确定删除？",
 					text : names.join(','),
 					type : "warning",
 					showCancelButton : true,
@@ -1049,7 +1062,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							dataType : "json",
 							success : function(data) {
 								if (data.success) {
-									swal("删除成功!","","success");
+									swal("删除成功","","success");
 									reloadDataGrid();
 								} else {
 									swal("删除失败", data.obj,"error");

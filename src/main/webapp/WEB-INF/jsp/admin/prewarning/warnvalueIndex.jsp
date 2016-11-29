@@ -140,10 +140,28 @@
 	padding-top: 2px;
 	margin-bottom: 0px;
 }
+
+.mustchoose {
+	padding-top: 5px;
+	padding-left: 5px;
+	color: red;
+}
+.form-group input,.form-group select{
+	width: 240px;
+	height:30px;
+	line-height:30px;
+	text-align:left;
+}
 </style>
 <script type="text/javascript">
 	var activeUser = '${activeUser}';
 	$(function() {
+		//修改页面缩放，界面显示不正常
+		$(".col-lg-3").addClass("col-sm-3");
+		$(".col-lg-7").css("text-align","center");
+		$(".col-lg-4").css("margin-left","33.3%");
+		$(".modal-dialog").css("margin","20px auto");
+
 		//左菜单栏
 		$("#warnparam-img").attr("src","${pageContext.request.contextPath}/static/new/img/images/a_62.png");
 		$("#warnmanage-img").attr("src","${pageContext.request.contextPath}/static/new/img/images/a_58.png");
@@ -188,7 +206,9 @@
 				flag=true;
 			}
 		});
-		$("#change-search-box").click();
+// 		$("#change-search-box").click();
+		$("#valueList").hide();
+
 		
 		$('#addValueInfoForm').bootstrapValidator({
 			message : '这个值不能为空！',
@@ -261,29 +281,35 @@
 				maxVal : {
 					validators : {
 						notEmpty : {
-							message : '最大值不能为空'
+							message : '不能为空'
 						},
 						regexp : {
 							regexp : /^[\-\+]?\d+(\.\d{0,5})?$/,
-							message : '最大值必须为小数点最多保留5位的数字'
+							message : '必须为小数点最多保留5位的数字'
 						},
 						stringLength : {
 							min : 1,
 							max : 12,
-							message : '最大值不能超过12个字符'
+							message : '不能超过12个字符'
+						}
+					}
+				},
+				minVal : {
+					validators : {
+						notEmpty : {
+							message : '不能为空'
+						},
+						regexp : {
+							regexp : /^[\-\+]?\d+(\.\d{0,5})?$/,
+							message : '必须为小数点最多保留5位的数字'
+						},
+						stringLength : {
+							min : 1,
+							max : 12,
+							message : '不能超过12个字符'
 						}
 					}
 				}
-// 				minVal : {
-// 					validators : {
-// 						notEmpty : {
-// 							message : '最小值不能为空',
-// 						},
-// 						numeric : {
-// 							message : '最小值必须为数字'
-// 						}
-// 					}
-// 				}
 			}
 		});
 		$('#editValueInfoForm').bootstrapValidator({
@@ -356,29 +382,35 @@
 				maxVal : {
 					validators : {
 						notEmpty : {
-							message : '最大值不能为空'
+							message : '不能为空'
 						},
 						regexp : {
 							regexp : /^[\-\+]?\d+(\.\d{0,5})?$/,
-							message : '最大值必须为小数点最多保留5位的数字'
+							message : '必须为小数点最多保留5位的数字'
 						},
 						stringLength : {
 							min : 1,
 							max : 12,
-							message : '最大值不能超过12个字符'
+							message : '不能超过12个字符'
+						}
+					}
+				},
+				minVal : {
+					validators : {
+						notEmpty : {
+							message : '不能为空'
+						},
+						regexp : {
+							regexp : /^[\-\+]?\d+(\.\d{0,5})?$/,
+							message : '必须为小数点最多保留5位的数字'
+						},
+						stringLength : {
+							min : 1,
+							max : 12,
+							message : '不能超过12个字符'
 						}
 					}
 				}
-// 				minVal : {
-// 					validators : {
-// 						notEmpty : {
-// 							message : '最小值不能为空'
-// 						},
-// 						numeric : {
-// 							message : '最小值必须为数字'
-// 						}
-// 					}
-// 				}
 			}
 		});
 		$('#addValueModal').on('hide.bs.modal', function () {
@@ -415,7 +447,7 @@
 				<li><img
 					src="${pageContext.request.contextPath}/static/imgs/DataImport/home.png"
 					style="margin-bottom: 3px;"> <span>预警管理</span></li>
-				<li class="active">特殊工况参数配置</li>
+				<li class="active">特殊工况配置</li>
 			</ul>
 			<!--  .breadcrumb -->
 		</div>
@@ -446,7 +478,7 @@
 									<div class="space-1"></div>
 									<div class="form-group">
 										<label class="col-sm-4 control-label no-padding-right"
-											for="search-series"> 星系 </label>
+											for="search-series"> 星系：</label>
 										<div class="col-sm-8">
 											<select class="col-xs-10 col-sm-5" id="search-series"
 												name="series">
@@ -457,7 +489,7 @@
 									<div class="space-4"></div>
 									<div class="form-group">
 										<label class="col-sm-4 control-label no-padding-right"
-											for="search-star"> 星</label>
+											for="search-star"> 星号：</label>
 										<div class="col-sm-8">
 											<select class="col-xs-10 col-sm-5" id="search-star"
 												name="star">
@@ -468,21 +500,21 @@
 									<div class="space-4"></div>
 									<div class="form-group">
 										<label class="col-sm-4 control-label no-padding-right"
-											for="search-parameterType"> 设备 </label>
+											for="search-parameterType"> 设备：</label>
 										<div class="col-sm-8">
 											<select class="col-xs-10 col-sm-5" id="search-parameterType"
 												name="parameterType">
 												<option value="">--请选择--</option>
-											</select>
+											</select><label class="mustchoose">*</label>
 										</div>
 									</div>
 									<div class="space-4"></div>
 									<div class="form-group">
 										<label class="col-sm-4 control-label no-padding-right"
-											for="search-parameter"> 参数 </label>
+											for="search-parameter"> 参数：</label>
 										<div class="col-sm-8">
 											<select class="col-xs-10 col-sm-5 select2"
-												style="width: 41.7%;" id="search-parameter" name="parameter">
+												 id="search-parameter" name="parameter">
 												<option value="">--请选择--</option>
 											</select>
 										</div>
@@ -530,7 +562,7 @@
 							<div class="modal-body">
 								<div class="form-group">
 									<label class="col-sm-3 control-label no-padding-right"
-										for="add-series"> 星系: </label>
+										for="add-series"> 星系：</label>
 									<div class="col-sm-8">
 										<select class="form-control" id="add-series" name="series">
 											<option value="">--请选择--</option>
@@ -540,7 +572,7 @@
 								<div class="space-4"></div>
 								<div class="form-group">
 									<label class="col-sm-3 control-label no-padding-right"
-										for="add-star"> 星: </label>
+										for="add-star"> 星号：</label>
 									<div class="col-sm-8">
 										<select class="form-control" id="add-star" name="star">
 											<option value="">--请选择--</option>
@@ -572,7 +604,7 @@
 								<div class="space-4"></div>
 								<div class="form-group">
 									<label class="col-lg-3 control-label no-padding-right"
-										for="add-timeZone"> 时间区间(min)： </label>
+										for="add-timeZone"> 时间区间(min)：</label>
 									<div class="col-sm-8">
 										<input type="text" name="timeZone" id="add-timeZone"
 											placeholder="时间区间" class="form-control" />
@@ -581,30 +613,52 @@
 								<div class="space-4"></div>
 								<div class="form-group">
 									<label class="col-lg-3 control-label no-padding-right"
-										for="add-limitTimes"> 限定次数： </label>
+										for="add-limitTimes"> 限定次数：</label>
 									<div class="col-sm-8">
 										<input type="text" name="limitTimes" id="add-limitTimes"
 											placeholder="限定次数" class="form-control" />
 									</div>
 								</div>
-								<div class="space-4"></div>
-								<div class="form-group">
-									<label class="col-lg-3 control-label no-padding-right"
-										for="add-maxVal"> 最大值： </label>
-									<div class="col-sm-8">
-										<input type="text" name="maxVal" id="add-maxVal"
-											placeholder="最大值" class="form-control" />
+								<div id="add-flywheelValDiv" style="display: none;">
+									<div class="space-4"></div>
+									<div class="form-group">
+										<label class="col-lg-3 control-label no-padding-right"
+											for="add-maxVal"> 最大值： </label>
+										<div class="col-sm-8">
+											<input type="text" name="maxVal" id="add-maxVal"
+												placeholder="最大值" class="form-control" />
+										</div>
+									</div>
+<!-- 									<div class="space-4"></div> -->
+<!-- 									<div class="form-group"> -->
+<!-- 										<label class="col-lg-3 control-label no-padding-right" -->
+<!-- 											for="add-minVal"> 最小值： </label> -->
+<!-- 										<div class="col-sm-8"> -->
+<!-- 											<input type="text" name="minVal" id="add-minVal" -->
+<!-- 												placeholder="最小值" class="form-control" /> -->
+<!-- 										</div> -->
+<!-- 									</div> -->
+								</div>
+								<div id="add-topValDiv" style="display: none;">
+									<div class="space-4"></div>
+									<div class="form-group">
+										<label class="col-lg-3 control-label no-padding-right"
+											for="add-maxValtop"> 最大变化绝对值： </label>
+										<div class="col-sm-8">
+											<input type="text" name="maxVal" id="add-maxValtop"
+												placeholder="最大变化绝对值" class="form-control" />
+										</div>
+									</div>
+									<div class="space-4"></div>
+									<div class="form-group">
+										<label class="col-lg-3 control-label no-padding-right"
+											for="add-minValtop"> 最小变化绝对值： </label>
+										<div class="col-sm-8">
+											<input type="text" name="minVal" id="add-minValtop"
+												placeholder="最小变化绝对值" class="form-control" />
+										</div>
 									</div>
 								</div>
-								<!-- 								<div class="space-4"></div> -->
-								<!-- 								<div class="form-group"> -->
-								<!-- 									<label class="col-lg-3 control-label no-padding-right" -->
-								<!-- 										for="add-minVal"> 最小值： </label> -->
-								<!-- 									<div class="col-sm-8"> -->
-								<!-- 										<input type="text" name="minVal" id="add-minVal" -->
-								<!-- 											placeholder="最小值" class="form-control" /> -->
-								<!-- 									</div> -->
-								<!-- 								</div> -->
 							</div>
 							<div class="modal-footer">
 								<div class="col-lg-7 col-lg-offset-3">
@@ -636,7 +690,7 @@
 								<input type="hidden" name="valueId" id="edit-value-id" />
 								<div class="form-group">
 									<label class="col-sm-3 control-label no-padding-right"
-										for="edit-series"> 星系: </label>
+										for="edit-series"> 星系：</label>
 									<div class="col-sm-8">
 										<select class="form-control" id="edit-series" name="series">
 											<option value="">--请选择--</option>
@@ -646,7 +700,7 @@
 								<div class="space-4"></div>
 								<div class="form-group">
 									<label class="col-sm-3 control-label no-padding-right"
-										for="edit-star"> 星: </label>
+										for="edit-star"> 星号：</label>
 									<div class="col-sm-8">
 										<select class="form-control" id="edit-star" name="star">
 											<option value="">--请选择--</option>
@@ -656,7 +710,7 @@
 								<div class="space-4"></div>
 								<div class="form-group">
 									<label class="col-sm-3 control-label no-padding-right"
-										for="edit-parameterType"> 设备： </label>
+										for="edit-parameterType"> 设备：</label>
 									<div class="col-sm-8">
 										<select class="form-control" id="edit-parameterType"
 											name="parameterType">
@@ -667,7 +721,7 @@
 								<div class="space-4"></div>
 								<div class="form-group">
 									<label class="col-sm-3 control-label no-padding-right"
-										for="edit-parameter"> 参数： </label>
+										for="edit-parameter"> 参数：</label>
 									<div class="col-sm-8">
 										<select class="form-control select2" style="width: 100%;"
 											id="edit-parameter" name="parameter">
@@ -678,7 +732,7 @@
 								<div class="space-4"></div>
 								<div class="form-group">
 									<label class="col-lg-3 control-label no-padding-right"
-										for="edit-timeZone"> 时间区间(min)： </label>
+										for="edit-timeZone"> 时间区间(min)：</label>
 									<div class="col-sm-8">
 										<input type="text" name="timeZone" id="edit-timeZone"
 											placeholder="时间区间" class="form-control" />
@@ -687,30 +741,53 @@
 								<div class="space-4"></div>
 								<div class="form-group">
 									<label class="col-lg-3 control-label no-padding-right"
-										for="edit-limitTimes"> 限定次数： </label>
+										for="edit-limitTimes"> 限定次数：</label>
 									<div class="col-sm-8">
 										<input type="text" name="limitTimes" id="edit-limitTimes"
 											placeholder="限定次数" class="form-control" />
 									</div>
 								</div>
-								<div class="space-4"></div>
-								<div class="form-group">
-									<label class="col-lg-3 control-label no-padding-right"
-										for="edit-maxVal"> 最大值： </label>
-									<div class="col-sm-8">
-										<input type="text" name="maxVal" id="edit-maxVal"
-											placeholder="最大值" class="form-control" />
+
+								<div id="edit-flywheelValDiv" style="display: none;">
+									<div class="space-4"></div>
+									<div class="form-group">
+										<label class="col-lg-3 control-label no-padding-right"
+											for="edit-maxVal"> 最大值： </label>
+										<div class="col-sm-8">
+											<input type="text" name="maxVal" id="edit-maxVal"
+												placeholder="最大值" class="form-control" />
+										</div>
+									</div>
+<!-- 									<div class="space-4"></div> -->
+<!-- 									<div class="form-group"> -->
+<!-- 										<label class="col-lg-3 control-label no-padding-right" -->
+<!-- 											for="edit-minVal"> 最小值： </label> -->
+<!-- 										<div class="col-sm-8"> -->
+<!-- 											<input type="text" name="minVal" id="edit-minVal" -->
+<!-- 												placeholder="最小值" class="form-control" /> -->
+<!-- 										</div> -->
+<!-- 									</div> -->
+								</div>
+								<div id="edit-topValDiv" style="display: none;">
+									<div class="space-4"></div>
+									<div class="form-group">
+										<label class="col-lg-3 control-label no-padding-right"
+											for="edit-maxValtop"> 最大变化绝对值： </label>
+										<div class="col-sm-8">
+											<input type="text" name="maxVal" id="edit-maxValtop"
+												placeholder="最大变化绝对值" class="form-control" />
+										</div>
+									</div>
+									<div class="space-4"></div>
+									<div class="form-group">
+										<label class="col-lg-3 control-label no-padding-right"
+											for="edit-minValtop"> 最小变化绝对值： </label>
+										<div class="col-sm-8">
+											<input type="text" name="minVal" id="edit-minValtop"
+												placeholder="最小变化绝对值" class="form-control" />
+										</div>
 									</div>
 								</div>
-								<!-- 								<div class="space-4"></div> -->
-								<!-- 								<div class="form-group"> -->
-								<!-- 									<label class="col-lg-3 control-label no-padding-right" -->
-								<!-- 										for="edit-minVal"> 最小值： </label> -->
-								<!-- 									<div class="col-sm-8"> -->
-								<!-- 										<input type="text" name="minVal" id="edit-minVal" -->
-								<!-- 											placeholder="最小值" class="form-control" /> -->
-								<!-- 									</div> -->
-								<!-- 								</div> -->
 							</div>
 							<div class="modal-footer">
 								<div class="col-lg-7 col-lg-offset-3">
@@ -741,109 +818,19 @@
 	<script type="text/javascript">
 		var valueGrid;
         $(function () {
-        	valueGrid = $("#valueList").datagrid({
-                url: '<%=request.getContextPath()%>/admin/prewarning/getValueList?warningType=0',
-								rownumbers : true,
-								fitColumns : true,
-								idField : 'valueId',//'valueId',
-								pageSize : 10,
-								pagination : true,
-								pageList : [ 10, 20, 30, 40, 50, 60, 70, 80,
-										90, 100 ],
-								onLoadError : function(data) {
-									$.messager.alert("参数信息", "暂无特殊工况参数信息",
-											"error");
 
-								},
-								frozenColumns : [ [ {
-									title : 'valueId',
-									field : 'valueId',//'valueId',
-									width : 50,
-									checkbox : true
-								} ] ],
-								columns : [ [ {
-									field : 'series',
-									title : '星系',
-									width : 100,
-									sortable:true
-								}, {
-									field : 'star',
-									title : '星',
-									width : 100,
-									sortable:true
-								},{
-									field : 'parameterType',
-									title : '设备',
-									width : 100,
-									sortable:true
-								}, {
-									field : 'parameter',
-									title : '参数',
-									width : 200,
-									sortable:true
-								}, {
-									field : 'timeZone',
-									title : '时间区间(min)',
-									width : 100,
-									sortable:true
-								}, {
-									field : 'limitTimes',
-									title : '限定次数',
-									width : 100,
-									sortable:true
-								}, {
-									field : 'maxVal',
-									title : '最大值',
-									width : 100,
-									sortable:true
-								} ] ],
-// 								}, {
-// 									field : 'minVal',
-// 									title : '最小值',
-// 									width : 100,
-// 									sortable:true
-						
-
-								toolbar : [ {
-									text : '创建',
-									iconCls : 'icon-add',
-									handler : function() {
-										createValue();
-									}
-								}, '-', {
-									text : '删除',
-									iconCls : 'icon-remove',
-									handler : function() {
-										deleteValue();
-									}
-								}, '-', {
-									text : '编辑',
-									iconCls : 'icon-edit',
-									handler : function() {
-										editValue();
-									}
-								}, '-', {
-									text : '取消选中',
-									iconCls : 'icon-undo',
-									handler : function() {
-										valueGrid.datagrid('unselectAll');
-									}
-								} ]
-							});
-
-		
-       	  		$.get('<%=request.getContextPath()%>/starParam/getSeriesList', {}, function (res) {
-     			  if(res.result == "true") {
-                 	  $.each(res.data.data ,function(){
-     						$('#search-series').append("<option value='"+ this.id+"'>"+ this.name +"</option>"); 
-     						$('#add-series').append("<option value='"+ this.id+"'>"+ this.name +"</option>"); 
-     						$('#edit-series').append("<option value='"+ this.id+"'>"+ this.name +"</option>"); 
-     					});
-                   }
-                   else {
-                 	  top.showMsg('提示', res.msg);
-                   }
-               });
+   	  		$.get('<%=request.getContextPath()%>/starParam/getSeriesList', {}, function (res) {
+ 			  if(res.result == "true") {
+             	  $.each(res.data.data ,function(){
+ 						$('#search-series').append("<option value='"+ this.id+"'>"+ this.name +"</option>"); 
+ 						$('#add-series').append("<option value='"+ this.id+"'>"+ this.name +"</option>"); 
+ 						$('#edit-series').append("<option value='"+ this.id+"'>"+ this.name +"</option>"); 
+ 					});
+               }
+               else {
+             	  top.showMsg('提示', res.msg);
+               }
+           });
         });
         
         $("#search-series").change(function(){
@@ -1039,6 +1026,14 @@
         
         $("#add-parameterType").change(function(){
 		 	var parameterType = $('#add-parameterType').val();	
+		 	if(parameterType == 'flywheel'){
+		 		$('#add-flywheelValDiv').show();
+				$('#add-topValDiv').hide();
+		 	}
+			if(parameterType == 'top'){
+				$('#add-flywheelValDiv').hide();
+				$('#add-topValDiv').show();
+		 	}
 		 	var seriesId = $('#add-series').val();
 		 	 var starId = $('#add-star').val();
 			  $.get('<%=request.getContextPath()%>/admin/prewarning/getParamList', {'parameterType':parameterType , 'series':seriesId ,  'star':starId}, function (res) {
@@ -1061,6 +1056,14 @@
         
         $("#edit-parameterType").change(function(){
 		 	var parameterType = $('#edit-parameterType').val();
+		 	if(parameterType == 'flywheel'){
+		 		$('#edit-flywheelValDiv').show();
+				$('#edit-topValDiv').hide();
+		 	}
+			if(parameterType == 'top'){
+				$('#edit-flywheelValDiv').hide();
+				$('#edit-topValDiv').show();
+		 	}
 		 	var seriesId = $('#edit-series').val();
 		 	 var starId = $('#edit-star').val();
 			  $.get('<%=request.getContextPath()%>/admin/prewarning/getParamList', {'parameterType':parameterType , 'series':seriesId ,  'star':starId}, function (res) {
@@ -1101,17 +1104,217 @@
 			var star = $('#search-star').val();
 			var parameterType = $('#search-parameterType').val();
 			var parameter = $('#search-parameter').val();
-			valueGrid.datagrid('load', {
-				series : series,
-				star : star,
-				parameterType : parameterType,
-				parameter : parameter,
-				warningType : "0"
-			});
+			if (parameterType == "") {
+				top.alertMsg('提示', '请选择设备！');
+				return;
+			}
+			
+			if(parameterType == "flywheel"){
+				valueGrid = $("#valueList").datagrid({
+	                url: '<%=request.getContextPath()%>/admin/prewarning/getValueList',
+	                				queryParams:{
+	                					series : series,
+	                					star : star,
+	                					parameterType : parameterType,
+	                					parameter : parameter,
+	                					warningType : "0"
+	                				},
+									rownumbers : true,
+									fitColumns : true,
+									idField : 'valueId',//'valueId',
+									pageSize : 10,
+									pagination : true,
+									pageList : [ 10, 20, 30, 40, 50, 60, 70, 80,
+											90, 100 ],
+									onLoadError : function(data) {
+										$.messager.alert("参数信息", "暂无特殊工况参数信息",
+												"error");
+
+									},
+									frozenColumns : [ [ {
+										title : 'valueId',
+										field : 'valueId',//'valueId',
+										width : 50,
+										checkbox : true
+									} ] ],
+									columns : [ [ {
+										field : 'series',
+										title : '星系',
+										width : 100,
+										sortable:true
+									}, {
+										field : 'star',
+										title : '星',
+										width : 100,
+										sortable:true
+									},{
+										field : 'parameterType',
+										title : '设备',
+										width : 100,
+										sortable:true
+									}, {
+										field : 'parameter',
+										title : '参数',
+										width : 200,
+										sortable:true
+									}, {
+										field : 'timeZone',
+										title : '时间区间(min)',
+										width : 100,
+										sortable:true
+									}, {
+										field : 'limitTimes',
+										title : '限定次数',
+										width : 100,
+										sortable:true
+									}, {
+										field : 'maxVal',
+										title : '最大值',
+										width : 100,
+										sortable:true
+									} ] ],
+//	 								}, {
+//	 									field : 'minVal',
+//	 									title : '最小值',
+//	 									width : 100,
+//	 									sortable:true
+							
+
+									toolbar : [ {
+										text : '创建',
+										iconCls : 'icon-add',
+										handler : function() {
+											createValue();
+										}
+									}, '-', {
+										text : '删除',
+										iconCls : 'icon-remove',
+										handler : function() {
+											deleteValue();
+										}
+									}, '-', {
+										text : '编辑',
+										iconCls : 'icon-edit',
+										handler : function() {
+											editValue();
+										}
+									}, '-', {
+										text : '取消选中',
+										iconCls : 'icon-undo',
+										handler : function() {
+											valueGrid.datagrid('unselectAll');
+										}
+									} ]
+								});
+			}
+			if(parameterType == "top"){
+				valueGrid = $("#valueList").datagrid({
+	                url: '<%=request.getContextPath()%>/admin/prewarning/getValueList',
+					                queryParams:{
+				    					series : series,
+				    					star : star,
+				    					parameterType : parameterType,
+				    					parameter : parameter,
+				    					warningType : "0"
+				    				},		
+	                				rownumbers : true,
+									fitColumns : true,
+									idField : 'valueId',//'valueId',
+									pageSize : 10,
+									pagination : true,
+									pageList : [ 10, 20, 30, 40, 50, 60, 70, 80,
+											90, 100 ],
+									onLoadError : function(data) {
+										$.messager.alert("参数信息", "暂无特殊工况参数信息",
+												"error");
+
+									},
+									frozenColumns : [ [ {
+										title : 'valueId',
+										field : 'valueId',//'valueId',
+										width : 50,
+										checkbox : true
+									} ] ],
+									columns : [ [ {
+										field : 'series',
+										title : '星系',
+										width : 100,
+										sortable:true
+									}, {
+										field : 'star',
+										title : '星',
+										width : 100,
+										sortable:true
+									},{
+										field : 'parameterType',
+										title : '设备',
+										width : 100,
+										sortable:true
+									}, {
+										field : 'parameter',
+										title : '参数',
+										width : 200,
+										sortable:true
+									}, {
+										field : 'timeZone',
+										title : '时间区间(min)',
+										width : 100,
+										sortable:true
+									}, {
+										field : 'limitTimes',
+										title : '限定次数',
+										width : 100,
+										sortable:true
+									}, {
+										field : 'maxVal',
+										title : '最大变化绝对值',
+										width : 110,
+										sortable:true
+									}, {
+	 									field : 'minVal',
+	 									title : '最小变化绝对值',
+	 									width : 110,
+	 									sortable:true
+									} ] ],
+	 								
+							
+
+									toolbar : [ {
+										text : '创建',
+										iconCls : 'icon-add',
+										handler : function() {
+											createValue();
+										}
+									}, '-', {
+										text : '删除',
+										iconCls : 'icon-remove',
+										handler : function() {
+											deleteValue();
+										}
+									}, '-', {
+										text : '编辑',
+										iconCls : 'icon-edit',
+										handler : function() {
+											editValue();
+										}
+									}, '-', {
+										text : '取消选中',
+										iconCls : 'icon-undo',
+										handler : function() {
+											valueGrid.datagrid('unselectAll');
+										}
+									} ]
+								});
+			}
+			valueGrid.datagrid('unselectAll');
 		});
 		
 		//创建参数
 		function createValue() {
+			$('#add-maxVal').attr("disabled",false);
+			$('#add-minVal').attr("disabled",false);
+			$('#add-maxValtop').attr("disabled",false);
+			$('#add-minValtop').attr("disabled",false);
 			$('#addValueModal').modal('show');
 		}
 		$('#submit_addValueInfo').click(function() {
@@ -1121,12 +1324,32 @@
 				top.alertMsg('错误', '请满足提交条件！');
 				return false;
 			}
-// 			var maxval = Number($("#add-maxVal").val());
-// 			var minval = Number($("#add-minVal").val());
-// 			if(maxval<minval){
-// 				top.alertMsg('错误', '最大值必须大于最小值！');
-// 				return false;
-// 			}
+			
+			if($("#add-parameterType").val() == 'top'){
+				$('#add-maxVal').attr("disabled",true);
+				$('#add-minVal').attr("disabled",true);
+				$('#add-maxValtop').attr("disabled",false);
+				$('#add-minValtop').attr("disabled",false);
+				var maxval = Number($("#add-maxValtop").val());
+				var minval = Number($("#add-minValtop").val());
+				if(maxval<minval){
+					top.alertMsg('错误', '最大变化绝对值必须大于最小变化绝对值！');
+					return false;
+				}
+				if(maxval <= 0){
+					top.alertMsg('错误', '最大变化绝对值必须大于0！');
+					return false;
+				}
+				if(minval <= 0){
+					top.alertMsg('错误', '最小变化绝对值必须大于0！');
+					return false;
+				}
+			}else{
+				$('#add-maxVal').attr("disabled",false);
+				$('#add-minVal').attr("disabled",false);
+				$('#add-maxValtop').attr("disabled",true);
+				$('#add-minValtop').attr("disabled",true);
+			}
 			var toUrl = '${pageContext.request.contextPath}/admin/prewarning/createWarnValue';
 			f.form('submit', {url : toUrl,
 				onsubmit : function() {
@@ -1161,12 +1384,32 @@
 				top.alertMsg('错误', '请满足提交条件！');
 				return false;
 			}
-// 			var maxval = Number($("#edit-maxVal").val());
-// 			var minval = Number($("#edit-minVal").val());
-// 			if(maxval<minval){
-// 				top.alertMsg('错误', '最大值必须大于最小值！');
-// 				return false;
-// 			}
+			if($("#edit-parameterType").val() == 'top'){
+				$('#edit-maxVal').attr("disabled",true);
+				$('#edit-minVal').attr("disabled",true);
+				$('#edit-maxValtop').attr("disabled",false);
+				$('#edit-minValtop').attr("disabled",false);
+				var maxval = Number($("#edit-maxValtop").val());
+				var minval = Number($("#edit-minValtop").val());
+				if(maxval<minval){
+					top.alertMsg('错误', '最大变化绝对值必须大于最小变化绝对值！');
+					return false;
+				}
+				if(maxval <= 0){
+					top.alertMsg('错误', '最大变化绝对值必须大于0！');
+					return false;
+				}
+				if(minval <= 0){
+					top.alertMsg('错误', '最小变化绝对值必须大于0！');
+					return false;
+				}
+			}else{
+				$('#edit-maxVal').attr("disabled",false);
+				$('#edit-minVal').attr("disabled",false);
+				$('#edit-maxValtop').attr("disabled",true);
+				$('#edit-minValtop').attr("disabled",true);
+			}
+			
 			var toUrl = '${pageContext.request.contextPath}/admin/prewarning/editWarnValue';
 			f.form('submit',{url : toUrl,onsubmit : function() {
 				var flag = $(this).form('validate');
@@ -1201,7 +1444,7 @@
 			if (rows.length > 0) {
 				swal(
 						{
-							title : "你是否确定删除?",
+							title : "你是否确定删除？",
 							text : "确认删除？",
 							type : "warning",
 							showCancelButton : true,
@@ -1225,7 +1468,7 @@
 									dataType : "json",
 									success : function(data) {
 										if (data.success) {
-											swal("删除成功!", "", "success");
+											swal("删除成功", "", "success");
 											reloadDataGrid();
 										} else {
 											swal("删除失败", data.obj,
@@ -1243,6 +1486,10 @@
 		}
 		//编辑用户
 		function editValue() {
+			$('#edit-maxVal').attr("disabled",false);
+			$('#edit-minVal').attr("disabled",false);
+			$('#edit-maxValtop').attr("disabled",false);
+			$('#edit-minValtop').attr("disabled",false);
 			var rows = valueGrid.datagrid('getSelections');
 			if (rows.length > 0) {
 				if (rows.length == 1) {
@@ -1336,8 +1583,21 @@
 										$('#edit-timeZone').val(data.timeZone);
 										$('#edit-limitTimes').val(
 												data.limitTimes);
-										$('#edit-maxVal').val(data.maxVal);
-										$('#edit-minVal').val(data.minVal);
+										
+										if(data.parameterType == 'flywheel'){
+											
+									 		$('#edit-flywheelValDiv').show();
+											$('#edit-topValDiv').hide();
+											$('#edit-maxVal').val(data.maxVal);
+											$('#edit-minVal').val(data.minVal);
+									 	}
+										if(data.parameterType == 'top'){
+											$('#edit-flywheelValDiv').hide();
+											$('#edit-topValDiv').show();
+											$('#edit-maxValtop').val(data.maxVal);
+											$('#edit-minValtop').val(data.minVal);
+									 	}
+										
 
 										//弹出编辑框
 										$('#editValueModal').modal('show');

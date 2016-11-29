@@ -18,6 +18,7 @@ import java.util.zip.ZipOutputStream;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang3.StringUtils;
 import org.bson.Document;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -107,6 +108,7 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 		dataMap.put("versions", versions);
 		
 		try {
+			
 			//保存csv临时文件
 			String csvTempFilePath = CommonConfig.getUplodCachePath() + File.separator + versions;
 			FileUtil.saveFile(csvTempFilePath, fileName, csvFileDto.getIn());
@@ -116,48 +118,53 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 			// 保存 *.csv文件
 			this.saveFileOfCSV(csvFileDto, dataMap);
 			
+			
 //		//获取map中的csv文件
 			FileDto datFile = map.get("dat");
 			if(datFile != null){			
 				// 保存 *.DAT文件
 				this.saveFileOfDAT(datFile, dataMap);
 			}
+			
+			statusTrackingService.updateStatusTracking(csvFileDto.getFileName(), StatusTrackingType.IMPORT.getValue(),
+					csvFileDto.getParameterType(), "");
+			
+			// 调用文件队列API，  zookeeper 
+			Map conf=new HashMap<>();
+			BaseConfig baseConfig=null;
+			try {
+				baseConfig= StormUtils.getBaseConfig(BaseConfig.class);
+			} catch (Exception e) {
+				e.printStackTrace();
+				statusTrackingService.updateStatusTracking(csvFileDto.getFileName(), StatusTrackingType.IMPORTFAIL.getValue(),
+						csvFileDto.getParameterType(), e.getMessage());
+			}
+			ZooKeeperNameKeys.setZooKeeperServer(conf, baseConfig.getZooKeeper());
+			ZooKeeperNameKeys.setNamespace(conf, baseConfig.getNamespace());
+			ZookeeperExecutor executor=new ZooKeeperClient()
+			.connectString(ZooKeeperNameKeys.getZooKeeperServer(conf))
+			.namespace(ZooKeeperNameKeys.getNamespace(conf))
+			.build();
+			CommunicationUtils communicationUtils=CommunicationUtils.get(executor);
+			Communication communication=new Communication();
+			communication.setFileName(csvFileDto.getFileName());
+			communication.setFilePath(csvFileDto.getFilePath());
+			communication.setVersions(versions);
+			communication.setSeries(nowSeries);
+			communication.setStar(nowStar);
+			communication.setName(csvFileDto.getParameterType());
+			communicationUtils.add(communication);
+			statusTrackingService.updateStatusTracking(csvFileDto.getFileName(), StatusTrackingType.PREHANDLE.getValue(),
+					csvFileDto.getParameterType(), "");
+			
 		} catch (Exception e) {
 //			e.printStackTrace();
 			statusTrackingService.updateStatusTracking(csvFileDto.getFileName(), StatusTrackingType.FILEUPLOADFAIL.getValue(),
 					csvFileDto.getParameterType(), e.getMessage());
+			
 		}
 		
-		statusTrackingService.updateStatusTracking(csvFileDto.getFileName(), StatusTrackingType.IMPORT.getValue(),
-				csvFileDto.getParameterType(), "");
-		
-		// 调用文件队列API，  zookeeper 
-		Map conf=new HashMap<>();
-		BaseConfig baseConfig=null;
-		try {
-			baseConfig= StormUtils.getBaseConfig(BaseConfig.class);
-		} catch (Exception e) {
-			e.printStackTrace();
-			statusTrackingService.updateStatusTracking(csvFileDto.getFileName(), StatusTrackingType.IMPORTFAIL.getValue(),
-					csvFileDto.getParameterType(), e.getMessage());
-		}
-		ZooKeeperNameKeys.setZooKeeperServer(conf, baseConfig.getZooKeeper());
-		ZooKeeperNameKeys.setNamespace(conf, baseConfig.getNamespace());
-		ZookeeperExecutor executor=new ZooKeeperClient()
-		.connectString(ZooKeeperNameKeys.getZooKeeperServer(conf))
-		.namespace(ZooKeeperNameKeys.getNamespace(conf))
-		.build();
-		CommunicationUtils communicationUtils=CommunicationUtils.get(executor);
-		Communication communication=new Communication();
-		communication.setFileName(csvFileDto.getFileName());
-		communication.setFilePath(csvFileDto.getFilePath());
-		communication.setVersions(versions);
-		communication.setSeries(nowSeries);
-		communication.setStar(nowStar);
-		communication.setName(csvFileDto.getParameterType());
-		communicationUtils.add(communication);
-		statusTrackingService.updateStatusTracking(csvFileDto.getFileName(), StatusTrackingType.PREHANDLE.getValue(),
-				csvFileDto.getParameterType(), "");
+	
 		return versions;
 	}
 
@@ -582,15 +589,14 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 		}
 		
 		CSVFileDataResultDto<Document> result = csvService.readCSVFileToDoc(fileDto.getFilePath(),uuId);
-		List<Document> docList = result.getDatas();		
+		//存储某一天的参数信息
+		String title = result.getTitle();
 		//数据不为空
-		if(docList != null && docList.size() > 0){
+		if(StringUtils.isNotBlank(title)){
 			//test 等级
 			mongoService.saveCSVData(series, star, parameterType, date, result.getMap(), uuId);
 			//保存csv文件数据
 			//mongoService.saveCSVData(series, star,parameterType, date, docList, uuId);
-			//存储某一天的参数信息
-			String title = result.getTitle();
 			DateParameters dateParameters = new DateParameters();
 			dateParameters.setSeries(series);
 			dateParameters.setStar(star);

@@ -286,11 +286,11 @@ public class CommonController {
 			//paramObiect的结构eg:{"nowSeries":"j9name","nowStar":"02","component":"flywheel","startTime":"2016-06-22 13:02:08","endTime":"2016-06-23 13:02:23","paramAttribute":[{"name":"飞轮温度Xa(00815)","value":"","y":"0"},{"name":"飞轮温度Ya(00817)","value":"","y":"0"},{"name":"飞轮温度Za(00819)","value":"","y":"0"}]}
 			Map<String, Class<ParamAttributeDto>> classMap = new HashMap<String, Class<ParamAttributeDto>>();
 			classMap.put("paramAttribute", ParamAttributeDto.class);					
-EhCache ehCache = new EhCache();
-String sessionId = request.getSession().getId();
-System.out.println("在Tap页鼠标滚动时 sessionid:"+sessionId);
-String paramObject =  (String) ehCache.getCacheElement(sessionId+"paramObject");
-ParamBatchDto pbd =JsonStringToObj.jsonToObject(paramObject,ParamBatchDto.class,classMap);
+			EhCache ehCache = new EhCache();
+			String sessionId = request.getSession().getId();
+			System.out.println("在Tap页鼠标滚动时 sessionid:"+sessionId);
+			String paramObject =  (String) ehCache.getCacheElement(sessionId+"paramObject");
+			ParamBatchDto pbd =JsonStringToObj.jsonToObject(paramObject,ParamBatchDto.class,classMap);
 			RoutingService routingService=new RoutingService();
 			RequestConfig requestConfig=new RequestConfig();
 			requestConfig.setPropertyCount(pbd.getParamAttribute().size());

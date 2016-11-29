@@ -16,7 +16,7 @@ import java.util.Map;
 import org.junit.Test;
 
 import DataAn.common.utils.DateUtil;
-import DataAn.galaxyManager.option.J9SeriesParamConfig;
+import DataAn.galaxyManager.option.J9SeriesParamConfigService;
 
 import com.csvreader.CsvWriter;
 
@@ -81,9 +81,9 @@ public class MakeCSVFile {
 	
 	@Test
 	public void testMakeDataCSV() throws Exception{
-		for (int year = 2010; year <= 2012; year++) {
-			for (int month = 1; month <= 12; month++) {
-				for (int day = 1; day < 30; day++) {
+		for (int year = 2000; year <= 2000; year++) {
+			for (int month = 5; month <= 5; month++) {
+				for (int day = 1; day < 10; day++) {
 					this.writeCSV(year, month, day);							
 				}
 			}
@@ -92,7 +92,7 @@ public class MakeCSVFile {
 	}
 	protected void writeCSV( int year,int month, int day) throws Exception {
 		
-		List<String> titleList = J9SeriesParamConfig.getJ9Series_FlywheelParamConfigList();
+		List<String> titleList = J9SeriesParamConfigService.getJ9Series_FlywheelParamConfigList();
 		//目录
 		String dirPath = "E:\\data\\flywheel\\" + year + "\\" + "0" + month;
 		//文件路径
@@ -132,8 +132,13 @@ public class MakeCSVFile {
 		int specialValue = 100; //特殊工况值
 		int beginspecialTime =  1 * 30 * 60 * 1000 ; //开始出现特殊工况时间
 		int specialTime = 5 * 1000; //特殊工况时间范围 5秒
-		
+		int count = 1;
 		while(tempDate.before(date2)){
+			
+			if(count == 2000)
+				break;
+			count++;
+			
 			tempDate = new Date(time);
 			csvOutput.write(DateUtil.format(tempDate, format));
 			if((time - beginTime) % beginExceptionTime <= exceptionTime){ //开始出现异常点
@@ -151,11 +156,12 @@ public class MakeCSVFile {
 			}else{
 				for (int i = 1; i < titleList.size(); i++) {
 					Double data = 10 + Math.random() * Math.random() * 100;
-					if(data < 15){
-						csvOutput.write("#"+df.format(data));
-					}else{
-						csvOutput.write(df.format(data));										
-					}
+//					if(data < 15){
+//						csvOutput.write("#"+df.format(data));
+//					}else{
+//						csvOutput.write(df.format(data));										
+//					}
+					csvOutput.write(df.format(data));	
 				}
 			}
 			csvOutput.endRecord();

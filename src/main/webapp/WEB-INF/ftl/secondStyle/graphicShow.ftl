@@ -17,8 +17,9 @@
     <!-- 颜色选择器 -->
 <!--     <link rel="stylesheet" href="${base}/static/content/minicolors/bootstrap.min.css"> -->
 <!-- 	<script type="text/javascript" src="${base}/static/content/minicolors/bootstrap.min.js"></script> -->
-	<link rel="stylesheet" href="${base}/static/content/minicolors/jquery.minicolors.css">
-    <script type="text/javascript" src="${base}/static/content/minicolors/jquery.minicolors.js"></script>
+<!--	<link rel="stylesheet" href="${base}/static/content/minicolors/jquery.minicolors.css"> -->
+<!--    <script type="text/javascript" src="${base}/static/content/minicolors/jquery.minicolors.js"></script> -->
+<!--    <script type="text/javascript" src="${base}/static/content/minicolors/jquery.colorpicker.js"></script> -->
     
     <!-- ps颜色选择器 -->
 <!--     <link rel="stylesheet" type="text/css" href="${base}/static/content/pscolors/css/colorpicker.css"/> -->
@@ -34,6 +35,8 @@
     <!--<script src=${base}/static/assets/js/bootstrap-tag.min.js"></script>-->
     <script src="${pageContext.request.contextPath}/DataRemote/static/assets/js/bootstrap.min.js"></script>
 	<script src="${pageContext.request.contextPath}/DataRemote/static/assets/js/typeahead-bs2.min.js"></script>
+	
+	<script type="text/javascript" src="${base}/static/content/minicolors/jscolor.js"></script>
     <style type="text/css">
     .dateStyle{
     	margin-left: 80px;
@@ -84,9 +87,9 @@
 <div class="page-content">
 	<div class="dateStyle">
 		<label>开始日期</label>
-		<input class="datainp" id="dateStart" type="text" placeholder="请选择" readonly>
+		<input class="datainp" id="dateStart" type="text" placeholder="- -请选择开始时间- -" readonly>
 		<label>结束日期</label>
-		<input class="datainp" id="dateEnd" type="text" placeholder="请选择" readonly>
+		<input class="datainp" id="dateEnd" type="text" placeholder="- -请选择结束时间- -" readonly>
 		<input class="btn btn-default getData-btn" id="getData"  type="button" name="getData" value="获取数据">
 		<input class="btn btn-default getData-btn" id="changeColor" type="button" name="changeColor" value="配置图信息" data-toggle="modal" data-target="#configChartModal" >
 	</div>
@@ -124,7 +127,7 @@
 							<div class="form-group">
 								<label class="col-sm-5 control-label"> ${param.name} </label>
 								<div class="col-sm-3">
-									<input type="text" id="${param.value}-color" name="${param.value}" dataName="${param.name}" class=" form-control demo" style="border: none;" data-position="bottom left">					       				
+									<input type="text" id="${param.value}-color" name="${param.value}" dataName="${param.name}" class=" form-control demo jscolor" style="border: none;" data-position="bottom left" value="">					       				
 								</div>
 								<div class="col-sm-3">
 									<select class="form-control" id="${param.value}-size">
@@ -174,7 +177,12 @@
 		maxDate:'${endDate}', //设定最大日期为当前日期
 	});
 
-    $(function(){   
+    $(function(){
+    	//修改页面缩放，界面显示不正常
+    	$(".modal-footer").css("text-align","center");
+    	$(".modal-footer").find("button").css({"margin-right":"20px","width":"80px"});
+    	$(".modal-dialog").css("margin","20px auto");
+    	
     	var paramObject={};	
     	//从滚轮处获取到的画布开始时间和结束时间
     	var startDate ="";
@@ -538,7 +546,7 @@ $.post("getDatabytap",
                 }
                
         });
-
+/*
     	//设置颜色
     	$('.demo').each( function() {
 			$(this).minicolors({
@@ -583,6 +591,7 @@ $.post("getDatabytap",
         	options.series = eval(seriesOptionsDam);
             myChart.setOption(options);
         })
+ */
     })
  </script>	
 </html>

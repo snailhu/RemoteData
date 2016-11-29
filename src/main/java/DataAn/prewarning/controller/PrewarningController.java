@@ -176,7 +176,9 @@ public class PrewarningController extends BaseController {
 		System.out.println("come in createValue ");
 		System.out.println(warnValue);
 		System.out.println(warnValue.getMaxVal());
-		warnValue.setMinVal(0.0);
+		if(warnValue.getMinVal()==null){
+			warnValue.setMinVal(0.0);
+		}
 		JsonMessage jsonMsg = new JsonMessage();
 		try {
 			boolean falg = prewarningService.cherkWarningValue(warnValue.getSeries().toString(),
@@ -264,7 +266,9 @@ public class PrewarningController extends BaseController {
 					return jsonMsg;
 				}
 			}
-			warnValue.setMinVal(0.0);
+			if(warnValue.getMinVal()==null){
+				warnValue.setMinVal(0.0);
+			}
 			prewarningService.updateWarnValue(warnValue);
 		} catch (Exception e) {
 			e.printStackTrace();

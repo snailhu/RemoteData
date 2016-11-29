@@ -336,7 +336,7 @@ input[type=text]::-webkit-focus-inner {
 					<form id="fileupload" action="admin/file/uploadFiles" class="form-horizontal" role="form" method="post" enctype="multipart/form-data">
 						<div class="space-20"></div>
 						<div class="form-group">
-							<label class="col-sm-3 control-label no-padding-right" > DAT文件:  </label>
+							<label class="col-sm-3 control-label no-padding-right" >DAT文件：</label>
 							<div class="col-sm-8">
 								<div class="uploader white">
 									<input type="text" class="filename" name="showDatFileName" placeholder="请选择文件..." readonly/>
@@ -347,7 +347,7 @@ input[type=text]::-webkit-focus-inner {
 						</div>
 						<div class="space-12"></div>
 						<div class="form-group">
-							<label class="col-sm-3 control-label no-padding-right"> CSV文件:  </label>
+							<label class="col-sm-3 control-label no-padding-right">CSV文件：</label>
 							<div class="col-sm-8">
 								<div class="uploader blue">
 									<input type="text" class="filename" placeholder="请选择文件..." readonly/>
@@ -358,7 +358,7 @@ input[type=text]::-webkit-focus-inner {
 						</div>
 						<div class="space-12"></div>
 						<div class="form-group">
-							<label class="col-sm-3 control-label no-padding-right">文件类型:</label>
+							<label class="col-sm-3 control-label no-padding-right">文件类型：</label>
 							<div class="col-sm-8" style="margin-top: 4px;">
 								<label style="margin-right: 50px;">
 									<input name="paramType" type="radio" class="ace" value="flywheel" checked="true"/>
@@ -372,13 +372,13 @@ input[type=text]::-webkit-focus-inner {
 						</div>
 						<div class="space-1"></div>
 						<div class="form-group">
-							<div style="margin-left: 300px;">
+							<div style="margin-left:30%;">
 								<span id="returnMsg"></span>
 							</div>
 						</div>
 						<div class="space-4"></div>
 						<div class="form-group">
-                           <div class="col-sm-8" style="float: right;">
+                           <div class="col-sm-8" style="margin-left:25%;">
 		                        <button type="button" id="submit-fileupload" class=" button btn btn-primary start">
 				                    <i class="icon-upload icon-white"></i>
 				                    <span>开始 上传</span>
@@ -441,7 +441,7 @@ input[type=text]::-webkit-focus-inner {
 	    						$("#returnMsg").html("<img src='${pageContext.request.contextPath}/static/imgs/error.png'/><font color='red'>"+data.msg+"</font>");
 	    					}else{
 	    						swal({
-	    							title : "你是否确定上传?",
+	    							title : "你是否确定上传？",
 	    							text : fileName,
 	    							type : "warning",
 	    							showCancelButton : true,

@@ -57,9 +57,19 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     padding-left: 5px;
     color: red;
 }
+.form-group input{
+	width: 240px;
+	height:30px;
+	line-height:30px;
+	text-align:left;
+}
+
 </style>
   <script type="text/javascript">
   $(function(){
+		//修改页面缩放，界面显示不正常
+		$(".col-lg-4").css("margin-left","25%");		
+
 		//左菜单栏
 		$("#fileview-img").attr("src","${pageContext.request.contextPath}/static/new/img/images/a_46.png");
 		$("#filemanage-img").attr("src","${pageContext.request.contextPath}/static/new/img/images/a_26.png");
@@ -67,7 +77,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		$("#filemange-text").css("color", "#5d90d6");
 		$("#fileviewUL").css("display", "block");
 		$("#filemanageUL").css("display", "block");
-	  
+
 	  jeDate({
 			dateCell:"#search-beginTime",//直接显示日期层的容器，可以是ID  CLASS
 			format:"YYYY-MM-DD",//日期格式
@@ -86,7 +96,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			//minDate:"2014-09-19 00:00:00",//最小日期
 			maxDate:jeDate.now(0), //设定最大日期为当前日期
 		});
-	  
+		$("#search-beginTime").keypress(function(){
+		  return false;
+		});
+		$("#search-endTime").keypress(function(){
+		  return false;
+		});
 	//修改搜索框图标
 	var flag=false;
 	$("#change-search-box").click(function(){		
@@ -149,50 +164,49 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								<form id="fileupload" action="" class="form-horizontal" role="form" >
 									<div class="space-1"></div>
 									<div class="form-group">
-										<label class="col-sm-3 control-label no-padding-right" for="search-series"> 系列 </label>
+										<label class="col-sm-3 control-label no-padding-right" for="search-series"> 系列：</label>
 										<div class="col-sm-9">
-											<input type="text" id="search-series" name="series" placeholder="系列" class="col-xs-10 col-sm-5" 
-											style="height: 28px;width: 231px"/>
+											<input type="text" id="search-series" name="series" placeholder="系列" class="col-xs-10 col-sm-5" style="height:30px;"/>
 											<label class="mustchoose">*</label>
 										</div>
 									</div>
 									<div class="space-4"></div>
 									<div class="form-group">
-										<label class="col-sm-3 control-label no-padding-right" for="search-star"> 星 </label>
+										<label class="col-sm-3 control-label no-padding-right" for="search-star"> 星号：</label>
 										<div class="col-sm-9">
-											<input type="text" id="search-star" name="star" placeholder="星" class="col-xs-10 col-sm-5" 
-											style="height: 28px;width: 231px"/>
+											<input type="text" id="search-star" name="star" placeholder="星号" class="col-xs-10 col-sm-5" style="height:30px;"/>
 											<label class="mustchoose">*</label>
 										</div>
 									</div>
 									<div class="space-4"></div>
 									<div class="form-group">
-										<label class="col-sm-3 control-label no-padding-right" for="search-paramType"> 设备 </label>
+										<label class="col-sm-3 control-label no-padding-right" for="search-paramType"> 设备：</label>
 										<div class="col-sm-9">
-											<input type="text" id="search-paramType" name="paramType" placeholder="设备" class="col-xs-10 col-sm-5" 
-											style="height: 28px;width: 231px"/>
+											<input type="text" id="search-paramType" name="paramType" placeholder="设备" class="col-xs-10 col-sm-5" style="height:30px;"/>
 											<label class="mustchoose">*</label>
 										</div>
 									</div>
 									<div class="space-4"></div>
 									<div class="form-group">
-										<label class="col-sm-3 control-label no-padding-right" for="search-beginTime"> 开始时间 </label>
+										<label class="col-sm-3 control-label no-padding-right" for="search-beginTime"> 开始时间：</label>
 										<div class="col-sm-9">
-											<input type="text" id="search-beginTime" name="beginTime" placeholder="开始时间" class="col-xs-10 col-sm-5" />
+										
+											<input type="text" id="search-beginTime" name="beginTime" placeholder="--请选择开始时间--" class="col-xs-10 col-sm-5" />
+
 											<div id="getBeginTime"></div>
 										</div>
 									</div>
 									<div class="space-4"></div>
 									<div class="form-group">
-										<label class="col-sm-3 control-label no-padding-right" for="search-endTime"> 结束时间 </label>
+										<label class="col-sm-3 control-label no-padding-right" for="search-endTime"> 结束时间：</label>
 										<div class="col-sm-9">
-											<input type="text" id="search-endTime" name="endTime" placeholder="结束时间" class="col-xs-10 col-sm-5" />
+											<input type="text" id="search-endTime" name="endTime" placeholder="--请选择结束时间--" class="col-xs-10 col-sm-5" />
 											<div id="getEndTime"></div>
 										</div>
 									</div>
 									<div class="space-4"></div>
 									<div class="form-group">
-										<label class="col-sm-3 control-label no-padding-right" > 文件类型 </label>
+										<label class="col-sm-3 control-label no-padding-right" > 文件类型：</label>
 										<div class="col-sm-9">
 											<label>
 												<input name="form-fileType-checkbox" type="checkbox" value="dat" class="ace" checked="checked"/>
@@ -321,7 +335,19 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	      $('#btn-search').click(function(){
 	    	  var nowSeries = $("#search-series").combobox('getValue');
 	    	  var nowStar = $("#search-star").combobox('getValue');
-	    	  var nowParamType = 'flywheel';
+	    	  var nowParamType = $("#search-paramType").combobox('getValue');
+			  if (nowSeries == "") {
+				top.alertMsg('提示', '请选择星系！');
+				return;
+			  }
+			  if (nowStar == "") {
+				top.alertMsg('提示', '请选择星！');
+				return;
+			  }
+			  if (nowParamType == "") {
+				top.alertMsg('提示', '请选择设备！');
+				return;
+			  }
 	    	  //显示文件列表
 	    	  $("#div-fsList").show();
 	    	  var beginTime = $('#search-beginTime').val();
@@ -453,7 +479,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     	          });
 	    	  }
 	     }else {
-	    	 top.showMsg("提示", "请选择要下载的文件");
+	    	 top.showMsg("提示", "请选择要下载的文件！");
 	     }  
 	  }
 	  function deleteFS() {
@@ -483,13 +509,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                   ids.push(rows[i].id +"/"+rows[i].type);
               }
 	          swal({
-					title : "你是否确定删除?",
+					title : "你是否确定删除？",
 					text : names.join(','),
 					type : "warning",
 					showCancelButton : true,
 					confirmButtonColor : "#DD6B55",
-					confirmButtonText : "删除!",
-					cancelButtonText : "取消!",
+					confirmButtonText : "删除",
+					cancelButtonText : "取消",
 					closeOnConfirm : false,
 //					closeOnCancel : false
 				},
@@ -504,7 +530,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							dataType : "json",
 							success : function(data) {
 								if (data.success) {
-									swal("删除成功!","","success");
+									swal("删除成功","","success");
 									reloadDataGrid();
 								} else {
 									swal("删除失败", data.msg,"error");

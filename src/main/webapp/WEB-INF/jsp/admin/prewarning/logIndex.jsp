@@ -100,11 +100,19 @@
 	padding-left: 5px;
 	color: red;
 }
-
+.form-group input,.form-group select{
+	width: 240px;
+	height:30px;
+	line-height:30px;
+	text-align:left;
+}
 </style>
 <script type="text/javascript">
 	var activeUser = '${activeUser}';
 	$(function() {
+		//修改页面缩放，界面显示不正常
+		$(".col-lg-4").css("margin-left","33.3%");
+
 		//左菜单栏
 		$("#warnlog-img").attr("src","${pageContext.request.contextPath}/static/new/img/images/a_70.png");
 		$("#warnmanage-img").attr("src","${pageContext.request.contextPath}/static/new/img/images/a_58.png");
@@ -194,7 +202,7 @@
 									<div class="space-1"></div>
 									<div class="form-group">
 										<label class="col-sm-4 control-label no-padding-right"
-											for="search-warningType"> 预警类型 </label>
+											for="search-warningType"> 预警类型：</label>
 										<div class="col-sm-8">
 											<select class="col-xs-10 col-sm-5" id="search-warningType"
 												name="warningType">
@@ -207,7 +215,7 @@
 									<div class="space-4"></div>
 									<div class="form-group">
 										<label class="col-sm-4 control-label no-padding-right"
-											for="search-series"> 星系 </label>
+											for="search-series"> 星系：</label>
 										<div class="col-sm-8">
 											<select class="col-xs-10 col-sm-5" id="search-series"
 												name="series">
@@ -218,7 +226,7 @@
 									<div class="space-4"></div>
 									<div class="form-group">
 										<label class="col-sm-4 control-label no-padding-right"
-											for="search-star"> 星</label>
+											for="search-star"> 星号：</label>
 										<div class="col-sm-8">
 											<select class="col-xs-10 col-sm-5" id="search-star"
 												name="star">
@@ -229,7 +237,7 @@
 									<div class="space-4"></div>
 									<div class="form-group">
 										<label class="col-sm-4 control-label no-padding-right"
-											for="search-parameterType"> 设备 </label>
+											for="search-parameterType"> 设备：</label>
 										<div class="col-sm-8">
 											<select class="col-xs-10 col-sm-5" id="search-parameterType"
 												name="parameterType">
@@ -240,10 +248,10 @@
 									<div class="space-4"></div>
 									<div class="form-group">
 										<label class="col-sm-4 control-label no-padding-right"
-											for="search-parameter"> 参数 </label>
+											for="search-parameter"> 参数：</label>
 										<div class="col-sm-8">
 											<select class="col-xs-10 col-sm-5 select2"
-												style="width: 41.7%;" id="search-parameter" name="parameter">
+												 id="search-parameter" name="parameter">
 												<option value="">--请选择--</option>
 											</select>
 										</div>
@@ -251,10 +259,10 @@
 									<div class="space-4"></div>
 									<div class="form-group">
 										<label class="col-sm-4 control-label no-padding-right"
-											for="search-createdatetimeStart"> 创建开始时间 </label>
+											for="search-createdatetimeStart"> 创建开始时间：</label>
 										<div class="col-sm-8">
 											<input type="text" id="search-createdatetimeStart"
-												name="createdatetimeStart" placeholder="创建开始时间"
+												name="createdatetimeStart" placeholder="--请选择开始时间--"
 												class="col-xs-10 col-sm-5" />
 											<div id="getBeginTime"></div>
 										</div>
@@ -262,10 +270,10 @@
 									<div class="space-4"></div>
 									<div class="form-group">
 										<label class="col-sm-4 control-label no-padding-right"
-											for="search-createdatetimeEnd"> 创建结束时间 </label>
+											for="search-createdatetimeEnd"> 创建结束时间：</label>
 										<div class="col-sm-8">
 											<input type="text" id="search-createdatetimeEnd"
-												name="createdatetimeEnd" placeholder="创建结束时间"
+												name="createdatetimeEnd" placeholder="--请选择结束时间--"
 												class="col-xs-10 col-sm-5" />
 											<div id="getEndTime"></div>
 										</div>
@@ -374,7 +382,7 @@ jeDate({
 						},
 						{
 							field : 'star',
-							title : '星',
+							title : '星号',
 							width : 100,
 						//sortable:true
 						},
@@ -576,7 +584,7 @@ jeDate({
 							},
 							{
 								field : 'star',
-								title : '星',
+								title : '星号',
 								width : 100,
 							//sortable:true
 							},
@@ -645,7 +653,7 @@ jeDate({
 			if (rows.length > 0) {
 				swal(
 						{
-							title : "你是否确定删除?",
+							title : "你是否确定删除？",
 							text : "确认删除？",
 							type : "warning",
 							showCancelButton : true,
@@ -687,7 +695,7 @@ jeDate({
 											dataType : "json",
 											success : function(data) {
 												if (data.success) {
-													swal("删除成功!", "", "success");
+													swal("删除成功", "", "success");
 													reloadDataGrid();
 												} else {
 													swal("删除失败", data.obj,

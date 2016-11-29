@@ -174,7 +174,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     float: right;
     position: relative;
   }
-  .form-group select{
+  .form-group select,.form-group input{
 	width: 240px;
 	height:30px;
 	line-height:30px;
@@ -488,7 +488,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								<div class="form-group">
 									<label class="col-sm-3 control-label no-padding-right" for="add-starParam-partsType">  设备： </label>
 									<div class="col-sm-8">
-										<select name="partsType"  id="add-starParam-partsType" class="form-control " >
+										<select name="partsType"  id="add-starParam-partsType" class="form-control" style="width:240px;">
 										   <option selected="selected" value="">--请选择--</option>
 				                       </select>
 									</div>
@@ -497,7 +497,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								<div class="form-group">
 									<label class="col-sm-3 control-label no-padding-right" for="add-starParam-paramCode"> 参数： </label>
 									<div class="col-sm-8">
-										<select name="paramCode"  id="add-starParam-paramCode" class="form-control  select2" style="width: 100%;">
+										<select name="paramCode"  id="add-starParam-paramCode" class="form-control  select2">
 											<option selected="selected" value="">--请选择--</option>
 				                       </select>
 									</div>
@@ -567,7 +567,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								<div class="form-group">
 									<label class="col-sm-3 control-label no-padding-right" for="edit-starParam-paramCode"> 参数： </label>
 									<div class="col-sm-8">
-										<select name="paramCode"  id="edit-starParam-paramCode" class="form-control  select2" style="width: 100%;">
+										<select name="paramCode"  id="edit-starParam-paramCode" class="form-control  select2">
 				                       </select>
 									</div>
 								</div>

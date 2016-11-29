@@ -35,7 +35,7 @@
     <!--<script src=${base}/static/assets/js/bootstrap-tag.min.js"></script>-->
     <script src="${pageContext.request.contextPath}/DataRemote/static/assets/js/bootstrap.min.js"></script>
 	<script src="${pageContext.request.contextPath}/DataRemote/static/assets/js/typeahead-bs2.min.js"></script>
-	
+	<!-- 颜色选择器 -->
 	<script type="text/javascript" src="${base}/static/content/minicolors/jscolor.js"></script>
     <style type="text/css">
     .dateStyle{

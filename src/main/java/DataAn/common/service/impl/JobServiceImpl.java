@@ -94,8 +94,10 @@ public class JobServiceImpl implements IJobService{
 		
 	}
 
-	//每个星期一晚上11点触发
-	@Scheduled(cron = "0 0 23 ? * MON") 
+	//每个星期一晚上11点触发 生产环境
+//	@Scheduled(cron = "0 0 23 ? * MON") 
+	//每天晚上22点执行此方法 测试使用
+	@Scheduled(cron = "0 0 23 * * ?") 
 	@Override
 	public void createReport() throws Exception {
 		String templateUrl = OptionConfig.getWebPath() + "\\report\\wordtemplate\\卫星状态报告.doc";

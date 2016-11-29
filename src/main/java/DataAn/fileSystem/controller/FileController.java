@@ -173,29 +173,31 @@ public class FileController {
 	@RequestMapping(value = "existFile", method = RequestMethod.POST)
 	@ResponseBody
 	public JsonMessage existFile(String fileName){
-		JsonMessage msg = new JsonMessage();
+		System.out.println("come in existFile...");
+		System.out.println("fileName: " + fileName);
+		JsonMessage jsonMsg = new JsonMessage();
 		fileName = fileName.replace("\\", "/");
 		String[] strs = fileName.split("/");
 		//j9-02--2016-02-01.csv
 		fileName = strs[strs.length-1];
 		boolean flag = false;
 		//j9-02
-		String[] seriesStarStrs = fileName.substring(0, fileName.lastIndexOf(".csv")).split("--");
+		String[] seriesStarStrs = fileName.substring(0, fileName.lastIndexOf(".")).split("--");
 		String[] ss = seriesStarStrs[0].split("-");
 		String nowSeries = ss[0];//SeriesType.J9_SERIES.getName();
 		String nowStar = ss[1];//J9SeriesType.getJ9SeriesType(ss[1]).getValue();
 		flag = seriesService.checkSeriesAndStar(nowSeries, nowStar);
 		if(!flag){
-			msg.setSuccess(true);
-			msg.setMsg("文件中的星系不存在！！！");			
+			jsonMsg.setSuccess(true);
+			jsonMsg.setMsg("文件中的星系不存在！！！");			
 		}else{
 			flag = fileService.isExistFile(fileName);
 			if(flag){
-				msg.setSuccess(true);
-				msg.setMsg("csv文件已存在！！！");	
+				jsonMsg.setSuccess(true);
+				jsonMsg.setMsg("文件已存在！！！");	
 			}
 		}
-		return msg;
+		return jsonMsg;
 	}
 	
 	@RequestMapping(value = "/uploadFile", method = { RequestMethod.POST })

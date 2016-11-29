@@ -2,15 +2,23 @@ package DataAn.sys.domain;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+import DataAn.sys.dto.StormSysStatus;
 
 @Entity
-@Table(name="t_stormServers")
-public class StormServers implements java.io.Serializable {
+@Table(name="t_stormServer")
+public class StormServer implements java.io.Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -22,11 +30,16 @@ public class StormServers implements java.io.Serializable {
 	@Column(name = "serverIp", nullable = true,length=64)
 	private String serverIp;//服务器IP
 	
-	@Column(name = "status", nullable = true,length=8)
-	private String status; // 服务器状态
+	@Enumerated(EnumType.STRING)
+	@Column(name = "status", nullable = true,length=16)
+	private StormSysStatus status; // 服务器状态
 
 	@Column(name = "description", nullable = true,length=256)
 	private String description;
+	
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "createDate", nullable = true)
+	private Date createDate = new Date();
 	
 	public long getId() {
 		return id;
@@ -43,12 +56,12 @@ public class StormServers implements java.io.Serializable {
 	public void setServerIp(String serverIp) {
 		this.serverIp = serverIp;
 	}
-
-	public String getStatus() {
+	
+	public StormSysStatus getStatus() {
 		return status;
 	}
 
-	public void setStatus(String status) {
+	public void setStatus(StormSysStatus status) {
 		this.status = status;
 	}
 
@@ -58,6 +71,14 @@ public class StormServers implements java.io.Serializable {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	public Date getCreateDate() {
+		return createDate;
+	}
+
+	public void setCreateDate(Date createDate) {
+		this.createDate = createDate;
 	}
 	
 	

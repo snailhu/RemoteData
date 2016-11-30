@@ -420,6 +420,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				  beginTime: beginTime,
 				  endTime: endTime
 		     });
+	    	  fsGrid.datagrid('unselectAll');
 		  });
 
 		/* 	if(activeUser != ''){

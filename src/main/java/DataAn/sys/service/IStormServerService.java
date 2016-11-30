@@ -5,15 +5,18 @@ import DataAn.sys.dto.StormServerDto;
 
 public interface IStormServerService {
 
-	void create(StormServerDto server);
+	void save(StormServerDto server);
 
 	void delete(String serverIds);
 	
 	void update(StormServerDto server);
 
+	void updateByServerIP(String serverIP);
+
 	Pager<StormServerDto> getStormServerList(int pageIndex, int pageSize);
 
 	boolean existServer(StormServerDto server);
+
 
 
 

@@ -556,8 +556,7 @@
 									<label class="col-sm-3 control-label no-padding-right"
 										for="add-parameter"> 参数：</label>
 									<div class="col-sm-8">
-										<select class="form-control select2" style="width: 100%;"
-											id="add-parameter" name="parameter">
+										<select class="form-control select2" id="add-parameter" name="parameter">
 											<option value="">--请选择--</option>
 										</select>
 									</div>
@@ -652,8 +651,7 @@
 									<label class="col-sm-3 control-label no-padding-right"
 										for="edit-parameter"> 参数：</label>
 									<div class="col-sm-8">
-										<select class="form-control select2" style="width: 100%;"
-											id="edit-parameter" name="parameter">
+										<select class="form-control select2" id="edit-parameter" name="parameter">
 											<option value="">--请选择--</option>
 										</select>
 									</div>

@@ -263,8 +263,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	        </form>
 	      </div>
 	      <div class="modal-footer">
-	        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
 	        <button type="button" class="btn btn-primary" onclick="postTemplate()">确定</button>
+	        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
 	      </div>
 	    </div>
 	  </div>
@@ -281,7 +281,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	      <div class="modal-body">
 	        <form>
 	          <div class="form-group">
-	            <label for="recipient-name" class="control-label">模板名称</label>
+	            <label for="recipient-name" class="control-label">模板名称:</label>
 	            <input type="text" class="form-control" id="id_template_name">
 	          </div>
 	          <div class="form-group">
@@ -291,8 +291,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	        </form>
 	      </div>
 	      <div class="modal-footer">
-	        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
 	        <button type="button" class="btn btn-primary" onclick="postTemplate()">确定</button>
+	        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
 	      </div>
 	    </div>
 	  </div>

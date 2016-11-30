@@ -27,15 +27,12 @@ public class StormServer implements java.io.Serializable {
 	@Column(name = "userId", unique = true, nullable = false)
 	private long id;
 	
-	@Column(name = "serverIp", nullable = true,length=64)
+	@Column(name = "serverIp", nullable = true,length=64, unique = true)
 	private String serverIp;//服务器IP
 	
 	@Enumerated(EnumType.STRING)
 	@Column(name = "status", nullable = true,length=16)
 	private StormSysStatus status; // 服务器状态
-
-	@Column(name = "description", nullable = true,length=256)
-	private String description;
 	
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "createDate", nullable = true)
@@ -63,14 +60,6 @@ public class StormServer implements java.io.Serializable {
 
 	public void setStatus(StormSysStatus status) {
 		this.status = status;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
 	}
 
 	public Date getCreateDate() {

@@ -6,9 +6,11 @@ public class StormServerDto {
 	
 	private String serverIp;
 	
-	private String status;
+	private String statusName;
 	
-	private String description;
+	private String statusValue;
+	
+	private String createDate;
 
 	public long getId() {
 		return id;
@@ -26,27 +28,35 @@ public class StormServerDto {
 		this.serverIp = serverIp;
 	}
 
-	public String getStatus() {
-		return status;
+	public String getStatusName() {
+		return statusName;
 	}
 
-	public void setStatus(String status) {
-		this.status = status;
+	public void setStatusName(String statusName) {
+		this.statusName = statusName;
 	}
 
-	public String getDescription() {
-		return description;
+	public String getStatusValue() {
+		return statusValue;
 	}
 
-	public void setDescription(String description) {
-		this.description = description;
+	public void setStatusValue(String statusValue) {
+		this.statusValue = statusValue;
+	}
+
+	public String getCreateDate() {
+		return createDate;
+	}
+
+	public void setCreateDate(String createDate) {
+		this.createDate = createDate;
 	}
 
 	@Override
 	public String toString() {
 		return "StormServerDto [id=" + id + ", serverIp=" + serverIp
-				+ ", status=" + status + ", description=" + description + "]";
+				+ ", statusName=" + statusName + ", statusValue=" + statusValue
+				+ ", createDate=" + createDate + "]";
 	}
-	
-	
+
 }

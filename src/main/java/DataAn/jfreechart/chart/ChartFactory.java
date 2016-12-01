@@ -137,16 +137,16 @@ public class ChartFactory {
             		dateTickUnit = new DateTickUnit(DateTickUnitType.SECOND, 1, new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")); // 第二个参数是时间轴间距            		
             	}else{ //一小时 至 一天之内的点显示
             		//刻度单位小时,1个小时为间隔
-            		dateTickUnit = new DateTickUnit(DateTickUnitType.HOUR, 1, new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")); // 第二个参数是时间轴间距            		
+            		dateTickUnit = new DateTickUnit(DateTickUnitType.HOUR, 4, new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")); // 第二个参数是时间轴间距            		
             	}
             }else{ //一天到一个星期的点显示
             	//刻度单位小时,4个小时为间隔
-                dateTickUnit = new DateTickUnit(DateTickUnitType.HOUR, 4, new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")); // 第二个参数是时间轴间距
+                dateTickUnit = new DateTickUnit(DateTickUnitType.HOUR, 12, new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")); // 第二个参数是时间轴间距
             }
 //            dateTickUnit = new DateTickUnit(DateTickUnitType.SECOND, 6, new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")); // 第二个参数是时间轴间距
         }else { //大于一个星期的点显示
         	//刻度单位小时,12个小时为间隔
-            dateTickUnit = new DateTickUnit(DateTickUnitType.HOUR, 12, new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")); // 第二个参数是时间轴间距
+            dateTickUnit = new DateTickUnit(DateTickUnitType.HOUR, 24, new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")); // 第二个参数是时间轴间距
 //            dateTickUnit = new DateTickUnit(DateTickUnitType.DAY, 1, new SimpleDateFormat("yyyy-MM-dd")); // 第二个参数是时间轴间距
         }
         

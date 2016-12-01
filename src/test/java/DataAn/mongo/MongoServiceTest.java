@@ -1,6 +1,7 @@
 package DataAn.mongo;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -14,6 +15,9 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import com.mongodb.client.MongoCursor;
+
+import DataAn.common.utils.DateUtil;
 import DataAn.common.utils.UUIDGeneratorUtil;
 import DataAn.fileSystem.dto.CSVFileDataResultDto;
 import DataAn.fileSystem.service.ICSVService;
@@ -71,7 +75,12 @@ public class MongoServiceTest {
 	
 	@Test
 	public void find(){
-		mongoService.find();
+		Date beginDate = DateUtil.format("2016-11-23 00:00:00");
+		Date endDate = DateUtil.format("2016-11-29 00:00:00");
+		MongoCursor<Document> cursor = mongoService.findByDate("j9", "02","flywheel", beginDate, endDate);
+		while (cursor.hasNext()) {
+			System.out.println(cursor.next());
+		}
 	}
 	
 	

@@ -81,8 +81,8 @@ public class MakeCSVFile {
 	
 	@Test
 	public void testMakeDataCSV() throws Exception{
-		for (int year = 2000; year <= 2000; year++) {
-			for (int month = 5; month <= 5; month++) {
+		for (int year = 2005; year <= 2005; year++) {
+			for (int month = 1; month <= 2; month++) {
 				for (int day = 1; day < 10; day++) {
 					this.writeCSV(year, month, day);							
 				}
@@ -135,7 +135,7 @@ public class MakeCSVFile {
 		int count = 1;
 		while(tempDate.before(date2)){
 			
-			if(count == 2000)
+			if(count == 5000)
 				break;
 			count++;
 			

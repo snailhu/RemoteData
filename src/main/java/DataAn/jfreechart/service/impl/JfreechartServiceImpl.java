@@ -180,12 +180,9 @@ public class JfreechartServiceImpl implements IJfreechartServcie {
 			List<ConstraintDto> constraintList = constraintsMap.get(key);
 			for (ConstraintDto constraintDto : constraintList) {
 				if (!params.containsKey(key)) {
-					params.put(constraintDto.getValue(),
-							constraintDto.getName());
-					paramMin.put(constraintDto.getValue(),
-							constraintDto.getMin());
-					paramMax.put(constraintDto.getValue(),
-							constraintDto.getMax());
+					params.put(constraintDto.getValue(),constraintDto.getName());
+					paramMin.put(constraintDto.getValue(),constraintDto.getMin());
+					paramMax.put(constraintDto.getValue(),constraintDto.getMax());
 				}
 			}
 		}
@@ -215,8 +212,18 @@ public class JfreechartServiceImpl implements IJfreechartServcie {
 					}
 					String strValue = doc.getString(key);
 					if(StringUtils.isNotBlank(strValue)){
+						
 						// 转换为double 类型
 						double dValue = Double.parseDouble(strValue.trim());
+						
+						//在有效值区间之内
+						
+						if(paramMax.get(key) != null && dValue > paramMax.get(key))
+							break;
+						
+						if(paramMin.get(key) != null && dValue < paramMin.get(key))
+							break;
+						
 						// 往序列里面添加数据
 						timeseries.addOrUpdate(new Millisecond(datetime), dValue);
 						lineMap.put(key, timeseries);
@@ -232,9 +239,10 @@ public class JfreechartServiceImpl implements IJfreechartServcie {
 							max = dValue;
 						}
 						maxMap.put(key, this.getMax(max, dValue));
-					}else{
-						throw new RuntimeException(DateUtil.format(beginDate) + " 到 "+ 
-								DateUtil.format(endDate) +" " + params.get(key) + " 未找到报告数据！");
+					}
+					else{
+//						throw new RuntimeException(DateUtil.format(beginDate) + " 到 "+ 
+//								DateUtil.format(endDate) +" " + params.get(key) + " 未找到报告数据！1");
 					}
 				}
 			}
@@ -249,23 +257,33 @@ public class JfreechartServiceImpl implements IJfreechartServcie {
 				for (ConstraintDto constraintDto : constraintList) {
 					TimeSeriesCollection dataset = new TimeSeriesCollection();
 					TimeSeries timeSeries = lineMap.get(constraintDto.getValue());
-					if(timeSeries == null){
-						throw new RuntimeException(DateUtil.format(beginDate) + " 到 "+ 
-								DateUtil.format(endDate) +" " + constraintDto.getName()+" 未找到报告数据！");
+//					if(timeSeries == null){
+//						throw new RuntimeException(DateUtil.format(beginDate) + " 到 "+ 
+//								DateUtil.format(endDate) +" " + constraintDto.getName()+" 未找到报告数据！2");
+//					}
+//					datasetList.add(dataset);
+					if(timeSeries != null){
+						dataset.addSeries(timeSeries);						
+						datasetList.add(dataset);						
+					}else{
+						System.out.println(DateUtil.format(beginDate) + " 到 "+ DateUtil.format(endDate) +" " + constraintDto.getName()+" 未找到报告数据！2");
 					}
-					dataset.addSeries(timeSeries);						
-					datasetList.add(dataset);
 				}
 			}else{
 				// 多条线图表数据
 				TimeSeriesCollection dataset = new TimeSeriesCollection();
 				for (ConstraintDto constraintDto : constraintList) {
 					TimeSeries timeSeries = lineMap.get(constraintDto.getValue());
-					if(timeSeries == null){
-						throw new RuntimeException(DateUtil.format(beginDate) + " 到 "+ 
-								DateUtil.format(endDate) +" " + constraintDto.getName()+" 未找到报告数据！");
+//					if(timeSeries == null){
+//						throw new RuntimeException(DateUtil.format(beginDate) + " 到 "+ 
+//								DateUtil.format(endDate) +" " + constraintDto.getName()+" 未找到报告数据！3");
+//					}
+//					dataset.addSeries(timeSeries);		
+					if(timeSeries != null){
+						dataset.addSeries(timeSeries);						
+					}else{
+						System.out.println(DateUtil.format(beginDate) + " 到 "+ DateUtil.format(endDate) +" " + constraintDto.getName()+" 未找到报告数据！2");
 					}
-					dataset.addSeries(timeSeries);						
 				}
 				datasetList.add(dataset);
 			}

@@ -1,7 +1,10 @@
 package DataAn.mongo;
 
+import org.bson.Document;
 import org.junit.Before;
 import org.junit.Test;
+
+import com.mongodb.client.MongoCursor;
 
 import DataAn.mongo.client.MongodbUtil;
 import DataAn.mongo.init.InitMongo;
@@ -22,6 +25,9 @@ public class MongodbUtilTest {
 		System.out.println("flag: " + flag);
 	}
 
-	
+	@Test
+	public void test2(){
+		
+	}
 
 }

@@ -80,11 +80,15 @@ public class JfreechartServcieTest {
 		c31.setName("飞轮温度Za(00819)");
 		c31.setValue("sequence_00819");
 		list3.add(c31);
+		ConstraintDto c32 = new ConstraintDto();
+		c32.setName("飞轮温度Zb(00825)");
+		c32.setValue("sequence_00825");
+		list3.add(c32);
 		constraintsMap.put("chart3", list3);
 		
 		
-		Date beginDate = DateUtil.format("2000-01-01 00:00:00");
-		Date endDate = DateUtil.format("2000-01-02 00:00:00");
+		Date beginDate = DateUtil.format("2016-11-23 00:00:00");
+		Date endDate = DateUtil.format("2016-11-29 00:00:00");
 		
 		LineChartDto lineChartDto = jfreechartServcie.createLineChart(series, star, paramType, beginDate, endDate, constraintsMap);
 		System.out.println(lineChartDto);

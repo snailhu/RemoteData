@@ -298,11 +298,13 @@ public class PrewarningServiceImpl implements IPrewarningService {
 	public List<WarningValue> getWarningValueByParams(String series, String star, String parameter,
 			String parameterType, String warningType) {
 		String seriesId = seriersDao.getSeriesIdByName(series);
-		String starId = starDao.getStarIdByName(star);
-		if (StringUtils.isBlank(seriesId) || StringUtils.isBlank(starId)) {
-			return null;
+		if (StringUtils.isNotBlank(seriesId)) {
+			List<Star> list = starDao.getStarBySeriesIdAndCode(Long.parseLong(seriesId), star);
+			if (list != null && list.size() > 0) {
+				return warningValueDao.getWarningValueByParams(seriesId, String.valueOf(list.get(0).getId()), parameter, parameterType, warningType);
+			}
 		}
-		return warningValueDao.getWarningValueByParams(seriesId, starId, parameter, parameterType, warningType);
+		return null;
 	}
 
 	@Override

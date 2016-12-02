@@ -48,7 +48,7 @@ public class Parameter {
 	private String simplyName;
 	
 	//参数码
-	@Column(name = "code", unique = true, nullable = false, length = 64)
+	@Column(name = "code", nullable = false, length = 64)
 	private String code;
 
 	@Temporal(TemporalType.TIMESTAMP)

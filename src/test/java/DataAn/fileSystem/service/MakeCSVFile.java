@@ -16,7 +16,7 @@ import java.util.Map;
 import org.junit.Test;
 
 import DataAn.common.utils.DateUtil;
-import DataAn.galaxyManager.option.J9SeriesParamConfigService;
+import DataAn.galaxy.service.J9SeriesParamConfigService;
 
 import com.csvreader.CsvWriter;
 

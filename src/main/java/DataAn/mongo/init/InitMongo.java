@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import DataAn.common.utils.PropertiesUtil;
-import DataAn.galaxyManager.option.J9SeriesType;
-import DataAn.galaxyManager.option.J9Series_Star_ParameterType;
-import DataAn.galaxyManager.option.SeriesType;
+import DataAn.galaxy.option.J9SeriesType;
+import DataAn.galaxy.option.J9Series_Star_ParameterType;
+import DataAn.galaxy.option.SeriesType;
 import DataAn.storm.hierarchy.HierarchyModel;
 import DataAn.storm.hierarchy.HieraychyUtils;
 

@@ -11,7 +11,7 @@ import java.util.List;
 import net.sf.json.JSONArray;
 import DataAn.Util.JsonStringToObj;
 import DataAn.common.utils.DateUtil;
-import DataAn.galaxyManager.option.J9Series_Star_ParameterType;
+import DataAn.galaxy.option.J9Series_Star_ParameterType;
 import DataAn.storm.hierarchy.HierarchyModel;
 import DataAn.storm.hierarchy.HieraychyUtils;
 import DataAn.mongo.init.InitMongo;

@@ -21,9 +21,9 @@ import DataAn.common.utils.DateUtil;
 import DataAn.common.utils.UUIDGeneratorUtil;
 import DataAn.fileSystem.dto.CSVFileDataResultDto;
 import DataAn.fileSystem.service.ICSVService;
-import DataAn.galaxyManager.option.J9SeriesType;
-import DataAn.galaxyManager.option.J9Series_Star_ParameterType;
-import DataAn.galaxyManager.option.SeriesType;
+import DataAn.galaxy.option.J9SeriesType;
+import DataAn.galaxy.option.J9Series_Star_ParameterType;
+import DataAn.galaxy.option.SeriesType;
 import DataAn.mongo.service.IMongoService;
 
 @RunWith(SpringJUnit4ClassRunner.class)

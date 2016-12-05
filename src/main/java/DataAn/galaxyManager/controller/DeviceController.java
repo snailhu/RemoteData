@@ -1,5 +1,6 @@
 package DataAn.galaxyManager.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -99,6 +100,7 @@ public class DeviceController {
 	@ResponseBody
 	public List<DeviceType> getDeviceTypeList(HttpServletRequest request) {
 		List<DeviceType> deviceTypes = null;
+		List<DeviceType> deviceTypesNew = new ArrayList<DeviceType>();
 		try {
 			deviceTypes = deviceService.getDeviceTypeList();
 		} catch (Exception e) {
@@ -108,12 +110,14 @@ public class DeviceController {
 		String userType = getUserType(null, request);
 		if (StringUtils.isNotBlank(userType)) {
 			for (DeviceType deviceType : deviceTypes) {
-				if (!userType.equals(deviceType.getDeviceCode())) {
-					deviceTypes.remove(deviceType);
+				if (userType.equals(deviceType.getDeviceCode())) {
+					deviceTypesNew.add(deviceType);
 				}
 			}
+		} else {
+			deviceTypesNew.addAll(deviceTypes);
 		}
-		return deviceTypes;
+		return deviceTypesNew;
 	}
 
 	@RequestMapping(value = "/createDevice")
@@ -227,16 +231,16 @@ public class DeviceController {
 			return userType;
 		}
 	}
-	
+
 	@RequestMapping("/getDeviceTypeComboData")
 	@ResponseBody
 	public List<Combo> getDeviceTypeComboData(String deviceTypeCode) {
-//		System.out.println("getDeviceTypeComboData..");
-//		System.out.println("deviceTypeCode: " + deviceTypeCode);
+		// System.out.println("getDeviceTypeComboData..");
+		// System.out.println("deviceTypeCode: " + deviceTypeCode);
 		List<Combo> list = deviceService.getDeviceTypeComboData(deviceTypeCode);
-//		for (Combo combo : list) {
-//			System.out.println(combo);
-//		}
+		// for (Combo combo : list) {
+		// System.out.println(combo);
+		// }
 		return list;
 	}
 }

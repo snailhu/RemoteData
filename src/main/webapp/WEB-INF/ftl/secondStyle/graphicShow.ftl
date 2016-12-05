@@ -518,7 +518,6 @@ $.post("getDatabytap",
        			// 向下滚
        			console.log("wheeldown");
        			if(startDate_init==startDate&&endDate_init==endDate){
-       				console.log("wheeldown");
        				console.log(startDate_init);
 	              	console.log(endDate_init);
        				if(needGetDate()){
@@ -540,6 +539,7 @@ $.post("getDatabytap",
 			       		paramObject.paramAttribute=names;
 			       		  		
 			         	//一次性组装所有参数的x和y值
+			         	console.log("开始请求后台时间："+new Date());
 			       		$.ajax({
 			                 url: '${base}/getData',
 			                 type: 'POST',
@@ -549,6 +549,7 @@ $.post("getDatabytap",
 			                 data: {'paramObject':JSON.stringify(paramObject)},
 			                  //成功执行方法
 			                 success: function(data){
+			                 	 console.log("请求后台完成时间："+new Date());
 			                	 $("#main").hideLoading(); 
 			                	 startDate_init = startDate;
 								 endDate_init = endDate;
@@ -584,6 +585,7 @@ $.post("getDatabytap",
 			    	            	options.series = eval(seriesOptions);
 			    	            	pDate=options.xAxis.data = date;
 			    	                myChart.setOption(options);
+			    	                console.log("画图完成时间："+new Date());
 			                 }
 			             })
        				}
@@ -639,6 +641,7 @@ $.post("getDatabytap",
 		       		paramObject.endTime=endDate;
 		       		paramObject.paramAttribute=names;
 		       		  		
+		       		 console.log("开始请求后台时间："+new Date());
 		         	//一次性组装所有参数的x和y值
 		       		$.ajax({
 		                 url: '${base}/getData',
@@ -649,6 +652,7 @@ $.post("getDatabytap",
 		                 data: {'paramObject':JSON.stringify(paramObject)},
 		                  //成功执行方法
 		                 success: function(data){
+		                 	 console.log("请求后台完成时间："+new Date());
 		                	 $("#main").hideLoading(); 
 		                	 startDate_init = startDate;
 							 endDate_init = endDate;	
@@ -684,6 +688,7 @@ $.post("getDatabytap",
 		    	            	options.series = eval(seriesOptions);
 		    	            	pDate=options.xAxis.data = date;
 		    	                myChart.setOption(options);
+		    	                 console.log("画图完成时间："+new Date());
 		                 }
 		             })  	
                 	
@@ -812,22 +817,22 @@ $.post("getDatabytap",
 		var startYear = startInit.getFullYear();
 		var startMonth = startInit.getMonth();
 		var startDay = startInit.getDate();
-		var startHours = startInit.getFullYear();
-		var startMinutes = startInit.getFullYear();
-		var startSeconds = startInit.getFullYear();
+		var startHours = startInit.getHours();
+		var startMinutes = startInit.getMinutes();
+		var startSeconds = startInit.getSeconds();
 		var endYear = endInit.getFullYear();
 		var endMonth = endInit.getMonth();
-		var endDay = endInit.getFullYear();
-		var endHours = endInit.getFullYear();
-		var endMinutes = endInit.getFullYear();
-		var endSeconds = endInit.getFullYear();
+		var endDay = endInit.getDate();
+		var endHours = endInit.getHours();
+		var endMinutes = endInit.getMinutes();
+		var endSeconds = endInit.getSeconds();
 		var a= stringToDate(startDate);
       	var b= stringToDate(endDate);
 		
 		if(timespace <= 120){
 			//两小时以内，1小时增减
 			if(startDate_init==startDate&&endDate_init==endDate){
-				startInit.setMinutes(startMinutes+30);
+				startInit.setMinutes(startMinutes-30);
 				endInit.setMinutes(endMinutes+30);
 				startDate = startInit.pattern("yyyy-MM-dd HH:mm:ss");
 				endDate = endInit.pattern("yyyy-MM-dd HH:mm:ss");
@@ -841,7 +846,7 @@ $.post("getDatabytap",
 		if(timespace > 120 && timespace <=2880){
 			//一小时到两天，一小时增减
 			if(startDate_init==startDate&&endDate_init==endDate){
-				startInit.setMinutes(startMinutes+30);
+				startInit.setMinutes(startMinutes-30);
 				endInit.setMinutes(endMinutes+30);
 				startDate = startInit.pattern("yyyy-MM-dd HH:mm:ss");
 				endDate = endInit.pattern("yyyy-MM-dd HH:mm:ss");
@@ -860,7 +865,7 @@ $.post("getDatabytap",
 		if(timespace > 2880 && timespace <=17080){
 			//两天到一周，半天增减
 			if(startDate_init==startDate&&endDate_init==endDate){
-				startInit.setHours(startHours+6);
+				startInit.setHours(startHours-6);
 				endInit.setHours(endHours+6);
 				startDate = startInit.pattern("yyyy-MM-dd HH:mm:ss");
 				endDate = endInit.pattern("yyyy-MM-dd HH:mm:ss");
@@ -879,7 +884,7 @@ $.post("getDatabytap",
 		if(timespace > 17080 && timespace <=34160){
 			//一周到两周，一天增减
 			if(startDate_init==startDate&&endDate_init==endDate){
-				startInit.setHours(startHours+12);
+				startInit.setHours(startHours-12);
 				endInit.setHours(endHours+12);
 				startDate = startInit.pattern("yyyy-MM-dd HH:mm:ss");
 				endDate = endInit.pattern("yyyy-MM-dd HH:mm:ss");
@@ -898,7 +903,7 @@ $.post("getDatabytap",
 		if(timespace > 17080 && timespace <=43200){
 			//两周到一月，两天增减
 			if(startDate_init==startDate&&endDate_init==endDate){
-				startInit.setDate(startDay+1);
+				startInit.setDate(startDay-1);
 				endInit.setDate(endDay+1);
 				startDate = startInit.pattern("yyyy-MM-dd HH:mm:ss");
 				endDate = endInit.pattern("yyyy-MM-dd HH:mm:ss");
@@ -917,7 +922,7 @@ $.post("getDatabytap",
 		if(timespace > 43200 && timespace <=259200){
 			//一月到半年，半月增减
 			if(startDate_init==startDate&&endDate_init==endDate){
-				startInit.setDate(startDay+7);
+				startInit.setDate(startDay-7);
 				endInit.setDate(endDay+8);
 				startDate = startInit.pattern("yyyy-MM-dd HH:mm:ss");
 				endDate = endInit.pattern("yyyy-MM-dd HH:mm:ss");
@@ -936,7 +941,7 @@ $.post("getDatabytap",
 		if(timespace > 204960 && timespace <=518400){
 			//半年到一年，一月增减
 			if(startDate_init==startDate&&endDate_init==endDate){
-				startInit.setDate(startDay+15);
+				startInit.setDate(startDay-15);
 				endInit.setDate(endDay+15);
 				startDate = startInit.pattern("yyyy-MM-dd HH:mm:ss");
 				endDate = endInit.pattern("yyyy-MM-dd HH:mm:ss");
@@ -955,7 +960,7 @@ $.post("getDatabytap",
 		if(timespace > 518400){
 			//大于一年，四个月增减
 			if(startDate_init==startDate&&endDate_init==endDate){
-				startInit.setMonth(startMonth+2);
+				startInit.setMonth(startMonth-2);
 				endInit.setMonth(endMonth+2);
 				startDate = startInit.pattern("yyyy-MM-dd HH:mm:ss");
 				endDate = endInit.pattern("yyyy-MM-dd HH:mm:ss");

@@ -230,13 +230,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
             },
             beginDate: {
                 validators: {
-              	  notEmpty: {
+              	    notEmpty: {
                         message: '开始运行时间不能为空'
                     },
-                regexp: {
-	                regexp: /^(?:(?!0000)[0-9]{4}-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1[0-9]|2[0-8])|(?:0[13-9]|1[0-2])-(?:29|30)|(?:0[13578]|1[02])-31)|(?:[0-9]{2}(?:0[48]|[2468][048]|[13579][26])|(?:0[48]|[2468][048]|[13579][26])00)-02-29)\s+([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]$/,
-                    message: '时间格式不对'
-                },
+	                regexp: {
+		                regexp: /^(?:(?!0000)[0-9]{4}-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1[0-9]|2[0-8])|(?:0[13-9]|1[0-2])-(?:29|30)|(?:0[13578]|1[02])-31)|(?:[0-9]{2}(?:0[48]|[2468][048]|[13579][26])|(?:0[48]|[2468][048]|[13579][26])00)-02-29)\s+([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]$/,
+	                    message: '时间格式不对'
+	                },
                 }
             }
         }
@@ -420,7 +420,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 									<label class="col-sm-3 control-label no-padding-right" for="add-star-beginDate"> 开始运行时间：</label>
 									<div class="col-sm-8">
 										<input type="text" class="form-control input-mask-date" name="beginDate" id="add-star-beginDate"
-											placeholder="yyyy-MM-dd HH:mm:ss">
+											placeholder="yyyy-MM-dd HH:mm:ss" readonly="true">
 										<div id="getBeginTime"></div>
 									</div>
 								</div>
@@ -476,7 +476,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 									<label class="col-sm-3 control-label no-padding-right" for="edit-star-beginDate"> 开始运行时间：</label>
 									<div class="col-sm-8">
 										<input type="text" class="form-control input-mask-date" name="beginDate" id="edit-star-beginDate"
-											placeholder="yyyy-MM-dd HH:mm:ss">
+											placeholder="yyyy-MM-dd HH:mm:ss" readonly="true">
 									</div>
 								</div>
 								<div class="space-8"></div>
@@ -579,7 +579,8 @@ $(function() {
 				            title: 'id',
 				            field: 'id',
 				            width: 20,
-				            checkbox: false
+				            checkbox: false,
+				            hidden: true
 				        }]],
 						columns : [ [
 								{

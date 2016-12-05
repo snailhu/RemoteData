@@ -186,7 +186,7 @@ $(function() {
 					<img src="${pageContext.request.contextPath}/static/imgs/DataImport/home.png" style="margin-bottom: 3px;">
 					<span>星系管理</span>
 				</li>
-				<li class="active">${nowSeries}系列${nowStar}星的参数列表</li>
+				<li class="active">${nowSeriesName}系列${nowStarName}星的参数列表</li>
 			</ul><!--  .breadcrumb -->
 		</div>
 		<div class="page-content">
@@ -340,13 +340,14 @@ $(function() {
 	          }, {
 	              field: 'fullName',
 	              title: '参数名',
-	              width: 300,
+	              width: 800,
 	              sortable: true
 	          }]],
 	          columns: [[{
 	              field: 'code',
 	              title: '参数码',
-	              width: 300
+	              width: 300,
+	              hidden: true
 	          }, 
 	          ]]
 	      });

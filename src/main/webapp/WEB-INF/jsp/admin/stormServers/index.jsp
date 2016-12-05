@@ -183,22 +183,22 @@ a {
 					<!-- PAGE CONTENT BEGINS -->
 
 					<div id="content" region="center" style="overflow: hidden">
-						<div id="toolbar" class="datagrid-toolbar" style="height: 28px;">
-							<div style="height: 28px;">
-								<button class="easyui-linkbutton" iconcls="icon-add"
-									plain="true" style="float: left;" id="createServer-btn">创建</button>
-								<div class="datagrid-btn-separator"></div>
-								<button class="easyui-linkbutton" iconcls="icon-remove"
-									plain="true" style="float: left;" onclick="deleteServer();">删除</button>
-								<div class="datagrid-btn-separator"></div>
-								<button class="easyui-linkbutton" iconcls="icon-edit"
-									plain="true" style="float: left;" onclick="editServer();">编辑</button>
-								<div class="datagrid-btn-separator"></div>
-								<button class="easyui-linkbutton" iconcls="icon-undo"
-									plain="true" style="float: left;"
-									onclick="serverGrid.datagrid('unselectAll');">取消选中</button>
-							</div>
-						</div>
+<!-- 						<div id="toolbar" class="datagrid-toolbar" style="height: 28px;"> -->
+<!-- 							<div style="height: 28px;"> -->
+<!-- 								<button class="easyui-linkbutton" iconcls="icon-add" -->
+<!-- 									plain="true" style="float: left;" id="createServer-btn">创建</button> -->
+<!-- 								<div class="datagrid-btn-separator"></div> -->
+<!-- 								<button class="easyui-linkbutton" iconcls="icon-remove" -->
+<!-- 									plain="true" style="float: left;" onclick="deleteServer();">删除</button> -->
+<!-- 								<div class="datagrid-btn-separator"></div> -->
+<!-- 								<button class="easyui-linkbutton" iconcls="icon-edit" -->
+<!-- 									plain="true" style="float: left;" onclick="editServer();">编辑</button> -->
+<!-- 								<div class="datagrid-btn-separator"></div> -->
+<!-- 								<button class="easyui-linkbutton" iconcls="icon-undo" -->
+<!-- 									plain="true" style="float: left;" -->
+<!-- 									onclick="serverGrid.datagrid('unselectAll');">取消选中</button> -->
+<!-- 							</div> -->
+<!-- 						</div> -->
 					</div>
 					<table id="serverList" width="100%" height="450px" border="false">
 					</table>
@@ -304,7 +304,7 @@ a {
 	          rownumbers: true,
 	          fitColumns:true,
 	          idField: 'id',
-	          toolbar: '#toolbar',
+// 	          toolbar: '#toolbar',
 	          pageSize: 10,
 	          pagination: true,
 	          pageList: [10, 20, 30, 40, 50, 60, 70, 80, 90, 100],
@@ -325,7 +325,7 @@ a {
 	              width: 100
 	          }, {
 	              field: 'createDate',
-	              title: '创建时间',
+	              title: '更新时间',
 	              width: 200
 	          }, 
 	          ]]
@@ -350,7 +350,7 @@ a {
 	          }else {
 	              var names = [];
 	              for (var i = 0; i < rows.length; i++) {
-	                  names.push(rows[i].name);
+	                  names.push(rows[i].serverIp);
 	              }
 	              top.showMsg("提示", '只能选择一个服务器进行编辑！您已经选择了【'+names.join(',')+'】'+rows.length+'个服务器');
 	          }

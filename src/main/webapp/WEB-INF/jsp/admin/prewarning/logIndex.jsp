@@ -263,7 +263,7 @@
 										<div class="col-sm-8">
 											<input type="text" id="search-createdatetimeStart"
 												name="createdatetimeStart" placeholder="--请选择开始时间--"
-												class="col-xs-10 col-sm-5" />
+												class="col-xs-10 col-sm-5" readonly="true" />
 											<div id="getBeginTime"></div>
 										</div>
 									</div>
@@ -274,7 +274,7 @@
 										<div class="col-sm-8">
 											<input type="text" id="search-createdatetimeEnd"
 												name="createdatetimeEnd" placeholder="--请选择结束时间--"
-												class="col-xs-10 col-sm-5" />
+												class="col-xs-10 col-sm-5" readonly="true" />
 											<div id="getEndTime"></div>
 										</div>
 									</div>

@@ -40,7 +40,7 @@ public class Parameter {
 	private String parameterType;
 		
 	//参数名全称
-	@Column(name = "fullName", unique = true, nullable = false, length = 128)
+	@Column(name = "fullName", nullable = false, length = 128)
 	private String fullName;
 	
 	//参数名简写

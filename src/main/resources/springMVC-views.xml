@@ -220,6 +220,7 @@
 			<mvc:mapping path="/admin/user/**" />
 			<mvc:mapping path="/admin/role/**" />
 			<mvc:mapping path="/admin/permission/**" />
+			<mvc:mapping path="/admin/log/**" />
 			<bean class="DataAn.common.interceptor.PermissionInterceptor"></bean>
 		</mvc:interceptor>
 	</mvc:interceptors>

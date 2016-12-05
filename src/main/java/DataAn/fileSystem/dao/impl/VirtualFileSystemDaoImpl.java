@@ -123,18 +123,23 @@ public class VirtualFileSystemDaoImpl extends BaseDaoImpl<VirtualFileSystem>
 	@SuppressWarnings("unchecked")
 	@Override
 	public Pager<VirtualFileSystem> selectBySeriesAndStarAndParameterTypeAndParentIdAndOrder(
-			String series, String star, String parameterType, long parentId,
+			String series, String star, String parameterType, long parentId,String dataTypes,
 			String order, int pageIndex, int pageSize) {
 		String hql = "from VirtualFileSystem fs where fs.series=:series and fs.star=:star and fs.parameterType=:parameterType";
-		String countHQl = "select count(*) from VirtualFileSystem fs where fs.series=:series and fs.star=:star and fs.parameterType=:parameterType";
+		String countHql = "select count(*) from VirtualFileSystem fs where fs.series=:series and fs.star=:star and fs.parameterType=:parameterType";
 
 		if (parentId != 0) {
 			hql += " and fs.parentId=:parentId";
-			countHQl += " and fs.parentId=:parentId";
+			countHql += " and fs.parentId=:parentId";
 		} else {
 			hql += " and fs.parentId is null";
-			countHQl += " and fs.parentId is null";
+			countHql += " and fs.parentId is null";
 		}
+		if (StringUtils.isNotBlank(dataTypes)) {
+			hql += " and fs.dataType in (:datatype)";
+			countHql += " and fs.dataType in (:datatype)";
+		}
+		
 		if (StringUtils.isNotBlank(order)) {
 			hql += " order by fs." + order;
 		} else {
@@ -143,14 +148,22 @@ public class VirtualFileSystemDaoImpl extends BaseDaoImpl<VirtualFileSystem>
 		Query query = this.getSession().createQuery(hql)
 				.setParameter("series", series).setParameter("star", star)
 				.setParameter("parameterType", parameterType);
-		Query countQuery = this.getSession().createQuery(countHQl)
+		Query countQuery = this.getSession().createQuery(countHql)
 				.setParameter("series", series).setParameter("star", star)
 				.setParameter("parameterType", parameterType);
 		if (parentId != 0) {
 			query.setParameter("parentId", parentId);
 			countQuery.setParameter("parentId", parentId);
 		}
-
+		if (StringUtils.isNotBlank(dataTypes)) {
+			String[] types = dataTypes.split(",");
+			List<FileDataType> list = new ArrayList<FileDataType>();
+			for (String type : types) {
+				list.add(FileDataType.getType(type));
+			}
+			query.setParameterList("datatype", list);
+			countQuery.setParameterList("datatype", list);
+		}
 		Long totalCount = 0l;
 		Object obj = countQuery.uniqueResult();
 		if (obj != null) {

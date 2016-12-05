@@ -180,7 +180,7 @@ public class ParameterServiceImpl implements IParameterService{
 //		}
 //		return param_en;
 		
-		Parameter param = parameterDao.selectBySeriesAndFullName(series, param_zh);
+		Parameter param = parameterDao.selectBySeriesAndStarAndCode(series, star, param_zh);
 		if(param == null){
 			//数据库中没有此集合
 			param = this.saveOne(series, star,paramType, param_zh);

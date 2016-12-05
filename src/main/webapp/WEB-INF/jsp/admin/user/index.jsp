@@ -301,7 +301,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 									<div class="form-group">
 										<label class="col-sm-3 control-label no-padding-right" for="search-createdatetimeStart"> 创建开始时间：</label>
 										<div class="col-sm-9">
-											<input type="text" id="search-createdatetimeStart" name="createdatetimeStart" placeholder="--请选择创建开始时间--" class="col-xs-10 col-sm-5" />
+											<input type="text" id="search-createdatetimeStart" name="createdatetimeStart" 
+											placeholder="--请选择创建开始时间--" class="col-xs-10 col-sm-5" readonly="true" />
 											<div id="getBeginTime"></div>
 										</div>
 									</div>
@@ -309,7 +310,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 									<div class="form-group">
 										<label class="col-sm-3 control-label no-padding-right" for="search-createdatetimeEnd"> 创建结束时间：</label>
 										<div class="col-sm-9">
-											<input type="text" id="search-createdatetimeEnd" name="createdatetimeEnd" placeholder="--请选择创建结束时间--" class="col-xs-10 col-sm-5" />
+											<input type="text" id="search-createdatetimeEnd" name="createdatetimeEnd" 
+											placeholder="--请选择创建结束时间--" class="col-xs-10 col-sm-5" readonly="true" />
 											<div id="getEndTime"></div>
 										</div>
 									</div>

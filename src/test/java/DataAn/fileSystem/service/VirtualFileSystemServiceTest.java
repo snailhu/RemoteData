@@ -128,7 +128,7 @@ public class VirtualFileSystemServiceTest {
 			if (StringUtils.isNotBlank(strDirId)) {
 				dirId = Long.parseLong(strDirId);
 			}
-			pager = fileService.getMongoFSList(pageIndex, pageSize, series, star, paramType, dirId);			
+			pager = fileService.getMongoFSList(pageIndex, pageSize, series, star, paramType, dirId, dataTypes);			
 		}
 		List<MongoFSDto> list =pager.getRows();
 		for (MongoFSDto fs : list) {

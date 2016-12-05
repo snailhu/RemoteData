@@ -217,7 +217,6 @@ public class JfreechartServiceImpl implements IJfreechartServcie {
 						double dValue = Double.parseDouble(strValue.trim());
 						
 						//在有效值区间之内
-						
 						if(paramMax.get(key) != null && dValue > paramMax.get(key))
 							break;
 						
@@ -272,6 +271,7 @@ public class JfreechartServiceImpl implements IJfreechartServcie {
 			}else{
 				// 多条线图表数据
 				TimeSeriesCollection dataset = new TimeSeriesCollection();
+				boolean flag = false;
 				for (ConstraintDto constraintDto : constraintList) {
 					TimeSeries timeSeries = lineMap.get(constraintDto.getValue());
 //					if(timeSeries == null){
@@ -281,11 +281,14 @@ public class JfreechartServiceImpl implements IJfreechartServcie {
 //					dataset.addSeries(timeSeries);		
 					if(timeSeries != null){
 						dataset.addSeries(timeSeries);						
+						flag = true;
 					}else{
-						System.out.println(DateUtil.format(beginDate) + " 到 "+ DateUtil.format(endDate) +" " + constraintDto.getName()+" 未找到报告数据！2");
+						System.out.println(DateUtil.format(beginDate) + " 到 "+ DateUtil.format(endDate) +" " + constraintDto.getName()+" 未找到报告数据！3");
 					}
 				}
-				datasetList.add(dataset);
+				if(flag){
+					datasetList.add(dataset);					
+				}
 			}
 
 			String title = "";
@@ -294,18 +297,19 @@ public class JfreechartServiceImpl implements IJfreechartServcie {
 
 			JFreeChart chart = ChartFactory.createTimeSeriesChart(title,
 					categoryAxisLabel, valueAxisLabel, datasetList);
-
-			String cachePath = CommonConfig.getChartCachePath();
-			File parentDir = new File(cachePath);
-			if (!parentDir.exists()) {
-				parentDir.mkdirs();
+			if(chart != null){
+				String cachePath = CommonConfig.getChartCachePath();
+				File parentDir = new File(cachePath);
+				if (!parentDir.exists()) {
+					parentDir.mkdirs();
+				}
+				File file = new File(cachePath, "lineChart.png");
+				int width = 1024;
+				int height = 620;
+				// ChartUtilities.saveChartAsJPEG(file, chart, width, height);
+				ChartUtilities.saveChartAsPNG(file, chart, width, height);
+				chartMap.put(key, file.getAbsolutePath());				
 			}
-			File file = new File(cachePath, "lineChart.png");
-			int width = 1024;
-			int height = 620;
-			// ChartUtilities.saveChartAsJPEG(file, chart, width, height);
-			ChartUtilities.saveChartAsPNG(file, chart, width, height);
-			chartMap.put(key, file.getAbsolutePath());
 		}
 
 		LineChartDto lineChartDto = new LineChartDto();

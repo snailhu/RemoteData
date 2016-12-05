@@ -74,6 +74,8 @@ public class ChartFactory {
 	public static JFreeChart createTimeSeriesChart(String title,
 			String categoryAxisLabel, String valueAxisLabel,
 			List<TimeSeriesCollection> datasetList) {
+		if(datasetList == null || datasetList.size() == 0)
+			return null;
 		TimeSeriesCollection dataset1 =  datasetList.get(0);
         JFreeChart chart = org.jfree.chart.ChartFactory.createTimeSeriesChart(title, categoryAxisLabel, valueAxisLabel,dataset1);
         

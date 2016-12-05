@@ -7,7 +7,7 @@ import java.util.Set;
 import org.junit.Test;
 
 import DataAn.common.config.CommonConfig;
-import DataAn.fileSystem.option.J9Series_Star_ParameterType;
+import DataAn.galaxy.option.J9Series_Star_ParameterType;
 import DataAn.mongo.init.InitMongo;
 import DataAn.storm.hierarchy.HierarchyModel;
 import DataAn.storm.hierarchy.HieraychyUtils;

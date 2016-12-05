@@ -39,8 +39,12 @@ import DataAn.fileSystem.option.FileDataType;
 import DataAn.fileSystem.option.FileType;
 import DataAn.fileSystem.service.ICSVService;
 import DataAn.fileSystem.service.IVirtualFileSystemService;
-import DataAn.galaxyManager.option.J9SeriesType;
-import DataAn.galaxyManager.option.SeriesType;
+import DataAn.galaxy.option.J9SeriesType;
+import DataAn.galaxy.option.SeriesType;
+import DataAn.galaxyManager.dao.ISeriesDao;
+import DataAn.galaxyManager.dao.IStarDao;
+import DataAn.galaxyManager.domain.Series;
+import DataAn.galaxyManager.domain.Star;
 import DataAn.galaxyManager.service.IParameterService;
 import DataAn.mongo.fs.IDfsDb;
 import DataAn.mongo.fs.MongoDfsDb;
@@ -78,6 +82,10 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 	private IParameterService paramService;
 	@Resource
 	private SystemLogService systemLogService;
+	@Resource
+	private IStarDao starDao;
+	@Resource
+	private ISeriesDao seriesDao;
 	
 	@Override
 	@Transactional
@@ -212,7 +220,7 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 	@Transactional
 	public void deleteFile(HttpServletRequest request,String ids) {
 		String[] arrayIds = ids.split(",");
-		
+		final List<VirtualFileSystem> files = new ArrayList<VirtualFileSystem>();
 		for (String id : arrayIds) {
 			String[] items = id.split("/");
 			//遍历目录写文件
@@ -221,8 +229,26 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 			String operateJob;
 			operateJob = "删除文件"+file.getFileName();
 			systemLogService.addOneSystemlogs( request,operateJob);
-			this.deleteFile(file);
+			this.deleteFile(files, file);
 		}
+		new Thread(new Runnable(){
+			@Override
+			public void run() {
+				try {
+					for (VirtualFileSystem file : files) {
+						//删除mongodb的文件和标志记录状态
+						IDfsDb dfs = MongoDfsDb.getInstance();
+						//根据星系获取数据库名称
+						String databaseName = InitMongo.getFSBDNameBySeriesAndStar(file.getSeries(), file.getStar());
+						//删除文件数据记录
+						dfs.delete(databaseName,file.getMongoFSUUId());
+						//更新记录状态
+						mongoService.updateCSVDataByVersions(file.getSeries(), file.getStar(), file.getParameterType(), file.getMongoFSUUId());
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}				
+			}}).start();
 	}
 
 	@Override
@@ -230,28 +256,24 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 	public void deleteFileByUUId(String uuId) {
 		VirtualFileSystem file = fileDao.selectByFileTypeIsFileAndMongoFSUUId(uuId);
 		if(file != null){
-			this.deleteFile(file);			
+			this.deleteFile(null,file);			
 		}
 	}
 
-	private void deleteFile(VirtualFileSystem file) {
+	private void deleteFile(List<VirtualFileSystem> files, VirtualFileSystem file) {
 		if(file.getFileType().getName().equals("dir")){
 			List<VirtualFileSystem> fileList = fileDao.findByParam("parentId", file.getId());
 			if(fileList != null && fileList.size() > 0){
 				for (VirtualFileSystem childFile : fileList) {
-					this.deleteFile(childFile);				
+					this.deleteFile(files,childFile);				
 				}
 			}
 		}else{
+			if(files != null){
+				files.add(file);
+			}
 			fileDao.delete(file);
-			//删除mongodb的文件和标志记录状态
-			IDfsDb dfs = MongoDfsDb.getInstance();
-			//根据星系获取数据库名称
-			String databaseName = InitMongo.getFSBDNameBySeriesAndStar(file.getSeries(), file.getStar());
-			//删除文件数据记录
-			dfs.delete(databaseName,file.getMongoFSUUId());
-			//更新记录状态
-			mongoService.updateCSVDataByVersions(file.getSeries(), file.getStar(), file.getParameterType(), file.getMongoFSUUId());
+			
 		}
 	}
 	
@@ -280,18 +302,19 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 	@Override
 	@Transactional(readOnly = true)
 	public FileDto downloadFiles(String ids) throws Exception {
-		FileDto fileDto = new FileDto();
 		String[] arrayIds = ids.split(",");
 		String mogodbFilePath = CommonConfig.getDownloadCachePath();
-		VirtualFileSystem file = null;
 		IDfsDb dfs = MongoDfsDb.getInstance();
+		//下载一个目录
+		VirtualFileSystem dir = null;
 		for (String id : arrayIds) {
 			String[] items = id.split("/");
 			//遍历目录写文件
 			if("dir".equals(items[1])){
-				this.writeDirFile(Long.parseLong(items[0]), dfs, mogodbFilePath);
+				dir = fileDao.get(Long.parseLong(items[0]));
+				this.writeDirFile(dir, dfs, mogodbFilePath);
 			}else{
-				file = fileDao.get(Long.parseLong(items[0]));
+				VirtualFileSystem file = fileDao.get(Long.parseLong(items[0]));
 				//判断临时文件是否存在
 				if(file.getCachePath() != null && !file.getCachePath().equals("")){
 					FileUtil.copyFile(file.getCachePath(), mogodbFilePath, true);
@@ -301,7 +324,12 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 				}
 			}
 		}
-		String zipFileName = DateUtil.format(new Date(),"yyyy-MM-dd-HH-mm-ss") + ".zip";
+		FileDto fileDto = new FileDto();
+		Series series = seriesDao.selectByCode(dir.getSeries());
+		List<Star> starList = starDao.getStarBySeriesIdAndCode(series.getId(), dir.getStar());
+		VirtualFileSystem parentDir = fileDao.get(dir.getParentId());
+		String zipFileName = series.getName()+"-"+starList.get(0).getName()+"--"+
+							parentDir.getFileName()+"-"+ dir.getFileName() + ".zip";
 		String zipPath = CommonConfig.getZipCachePath() + File.separator + zipFileName;
 		ZipCompressorByAnt zca = new ZipCompressorByAnt(zipPath);  
 	    zca.compressExe(mogodbFilePath);  
@@ -310,15 +338,14 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 		return fileDto;
 	}
 	
-	private void writeDirFile(long dirId,IDfsDb dfs,String path) throws Exception{
-		VirtualFileSystem dir = fileDao.get(dirId);
+	private void writeDirFile(VirtualFileSystem dir,IDfsDb dfs,String path) throws Exception{
 		path = path + File.separator + dir.getFileName();
-		List<VirtualFileSystem> fileList = fileDao.findByParam("parentId", dirId);
+		List<VirtualFileSystem> fileList = fileDao.findByParam("parentId", dir.getId());
 		if(fileList != null && fileList.size() > 0){
 			for (VirtualFileSystem childFile : fileList) {
 				
 				if(childFile.getFileType().getName().equals("dir")){
-					this.writeDirFile(childFile.getId(), dfs, path);					
+					this.writeDirFile(childFile, dfs, path);					
 				}else{
 					//判断临时文件是否存在
 					if(childFile.getCachePath() != null && !childFile.getCachePath().equals("")){
@@ -390,10 +417,10 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 	
 	@Override
 	public Pager<MongoFSDto> getMongoFSList(int pageIndex, int pageSize,
-			String series, String star, String parameterType, long dirId) {
+			String series, String star, String parameterType, long dirId, String dataTypes) {
 		Pager<VirtualFileSystem> pager = fileDao
 				.selectBySeriesAndStarAndParameterTypeAndParentIdAndOrder(
-						series, star, parameterType, dirId, "updateDate",
+						series, star, parameterType, dirId, dataTypes, "updateDate",
 						pageIndex, pageSize);
 
 		return this.returnPager(pageIndex, pageSize, pager.getRows(),

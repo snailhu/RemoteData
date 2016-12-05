@@ -11,11 +11,11 @@ import org.springframework.stereotype.Service;
 
 import DataAn.Analysis.dto.ConstraintDto;
 import DataAn.common.dao.Pager;
+import DataAn.galaxy.option.J9Series_Star_ParameterType;
 import DataAn.galaxyManager.dao.ISeriesDao;
 import DataAn.galaxyManager.dao.IStarDao;
 import DataAn.galaxyManager.domain.Series;
 import DataAn.galaxyManager.domain.Star;
-import DataAn.galaxyManager.option.J9Series_Star_ParameterType;
 import DataAn.galaxyManager.service.IJ9Series_Star_Service;
 import DataAn.galaxyManager.service.IParameterService;
 import DataAn.reportManager.dao.IStarParamDao;

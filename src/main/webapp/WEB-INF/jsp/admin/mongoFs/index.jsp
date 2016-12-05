@@ -191,7 +191,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 										<label class="col-sm-3 control-label no-padding-right" for="search-beginTime"> 开始时间：</label>
 										<div class="col-sm-9">
 										
-											<input type="text" id="search-beginTime" name="beginTime" placeholder="--请选择开始时间--" class="col-xs-10 col-sm-5" />
+											<input type="text" id="search-beginTime" name="beginTime" placeholder="--请选择开始时间--" class="col-xs-10 col-sm-5"  readonly="true"/>
 
 											<div id="getBeginTime"></div>
 										</div>
@@ -200,7 +200,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 									<div class="form-group">
 										<label class="col-sm-3 control-label no-padding-right" for="search-endTime"> 结束时间：</label>
 										<div class="col-sm-9">
-											<input type="text" id="search-endTime" name="endTime" placeholder="--请选择结束时间--" class="col-xs-10 col-sm-5" />
+											<input type="text" id="search-endTime" name="endTime" placeholder="--请选择结束时间--" class="col-xs-10 col-sm-5"  readonly="true"/>
 											<div id="getEndTime"></div>
 										</div>
 									</div>
@@ -407,11 +407,16 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     	  
 		  fsGrid.datagrid('unselectAll');
 		  nowDirId = dirId;
+		  var fileTypes = [];
+		  $("[name='form-fileType-checkbox']:checked").each(function(){
+    		  fileTypes.push($(this).val());
+    	  });
 		  fsGrid.datagrid('load', {
 			  series: nowSeries,
 			  star: nowStar,
 			  paramType: nowParamType,
-			  dirId: dirId
+			  dirId: dirId,
+			  fileTypes:fileTypes.join(',')
 	              });
 		  var fileCatalog = $('#fileCatalog');
 		  fileCatalog.empty();
@@ -470,11 +475,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	    	  }else{
 	              $.messager.confirm('提示', '确定要下载多个文件或目录吗？', function (r) {
     	              if (r) {
-    	            	  top.showMsg("提示", "此功能暂时不支持！");
-    	            	  for (var i = 0; i < rows.length; i++) {
-    	                      ids.push(rows[i].id +"/"+rows[i].type);
-    	                  }
-    	            	  window.location.href="admin/file/downloads?itemIds="+ids.join(',');
+    	            	  top.showMsg("提示", "请选择单个目录下载！");
+//     	            	  for (var i = 0; i < rows.length; i++) {
+//     	                      ids.push(rows[i].id +"/"+rows[i].type);
+//     	                  }
+//     	            	  window.location.href="admin/file/downloads?itemIds="+ids.join(',');
     	              }
     	          });
 	    	  }

@@ -14,8 +14,8 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import DataAn.common.utils.DateUtil;
-import DataAn.galaxyManager.option.J9SeriesType;
-import DataAn.galaxyManager.option.SeriesType;
+import DataAn.galaxy.option.J9SeriesType;
+import DataAn.galaxy.option.SeriesType;
 import DataAn.jfreechart.chart.Serie;
 import DataAn.jfreechart.dto.LineChartDto;
 import DataAn.jfreechart.service.IJfreechartServcie;

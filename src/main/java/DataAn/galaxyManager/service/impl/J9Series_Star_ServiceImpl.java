@@ -7,12 +7,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
 import javax.annotation.Resource;
-
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
-
 import DataAn.Analysis.dto.ConstraintDto;
 import DataAn.Util.EhCache;
 import DataAn.fileSystem.dao.IDateParametersDao;
@@ -339,6 +336,8 @@ public class J9Series_Star_ServiceImpl implements IJ9Series_Star_Service{
 					child.setParentId(parentId);
 					child.setName(flyWheelData); //设置中文
 					child.setValue(map.get(flyWheelData)); //设置英文
+					child.setMax(Float.MAX_VALUE);
+					child.setMin(-Float.MAX_VALUE);
 					child.setYname("Y1");
 					children.add(child);
 					count ++;

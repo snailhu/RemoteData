@@ -52,12 +52,10 @@ public class StormServerServiceImpl implements IStormServerService{
 	@Override
 	@Transactional
 	public void updateByServerIP(String serverIP){
-		List<StormServer> list = stormServerDao.findByParam("serverIp", serverIP);
-		if(list != null && list.size() > 0){
-			StormServer server = list.get(0);
-			server.setStatus(StormSysStatus.SHUTDOWN);
-			stormServerDao.update(server);
-		}
+		StormServer server = new StormServer();
+		server.setServerIp(serverIP);
+		server.setStatus(StormSysStatus.SHUTDOWN);
+		stormServerDao.add(server);
 	}
 	@Override
 	public Pager<StormServerDto> getStormServerList(int pageIndex, int pageSize) {

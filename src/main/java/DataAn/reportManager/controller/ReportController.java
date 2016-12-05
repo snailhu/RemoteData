@@ -23,7 +23,7 @@ import DataAn.common.pageModel.JsonMessage;
 import DataAn.common.pageModel.Pager;
 import DataAn.common.utils.DateUtil;
 import DataAn.fileSystem.dto.MongoFSDto;
-import DataAn.galaxyManager.option.J9Series_Star_ParameterType;
+import DataAn.galaxy.option.J9Series_Star_ParameterType;
 import DataAn.jfreechart.service.IJfreechartServcie;
 import DataAn.mongo.init.InitMongo;
 import DataAn.reportManager.dao.IStarParamDao;

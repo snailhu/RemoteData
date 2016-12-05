@@ -225,7 +225,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 									<div class="form-group">
 										<label class="col-sm-5 control-label no-padding-right" for="form-beginTime"> 开始日期： </label>
 										<div class="col-sm-3">
-											<input type="text" id="form-beginTime" name="beginTime" placeholder="--请选择开始日期--" class="form-control" />
+											<input type="text" id="form-beginTime" name="beginTime" 
+											placeholder="--请选择开始日期--" class="form-control" readonly="true" />
 											<div id="getBeginTime"></div>
 										</div>
 									</div>
@@ -233,7 +234,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 									<div class="form-group">
 										<label class="col-sm-5 control-label no-padding-right" for="form-endTime"> 结束日期： </label>
 										<div class="col-sm-3">
-											<input type="text" id="form-endTime" name="endTime" placeholder="--请选择结束日期--" class="form-control" />
+											<input type="text" id="form-endTime" name="endTime" 
+											placeholder="--请选择结束日期--" class="form-control" readonly="true" />
 											<div id="getEndTime"></div>
 										</div>
 									</div>

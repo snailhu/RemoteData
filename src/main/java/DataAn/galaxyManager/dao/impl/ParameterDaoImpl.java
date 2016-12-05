@@ -78,18 +78,18 @@ implements IParameterDao{
 		}
 		return null;
 	}
-	@SuppressWarnings("unchecked")
-	@Override
-	public Parameter selectBySeriesAndFullName(String series, String param_zh) {
-		String hql = "from Parameter param where param.series=? and param.fullName=?";
-		List<Parameter> list = this.getSession().createQuery(hql)
-												.setParameter(0, series)
-												.setParameter(1, param_zh).list();
-		if(list != null && list.size() > 0){
-			return list.get(0);
-		}
-		return null;
-	}
+//	@SuppressWarnings("unchecked")
+//	@Override
+//	public Parameter selectBySeriesAndFullName(String series, String param_zh) {
+//		String hql = "from Parameter param where param.series=? and param.fullName=?";
+//		List<Parameter> list = this.getSession().createQuery(hql)
+//												.setParameter(0, series)
+//												.setParameter(1, param_zh).list();
+//		if(list != null && list.size() > 0){
+//			return list.get(0);
+//		}
+//		return null;
+//	}
 	
 	@SuppressWarnings("unchecked")
 	@Override
@@ -106,28 +106,28 @@ implements IParameterDao{
 		return null;
 	}
 
-	@SuppressWarnings("unchecked")
-	@Override
-	public Parameter selectBySeriesAndCode(String series, String param_en) {
-		String hql = "from Parameter param where param.series=? and param.code=?";
-		List<Parameter> list = this.getSession().createQuery(hql)
-												.setParameter(0, series)
-												.setParameter(1, param_en).list();
-		if(list != null && list.size() > 0){
-			return list.get(0);
-		}
-		return null;
-	}
+//	@SuppressWarnings("unchecked")
+//	@Override
+//	public Parameter selectBySeriesAndCode(String series, String param_en) {
+//		String hql = "from Parameter param where param.series=? and param.code=?";
+//		List<Parameter> list = this.getSession().createQuery(hql)
+//												.setParameter(0, series)
+//												.setParameter(1, param_en).list();
+//		if(list != null && list.size() > 0){
+//			return list.get(0);
+//		}
+//		return null;
+//	}
 
-	@SuppressWarnings("unchecked")
-	@Override
-	public List<Parameter> selectBySeriesAndParameterType(String series,
-			String parameterType) {
-		String hql = "from Parameter param where param.series=? and param.parameterType=? and param.simplyName is not null";
-		return this.getSession().createQuery(hql)
-								.setParameter(0, series)
-								.setParameter(1, parameterType).list();
-	}
+//	@SuppressWarnings("unchecked")
+//	@Override
+//	public List<Parameter> selectBySeriesAndParameterType(String series,
+//			String parameterType) {
+//		String hql = "from Parameter param where param.series=? and param.parameterType=? and param.simplyName is not null";
+//		return this.getSession().createQuery(hql)
+//								.setParameter(0, series)
+//								.setParameter(1, parameterType).list();
+//	}
 
 	@SuppressWarnings("unchecked")
 	@Override

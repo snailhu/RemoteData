@@ -15,7 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import DataAn.common.dao.Pager;
 import DataAn.common.pageModel.EasyuiTreeNode;
 import DataAn.common.utils.DateUtil;
-import DataAn.galaxyManager.option.J9Series_Star_ParameterType;
+import DataAn.galaxy.option.J9Series_Star_ParameterType;
 import DataAn.sys.dao.IAuthDao;
 import DataAn.sys.dao.IRoleAuthDao;
 import DataAn.sys.domain.Auth;

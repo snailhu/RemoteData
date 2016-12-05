@@ -82,6 +82,15 @@
     //margin-left:120px;
     //margin-top:-32px
     }
+	#add-series-close{
+	color: white;
+    font-size: 14px;
+    width: 100px;
+    background-color: #abbac3;
+    height: 32px;
+    border-width: 0;
+	}
+	#add-series-close:hover{background-color:#8b9aa3;border-color:#abbac3;}
     </style>
 </head>
 <body>
@@ -145,8 +154,8 @@
 		      </div>
 		      <div class="modal-footer">
 		      	<div class="col-lg-4 col-lg-offset-5">
-			        <button type="button" class="btn btn-default" id="add-series-close" data-dismiss="modal">关闭</button>
 			        <button type="button" class="btn btn-primary" data-dismiss="modal" id="submit_configChart">确定</button>
+			        <button type="button" class="btn btn-default" id="add-series-close" data-dismiss="modal">关闭</button>
                    </div>
 		      </div>
 		    </div>

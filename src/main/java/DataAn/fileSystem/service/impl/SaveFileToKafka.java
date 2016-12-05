@@ -159,7 +159,7 @@ public class SaveFileToKafka implements Runnable {
 						boundProducer.send(defaultFetchObj,topic);
 					}
 					boundProducer.send(new Ending(),topic);
-					Log4jUtil.getInstance().getLogger(SaveFileToKafka.class).info(nodeWorker.getId()+ " end send data kafka..");
+					Log4jUtil.getInstance().getLogger(SaveFileToKafka.class).info(nodeWorker.getId()+ " end send data kafka..count: " + count);
 					// mongo...
 					Log4jUtil.getInstance().getLogger(SaveFileToKafka.class).info(nodeWorker.getId()+ " to update mongodb data..");
 					mongoService.updateCSVDataByDate(series, star, name, dateTime1, dateTime);

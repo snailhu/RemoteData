@@ -27,7 +27,7 @@ public class StormServer implements java.io.Serializable {
 	@Column(name = "userId", unique = true, nullable = false)
 	private long id;
 	
-	@Column(name = "serverIp", nullable = true,length=64, unique = true)
+	@Column(name = "serverIp", nullable = true,length=64)
 	private String serverIp;//服务器IP
 	
 	@Enumerated(EnumType.STRING)

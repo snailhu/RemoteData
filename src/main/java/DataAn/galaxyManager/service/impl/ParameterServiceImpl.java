@@ -4,14 +4,10 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
-
 import javax.annotation.Resource;
-
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import DataAn.common.dao.Pager;
 import DataAn.galaxyManager.dao.IParameterDao;
 import DataAn.galaxyManager.domain.Parameter;
@@ -184,7 +180,7 @@ public class ParameterServiceImpl implements IParameterService{
 //		}
 //		return param_en;
 		
-		Parameter param = parameterDao.selectBySeriesAndFullName(series, param_zh);
+		Parameter param = parameterDao.selectBySeriesAndStarAndCode(series, star, param_zh);
 		if(param == null){
 			//数据库中没有此集合
 			param = this.saveOne(series, star,paramType, param_zh);

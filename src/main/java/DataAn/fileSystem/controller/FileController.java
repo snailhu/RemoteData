@@ -32,7 +32,7 @@ import DataAn.common.pageModel.Pager;
 import DataAn.fileSystem.dto.FileDto;
 import DataAn.fileSystem.dto.MongoFSDto;
 import DataAn.fileSystem.service.IVirtualFileSystemService;
-import DataAn.galaxyManager.option.J9Series_Star_ParameterType;
+import DataAn.galaxy.option.J9Series_Star_ParameterType;
 import DataAn.galaxyManager.service.ISeriesService;
 import DataAn.status.option.StatusTrackingType;
 import DataAn.status.service.IStatusTrackingService;
@@ -136,18 +136,26 @@ public class FileController {
 			
 			Pager<MongoFSDto> pager = null;
 			if(StringUtils.isNotBlank(beginTime) || StringUtils.isNotBlank(endTime)){
-				if (StringUtils.isNotBlank(strDirId)) {
-					long dirId = Long.parseLong(strDirId);
-					pager = fileService.getMongoFSList(page, rows, series, star, paramType, dirId, beginTime, endTime, fileTypes);								
+				if(StringUtils.isNotBlank(fileTypes)){
+					if (StringUtils.isNotBlank(strDirId)) {
+						long dirId = Long.parseLong(strDirId);
+						pager = fileService.getMongoFSList(page, rows, series, star, paramType, dirId, beginTime, endTime, fileTypes);								
+					}else{
+						pager = fileService.getMongoFSList(page, rows, series, star, paramType, null, beginTime, endTime, fileTypes);
+					}					
 				}else{
-					pager = fileService.getMongoFSList(page, rows, series, star, paramType, null, beginTime, endTime, fileTypes);
+					pager = new Pager<MongoFSDto>(page, rows, 0l, new ArrayList<MongoFSDto>());
 				}
 			}else{
-				long dirId = 0;
-				if (StringUtils.isNotBlank(strDirId)) {
-					dirId = Long.parseLong(strDirId);
+				if(StringUtils.isNotBlank(fileTypes)){
+					long dirId = 0;
+					if (StringUtils.isNotBlank(strDirId)) {
+						dirId = Long.parseLong(strDirId);
+					}
+					pager = fileService.getMongoFSList(page, rows, series, star, paramType, dirId,fileTypes);								
+				}else{
+					pager = new Pager<MongoFSDto>(page, rows, 0l, new ArrayList<MongoFSDto>());
 				}
-				pager = fileService.getMongoFSList(page, rows, series, star, paramType, dirId);			
 			}
 			json.setRows(pager.getRows());
 			json.setTotal(pager.getTotalCount());	

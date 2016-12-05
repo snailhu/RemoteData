@@ -66,6 +66,7 @@ public class DeviceController {
 			HttpServletResponse response) {
 		String series = request.getParameter("series");
 		String star = request.getParameter("star");
+		String userType = getUserType(null, request);
 		EasyuiDataGridJson json = new EasyuiDataGridJson();
 		System.out.println("come in getDeviceTypePager...");
 		System.out.println("pageIndex: " + page);
@@ -73,7 +74,7 @@ public class DeviceController {
 		System.out.println("series: " + series);
 		System.out.println("star: " + star);
 		try {
-			Pager<QueryDeviceTypeDTO> pager = deviceService.pageQueryDeviceType(page, rows, series, star);
+			Pager<QueryDeviceTypeDTO> pager = deviceService.pageQueryDeviceType(page, rows, series, star, userType);
 			json.setRows(pager.getDatas());
 			json.setTotal(pager.getTotalCount());
 		} catch (Exception e) {

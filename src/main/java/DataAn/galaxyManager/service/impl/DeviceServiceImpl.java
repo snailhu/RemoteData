@@ -61,10 +61,10 @@ public class DeviceServiceImpl implements IDeviceService {
 	}
 
 	@Override
-	public Pager<QueryDeviceTypeDTO> pageQueryDeviceType(int pageIndex, int pageSize, String series, String star)
-			throws Exception {
+	public Pager<QueryDeviceTypeDTO> pageQueryDeviceType(int pageIndex, int pageSize, String series, String star,
+			String userType) throws Exception {
 		List<QueryDeviceTypeDTO> deviceTypeDTOs = new ArrayList<QueryDeviceTypeDTO>();
-		Pager<DeviceType> devicePager = deviceTypeDao.selectByPager(pageIndex, pageSize);
+		Pager<DeviceType> devicePager = deviceTypeDao.selectByPager(pageIndex, pageSize, userType);
 		List<DeviceType> deviceTypes = devicePager.getDatas();
 		if (deviceTypes != null && deviceTypes.size() > 0) {
 			for (DeviceType deviceType : deviceTypes) {

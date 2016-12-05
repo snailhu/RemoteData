@@ -103,7 +103,8 @@ public class PrewarningServiceImpl implements IPrewarningService {
 				Star starDomain = starDao.get(value.getStar());
 				if (seriesDomain != null) {
 					valueDTO.setSeries(seriesDomain.getName());
-					valueDTO.setParameter(getParamCNname(seriesDomain.getCode(),starDomain.getCode(), value.getParameter()));
+					valueDTO.setParameter(
+							getParamCNname(seriesDomain.getCode(), starDomain.getCode(), value.getParameter()));
 				} else {
 					valueDTO.setSeries(value.getSeries().toString());
 				}
@@ -192,7 +193,8 @@ public class PrewarningServiceImpl implements IPrewarningService {
 					J9Series_Star_ParameterType.getJ9SeriesStarParameterType(warnLog.getParameterType()).getName());
 			if (seriesDomain != null) {
 				warnLog.setSeries(seriesDomain.getName());
-				warnLog.setParameter(getParamCNname(seriesDomain.getCode(),starDomain.getCode(), warnLog.getParameter()));
+				warnLog.setParameter(
+						getParamCNname(seriesDomain.getCode(), starDomain.getCode(), warnLog.getParameter()));
 			}
 			if (starDomain != null) {
 				warnLog.setStar(starDomain.getName());
@@ -276,9 +278,9 @@ public class PrewarningServiceImpl implements IPrewarningService {
 		return selectOptionDTO;
 	}
 
-	private String getParamCNname(String series,String star, String EnName) throws Exception {
+	private String getParamCNname(String series, String star, String EnName) throws Exception {
 		String cnName = "";
-		Parameter constraintDto = parameterDao.selectBySeriesAndStarAndCode(series,star,EnName);
+		Parameter constraintDto = parameterDao.selectBySeriesAndStarAndCode(series, star, EnName);
 		if (constraintDto != null) {
 			cnName = constraintDto.getSimplyName();
 		}
@@ -298,7 +300,8 @@ public class PrewarningServiceImpl implements IPrewarningService {
 		if (StringUtils.isNotBlank(seriesId)) {
 			List<Star> list = starDao.getStarBySeriesIdAndCode(Long.parseLong(seriesId), star);
 			if (list != null && list.size() > 0) {
-				return warningValueDao.getWarningValueByParams(seriesId, String.valueOf(list.get(0).getId()), parameter, parameterType, warningType);
+				return warningValueDao.getWarningValueByParams(seriesId, String.valueOf(list.get(0).getId()), parameter,
+						parameterType, warningType);
 			}
 		}
 		return null;
@@ -320,13 +323,13 @@ public class PrewarningServiceImpl implements IPrewarningService {
 			warningLog.setParameterType(logDTO.getParameterType());
 			warningLog.setParamValue(logDTO.getParamValue());
 			String seriersId = seriersDao.getSeriesIdByName(logDTO.getSeries());
-			if (StringUtils.isNoneBlank(seriersId)) {
+			if (StringUtils.isNotBlank(seriersId)) {
 				warningLog.setSeries(Long.parseLong(seriersId));
 			} else {
 				continue;
 			}
 			String starId = starDao.getStarIdByName(logDTO.getStar());
-			if (StringUtils.isNoneBlank(starId)) {
+			if (StringUtils.isNotBlank(starId)) {
 				warningLog.setStar(Long.parseLong(starId));
 			} else {
 				continue;

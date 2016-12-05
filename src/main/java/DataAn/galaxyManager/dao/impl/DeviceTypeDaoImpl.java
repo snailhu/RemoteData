@@ -2,6 +2,7 @@ package DataAn.galaxyManager.dao.impl;
 
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Query;
 import org.springframework.stereotype.Repository;
 
@@ -14,9 +15,13 @@ import DataAn.galaxyManager.domain.DeviceType;
 public class DeviceTypeDaoImpl extends BaseDaoImpl<DeviceType> implements IDeviceTypeDao {
 
 	@Override
-	public Pager<DeviceType> selectByPager(int pageIndex, int pageSize) {
+	public Pager<DeviceType> selectByPager(int pageIndex, int pageSize, String userType) {
 		String hql = "from DeviceType d where 1=1";
 		String countHQL = "select count(*) from DeviceType d where 1=1";
+		if (StringUtils.isNotBlank(userType)) {
+			hql += " and d.deviceCode = '" + userType + "'";
+			countHQL += " and d.deviceCode = '" + userType + "'";
+		}
 		Query query = this.getSession().createQuery(hql);
 		Query countQuery = this.getSession().createQuery(countHQL);
 		List<DeviceType> list = query.setMaxResults(pageSize).setFirstResult(pageSize * (pageIndex - 1)).list();

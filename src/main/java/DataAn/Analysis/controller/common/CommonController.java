@@ -2,8 +2,8 @@ package DataAn.Analysis.controller.common;
 
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -31,10 +31,8 @@ import DataAn.Analysis.dto.SingleParamDto;
 import DataAn.Analysis.dto.YearAndParamDataDto;
 import DataAn.Util.EhCache;
 import DataAn.Util.JsonStringToObj;
-import DataAn.common.pageModel.Pager;
-import DataAn.galaxy.option.J9SeriesType;
+import DataAn.common.utils.DateUtil;
 import DataAn.galaxy.option.J9Series_Star_ParameterType;
-import DataAn.galaxy.option.SeriesType;
 import DataAn.galaxyManager.dto.SeriesDto;
 import DataAn.galaxyManager.dto.StarDto;
 import DataAn.galaxyManager.service.IJ9Series_Star_Service;
@@ -206,6 +204,8 @@ public class CommonController {
 //			@RequestParam(value="nowStar",required = true) String nowStar,
 			@RequestParam(value="paramObject",required = true) String paramObject
 			) throws Exception{
+		long begin = System.currentTimeMillis();
+	System.out.println("----------------后台开始时间："+ DateUtil.formatSSS(new Date()));
 		//String key = start+end;
 //	  	Jedis jedis = RedisPoolUtil.buildJedisPool().getResource(); 
 //				if(jedis.exists((key+"year"+filename).getBytes()) && jedis.exists((key+"param"+filename).getBytes())){
@@ -270,6 +270,9 @@ public class CommonController {
         for(Object li : paramlist)
         {System.out.println("参数值为："+li);}
     }*/
+	long end = System.currentTimeMillis();
+	System.out.println("----------------后台结束时间："+  DateUtil.formatSSS(new Date()));
+	System.out.println("----------------后台总处理时间："+ (end-begin));
 	return result;			
 	}
 	

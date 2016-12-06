@@ -14,8 +14,8 @@ public interface IDeviceService {
 
 	public void updateDevice(DeviceDto deviceDto) throws Exception;
 
-	public Pager<QueryDeviceTypeDTO> pageQueryDeviceType(int pageIndex, int pageSize, String series, String star)
-			throws Exception;
+	public Pager<QueryDeviceTypeDTO> pageQueryDeviceType(int pageIndex, int pageSize, String series, String star,
+			String userType) throws Exception;
 
 	public List<QueryDeviceDTO> getDeviceByParam(String series, String star, String deviceType) throws Exception;
 
@@ -26,7 +26,7 @@ public interface IDeviceService {
 	public QueryDeviceDTO getDeviceById(Long deviceId) throws Exception;
 
 	public void deleteDevice(Long deviceId) throws Exception;
-	
+
 	public List<Combo> getDeviceTypeComboData(String deviceTypeCode);
 
 }

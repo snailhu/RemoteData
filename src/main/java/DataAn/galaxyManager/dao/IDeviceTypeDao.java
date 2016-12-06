@@ -7,7 +7,7 @@ import DataAn.common.dao.Pager;
 import DataAn.galaxyManager.domain.DeviceType;
 
 public interface IDeviceTypeDao extends IBaseDao<DeviceType> {
-	public Pager<DeviceType> selectByPager(int pageIndex, int pageSize);
+	public Pager<DeviceType> selectByPager(int pageIndex, int pageSize, String userType);
 
 	public List<DeviceType> getDeviceTypeList();
 }

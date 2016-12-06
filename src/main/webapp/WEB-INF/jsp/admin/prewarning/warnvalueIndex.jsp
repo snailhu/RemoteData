@@ -146,11 +146,12 @@
 	padding-left: 5px;
 	color: red;
 }
-.form-group input,.form-group select{
+
+.form-group input, .form-group select {
 	width: 240px;
-	height:30px;
-	line-height:30px;
-	text-align:left;
+	height: 30px;
+	line-height: 30px;
+	text-align: left;
 }
 </style>
 <script type="text/javascript">
@@ -514,7 +515,7 @@
 											for="search-parameter"> 参数：</label>
 										<div class="col-sm-8">
 											<select class="col-xs-10 col-sm-5 select2"
-												 id="search-parameter" name="parameter">
+												id="search-parameter" name="parameter">
 												<option value="">--请选择--</option>
 											</select>
 										</div>
@@ -595,7 +596,8 @@
 									<label class="col-sm-3 control-label no-padding-right"
 										for="add-parameter"> 参数： </label>
 									<div class="col-sm-8">
-										<select class="form-control select2" id="add-parameter" name="parameter">
+										<select class="form-control select2" id="add-parameter"
+											name="parameter">
 											<option value="">--请选择--</option>
 										</select>
 									</div>
@@ -628,15 +630,15 @@
 												placeholder="最大值" class="form-control" />
 										</div>
 									</div>
-<!-- 									<div class="space-4"></div> -->
-<!-- 									<div class="form-group"> -->
-<!-- 										<label class="col-lg-3 control-label no-padding-right" -->
-<!-- 											for="add-minVal"> 最小值： </label> -->
-<!-- 										<div class="col-sm-8"> -->
-<!-- 											<input type="text" name="minVal" id="add-minVal" -->
-<!-- 												placeholder="最小值" class="form-control" /> -->
-<!-- 										</div> -->
-<!-- 									</div> -->
+									<!-- 									<div class="space-4"></div> -->
+									<!-- 									<div class="form-group"> -->
+									<!-- 										<label class="col-lg-3 control-label no-padding-right" -->
+									<!-- 											for="add-minVal"> 最小值： </label> -->
+									<!-- 										<div class="col-sm-8"> -->
+									<!-- 											<input type="text" name="minVal" id="add-minVal" -->
+									<!-- 												placeholder="最小值" class="form-control" /> -->
+									<!-- 										</div> -->
+									<!-- 									</div> -->
 								</div>
 								<div id="add-topValDiv" style="display: none;">
 									<div class="space-4"></div>
@@ -722,7 +724,8 @@
 									<label class="col-sm-3 control-label no-padding-right"
 										for="edit-parameter"> 参数：</label>
 									<div class="col-sm-8">
-										<select class="form-control select2" id="edit-parameter" name="parameter">
+										<select class="form-control select2" id="edit-parameter"
+											name="parameter">
 											<option value="">--请选择--</option>
 										</select>
 									</div>
@@ -756,15 +759,15 @@
 												placeholder="最大值" class="form-control" />
 										</div>
 									</div>
-<!-- 									<div class="space-4"></div> -->
-<!-- 									<div class="form-group"> -->
-<!-- 										<label class="col-lg-3 control-label no-padding-right" -->
-<!-- 											for="edit-minVal"> 最小值： </label> -->
-<!-- 										<div class="col-sm-8"> -->
-<!-- 											<input type="text" name="minVal" id="edit-minVal" -->
-<!-- 												placeholder="最小值" class="form-control" /> -->
-<!-- 										</div> -->
-<!-- 									</div> -->
+									<!-- 									<div class="space-4"></div> -->
+									<!-- 									<div class="form-group"> -->
+									<!-- 										<label class="col-lg-3 control-label no-padding-right" -->
+									<!-- 											for="edit-minVal"> 最小值： </label> -->
+									<!-- 										<div class="col-sm-8"> -->
+									<!-- 											<input type="text" name="minVal" id="edit-minVal" -->
+									<!-- 												placeholder="最小值" class="form-control" /> -->
+									<!-- 										</div> -->
+									<!-- 									</div> -->
 								</div>
 								<div id="edit-topValDiv" style="display: none;">
 									<div class="space-4"></div>
@@ -1535,15 +1538,11 @@
 																										"<option value='"+ this.code+"'>"
 																												+ this.simplyName
 																												+ "</option>");
-																						$(
-																								"#edit-parameter")
-																								.select2()
-																								.val(
-																										data.parameter)
-																								.trigger(
-																										"change");
 																					}
 																				});
+																$("#edit-parameter").select2().val(
+																		data.parameter).trigger(
+																		"change");
 																$
 																		.each(
 																				res.stars,
@@ -1581,21 +1580,22 @@
 										$('#edit-timeZone').val(data.timeZone);
 										$('#edit-limitTimes').val(
 												data.limitTimes);
-										
-										if(data.parameterType == 'flywheel'){
-											
-									 		$('#edit-flywheelValDiv').show();
+
+										if (data.parameterType == 'flywheel') {
+
+											$('#edit-flywheelValDiv').show();
 											$('#edit-topValDiv').hide();
 											$('#edit-maxVal').val(data.maxVal);
 											$('#edit-minVal').val(data.minVal);
-									 	}
-										if(data.parameterType == 'top'){
+										}
+										if (data.parameterType == 'top') {
 											$('#edit-flywheelValDiv').hide();
 											$('#edit-topValDiv').show();
-											$('#edit-maxValtop').val(data.maxVal);
-											$('#edit-minValtop').val(data.minVal);
-									 	}
-										
+											$('#edit-maxValtop').val(
+													data.maxVal);
+											$('#edit-minValtop').val(
+													data.minVal);
+										}
 
 										//弹出编辑框
 										$('#editValueModal').modal('show');

@@ -4,10 +4,14 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+
 import javax.annotation.Resource;
+
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import DataAn.common.dao.Pager;
 import DataAn.galaxyManager.dao.IParameterDao;
 import DataAn.galaxyManager.domain.Parameter;
@@ -22,13 +26,13 @@ public class ParameterServiceImpl implements IParameterService{
 	@Resource
 	private IParameterDao parameterDao;
 	
-//	private ConcurrentHashMap<String,String> parameterList_allZh_and_en = new ConcurrentHashMap<String,String>();
+	private ConcurrentHashMap<String,String> parameterList_allZh_and_en = new ConcurrentHashMap<String,String>();
 	
-//	private ConcurrentHashMap<String,String> parameterList_en_and_allZh = new ConcurrentHashMap<String,String>();
+	private ConcurrentHashMap<String,String> parameterList_en_and_allZh = new ConcurrentHashMap<String,String>();
 	
 	@Override
 	@Transactional
-	public Parameter saveOne(String series, String star, String paramType, String param_zh) {
+	public Parameter saveOne(String series, String star, String deviceTypeCode, String param_zh) {
 		Parameter param = new Parameter();
 		if(param_zh.equals("接收地方时")){ // || param_zh.equals("时间")
 			param.setSeries(series);
@@ -44,10 +48,10 @@ public class ParameterServiceImpl implements IParameterService{
 			String code = "sequence_" + num;
 			param.setSeries(series);
 			param.setStar(star);
-			if(StringUtils.isNotBlank(paramType)){
-				param.setParameterType(paramType);					
+			if(StringUtils.isNotBlank(deviceTypeCode)){
+				param.setDeviceTypeCode(deviceTypeCode);					
 			}else{//TODO 通过数据库判断参数类型
-				param.setParameterType(J9Series_Star_ParameterType.getJ9SeriesStarParameterTypeByName(param_zh).getValue());	
+				param.setDeviceTypeCode(J9Series_Star_ParameterType.getJ9SeriesStarParameterTypeByName(param_zh).getValue());	
 			}
 			param.setFullName(param_zh);
 			param.setSimplyName(param_zh.split(":")[1]);
@@ -68,16 +72,23 @@ public class ParameterServiceImpl implements IParameterService{
 					paramSet.add(item);
 				}
 			}
-			for (String param_zh : paramSet) {
-				if(this.isExistParameter(0, series, star, param_zh.trim())){
-					this.saveOne(series, star, paramType, param_zh);					
-				}
-			}
+			this.saveMany(series, star, paramType, paramSet);
 		} catch (Exception e) {
 			//e.printStackTrace();
 		}
 	}
 
+
+	@Override
+	public void saveMany(String series, String star, String paramType,
+			Set<String> paramNames) {
+		for (String param_zh : paramNames) {
+			if(!this.isExistParameter(0, series, star, param_zh.trim())){
+				this.saveOne(series, star, paramType, param_zh);					
+			}
+		}
+	}
+	
 	@Override
 	@Transactional
 	public void deleteParamter(String paramIds) {
@@ -123,7 +134,7 @@ public class ParameterServiceImpl implements IParameterService{
 	@Override
 	public List<ParameterDto> getParameterList(String series, String star, String paramType) {
 		List<ParameterDto> paramDtoList = new ArrayList<ParameterDto>();
-		List<Parameter> paramList = parameterDao.selectBySeriesAndStarAndParameterType(series,star,paramType);
+		List<Parameter> paramList = parameterDao.selectBySeriesAndStarAndDeviceTypeCode(series,star,paramType);
 		if(paramList != null && paramList.size() > 0){
 			for (Parameter parameter : paramList) {
 				paramDtoList.add(this.pojoToDto(parameter));
@@ -159,33 +170,33 @@ public class ParameterServiceImpl implements IParameterService{
 		paramDto.setSimplyName(param.getSimplyName());
 		paramDto.setSeries(param.getSeries());
 		paramDto.setStar(param.getStar());
-		paramDto.setParameterType(param.getParameterType());
+		paramDto.setDeviceTypeCode(param.getDeviceTypeCode());
 		return paramDto;
 	}
 
 	@Override
 	public String getParameter_en_by_allZh(String series, String star,
 			 String paramType, String param_zh) {
-//		//先从Map集合里面查找
-//		String param_en = parameterList_allZh_and_en.get(param_zh);
-//		if(param_en == null){
-//			//Map集合里面没有再从数据库中查找
-//			Parameter param = parameterDao.selectBySeriesAndFullName(series, param_zh);
-//			if(param == null){
-//				//数据库中没有此集合
-//				param = this.saveOne(series, star,paramType, param_zh);
-//			}
-//			param_en = param.getCode();
-//			parameterList_allZh_and_en.put(param_zh, param_en);
-//		}
-//		return param_en;
-		
-		Parameter param = parameterDao.selectBySeriesAndStarAndCode(series, star, param_zh);
-		if(param == null){
-			//数据库中没有此集合
-			param = this.saveOne(series, star,paramType, param_zh);
+		//先从Map集合里面查找
+		String param_en = parameterList_allZh_and_en.get(param_zh);
+		if(param_en == null){
+			//Map集合里面没有再从数据库中查找
+			Parameter param = parameterDao.selectBySeriesAndStarAndCode(series, star, param_zh);
+			if(param == null){
+				//数据库中没有此集合
+				param = this.saveOne(series, star,paramType, param_zh);
+			}
+			param_en = param.getCode();
+			parameterList_allZh_and_en.put(param_zh, param_en);
 		}
-		return param.getCode();
+		return param_en;
+		
+//		Parameter param = parameterDao.selectBySeriesAndStarAndCode(series, star, param_zh);
+//		if(param == null){
+//			//数据库中没有此集合
+//			param = this.saveOne(series, star,paramType, param_zh);
+//		}
+//		return param.getCode();
 	}
 
 	public String getParameter_en_by_simpleZh(String series, String star,
@@ -201,22 +212,22 @@ public class ParameterServiceImpl implements IParameterService{
 	public String getParameter_allZh_by_en(String series, String star,
 			 String paramType, String param_en) {
 		//先从Map集合里面查找
-//		String param_zh = parameterList_en_and_allZh.get(param_en);
-//		if(param_zh == null || param_zh.equals("")){
-//			//Map集合里面没有再从数据库中查找
-//			Parameter param = parameterDao.selectBySeriesAndCode(series, param_en);
-//			if(param != null){
-//				parameterList_en_and_allZh.put(param.getCode(), param.getFullName());
-//				param_zh = param.getFullName();
-//			}
-//		}
-//		return param_zh;
-		
-		Parameter param = parameterDao.selectBySeriesAndStarAndCode(series,star, param_en);
-		if(param != null){
-			return param.getFullName();
+		String param_zh = parameterList_en_and_allZh.get(param_en);
+		if(StringUtils.isNotBlank(param_zh)){
+			//Map集合里面没有再从数据库中查找
+			Parameter param = parameterDao.selectBySeriesAndStarAndCode(series,star, param_en);
+			if(param != null){
+				parameterList_en_and_allZh.put(param.getCode(), param.getFullName());
+				return param.getFullName();
+			}
 		}
 		return null;
+		
+//		Parameter param = parameterDao.selectBySeriesAndStarAndCode(series,star, param_en);
+//		if(param != null){
+//			return param.getFullName();
+//		}
+//		return null;
 	}
 
 	@Override
@@ -262,6 +273,7 @@ public class ParameterServiceImpl implements IParameterService{
 		}
 		return null;
 	}
+
 
 
 }

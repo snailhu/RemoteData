@@ -327,9 +327,13 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 		FileDto fileDto = new FileDto();
 		Series series = seriesDao.selectByCode(dir.getSeries());
 		List<Star> starList = starDao.getStarBySeriesIdAndCode(series.getId(), dir.getStar());
-		VirtualFileSystem parentDir = fileDao.get(dir.getParentId());
 		String zipFileName = series.getName()+"-"+starList.get(0).getName()+"--"+
-							parentDir.getFileName()+"-"+ dir.getFileName() + ".zip";
+				dir.getFileName() + ".zip";	
+		if(dir.getParentId() != null){
+			VirtualFileSystem parentDir = fileDao.get(dir.getParentId());
+			zipFileName = series.getName()+"-"+starList.get(0).getName()+"--"+
+					parentDir.getFileName()+"-"+ dir.getFileName() + ".zip";			
+		}
 		String zipPath = CommonConfig.getZipCachePath() + File.separator + zipFileName;
 		ZipCompressorByAnt zca = new ZipCompressorByAnt(zipPath);  
 	    zca.compressExe(mogodbFilePath);  
@@ -484,9 +488,9 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 	protected void saveFileOfCSV(FileDto fileDto, Map<String,String> dataMap) throws Exception{
 		
 		String uuId = dataMap.get("versions");
-		String series = dataMap.get("series");
-		String star = dataMap.get("star");
-		String parameterType = fileDto.getParameterType();
+		final String series = dataMap.get("series");
+		final String star = dataMap.get("star");
+		final String parameterType = fileDto.getParameterType();
 		String date = dataMap.get("date");
 		String year = dataMap.get("year");
 		String month = dataMap.get("month");
@@ -512,7 +516,7 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 		//获取参数信息保存
 		CSVFileDataResultDto<Document> result = csvService.readCSVFileToDocAndgetTitle(fileDto.getFilePath());
 		//存储某一天的参数信息
-		String title = result.getTitle();
+		final String title = result.getTitle();
 		DateParameters dateParameters = new DateParameters();
 		dateParameters.setSeries(series);
 		dateParameters.setStar(star);
@@ -521,8 +525,13 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 		dateParameters.setYear_month_day(date);
 		parametersDao.add(dateParameters);
 		
-		//保存参数
-		//paramService.saveMany(series, star, parameterType, title);
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				//保存参数
+				paramService.saveMany(series, star, parameterType, title);
+			}
+		});
 		
 		//查找csv的文件夹是否存在
 //		VirtualFileSystem csvDir = fileDao.selectByParentIdisNullAndFileName("csv");

@@ -103,6 +103,14 @@ $(function() {
                     },
                 }
             },
+            deviceTypeCode : {
+                message: '请选择设备类型',
+                validators : {
+                    notEmpty : {
+                        message : '请选择设备类型'
+                    },
+                }
+            },
             fullName : {
                 message : '参数名不能为空',
                 validators : {
@@ -145,6 +153,14 @@ $(function() {
                 validators : {
                     notEmpty : {
                         message : '请选择一个系列'
+                    },
+                }
+            },
+            deviceTypeCode : {
+                message: '请选择设备类型',
+                validators : {
+                    notEmpty : {
+                        message : '请选择设备类型'
                     },
                 }
             },
@@ -235,9 +251,17 @@ $(function() {
 								</div>
 								<div class="space-4"></div>
 								<div class="form-group">
-									<label class="col-sm-3 control-label no-padding-right" for="add-param-series"> 星号：</label>
+									<label class="col-sm-3 control-label no-padding-right" for="add-param-star"> 星号：</label>
 									<div class="col-sm-8">
 										<input name="star" id="add-param-star" class="form-control" readonly="true"/>
+									</div>
+								</div>
+								<div class="space-4"></div>
+								<div class="form-group">
+									<label class="col-sm-3 control-label no-padding-right" for="add-param-deviceTypeCode"> 设备类型： </label>
+									<div class="col-sm-8">
+										<input type="text" id="add-param-deviceTypeCode" name="deviceTypeCode" placeholder="--请选择设备类型--" 
+										style="width: 350px;height:32px;"/>
 									</div>
 								</div>
 								<div class="space-4"></div>
@@ -280,11 +304,19 @@ $(function() {
                                 </div>
                                 <div class="space-4"></div>
                                 <div class="form-group">
-                                    <label class="col-sm-3 control-label no-padding-right" for="edit-param-series"> 系列：</label>
+                                    <label class="col-sm-3 control-label no-padding-right" for="edit-param-star"> 星：</label>
                                     <div class="col-sm-8">
-                                        <input name="series" id="edit-param-star" class="form-control" readonly="true"/>
+                                        <input name="star" id="edit-param-star" class="form-control" readonly="true"/>
                                     </div>
                                 </div>
+                                <div class="space-4"></div>
+								<div class="form-group">
+									<label class="col-sm-3 control-label no-padding-right" for="edit-param-deviceTypeCode"> 设备类型： </label>
+									<div class="col-sm-8">
+										<input type="text" id="edit-param-deviceTypeCode" name="deviceTypeCode" placeholder="--请选择设备类型--" 
+										style="width: 350px;height:32px;"/>
+									</div>
+								</div>
                                 <div class="space-4"></div>
                                 <div class="form-group">
                                     <label class="col-sm-3 control-label no-padding-right" for="edit-param-fullName"> 参数名称：</label>
@@ -360,6 +392,16 @@ $(function() {
 //       }); 
 // 	$("#add-param-series").combobox('setValues', '${nowSeries}');
 	
+	$("#add-param-deviceTypeCode").combobox({
+	    url:'${pageContext.request.contextPath}/admin/device/getDeviceTypeComboData',
+	    valueField:'value',
+	    textField:'text',
+	});
+	$("#edit-param-deviceTypeCode").combobox({
+	    url:'${pageContext.request.contextPath}/admin/device/getDeviceTypeComboData',
+	    valueField:'value',
+	    textField:'text',
+	});
 	$('#addParamModal-btn').click(function(){
 		$('#add-param-series').val(nowSeriesName);
 		$('#add-param-star').val(nowStarName);
@@ -379,11 +421,13 @@ $(function() {
 // 		var series = $("#add-param-series").val();
 // 		var star = $("#add-param-star").val();
 		var name = $('#add-param-fullName').val();
+		var deviceTypeCode = $("#add-param-deviceTypeCode").combobox('getValue');
 		$.ajax({
 			url : '${pageContext.request.contextPath}/admin/parameter/createParam',
 			data : {
 				series : nowSeries,
 				star : nowStar,
+				deviceTypeCode : deviceTypeCode,
 				name : name
 			},
 			cache : false,
@@ -435,12 +479,14 @@ $(function() {
 		}
 		var id = $('#edit-param-id').val();
 		var name = $('#edit-param-fullName').val();
+		var deviceTypeCode = $("#edit-param-deviceTypeCode").combobox('getValue');
 		$.ajax({
 			url : '${pageContext.request.contextPath}/admin/parameter/editParam',
 			data : {
 				id : id,
 				series : nowSeries,
 				star : nowStar,
+				deviceTypeCode : deviceTypeCode,
 				name : name
 			},
 			cache : false,

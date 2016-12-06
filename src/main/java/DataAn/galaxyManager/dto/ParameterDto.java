@@ -15,13 +15,15 @@ public class ParameterDto implements Serializable {
 
 	private String star; // 星 01、02、03...
 
-	private String parameterType; // 参数类型 flywheel、top
-
 	private String fullName; // 参数全称如， F10W111:飞轮电流Xa(00814)
 
 	private String simplyName; // 参数简称 如， 飞轮电流Xa(00814)
 
 	private String code; // 码： sequence_00814
+	
+	private String deviceTypeCode;// 设备类型Code flywheel、top
+	
+	private String deviceTypeName;// 设备类型名称 飞轮、陀螺
 
 	public Long getId() {
 		return id;
@@ -45,14 +47,6 @@ public class ParameterDto implements Serializable {
 
 	public void setStar(String star) {
 		this.star = star;
-	}
-
-	public String getParameterType() {
-		return parameterType;
-	}
-
-	public void setParameterType(String parameterType) {
-		this.parameterType = parameterType;
 	}
 
 	public String getFullName() {
@@ -79,10 +73,31 @@ public class ParameterDto implements Serializable {
 		this.code = code;
 	}
 
+	public String getDeviceTypeCode() {
+		return deviceTypeCode;
+	}
+
+	public void setDeviceTypeCode(String deviceTypeCode) {
+		this.deviceTypeCode = deviceTypeCode;
+	}
+
+	public String getDeviceTypeName() {
+		return deviceTypeName;
+	}
+
+	public void setDeviceTypeName(String deviceTypeName) {
+		this.deviceTypeName = deviceTypeName;
+	}
+
 	@Override
 	public String toString() {
-		return "ParameterDto [id=" + id + ", series=" + series + ", star=" + star + ", parameterType=" + parameterType
-				+ ", fullName=" + fullName + ", simplyName=" + simplyName + ", code=" + code + "]";
+		return "ParameterDto [id=" + id + ", series=" + series + ", star="
+				+ star + ", fullName="
+				+ fullName + ", simplyName=" + simplyName + ", code=" + code
+				+ ", deviceTypeCode=" + deviceTypeCode + ", deviceTypeName="
+				+ deviceTypeName + "]";
 	}
+
+	
 
 }

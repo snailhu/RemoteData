@@ -262,14 +262,11 @@ public class CommonController {
 	requestConfig.setTimeEnd(pbd.getEndTime());
 	
 	Map<String, YearAndParamDataDto> result = routingService.getData(requestConfig);	
-/*	for (Object obj : result.keySet()) {
-        String key = (String) obj;
+	for (String key : result.keySet()) {
         YearAndParamDataDto value =  result.get(key);
         List paramlist =value.getParamValue();
         System.out.println("key:"+key + "参数集合对象的大小" + paramlist.size());
-        for(Object li : paramlist)
-        {System.out.println("参数值为："+li);}
-    }*/
+    }
 	long end = System.currentTimeMillis();
 	System.out.println("----------------后台结束时间："+  DateUtil.formatSSS(new Date()));
 	System.out.println("----------------后台总处理时间："+ (end-begin));

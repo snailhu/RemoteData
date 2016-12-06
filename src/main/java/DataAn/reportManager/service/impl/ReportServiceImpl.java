@@ -7,6 +7,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.URLEncoder;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -350,7 +351,7 @@ public class ReportServiceImpl implements IReoportService {
 		try {
 			response.setCharacterEncoding("utf-8");
 			response.setContentType("multipart/form-data");
-			response.setHeader("Content-Disposition", "attachment;fileName=" + fileName);
+			response.setHeader("Content-Disposition", "attachment;filename=" + new String(fileName.getBytes("gb2312"), "ISO8859-1"));
 			os = response.getOutputStream();
 			byte[] b = new byte[2048];
 			int length;

@@ -407,8 +407,8 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 
 	@Override
 	@Transactional(readOnly = true)
-	public boolean isExistFile(String fileName) {
-		VirtualFileSystem file = fileDao.selectByFileName(fileName);
+	public boolean isExistFile(String parameterType, String fileName) {
+		VirtualFileSystem file = fileDao.selectByParameterTypeAndFileName(parameterType,fileName);
 		if(file == null){
 			return false;
 		}

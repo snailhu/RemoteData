@@ -33,10 +33,11 @@ public class VirtualFileSystemDaoImpl extends BaseDaoImpl<VirtualFileSystem>
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public VirtualFileSystem selectByFileName(String fileName) {
-		String hql = "from VirtualFileSystem fs where fs.fileName=?";
+	public VirtualFileSystem selectByParameterTypeAndFileName(String parameterType, 
+			String fileName) {
+		String hql = "from VirtualFileSystem fs where fs.parameterType=? and fs.fileName=?";
 		List<VirtualFileSystem> list = this.getSession().createQuery(hql)
-				.setParameter(0, fileName).list();
+				.setParameter(0, parameterType).setParameter(1, fileName).list();
 		if (list != null && list.size() > 0) {
 			return list.get(0);
 		}

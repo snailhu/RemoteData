@@ -137,7 +137,7 @@ public class SeriesServiceImpl implements ISeriesService {
 	public boolean checkSeriesAndStar(String series, String star) {
 		List<Series> seriesList = seriesDao.findByParam("code", series);
 		if (seriesList != null && seriesList.size() > 0) {
-			List<Star> starList = starDao.findByParam("code", star);
+			List<Star> starList = starDao.getStarBySeriesIdAndCode(seriesList.get(0).getId(), star);
 			if (starList != null && starList.size() > 0) {
 				return true;
 			}

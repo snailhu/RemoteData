@@ -409,6 +409,7 @@ input[type=text]::-webkit-focus-inner {
   		
 	$('#submit-fileupload').click(function() {
         var fileName = $('#csvFile').val();
+        var parameterType = $("input[name='paramType']:checked").val(); 
         if(fileName.length == 0){
         	$("#returnMsg").html("<img src='${pageContext.request.contextPath}/static/imgs/error.png'/><font color='red'>csv文件不能为空</font>");
         }else{
@@ -423,6 +424,7 @@ input[type=text]::-webkit-focus-inner {
         			$.ajax({  
         		        url : "${pageContext.request.contextPath}/admin/file/existFile",  
         		        data : {
+        		        	parameterType : parameterType,
         		        	fileName : datFile
 						},
 						cache : false,
@@ -454,7 +456,7 @@ input[type=text]::-webkit-focus-inner {
         					}
         				});
         				if(flag){
-    	   	 				$.post("${pageContext.request.contextPath}/admin/file/existFile", { fileName: fileName},function(data){
+    	   	 				$.post("${pageContext.request.contextPath}/admin/file/existFile", { parameterType : parameterType,fileName: fileName},function(data){
 //     	    					console.log("flag: " + data.success);
     	    					if (data.success) {
     	    						$("#returnMsg").html("<img src='${pageContext.request.contextPath}/static/imgs/error.png'/><font color='red'>csv"+data.msg+"</font>");

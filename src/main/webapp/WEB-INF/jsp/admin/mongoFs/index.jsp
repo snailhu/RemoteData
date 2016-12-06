@@ -475,7 +475,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	    	  }else{
 	              $.messager.confirm('提示', '确定要下载多个文件或目录吗？', function (r) {
     	              if (r) {
-    	            	  top.showMsg("提示", "请选择单个目录下载！");
+    	            	  top.showMsg("提示", "请选择单个文件或目录下载！");
 //     	            	  for (var i = 0; i < rows.length; i++) {
 //     	                      ids.push(rows[i].id +"/"+rows[i].type);
 //     	                  }

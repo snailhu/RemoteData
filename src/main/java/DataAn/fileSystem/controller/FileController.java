@@ -180,8 +180,9 @@ public class FileController {
 	
 	@RequestMapping(value = "existFile", method = RequestMethod.POST)
 	@ResponseBody
-	public JsonMessage existFile(String fileName){
+	public JsonMessage existFile(String parameterType, String fileName){
 		System.out.println("come in existFile...");
+		System.out.println("parameterType: " + parameterType);
 		System.out.println("fileName: " + fileName);
 		JsonMessage jsonMsg = new JsonMessage();
 		fileName = fileName.replace("\\", "/");
@@ -199,7 +200,7 @@ public class FileController {
 			jsonMsg.setSuccess(true);
 			jsonMsg.setMsg("文件中的星系不存在！！！");			
 		}else{
-			flag = fileService.isExistFile(fileName);
+			flag = fileService.isExistFile(parameterType, fileName);
 			if(flag){
 				jsonMsg.setSuccess(true);
 				jsonMsg.setMsg("文件已存在！！！");	

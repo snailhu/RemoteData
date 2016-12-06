@@ -81,11 +81,8 @@ public interface IVirtualFileSystemService {
 	* @Description: 判断当前文件时候存在
 	* @param fileName *.csv 或  *.DAT 文件名
 	* @return
-	* @author Shenwp
-	* @date 2016年7月5日
-	* @version 1.0
 	*/
-	public boolean isExistFile(String fileName);
+	public boolean isExistFile(String parameterType, String fileName);
 	
 	/**
 	* @Title: getMongoFSList
@@ -94,9 +91,6 @@ public interface IVirtualFileSystemService {
 	* @param pageSize
 	* @param dirId
 	* @return
-	* @author Shenwp
-	* @date 2016年7月8日
-	* @version 1.0
 	*/	
 	public Pager<MongoFSDto> getMongoFSList(int pageIndex, int pageSize,
 			String series, String star, String parameterType, long dirId, String dataTypes);

@@ -65,7 +65,10 @@ public class CommonController {
 	@ResponseBody
 	public List<ConstraintDto> getConstraint(String beginDate,String endDate,String Series_current,String Star_current,String type_current) 
 			throws Exception{
-		return j9Series_Star_Service.getAllParameterList(beginDate, endDate, Series_current, Star_current, type_current);
+		if(StringUtils.isNotBlank(beginDate) || StringUtils.isNotBlank(endDate)){
+			return j9Series_Star_Service.getAllParameterList(beginDate, endDate, Series_current, Star_current, type_current);			
+		}
+		return new ArrayList<ConstraintDto>();
 	}
 	
 	

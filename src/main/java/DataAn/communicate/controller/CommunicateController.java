@@ -1,6 +1,9 @@
 package DataAn.communicate.controller;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -11,15 +14,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 
 import DataAn.common.controller.BaseController;
 import DataAn.fileSystem.dao.IVirtualFileSystemDao;
 import DataAn.fileSystem.domain.VirtualFileSystem;
+import DataAn.galaxyManager.service.IParameterService;
 import DataAn.prewarning.domain.WarningValue;
 import DataAn.prewarning.service.IPrewarningService;
 import DataAn.status.service.IStatusTrackingService;
+import DataAn.storm.exceptioncheck.model.ExceptionJobConfig;
+import DataAn.storm.exceptioncheck.model.ExceptionPointConfig;
 
 @Controller
 @RequestMapping("/Communicate")
@@ -30,7 +37,96 @@ public class CommunicateController extends BaseController {
 	private IStatusTrackingService statusTrackingService;
 	@Resource
 	private IVirtualFileSystemDao fileDao;
+	@Resource
+	private IParameterService parameterService;
 
+	// 获取星系设备:特殊工况参数配置信息
+	@RequestMapping(value = "/getExceptionJobConfigList")
+	@ResponseBody
+	public String getExceptionJobConfigList(String series, String star, String parameterType) {
+		if (StringUtils.isBlank(series) || StringUtils.isBlank(star) || StringUtils.isBlank(parameterType)) {
+			System.out.println("请求参数：星系，星，设备类型 不能为空！！！");
+			return null;
+		}
+		//特殊工况参数配置
+		List<WarningValue> jobWarningValues = prewarningService.getWarningValueByParams(series, star, null, parameterType, "0");
+		if(jobWarningValues != null && jobWarningValues.size() > 0){
+			Map<String,String> map = new HashMap<String,String>();
+			List<ExceptionJobConfig> jobConfigList = new ArrayList<ExceptionJobConfig>();
+			ExceptionJobConfig jobConfig = null;
+			for (WarningValue wv : jobWarningValues) {
+				String deviceName = parameterService.getParameter_deviceName_by_en(series, star, wv.getParameterType(), wv.getParameter());
+				if(StringUtils.isNotBlank(deviceName)){
+					jobConfig = new ExceptionJobConfig();
+					jobConfig.setDeviceName(deviceName);
+					jobConfig.setDeviceType(wv.getParameterType());
+					jobConfig.setParamCode(wv.getParameter());
+					jobConfig.setMax(wv.getMaxVal());
+					jobConfig.setMin(wv.getMinVal());
+					jobConfig.setDelayTime(wv.getLimitTimes());//时间单位
+					jobConfig.setCount(wv.getTimeZone());
+					jobConfigList.add(jobConfig);
+				}else{
+					throw new RuntimeException(series+"-"+star+"-"+wv.getParameterType()+"-"+wv.getParameter()+" : 找不到设备1");
+				}
+			}
+			map.put("exceptionJobConfig", JSON.toJSONString(jobConfigList));
+			//异常参数配置
+			List<WarningValue> exceWarningValues = prewarningService.getWarningValueByParams(series, star, null, parameterType, "1");
+			if(exceWarningValues != null && exceWarningValues.size() > 0){
+				List<ExceptionPointConfig> exceConfigList = new ArrayList<ExceptionPointConfig>();
+				ExceptionPointConfig exceConfig = null;
+				for (WarningValue ew : exceWarningValues) {
+					String deviceName = parameterService.getParameter_deviceName_by_en(series, star, ew.getParameterType(), ew.getParameter());
+					if(StringUtils.isNotBlank(deviceName)){
+						exceConfig = new ExceptionPointConfig();
+						exceConfig.setDeviceType(ew.getParameterType());
+						exceConfig.setDeviceName(deviceName);
+						exceConfig.setParamCode(ew.getParameter());
+						exceConfig.setMax(ew.getMaxVal());
+						exceConfig.setMin(ew.getMinVal());
+						exceConfig.setDelayTime(ew.getLimitTimes());//时间单位
+						exceConfigList.add(exceConfig);						
+					}else{
+						throw new RuntimeException(series+"-"+star+"-"+ew.getParameterType()+"-"+ew.getParameter()+" : 找不到设备2");
+					}
+				}
+				map.put("exceptionPointConfig", JSON.toJSONString(exceConfigList));
+				return JSON.toJSONString(map);
+			}
+//			return JSON.toJSONString(jobConfigList);
+		}
+		return null;
+	}
+	
+	// 获取星系设备:异常参数配置信息
+	@RequestMapping(value = "/getExceptionPointConfigList")
+	@ResponseBody
+	public String getExceptionPointConfigList(String series, String star, String parameterType) {
+		if (StringUtils.isBlank(series) || StringUtils.isBlank(star) || StringUtils.isBlank(parameterType)) {
+			System.out.println("请求参数：星系，星，设备类型 不能为空！！！");
+			return null;
+		}
+		//异常参数配置
+		List<WarningValue> warningValues = prewarningService.getWarningValueByParams(series, star, null, parameterType, "1");
+		if(warningValues != null && warningValues.size() > 0){
+			List<ExceptionPointConfig> exceConfigList = new ArrayList<ExceptionPointConfig>();
+			ExceptionPointConfig exceConfig = null;
+			for (WarningValue wv : warningValues) {
+				exceConfig = new ExceptionPointConfig();
+				exceConfig.setDeviceType(wv.getParameterType());
+				exceConfig.setDeviceName(parameterService.getParameter_deviceName_by_en(series, star, wv.getParameterType(), wv.getParameter()));
+				exceConfig.setParamCode(wv.getParameter());
+				exceConfig.setMax(wv.getMaxVal());
+				exceConfig.setMin(wv.getMinVal());
+				exceConfig.setDelayTime(wv.getLimitTimes());//时间单位
+				exceConfigList.add(exceConfig);
+			}
+			return JSON.toJSONString(exceConfigList);
+		}
+		return null;
+	}
+		
 	// 获取所有特殊工况参数配置信息
 	@RequestMapping(value = "/getAllWarnValue")
 	@ResponseBody
@@ -89,8 +185,9 @@ public class CommunicateController extends BaseController {
 	@ResponseBody
 	public String getWarnValueByParam(HttpServletRequest request, String series, String star, String parameterType,
 			String parameter) {
-		if (StringUtils.isBlank("series") || StringUtils.isBlank("star") || StringUtils.isBlank("parameterType")) {
-			return "请求参数：星系，星，设备类型 不能为空！！！";
+		if (StringUtils.isBlank(series) || StringUtils.isBlank(star) || StringUtils.isBlank(parameterType)) {
+			System.out.println("请求参数：星系，星，设备类型 不能为空！！！");
+			return null;
 		}
 		JSONObject jsonObject = new JSONObject();
 		jsonObject.put("series", series);

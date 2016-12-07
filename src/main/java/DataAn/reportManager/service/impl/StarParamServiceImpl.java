@@ -172,7 +172,7 @@ public class StarParamServiceImpl implements IStarParamService {
 	public List<ConstraintDto> getConstraintList(String series,String star,String paramType) throws Exception{
 		List<ConstraintDto> constraintDtoList = new ArrayList<ConstraintDto>();
 		
-		List<ConstraintDto> list = j9Series_Star_Service.getAllParameterList("", "", series, star, paramType);
+		List<ConstraintDto> list = j9Series_Star_Service.getParameterList(series, star, paramType);
 		for (ConstraintDto constraintDto : list) {
 			if(constraintDto.getParentId() != 0) {
 				constraintDtoList.add(constraintDto);

@@ -44,34 +44,39 @@ public class LoginController {
 	public String loginPost(@RequestParam(value = "username", required = true) String username,
 			@RequestParam(value = "password", required = true) String password, HttpServletResponse response,
 			HttpServletRequest request) throws InvalidKeyException, NoSuchAlgorithmException, IOException {
-//		 System.out.println("login...");
-//		 System.out.println("username: " + username);
-//		 System.out.println("password: " + password);
-//		 System.out.println("userService: " + userService);
+		 System.out.println("login...");
+		 System.out.println("username: " + username);
+		 System.out.println("password: " + password);
+		 System.out.println("userService: " + userService);
 		ActiveUserDto acticeUser = userService.getActiveUserByName(username);
 		if (acticeUser != null) {
-			if (password.equals(acticeUser.getPassWord())) {
-				HttpSession session = request.getSession();
-				Long warnCount = 0l;
-				try {
-					warnCount = prewarningService.getNotReadCount("", "", "", "", "");
-				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}	
-				User user = new User();
-				user.setUserName(username);
-				session.setAttribute("warnCount", warnCount);
-				session.setAttribute("user", user);
-				session.setAttribute("userName", username);
-				session.setAttribute("activeUser", acticeUser);
-				//添加登录日志到日志数据库
-				String operatejob = "登录系统";
-				systemLogService.addOneSystemlogs(request,operatejob);
-
-				return "redirect:/Index";
+			if(username.equals(acticeUser.getUserName())){
+				if (password.equals(acticeUser.getPassWord())) {
+					HttpSession session = request.getSession();
+					Long warnCount = 0l;
+					try {
+						warnCount = prewarningService.getNotReadCount("", "", "", "", "");
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}	
+					User user = new User();
+					user.setUserName(username);
+					session.setAttribute("warnCount", warnCount);
+					session.setAttribute("user", user);
+					session.setAttribute("userName", username);
+					session.setAttribute("activeUser", acticeUser);
+					//添加登录日志到日志数据库
+					String operatejob = "登录系统";
+					systemLogService.addOneSystemlogs(request,operatejob);
+					
+					return "redirect:/Index";
+				} else {
+					request.setAttribute("loginFlag", 1);
+					return "/admin/account/login";
+				}
 			} else {
-				request.setAttribute("loginFlag", 1);
+				request.setAttribute("loginFlag", -1);
 				return "/admin/account/login";
 			}
 		} else {

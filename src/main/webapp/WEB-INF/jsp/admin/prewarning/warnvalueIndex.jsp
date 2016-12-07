@@ -819,6 +819,53 @@
 	<script type="text/javascript">
 		var valueGrid;
         $(function () {
+        	valueGrid = $("#valueList").datagrid({
+								frozenColumns : [ [ {
+									title : 'valueId',
+									field : 'valueId',//'valueId',
+									width : 50,
+									checkbox : true
+								} ] ],
+								columns : [ [ {
+									field : 'series',
+									title : '星系',
+									width : 100,
+									sortable:true
+								}, {
+									field : 'star',
+									title : '星',
+									width : 100,
+									sortable:true
+								},{
+									field : 'parameterType',
+									title : '设备',
+									width : 100,
+									sortable:true
+								}, {
+									field : 'parameter',
+									title : '参数',
+									width : 100,
+									sortable:true
+								}, {
+									field : 'timeZone',
+									title : '时间区间(min)',
+									width : 100,
+									sortable:true
+								}, {
+									field : 'limitTimes',
+									title : '限定次数',
+									width : 100,
+									sortable:true
+								} ] ],
+
+								toolbar : [ {
+									text : '创建',
+									iconCls : 'icon-add',
+									handler : function() {
+										createValue();
+									}
+								} ]
+							});        	
 
    	  		$.get('<%=request.getContextPath()%>/starParam/getSeriesList', {}, function (res) {
  			  if(res.result == "true") {

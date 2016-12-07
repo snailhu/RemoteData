@@ -36,8 +36,8 @@ public class Parameter {
 	private String star;
 	
 	//参数 如: flywheel、top
-	@Column(name = "parameterType", nullable = true, length = 16)
-	private String parameterType;
+	@Column(name = "deviceTypeCode", nullable = true, length = 16)
+	private String deviceTypeCode;
 		
 	//参数名全称
 	@Column(name = "fullName", nullable = false, length = 128)
@@ -79,12 +79,12 @@ public class Parameter {
 		this.star = star;
 	}
 
-	public String getParameterType() {
-		return parameterType;
+	public String getDeviceTypeCode() {
+		return deviceTypeCode;
 	}
 
-	public void setParameterType(String parameterType) {
-		this.parameterType = parameterType;
+	public void setDeviceTypeCode(String deviceTypeCode) {
+		this.deviceTypeCode = deviceTypeCode;
 	}
 
 	public String getFullName() {

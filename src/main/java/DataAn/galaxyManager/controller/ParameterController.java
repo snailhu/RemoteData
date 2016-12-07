@@ -67,10 +67,12 @@ public class ParameterController {
 	@ResponseBody
 	public JsonMessage createParam(@RequestParam(value = "series", required = true) String series,
 								   @RequestParam(value = "star", required = true) String star,
+								   @RequestParam(value = "deviceTypeCode", required = true) String deviceTypeCode,
 								   @RequestParam(value = "name", required = true) String name){
 		System.out.println("come in createParam");
 		System.out.println("series: " + series);
 		System.out.println("star: " + star);
+		System.out.println("deviceTypeCode: " + deviceTypeCode);
 		System.out.println("name: " + name);
 		JsonMessage jsonMsg = new JsonMessage();
 		if (parameterService.isExistParameter(0, series, star, name)) {
@@ -80,7 +82,7 @@ public class ParameterController {
 			return jsonMsg;
 		} 
 		try {
-			parameterService.saveOne(series,star,null, name);
+			parameterService.saveOne(series,star,deviceTypeCode, name);
 		} catch (Exception e) {
 			e.printStackTrace();
 			jsonMsg.setSuccess(false);
@@ -97,15 +99,17 @@ public class ParameterController {
 	public JsonMessage editParam(@RequestParam(value = "id", required = true) long id,
 								@RequestParam(value = "series", required = true) String series,
 								@RequestParam(value = "star", required = true) String star,
+								@RequestParam(value = "deviceTypeCode", required = true) String deviceTypeCode,
 			  					@RequestParam(value = "name", required = true) String name){
 
 		System.out.println("come in editParam");
 		System.out.println("id: " + id);
 		System.out.println("series: " + series);
 		System.out.println("star: " + star);
+		System.out.println("deviceTypeCode: " + deviceTypeCode);
 		System.out.println("name: " + name);
 		JsonMessage jsonMsg = new JsonMessage();
-		boolean flag = parameterService.isExistParameter(0, series, star, name);
+		boolean flag = parameterService.isExistParameter(id, series, star, name);
 		System.out.println("flag: " + flag);
 		if (flag) {
 			jsonMsg.setSuccess(false);

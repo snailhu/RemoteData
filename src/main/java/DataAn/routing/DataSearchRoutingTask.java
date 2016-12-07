@@ -44,7 +44,12 @@ public class DataSearchRoutingTask extends RecursiveTask<Map<String, YearAndPara
 			dataSearchTaskConfig.setEndDate(mongoFilter.getEndDate());
 			dataSearchTaskConfig.setMaxvalue(property.getMax());
 			dataSearchTaskConfig.setMinvalue(property.getMin());
-			dataSearchTaskConfig.setRepo(routingRepoService.getTargetRepo(requestConfig,property.getValue(),repo.index()));
+			if(repo.index()==1){
+				dataSearchTaskConfig.setRepo(repo);
+			}
+			else{
+				dataSearchTaskConfig.setRepo(routingRepoService.getTargetRepo(requestConfig,property.getValue(),repo.index()));
+			}
 			DataSearchTask task = new DataSearchTask(dataSearchTaskConfig);
 		    forks.add(task);
 		    task.fork();

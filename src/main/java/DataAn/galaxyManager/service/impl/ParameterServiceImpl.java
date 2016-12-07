@@ -257,7 +257,7 @@ public class ParameterServiceImpl implements IParameterService{
 	}
 
 	@Override
-	public String getParameter_paramTypeName_by_en(String series, String star,
+	public String getParameter_deviceName_by_en(String series, String star,
 			String paramType, String param_en) {
 		String param_zh = this.getParameter_allZh_by_en(series, star, paramType, param_en);
 		if(StringUtils.isNotBlank(param_zh)){

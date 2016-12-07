@@ -53,5 +53,5 @@ public interface IParameterService {
 	 * @author Shenwp
 	 * @date 2016年10月26日
 	 */
-	public String getParameter_paramTypeName_by_en(String series, String star, String paramType, String param_en);
+	public String getParameter_deviceName_by_en(String series, String star, String paramType, String param_en);
 }

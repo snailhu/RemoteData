@@ -171,7 +171,7 @@ public class J9Series_Star_ServiceImpl implements IJ9Series_Star_Service{
 //		star = J9SeriesType.STRA2.getValue();
 //		String paramType = J9Series_Star_ParameterType.FLYWHEEL.getValue();
 		if (StringUtils.isNotBlank(series) && StringUtils.isNotBlank(star) && StringUtils.isNotBlank(paramType)) {
-			return paramService.getParameter_paramTypeName_by_en(series, star, paramType, param_en);
+			return paramService.getParameter_deviceName_by_en(series, star, paramType, param_en);
 		}
 		return null;
 	}

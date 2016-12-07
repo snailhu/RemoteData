@@ -80,12 +80,14 @@ public class ParameterServiceImpl implements IParameterService{
 
 
 	@Override
-	public void saveMany(String series, String star, String paramType,
-			Set<String> paramNames) {
-		for (String param_zh : paramNames) {
-			if(!this.isExistParameter(0, series, star, param_zh.trim())){
-				this.saveOne(series, star, paramType, param_zh);					
-			}
+	public void saveMany(String series, String star, String paramType,Set<String> paramNames) {
+		List<Parameter> paramList = parameterDao.selectBySeriesAndStarAndDeviceTypeCode(series,star,paramType);
+		if(paramList == null || paramList.size() == 0){
+			for (String param_zh : paramNames) {
+				if(!this.isExistParameter(0, series, star, param_zh.trim())){
+					this.saveOne(series, star, paramType, param_zh);					
+				}
+			}			
 		}
 	}
 	
@@ -179,7 +181,7 @@ public class ParameterServiceImpl implements IParameterService{
 			 String paramType, String param_zh) {
 		//先从Map集合里面查找
 		String param_en = parameterList_allZh_and_en.get(param_zh);
-		if(param_en == null){
+		if(StringUtils.isBlank(param_en)){
 			//Map集合里面没有再从数据库中查找
 			Parameter param = parameterDao.selectBySeriesAndStarAndCode(series, star, param_zh);
 			if(param == null){
@@ -188,8 +190,9 @@ public class ParameterServiceImpl implements IParameterService{
 			}
 			param_en = param.getCode();
 			parameterList_allZh_and_en.put(param_zh, param_en);
+			return param_en;
 		}
-		return param_en;
+		return null;
 		
 //		Parameter param = parameterDao.selectBySeriesAndStarAndCode(series, star, param_zh);
 //		if(param == null){
@@ -213,7 +216,7 @@ public class ParameterServiceImpl implements IParameterService{
 			 String paramType, String param_en) {
 		//先从Map集合里面查找
 		String param_zh = parameterList_en_and_allZh.get(param_en);
-		if(StringUtils.isNotBlank(param_zh)){
+		if(StringUtils.isBlank(param_zh)){
 			//Map集合里面没有再从数据库中查找
 			Parameter param = parameterDao.selectBySeriesAndStarAndCode(series,star, param_en);
 			if(param != null){
@@ -259,6 +262,11 @@ public class ParameterServiceImpl implements IParameterService{
 	@Override
 	public String getParameter_deviceName_by_en(String series, String star,
 			String paramType, String param_en) {
+//		System.out.println("getParameter_deviceName_by_en..");
+//		System.out.println("series: " + series);
+//		System.out.println("star: " + star);
+//		System.out.println("paramType: " + paramType);
+//		System.out.println("param_en: " + param_en);
 		String param_zh = this.getParameter_allZh_by_en(series, star, paramType, param_en);
 		if(StringUtils.isNotBlank(param_zh)){
 			if(!param_zh.equals("时间") && !param_zh.equals("接收地方时")){

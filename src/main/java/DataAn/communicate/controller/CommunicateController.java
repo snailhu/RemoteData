@@ -55,15 +55,20 @@ public class CommunicateController extends BaseController {
 			List<ExceptionJobConfig> jobConfigList = new ArrayList<ExceptionJobConfig>();
 			ExceptionJobConfig jobConfig = null;
 			for (WarningValue wv : jobWarningValues) {
-				jobConfig = new ExceptionJobConfig();
-				jobConfig.setDeviceType(wv.getParameterType());
-				jobConfig.setDeviceName(parameterService.getParameter_deviceName_by_en(series, star, wv.getParameterType(), wv.getParameter()));
-				jobConfig.setParamCode(wv.getParameter());
-				jobConfig.setMax(wv.getMaxVal());
-				jobConfig.setMin(wv.getMinVal());
-				jobConfig.setDelayTime(wv.getLimitTimes());//时间单位
-				jobConfig.setCount(wv.getTimeZone());
-				jobConfigList.add(jobConfig);
+				String deviceName = parameterService.getParameter_deviceName_by_en(series, star, wv.getParameterType(), wv.getParameter());
+				if(StringUtils.isNotBlank(deviceName)){
+					jobConfig = new ExceptionJobConfig();
+					jobConfig.setDeviceName(deviceName);
+					jobConfig.setDeviceType(wv.getParameterType());
+					jobConfig.setParamCode(wv.getParameter());
+					jobConfig.setMax(wv.getMaxVal());
+					jobConfig.setMin(wv.getMinVal());
+					jobConfig.setDelayTime(wv.getLimitTimes());//时间单位
+					jobConfig.setCount(wv.getTimeZone());
+					jobConfigList.add(jobConfig);
+				}else{
+					throw new RuntimeException(series+"-"+star+"-"+wv.getParameterType()+"-"+wv.getParameter()+" : 找不到设备1");
+				}
 			}
 			map.put("exceptionJobConfig", JSON.toJSONString(jobConfigList));
 			//异常参数配置
@@ -71,15 +76,20 @@ public class CommunicateController extends BaseController {
 			if(exceWarningValues != null && exceWarningValues.size() > 0){
 				List<ExceptionPointConfig> exceConfigList = new ArrayList<ExceptionPointConfig>();
 				ExceptionPointConfig exceConfig = null;
-				for (WarningValue wv : exceWarningValues) {
-					exceConfig = new ExceptionPointConfig();
-					exceConfig.setDeviceType(wv.getParameterType());
-					exceConfig.setDeviceName(parameterService.getParameter_deviceName_by_en(series, star, wv.getParameterType(), wv.getParameter()));
-					exceConfig.setParamCode(wv.getParameter());
-					exceConfig.setMax(wv.getMaxVal());
-					exceConfig.setMin(wv.getMinVal());
-					exceConfig.setDelayTime(wv.getLimitTimes());//时间单位
-					exceConfigList.add(exceConfig);
+				for (WarningValue ew : exceWarningValues) {
+					String deviceName = parameterService.getParameter_deviceName_by_en(series, star, ew.getParameterType(), ew.getParameter());
+					if(StringUtils.isNotBlank(deviceName)){
+						exceConfig = new ExceptionPointConfig();
+						exceConfig.setDeviceType(ew.getParameterType());
+						exceConfig.setDeviceName(deviceName);
+						exceConfig.setParamCode(ew.getParameter());
+						exceConfig.setMax(ew.getMaxVal());
+						exceConfig.setMin(ew.getMinVal());
+						exceConfig.setDelayTime(ew.getLimitTimes());//时间单位
+						exceConfigList.add(exceConfig);						
+					}else{
+						throw new RuntimeException(series+"-"+star+"-"+ew.getParameterType()+"-"+ew.getParameter()+" : 找不到设备2");
+					}
 				}
 				map.put("exceptionPointConfig", JSON.toJSONString(exceConfigList));
 				return JSON.toJSONString(map);

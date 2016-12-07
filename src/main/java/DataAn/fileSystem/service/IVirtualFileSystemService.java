@@ -39,7 +39,7 @@ public interface IVirtualFileSystemService {
 	*/
 	public void deleteFile(HttpServletRequest request,String ids);
 	
-	public void deleteFileByUUId(String uuId);
+	public void deleteFileByUUId(String uuId) throws Exception;
 	/**
 	* @Title: downloadFile
 	* @Description: 下载单个文件

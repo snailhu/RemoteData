@@ -1,6 +1,7 @@
 package DataAn.galaxyManager.service;
 
 import java.util.List;
+import java.util.Set;
 
 import DataAn.common.dao.Pager;
 import DataAn.galaxyManager.domain.Parameter;
@@ -8,9 +9,11 @@ import DataAn.galaxyManager.dto.ParameterDto;
 
 public interface IParameterService {
 
-	public Parameter saveOne(String series, String star, String paramType, String param_zh);
+	public Parameter saveOne(String series, String star, String deviceTypeCode, String param_zh);
 	
 	public void saveMany(String series, String star, String paramType, String param_zhs);
+	
+	public void saveMany(String series, String star, String paramType, Set<String> paramNames);
 	
 	public void deleteParamter(String paramIds);
 	
@@ -50,5 +53,5 @@ public interface IParameterService {
 	 * @author Shenwp
 	 * @date 2016年10月26日
 	 */
-	public String getParameter_paramTypeName_by_en(String series, String star, String paramType, String param_en);
+	public String getParameter_deviceName_by_en(String series, String star, String paramType, String param_en);
 }

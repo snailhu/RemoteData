@@ -131,13 +131,13 @@ implements IParameterDao{
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<Parameter> selectBySeriesAndStarAndParameterType(String series,
-			String star, String parameterType) {
-		String hql = "from Parameter param where param.series=? and param.star=? and param.parameterType=? and param.simplyName is not null";
+	public List<Parameter> selectBySeriesAndStarAndDeviceTypeCode(String series,
+			String star, String deviceTypeCode) {
+		String hql = "from Parameter param where param.series=? and param.star=? and param.deviceTypeCode=? and param.simplyName is not null";
 		return this.getSession().createQuery(hql)
 								.setParameter(0, series)
 								.setParameter(1, star)
-								.setParameter(2, parameterType).list();
+								.setParameter(2, deviceTypeCode).list();
 	}
 
 

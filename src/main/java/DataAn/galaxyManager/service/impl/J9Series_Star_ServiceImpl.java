@@ -7,15 +7,19 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
 import javax.annotation.Resource;
+
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
+
 import DataAn.Analysis.dto.ConstraintDto;
 import DataAn.Util.EhCache;
 import DataAn.fileSystem.dao.IDateParametersDao;
 import DataAn.fileSystem.domain.DateParameters;
 import DataAn.galaxyManager.dto.ParameterDto;
 import DataAn.galaxyManager.option.J9SeriesType;
+import DataAn.galaxyManager.option.J9Series_Star_FlywheelParameterConfig;
 import DataAn.galaxyManager.option.J9Series_Star_ParameterType;
 import DataAn.galaxyManager.option.SeriesType;
 import DataAn.galaxyManager.service.IJ9Series_Star_Service;
@@ -167,7 +171,7 @@ public class J9Series_Star_ServiceImpl implements IJ9Series_Star_Service{
 //		star = J9SeriesType.STRA2.getValue();
 //		String paramType = J9Series_Star_ParameterType.FLYWHEEL.getValue();
 		if (StringUtils.isNotBlank(series) && StringUtils.isNotBlank(star) && StringUtils.isNotBlank(paramType)) {
-			return paramService.getParameter_paramTypeName_by_en(series, star, paramType, param_en);
+			return paramService.getParameter_deviceName_by_en(series, star, paramType, param_en);
 		}
 		return null;
 	}
@@ -355,18 +359,25 @@ public class J9Series_Star_ServiceImpl implements IJ9Series_Star_Service{
 	@Override
 	public void initJ9SeriesParameterData() {
 		try {
-			String type = J9Series_Star_ParameterType.FLYWHEEL.getName();
-			String paramType = J9Series_Star_ParameterType.FLYWHEEL.getValue();
-			//"电流","转速","温度","指令","供电状态","角动量"
-			List<String> params = J9Series_Star_ParameterType.getFlywheelTypeOnDataType();
-			//初始化飞轮参数数据
-			Map<String, String> map = this.getAllParameterList_allZh_and_enByOption(type,null);
-			Set<String> keys = map.keySet();
-			String series = SeriesType.J9_SERIES.getName();
-			String star = J9SeriesType.STRA2.getValue();
-			for (String key : keys) {
-				paramService.getParameter_en_by_allZh(series, star,paramType, key);
+			//初始化飞轮数据
+			Set<String> paramNames = new HashSet<String>();
+			Class<?> pojoClass = Class.forName(J9Series_Star_FlywheelParameterConfig.class.getName());
+			Object obj = pojoClass.newInstance();
+			Field[] fields = pojoClass.getDeclaredFields();
+			for (Field field : fields) {
+				String paramName = field.get(obj).toString().trim();
+				if(!paramName.equals("接收地方时")){
+					paramNames.add(paramName);					
+				}
 			}
+			String series = SeriesType.J9_SERIES.getName();
+			String paramType = J9Series_Star_ParameterType.FLYWHEEL.getValue();
+			J9SeriesType[] types = J9SeriesType.values();
+			for (J9SeriesType j9SeriesType : types) {
+				String star = j9SeriesType.getValue();
+				paramService.saveMany(series, star, paramType, paramNames);
+			}
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

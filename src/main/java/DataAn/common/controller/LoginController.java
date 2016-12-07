@@ -44,12 +44,12 @@ public class LoginController {
 	public String loginPost(@RequestParam(value = "username", required = true) String username,
 			@RequestParam(value = "password", required = true) String password, HttpServletResponse response,
 			HttpServletRequest request) throws InvalidKeyException, NoSuchAlgorithmException, IOException {
-//		 System.out.println("login...");
-//		 System.out.println("username: " + username);
-//		 System.out.println("password: " + password);
-//		 System.out.println("userService: " + userService);
+		 System.out.println("login...");
+		 System.out.println("username: " + username);
+		 System.out.println("password: " + password);
+		 System.out.println("userService: " + userService);
 		ActiveUserDto acticeUser = userService.getActiveUserByName(username);
-		if (acticeUser != null) {
+		if (acticeUser != null && username.equals(acticeUser.getUserName())) {
 			if (password.equals(acticeUser.getPassWord())) {
 				HttpSession session = request.getSession();
 				Long warnCount = 0l;

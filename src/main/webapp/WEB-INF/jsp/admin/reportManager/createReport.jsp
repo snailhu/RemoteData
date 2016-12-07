@@ -226,7 +226,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 										<label class="col-sm-5 control-label no-padding-right" for="form-beginTime"> 开始日期： </label>
 										<div class="col-sm-3">
 											<input type="text" id="form-beginTime" name="beginTime" 
-											placeholder="--请选择开始日期--" class="form-control" readonly="true" />
+											placeholder="--请选择开始日期--" class="form-control"/>
 											<div id="getBeginTime"></div>
 										</div>
 									</div>
@@ -235,7 +235,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 										<label class="col-sm-5 control-label no-padding-right" for="form-endTime"> 结束日期： </label>
 										<div class="col-sm-3">
 											<input type="text" id="form-endTime" name="endTime" 
-											placeholder="--请选择结束日期--" class="form-control" readonly="true" />
+											placeholder="--请选择结束日期--" class="form-control"/>
 											<div id="getEndTime"></div>
 										</div>
 									</div>
@@ -413,6 +413,9 @@ $(function(){
 					  $("#downloadReport").hideLoading();
 					 	var docPath = res.data.docPath;
 					 	var filename = res.data.filename;
+					 	console.log(filename);
+					 	console.log(docPath);
+						console.log("report/downloadReport?docPath="+docPath+"&filename="+filename);
          				window.location.href="report/downloadReport?docPath="+docPath+"&filename="+filename;
 	              }
 	              else {

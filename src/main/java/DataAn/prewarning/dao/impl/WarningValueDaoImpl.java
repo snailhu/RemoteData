@@ -65,7 +65,7 @@ public class WarningValueDaoImpl extends BaseDaoImpl<WarningValue> implements IW
 			hql += " and warningType = " + warningType;
 			countHQL += " and warningType = " + warningType;
 		}
-		if (StringUtils.isNotBlank(sort) && StringUtils.isNoneBlank(order)) {
+		if (StringUtils.isNotBlank(sort) && StringUtils.isNotBlank(order)) {
 			hql += "order by " + sort + " " + order;
 		} else {
 			hql += "order by createDate desc";

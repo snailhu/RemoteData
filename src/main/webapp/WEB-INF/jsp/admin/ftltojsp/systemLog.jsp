@@ -110,7 +110,7 @@
 									<div class="form-group">
 										<label class="col-sm-5 control-label no-padding-right" for="form-beginTime"> 开始时间：</label>
 										<div class="col-sm-3">
-											<input class="form-control"  id="form-beginTime"   name="beginTime" type="text" placeholder="--请选择开始时间--">
+											<input class="form-control"  id="form-beginTime"   name="beginTime" type="text" placeholder="--请选择开始时间--" readonly="true"/>
 											<!-- <input type="text" id="form-beginTime" name="beginTime" placeholder="开始时间" class="col-xs-10 col-sm-5" />
 											<div id="getBeginTime"></div> -->
 										</div>
@@ -120,7 +120,7 @@
 									<div class="form-group">
 										<label class="col-sm-5 control-label no-padding-right" for="form-endTime"> 结束时间：</label>
 										<div class="col-sm-3">
-											<input  class="form-control"  id="form-endTime" name="endTime"  type="text" placeholder="--请选择结束时间--" >
+											<input  class="form-control"  id="form-endTime" name="endTime"  type="text" placeholder="--请选择结束时间--" readonly="true"/>
 											<div id="getEndTime"></div>
 										</div>
 									</div>

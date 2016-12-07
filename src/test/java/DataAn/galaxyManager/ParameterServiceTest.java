@@ -97,4 +97,14 @@ public class ParameterServiceTest {
 		boolean flag = parameterService.isExistParameter(id, series, star, name);
 		System.out.println("flag: " + flag);
 	}
+	
+	@Test
+	public void testGetDeviceName(){
+		String series = "j9";
+		String star = "02";
+		String paramType = "flywheel";
+		String param_en = "sequence_00825";
+		String deviceName = parameterService.getParameter_deviceName_by_en(series, star, paramType, param_en);
+		System.out.println("deviceName: " + deviceName);
+	}
 }

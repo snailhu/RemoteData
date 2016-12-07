@@ -170,6 +170,20 @@
 .breadcrumb {
     margin-top: 10px;
 }
+.detailexp{
+	display:block;
+	width:80px;
+	height:26px;
+	line-height:26px;
+	color:#000;
+	text-align:center;
+	overflow:hidden;
+}
+.detailexp:hover{
+	background:#e2e2e2;
+	border:1px solid #CCC;
+	border-radius:5px 5px 5px 5px;
+}
 </style>
 <script type="text/javascript">
 	$(function() {
@@ -449,7 +463,7 @@ jeDate({
 			if (row.statusType == "结束") {
 				return '<input type="hidden" id="search-fileName" value = "'+row.exceptionInfo+'"/>'
 			} else {
-				return '<a href="javascript:ShowexceptionInfo('
+				return '<a class="detailexp" style="color:#0909df" href="javascript:ShowexceptionInfo('
 						+ index
 						+ '" onclick="ShowexceptionInfo('
 						+ index

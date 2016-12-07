@@ -69,6 +69,21 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 a {
     color: #428bca;
 }
+.powedit{
+	display:block;
+	width:80px;
+	height:26px;
+	line-height:26px;
+	color:#000;
+	text-align:center;
+	margin:0px auto;
+	overflow:hidden;
+}
+.powedit:hover{
+	background:#e2e2e2;
+	border:1px solid #CCC;
+	border-radius:5px 5px 5px 5px;
+}
 </style>
 <script type="text/javascript">
 	$(function() {
@@ -333,7 +348,7 @@ a {
 	              title: '编辑权限',
 	              width: 80,
 	              formatter: function (value, row, index) {
-	                  return "<a href=\"javascript:doEditPermission('" + row.id +  "');\"" + " title='编辑权限'>编辑权限</a>";
+	                  return "<a class='powedit' style='color:#0909df' href=\"javascript:doEditPermission('" + row.id +  "');\"" + " title='编辑权限'>编辑权限</a>";
 	              }
 	          }
 	          ]]

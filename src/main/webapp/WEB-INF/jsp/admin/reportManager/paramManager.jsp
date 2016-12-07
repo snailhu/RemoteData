@@ -457,7 +457,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			<table id="StarParamList" border="false" width="100%" height="500px">
 			</table>
 			
-			<!-- 创建用户 -->
+			<!-- 创建参数 -->
 			<div class="modal fade" id="addStarParamModal" tabindex="-1" role="dialog" aria-labelledby="addStarParamModalLabel">
 				<div class="modal-dialog" role="document">
 					<div class="modal-content">
@@ -528,7 +528,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					</div>
 				</div>
 			</div>
-			<!-- 编辑用户 -->
+			<!-- 编辑参数 -->
 			<div class="modal fade" id="editStarParamModal" tabindex="-1" role="dialog" aria-labelledby="editStarParamModalLabel">
 				<div class="modal-dialog" role="document" >
 					<div class="modal-content">
@@ -1155,6 +1155,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						          	  	$.each(data ,function(){
 							          	  	$("#edit-starParam-partsType").append("<option value = '"+ this.deviceCode+"'>"+ this.deviceName+"</option>"); 
 										});
+						          	    $('#edit-starParam-partsType').val(sp.data.starParam.partsType);
 						            }
 						        });	 
 							  /* if(activeUser != ''){

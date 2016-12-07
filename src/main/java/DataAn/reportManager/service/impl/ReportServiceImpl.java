@@ -7,7 +7,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.net.URLEncoder;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -351,7 +350,8 @@ public class ReportServiceImpl implements IReoportService {
 		try {
 			response.setCharacterEncoding("utf-8");
 			response.setContentType("multipart/form-data");
-			response.setHeader("Content-Disposition", "attachment;filename=" + new String(fileName.getBytes("gb2312"), "ISO8859-1"));
+			response.setHeader("Content-Disposition",
+					"attachment;filename=" + new String(fileName.getBytes("gb2312"), "ISO8859-1"));
 			os = response.getOutputStream();
 			byte[] b = new byte[2048];
 			int length;
@@ -589,6 +589,11 @@ public class ReportServiceImpl implements IReoportService {
 		data.setCreateDate(DateUtil.getNowTime("yyyy-MM-dd"));
 
 		List<StarParam> starParamList = starParamService.getStarParamForReport(seriesId, starId, partsType);
+		if (starParamList == null || starParamList.size() < 1) {
+			String templateNullUrl = OptionConfig.getWebPath() + "\\report\\wordtemplate\\nullData.doc";
+			reportNullDoc(filename, templateNullUrl, docPath, data.getBeginDate(), data.getEndDate(), "参数管理中未配置任何参数信息");
+			return;
+		}
 		List<String> parList = new ArrayList<String>();
 		String paramStr = OptionConfig.getParamStr();
 		String[] parArr = paramStr.split(",");

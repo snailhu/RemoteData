@@ -1155,6 +1155,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						          	  	$.each(data ,function(){
 							          	  	$("#edit-starParam-partsType").append("<option value = '"+ this.deviceCode+"'>"+ this.deviceName+"</option>"); 
 										});
+						          	    $('#edit-starParam-partsType').val(sp.data.starParam.partsType);
 						            }
 						        });	 
 							  /* if(activeUser != ''){

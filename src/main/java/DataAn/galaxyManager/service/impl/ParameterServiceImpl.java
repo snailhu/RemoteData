@@ -213,7 +213,7 @@ public class ParameterServiceImpl implements IParameterService{
 			 String paramType, String param_en) {
 		//先从Map集合里面查找
 		String param_zh = parameterList_en_and_allZh.get(param_en);
-		if(StringUtils.isNotBlank(param_zh)){
+		if(StringUtils.isBlank(param_zh)){
 			//Map集合里面没有再从数据库中查找
 			Parameter param = parameterDao.selectBySeriesAndStarAndCode(series,star, param_en);
 			if(param != null){
@@ -221,7 +221,7 @@ public class ParameterServiceImpl implements IParameterService{
 				return param.getFullName();
 			}
 		}
-		return null;
+		return param_zh;
 		
 //		Parameter param = parameterDao.selectBySeriesAndStarAndCode(series,star, param_en);
 //		if(param != null){

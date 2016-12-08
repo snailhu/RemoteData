@@ -380,9 +380,12 @@
              	  var yname = 0;
              	  var legendname ="";
              	  for(var param in data){
-             	  yname  = names[i].y;
-             	  legendname =names[i].name;
-             	  console.log(yname+legendname)
+             	  
+             	  yname  = names[names.length-1-i].y;
+             	  legendname =names[names.length-1-i].name;
+             	  console.log(names.length);
+             	  console.log(yname+legendname+data[param]);
+             	  	
              	  	seriesOptions[i++] = {
 			            	type: 'line',
 			                //name: param,

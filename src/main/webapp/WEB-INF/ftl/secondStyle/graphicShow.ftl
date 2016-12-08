@@ -748,6 +748,7 @@ $.post("getDatabytap",
 		var endSeconds = endInit.getSeconds();
 		var a= stringToDate(startDate);
       	var b= stringToDate(endDate);
+      	
 		
 		if(timespace <= 120){
 			//两小时以内，1小时增减
@@ -765,10 +766,10 @@ $.post("getDatabytap",
 			}
 		}
 		if(timespace > 120 && timespace <=2880){
-			//两小时到两天，四小时增减
+			//两小时到两天，两小时增减
 			if(startDate_init==startDate&&endDate_init==endDate){
-				startInit.setHours(startHours-2);
-				endInit.setHours(endHours+2);
+				startInit.setHours(startHours-1);
+				endInit.setHours(endHours+1);
 				startDate = startInit.pattern("yyyy-MM-dd HH:mm:ss");
 				endDate = endInit.pattern("yyyy-MM-dd HH:mm:ss");
 				startDate_init = startDate;
@@ -776,7 +777,7 @@ $.post("getDatabytap",
 				return true;
 			}else{
 				console.log(startDate);
-				if(startInit-a/60000 >= 120 || endInit-b/60000 >= 120){
+				if(a/60000 - startInit/60000 >= 60 || endInit/60000-b/60000 >= 60){
 					return true;
 				}else{
 					return false;
@@ -784,18 +785,17 @@ $.post("getDatabytap",
 			}
 		}
 		if(timespace > 2880 && timespace <=10080){
-			//两天到一周，两天增减
+			//两天到一周，一天增减
 			if(startDate_init==startDate&&endDate_init==endDate){
-				startInit.setDate(startDay-1);
-				endInit.setDate(endDay+1);
+				startInit.setHours(startHours-12);
+				endInit.setHours(endHours+12);
 				startDate = startInit.pattern("yyyy-MM-dd HH:mm:ss");
 				endDate = endInit.pattern("yyyy-MM-dd HH:mm:ss");
 				startDate_init = startDate;
 				endDate_init = endDate;
 				return true;
 			}else{
-				console.log(startDate);
-				if(startInit-a/60000 >= 1440 || endInit-b/60000 >= 1440){
+				if(a/60000-startInit/60000 >= 720 || endInit/60000-b/60000 >= 720){
 					return true;
 				}else{
 					return false;
@@ -803,10 +803,10 @@ $.post("getDatabytap",
 			}
 		}
 		if(timespace > 10080 && timespace <=43200){
-			//一周到一个月，六天增减
+			//一周到一个月，四天天增减
 			if(startDate_init==startDate&&endDate_init==endDate){
-				startInit.setDate(startDay-3);
-				endInit.setDate(endDay+3);
+				startInit.setDate(startDay-2);
+				endInit.setDate(endDay+2);
 				startDate = startInit.pattern("yyyy-MM-dd HH:mm:ss");
 				endDate = endInit.pattern("yyyy-MM-dd HH:mm:ss");
 				startDate_init = startDate;
@@ -814,7 +814,7 @@ $.post("getDatabytap",
 				return true;
 			}else{
 				console.log(startDate);
-				if(startInit-a/60000 >= 4320 || endInit-b/60000 >= 4320){
+				if(a/60000 - startInit/60000 >= 2880 || endInit/60000-b/60000 >= 2880){
 					return true;
 				}else{
 					return false;
@@ -833,7 +833,7 @@ $.post("getDatabytap",
 				return true;
 			}else{
 				console.log(startDate);
-				if(startInit-a/60000 >= 21600 || endInit-b/60000 >= 21600){
+				if(a/60000 - startInit/60000 >= 21600 || endInit/60000-b/60000 >= 21600){
 					return true;
 				}else{
 					return false;
@@ -852,7 +852,7 @@ $.post("getDatabytap",
 				return true;
 			}else{
 				console.log(startDate);
-				if(startInit-a/60000 >= 129600 || endInit-b/60000 >= 129600){
+				if(a/60000 - startInit/60000 >= 129600 || endInit/60000-b/60000 >= 129600){
 					return true;
 				}else{
 					return false;

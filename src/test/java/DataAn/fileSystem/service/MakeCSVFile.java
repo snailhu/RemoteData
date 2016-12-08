@@ -25,7 +25,9 @@ public class MakeCSVFile {
 	@Test
 	public void testCopyDataCSV() throws Exception{
 		List<String> list = new ArrayList<String>();
-		File file = new File("C:\\feb-9-05.csv");
+//		String filePath = "C:\\feb-9-05.csv";
+		String filePath = "C:\\2014-01.csv";
+		File file = new File(filePath);
 		InputStream in = new FileInputStream(file);
 		InputStreamReader inputStreamReader = new InputStreamReader(in, "gb2312");
 		BufferedReader reader = new BufferedReader(inputStreamReader);// 换成你的文件名
@@ -45,7 +47,7 @@ public class MakeCSVFile {
 	protected void writeCSV(List<String> list, int year,int month) throws Exception {
 		String strMonth = "0" + month;
 		//目录
-		String dirPath = "E:\\data\\flywheel\\" + year;
+		String dirPath = "E:\\data\\top\\" + year;
 		//文件路径
 		String outputFile = dirPath +"\\" +"j9-02--" + year +"-0" + month +"-01" +".csv";
 		if(month > 9){
@@ -68,7 +70,8 @@ public class MakeCSVFile {
 		csvOutput.endRecord();
 		for (int i = 1; i < list.size(); i++) {
 			String[] array = list.get(i).split(",");
-			String datetime = array[0].replace("2016年", strYear).replace("02月", strMonth);
+			String datetime = array[0].replace("2014年", strYear).replace("01月", strMonth);
+			datetime = DateUtil.formatString(datetime, "yyyy年MM月dd日HH时mm分ss.SSS秒","yyyy年MM月dd日HH时mm分ss秒");
 			csvOutput.write(datetime);
 			for (int j = 1; j < array.length; j++) {
 				csvOutput.write(array[j]);

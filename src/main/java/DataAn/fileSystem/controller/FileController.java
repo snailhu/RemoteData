@@ -455,21 +455,5 @@ public class FileController {
 		return jsonMsg;
 	}
 	
-	@RequestMapping(value="/deleteCSVFile",method = { RequestMethod.POST })
-	@ResponseBody
-	public JsonMessage deleteCSVFile(String versions) {
-		System.out.println("deleteCSVFile...");
-		System.out.println("version: " + versions);
-		JsonMessage jsonMsg = new JsonMessage();
-		try {
-			fileService.deleteFileByUUId(versions);
-			jsonMsg.setSuccess(true);
-			jsonMsg.setMsg("删除成功！");
-		} catch (Exception e) {
-//			e.printStackTrace();
-			jsonMsg.setSuccess(false);
-			jsonMsg.setMsg("删除失败！");
-		}
-		return jsonMsg;
-	}
+	
 }

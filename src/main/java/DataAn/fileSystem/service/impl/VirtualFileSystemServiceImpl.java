@@ -237,13 +237,10 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 	@Override
 	@Transactional
 	public void deleteFileByUUId(String uuId) throws Exception {
-		final List<VirtualFileSystem> files = new ArrayList<VirtualFileSystem>();
 		VirtualFileSystem file = fileDao.selectByFileTypeIsFileAndMongoFSUUId(uuId);
 		if(file != null){
+			final List<VirtualFileSystem> files = new ArrayList<VirtualFileSystem>();
 			files.add(file);
-			//更新状态
-			statusTrackingService.updateStatusTracking(file.getFileName(), StatusTrackingType.FILEUPLOADFAIL.getValue(),
-					file.getParameterType(), "数据处理失败！");
 			this.deleteFile(null,file);	
 			this.deleteMongodbFile(files);
 		}

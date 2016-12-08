@@ -79,7 +79,7 @@ public class DateUtil {
 
 		return new java.text.SimpleDateFormat(pattern).format(date);
 	}
-
+	
 	/**
 	 * 将String Date类型转换为 另一种格式字符串
 	 * 
@@ -89,20 +89,23 @@ public class DateUtil {
 	 *            字符串格式
 	 * @return 日期字符串
 	 */
-	public static String formatString(String strDate, String oldPattern, String pattern) {
+	public static String formatString(String strDate, String oldPattern, String newPattern) {
 		if (strDate == null) {
 			return null;
 		}
-		if (pattern == null || pattern.equals("") || pattern.equals("null")) {
-			pattern = "yyyy-MM-dd HH-mm-ss";
+		if (oldPattern == null || oldPattern.equals("") || oldPattern.equals("null")) {
+			oldPattern = "yyyy-MM-dd HH-mm-ss";
 		}
 		Date date = null;
 		try {
+			if(newPattern == null || newPattern.equals("") || newPattern.equals("null")){
+				newPattern = "yyyy年MM月dd日HH时mm分ss秒";
+			}
 			date = new java.text.SimpleDateFormat(oldPattern).parse(strDate);
 		} catch (ParseException pe) {
 		}
 
-		return new java.text.SimpleDateFormat(pattern).format(date);
+		return new java.text.SimpleDateFormat(newPattern).format(date);
 	}
 
 	/**

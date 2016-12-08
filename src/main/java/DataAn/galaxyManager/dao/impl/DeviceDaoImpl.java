@@ -20,13 +20,13 @@ public class DeviceDaoImpl extends BaseDaoImpl<Device> implements IDeviceDao {
 	@Override
 	public List<Device> getDevicesBySeriesAndStar(String series, String star, String deviceType) {
 		String hql = "from Device d where 1=1";
-		if (StringUtils.isNoneBlank(series)) {
+		if (StringUtils.isNotBlank(series)) {
 			hql += " and d.seriersId = " + series;
 		}
-		if (StringUtils.isNoneBlank(star)) {
+		if (StringUtils.isNotBlank(star)) {
 			hql += " and d.starId = " + star;
 		}
-		if (StringUtils.isNoneBlank(deviceType)) {
+		if (StringUtils.isNotBlank(deviceType)) {
 			hql += " and d.deviceType = " + deviceType;
 		}
 		hql += " order by d.createDate";
@@ -38,11 +38,11 @@ public class DeviceDaoImpl extends BaseDaoImpl<Device> implements IDeviceDao {
 	public Pager<Device> selectByPager(String series, String star, int pageIndex, int pageSize) {
 		String hql = "from Device d where 1=1";
 		String countHQL = "select count(*) from Device d where 1=1";
-		if (StringUtils.isNoneBlank(series)) {
+		if (StringUtils.isNotBlank(series)) {
 			hql += " and d.seriersId = " + series;
 			countHQL += " and d.seriersId = " + series;
 		}
-		if (StringUtils.isNoneBlank(star)) {
+		if (StringUtils.isNotBlank(star)) {
 			hql += " and d.starId = " + star;
 			countHQL += " and d.starId = " + star;
 		}

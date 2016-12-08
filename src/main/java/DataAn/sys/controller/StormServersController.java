@@ -118,15 +118,5 @@ public class StormServersController extends BaseController{
 		jsonMsg.setMsg("删除服务器成功!");
 		return jsonMsg;
 	}
-	@RequestMapping(value="/updateServerStatus")
-	@ResponseBody
-	public boolean updateServerStatus(String serverIP){
-		try {
-			stormServerService.updateByServerIP(serverIP);
-			return true;
-		} catch (Exception e) {
-			return false;
-		}
 	
-	}
 }

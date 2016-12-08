@@ -13,6 +13,7 @@ import java.util.Vector;
 import javax.annotation.Resource;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.Logger;
 import org.bson.Document;
 import org.jfree.chart.ChartUtilities;
 import org.jfree.chart.JFreeChart;
@@ -25,6 +26,7 @@ import com.mongodb.client.MongoCursor;
 
 import DataAn.common.config.CommonConfig;
 import DataAn.common.utils.DateUtil;
+import DataAn.common.utils.Log4jUtil;
 import DataAn.jfreechart.chart.ChartFactory;
 import DataAn.jfreechart.chart.ChartUtils;
 import DataAn.jfreechart.chart.Serie;
@@ -37,6 +39,7 @@ import DataAn.wordManager.config.OptionConfig;
 @Service
 public class JfreechartServiceImpl implements IJfreechartServcie {
 
+	private Logger logger = Log4jUtil.getInstance().getLogger(JfreechartServiceImpl.class);
 	@Resource
 	private IMongoService mongoService;
 
@@ -44,18 +47,23 @@ public class JfreechartServiceImpl implements IJfreechartServcie {
 	public LineChartDto createLineChart(String series, String star,
 			String paramType, Date beginDate, Date endDate,
 			Map<String, List<ConstraintDto>> constraintsMap) throws Exception {
-		System.out.println("come in createLineChart..");
-		System.out.println("series: " + series);
-		System.out.println("star: " + star);
-		System.out.println("paramType: " + paramType);
-		System.out.println("beginDate: " + DateUtil.format(beginDate));
-		System.out.println("endDate: " + DateUtil.format(endDate));
+		
+		StringBuffer sb = new StringBuffer();
+		sb.append("come in createLineChart..");
+		sb.append("series: " + series);
+		sb.append("star: " + star);
+		sb.append("paramType: " + paramType);
+		sb.append("beginDate: " + DateUtil.format(beginDate));
+		sb.append("endDate: " + DateUtil.format(endDate));
+		sb.append("\n");
 		for (String key : constraintsMap.keySet()) {
 			for (ConstraintDto constraintDto : constraintsMap.get(key)) {
-				System.out.println(constraintDto);
+				sb.append(constraintDto);
 			}
-			System.out.println();
+			sb.append("\n");
 		}
+		logger.info(sb.toString());
+		
 		return this.createTimeSeriesChart(series, star, paramType, beginDate,
 				endDate, constraintsMap);
 	}
@@ -265,7 +273,7 @@ public class JfreechartServiceImpl implements IJfreechartServcie {
 						dataset.addSeries(timeSeries);						
 						datasetList.add(dataset);						
 					}else{
-						System.out.println(DateUtil.format(beginDate) + " 到 "+ DateUtil.format(endDate) +" " + constraintDto.getName()+" 未找到报告数据！2");
+						logger.info(DateUtil.format(beginDate) + " 到 "+ DateUtil.format(endDate) +" " + constraintDto.getName()+" 未找到报告数据！2");
 					}
 				}
 			}else{
@@ -283,7 +291,7 @@ public class JfreechartServiceImpl implements IJfreechartServcie {
 						dataset.addSeries(timeSeries);						
 						flag = true;
 					}else{
-						System.out.println(DateUtil.format(beginDate) + " 到 "+ DateUtil.format(endDate) +" " + constraintDto.getName()+" 未找到报告数据！3");
+						logger.info(DateUtil.format(beginDate) + " 到 "+ DateUtil.format(endDate) +" " + constraintDto.getName()+" 未找到报告数据！3");
 					}
 				}
 				if(flag){

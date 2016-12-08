@@ -21,6 +21,7 @@ import DataAn.galaxyManager.dto.ParameterDto;
 import DataAn.galaxyManager.option.J9SeriesType;
 import DataAn.galaxyManager.option.J9Series_Star_FlywheelParameterConfig;
 import DataAn.galaxyManager.option.J9Series_Star_ParameterType;
+import DataAn.galaxyManager.option.J9Series_Star_TopParameterConfig;
 import DataAn.galaxyManager.option.SeriesType;
 import DataAn.galaxyManager.service.IJ9Series_Star_Service;
 import DataAn.galaxyManager.service.IParameterService;
@@ -360,22 +361,34 @@ public class J9Series_Star_ServiceImpl implements IJ9Series_Star_Service{
 	public void initJ9SeriesParameterData() {
 		try {
 			//初始化飞轮数据
-			Set<String> paramNames = new HashSet<String>();
-			Class<?> pojoClass = Class.forName(J9Series_Star_FlywheelParameterConfig.class.getName());
-			Object obj = pojoClass.newInstance();
-			Field[] fields = pojoClass.getDeclaredFields();
-			for (Field field : fields) {
-				String paramName = field.get(obj).toString().trim();
-				if(!paramName.equals("接收地方时")){
-					paramNames.add(paramName);					
+			Set<String> flywheelParamNames = new HashSet<String>();
+			Class<?> flywheelClass = Class.forName(J9Series_Star_FlywheelParameterConfig.class.getName());
+			Object flywheelObj = flywheelClass.newInstance();
+			Field[] flywheelFields = flywheelClass.getDeclaredFields();
+			for (Field field : flywheelFields) {
+				String paramName = field.get(flywheelObj).toString().trim();
+				if(paramName != null && !paramName.equals("接收地方时")){
+					flywheelParamNames.add(paramName);					
 				}
 			}
+			//初始化陀螺数据
+			Set<String> topParamNames = new HashSet<String>();
+			Class<?> topClass = Class.forName(J9Series_Star_TopParameterConfig.class.getName());
+			Object topObj = topClass.newInstance();
+			Field[] topFields = topClass.getDeclaredFields();
+			for (Field field : topFields) {
+				String paramName = field.get(topObj).toString().trim();
+				if(paramName != null && !paramName.equals("接收地方时")){
+					topParamNames.add(paramName);					
+				}
+			}
+			
 			String series = SeriesType.J9_SERIES.getName();
-			String paramType = J9Series_Star_ParameterType.FLYWHEEL.getValue();
 			J9SeriesType[] types = J9SeriesType.values();
 			for (J9SeriesType j9SeriesType : types) {
 				String star = j9SeriesType.getValue();
-				paramService.saveMany(series, star, paramType, paramNames);
+				paramService.saveMany(series, star, J9Series_Star_ParameterType.FLYWHEEL.getValue(), flywheelParamNames);
+				paramService.saveMany(series, star, J9Series_Star_ParameterType.TOP.getValue(), topParamNames);
 			}
 			
 		} catch (Exception e) {

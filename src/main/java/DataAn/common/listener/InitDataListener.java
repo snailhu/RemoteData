@@ -29,7 +29,15 @@ public class InitDataListener implements ApplicationListener<ContextRefreshedEve
 			//开另外一个线程处理存入kafka的数据
 			new Thread(new SaveFileToKafka(paramService, mongoService)).start();
 			//初始化数据 //TODO ?
-			initDataService.initDataBase();
+			new Thread(new Runnable() {
+				
+				@Override
+				public void run() {
+					initDataService.initDataBase();
+					
+				}
+			});
+			
 		}
 	}
 

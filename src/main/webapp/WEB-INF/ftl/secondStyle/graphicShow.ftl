@@ -510,89 +510,6 @@ $.post("getDatabytap",
        		
        	})
        	
-       	
-       	//鼠标滚轮监控
-       	 $("#main").mousewheel(function(event, delta) {
-       		console.log(event+","+delta);
-       		if (delta < 0) {
-       			// 向下滚
-       			console.log("wheeldown");
-       			if(startDate_init==startDate&&endDate_init==endDate){
-       				console.log(startDate_init);
-	              	console.log(endDate_init);
-       				if(needGetDate()){
-       					$("#main").showLoading(); 
-						var a= stringToDate(startDate);
-		              	var b= stringToDate(endDate);
-		              	console.log(a);
-		              	console.log(b);
-		              	startDate = a.pattern("yyyy-MM-dd HH:mm:ss");
-		              	endDate = b.pattern("yyyy-MM-dd HH:mm:ss");
-		              	console.log(startDate);
-		              	console.log(endDate);
-			       		//将一组中的所有参数组装为object
-			       		paramObject.nowSeries='${nowSeries}';
-			       		paramObject.nowStar='${nowStar}';
-			       		paramObject.component='${component}';
-			       		paramObject.startTime=startDate;
-			       		paramObject.endTime=endDate;
-			       		paramObject.paramAttribute=names;
-			       		  		
-			         	//一次性组装所有参数的x和y值
-			         	console.log("开始请求后台时间："+new Date());
-			       		$.ajax({
-			                 url: '${base}/getData',
-			                 type: 'POST',
-			                 dataType: 'json',
-			                 timeout: 100000,
-			                 cache: false,
-			                 data: {'paramObject':JSON.stringify(paramObject)},
-			                  //成功执行方法
-			                 success: function(data){
-			                 	 console.log("请求后台完成时间："+new Date());
-			                	 $("#main").hideLoading(); 
-			                	 startDate_init = startDate;
-								 endDate_init = endDate;
-								 $('#dateStart').val(startDate);
-       							 $('#dateEnd').val(endDate);
-								 console.log("111"+startDate_init);
-					             console.log("111"+endDate_init);	
-			                	 //var json = eval(data);
-			                 	  var i=0
-			                 	  var yname = 0;
-			                 	  var legendname ="";
-			                 	  for(var param in data){
-			                 	  yname  = names[i].y;
-			                 	  legendname =names[i].name;
-			                 	  console.log(yname+legendname)
-			                 	  	seriesOptions[i++] = {
-			    			            	type: 'line',
-			    			                //name: param,
-			    			                name:legendname,
-			    			                smooth:false,
-			    			               	yAxisIndex: yname,
-			    			                lineStyle:{
-			    		                    	normal:{
-			    		                    		width:0.5 
-			    		                    		}
-			    		                    },
-			    			                data: data[param].paramValue
-			    			            };
-			    			            //设置X轴，注意，这里X轴存在问题，默认使用了最后一组参数的X轴
-			    			            date =  data[param].yearValue;
-			                 	  }
-			                 	  	pSeriesOptions = seriesOptions
-			    	            	options.series = eval(seriesOptions);
-			    	            	pDate=options.xAxis.data = date;
-			    	                myChart.setOption(options);
-			    	                console.log("画图完成时间："+new Date());
-			                 }
-			             })
-       				}
-       			}
-		    }
-         });
-       	
        	//数据缩放区域事件	  	      
         myChart.on('dataZoom', function (params) {
               //  console.log(params);
@@ -609,7 +526,6 @@ $.post("getDatabytap",
 				}else{
 					startDate = startDate_init;
 					endDate = endDate_init;	
-					return;
 				}
 				$('#dateStart').val(startDate);
        			$('#dateEnd').val(endDate);
@@ -642,6 +558,7 @@ $.post("getDatabytap",
 		       		paramObject.paramAttribute=names;
 		       		  		
 		       		 console.log("开始请求后台时间："+new Date());
+		       		  console.log(JSON.stringify(paramObject));
 		         	//一次性组装所有参数的x和y值
 		       		$.ajax({
 		                 url: '${base}/getData',
@@ -654,12 +571,12 @@ $.post("getDatabytap",
 		                 success: function(data){
 		                 	 console.log("请求后台完成时间："+new Date());
 		                	 $("#main").hideLoading(); 
+		                	 console.log("111"+startDate_init);
+					         console.log("111"+endDate_init);
 		                	 startDate_init = startDate;
 							 endDate_init = endDate;	
 							 $('#dateStart').val(startDate);
        						 $('#dateEnd').val(endDate);
-							 console.log("111"+startDate_init);
-					         console.log("111"+endDate_init);
 		                	 //var json = eval(data);
 		                 	  var i=0
 		                 	  var yname = 0;
@@ -840,14 +757,15 @@ $.post("getDatabytap",
 				endDate_init = endDate;
 				return true;
 			}else{
+				//原始数据不请求后台
 				return false;
 			}
 		}
 		if(timespace > 120 && timespace <=2880){
-			//一小时到两天，一小时增减
+			//两小时到两天，四小时增减
 			if(startDate_init==startDate&&endDate_init==endDate){
-				startInit.setMinutes(startMinutes-30);
-				endInit.setMinutes(endMinutes+30);
+				startInit.setHours(startHours-2);
+				endInit.setHours(endHours+2);
 				startDate = startInit.pattern("yyyy-MM-dd HH:mm:ss");
 				endDate = endInit.pattern("yyyy-MM-dd HH:mm:ss");
 				startDate_init = startDate;
@@ -855,53 +773,15 @@ $.post("getDatabytap",
 				return true;
 			}else{
 				console.log(startDate);
-				if(startInit-a/60000 >= 30 || endInit-b/60000 >= 30){
+				if(startInit-a/60000 >= 120 || endInit-b/60000 >= 120){
 					return true;
 				}else{
 					return false;
 				}
 			}
 		}
-		if(timespace > 2880 && timespace <=17080){
-			//两天到一周，半天增减
-			if(startDate_init==startDate&&endDate_init==endDate){
-				startInit.setHours(startHours-6);
-				endInit.setHours(endHours+6);
-				startDate = startInit.pattern("yyyy-MM-dd HH:mm:ss");
-				endDate = endInit.pattern("yyyy-MM-dd HH:mm:ss");
-				startDate_init = startDate;
-				endDate_init = endDate;
-				return true;
-			}else{
-				console.log(startDate);
-				if(startInit-a/60000 >= 360 || endInit-b/60000 >= 360){
-					return true;
-				}else{
-					return false;
-				}
-			}
-		}
-		if(timespace > 17080 && timespace <=34160){
-			//一周到两周，一天增减
-			if(startDate_init==startDate&&endDate_init==endDate){
-				startInit.setHours(startHours-12);
-				endInit.setHours(endHours+12);
-				startDate = startInit.pattern("yyyy-MM-dd HH:mm:ss");
-				endDate = endInit.pattern("yyyy-MM-dd HH:mm:ss");
-				startDate_init = startDate;
-				endDate_init = endDate;
-				return true;
-			}else{
-				console.log(startDate);
-				if(startInit-a/60000 >= 720 || endInit-b/60000 >= 720){
-					return true;
-				}else{
-					return false;
-				}
-			}
-		}
-		if(timespace > 17080 && timespace <=43200){
-			//两周到一月，两天增减
+		if(timespace > 2880 && timespace <=10080){
+			//两天到一周，两天增减
 			if(startDate_init==startDate&&endDate_init==endDate){
 				startInit.setDate(startDay-1);
 				endInit.setDate(endDay+1);
@@ -919,11 +799,11 @@ $.post("getDatabytap",
 				}
 			}
 		}
-		if(timespace > 43200 && timespace <=259200){
-			//一月到半年，半月增减
+		if(timespace > 10080 && timespace <=43200){
+			//一周到一个月，六天增减
 			if(startDate_init==startDate&&endDate_init==endDate){
-				startInit.setDate(startDay-7);
-				endInit.setDate(endDay+8);
+				startInit.setDate(startDay-3);
+				endInit.setDate(endDay+3);
 				startDate = startInit.pattern("yyyy-MM-dd HH:mm:ss");
 				endDate = endInit.pattern("yyyy-MM-dd HH:mm:ss");
 				startDate_init = startDate;
@@ -931,15 +811,15 @@ $.post("getDatabytap",
 				return true;
 			}else{
 				console.log(startDate);
-				if(startInit-a/60000 >= 10800 || endInit-b/60000 >= 10800){
+				if(startInit-a/60000 >= 4320 || endInit-b/60000 >= 4320){
 					return true;
 				}else{
 					return false;
 				}
 			}
 		}
-		if(timespace > 204960 && timespace <=518400){
-			//半年到一年，一月增减
+		if(timespace > 43200 && timespace <=518400){
+			//一月到一年，一月增减
 			if(startDate_init==startDate&&endDate_init==endDate){
 				startInit.setDate(startDay-15);
 				endInit.setDate(endDay+15);
@@ -958,10 +838,10 @@ $.post("getDatabytap",
 			}
 		}
 		if(timespace > 518400){
-			//大于一年，四个月增减
+			//大于一年，六个月增减
 			if(startDate_init==startDate&&endDate_init==endDate){
-				startInit.setMonth(startMonth-2);
-				endInit.setMonth(endMonth+2);
+				startInit.setMonth(startMonth-3);
+				endInit.setMonth(endMonth+3);
 				startDate = startInit.pattern("yyyy-MM-dd HH:mm:ss");
 				endDate = endInit.pattern("yyyy-MM-dd HH:mm:ss");
 				startDate_init = startDate;
@@ -969,7 +849,7 @@ $.post("getDatabytap",
 				return true;
 			}else{
 				console.log(startDate);
-				if(startInit-a/60000 >= 86400 || endInit-b/60000 >= 86400){
+				if(startInit-a/60000 >= 129600 || endInit-b/60000 >= 129600){
 					return true;
 				}else{
 					return false;

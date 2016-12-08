@@ -22,6 +22,7 @@ public class InitDataServiceImpl implements IInitDataService{
 	@Override
 	@Transactional
 	public void initDataBase(){
+		System.out.println("come in initDataBase...");
 		//初始化j9星系库数据
 		seriesService.initJ9Series();
 		//初始化j9系列参数

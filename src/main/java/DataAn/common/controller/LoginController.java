@@ -49,29 +49,34 @@ public class LoginController {
 		 System.out.println("password: " + password);
 		 System.out.println("userService: " + userService);
 		ActiveUserDto acticeUser = userService.getActiveUserByName(username);
-		if (acticeUser != null && username.equals(acticeUser.getUserName())) {
-			if (password.equals(acticeUser.getPassWord())) {
-				HttpSession session = request.getSession();
-				Long warnCount = 0l;
-				try {
-					warnCount = prewarningService.getNotReadCount("", "", "", "", "");
-				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}	
-				User user = new User();
-				user.setUserName(username);
-				session.setAttribute("warnCount", warnCount);
-				session.setAttribute("user", user);
-				session.setAttribute("userName", username);
-				session.setAttribute("activeUser", acticeUser);
-				//添加登录日志到日志数据库
-				String operatejob = "登录系统";
-				systemLogService.addOneSystemlogs(request,operatejob);
-
-				return "redirect:/Index";
+		if (acticeUser != null) {
+			if(username.equals(acticeUser.getUserName())){
+				if (password.equals(acticeUser.getPassWord())) {
+					HttpSession session = request.getSession();
+					Long warnCount = 0l;
+					try {
+						warnCount = prewarningService.getNotReadCount("", "", "", "", "");
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}	
+					User user = new User();
+					user.setUserName(username);
+					session.setAttribute("warnCount", warnCount);
+					session.setAttribute("user", user);
+					session.setAttribute("userName", username);
+					session.setAttribute("activeUser", acticeUser);
+					//添加登录日志到日志数据库
+					String operatejob = "登录系统";
+					systemLogService.addOneSystemlogs(request,operatejob);
+					
+					return "redirect:/Index";
+				} else {
+					request.setAttribute("loginFlag", 1);
+					return "/admin/account/login";
+				}
 			} else {
-				request.setAttribute("loginFlag", 1);
+				request.setAttribute("loginFlag", -1);
 				return "/admin/account/login";
 			}
 		} else {

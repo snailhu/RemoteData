@@ -61,6 +61,19 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 .form-horizontal {
     margin-bottom: 0px;
 }
+.parmdev{
+	display:block;
+	color:#000;
+	text-align:center;
+	height:26px;
+	line-height:26px;
+	margin:0px auto;
+}
+.parmdev:hover{
+	background:#e2e2e2;
+	border:1px solid #CCC;
+	border-radius:5px 5px 5px 5px;
+}
 </style>
   <script type="text/javascript">
   	$(function(){
@@ -608,7 +621,7 @@ $(function() {
 									title : '设备管理',
 									width : 50,
 									formatter: function (value, row, index) {
-						                return "<a href=\"javascript:doEditDevice('" + seriesId + "','" + row.id +"');\"" + " title='设备管理'>设备管理</a>";
+						                return "<a class='parmdev' style='color:#0909df' href=\"javascript:doEditDevice('" + seriesId + "','" + row.id +"');\"" + " title='设备管理'>设备管理</a>";
 						            }
 								},
 								{
@@ -616,7 +629,7 @@ $(function() {
 						            title: '参数列表',
 						            width: 50,
 						            formatter: function (value, row, index) {
-						                return "<a href=\"javascript:doEditParam('" + seriesCode + "','" + row.code +"');\"" + " title='参数列表'>参数列表</a>";
+						                return "<a class='parmdev' style='color:#0909df' href=\"javascript:doEditParam('" + seriesCode + "','" + row.code +"');\"" + " title='参数列表'>参数列表</a>";
 						            }
 						        },
 								{

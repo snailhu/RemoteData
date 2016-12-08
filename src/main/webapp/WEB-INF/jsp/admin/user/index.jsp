@@ -74,6 +74,21 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	line-height:30px;
 	text-align:left;
 }
+.posrole{
+	display:block;
+	width:100px;
+	height:26px;
+	line-height:26px;
+	color:#000;
+	text-align:center;
+	margin:0 auto;
+	overflow:hidden;
+}
+.posrole:hover{
+	background:#e2e2e2;
+	border:1px solid #CCC;
+	border-radius:5px 5px 5px 5px;
+}
 </style>
 <script type="text/javascript">
 	$(function() {
@@ -587,7 +602,7 @@ $("#search-createdatetimeEnd").keypress(function(){
                     title: '个人角色',
                     width: 100,
                     formatter: function (value, row, index) {
-                        return "<a href=\"javascript:doEditRole('" + row.id + "');\"" + " title='个人角色'>"+ row.userRole +"</a>";
+                        return "<a class='posrole' style='color:#0909df' href=\"javascript:doEditRole('" + row.id + "');\"" + " title='个人角色'>"+ row.userRole +"</a>";
                     }
                 }
                 ]],

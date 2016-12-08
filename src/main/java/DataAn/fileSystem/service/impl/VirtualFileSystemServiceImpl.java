@@ -231,6 +231,40 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 			systemLogService.addOneSystemlogs( request,operateJob);
 			this.deleteFile(files, file);
 		}
+		this.deleteMongodbFile(files);
+	}
+
+	@Override
+	@Transactional
+	public void deleteFileByUUId(String uuId) throws Exception {
+		final List<VirtualFileSystem> files = new ArrayList<VirtualFileSystem>();
+		VirtualFileSystem file = fileDao.selectByFileTypeIsFileAndMongoFSUUId(uuId);
+		if(file != null){
+			files.add(file);
+			//更新状态
+			statusTrackingService.updateStatusTracking(file.getFileName(), StatusTrackingType.FILEUPLOADFAIL.getValue(),
+					file.getParameterType(), "数据处理失败！");
+			this.deleteFile(null,file);	
+			this.deleteMongodbFile(files);
+		}
+	}
+
+	private void deleteFile(List<VirtualFileSystem> files, VirtualFileSystem file) {
+		if(file.getFileType().getName().equals("dir")){
+			List<VirtualFileSystem> fileList = fileDao.findByParam("parentId", file.getId());
+			if(fileList != null && fileList.size() > 0){
+				for (VirtualFileSystem childFile : fileList) {
+					this.deleteFile(files,childFile);				
+				}
+			}
+		}else{
+			if(files != null){
+				files.add(file);
+			}
+			fileDao.delete(file);
+		}
+	}
+	private void deleteMongodbFile(final List<VirtualFileSystem> files){
 		new Thread(new Runnable(){
 			@Override
 			public void run() {
@@ -250,33 +284,6 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 				}				
 			}}).start();
 	}
-
-	@Override
-	@Transactional
-	public void deleteFileByUUId(String uuId) {
-		VirtualFileSystem file = fileDao.selectByFileTypeIsFileAndMongoFSUUId(uuId);
-		if(file != null){
-			this.deleteFile(null,file);			
-		}
-	}
-
-	private void deleteFile(List<VirtualFileSystem> files, VirtualFileSystem file) {
-		if(file.getFileType().getName().equals("dir")){
-			List<VirtualFileSystem> fileList = fileDao.findByParam("parentId", file.getId());
-			if(fileList != null && fileList.size() > 0){
-				for (VirtualFileSystem childFile : fileList) {
-					this.deleteFile(files,childFile);				
-				}
-			}
-		}else{
-			if(files != null){
-				files.add(file);
-			}
-			fileDao.delete(file);
-			
-		}
-	}
-	
 	@Override
 	@Transactional(readOnly = true)
 	public FileDto downloadFile(long fileId) throws Exception {

@@ -65,7 +65,10 @@ public class CommonController {
 	@ResponseBody
 	public List<ConstraintDto> getConstraint(String beginDate,String endDate,String Series_current,String Star_current,String type_current) 
 			throws Exception{
-		return j9Series_Star_Service.getAllParameterList(beginDate, endDate, Series_current, Star_current, type_current);
+		if(StringUtils.isNotBlank(beginDate) || StringUtils.isNotBlank(endDate)){
+			return j9Series_Star_Service.getAllParameterList(beginDate, endDate, Series_current, Star_current, type_current);			
+		}
+		return new ArrayList<ConstraintDto>();
 	}
 	
 	
@@ -217,16 +220,16 @@ public class CommonController {
 //					return result;	
 //				} 
 	//paramObiect的结构eg:{"nowSeries":"j9name","nowStar":"02","component":"flywheel","startTime":"2016-06-22 13:02:08","endTime":"2016-06-23 13:02:23","paramAttribute":[{"name":"飞轮温度Xa(00815)","value":"","y":"0"},{"name":"飞轮温度Ya(00817)","value":"","y":"0"},{"name":"飞轮温度Za(00819)","value":"","y":"0"}]}
-	System.out.println("需要展现的曲线的信息paramObject: " + paramObject);
+	//System.out.println("需要展现的曲线的信息paramObject: " + paramObject);
 	//将参数信息放进缓存，供绘制曲线tab自己在读取
 	EhCache ehCache = new EhCache(); 
 	String sessionId = request.getSession().getId();
 	ehCache.addToCache(sessionId+"paramObject", paramObject);
-	System.out.println("在选择曲线组别页面保存参数信息时的sessionid："+sessionId);
+	//System.out.println("在选择曲线组别页面保存参数信息时的sessionid："+sessionId);
 	Map<String, Class<ParamAttributeDto>> classMap = new HashMap<String, Class<ParamAttributeDto>>();
 	classMap.put("paramAttribute", ParamAttributeDto.class);
 	ParamBatchDto pbd =JsonStringToObj.jsonToObject(paramObject,ParamBatchDto.class,classMap);
-	System.out.println("将paramAttrribute转换成对象pbd");
+	//System.out.println("将paramAttrribute转换成对象pbd");
 //	 YearAndParamDataDto result = mongoService.getList(paramSize,new String[]{start,end,paramNames,nowSeries,nowStar,component});				
 //		ThreadPoolExecutor executor = new ThreadPoolExecutor(5, 10, 200, TimeUnit.SECONDS,new ArrayBlockingQueue<Runnable>(5));
 //		executor.execute(new Runnable() {
@@ -242,7 +245,7 @@ public class CommonController {
 	//将propeities从字符串数据转换成对象数组
 	//String[] properties=new String[pbd.getParamAttribute().size()];
 	ParamAttributeDto properties[]=new ParamAttributeDto[pbd.getParamAttribute().size()];
-	System.out.println("pbd.getParamAttribute().size()的值为："+pbd.getParamAttribute().size());
+	//System.out.println("pbd.getParamAttribute().size()的值为："+pbd.getParamAttribute().size());
 	int i=0;
 	List<ParamAttributeDto> listparam=pbd.getParamAttribute();
 	for(ParamAttributeDto paramAttributeDto: listparam){
@@ -250,10 +253,10 @@ public class CommonController {
 		String value =paramAttributeDto.getValue();
 		properties[i++]=paramAttributeDto;
 		
-		System.out.println(paramAttributeDto.getMax()+"最小值"+paramAttributeDto.getMin());
-		System.out.println("添加到requestConfig的参数值"+paramAttributeDto.getValue()+"nanme属性为："+paramAttributeDto.getName());
+		//System.out.println(paramAttributeDto.getMax()+"最小值"+paramAttributeDto.getMin());
+		//System.out.println("添加到requestConfig的参数值"+paramAttributeDto.getValue()+"nanme属性为："+paramAttributeDto.getName());
 	}
-	System.out.println("设置requestConfig的Properties属性为："+properties);
+	//System.out.println("设置requestConfig的Properties属性为："+properties);
 	requestConfig.setProperties(properties);
 	requestConfig.setSeries(pbd.getNowSeries());
 	requestConfig.setStar(pbd.getNowStar());
@@ -262,11 +265,11 @@ public class CommonController {
 	requestConfig.setTimeEnd(pbd.getEndTime());
 	
 	Map<String, YearAndParamDataDto> result = routingService.getData(requestConfig);	
-	for (String key : result.keySet()) {
+	/*for (String key : result.keySet()) {
         YearAndParamDataDto value =  result.get(key);
         List paramlist =value.getParamValue();
         System.out.println("key:"+key + "参数集合对象的大小" + paramlist.size());
-    }
+    }*/
 	long end = System.currentTimeMillis();
 	System.out.println("----------------后台结束时间："+  DateUtil.formatSSS(new Date()));
 	System.out.println("----------------后台总处理时间："+ (end-begin));

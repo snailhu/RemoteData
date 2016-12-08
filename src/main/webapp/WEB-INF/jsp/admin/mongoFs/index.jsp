@@ -30,7 +30,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     <script type="text/javascript" src="${pageContext.request.contextPath}/static/content/jeDate/jedate/jedate.js"></script>
     
 	<link rel="stylesheet" href="<%=request.getContextPath()%>/static/css/all.css" type="text/css" />
-	
   <style type="text/css">
 .widget-toolbar>a {
 	font-size: 36px;
@@ -63,10 +62,24 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	line-height:30px;
 	text-align:left;
 }
-
+.daosanjiao{
+	margin:10px;
+	display: inline-block;
+	width:0px;height:0px;
+	border-top:8px solid black;
+	border-left:3px solid transparent;
+	border-bottom:0px solid transparent;
+	border-right:3px solid transparent;
+}
+.combo-arrow{
+	/* background:none; */
+}
 </style>
   <script type="text/javascript">
   $(function(){
+	 // $(".combo-arrow").css("background","none");
+	 // $(".combo-arrow").append("<span class='daosanjiao'></span>");
+	 
 		//修改页面缩放，界面显示不正常
 		$(".col-lg-4").css("margin-left","25%");		
 
@@ -166,7 +179,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 									<div class="form-group">
 										<label class="col-sm-3 control-label no-padding-right" for="search-series"> 系列：</label>
 										<div class="col-sm-9">
-											<input type="text" id="search-series" name="series" placeholder="系列" class="col-xs-10 col-sm-5" style="height:30px;"/>
+											<input type="text" id="search-series" name="series" placeholder="系列" class="col-xs-10 col-sm-5" style="height:30px;"/>																					
 											<label class="mustchoose">*</label>
 										</div>
 									</div>

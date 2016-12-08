@@ -33,8 +33,12 @@ public class DataSearchTask extends RecursiveTask<YearAndParamDataDto> {
 		Double maxtemp=Double.valueOf(dataSearchTaskConfig.getMaxvalue());
 		Double mintemp=Double.valueOf(dataSearchTaskConfig.getMinvalue());
 		
+		System.out.println("---第二步--------开始monogodb查询时间："+ DateUtil.formatSSS(new Date()));
+		long begin = System.currentTimeMillis();
+		
 		
 		MongodbUtil mg = MongodbUtil.getInstance();
+		System.out.println("选择的仓库："+repo.collection());
 		MongoCollection<Document> collection = mg.getCollection(repo.database(), repo.collection());		
 
 		YearAndParamDataDto yearAndParam = new YearAndParamDataDto();
@@ -43,7 +47,13 @@ public class DataSearchTask extends RecursiveTask<YearAndParamDataDto> {
 		
 		FindIterable<Document> document_It = collection.find(Filters.and(Filters.gte("datetime", startDate),Filters.lte("datetime", endDate)));						
 		
-
+		long end = System.currentTimeMillis();
+		System.out.println("---第二步----------从monogodb查询结束时间："+ DateUtil.formatSSS(new Date())+"共用时："+(end-begin));
+		
+		
+		System.out.println("---第3步----------把查询出来的Document进行处理 开始时间："+ DateUtil.formatSSS(new Date()));
+		long begin_chuli =System.currentTimeMillis();
+		
 		for (Document doc : document_It) {
 			/*String paraVal = doc.getString(dataSearchTaskConfig.getProperty());
 			if (paraVal != null) {
@@ -72,6 +82,8 @@ public class DataSearchTask extends RecursiveTask<YearAndParamDataDto> {
 		yearAndParam.setParamCount(yearValue.size());
 		yearAndParam.setParamValue(paramValue);
 	    yearAndParam.setYearValue(yearValue);
+	    long end_chuli = System.currentTimeMillis();
+	    System.out.println("---第3步----------把查询出来的Document进行处理  结束时间："+ DateUtil.formatSSS(new Date())+"共用时："+(end_chuli-begin_chuli));
 		return yearAndParam;
 	}
 

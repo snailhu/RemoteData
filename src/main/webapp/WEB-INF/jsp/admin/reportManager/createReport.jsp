@@ -133,6 +133,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     padding-top: 2px;
     margin-bottom: 0px;
 }
+.form-group input{cursor:pointer;}
 .form-group input,.form-group select{
 	width: 240px;
 	height:30px;
@@ -226,7 +227,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 										<label class="col-sm-5 control-label no-padding-right" for="form-beginTime"> 开始日期： </label>
 										<div class="col-sm-3">
 											<input type="text" id="form-beginTime" name="beginTime" 
-											placeholder="--请选择开始日期--" class="form-control"/>
+											placeholder="--请选择开始日期--" class="form-control" readonly="true"/>
 											<div id="getBeginTime"></div>
 										</div>
 									</div>
@@ -235,7 +236,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 										<label class="col-sm-5 control-label no-padding-right" for="form-endTime"> 结束日期： </label>
 										<div class="col-sm-3">
 											<input type="text" id="form-endTime" name="endTime" 
-											placeholder="--请选择结束日期--" class="form-control"/>
+											placeholder="--请选择结束日期--" class="form-control" readonly="true"/>
 											<div id="getEndTime"></div>
 										</div>
 									</div>
@@ -267,13 +268,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <script type="text/javascript">
 	var activeUser = '${activeUser}';
 $(function(){
-	  
-	   $("#form-beginTime").keypress(function(){
-			  return false;
-		});
-		$("#form-endTime").keypress(function(){
-			   return false;
-		});
 	  jeDate({
 			dateCell:"#form-beginTime",//直接显示日期层的容器，可以是ID  CLASS
 			format:"YYYY-MM-DD",//日期格式
@@ -291,6 +285,12 @@ $(function(){
 			isTime:false, //是否开启时间选择
 			//minDate:"2014-09-19 00:00:00",//最小日期
 			maxDate:jeDate.now(0), //设定最大日期为当前日期
+		});
+		 $("#form-beginTime").keypress(function(){
+			  return false;
+		});
+		$("#form-endTime").keypress(function(){
+			   return false;
 		});
 
 	$.get('<%=request.getContextPath()%>/admin/device/getDeviceTypeList', {}, function (data) {

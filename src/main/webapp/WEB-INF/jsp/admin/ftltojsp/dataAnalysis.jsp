@@ -344,7 +344,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				</div>
 				<div class="dateStyle">
 				<select class="form-control" id="edit_component" name="component" style="display:none;">
-					<option value="">选择设备</option>
+<!-- 					<option value="">选择设备</option> -->
 				</select>
 				</div>
 				<button style="height: 35px;"  id='jqxButton-getParameters' onMouseOut="this.style.backgroundColor=''" onMouseOver="this.style.backgroundColor='#00A1CB'">获取参数</button>
@@ -421,17 +421,17 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	jeDate({
 		dateCell:"#dateStart",//直接显示日期层的容器，可以是ID  CLASS
 		ormat:"YYYY-MM-DD hh:mm:ss", //日期格式
-minDate:"1900-01-01 00:00:00", //最小日期
-maxDate:"2099-12-31 23:59:59", //最大日期
-isinitVal:false, //是否初始化时间
-isTime:true, //是否开启时间选择
-//isClear:true, //是否显示清空
-festival:false, //是否显示节日
-zIndex:999,  //弹出层的层级高度
-marks:null, //给日期做标注
-choosefun:function(val) {},  //选中日期后的回调
-clearfun:function(val) {},   //清除日期后的回调
-okfun:function(val) {}       //点击确定后的回调
+		minDate:"1900-01-01 00:00:00", //最小日期
+		maxDate:jeDate.now(0), //最大日期
+		isinitVal:false, //是否初始化时间
+		isTime:true, //是否开启时间选择
+		//isClear:true, //是否显示清空
+		festival:false, //是否显示节日
+		zIndex:999,  //弹出层的层级高度
+		marks:null, //给日期做标注
+		choosefun:function(val) {},  //选中日期后的回调
+		clearfun:function(val) {},   //清除日期后的回调
+		okfun:function(val) {}       //点击确定后的回调
 	});
 	jeDate({
 		dateCell:"#dateEnd",//直接显示日期层的容器，可以是ID  CLASS

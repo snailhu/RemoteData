@@ -294,6 +294,22 @@ input[type=text]::-webkit-focus-inner {
 .breadcrumb {
     margin-top: 10px;
 }
+.sweet-alert {
+    background-color: #ffffff;
+    width: 478px;
+    height: 305px;
+    padding: 17px;
+    border-radius: 5px;
+    text-align: center;
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    margin-left: -256px;
+    margin-top: -200px;
+    overflow: hidden;
+    display: none;
+    z-index: 2000;
+}
 </style>
 <script type="text/javascript">
 	$(function(){
@@ -441,6 +457,7 @@ input[type=text]::-webkit-focus-inner {
         		}
         	}
         	if(flag){
+        		$("#returnMsg").empty();
         		if(regexp.test(fileName)){
             		var activeUser = '${activeUser}';
             		if(activeUser != null){
@@ -474,6 +491,7 @@ input[type=text]::-webkit-focus-inner {
     	    						},
     	    						function(isConfirm) {
     	    							if (isConfirm) {
+    	    								$(".cancel").attr("disabled", true);//按钮失效
     	    								$("#fileupload").submit();
     	    							} else {
     	    								swal("取消上传", "","error");

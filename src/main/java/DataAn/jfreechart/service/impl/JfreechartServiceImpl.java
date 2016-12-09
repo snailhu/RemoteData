@@ -227,11 +227,11 @@ public class JfreechartServiceImpl implements IJfreechartServcie {
 						double dValue = Double.parseDouble(strValue.trim());
 						
 						//在有效值区间之内
-//						if(paramMax.get(key) != null && dValue > paramMax.get(key))
-//							continue;
-//						
-//						if(paramMin.get(key) != null && dValue < paramMin.get(key))
-//							continue;
+						if(paramMax.get(key) != null && dValue > paramMax.get(key))
+							continue;
+						
+						if(paramMin.get(key) != null && dValue < paramMin.get(key))
+							continue;
 						
 						// 往序列里面添加数据
 						timeseries.addOrUpdate(new Millisecond(datetime), dValue);

@@ -117,8 +117,8 @@ $(function() {
                     notEmpty : {
                         message : '参数名不能为空'
                     },
-                    regexp : { 
-                        regexp : /^[\u4E00-\u9FA5A-Za-z0-9_:\u4E00-\u9FA5A-Za-z0-9_]+(\([0-9]*\))+$/,
+                    regexp : { //任意字符 ((?:.|(\s\r\n\+))*)
+                        regexp : /^[\u4E00-\u9FA5A-Za-z0-9_:\s\+\u4E00-\u9FA5A-Za-z0-9_]+(\([0-9]*\))+$/,
                         message : '参数名格式不对'
                     },
                 }
@@ -171,7 +171,7 @@ $(function() {
                         message : '参数名不能为空'
                     },
                     regexp : { 
-                        regexp : /^[\u4E00-\u9FA5A-Za-z0-9_:\u4E00-\u9FA5A-Za-z0-9_]+(\([0-9]*\))+$/,
+                        regexp : /^[\u4E00-\u9FA5A-Za-z0-9_:\s\+\u4E00-\u9FA5A-Za-z0-9_]+(\([0-9]*\))+$/,
                         message : '参数名格式不对'
                     },
                 }
@@ -369,13 +369,19 @@ $(function() {
 	              field: 'id',
 	              width: 50,
 	              checkbox: true
+	          }]],
+	          columns: [[{
+	              field: 'deviceTypeName',
+	              title: '设备',
+	              width: 100,
+	              sortable: true
 	          }, {
 	              field: 'fullName',
 	              title: '参数名',
-	              width: 800,
+	              width: 500
+	              ,
 	              sortable: true
-	          }]],
-	          columns: [[{
+	          }, {
 	              field: 'code',
 	              title: '参数码',
 	              width: 300,

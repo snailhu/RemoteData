@@ -2,7 +2,9 @@ package DataAn.galaxyManager.service.impl;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -158,6 +160,18 @@ public class DeviceServiceImpl implements IDeviceService {
 			}
 		}
 		return comboList;
+	}
+
+	@Override
+	public Map<String, String> getAllDeviceTypeMap() {
+		Map<String,String> map = new HashMap<String,String>();
+		List<DeviceType> list = deviceTypeDao.findAll();
+		if (list != null && list.size() > 0) {
+			for (DeviceType deviceType : list) {
+				map.put(deviceType.getDeviceCode(), deviceType.getDeviceName());		
+			}
+		}
+		return map;
 	}
 
 }

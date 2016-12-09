@@ -1,6 +1,7 @@
 package DataAn.galaxyManager.service;
 
 import java.util.List;
+import java.util.Map;
 
 import DataAn.common.dao.Pager;
 import DataAn.common.pageModel.Combo;
@@ -28,5 +29,7 @@ public interface IDeviceService {
 	public void deleteDevice(Long deviceId) throws Exception;
 
 	public List<Combo> getDeviceTypeComboData(String deviceTypeCode);
+	
+	public Map<String,String> getAllDeviceTypeMap();
 
 }

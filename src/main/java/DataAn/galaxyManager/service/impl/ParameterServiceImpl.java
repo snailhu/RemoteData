@@ -3,6 +3,7 @@ package DataAn.galaxyManager.service.impl;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -17,6 +18,7 @@ import DataAn.galaxyManager.dao.IParameterDao;
 import DataAn.galaxyManager.domain.Parameter;
 import DataAn.galaxyManager.dto.ParameterDto;
 import DataAn.galaxyManager.option.J9Series_Star_ParameterType;
+import DataAn.galaxyManager.service.IDeviceService;
 import DataAn.galaxyManager.service.IParameterService;
 
 
@@ -25,6 +27,8 @@ public class ParameterServiceImpl implements IParameterService{
 
 	@Resource
 	private IParameterDao parameterDao;
+	@Resource
+	private IDeviceService deviceService;
 	
 	private ConcurrentHashMap<String,String> parameterList_allZh_and_en = new ConcurrentHashMap<String,String>();
 	
@@ -153,10 +157,13 @@ public class ParameterServiceImpl implements IParameterService{
 		List<ParameterDto> paramDtoList = new ArrayList<ParameterDto>();
 		Pager<Parameter> paramPager = parameterDao.selectByPager(series,star, pageIndex, pageSize);
 		if(paramPager != null){
+			Map<String,String> map = deviceService.getAllDeviceTypeMap();
 			List<Parameter> paramList = paramPager.getDatas();
 			if(paramList != null && paramList.size() > 0){
 				for (Parameter param : paramList) {
-					paramDtoList.add(this.pojoToDto(param));
+					ParameterDto paramDto = this.pojoToDto(param);
+					paramDto.setDeviceTypeName(map.get(param.getDeviceTypeCode()));
+					paramDtoList.add(paramDto);
 				}
 			}			
 		}
@@ -183,7 +190,7 @@ public class ParameterServiceImpl implements IParameterService{
 		String param_en = parameterList_allZh_and_en.get(param_zh);
 		if(StringUtils.isBlank(param_en)){
 			//Map集合里面没有再从数据库中查找
-			Parameter param = parameterDao.selectBySeriesAndStarAndCode(series, star, param_zh);
+			Parameter param = parameterDao.selectBySeriesAndStarAndFullName(series, star, param_zh);
 			if(param == null){
 				//数据库中没有此集合
 				param = this.saveOne(series, star,paramType, param_zh);

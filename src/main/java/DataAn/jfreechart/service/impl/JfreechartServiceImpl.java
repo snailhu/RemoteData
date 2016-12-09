@@ -39,9 +39,10 @@ import DataAn.wordManager.config.OptionConfig;
 @Service
 public class JfreechartServiceImpl implements IJfreechartServcie {
 
-	private Logger logger = Log4jUtil.getInstance().getLogger(JfreechartServiceImpl.class);
 	@Resource
 	private IMongoService mongoService;
+
+	private Logger logger = Log4jUtil.getInstance().getLogger(JfreechartServiceImpl.class);
 
 	@Override
 	public LineChartDto createLineChart(String series, String star,
@@ -49,20 +50,21 @@ public class JfreechartServiceImpl implements IJfreechartServcie {
 			Map<String, List<ConstraintDto>> constraintsMap) throws Exception {
 		
 		StringBuffer sb = new StringBuffer();
-		sb.append("come in createLineChart..");
-		sb.append("series: " + series);
-		sb.append("star: " + star);
-		sb.append("paramType: " + paramType);
-		sb.append("beginDate: " + DateUtil.format(beginDate));
-		sb.append("endDate: " + DateUtil.format(endDate));
+		sb.append("come in createLineChart.."+"\n");
+		sb.append("series: " + series+"\n");
+		sb.append("star: " + star+"\n");
+		sb.append("paramType: " + paramType+"\n");
+		sb.append("beginDate: " + DateUtil.format(beginDate)+"\n");
+		sb.append("endDate: " + DateUtil.format(endDate)+"\n");
 		sb.append("\n");
 		for (String key : constraintsMap.keySet()) {
 			for (ConstraintDto constraintDto : constraintsMap.get(key)) {
-				sb.append(constraintDto);
+				sb.append(constraintDto+"\n");
 			}
 			sb.append("\n");
 		}
-		logger.info(sb.toString());
+		System.out.println(sb.toString());
+//		logger.info(sb.toString());
 		
 		return this.createTimeSeriesChart(series, star, paramType, beginDate,
 				endDate, constraintsMap);
@@ -255,6 +257,10 @@ public class JfreechartServiceImpl implements IJfreechartServcie {
 			}
 		}
 
+		for (String line : lineMap.keySet()) {
+			System.out.println(line + " count: " + lineMap.get(line).getItemCount());
+		}
+		
 		Map<String, String> chartMap = new HashMap<String, String>();
 		for (String key : constraintsKeys) {
 			List<ConstraintDto> constraintList = constraintsMap.get(key);
@@ -294,6 +300,7 @@ public class JfreechartServiceImpl implements IJfreechartServcie {
 						logger.info(DateUtil.format(beginDate) + " 到 "+ DateUtil.format(endDate) +" " + constraintDto.getName()+" 未找到报告数据！3");
 					}
 				}
+				//至少有一次
 				if(flag){
 					datasetList.add(dataset);					
 				}
@@ -359,7 +366,7 @@ public class JfreechartServiceImpl implements IJfreechartServcie {
 			tempDocList.add(doc);
 			tempMap.put(datetime, tempDocList);
 		}
-		System.out.println("count: " + count);
+		System.out.println("get mongodb data count: " + count);
 		if(count == 0){
 			throw new RuntimeException(DateUtil.format(beginDate) + " 到 "+ DateUtil.format(endDate) +" 未找到报告数据！");
 		}

@@ -585,8 +585,10 @@ $.post("getDatabytap",
 		                 	  var yname = 0;
 		                 	  var legendname ="";
 		                 	  for(var param in data){
-		                 	  yname  = names[i].y;
-		                 	  legendname =names[i].name;
+		                 	  
+		                 	  yname  = names[names.length-1-i].y;
+             	  			  legendname =names[names.length-1-i].name;
+		                 	  
 		                 	  console.log(yname+legendname)
 		                 	  	seriesOptions[i++] = {
 		    			            	type: 'line',

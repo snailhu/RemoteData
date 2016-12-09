@@ -83,6 +83,7 @@ public class DataSearchTask extends RecursiveTask<YearAndParamDataDto> {
 		yearAndParam.setParamValue(paramValue);
 	    yearAndParam.setYearValue(yearValue);
 	    long end_chuli = System.currentTimeMillis();
+		System.out.println("---第3步----------把查询出来的Document的数据个数："+paramValue.size());
 	    System.out.println("---第3步----------把查询出来的Document进行处理  结束时间："+ DateUtil.formatSSS(new Date())+"共用时："+(end_chuli-begin_chuli));
 		return yearAndParam;
 	}

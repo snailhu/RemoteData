@@ -59,7 +59,7 @@
 			<div  style="margin:0px height:31px !important">
 				<div id="menu"></div>
 			</div>
-			<span> &amp;</span>
+			<span> &nbsp;</span>
 			<div class="col-xs-12"><hr/></div>
 			<!--<div class="row" style="margin:0px height:31px!important"></div>-->
 	           <div class="col-xs-12">

@@ -15,7 +15,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<meta http-equiv="expires" content="0">    
 	<meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
 	<meta http-equiv="description" content="This is my page">
-  
+  <jsp:include page="/WEB-INF/jsp/inc/include-easyUI.jsp"></jsp:include>
   	 <link href="${pageContext.request.contextPath}/static/assets/css/bootstrap.min.css" rel="stylesheet" />
  
    	<link rel="stylesheet" href="${pageContext.request.contextPath}/static/jqwidgets/styles/jqx.base.css" type="text/css" />
@@ -521,6 +521,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		 	console.log("当前"+Series_current+"----"+Star_current);
             var url = "${pageContext.request.contextPath}/getConstraint?beginDate="+beginDate+"&endDate="+endDate+"&Series_current="+Series_current+"&Star_current="+Star_current+"&type_current="+type_current;
             updateParamTree(url);
+            intTemplateList();
+            
 		 });
 		 
 		 $("#jqxButton_addgroup").jqxButton({ width: '95', height: '30'});	
@@ -693,7 +695,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	        j++;           
 	        JsonG.alldata=AllRowselect;   
        	}else{
-       		alert("至少请选择一行参数！");
+       		top.showMsg('提示', "参数不能为空 ，请至少选择一行参数");
+				  return false;
+       		
        	}  
       }
         

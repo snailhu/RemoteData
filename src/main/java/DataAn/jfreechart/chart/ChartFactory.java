@@ -4,6 +4,7 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Vector;
 
@@ -21,6 +22,7 @@ import org.jfree.chart.renderer.category.LineAndShapeRenderer;
 import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.general.DefaultPieDataset;
+import org.jfree.data.time.TimeSeries;
 import org.jfree.data.time.TimeSeriesCollection;
 import org.jfree.ui.RectangleEdge;
 
@@ -49,8 +51,8 @@ public class ChartFactory {
         // 日期X坐标轴
         DateAxis domainAxis = (DateAxis) xyplot.getDomainAxis();
         domainAxis.setAutoTickUnitSelection(false);
-        DateTickUnit dateTickUnit = null;
         
+//        DateTickUnit dateTickUnit = null;
 //        if (dataset.getItemCount(0) < 16) {
 //            //刻度单位月,半年为间隔
 //            dateTickUnit = new DateTickUnit(DateTickUnitType.SECOND, 6, new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")); // 第二个参数是时间轴间距
@@ -62,10 +64,54 @@ public class ChartFactory {
         
 //        XYLineAndShapeRenderer xyRenderer = (XYLineAndShapeRenderer) xyplot.getRenderer();
 //        xyRenderer.setBaseItemLabelsVisible(false);
-        dateTickUnit = new DateTickUnit(DateTickUnitType.HOUR, 4, new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")); // 第二个参数是时间轴间距
-        
+//        dateTickUnit = new DateTickUnit(DateTickUnitType.HOUR, 4, new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")); // 第二个参数是时间轴间距
         // 设置时间单位
-        domainAxis.setTickUnit(dateTickUnit);
+//        domainAxis.setTickUnit(dateTickUnit);
+        if(dataset != null && dataset.getSeriesCount() >0){
+			DateTickUnit dateTickUnit = null;
+			int seriesCount = 0;
+			int itemCount = 0;
+			TimeSeries timeSeries = null;
+			for (int i = 0; i < dataset.getSeriesCount(); i++) {
+				timeSeries = dataset.getSeries(i);
+				if(itemCount < timeSeries.getItemCount()){
+					itemCount = timeSeries.getItemCount();
+					seriesCount = i;
+				}
+			}
+			timeSeries = dataset.getSeries(seriesCount);
+			long interval = timeSeries.getDataItem(timeSeries.getItemCount()-1).getPeriod().getLastMillisecond() - timeSeries.getDataItem(0).getPeriod().getLastMillisecond();
+			interval = interval / 24; //显示24个间隔
+			int s_interval = (int) (interval / 1000); // 得到 1秒钟几个点
+			if(s_interval > 0){ 
+				int m_interval = s_interval / 60; // 得到 1分钟几个点
+				if(m_interval > 0){ 
+					int h_interval = m_interval / 60; // 等到1小时几个点
+					if(h_interval > 0){ 
+						int d_interval = h_interval / 24; // 等到1天几个点
+						if(d_interval > 0){ 
+							int y_interval = d_interval / 365; // 等到1年几个点
+							if(y_interval > 0){ 
+								dateTickUnit = new DateTickUnit(DateTickUnitType.YEAR, y_interval, new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"));
+							}else{
+								dateTickUnit = new DateTickUnit(DateTickUnitType.DAY, d_interval, new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"));
+							}
+						}else{
+							dateTickUnit = new DateTickUnit(DateTickUnitType.HOUR, h_interval, new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"));
+						}
+					}else{
+						dateTickUnit = new DateTickUnit(DateTickUnitType.MINUTE, m_interval, new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"));
+					}
+				}else{
+					dateTickUnit = new DateTickUnit(DateTickUnitType.SECOND, s_interval, new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"));
+				}
+			}else{
+				dateTickUnit = new DateTickUnit(DateTickUnitType.SECOND, 1, new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"));
+			}
+			// 设置时间单位
+	       domainAxis.setTickUnit(dateTickUnit);
+        }
+        
         ChartUtils.setLegendEmptyBorder(chart);
        
 		return chart;
@@ -131,32 +177,52 @@ public class ChartFactory {
         // 日期X坐标轴
         DateAxis domainAxis = (DateAxis) xyplot.getDomainAxis();
         domainAxis.setAutoTickUnitSelection(false);
-        
-        DateTickUnit dateTickUnit = null;
-        if (dataset1.getItemCount(0) < 7*24*60*60*4) {
-            if(dataset1.getItemCount(0) < 24*60*60*4){//一天之内的点显示
-            	if(dataset1.getItemCount(0) < 60*60*4){ //小于一个小时的点显示
-            		dateTickUnit = new DateTickUnit(DateTickUnitType.SECOND, 1, new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")); // 第二个参数是时间轴间距            		
-            	}else{ //一小时 至 一天之内的点显示
-            		//刻度单位小时,1个小时为间隔
-            		dateTickUnit = new DateTickUnit(DateTickUnitType.HOUR, 4, new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")); // 第二个参数是时间轴间距            		
-            	}
-            }else{ //一天到一个星期的点显示
-            	//刻度单位小时,4个小时为间隔
-                dateTickUnit = new DateTickUnit(DateTickUnitType.HOUR, 12, new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")); // 第二个参数是时间轴间距
-            }
-//            dateTickUnit = new DateTickUnit(DateTickUnitType.SECOND, 6, new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")); // 第二个参数是时间轴间距
-        }else { //大于一个星期的点显示
-        	//刻度单位小时,12个小时为间隔
-            dateTickUnit = new DateTickUnit(DateTickUnitType.HOUR, 24, new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")); // 第二个参数是时间轴间距
-//            dateTickUnit = new DateTickUnit(DateTickUnitType.DAY, 1, new SimpleDateFormat("yyyy-MM-dd")); // 第二个参数是时间轴间距
+    	
+    	if(dataset1 != null && dataset1.getSeriesCount() >0){
+			DateTickUnit dateTickUnit = null;
+			int seriesCount = 0;
+			int itemCount = 0;
+			TimeSeries timeSeries = null;
+			for (int i = 0; i < dataset1.getSeriesCount(); i++) {
+				timeSeries = dataset1.getSeries(i);
+				if(itemCount < timeSeries.getItemCount()){
+					itemCount = timeSeries.getItemCount();
+					seriesCount = i;
+				}
+			}
+			timeSeries = dataset1.getSeries(seriesCount);
+			long ss_interval = timeSeries.getDataItem(timeSeries.getItemCount()-1).getPeriod().getLastMillisecond() - timeSeries.getDataItem(0).getPeriod().getLastMillisecond();
+			int s_interval = (int) (ss_interval / 1000); // 得到 1秒钟几个点
+			s_interval = s_interval / 24; //显示24个间隔
+			if(s_interval > 0){ 
+				int m_interval = s_interval / 60; // 得到 1分钟几个点
+				if(m_interval > 0){ 
+					int h_interval = m_interval / 60; // 等到1小时几个点
+					if(h_interval > 0){ 
+						int d_interval = h_interval / 24; // 等到1天几个点
+						if(d_interval > 0){ 
+							int y_interval = d_interval / 365; // 等到1年几个点
+							if(y_interval > 0){ 
+								dateTickUnit = new DateTickUnit(DateTickUnitType.YEAR, y_interval, new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"));
+							}else{
+								dateTickUnit = new DateTickUnit(DateTickUnitType.DAY, d_interval, new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"));
+							}
+						}else{
+							dateTickUnit = new DateTickUnit(DateTickUnitType.HOUR, h_interval, new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"));
+						}
+					}else{
+						dateTickUnit = new DateTickUnit(DateTickUnitType.MINUTE, m_interval, new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"));
+					}
+				}else{
+					dateTickUnit = new DateTickUnit(DateTickUnitType.SECOND, s_interval, new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"));
+				}
+			}else{
+				dateTickUnit = new DateTickUnit(DateTickUnitType.SECOND, 1, new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"));
+			}
+			// 设置时间单位
+	       domainAxis.setTickUnit(dateTickUnit);
         }
-        
-        //TODO 设置时间轴
-//        dateTickUnit = new DateTickUnit(DateTickUnitType.HOUR, 4, new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")); // 第二个参数是时间轴间距
-        
-        // 设置时间单位
-        domainAxis.setTickUnit(dateTickUnit);
+    	
         ChartUtils.setLegendEmptyBorder(chart);
         
 		return chart;

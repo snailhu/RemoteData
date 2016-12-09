@@ -1,14 +1,18 @@
 package DataAn.jfreechart;
 
 import java.text.DecimalFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Vector;
+
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
+
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.data.time.TimeSeries;
 import org.jfree.data.time.TimeSeriesCollection;
+
 import DataAn.common.utils.DateUtil;
 import DataAn.jfreechart.chart.ChartFactory;
 import DataAn.jfreechart.chart.ChartUtils;
@@ -61,9 +65,11 @@ public class ChartFactoryTest3 {
 		int month = 1;
 		int day = 1;
 		Date date1 = new Date(year,month-1,day,0,0,0);
-		Date date2 = new Date(year,month-1,day+1,0,0,0);
+		Date date2 = new Date(year,month-1,day+2,0,0,0);
 		Date tempDate = date1;
 		long time = tempDate.getTime();
+		System.out.println("date1: " + date1);
+		System.out.println("time: " + time);
 		String format = year+ "-MM-dd HH:mm:ss.SSS";
 		DecimalFormat df = new DecimalFormat("#.00");
 		while(tempDate.before(date2)){
@@ -88,6 +94,30 @@ public class ChartFactoryTest3 {
 		timeSeries = ChartUtils.createTimeseries("NewYork", newYorkDateValues);
 		dataset.addSeries(timeSeries);
         
+		if(dataset != null && dataset.getSeriesCount() >0){
+			Calendar cal = Calendar.getInstance();
+			for (int i = 0; i < dataset.getSeriesCount(); i++) {
+				timeSeries = dataset.getSeries(i);
+				System.out.println("第 " + (i+1) + " 条count: " + timeSeries.getItemCount());
+				System.out.println("begin..");
+				System.out.println(timeSeries.getDataItem(0).getPeriod());
+				System.out.println(timeSeries.getDataItem(0).getPeriod().getStart());
+				System.out.println(timeSeries.getDataItem(0).getPeriod().getEnd());
+				System.out.println(timeSeries.getDataItem(0).getPeriod().getLastMillisecond());
+				cal.setTime(timeSeries.getDataItem(0).getPeriod().getStart());
+				System.out.println("DAY_OF_YEAR: " + cal.get(Calendar.DATE));
+				System.out.println("end...");
+				System.out.println(timeSeries.getDataItem(timeSeries.getItemCount()-1).getPeriod());
+				System.out.println(timeSeries.getDataItem(timeSeries.getItemCount()-1).getPeriod().getStart());
+				System.out.println(timeSeries.getDataItem(timeSeries.getItemCount()-1).getPeriod().getEnd());
+				System.out.println(timeSeries.getDataItem(timeSeries.getItemCount()-1).getPeriod().getLastMillisecond());
+				cal.setTime(timeSeries.getDataItem(timeSeries.getItemCount()-1).getPeriod().getEnd());
+				System.out.println("DAY_OF_YEAR: " + cal.get(Calendar.DATE));
+				long interval = timeSeries.getDataItem(timeSeries.getItemCount()-1).getPeriod().getLastMillisecond() - timeSeries.getDataItem(0).getPeriod().getLastMillisecond();
+				System.out.println(interval);
+			}
+		}
+		
         return dataset;
     }
     

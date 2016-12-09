@@ -13,4 +13,14 @@ public class DateUtilTest {
 		
 		System.out.println(datetime2);
 	}
+	
+	@Test
+	public void test2(){
+		long interval = 86388 / 24;
+		System.out.println(interval + "s");
+		long interval1 = interval / 60;
+		System.out.println(interval1 + "m");
+		long interval2 = interval1 / 60;
+		System.out.println(interval2 + "h");
+	}
 }

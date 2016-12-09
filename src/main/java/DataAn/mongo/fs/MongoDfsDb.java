@@ -8,8 +8,8 @@ import java.io.OutputStream;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
-import DataAn.common.utils.LogUtil;
-import DataAn.mongo.client.MongodbUtil;
+import org.apache.log4j.Logger;
+import DataAn.common.utils.Log4jUtil;
 import DataAn.mongo.init.InitMongo;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
@@ -30,14 +30,19 @@ public class MongoDfsDb implements IDfsDb{
 	private static ConcurrentHashMap<String, DB> dbs = new ConcurrentHashMap<String, DB>();
 
 	private static ConcurrentHashMap<String, GridFS> gridFSs = new ConcurrentHashMap<String, GridFS>();
+		
+	private Logger logger = Log4jUtil.getInstance().getLogger(MongoDfsDb.class);
 	
+	//单利模式：静态内部类
 	private static class MongoDfsDbInstance {
 		private static final IDfsDb instance = new MongoDfsDb();
 	}
 	
-	public static IDfsDb getInstance(){
+	public static final IDfsDb getInstance(){
+		
 		return MongoDfsDbInstance.instance;
 	}
+	
 	
 	private MongoDfsDb(){
 //		// 1.建立一个Mongo的数据库连接对象
@@ -47,11 +52,9 @@ public class MongoDfsDb implements IDfsDb{
 //		DB db = connection.getDB(InitMongo.DATABASE_TEST);
 //		gridFS = new GridFS(db);
 		
-		if (LogUtil.getInstance().getLogger(MongodbUtil.class).isDebugEnabled()) {
-			LogUtil.getInstance().getLogger(MongodbUtil.class).debug("MongoDfsDb() - start "); //$NON-NLS-1$
-		}
-		System.out.println("启动文件存储数据库：{}" + InitMongo.DB_SERVER_HOST + ":" + InitMongo.FS_SERVER_PORT);
-		LogUtil.getInstance().getLogger(this.getClass()).info("启动单机存储文件数据库：{}",InitMongo.DB_SERVER_HOST);
+		logger.info("MongoDfsDb() - start "); //$NON-NLS-1$
+		logger.info("启动文件存储数据库：{}" + InitMongo.DB_SERVER_HOST + ":" + InitMongo.FS_SERVER_PORT);
+		
 		mg = new MongoClient(InitMongo.FS_SERVER_HOST, InitMongo.FS_SERVER_PORT);
 		
 		dbs.put(InitMongo.FS_J9STAR2, getDB(InitMongo.FS_J9STAR2));

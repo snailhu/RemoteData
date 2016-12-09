@@ -1,7 +1,9 @@
 package DataAn.common.config;
 
 import java.io.File;
+import java.util.Date;
 
+import DataAn.common.utils.DateUtil;
 import DataAn.common.utils.PropertiesUtil;
 import DataAn.common.utils.UUIDGeneratorUtil;
 
@@ -29,23 +31,32 @@ public class CommonConfig {
 	}
 	
 	public static String getUplodCachePath() {
-		String uploadCachePath = getCachePath() + File.separator + "upload";
+		String uploadCachePath = getCachePath() + File.separator + 
+								"upload"+ File.separator + 
+								DateUtil.format(new Date(), "yyyy-MM-dd");
 		return uploadCachePath;
 	}
 	public static String getDownloadCachePath() {
-		String uploadCachePath = getCachePath() + File.separator + "download" 
-												+ File.separator + UUIDGeneratorUtil.getUUID();
+		String uploadCachePath = getCachePath() + File.separator + 
+								"download"+ File.separator + 
+								DateUtil.format(new Date(), "yyyy-MM-dd")+ File.separator + 
+								UUIDGeneratorUtil.getUUID();
 		return uploadCachePath;
 	}
 	public static String getZipCachePath() {
-		String uploadCachePath = getCachePath() + File.separator + "zip" 
-												+ File.separator + UUIDGeneratorUtil.getUUID();
+		String uploadCachePath = getCachePath() + File.separator + 
+								"zip"+ File.separator + 
+								DateUtil.format(new Date(), "yyyy-MM-dd")+ File.separator + 
+								UUIDGeneratorUtil.getUUID();
+
 		return uploadCachePath;
 	}
 	
 	public static String getChartCachePath() {
-		String uploadCachePath = getCachePath() + File.separator + "chart" 
-												+ File.separator + UUIDGeneratorUtil.getUUID();
+		String uploadCachePath = getCachePath() + File.separator + 
+								"chart"+ File.separator + 
+								DateUtil.format(new Date(), "yyyy-MM-dd")+ File.separator + 
+								UUIDGeneratorUtil.getUUID();
 		return uploadCachePath;
 	}
 }

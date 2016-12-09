@@ -90,6 +90,11 @@ public class ChartFactoryTest4 {
 		System.out.println("tokyoDateValues: " +tokyoDateValues.size());
 		TimeSeries timeSeries1 = ChartUtils.createTimeseries("Tokyo",tokyoDateValues);
 		dataset1.addSeries(timeSeries1);
+		
+		TimeSeries timeSeries = dataset1.getSeries(0);
+		System.out.println("count: " + timeSeries.getItemCount());
+		
+		
 		datasetList.add(dataset1);
 		
 		TimeSeriesCollection dataset2 = new TimeSeriesCollection();

@@ -9,6 +9,7 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.Logger;
 import org.bson.Document;
 
 import com.mongodb.BasicDBObject;
@@ -25,6 +26,7 @@ import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.Updates;
 
 import DataAn.common.utils.DataTypeUtil;
+import DataAn.common.utils.Log4jUtil;
 import DataAn.common.utils.LogUtil;
 import DataAn.mongo.init.InitMongo;
 
@@ -39,7 +41,9 @@ public class MongodbUtil {
 	private static volatile boolean isShard = true; //分片标示
 	
 	private volatile static MongodbUtil singleton = null;
-		
+	
+	private Logger logger = Log4jUtil.getInstance().getLogger(MongodbUtil.class);
+	
 	public static MongodbUtil getInstance() {
 		if (singleton == null) {
 			synchronized (MongodbUtil.class) {
@@ -52,13 +56,10 @@ public class MongodbUtil {
 	}
 	
 	private MongodbUtil(){
-		if (LogUtil.getInstance().getLogger(MongodbUtil.class).isDebugEnabled()) {
-			LogUtil.getInstance().getLogger(MongodbUtil.class).debug("DataAn.mongo.client.MongodbUtil() - start "); //$NON-NLS-1$
-		}
+		logger.info("DataAn.mongo.client.MongodbUtil() - start "); //$NON-NLS-1$
 		if(mg == null){
 			if (isShard && DataTypeUtil.isNotEmpty(InitMongo.SERVER_HOSTS)) {
-				System.out.println("-----启动集群分片数据库：{}" + InitMongo.SERVER_HOSTS + ":" +InitMongo.DB_SERVER_PORT);
-				LogUtil.getInstance().getLogger(this.getClass()).info("-----启动集群分片数据库：{}",InitMongo.SERVER_HOSTS);
+				logger.info("-----启动集群分片数据库：{}" + InitMongo.SERVER_HOSTS + ":" +InitMongo.DB_SERVER_PORT);
 				List<ServerAddress> addresses = new ArrayList<ServerAddress>();
 				String[] list = InitMongo.SERVER_HOSTS.split(",");
 				for (String ip : list) {
@@ -67,8 +68,7 @@ public class MongodbUtil {
 				}
 				mg = new MongoClient(addresses);
 			}else{
-				System.out.println("启动数据存储数据库：{}" + InitMongo.DB_SERVER_HOST + ":" +InitMongo.DB_SERVER_PORT);
-				LogUtil.getInstance().getLogger(this.getClass()).info("启动数据库：{}",InitMongo.DB_SERVER_HOST);
+				logger.info("启动数据存储数据库：{}" + InitMongo.DB_SERVER_HOST + ":" +InitMongo.DB_SERVER_PORT);
 				mg = new MongoClient(InitMongo.DB_SERVER_HOST, InitMongo.DB_SERVER_PORT);
 			}
 			//dbs.put(InitMongo.DATABASE_TEST, getDB(InitMongo.DATABASE_TEST));
@@ -85,8 +85,7 @@ public class MongodbUtil {
 	 * @param databaseName
 	 */
 	private void createShardDB(String databaseName) {
-		System.out.println("创建新的数据库{},并分片" + databaseName);
-		LogUtil.getInstance().getLogger(getClass()).info("创建新的数据库{},并分片",databaseName);
+		logger.info("创建新的数据库{},并分片" + databaseName);
 //		MongoDatabase admin = mg.getDatabase("admin");
 //		Document doc = new Document();
 //		doc.put("enablesharding", databaseName);
@@ -105,7 +104,7 @@ public class MongodbUtil {
 	 * @return
 	 */
 	public void dropDB(String databaseName){
-		LogUtil.getInstance().getLogger(getClass()).info("删除数据库",databaseName);
+		logger.info("删除数据库" + databaseName);
 		MongoDatabase db = dbs.get(databaseName);
 		if (db==null) {
 			db = mg.getDatabase(databaseName);
@@ -152,8 +151,7 @@ public class MongodbUtil {
 	 * @param collectionName
 	 */
 	private void createShardCollection(String databaseName,String collectionName) {
-		System.out.println("数据存储创建新的表{}.{},并分片"+databaseName+"."+collectionName);
-		LogUtil.getInstance().getLogger(getClass()).info("创建新的表{}.{},并分片",databaseName,collectionName);
+		logger.info("数据存储创建新的表{}.{},并分片"+databaseName+"."+collectionName);
 //		MongoDatabase admin = mg.getDatabase("admin");
 //		Document shard = new Document();
 //		Document key = new Document();

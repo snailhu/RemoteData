@@ -226,7 +226,19 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     line-height: 37px;
     float: right;
     position: relative;
-}
+	}
+	
+	.select5 {
+	background-color: #FAFAD2;
+	color: #111111;
+    border: solid 1px #000;
+    appearance:none;
+    -moz-appearance:none;
+    -webkit-appearance:none;
+    padding-right: 14px;
+    background: url("${pageContext.request.contextPath}/static/imgs/arrow.png") no-repeat scroll right center transparent;
+	}
+	select5::-ms-expand { display: none; }
 </style>
 
 	</head>
@@ -343,7 +355,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					</div>				
 				</div>
 				<div class="dateStyle">
-				<select class="form-control" id="edit_component" name="component" style="display:none;">
+				<select class="select5" id="edit_component" name="component" style="display:none;">
 <!-- 					<option value="">选择设备</option> -->
 				</select>
 				</div>

@@ -515,6 +515,8 @@ $.post("getDatabytap",
        	
        	//数据缩放区域事件	  	      
         myChart.on('dataZoom', function (params) {
+        		console.log(myChart.getOption().series[0].type);
+        	  var lineType = myChart.getOption().series[0].type;
               //  console.log(params);
                // var endDate = date[params.batch[0].endValue];
               //  var startDate = date[params.batch[0].startValue];
@@ -589,7 +591,7 @@ $.post("getDatabytap",
 		                 	  legendname =names[i].name;
 		                 	  console.log(yname+legendname)
 		                 	  	seriesOptions[i++] = {
-		    			            	type: 'line',
+		    			            	type: lineType,
 		    			                //name: param,
 		    			                name:legendname,
 		    			                smooth:false,

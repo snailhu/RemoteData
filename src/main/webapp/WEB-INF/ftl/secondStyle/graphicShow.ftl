@@ -228,6 +228,8 @@
 	//当前echars画布中最大时间区间
 	var startDate_init = '${beginDate}';
 	var endDate_init = '${endDate}';
+	//实时时间跨度
+	var timeZone = stringToDate(endDate_init) - stringToDate(startDate_init)/60000;
 
     $(function(){
     	//修改页面缩放，界面显示不正常
@@ -515,172 +517,169 @@ $.post("getDatabytap",
        	
        	//数据缩放区域事件	  	      
         myChart.on('dataZoom', function (params) {
-              //  console.log(params);
-               // var endDate = date[params.batch[0].endValue];
-              //  var startDate = date[params.batch[0].startValue];
+        		console.log(myChart.getOption().series[0].type);
+        	  	var lineType = myChart.getOption().series[0].type;
               	var xAxis = myChart.getModel().option.xAxis[0];
-				//var startDate = xAxis.data[xAxis.rangeStart]
-				//var endDate = xAxis.data[xAxis.rangeEnd];
 				if(xAxis.data[xAxis.rangeStart]&&xAxis.data[xAxis.rangeEnd]){
 					startDate = xAxis.data[xAxis.rangeStart]
 					endDate = xAxis.data[xAxis.rangeEnd];
+					var a= stringToDate(startDate);
+              		var b= stringToDate(endDate);
 					$('#dateStart').val(startDate);
        				$('#dateEnd').val(endDate);
+       				timeZone = (b-a)/60000;
+       				console.log(timeZone);
 				}else{
-					startDate = startDate_init;
-					endDate = endDate_init;	
+					if(timeZone>10){
+						startDate = startDate_init;
+						endDate = endDate_init;	
+					}
 				}
 				$('#dateStart').val(startDate);
        			$('#dateEnd').val(endDate);
               	console.log("开始日期"+startDate+"结束日期："+endDate);
-              	var a= stringToDate(startDate);
-              	var b= stringToDate(endDate);
-              	console.log(a+b);
-              	console.log(b-a);
-              	var timespace = (b-a)/60000;
-                //var time =DateDiff("s", a, b);
-              	console.log(timespace);
-              	//alert(time);
-              	//if(timespace<0){ 
-                if(needGetDate()){
-                	$("#main").showLoading(); 
-					var a= stringToDate(startDate);
-	              	var b= stringToDate(endDate);
-	              	console.log(a);
-	              	console.log(b);
-	              	startDate = a.pattern("yyyy-MM-dd HH:mm:ss");
-	              	endDate = b.pattern("yyyy-MM-dd HH:mm:ss");
-	              	console.log(startDate);
-	              	console.log(endDate);
-		       		//将一组中的所有参数组装为object
-		       		paramObject.nowSeries='${nowSeries}';
-		       		paramObject.nowStar='${nowStar}';
-		       		paramObject.component='${component}';
-		       		paramObject.startTime=startDate;
-		       		paramObject.endTime=endDate;
-		       		paramObject.paramAttribute=names;
-		       		  		
-		       		 console.log("开始请求后台时间："+new Date());
-		       		  console.log(JSON.stringify(paramObject));
-		         	//一次性组装所有参数的x和y值
-		       		$.ajax({
-		                 url: '${base}/getData',
-		                 type: 'POST',
-		                 dataType: 'json',
-		                 timeout: 100000,
-		                 cache: false,
-		                 data: {'paramObject':JSON.stringify(paramObject)},
-		                  //成功执行方法
-		                 success: function(data){
-		                 	 console.log("请求后台完成时间："+new Date());
-		                	 $("#main").hideLoading(); 
-		                	 console.log("111"+startDate_init);
-					         console.log("111"+endDate_init);
-		                	 startDate_init = startDate;
-							 endDate_init = endDate;	
-							 $('#dateStart').val(startDate);
-       						 $('#dateEnd').val(endDate);
-		                	 //var json = eval(data);
-		                 	  var i=0
-		                 	  var yname = 0;
-		                 	  var legendname ="";
-		                 	  for(var param in data){
-		                 	  yname  = names[i].y;
-		                 	  legendname =names[i].name;
-		                 	  console.log(yname+legendname)
-		                 	  	seriesOptions[i++] = {
-		    			            	type: 'line',
-		    			                //name: param,
-		    			                name:legendname,
-		    			                smooth:false,
-		    			               	yAxisIndex: yname,
-		    			                lineStyle:{
-		    		                    	normal:{
-		    		                    		width:0.5 
-		    		                    		}
-		    		                    },
-		    			                data: data[param].paramValue
-		    			            };
-		    			            //设置X轴，注意，这里X轴存在问题，默认使用了最后一组参数的X轴
-		    			            date =  data[param].yearValue;
-		                 	  }
-		                 	  	pSeriesOptions = seriesOptions
-		    	            	options.series = eval(seriesOptions);
-		    	            	pDate=options.xAxis.data = date;
-		    	                myChart.setOption(options);
-		    	                 console.log("画图完成时间："+new Date());
-		                 }
-		             })  	
-                	
-                
-//                 	$("#main").showLoading(); 
-// 	 				var seriesCounter_new = 0    
-// 					var seriesOptionsDam = []	
-// 	                $.each(names, function (i, n) {
-// 	                    //$.getJSON('${base}/getData?start='+startDate+'&end='+endDate+'&paramSize='+paramSize+'&filename=' + n.value, function (data) {
-// 	                    $.getJSON('${base}/getData?start='+startDate+'&end='+endDate, function (data) {
-// 	                    	 $("#main").hideLoading(); 
-// 	                    	//console.log(data);
-// 	                    	console.log("开始日期"+startDate+"结束日期："+endDate);
-// 	                        seriesOptionsDam[i] = {
-// 	                            type: 'line',
-// 	                            smooth:true,
-// 	                            name: n.name,
-// 	                            yAxisIndex: n.y,
-// 	                            data: data["paramValue"]
-// 	                        };
-// 	                        seriesCounter_new += 1;
-// 	                        if (seriesCounter_new === names.length) {
-// 	                            options.series = eval(seriesOptionsDam);
-// 	                            date=options.xAxis.data = data["yearValue"];
-// 	                            startDate_init = startDate;
-// 								endDate_init = endDate;	
-// 								startDate_init = startDate;
-//        							endDate_init = endDate;
-// 	                            myChart.setOption(options);
-// 	                        }
-// 	                    });
-	                    
-// $.post("getDatabytap", 
-// 		{
-// 			'startDate' : startDate,
-// 			'endDate' : endDate
-// 		},
-// 	function(data){
-// //  var json = eval(data);
-//   var i=0
-//   //debugger;
-//   var yname = 0;
-//   for(var param in data){
-//   yname  = names[i].y;
-//   console.log(yname)
-//   	seriesOptions[i++] = {
-//         	type: 'line',
-//             name: param,
-//             smooth:false,
-//            	yAxisIndex: yname,
-//             lineStyle:{
-//             	normal:{
-//             		width:0.5 
-//             		}
-//             },
-//             data: data[param].paramValue
-//         };
-//         //设置X轴，注意，这里X轴存在问题，默认使用了最后一组参数的X轴
-//         date =  data[param].yearValue;
-//   }
-//   	pSeriesOptions = seriesOptions
-// 	options.series = eval(seriesOptions);
-// 	pDate=options.xAxis.data = date;
-// 	startDate_init = startDate;
-// 	endDate_init = endDate;
-//     myChart.setOption(options);
-	
-// 	});
-	
-// 	                });
-                }
-               
+              	if(timeZone>10){
+              		 if(needGetDate()){
+						                	$("#main").showLoading(); 
+											var a= stringToDate(startDate);
+							              	var b= stringToDate(endDate);
+							              	console.log(a);
+							              	console.log(b);
+							              	startDate = a.pattern("yyyy-MM-dd HH:mm:ss");
+							              	endDate = b.pattern("yyyy-MM-dd HH:mm:ss");
+							              	console.log(startDate);
+							              	console.log(endDate);
+								       		//将一组中的所有参数组装为object
+								       		paramObject.nowSeries='${nowSeries}';
+								       		paramObject.nowStar='${nowStar}';
+								       		paramObject.component='${component}';
+								       		paramObject.startTime=startDate;
+								       		paramObject.endTime=endDate;
+								       		paramObject.paramAttribute=names;
+								       		  		
+								       		 console.log("开始请求后台时间："+new Date());
+								       		  console.log(JSON.stringify(paramObject));
+								         	//一次性组装所有参数的x和y值
+								       		$.ajax({
+								                 url: '${base}/getData',
+								                 type: 'POST',
+								                 dataType: 'json',
+								                 timeout: 100000,
+								                 cache: false,
+								                 data: {'paramObject':JSON.stringify(paramObject)},
+								                  //成功执行方法
+								                 success: function(data){
+								                 	 console.log("请求后台完成时间："+new Date());
+								                	 $("#main").hideLoading(); 
+								                	 console.log("111"+startDate_init);
+											         console.log("111"+endDate_init);
+								                	 startDate_init = startDate;
+													 endDate_init = endDate;	
+													 $('#dateStart').val(startDate);
+						       						 $('#dateEnd').val(endDate);
+								                	 //var json = eval(data);
+								                 	  var i=0
+								                 	  var yname = 0;
+								                 	  var legendname ="";
+								                 	  for(var param in data){
+								                 	  
+								                 	  yname  = names[names.length-1-i].y;
+						             	  			  legendname =names[names.length-1-i].name;
+								                 	  
+								                 	  console.log(yname+legendname)
+								                 	  	seriesOptions[i++] = {
+								    			            	type: lineType,
+								    			                //name: param,
+								    			                name:legendname,
+								    			                smooth:false,
+								    			               	yAxisIndex: yname,
+								    			                lineStyle:{
+								    		                    	normal:{
+								    		                    		width:0.5 
+								    		                    		}
+								    		                    },
+								    			                data: data[param].paramValue
+								    			            };
+								    			            //设置X轴，注意，这里X轴存在问题，默认使用了最后一组参数的X轴
+								    			            date =  data[param].yearValue;
+								                 	  }
+								                 	  	pSeriesOptions = seriesOptions
+								    	            	options.series = eval(seriesOptions);
+								    	            	pDate=options.xAxis.data = date;
+								    	                myChart.setOption(options);
+								    	                 console.log("画图完成时间："+new Date());
+								                 }
+								             })  	
+						                	
+						                
+						//                 	$("#main").showLoading(); 
+						// 	 				var seriesCounter_new = 0    
+						// 					var seriesOptionsDam = []	
+						// 	                $.each(names, function (i, n) {
+						// 	                    //$.getJSON('${base}/getData?start='+startDate+'&end='+endDate+'&paramSize='+paramSize+'&filename=' + n.value, function (data) {
+						// 	                    $.getJSON('${base}/getData?start='+startDate+'&end='+endDate, function (data) {
+						// 	                    	 $("#main").hideLoading(); 
+						// 	                    	//console.log(data);
+						// 	                    	console.log("开始日期"+startDate+"结束日期："+endDate);
+						// 	                        seriesOptionsDam[i] = {
+						// 	                            type: 'line',
+						// 	                            smooth:true,
+						// 	                            name: n.name,
+						// 	                            yAxisIndex: n.y,
+						// 	                            data: data["paramValue"]
+						// 	                        };
+						// 	                        seriesCounter_new += 1;
+						// 	                        if (seriesCounter_new === names.length) {
+						// 	                            options.series = eval(seriesOptionsDam);
+						// 	                            date=options.xAxis.data = data["yearValue"];
+						// 	                            startDate_init = startDate;
+						// 								endDate_init = endDate;	
+						// 								startDate_init = startDate;
+						//        							endDate_init = endDate;
+						// 	                            myChart.setOption(options);
+						// 	                        }
+						// 	                    });
+							                    
+						// $.post("getDatabytap", 
+						// 		{
+						// 			'startDate' : startDate,
+						// 			'endDate' : endDate
+						// 		},
+						// 	function(data){
+						// //  var json = eval(data);
+						//   var i=0
+						//   //debugger;
+						//   var yname = 0;
+						//   for(var param in data){
+						//   yname  = names[i].y;
+						//   console.log(yname)
+						//   	seriesOptions[i++] = {
+						//         	type: 'line',
+						//             name: param,
+						//             smooth:false,
+						//            	yAxisIndex: yname,
+						//             lineStyle:{
+						//             	normal:{
+						//             		width:0.5 
+						//             		}
+						//             },
+						//             data: data[param].paramValue
+						//         };
+						//         //设置X轴，注意，这里X轴存在问题，默认使用了最后一组参数的X轴
+						//         date =  data[param].yearValue;
+						//   }
+						//   	pSeriesOptions = seriesOptions
+						// 	options.series = eval(seriesOptions);
+						// 	pDate=options.xAxis.data = date;
+						// 	startDate_init = startDate;
+						// 	endDate_init = endDate;
+						//     myChart.setOption(options);
+							
+						// 	});
+							
+						// 	                });
+					}
+              }
         });
 /*
     	//设置颜色

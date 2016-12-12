@@ -104,8 +104,8 @@
 												<span id="returnMsg"></span>
 											</div>-->
 											<div class="select">
-												<input type="checkbox"></input>
-												<span class="next">下次自动登录</span>
+												<!--<input type="checkbox"></input>-->
+												<span class="next"> &nbsp;</span>
 												<!--span class="forget">忘记密码？</span -->
 											</div>
 											<div class="space"></div>

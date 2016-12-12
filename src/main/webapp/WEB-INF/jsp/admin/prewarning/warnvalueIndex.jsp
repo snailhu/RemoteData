@@ -148,7 +148,7 @@
 }
 
 .form-group input, .form-group select {
-	width: 240px;
+	width: 270px;
 	height: 30px;
 	line-height: 30px;
 	text-align: left;
@@ -482,7 +482,7 @@
 											for="search-series"> 星系：</label>
 										<div class="col-sm-8">
 											<select class="col-xs-10 col-sm-5" id="search-series"
-												name="series">
+												name="series" style="width: 240px;">
 												<option value="">--请选择--</option>
 											</select>
 										</div>
@@ -493,7 +493,7 @@
 											for="search-star"> 星号：</label>
 										<div class="col-sm-8">
 											<select class="col-xs-10 col-sm-5" id="search-star"
-												name="star">
+												name="star" style="width: 240px;">
 												<option value="">--请选择--</option>
 											</select>
 										</div>
@@ -504,7 +504,7 @@
 											for="search-parameterType"> 设备：</label>
 										<div class="col-sm-8">
 											<select class="col-xs-10 col-sm-5" id="search-parameterType"
-												name="parameterType">
+												name="parameterType" style="width: 240px;">
 												<option value="">--请选择--</option>
 											</select><label class="mustchoose">*</label>
 										</div>
@@ -515,7 +515,7 @@
 											for="search-parameter"> 参数：</label>
 										<div class="col-sm-8">
 											<select class="col-xs-10 col-sm-5 select2"
-												id="search-parameter" name="parameter">
+												id="search-parameter" name="parameter" style="width: 240px;">
 												<option value="">--请选择--</option>
 											</select>
 										</div>
@@ -564,7 +564,7 @@
 								<div class="form-group">
 									<label class="col-sm-3 control-label no-padding-right"
 										for="add-series"> 星系：</label>
-									<div class="col-sm-8">
+									<div class="col-sm-6">
 										<select class="form-control" id="add-series" name="series">
 											<option value="">--请选择--</option>
 										</select>
@@ -574,7 +574,7 @@
 								<div class="form-group">
 									<label class="col-sm-3 control-label no-padding-right"
 										for="add-star"> 星号：</label>
-									<div class="col-sm-8">
+									<div class="col-sm-6">
 										<select class="form-control" id="add-star" name="star">
 											<option value="">--请选择--</option>
 										</select>
@@ -584,7 +584,7 @@
 								<div class="form-group">
 									<label class="col-sm-3 control-label no-padding-right"
 										for="add-parameterType"> 设备： </label>
-									<div class="col-sm-8">
+									<div class="col-sm-6">
 										<select class="form-control" id="add-parameterType"
 											name="parameterType">
 											<option value="">--请选择--</option>
@@ -595,8 +595,8 @@
 								<div class="form-group">
 									<label class="col-sm-3 control-label no-padding-right"
 										for="add-parameter"> 参数： </label>
-									<div class="col-sm-8">
-										<select class="form-control select2" id="add-parameter"
+									<div class="col-sm-6">
+										<select  id="add-parameter"
 											name="parameter">
 											<option value="">--请选择--</option>
 										</select>
@@ -606,7 +606,7 @@
 								<div class="form-group">
 									<label class="col-lg-3 control-label no-padding-right"
 										for="add-timeZone"> 时间区间(min)：</label>
-									<div class="col-sm-8">
+									<div class="col-sm-6">
 										<input type="text" name="timeZone" id="add-timeZone"
 											placeholder="时间区间" class="form-control" />
 									</div>
@@ -615,7 +615,7 @@
 								<div class="form-group">
 									<label class="col-lg-3 control-label no-padding-right"
 										for="add-limitTimes"> 限定次数：</label>
-									<div class="col-sm-8">
+									<div class="col-sm-6">
 										<input type="text" name="limitTimes" id="add-limitTimes"
 											placeholder="限定次数" class="form-control" />
 									</div>
@@ -625,7 +625,7 @@
 									<div class="form-group">
 										<label class="col-lg-3 control-label no-padding-right"
 											for="add-maxVal"> 最大值： </label>
-										<div class="col-sm-8">
+										<div class="col-sm-6">
 											<input type="text" name="maxVal" id="add-maxVal"
 												placeholder="最大值" class="form-control" />
 										</div>
@@ -645,7 +645,7 @@
 									<div class="form-group">
 										<label class="col-lg-3 control-label no-padding-right"
 											for="add-maxValtop"> 最大变化绝对值： </label>
-										<div class="col-sm-8">
+										<div class="col-sm-6">
 											<input type="text" name="maxVal" id="add-maxValtop"
 												placeholder="最大变化绝对值" class="form-control" />
 										</div>
@@ -654,7 +654,7 @@
 									<div class="form-group">
 										<label class="col-lg-3 control-label no-padding-right"
 											for="add-minValtop"> 最小变化绝对值： </label>
-										<div class="col-sm-8">
+										<div class="col-sm-6">
 											<input type="text" name="minVal" id="add-minValtop"
 												placeholder="最小变化绝对值" class="form-control" />
 										</div>
@@ -692,7 +692,7 @@
 								<div class="form-group">
 									<label class="col-sm-3 control-label no-padding-right"
 										for="edit-series"> 星系：</label>
-									<div class="col-sm-8">
+									<div class="col-sm-6">
 										<select class="form-control" id="edit-series" name="series">
 											<option value="">--请选择--</option>
 										</select>
@@ -702,7 +702,7 @@
 								<div class="form-group">
 									<label class="col-sm-3 control-label no-padding-right"
 										for="edit-star"> 星号：</label>
-									<div class="col-sm-8">
+									<div class="col-sm-6">
 										<select class="form-control" id="edit-star" name="star">
 											<option value="">--请选择--</option>
 										</select>
@@ -712,7 +712,7 @@
 								<div class="form-group">
 									<label class="col-sm-3 control-label no-padding-right"
 										for="edit-parameterType"> 设备：</label>
-									<div class="col-sm-8">
+									<div class="col-sm-6">
 										<select class="form-control" id="edit-parameterType"
 											name="parameterType">
 											<option value="">--请选择--</option>
@@ -723,7 +723,7 @@
 								<div class="form-group">
 									<label class="col-sm-3 control-label no-padding-right"
 										for="edit-parameter"> 参数：</label>
-									<div class="col-sm-8">
+									<div class="col-sm-6">
 										<select class="form-control select2" id="edit-parameter"
 											name="parameter">
 											<option value="">--请选择--</option>
@@ -734,7 +734,7 @@
 								<div class="form-group">
 									<label class="col-lg-3 control-label no-padding-right"
 										for="edit-timeZone"> 时间区间(min)：</label>
-									<div class="col-sm-8">
+									<div class="col-sm-6">
 										<input type="text" name="timeZone" id="edit-timeZone"
 											placeholder="时间区间" class="form-control" />
 									</div>
@@ -743,7 +743,7 @@
 								<div class="form-group">
 									<label class="col-lg-3 control-label no-padding-right"
 										for="edit-limitTimes"> 限定次数：</label>
-									<div class="col-sm-8">
+									<div class="col-sm-6">
 										<input type="text" name="limitTimes" id="edit-limitTimes"
 											placeholder="限定次数" class="form-control" />
 									</div>
@@ -754,7 +754,7 @@
 									<div class="form-group">
 										<label class="col-lg-3 control-label no-padding-right"
 											for="edit-maxVal"> 最大值： </label>
-										<div class="col-sm-8">
+										<div class="col-sm-6">
 											<input type="text" name="maxVal" id="edit-maxVal"
 												placeholder="最大值" class="form-control" />
 										</div>
@@ -774,7 +774,7 @@
 									<div class="form-group">
 										<label class="col-lg-3 control-label no-padding-right"
 											for="edit-maxValtop"> 最大变化绝对值： </label>
-										<div class="col-sm-8">
+										<div class="col-sm-6">
 											<input type="text" name="maxVal" id="edit-maxValtop"
 												placeholder="最大变化绝对值" class="form-control" />
 										</div>
@@ -783,7 +783,7 @@
 									<div class="form-group">
 										<label class="col-lg-3 control-label no-padding-right"
 											for="edit-minValtop"> 最小变化绝对值： </label>
-										<div class="col-sm-8">
+										<div class="col-sm-6">
 											<input type="text" name="minVal" id="edit-minValtop"
 												placeholder="最小变化绝对值" class="form-control" />
 										</div>

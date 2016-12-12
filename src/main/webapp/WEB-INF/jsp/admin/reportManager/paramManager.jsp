@@ -175,7 +175,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     position: relative;
   }
   .form-group select,.form-group input{
-	width: 240px;
+	width: 270px;
 	height:30px;
 	line-height:30px;
 	text-align:left;
@@ -396,7 +396,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 									<div class="form-group">
 										<label class="col-sm-5 control-label no-padding-right" for="form-series">星系：</label>
 										<div class="col-sm-3"  >
-										<select name="series"  id="form-series" class="form-control " >
+										<select name="series"  id="form-series" class="form-control "  style="width: 240px;">
 										<option value="">--请选择--</option>
 				                       </select>
 									</div>
@@ -405,7 +405,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 									<div class="form-group">
 										<label class="col-sm-5 control-label no-padding-right" for="form-star">星号：</label>
 										<div class="col-sm-3">
-												<select name="star"  id="form-star" class="form-control " >
+												<select name="star"  id="form-star" class="form-control " style="width: 240px;">
 												<option value="">--请选择--</option>
 				                       			</select>
 										</div>
@@ -414,7 +414,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 									<div class="form-group">
 										<label class="col-sm-5 control-label no-padding-right" for="form-partsType">设备：</label>
 										<div class="col-sm-3">
-											<select name="partsType"  id="form-partsType" class="form-control " >
+											<select name="partsType"  id="form-partsType" class="form-control " style="width: 240px;">
 				                           		<option selected="selected" value="">--请选择--</option>
 				                       		</select>
 										</div>
@@ -424,7 +424,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 									<div class="form-group">
 										<label class="col-sm-5 control-label no-padding-right" for="form-paramCode">参数：</label>
 										<div class="col-sm-3">
-											<select name="paramCode"  id="form-paramCode" class="form-control  select2" >
+											<select name="paramCode"  id="form-paramCode" class="form-control  select2" style="width: 240px;">
 				                           		<option value="">--请选择--</option>
 				                       		</select>
 										</div>
@@ -471,7 +471,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							<div class="modal-body">
 								<div class="form-group">
 									<label class="col-sm-3 control-label no-padding-right" for="add-starParam-series"> 星系：</label>
-									<div class="col-sm-8"  >
+									<div class="col-sm-6"  >
 										<select name="series"  id="add-starParam-series" class="form-control " >
 				                       </select>
 									</div>
@@ -479,7 +479,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								<div class="space-4"></div>
 								<div class="form-group">
 									<label class="col-sm-3 control-label no-padding-right" for="add-starParam-star"> 星号： </label>
-									<div class="col-sm-8">
+									<div class="col-sm-6">
 										<select name="star"  id="add-starParam-star" class="form-control " >
 				                       </select>
 									</div>
@@ -487,8 +487,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								<div class="space-4"></div>
 								<div class="form-group">
 									<label class="col-sm-3 control-label no-padding-right" for="add-starParam-partsType">  设备： </label>
-									<div class="col-sm-8">
-										<select name="partsType"  id="add-starParam-partsType" class="form-control" style="width:240px;">
+									<div class="col-sm-6">
+										<select name="partsType"  id="add-starParam-partsType" class="form-control">
 										   <option selected="selected" value="">--请选择--</option>
 				                       </select>
 									</div>
@@ -496,7 +496,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								<div class="space-4"></div>
 								<div class="form-group">
 									<label class="col-sm-3 control-label no-padding-right" for="add-starParam-paramCode"> 参数： </label>
-									<div class="col-sm-8">
+									<div class="col-sm-6">
 										<select name="paramCode"  id="add-starParam-paramCode" class="form-control  select2">
 											<option selected="selected" value="">--请选择--</option>
 				                       </select>
@@ -505,14 +505,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								<div class="space-4"></div>
 								<div class="form-group">
 									<label class="col-sm-3 control-label no-padding-right" for="add-starParam-effeMin"> 最小有效值： </label>
-									<div class="col-sm-8">
+									<div class="col-sm-6">
 										<input type="text" name="effeMin" id="add-starParam-effeMin" placeholder="最小有效值" class="form-control" />
 									</div>
 								</div>
 								<div class="space-4"></div>
 								<div class="form-group">
 									<label class="col-sm-3 control-label no-padding-right" for="add-starParam-effeMax"> 最大有效值： </label>
-									<div class="col-sm-8">
+									<div class="col-sm-6">
 										<input type="text" name="effeMax" id="add-starParam-effeMax" placeholder="最大有效值" class="form-control" />
 									</div>
 								</div>
@@ -542,7 +542,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							<div class="modal-body">
 								<div class="form-group">
 									<label class="col-sm-3 control-label no-padding-right" for="edit-starParam-series"> 星系: </label>
-									<div class="col-sm-8">
+									<div class="col-sm-6">
 										<select name="series"  id="edit-starParam-series" class="form-control " >
 				                       	</select>
 									</div>
@@ -550,7 +550,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								<div class="space-4"></div>
 								<div class="form-group">
 									<label class="col-sm-3 control-label no-padding-right" for="edit-starParam-star"> 星号： </label>
-									<div class="col-sm-8">
+									<div class="col-sm-6">
 										<select name="star"  id="edit-starParam-star" class="form-control " >
 				                       </select>
 									</div>
@@ -558,7 +558,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								<div class="space-4"></div>
 								<div class="form-group">
 									<label class="col-sm-3 control-label no-padding-right" for="edit-starParam-partsType">  设备： </label>
-									<div class="col-sm-8">
+									<div class="col-sm-6">
 										<select name="partsType"  id="edit-starParam-partsType" class="form-control " >
 				                       </select>
 									</div>
@@ -566,7 +566,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								 <div class="space-4"></div>
 								<div class="form-group">
 									<label class="col-sm-3 control-label no-padding-right" for="edit-starParam-paramCode"> 参数： </label>
-									<div class="col-sm-8">
+									<div class="col-sm-6">
 										<select name="paramCode"  id="edit-starParam-paramCode" class="form-control  select2">
 				                       </select>
 									</div>
@@ -575,14 +575,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								<div class="space-4"></div>
 								<div class="form-group">
 									<label class="col-sm-3 control-label no-padding-right" for="edit-starParam-effeMin"> 最小有效值： </label>
-									<div class="col-sm-8">
+									<div class="col-sm-6">
 										<input type="text" name="effeMin" id="edit-starParam-effeMin" placeholder="最小有效值" class="form-control" />
 									</div>
 								</div>
 								<div class="space-4"></div>
 								<div class="form-group">
 									<label class="col-sm-3 control-label no-padding-right" for="edit-starParam-effeMax"> 最大有效值： </label>
-									<div class="col-sm-8">
+									<div class="col-sm-6">
 										<input type="text" name="effeMax" id="edit-starParam-effeMax" placeholder="最大有效值" class="form-control" />
 									</div>
 								</div>

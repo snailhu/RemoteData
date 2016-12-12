@@ -15,7 +15,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<meta http-equiv="expires" content="0">    
 	<meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
 	<meta http-equiv="description" content="This is my page">
-  
+  <jsp:include page="/WEB-INF/jsp/inc/include-easyUI.jsp"></jsp:include>
   	 <link href="${pageContext.request.contextPath}/static/assets/css/bootstrap.min.css" rel="stylesheet" />
  
    	<link rel="stylesheet" href="${pageContext.request.contextPath}/static/jqwidgets/styles/jqx.base.css" type="text/css" />
@@ -226,7 +226,19 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     line-height: 37px;
     float: right;
     position: relative;
-}
+	}
+	
+	.select5 {
+	background-color: #FAFAD2;
+	color: #111111;
+    border: solid 1px #000;
+    appearance:none;
+    -moz-appearance:none;
+    -webkit-appearance:none;
+    padding-right: 14px;
+    background: url("${pageContext.request.contextPath}/static/imgs/arrow.png") no-repeat scroll right center transparent;
+	}
+	select5::-ms-expand { display: none; }
 </style>
 
 	</head>
@@ -343,7 +355,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					</div>				
 				</div>
 				<div class="dateStyle">
-				<select class="form-control" id="edit_component" name="component" style="display:none;">
+				<select class="select5" id="edit_component" name="component" style="display:none;">
 <!-- 					<option value="">选择设备</option> -->
 				</select>
 				</div>
@@ -521,6 +533,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		 	console.log("当前"+Series_current+"----"+Star_current);
             var url = "${pageContext.request.contextPath}/getConstraint?beginDate="+beginDate+"&endDate="+endDate+"&Series_current="+Series_current+"&Star_current="+Star_current+"&type_current="+type_current;
             updateParamTree(url);
+            intTemplateList();
+            
 		 });
 		 
 		 $("#jqxButton_addgroup").jqxButton({ width: '95', height: '30'});	
@@ -693,7 +707,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	        j++;           
 	        JsonG.alldata=AllRowselect;   
        	}else{
-       		alert("至少请选择一行参数！");
+       		top.showMsg('提示', "参数不能为空 ，请至少选择一行参数");
+				  return false;
+       		
        	}  
       }
         

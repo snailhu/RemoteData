@@ -385,7 +385,7 @@ $(function() {
 	              field: 'code',
 	              title: '参数码',
 	              width: 300,
-	              hidden: true
+// 	              hidden: true
 	          }, 
 	          ]]
 	      });

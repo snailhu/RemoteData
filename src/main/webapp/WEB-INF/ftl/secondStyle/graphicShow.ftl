@@ -101,7 +101,7 @@
 		<input class="datainp" id="dateStart" type="text" placeholder="- -请选择开始时间- -" readonly>
 		<label>结束日期</label>
 		<input class="datainp" id="dateEnd" type="text" placeholder="- -请选择结束时间- -" readonly>
-		<input class="btn btn-default getData-btn" id="getData"  type="button" name="getData" value="获取数据">
+		<!--<input class="btn btn-default getData-btn" id="getData"  type="button" name="getData" value="获取数据">-->
 		<input class="btn btn-default getData-btn" id="changeColor" type="button" name="changeColor" value="配置图信息" data-toggle="modal" data-target="#configChartModal" >
 	</div>
 	<div class="changeColor-div">
@@ -749,8 +749,9 @@ $.post("getDatabytap",
       	var b= stringToDate(endDate);
       	
 		
-		if(timespace <= 120){
-			//两小时以内，1小时增减
+		if(timespace <= 1440){
+		console.log("选择的时间在一天之内"+timespace);
+			//一天以内，1小时增减
 			if(startDate_init==startDate&&endDate_init==endDate){
 				startInit.setMinutes(startMinutes-30);
 				endInit.setMinutes(endMinutes+30);
@@ -763,9 +764,10 @@ $.post("getDatabytap",
 				//原始数据不请求后台
 				return false;
 			}
+			return false;
 		}
-		if(timespace > 120 && timespace <=2880){
-			//两小时到两天，两小时增减
+		if(timespace > 1440 && timespace <=2880){
+			//一天到两天，两小时增减
 			if(startDate_init==startDate&&endDate_init==endDate){
 				startInit.setHours(startHours-1);
 				endInit.setHours(endHours+1);

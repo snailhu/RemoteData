@@ -333,21 +333,29 @@
 
 		var statusYstepList = ${statusYstepList};
 		var statusDiv = "";
+		var sumYstep = 0;
 		$.each(statusYstepList, function() {
 			if(this.statusType == '1'){
 				statusDiv = getstatus1Div(this.fileName);
+				sumYstep = sumYstep + 1;
 			}
 			if(this.statusType == '2'){
 				statusDiv = getstatus2Div(this.fileName);
+				sumYstep = sumYstep + 1;
 			}
 			if(this.statusType == '3'){
 				statusDiv = getstatus3Div(this.fileName);
+				sumYstep = sumYstep + 1;
 			}
 			if(this.statusType == '4'){
 				statusDiv = getstatus4Div(this.fileName);
+				sumYstep = sumYstep + 1;
 			}
 			$('#stautsstep').append(statusDiv);
 		});
+		if(sumYstep == 0){
+			$('#stautsstep').append('<div class="status1"><p>当前无进行中的文件</p></div>');
+		}
 	</script>
 </body>
 </html>

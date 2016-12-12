@@ -89,7 +89,7 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 	
 	@Override
 	@Transactional
-	public String saveFile(Map<String, FileDto> map) throws Exception {
+	public String saveFile(Map<String, FileDto> map,String serverConfig) throws Exception {
 	
 		//获取map中的csv文件
 		FileDto csvFileDto = map.get("csv");
@@ -155,6 +155,7 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 			.build();
 			CommunicationUtils communicationUtils=CommunicationUtils.get(executor);
 			Communication communication=new Communication();
+			communication.setServerConfig(serverConfig);
 			communication.setFileName(csvFileDto.getFileName());
 			communication.setFilePath(csvFileDto.getFilePath());
 			communication.setVersions(versions);

@@ -95,9 +95,9 @@ public class CommunicateController extends BaseController {
 	//storm 服务器报错更行服务器状态
 	@RequestMapping(value="/updateServerStatus")
 	@ResponseBody
-	public boolean updateServerStatus(String serverIP){
+	public boolean updateServerStatus(String workerId){
 		
-		return communicateService.updateServerStatus(serverIP);
+		return communicateService.updateServerStatus(workerId);
 	
 	}
 }

@@ -27,7 +27,7 @@ public interface IVirtualFileSystemService {
 	* @date 2016年7月8日
 	* @version 1.0
 	*/
-	public String saveFile(Map<String,FileDto> map) throws Exception;
+	public String saveFile(Map<String,FileDto> map,String serverConfig) throws Exception;
 	
 	public String saveFileMock(Map<String,FileDto> map) throws Exception;
 	

@@ -32,11 +32,9 @@ import DataAn.common.pageModel.Pager;
 import DataAn.fileSystem.dto.FileDto;
 import DataAn.fileSystem.dto.MongoFSDto;
 import DataAn.fileSystem.service.IVirtualFileSystemService;
-import DataAn.galaxy.option.J9Series_Star_ParameterType;
 import DataAn.galaxyManager.service.ISeriesService;
 import DataAn.status.option.StatusTrackingType;
 import DataAn.status.service.IStatusTrackingService;
-import DataAn.sys.dto.ActiveUserDto;
 import DataAn.sys.service.SystemLogService;
 
 @Controller

@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 import com.mongodb.client.MongoCursor;
 
 import DataAn.common.utils.DateUtil;
-import DataAn.galaxy.option.J9Series_Star_ParameterType;
+import DataAn.galaxyManager.option.J9Series_Star_ParameterType;
 import DataAn.mongo.client.MongodbUtil;
 import DataAn.mongo.init.InitMongo;
 import DataAn.mongo.service.IMongoService;

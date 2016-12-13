@@ -19,7 +19,7 @@ import com.alibaba.fastjson.JSON;
 import DataAn.common.dao.Pager;
 import DataAn.common.pageModel.EasyuiDataGridJson;
 import DataAn.common.pageModel.JsonMessage;
-import DataAn.galaxy.option.J9Series_Star_ParameterType;
+import DataAn.galaxyManager.option.J9Series_Star_ParameterType;
 import DataAn.status.dto.StatusTrackingDTO;
 import DataAn.status.dto.StatusYstepDTO;
 import DataAn.status.service.IStatusTrackingService;

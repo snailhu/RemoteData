@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.annotation.Resource;
 
@@ -14,8 +15,8 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import DataAn.common.utils.DateUtil;
-import DataAn.galaxy.option.J9SeriesType;
-import DataAn.galaxy.option.SeriesType;
+import DataAn.galaxyManager.option.J9SeriesType;
+import DataAn.galaxyManager.option.SeriesType;
 import DataAn.jfreechart.dto.ConstraintDto;
 import DataAn.jfreechart.dto.LineChartDto;
 import DataAn.jfreechart.service.IJfreechartServcie;
@@ -112,17 +113,28 @@ public class JfreechartServcieTest {
 	public void test3() throws Exception{
 		long begin = System.currentTimeMillis();
 		String series = SeriesType.J9_SERIES.getValue();
-		String star = J9SeriesType.STRA3.getValue();
+		String star = J9SeriesType.STRA2.getValue();
 		String paramType = "flywheel";
 		Map<String,List<ConstraintDto>> map = reoportService.getConstraintDtoList(series,star,paramType);
 		System.out.println(map);
+		
+		Map<String,List<ConstraintDto>> map2 = new HashMap<String,List<ConstraintDto>>();
+		Set<String> keys = map.keySet();
+		int count=0;
+		for (String key : keys) {
+			if(count==1)
+				break;
+			count++;
+			map2.put(key, map.get(key));			
+		}
+		System.out.println(map2);
 		Date beginDate = DateUtil.format("2016-12-01 00:00:00");
 		Date endDate = DateUtil.format("2016-12-07 00:00:00");
 		
 //		Date beginDate = DateUtil.format("2016-12-08 00:00:00");
 //		Date endDate = DateUtil.format("2016-12-09 00:00:00");
 		
-		LineChartDto lineChartDto = jfreechartServcie.createLineChart(series, star, paramType, beginDate, endDate, map);
+		LineChartDto lineChartDto = jfreechartServcie.createLineChart(series, star, paramType, beginDate, endDate, map2);
 		System.out.println(lineChartDto);
 		long end = System.currentTimeMillis();
 		System.out.println("画图总时间： " + (end-begin));

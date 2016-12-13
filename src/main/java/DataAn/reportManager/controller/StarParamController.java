@@ -23,7 +23,7 @@ import DataAn.common.controller.BaseController;
 import DataAn.common.dao.Pager;
 import DataAn.common.pageModel.EasyuiDataGridJson;
 import DataAn.common.pageModel.JsonMessage;
-import DataAn.galaxy.option.J9Series_Star_ParameterType;
+import DataAn.galaxyManager.option.J9Series_Star_ParameterType;
 import DataAn.galaxyManager.domain.Series;
 import DataAn.galaxyManager.domain.Star;
 import DataAn.galaxyManager.dto.SeriesDto;

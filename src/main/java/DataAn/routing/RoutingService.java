@@ -39,7 +39,7 @@ public class RoutingService {
 		date2.setTime(DateUtil.format(requestConfig.getTimeEnd()));
 		Date endDate = date2.getTime();
 		//如果小于两个小时
-		if((endDate.getTime()-startDate.getTime())<7200000)
+		if((endDate.getTime()-startDate.getTime())<86400000)
 		{
 			DefaultRepo  originalrepo= new DefaultRepo();
 			originalrepo.setDatabase(repo.database());

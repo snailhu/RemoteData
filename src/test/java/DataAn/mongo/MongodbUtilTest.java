@@ -49,5 +49,32 @@ public class MongodbUtilTest {
 				System.out.println("多少个数据："+count+"耗时："+(end-begin));
 		
 	}
+	
+	@Test
+	public void testCount(){
+		Date beginDate = DateUtil.format("2016-12-01 00:00:00");
+		Date endDate = DateUtil.format("2016-12-07 00:00:00");
+		MongoCollection<Document> collection = mg.getCollection("db_j9_02", "flywheel1s");
+		long count = collection.count(Filters.and(Filters.gte("datetime", beginDate),
+							   Filters.lte("datetime", endDate)));
+		System.out.println("count: " + count);
+	}
+	
+	@Test
+	public void testFind(){
+		Date beginDate = DateUtil.format("2016-12-01 00:00:00");
+		Date endDate = DateUtil.format("2016-12-07 00:00:00");
+		MongoCollection<Document> collection = mg.getCollection("db_j9_02", "flywheel1s");
+		Document keys = new Document();
+		keys.put("_id", 0);
+	    keys.put("datetime", 1);
+	    keys.put("sequence_00428", 1);
+	    MongoCursor<Result> cursor = collection.find(Filters.and(Filters.gte("datetime", beginDate),
+				   Filters.lte("datetime", endDate)),Result.class).iterator();
+	    while (cursor.hasNext()) {
+			System.out.println(cursor.next());
+		}
+	    
+	}
 
 }

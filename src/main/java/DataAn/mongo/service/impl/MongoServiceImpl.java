@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 import com.mongodb.client.MongoCursor;
 
 import DataAn.common.utils.DateUtil;
-import DataAn.galaxy.option.J9Series_Star_ParameterType;
+import DataAn.galaxyManager.option.J9Series_Star_ParameterType;
 import DataAn.mongo.client.MongodbUtil;
 import DataAn.mongo.init.InitMongo;
 import DataAn.mongo.service.IMongoService;
@@ -158,7 +158,7 @@ public class MongoServiceImpl implements IMongoService{
 	public MongoCursor<Document> findByDate(String series, String star,
 			String paramType, Date beginDate, Date endDate) {
 		String databaseName = InitMongo.getDataBaseNameBySeriesAndStar(series, star);
-		//1s 等级存储原始数据集
+		//1s 等级数据集
 		String collectionName =  paramType + "1s";
 		//开始时间向前推进 1m
 		beginDate = new Date(beginDate.getTime() - 1000);

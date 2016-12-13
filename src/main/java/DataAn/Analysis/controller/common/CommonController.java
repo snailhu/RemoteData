@@ -32,7 +32,7 @@ import DataAn.Analysis.dto.YearAndParamDataDto;
 import DataAn.Util.EhCache;
 import DataAn.Util.JsonStringToObj;
 import DataAn.common.utils.DateUtil;
-import DataAn.galaxy.option.J9Series_Star_ParameterType;
+import DataAn.galaxyManager.option.J9Series_Star_ParameterType;
 import DataAn.galaxyManager.dto.SeriesDto;
 import DataAn.galaxyManager.dto.StarDto;
 import DataAn.galaxyManager.service.IJ9Series_Star_Service;

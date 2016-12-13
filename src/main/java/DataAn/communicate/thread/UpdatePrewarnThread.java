@@ -1,4 +1,4 @@
-package DataAn.communicate.Thread;
+package DataAn.communicate.thread;
 
 import DataAn.prewarning.service.IPrewarningService;
 

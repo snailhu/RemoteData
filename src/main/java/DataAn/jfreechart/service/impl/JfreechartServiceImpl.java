@@ -2,9 +2,11 @@ package DataAn.jfreechart.service.impl;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -32,8 +34,12 @@ import DataAn.jfreechart.chart.ChartUtils;
 import DataAn.jfreechart.chart.Serie;
 import DataAn.jfreechart.dto.ConstraintDto;
 import DataAn.jfreechart.dto.LineChartDto;
+import DataAn.jfreechart.dto.LineMapDto;
 import DataAn.jfreechart.service.IJfreechartServcie;
+import DataAn.jfreechart.thread.ChartDataSearchByDayTask;
+import DataAn.mongo.init.InitMongo;
 import DataAn.mongo.service.IMongoService;
+import DataAn.routing.DataSearchTask;
 import DataAn.wordManager.config.OptionConfig;
 
 @Service
@@ -70,7 +76,48 @@ public class JfreechartServiceImpl implements IJfreechartServcie {
 		return this.createTimeSeriesChart2(series, star, paramType, beginDate,
 				endDate, constraintsMap);
 	}
-
+	protected LineChartDto createTimeSeriesChart3(String series, String star,
+			String paramType, Date beginDate, Date endDate,
+			Map<String, List<ConstraintDto>> constraintsMap) throws Exception {
+		Map<String, TimeSeries> lineMap = new HashMap<String, TimeSeries>();
+		Map<String, Double> paramMin = new HashMap<String, Double>();
+		Map<String, Double> paramMax = new HashMap<String, Double>();
+		Set<String> constraintsKeys = constraintsMap.keySet();
+		for (String key : constraintsKeys) {
+			List<ConstraintDto> constraintList = constraintsMap.get(key);
+			for (ConstraintDto constraintDto : constraintList) {
+				if (!lineMap.containsKey(key)) {
+					lineMap.put(constraintDto.getValue(),ChartUtils.createTimeseries(constraintDto.getName()));
+					paramMin.put(constraintDto.getValue(),constraintDto.getMin());
+					paramMax.put(constraintDto.getValue(),constraintDto.getMax());
+				}
+			}
+		}
+		LineMapDto lineMapDto = new LineMapDto();
+		lineMapDto.setLineMap(lineMap);
+		
+		List<ChartDataSearchByDayTask> forks = new LinkedList<>();
+		String databaseName = InitMongo.getDataBaseNameBySeriesAndStar(series, star);
+		//1s 等级数据集
+		String collectionName =  paramType + "1s";
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(beginDate);
+		while(!endDate.before(cal.getTime())){
+			String day = DateUtil.format(cal.getTime(), "yyyy-MM-dd");
+			cal.set(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DATE)+1);
+			ChartDataSearchByDayTask task = new ChartDataSearchByDayTask(lineMapDto, databaseName, collectionName, day, paramMax, paramMax);
+			task.fork();
+		}
+		for (ChartDataSearchByDayTask task : forks) {
+			task.join();
+		}
+		
+		for (String line : lineMap.keySet()) {
+			System.out.println(line + " count: " + lineMap.get(line).getItemCount());
+		}
+		
+		return null;
+	}
 	protected LineChartDto createTimeSeriesChart2(String series, String star,
 			String paramType, Date beginDate, Date endDate,
 			Map<String, List<ConstraintDto>> constraintsMap) throws Exception {

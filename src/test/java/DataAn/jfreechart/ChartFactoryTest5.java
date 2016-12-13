@@ -19,7 +19,7 @@ import DataAn.jfreechart.chart.ChartFactory;
 import DataAn.jfreechart.chart.ChartUtils;
 
 
-public class ChartFactoryTest4 {
+public class ChartFactoryTest5 {
 
 
 	
@@ -33,7 +33,7 @@ public class ChartFactoryTest4 {
 	            @Override
 	            public void run() {
 	                // 创建图形
-	                ChartPanel chartPanel = new ChartFactoryTest4().createChart();
+	                ChartPanel chartPanel = new ChartFactoryTest5().createChart();
 	                frame.getContentPane().add(chartPanel);
 	                frame.setVisible(true);
 	            }

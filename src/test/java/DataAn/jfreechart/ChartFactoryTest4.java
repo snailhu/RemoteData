@@ -42,7 +42,9 @@ public class ChartFactoryTest4 {
 		List<TimeSeriesCollection> datasetList = createDataset();
         System.out.println("createChart Tokyo: " + datasetList.get(0).getItemCount(0));
         System.out.println("createChart NewYork: " + datasetList.get(1).getItemCount(0));
-        JFreeChart chart = ChartFactory.createTimeSeriesChart("天气", "", "", datasetList);
+        Date beginDate = datasetList.get(0).getSeries(0).getDataItem(0).getPeriod().getStart();
+        Date endDate = datasetList.get(0).getSeries(0).getDataItem(datasetList.get(0).getItemCount(0)-1).getPeriod().getEnd();
+        JFreeChart chart = ChartFactory.createTimeSeriesChart("天气", "", "", datasetList,beginDate,endDate);
         // 设置图例位置
         // 6:使用chartPanel接收
         ChartPanel chartPanel = new ChartPanel(chart);

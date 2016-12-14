@@ -30,4 +30,19 @@ public class DateUtilTest {
 			cal.set(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DATE)+1);
 		}
 	}
+	
+	@Test
+	public void test3(){
+		Date beginDate = DateUtil.format("2016-12-01 00:00:00");
+		Date endDate = DateUtil.format("2016-12-07 00:00:00");
+		
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(beginDate);
+		while(cal.getTime().before(endDate)){
+			beginDate = cal.getTime();
+			cal.set(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DATE)+1);
+			System.out.println(DateUtil.format(beginDate) + " 到 "+ DateUtil.format(cal.getTime()));
+
+		}
+	}
 }

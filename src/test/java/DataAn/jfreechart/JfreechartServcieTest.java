@@ -50,50 +50,50 @@ public class JfreechartServcieTest {
 		Map<String,List<ConstraintDto>> constraintsMap = new HashMap<String,List<ConstraintDto>>();
 		List<ConstraintDto> list1 = new ArrayList<ConstraintDto>();
 		ConstraintDto c11 = new ConstraintDto();
-		c11.setName("飞轮转速Xa(00423)");
-		c11.setValue("sequence_00423");
+		c11.setParamName("飞轮转速Xa(00423)");
+		c11.setParamCode("sequence_00423");
 		list1.add(c11);
 		ConstraintDto c12 = new ConstraintDto();
-		c12.setName("飞轮转速Ya(00424)");
-		c12.setValue("sequence_00424");
+		c12.setParamName("飞轮转速Ya(00424)");
+		c12.setParamCode("sequence_00424");
 		list1.add(c12);
 		ConstraintDto c13 = new ConstraintDto();
-		c13.setName("飞轮转速Za(00425)");
-		c13.setValue("sequence_00425");
+		c13.setParamName("飞轮转速Za(00425)");
+		c13.setParamCode("sequence_00425");
 		list1.add(c13);
 		ConstraintDto c14 = new ConstraintDto();
-		c14.setName("飞轮转速Xb(00426)");
-		c14.setValue("sequence_00426");
+		c14.setParamName("飞轮转速Xb(00426)");
+		c14.setParamCode("sequence_00426");
 		list1.add(c14);
-		ConstraintDto c15 = new ConstraintDto();
-		c15.setName("飞轮转速Yb(00427)");
-		c15.setValue("sequence_00427");
+		ConstraintDto c15 =new ConstraintDto();
+		c15.setParamName("飞轮转速Yb(00427)");
+		c15.setParamCode("sequence_00427");
 		list1.add(c15);
 		ConstraintDto c16 = new ConstraintDto();
-		c16.setName("飞轮转速Zb(00428)");
-		c16.setValue("sequence_00428");
+		c16.setParamName("飞轮转速Zb(00428)");
+		c16.setParamCode("sequence_00428");
 		list1.add(c16);
 		constraintsMap.put("chart1", list1);
 		
 		List<ConstraintDto> list2 = new ArrayList<ConstraintDto>();
 		ConstraintDto c21 = new ConstraintDto();
-		c21.setName("飞轮电流Xa(00814)");
-		c21.setValue("sequence_00814");
+		c21.setParamName("飞轮电流Xa(00814)");
+		c21.setParamCode("sequence_00814");
 		list2.add(c21);
 		ConstraintDto c22 = new ConstraintDto();
-		c22.setName("飞轮转速Xa(00423)");
-		c22.setValue("sequence_00423");
+		c22.setParamName("飞轮转速Xa(00423)");
+		c22.setParamCode("sequence_00423");
 		list2.add(c22);
 		constraintsMap.put("chart2", list2);
 		
 		List<ConstraintDto> list3 = new ArrayList<ConstraintDto>();
 		ConstraintDto c31 = new ConstraintDto();
-		c31.setName("飞轮温度Xa(00815)");
-		c31.setValue("sequence_00815");
+		c31.setParamName("飞轮温度Xa(00815)");
+		c31.setParamCode("sequence_00815");
 		list3.add(c31);
 		ConstraintDto c32 = new ConstraintDto();
-		c32.setName("飞轮温度Ya(00817)");
-		c32.setValue("sequence_00817");
+		c32.setParamName("飞轮温度Ya(00817)");
+		c32.setParamCode("sequence_00817");
 		c32.setMax(80);
 		c32.setMin(30);
 		list3.add(c32);
@@ -123,13 +123,13 @@ public class JfreechartServcieTest {
 		int count=0;
 		for (String key : keys) {
 			if(count==1)
-				break;
+				//break;
 			count++;
 			map2.put(key, map.get(key));			
 		}
 		System.out.println(map2);
 		Date beginDate = DateUtil.format("2016-12-01 00:00:00");
-		Date endDate = DateUtil.format("2016-12-07 00:00:00");
+		Date endDate = DateUtil.format("2016-12-02 00:00:00");
 		
 //		Date beginDate = DateUtil.format("2016-12-08 00:00:00");
 //		Date endDate = DateUtil.format("2016-12-09 00:00:00");

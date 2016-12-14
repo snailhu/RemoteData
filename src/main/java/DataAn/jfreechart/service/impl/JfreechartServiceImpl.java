@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.Vector;
+import java.util.concurrent.ForkJoinPool;
 
 import javax.annotation.Resource;
 
@@ -36,7 +37,8 @@ import DataAn.jfreechart.dto.ConstraintDto;
 import DataAn.jfreechart.dto.LineChartDto;
 import DataAn.jfreechart.dto.LineMapDto;
 import DataAn.jfreechart.service.IJfreechartServcie;
-import DataAn.jfreechart.thread.ChartDataSearchByDayTask;
+import DataAn.jfreechart.thread.SearchByDayDoneTask;
+import DataAn.jfreechart.thread.SearchByDayTask;
 import DataAn.mongo.init.InitMongo;
 import DataAn.mongo.service.IMongoService;
 import DataAn.routing.DataSearchTask;
@@ -49,7 +51,9 @@ public class JfreechartServiceImpl implements IJfreechartServcie {
 	private IMongoService mongoService;
 
 	private Logger logger = Log4jUtil.getInstance().getLogger(JfreechartServiceImpl.class);
-
+	
+//	private final ForkJoinPool forkJoinPool = new ForkJoinPool();
+	
 	@Override
 	public LineChartDto createLineChart(String series, String star,
 			String paramType, Date beginDate, Date endDate,
@@ -73,50 +77,16 @@ public class JfreechartServiceImpl implements IJfreechartServcie {
 		System.out.println(sb.toString());
 //		logger.info(sb.toString());
 		
-		return this.createTimeSeriesChart2(series, star, paramType, beginDate,
+		return this.createTimeSeriesChart3(series, star, paramType, beginDate,
 				endDate, constraintsMap);
 	}
 	protected LineChartDto createTimeSeriesChart3(String series, String star,
 			String paramType, Date beginDate, Date endDate,
 			Map<String, List<ConstraintDto>> constraintsMap) throws Exception {
-		Map<String, TimeSeries> lineMap = new HashMap<String, TimeSeries>();
-		Map<String, Double> paramMin = new HashMap<String, Double>();
-		Map<String, Double> paramMax = new HashMap<String, Double>();
-		Set<String> constraintsKeys = constraintsMap.keySet();
-		for (String key : constraintsKeys) {
-			List<ConstraintDto> constraintList = constraintsMap.get(key);
-			for (ConstraintDto constraintDto : constraintList) {
-				if (!lineMap.containsKey(key)) {
-					lineMap.put(constraintDto.getValue(),ChartUtils.createTimeseries(constraintDto.getName()));
-					paramMin.put(constraintDto.getValue(),constraintDto.getMin());
-					paramMax.put(constraintDto.getValue(),constraintDto.getMax());
-				}
-			}
-		}
-		LineMapDto lineMapDto = new LineMapDto();
-		lineMapDto.setLineMap(lineMap);
+		ForkJoinPool forkJoinPool = new ForkJoinPool(15);
 		
-		List<ChartDataSearchByDayTask> forks = new LinkedList<>();
-		String databaseName = InitMongo.getDataBaseNameBySeriesAndStar(series, star);
-		//1s 等级数据集
-		String collectionName =  paramType + "1s";
-		Calendar cal = Calendar.getInstance();
-		cal.setTime(beginDate);
-		while(!endDate.before(cal.getTime())){
-			String day = DateUtil.format(cal.getTime(), "yyyy-MM-dd");
-			cal.set(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DATE)+1);
-			ChartDataSearchByDayTask task = new ChartDataSearchByDayTask(lineMapDto, databaseName, collectionName, day, paramMax, paramMax);
-			task.fork();
-		}
-		for (ChartDataSearchByDayTask task : forks) {
-			task.join();
-		}
-		
-		for (String line : lineMap.keySet()) {
-			System.out.println(line + " count: " + lineMap.get(line).getItemCount());
-		}
-		
-		return null;
+		LineChartDto lineChartDto = forkJoinPool.invoke(new SearchByDayTask(series, star, paramType, beginDate, endDate, constraintsMap));
+		return lineChartDto;
 	}
 	protected LineChartDto createTimeSeriesChart2(String series, String star,
 			String paramType, Date beginDate, Date endDate,
@@ -130,9 +100,9 @@ public class JfreechartServiceImpl implements IJfreechartServcie {
 			List<ConstraintDto> constraintList = constraintsMap.get(key);
 			for (ConstraintDto constraintDto : constraintList) {
 				if (!params.containsKey(key)) {
-					params.put(constraintDto.getValue(),constraintDto.getName());
-					paramMin.put(constraintDto.getValue(),constraintDto.getMin());
-					paramMax.put(constraintDto.getValue(),constraintDto.getMax());
+					params.put(constraintDto.getParamCode(),constraintDto.getParamName());
+					paramMin.put(constraintDto.getParamCode(),constraintDto.getMin());
+					paramMax.put(constraintDto.getParamCode(),constraintDto.getMax());
 				}
 			}
 		}
@@ -243,7 +213,7 @@ public class JfreechartServiceImpl implements IJfreechartServcie {
 				//双Y轴
 				for (ConstraintDto constraintDto : constraintList) {
 					TimeSeriesCollection dataset = new TimeSeriesCollection();
-					TimeSeries timeSeries = lineMap.get(constraintDto.getValue());
+					TimeSeries timeSeries = lineMap.get(constraintDto.getParamCode());
 //					if(timeSeries == null){
 //						throw new RuntimeException(DateUtil.format(beginDate) + " 到 "+ 
 //								DateUtil.format(endDate) +" " + constraintDto.getName()+" 未找到报告数据！2");
@@ -253,7 +223,7 @@ public class JfreechartServiceImpl implements IJfreechartServcie {
 						dataset.addSeries(timeSeries);						
 						datasetList.add(dataset);						
 					}else{
-						logger.info(DateUtil.format(beginDate) + " 到 "+ DateUtil.format(endDate) +" " + constraintDto.getName()+" 未找到报告数据！2");
+						logger.info(DateUtil.format(beginDate) + " 到 "+ DateUtil.format(endDate) +" " + constraintDto.getParamName()+" 未找到报告数据！2");
 					}
 				}
 			}else{
@@ -261,7 +231,7 @@ public class JfreechartServiceImpl implements IJfreechartServcie {
 				TimeSeriesCollection dataset = new TimeSeriesCollection();
 				boolean flag = false;
 				for (ConstraintDto constraintDto : constraintList) {
-					TimeSeries timeSeries = lineMap.get(constraintDto.getValue());
+					TimeSeries timeSeries = lineMap.get(constraintDto.getParamCode());
 //					if(timeSeries == null){
 //						throw new RuntimeException(DateUtil.format(beginDate) + " 到 "+ 
 //								DateUtil.format(endDate) +" " + constraintDto.getName()+" 未找到报告数据！3");
@@ -271,7 +241,7 @@ public class JfreechartServiceImpl implements IJfreechartServcie {
 						dataset.addSeries(timeSeries);						
 						flag = true;
 					}else{
-						logger.info(DateUtil.format(beginDate) + " 到 "+ DateUtil.format(endDate) +" " + constraintDto.getName()+" 未找到报告数据！3");
+						logger.info(DateUtil.format(beginDate) + " 到 "+ DateUtil.format(endDate) +" " + constraintDto.getParamName()+" 未找到报告数据！3");
 					}
 				}
 				//至少有一次
@@ -322,9 +292,9 @@ public class JfreechartServiceImpl implements IJfreechartServcie {
 			List<ConstraintDto> constraintList = constraintsMap.get(key);
 			for (ConstraintDto constraintDto : constraintList) {
 				if (!params.containsKey(key)) {
-					params.put(constraintDto.getValue(),constraintDto.getName());
-					paramMin.put(constraintDto.getValue(),constraintDto.getMin());
-					paramMax.put(constraintDto.getValue(),constraintDto.getMax());
+					params.put(constraintDto.getParamCode(),constraintDto.getParamName());
+					paramMin.put(constraintDto.getParamCode(),constraintDto.getMin());
+					paramMax.put(constraintDto.getParamCode(),constraintDto.getMax());
 				}
 			}
 		}
@@ -401,7 +371,7 @@ public class JfreechartServiceImpl implements IJfreechartServcie {
 				//双Y轴
 				for (ConstraintDto constraintDto : constraintList) {
 					TimeSeriesCollection dataset = new TimeSeriesCollection();
-					TimeSeries timeSeries = lineMap.get(constraintDto.getValue());
+					TimeSeries timeSeries = lineMap.get(constraintDto.getParamCode());
 //					if(timeSeries == null){
 //						throw new RuntimeException(DateUtil.format(beginDate) + " 到 "+ 
 //								DateUtil.format(endDate) +" " + constraintDto.getName()+" 未找到报告数据！2");
@@ -411,7 +381,7 @@ public class JfreechartServiceImpl implements IJfreechartServcie {
 						dataset.addSeries(timeSeries);						
 						datasetList.add(dataset);						
 					}else{
-						logger.info(DateUtil.format(beginDate) + " 到 "+ DateUtil.format(endDate) +" " + constraintDto.getName()+" 未找到报告数据！2");
+						logger.info(DateUtil.format(beginDate) + " 到 "+ DateUtil.format(endDate) +" " + constraintDto.getParamName()+" 未找到报告数据！2");
 					}
 				}
 			}else{
@@ -419,7 +389,7 @@ public class JfreechartServiceImpl implements IJfreechartServcie {
 				TimeSeriesCollection dataset = new TimeSeriesCollection();
 				boolean flag = false;
 				for (ConstraintDto constraintDto : constraintList) {
-					TimeSeries timeSeries = lineMap.get(constraintDto.getValue());
+					TimeSeries timeSeries = lineMap.get(constraintDto.getParamCode());
 //					if(timeSeries == null){
 //						throw new RuntimeException(DateUtil.format(beginDate) + " 到 "+ 
 //								DateUtil.format(endDate) +" " + constraintDto.getName()+" 未找到报告数据！3");
@@ -429,7 +399,7 @@ public class JfreechartServiceImpl implements IJfreechartServcie {
 						dataset.addSeries(timeSeries);						
 						flag = true;
 					}else{
-						logger.info(DateUtil.format(beginDate) + " 到 "+ DateUtil.format(endDate) +" " + constraintDto.getName()+" 未找到报告数据！3");
+						logger.info(DateUtil.format(beginDate) + " 到 "+ DateUtil.format(endDate) +" " + constraintDto.getParamName()+" 未找到报告数据！3");
 					}
 				}
 				//至少有一次

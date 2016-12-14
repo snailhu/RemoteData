@@ -5,22 +5,22 @@ package DataAn.jfreechart.dto;
  */
 public class ConstraintDto {
 
-	private String name; //中文键
-	private String value; //英文值
+	private String paramName; //中文键
+	private String paramCode; //英文值
 	private double max; //最大值区间
 	private double min; //最小值区间
 	
-	public String getName() {
-		return name;
+	public String getParamName() {
+		return paramName;
 	}
-	public void setName(String name) {
-		this.name = name;
+	public void setParamName(String paramName) {
+		this.paramName = paramName;
 	}
-	public String getValue() {
-		return value;
+	public String getParamCode() {
+		return paramCode;
 	}
-	public void setValue(String value) {
-		this.value = value;
+	public void setParamCode(String paramCode) {
+		this.paramCode = paramCode;
 	}
 	public double getMax() {
 		return max;
@@ -36,9 +36,10 @@ public class ConstraintDto {
 	}
 	@Override
 	public String toString() {
-		return "ConstraintDto [name=" + name + ", value=" + value + ", max="
-				+ max + ", min=" + min + "]";
+		return "ConstraintDto [paramName=" + paramName + ", paramCode="
+				+ paramCode + ", max=" + max + ", min=" + min + "]";
 	}
+	
 	
 	
 }

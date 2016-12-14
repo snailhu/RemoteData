@@ -26,7 +26,7 @@ public class MakeCSVFile {
 	public void testCopyDataCSV() throws Exception{
 		List<String> list = new ArrayList<String>();
 //		String filePath = "C:\\feb-9-05.csv";
-		String filePath = "C:\\2014-01.csv";
+		String filePath = "C:\\j9-02--2000-01-01";
 		File file = new File(filePath);
 		InputStream in = new FileInputStream(file);
 		InputStreamReader inputStreamReader = new InputStreamReader(in, "gb2312");
@@ -138,7 +138,7 @@ public class MakeCSVFile {
 		int count = 1;
 		while(tempDate.before(date2)){
 			
-			if(count == 5000)
+			if(count == 20000)
 				break;
 			count++;
 			

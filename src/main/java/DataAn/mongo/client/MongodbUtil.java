@@ -396,7 +396,6 @@ public class MongodbUtil {
 	
 	public MongoCursor<Document> find(String databaseName,String collectionName, String key, Object value){
 		MongoCollection<Document> collection = this.getCollection(databaseName, collectionName);
-		
 		return collection.find(Filters.eq(key, value)).iterator();
 	}
 	

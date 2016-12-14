@@ -20,7 +20,7 @@ import DataAn.common.dao.Pager;
 import DataAn.common.pageModel.Combo;
 import DataAn.common.pageModel.EasyuiDataGridJson;
 import DataAn.common.pageModel.JsonMessage;
-import DataAn.galaxy.option.J9Series_Star_ParameterType;
+import DataAn.galaxyManager.option.J9Series_Star_ParameterType;
 import DataAn.galaxyManager.domain.DeviceType;
 import DataAn.galaxyManager.dto.DeviceDto;
 import DataAn.galaxyManager.dto.QueryDeviceDTO;

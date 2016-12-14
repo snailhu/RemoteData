@@ -1,10 +1,7 @@
 package DataAn.reportManager;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Vector;
 
 import javax.annotation.Resource;
 
@@ -14,15 +11,9 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import DataAn.common.utils.DateUtil;
-import DataAn.galaxy.option.J9SeriesType;
-import DataAn.galaxy.option.SeriesType;
-import DataAn.jfreechart.chart.Serie;
-import DataAn.jfreechart.dto.LineChartDto;
 import DataAn.jfreechart.service.IJfreechartServcie;
-import DataAn.reportManager.domain.StarParam;
 import DataAn.reportManager.dto.DataToDocDto;
 import DataAn.reportManager.dto.ParamDto;
-import DataAn.reportManager.dto.ParamImgDataDto;
 import DataAn.reportManager.dto.ProductDto;
 import DataAn.reportManager.service.IReoportService;
 import DataAn.reportManager.service.IStarParamService;

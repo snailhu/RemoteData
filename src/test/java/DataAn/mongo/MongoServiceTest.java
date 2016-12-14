@@ -15,15 +15,17 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
+import com.mongodb.client.model.Filters;
 
 import DataAn.common.utils.DateUtil;
 import DataAn.common.utils.UUIDGeneratorUtil;
 import DataAn.fileSystem.dto.CSVFileDataResultDto;
 import DataAn.fileSystem.service.ICSVService;
-import DataAn.galaxy.option.J9SeriesType;
-import DataAn.galaxy.option.J9Series_Star_ParameterType;
-import DataAn.galaxy.option.SeriesType;
+import DataAn.galaxyManager.option.J9SeriesType;
+import DataAn.galaxyManager.option.J9Series_Star_ParameterType;
+import DataAn.galaxyManager.option.SeriesType;
 import DataAn.mongo.service.IMongoService;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -75,8 +77,8 @@ public class MongoServiceTest {
 	
 	@Test
 	public void find(){
-		Date beginDate = DateUtil.format("2016-11-23 00:00:00");
-		Date endDate = DateUtil.format("2016-11-29 00:00:00");
+		Date beginDate = DateUtil.format("2016-12-01 00:00:00");
+		Date endDate = DateUtil.format("2016-12-07 00:00:00");
 		MongoCursor<Document> cursor = mongoService.findByDate("j9", "02","flywheel", beginDate, endDate);
 		while (cursor.hasNext()) {
 			System.out.println(cursor.next());

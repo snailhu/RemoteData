@@ -7,8 +7,6 @@ import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import DataAn.galaxy.option.SeriesType;
-import DataAn.prewarning.dto.SelectOptionDTO;
 import DataAn.prewarning.service.IPrewarningService;
 
 @RunWith(SpringJUnit4ClassRunner.class)

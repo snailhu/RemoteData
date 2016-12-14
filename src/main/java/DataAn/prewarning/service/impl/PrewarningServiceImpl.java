@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 
 import DataAn.common.dao.Pager;
 import DataAn.common.utils.DateUtil;
-import DataAn.galaxy.option.J9Series_Star_ParameterType;
+import DataAn.galaxyManager.option.J9Series_Star_ParameterType;
 import DataAn.galaxyManager.dao.IParameterDao;
 import DataAn.galaxyManager.dao.ISeriesDao;
 import DataAn.galaxyManager.dao.IStarDao;

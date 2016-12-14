@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Vector;
 
@@ -119,7 +120,7 @@ public class ChartFactory {
 	
 	public static JFreeChart createTimeSeriesChart(String title,
 			String categoryAxisLabel, String valueAxisLabel,
-			List<TimeSeriesCollection> datasetList) {
+			List<TimeSeriesCollection> datasetList, Date beginDate, Date endDate) {
 		if(datasetList == null || datasetList.size() == 0)
 			return null;
 		TimeSeriesCollection dataset1 =  datasetList.get(0);
@@ -180,18 +181,7 @@ public class ChartFactory {
     	
     	if(dataset1 != null && dataset1.getSeriesCount() >0){
 			DateTickUnit dateTickUnit = null;
-			int seriesCount = 0;
-			int itemCount = 0;
-			TimeSeries timeSeries = null;
-			for (int i = 0; i < dataset1.getSeriesCount(); i++) {
-				timeSeries = dataset1.getSeries(i);
-				if(itemCount < timeSeries.getItemCount()){
-					itemCount = timeSeries.getItemCount();
-					seriesCount = i;
-				}
-			}
-			timeSeries = dataset1.getSeries(seriesCount);
-			long ss_interval = timeSeries.getDataItem(timeSeries.getItemCount()-1).getPeriod().getLastMillisecond() - timeSeries.getDataItem(0).getPeriod().getLastMillisecond();
+			long ss_interval = endDate.getTime() - beginDate.getTime();
 			int s_interval = (int) (ss_interval / 1000); // 得到 1秒钟几个点
 			s_interval = s_interval / 24; //显示24个间隔
 			if(s_interval > 0){ 

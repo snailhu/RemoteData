@@ -565,7 +565,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                { name: 'name', type: 'string' },
                { name: 'max', type: 'string' },
                { name: 'min', type: 'stirng' },
-               //{ name: 'unit' type: 'string'},
+               { name: 'unit', type: 'string'},
                { name: 'yname',type:'string'}
            ],
            hierarchy:

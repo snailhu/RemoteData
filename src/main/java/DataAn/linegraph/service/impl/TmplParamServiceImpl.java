@@ -92,6 +92,7 @@ public class TmplParamServiceImpl implements ITmplParamService {
 				dto.setName(tmplparam.getName());
 				dto.setMax(tmplparam.getMax());
 				dto.setMin(tmplparam.getMin());
+				dto.setUnit(tmplparam.getUnit());
 				dto.setYname(tmplparam.getYname());
 				paramList.add(dto);
 			}

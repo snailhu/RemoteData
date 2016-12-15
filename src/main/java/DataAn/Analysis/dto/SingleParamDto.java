@@ -74,7 +74,7 @@ public class SingleParamDto implements Serializable{
 	@Override
 	public String toString() {
 		return "SingleParamDto [id=" + id + ", name=" + name + ", value="
-				+ value + ", max=" + max + ", min=" + min + ", unit="+unit+", yname=" + yname
+				+ value + ", max=" + max + ", min=" + min + ", unit=" + unit + ", yname=" + yname
 				+ "]";
 	}
 
@@ -100,11 +100,5 @@ public class SingleParamDto implements Serializable{
 
 	public void setMin(String min) {
 		this.min = min;
-	}
-
-
-
-	
-
-	
+	}	
 }		

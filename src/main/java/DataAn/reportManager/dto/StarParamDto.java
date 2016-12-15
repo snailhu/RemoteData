@@ -2,33 +2,41 @@ package DataAn.reportManager.dto;
 
 import java.util.Date;
 
-
 public class StarParamDto {
 
 	private Long id;
-	
+
 	private String paramCode;
-	
+
 	private String paramName;
-	
+
 	private String creater;
-	
+
 	private String series;
-	
+
 	private String star;
-	
+
 	private String parameterType;
-	
+
 	private String productName;
-		
+
 	private String partsType;
-	
+
 	private double effeMin;
-	
+
 	private double effeMax;
-	
+
+	private String valueUnit;
+
+	public String getValueUnit() {
+		return valueUnit;
+	}
+
+	public void setValueUnit(String valueUnit) {
+		this.valueUnit = valueUnit;
+	}
+
 	private Date createDate = new Date();
-	
 
 	public String getProductName() {
 		return productName;

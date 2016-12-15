@@ -72,9 +72,9 @@ public class ConfigTest {
 	
 	@Test
 	public void test3(){
-		Map<String,String> params = new HashMap<String,String>();
-		params.put("aa", "bb");
-		System.out.println(params.containsKey("aa"));
-		System.out.println(params.containsValue("aa"));
+		List<String> list = new ArrayList<String>(10);
+		list.add(0, "a");
+		list.add(5, "b");
+		System.out.println(list.size());
 	}
 }

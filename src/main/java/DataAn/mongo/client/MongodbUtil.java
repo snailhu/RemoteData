@@ -412,4 +412,11 @@ public class MongodbUtil {
 							   				Filters.lte("datetime", endDate),
 							   				Filters.eq(fieldName, value)));
 	}
+	
+	public long countByDate(String databaseName,String collectionName,
+			Date beginDate, Date endDate){
+		MongoCollection<Document> collection = this.getCollection(databaseName, collectionName);
+		return collection.count(Filters.and(Filters.gte("datetime", beginDate),
+							   				Filters.lte("datetime", endDate)));
+	}
 }

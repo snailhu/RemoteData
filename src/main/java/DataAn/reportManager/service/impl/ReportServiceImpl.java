@@ -611,8 +611,8 @@ public class ReportServiceImpl implements IReoportService {
 				String key = starParam.getProductName() + starParam.getParameterType();
 				List<ConstraintDto> listSingle = new ArrayList<ConstraintDto>();
 				ConstraintDto constraintDto = new ConstraintDto();
-				constraintDto.setName(starParam.getParamName());
-				constraintDto.setValue(starParam.getParamCode());
+				constraintDto.setParamName(starParam.getParamName());
+				constraintDto.setParamCode(starParam.getParamCode());
 				constraintDto.setMax(starParam.getEffeMax());
 				constraintDto.setMin(starParam.getEffeMin());
 				listSingle.add(constraintDto);
@@ -635,8 +635,8 @@ public class ReportServiceImpl implements IReoportService {
 			for (StarParam starParam : doubleList) {
 				if (product.equals(starParam.getProductName())) {
 					ConstraintDto constraintDto = new ConstraintDto();
-					constraintDto.setName(starParam.getParamName());
-					constraintDto.setValue(starParam.getParamCode());
+					constraintDto.setParamName(starParam.getParamName());
+					constraintDto.setParamCode(starParam.getParamCode());
 					constraintDto.setMax(starParam.getEffeMax());
 					constraintDto.setMin(starParam.getEffeMin());
 					productlist.add(constraintDto);
@@ -659,8 +659,8 @@ public class ReportServiceImpl implements IReoportService {
 			for (StarParam starParam : starParamList) {
 				if (string.equals(starParam.getParameterType())) {
 					ConstraintDto constraintDto = new ConstraintDto();
-					constraintDto.setName(starParam.getParamName());
-					constraintDto.setValue(starParam.getParamCode());
+					constraintDto.setParamName(starParam.getParamName());
+					constraintDto.setParamCode(starParam.getParamCode());
 					constraintDto.setMax(starParam.getEffeMax());
 					constraintDto.setMin(starParam.getEffeMin());
 					parameterTypelist.add(constraintDto);
@@ -779,8 +779,8 @@ public class ReportServiceImpl implements IReoportService {
 				String key = starParam.getProductName() + starParam.getParameterType();
 				List<ConstraintDto> listSingle = new ArrayList<ConstraintDto>();
 				ConstraintDto constraintDto = new ConstraintDto();
-				constraintDto.setName(starParam.getParamName());
-				constraintDto.setValue(starParam.getParamCode());
+				constraintDto.setParamName(starParam.getParamName());
+				constraintDto.setParamCode(starParam.getParamCode());
 				constraintDto.setMax(starParam.getEffeMax());
 				constraintDto.setMin(starParam.getEffeMin());
 				listSingle.add(constraintDto);
@@ -803,8 +803,8 @@ public class ReportServiceImpl implements IReoportService {
 			for (StarParam starParam : doubleList) {
 				if (product.equals(starParam.getProductName())) {
 					ConstraintDto constraintDto = new ConstraintDto();
-					constraintDto.setName(starParam.getParamName());
-					constraintDto.setValue(starParam.getParamCode());
+					constraintDto.setParamName(starParam.getParamName());
+					constraintDto.setParamCode(starParam.getParamCode());
 					constraintDto.setMax(starParam.getEffeMax());
 					constraintDto.setMin(starParam.getEffeMin());
 					productlist.add(constraintDto);
@@ -827,8 +827,8 @@ public class ReportServiceImpl implements IReoportService {
 			for (StarParam starParam : starParamList) {
 				if (string.equals(starParam.getParameterType())) {
 					ConstraintDto constraintDto = new ConstraintDto();
-					constraintDto.setName(starParam.getParamName());
-					constraintDto.setValue(starParam.getParamCode());
+					constraintDto.setParamName(starParam.getParamName());
+					constraintDto.setParamCode(starParam.getParamCode());
 					constraintDto.setMax(starParam.getEffeMax());
 					constraintDto.setMin(starParam.getEffeMin());
 					parameterTypelist.add(constraintDto);

@@ -553,7 +553,7 @@ $(function() {
             width: 50
         },{
 			field : 'runDays',
-			title : '设备累计工作时间(天)',
+			title : '星累计运行时间(天)',
 			width : 50
 		}, {
             field: 'description',
@@ -613,7 +613,7 @@ $(function() {
 								},
 								{
 									field : 'runDays',
-									title : '设备累计工作时间(天)',
+									title : '运行时间(天)',
 									width : 80
 								},
 								{

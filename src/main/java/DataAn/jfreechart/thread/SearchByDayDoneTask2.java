@@ -10,14 +10,14 @@ import org.bson.Document;
 import com.mongodb.client.MongoCursor;
 import DataAn.common.utils.DateUtil;
 import DataAn.jfreechart.dto.LineMapDto;
-import DataAn.jfreechart.dto.LineTimeSeriesDto;
+import DataAn.jfreechart.dto.LineTimeSeriesDto2;
 import DataAn.mongo.client.MongodbUtil;
 
-public class SearchByDayDoneTask extends RecursiveTask<LineMapDto>{
+public class SearchByDayDoneTask2 extends RecursiveTask<LineMapDto>{
 
 	private static final long serialVersionUID = 1L;
 	
-	private LineTimeSeriesDto[] arrayData;
+	private Map<String,LineTimeSeriesDto2[]> arrayDataMap;
 	private String databaseName;
 	private String collectionName;
 	private Date beginDate0;
@@ -27,12 +27,14 @@ public class SearchByDayDoneTask extends RecursiveTask<LineMapDto>{
 	private Map<String, Double> paramMaxMap;
 	private Map<String, String> paramsMap;	
 
-	public SearchByDayDoneTask(LineTimeSeriesDto[] arrayData,
-			String databaseName, String collectionName,Date beginDate0,
+	
+
+	public SearchByDayDoneTask2(Map<String, LineTimeSeriesDto2[]> arrayDataMap,
+			String databaseName, String collectionName, Date beginDate0,
 			Date beginDate, Date endDate, Map<String, Double> paramMinMap,
 			Map<String, Double> paramMaxMap, Map<String, String> paramsMap) {
 		super();
-		this.arrayData = arrayData;
+		this.arrayDataMap = arrayDataMap;
 		this.databaseName = databaseName;
 		this.collectionName = collectionName;
 		this.beginDate0 = beginDate0;
@@ -68,15 +70,15 @@ public class SearchByDayDoneTask extends RecursiveTask<LineMapDto>{
 			throw new RuntimeException(DateUtil.format(beginDate) + " 到 "+ DateUtil.format(endDate) +" 未找到报告数据！");
 		}
 		int count = 0;// 迭代器
-		Map<String,Double> dataMap = null;
-		LineTimeSeriesDto lineTimeSeriesDto = null;
+		LineTimeSeriesDto2[] arrayData = null;
+		LineTimeSeriesDto2 lineTimeSeriesDto = null;
 		Document doc = null;
 		Date datetime = null;
 		long lastTime = 0; //上一个时间截
 		long nextTime = 0; //下一个时间截
 		int second_count = 0; //秒级数据集的个数
 		while (cursor.hasNext()) {
-			lineTimeSeriesDto = new LineTimeSeriesDto();
+			
 			
 			doc = cursor.next();
 			nextTime = doc.getDate("datetime").getTime();
@@ -89,7 +91,6 @@ public class SearchByDayDoneTask extends RecursiveTask<LineMapDto>{
 				second_count ++;
 			}
 			datetime = new Date(nextTime);
-			dataMap = new HashMap<String,Double>();			
 			for (String key : en_params) {
 				String strValue = doc.getString(key);
 				if(StringUtils.isNotBlank(strValue)){
@@ -104,8 +105,16 @@ public class SearchByDayDoneTask extends RecursiveTask<LineMapDto>{
 					if(paramMinMap.get(key) != null && dValue < paramMinMap.get(key))
 						continue;
 					
-					// 往Map里面添加数据
-					dataMap.put(key, dValue);
+					// 获取对应参数的数组
+					arrayData = arrayDataMap.get(key);
+					lineTimeSeriesDto = new LineTimeSeriesDto2();
+					lineTimeSeriesDto.setDatetime(datetime);
+					lineTimeSeriesDto.setParamCode(key);
+					lineTimeSeriesDto.setParamValue(dValue);
+					//往数组里面添加
+					arrayData[index+count] = lineTimeSeriesDto;
+					//往Map里面添加
+					arrayDataMap.put(key, arrayData);
 					
 					// 获取最小值
 					min = minMap.get(key);
@@ -121,9 +130,6 @@ public class SearchByDayDoneTask extends RecursiveTask<LineMapDto>{
 					maxMap.put(key, this.getMax(max, dValue));
 				}
 			}
-			lineTimeSeriesDto.setDatetime(datetime);
-			lineTimeSeriesDto.setParam(dataMap);
-			arrayData[index+count]=	lineTimeSeriesDto;
 			count++;
 		}
 		if(count == 0){

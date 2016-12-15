@@ -167,7 +167,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     	margin-top:-32px 	
     }
     #id_dplist_template{
-    	margin-left:550px;
+    	margin-left:590px;
     	margin-top:-32px;
     }
     .groupButton{
@@ -562,8 +562,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                { name: 'id', type: 'number' },
                { name: 'parentId', type: 'number' },
                { name: 'name', type: 'string' },
-               { name: 'max', type: 'number' },
-               { name: 'min', type: 'number' },
+               { name: 'max', type: 'string' },
+               { name: 'min', type: 'stirng' },
+               //{ name: 'unit' type: 'string'},
                { name: 'yname',type:'string'}
            ],
            hierarchy:
@@ -577,7 +578,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
        var dataAdapter = new $.jqx.dataAdapter(source);
        $("#treeGrid").jqxTreeGrid(
        {
-           width: 760,                
+           width: 800,                
            source: dataAdapter,
            sortable: true,
            editable: true,
@@ -587,9 +588,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
            columns: [
 	             { text: '参数名称',  dataField: 'name',editable: false, width: 310 },
 	             { text: 'ID',  dataField: 'id',editable: false, width:200, hidden: true },
-	             { text: '最大值', dataField: 'max', width: 150 },
-	             { text: '最小值', dataField: 'min', width: 150 },
-	             { text: 'Y轴', dataField:'yname',width:150,columnType:'template',
+	             { text: '最大值', dataField: 'max', width: 140 },
+	             { text: '最小值', dataField: 'min', width: 140 },
+	             { text: '单位',dataField: 'unit',width:105},
+	             { text: 'Y轴', dataField:'yname',width:105,columnType:'template',
 	             	cellsRenderer: function (row, column, value, rowData) {if(value=="0") {return "Y1"};if(value=="1"){return "Y2"}},
 					createEditor: function (row, cellValue, editor, cellText, width, height) {
 					  var source = ["Y1", "Y2"];
@@ -628,6 +630,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                     rowObject.name=rowindex[i].name;
                     rowObject.max=rowindex[i].max;
                     rowObject.min=rowindex[i].min;
+                    rowObject.unit=rowindex[i].unit;
                     rowObject.yname=rowindex[i].yname;
                     if(rowObject.yname=="y2"){
                     	chkObjs=2;
@@ -673,6 +676,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	                  rowObject.name=rowindex[i].name;
 	                  rowObject.max=rowindex[i].max;
 	                  rowObject.min=rowindex[i].min;
+	                  rowObject.unit=rowindex[i].unit;
 	                  var yname = rowindex[i].yname;
 	                  if(yname=='Y2'){
 	                  //这里统一一下（Y1轴的话用大写的‘Y1’,Y2轴用大写的‘Y2’）
@@ -733,6 +737,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         		param.name=template[i].name;
         		param.max=template[i].max;
         		param.min=template[i].min;
+        		param.unit=template[i].unit;
         		param.yname=template[i].yname;
         		paramarray.push(param);
         		//alert(param.name+"max:"+param.max+"min:"+param.min+param.yname);
@@ -838,8 +843,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	                dataFields: [
 	                    { name: 'id', type: 'number' },                    
 	                    { name: 'name', type: 'string' },
-	                    { name: 'max', type: 'number' },
-	                    { name: 'min', type: 'number' },
+	                    { name: 'max', type: 'string' },
+	                    { name: 'min', type: 'string' },
+	                    //{ name: 'unit' type: 'string'},
 	                    { name: 'yname',type:'string'},
 	                    { name: 'templateName', type: 'string' },
 	                    { name: 'templateid', type: 'number' },
@@ -950,9 +956,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	                  { text: '模板名称',  dataField: 'templateName', editable: false, width: 210 },
 	                  { text: '模板包含参数',  dataField: 'name', width: 220 },
 	                  //{ text: '模板ID',   dataField: 'templateid',editable: false, width:180, hidden: false },
-	                  { text: '最大值',   dataField: 'max', width: 150 },
-	                  { text: '最小值',    dataField: 'min', width: 150 },
-	                  { text: 'Y轴',     dataField: 'yname', width:150, columnType:'custom',
+	                  { text: '最大值',   dataField: 'max', width: 115 },
+	                  { text: '最小值',    dataField: 'min', width: 115 },
+	                  //{ text: '单位',       dataField: 'unit' width: 105},
+	                  { text: 'Y轴',     dataField: 'yname', width:115, columnType:'custom',
 	                  	//cellsRenderer: function (row, column, value, rowData) {if(value=="添加到分组") {return "<input type='button' value='删除模板'></input>"}},
 	                  	cellsRenderer: function (row, column, value, rowData) { if(value=="0") {return "Y1";} else if(value=="1"){return "Y2"} else{ return "";}}, 
 	                  	createEditor: function (row, cellValue, editor, cellText, width, height) {

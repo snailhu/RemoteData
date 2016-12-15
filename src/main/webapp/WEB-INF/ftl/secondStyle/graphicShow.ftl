@@ -253,10 +253,11 @@
 		        var n={};
         		n.name = '${param.name}';
         		n.value = '${param.value}';
+        		n.unit = '${param.unit}';
         		n.y = '${param.yname}';
         		n.max = '${param.max}';
-        		n.min = '${param.min}'
-        		console.log("每条曲线的参数：参数名"+n.name+"*参数值:"+n.value+"*Y轴:"+n.y+"*最大值:"+n.max+"*最小值："+n.min);
+        		n.min = '${param.min}';
+        		console.log("每条曲线的参数：参数名"+n.name+"*参数值:"+n.value+"单位"+n.unit+"*Y轴:"+n.y+"*最大值:"+n.max+"*最小值："+n.min);
         		names.push(n);
         	</#list>       	
         <#else>
@@ -381,31 +382,79 @@
              	  var i=0
              	  var yname = 0;
              	  var legendname ="";
-             	  for(var param in data){
+             	  var unit="";          	  
+             	  var Y1name ="Y1轴";
+             	  var Y1nametemp ="Y1轴";
+             	  var Y2name ="Y2轴";
+             	  var Y2nametemp ="Y2轴";
              	  
-             	  yname  = names[names.length-1-i].y;
-             	  legendname =names[names.length-1-i].name;
-             	  console.log(names.length);
-             	  console.log(yname+legendname+data[param]);
-             	  	
-             	  	seriesOptions[i++] = {
-			            	type: 'line',
-			                //name: param,
-			                name:legendname,
-			                smooth:false,
-			               	yAxisIndex: yname,
-			                lineStyle:{
-		                    	normal:{
-		                    		width:0.5 
-		                    		}
-		                    },
-			                data: data[param].paramValue
-			            };
-			            //设置X轴，注意，这里X轴存在问题，默认使用了最后一组参数的X轴
-			            date =  data[param].yearValue;
+             	  for(var param in data){             	  
+	             	  unit = names[names.length-1-i].unit;
+	             	  yname  = names[names.length-1-i].y;
+	  				  if(yname==0)
+	  				  {
+	  				  	Y1nametemp = Y1name;
+	  				  	Y1name ="Y1轴("+unit+")";
+	  				  	console.log(Y1nametemp+"-------"+Y1name)	  				  	
+	  				  	if((Y1name!=Y1nametemp))
+	  				  	{
+	  				  		if(Y1nametemp=="Y1轴")
+	  				  		{}
+	  				  		else{
+	  				  			Y1name ="Y1轴";
+	  				  		}	
+	  				  	}
+	  				  	
+	  				  }
+	  				  if(yname==1)
+	  				  {
+	  				    var Y2nametemp =Y2name;
+	  				  	Y2name ="Y2轴("+unit+")";	  				  	
+	  				  	if(Y2name!=Y2nametemp)
+	  				  	{
+	  				  		Y2name ="Y2轴";
+	  				  	}
+	  				  }
+  				  
+	             	  legendname =names[names.length-1-i].name;
+	             	  console.log(names.length);
+	             	  console.log(yname+legendname+unit);            	  	
+	             	  	seriesOptions[i++] = {
+				            	type: 'line',
+				                //name: param,
+				                name:legendname,
+				                smooth:false,
+				               	yAxisIndex: yname,
+				                lineStyle:{
+			                    	normal:{
+			                    		width:0.5 
+			                    		}
+			                    },
+				                data: data[param].paramValue
+				            };
+				            //设置X轴，注意，这里X轴存在问题，默认使用了最后一组参数的X轴
+				            date =  data[param].yearValue;
              	  }
-             	  	pSeriesOptions = seriesOptions
+             	  
+             	  //修改Y轴坐标单位
+             	  var YAxixs =[{
+				        		name: Y1name,
+				            	type: 'value',
+				            	splitLine : {
+					                show: true
+					            }
+				        	},{
+				        		name: Y2name,
+					            type : 'value',
+					            splitLine : {
+					                show: false
+					            }
+				        	}
+				        ]
+             	 	
+             	  	pSeriesOptions = seriesOptions;
 	            	options.series = eval(seriesOptions);
+	            	options.yAxis =YAxixs;
 	            	pDate=options.xAxis.data = date;
 	                myChart.setOption(options);
              }

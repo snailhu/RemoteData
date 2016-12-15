@@ -35,7 +35,7 @@ public class TemplateParameter {
 	@Column(name="min", nullable = true,length =64)
 	private String min;
 	
-	@Column(name="unit", nullable = false ,length =64)
+	@Column(name="unit", nullable = true ,length =64)
 	private String unit;
 	
 	@Column(name="yname", nullable = false ,length =64)

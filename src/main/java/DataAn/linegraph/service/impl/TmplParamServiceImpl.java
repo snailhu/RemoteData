@@ -56,6 +56,7 @@ public class TmplParamServiceImpl implements ITmplParamService {
 			param.setName(paramdto.getName());
 			param.setMax(paramdto.getMax());
 			param.setMin(paramdto.getMin());
+			param.setUnit(paramdto.getUnit());
 			param.setYname(paramdto.getYname());
 			param.setLinegraphtemplale(template);
 			tmplparamDao.add(param);
@@ -132,6 +133,7 @@ public class TmplParamServiceImpl implements ITmplParamService {
 						//param.setTemplateName(template.getName());
 						param.setMax(tmplparam.getMax());
 						param.setMin(tmplparam.getMin());
+						param.setUnit(tmplparam.getUnit());
 						param.setYname(tmplparam.getYname());
 						count++;
 						paramList.add(param);

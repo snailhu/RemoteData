@@ -15,9 +15,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<meta http-equiv="expires" content="0">    
 	<meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
 	<meta http-equiv="description" content="This is my page">
-  <jsp:include page="/WEB-INF/jsp/inc/include-easyUI.jsp"></jsp:include>
+    
   	 <link href="${pageContext.request.contextPath}/static/assets/css/bootstrap.min.css" rel="stylesheet" />
- 
+ <!--添加了这个引用会和保存为模板对话框冲突-->
+ <!--<jsp:include page="/WEB-INF/jsp/inc/include-easyUI.jsp"></jsp:include>-->
    	<link rel="stylesheet" href="${pageContext.request.contextPath}/static/jqwidgets/styles/jqx.base.css" type="text/css" />
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/static/jqwidgets/styles/jqx.energyblue.css" type="text/css" />
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/static/content/css/default.css"  type="text/css"/>	
@@ -282,7 +283,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	  </div>
 	</div>
 	<!--保存为模板弹出框-->
-    <div class="modal fade" id="id_Modal_template" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"  >
+    <div class="modal fade" id="id_Modal_template" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
 	  <div class="modal-dialog" role="document" style="margin:50px auto;">
 	    <div class="modal-content">
 	      <div class="modal-header">
@@ -845,7 +846,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	                    { name: 'name', type: 'string' },
 	                    { name: 'max', type: 'string' },
 	                    { name: 'min', type: 'string' },
-	                    //{ name: 'unit' type: 'string'},
+	                    { name: 'unit', type: 'string'},
 	                    { name: 'yname',type:'string'},
 	                    { name: 'templateName', type: 'string' },
 	                    { name: 'templateid', type: 'number' },
@@ -958,7 +959,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	                  //{ text: '模板ID',   dataField: 'templateid',editable: false, width:180, hidden: false },
 	                  { text: '最大值',   dataField: 'max', width: 115 },
 	                  { text: '最小值',    dataField: 'min', width: 115 },
-	                  //{ text: '单位',       dataField: 'unit' width: 105},
+	                  { text: '单位',       dataField: 'unit', width: 105},
 	                  { text: 'Y轴',     dataField: 'yname', width:115, columnType:'custom',
 	                  	//cellsRenderer: function (row, column, value, rowData) {if(value=="添加到分组") {return "<input type='button' value='删除模板'></input>"}},
 	                  	cellsRenderer: function (row, column, value, rowData) { if(value=="0") {return "Y1";} else if(value=="1"){return "Y2"} else{ return "";}}, 

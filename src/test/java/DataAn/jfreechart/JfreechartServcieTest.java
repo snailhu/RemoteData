@@ -129,7 +129,7 @@ public class JfreechartServcieTest {
 		}
 		System.out.println(map2);
 		Date beginDate = DateUtil.format("2016-12-01 00:00:00");
-		Date endDate = DateUtil.format("2016-12-02 00:00:00");
+		Date endDate = DateUtil.format("2016-12-07 00:00:00");
 		
 //		Date beginDate = DateUtil.format("2016-12-08 00:00:00");
 //		Date endDate = DateUtil.format("2016-12-09 00:00:00");

@@ -39,6 +39,7 @@ import DataAn.jfreechart.dto.LineMapDto;
 import DataAn.jfreechart.service.IJfreechartServcie;
 import DataAn.jfreechart.thread.SearchByDayDoneTask;
 import DataAn.jfreechart.thread.SearchByDayTask;
+import DataAn.jfreechart.thread.SearchByDayTask2;
 import DataAn.mongo.init.InitMongo;
 import DataAn.mongo.service.IMongoService;
 import DataAn.routing.DataSearchTask;
@@ -85,7 +86,7 @@ public class JfreechartServiceImpl implements IJfreechartServcie {
 			Map<String, List<ConstraintDto>> constraintsMap) throws Exception {
 		ForkJoinPool forkJoinPool = new ForkJoinPool(15);
 		
-		LineChartDto lineChartDto = forkJoinPool.invoke(new SearchByDayTask(series, star, paramType, beginDate, endDate, constraintsMap));
+		LineChartDto lineChartDto = forkJoinPool.invoke(new SearchByDayTask2(series, star, paramType, beginDate, endDate, constraintsMap));
 		return lineChartDto;
 	}
 	protected LineChartDto createTimeSeriesChart2(String series, String star,

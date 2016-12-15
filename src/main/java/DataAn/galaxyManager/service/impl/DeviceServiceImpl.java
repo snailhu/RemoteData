@@ -47,14 +47,41 @@ public class DeviceServiceImpl implements IDeviceService {
 		Star star = starDao.get(deviceDto.getStarId());
 		device.setStartDate(star.getStartRunDate());
 		device.setDeviceType(deviceDto.getDeviceType());
+		device.setModel(deviceDto.getModel());
+		device.setRunDays(0);
+		device.setRunStatus(1);
 		deviceDao.add(device);
 	}
 
 	@Override
 	public void updateDevice(DeviceDto deviceDto) throws Exception {
 		Device device = deviceDao.get(deviceDto.getDeviceId());
+		if (StringUtils.isNotBlank(deviceDto.getModel())) {
+			device.setModel(deviceDto.getModel());
+		}
+		if (StringUtils.isNotBlank(deviceDto.getStartDate())) {
+			device.setStartDate(DateUtil.format(deviceDto.getStartDate(), "yyyy-MM-dd"));
+		}
 		if (StringUtils.isNotBlank(deviceDto.getEndDate())) {
 			device.setEndDate(DateUtil.format(deviceDto.getEndDate(), "yyyy-MM-dd"));
+		}
+		if (deviceDto.getRunStatus() != device.getRunStatus()) {
+			device.setRunStatus(deviceDto.getRunStatus());
+			if (device.getRunStatus() == 0) {
+				int rundays = DateUtil.daysOfTwo(device.getStartDate(), device.getEndDate());
+				int beforeRundays = device.getRunDays();
+				device.setRunDays(beforeRundays + (rundays - device.getLastDays()));
+				device.setLastDays(rundays);
+			} else {
+				device.setLastDays(0);
+			}
+		} else {
+			if (device.getRunStatus() == 0) {
+				int rundays = DateUtil.daysOfTwo(device.getStartDate(), device.getEndDate());
+				int beforeRundays = device.getRunDays();
+				device.setRunDays(beforeRundays + (rundays - device.getLastDays()));
+				device.setLastDays(rundays);
+			}
 		}
 		if (StringUtils.isNotBlank(deviceDto.getDeviceName())) {
 			device.setDeviceName(deviceDto.getDeviceName());
@@ -94,15 +121,23 @@ public class DeviceServiceImpl implements IDeviceService {
 			deviceDto.setDeviceId(device.getDeviceId());
 			deviceDto.setDeviceName(device.getDeviceName());
 			deviceDto.setDeviceType(device.getDeviceType());
-			int rundays = DateUtil.daysOfTwo(device.getStartDate(), new Date());
+			int totalDays = 0;
+			if (device.getRunStatus() == 0) {
+				totalDays += device.getRunDays();
+			} else if (device.getRunStatus() == 1) {
+				int days = DateUtil.daysOfTwo(device.getStartDate(), new Date());
+				days += device.getRunDays();
+				totalDays += days;
+			}
 			if (device.getEndDate() != null) {
 				deviceDto.setEndDate(DateUtil.format(device.getEndDate(), "yyyy-MM-dd"));
-				rundays = DateUtil.daysOfTwo(device.getStartDate(), device.getEndDate());
 			}
 			deviceDto.setSeriersId(device.getSeriersId());
 			deviceDto.setStarId(device.getStarId());
 			deviceDto.setStartDate(DateUtil.format(device.getStartDate(), "yyyy-MM-dd"));
-			deviceDto.setRunDays(rundays);
+			deviceDto.setRunDays(totalDays);
+			deviceDto.setModel(device.getModel());
+			deviceDto.setRunStatus(device.getRunStatus());
 			deviceDtos.add(deviceDto);
 		}
 		return deviceDtos;
@@ -126,15 +161,23 @@ public class DeviceServiceImpl implements IDeviceService {
 		deviceDto.setDeviceId(device.getDeviceId());
 		deviceDto.setDeviceName(device.getDeviceName());
 		deviceDto.setDeviceType(device.getDeviceType());
-		int rundays = DateUtil.daysOfTwo(device.getStartDate(), new Date());
+		int totalDays = 0;
+		if (device.getRunStatus() == 0) {
+			totalDays += device.getRunDays();
+		} else if (device.getRunStatus() == 1) {
+			int days = DateUtil.daysOfTwo(device.getStartDate(), new Date());
+			days += device.getRunDays();
+			totalDays += days;
+		}
 		if (device.getEndDate() != null) {
 			deviceDto.setEndDate(DateUtil.format(device.getEndDate(), "yyyy-MM-dd"));
-			rundays = DateUtil.daysOfTwo(device.getStartDate(), device.getEndDate());
 		}
 		deviceDto.setSeriersId(device.getSeriersId());
 		deviceDto.setStarId(device.getStarId());
 		deviceDto.setStartDate(DateUtil.format(device.getStartDate(), "yyyy-MM-dd"));
-		deviceDto.setRunDays(rundays);
+		deviceDto.setRunDays(totalDays);
+		deviceDto.setModel(device.getModel());
+		deviceDto.setRunStatus(device.getRunStatus());
 		return deviceDto;
 	}
 
@@ -164,11 +207,11 @@ public class DeviceServiceImpl implements IDeviceService {
 
 	@Override
 	public Map<String, String> getAllDeviceTypeMap() {
-		Map<String,String> map = new HashMap<String,String>();
+		Map<String, String> map = new HashMap<String, String>();
 		List<DeviceType> list = deviceTypeDao.findAll();
 		if (list != null && list.size() > 0) {
 			for (DeviceType deviceType : list) {
-				map.put(deviceType.getDeviceCode(), deviceType.getDeviceName());		
+				map.put(deviceType.getDeviceCode(), deviceType.getDeviceName());
 			}
 		}
 		return map;

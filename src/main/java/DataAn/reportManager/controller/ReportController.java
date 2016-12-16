@@ -22,6 +22,7 @@ import DataAn.common.pageModel.EasyuiDataGridJson;
 import DataAn.common.pageModel.JsonMessage;
 import DataAn.common.pageModel.Pager;
 import DataAn.common.utils.DateUtil;
+import DataAn.common.utils.UUIDGeneratorUtil;
 import DataAn.fileSystem.dto.MongoFSDto;
 import DataAn.galaxyManager.option.J9Series_Star_ParameterType;
 import DataAn.jfreechart.service.IJfreechartServcie;
@@ -175,6 +176,12 @@ public class ReportController {
 	@RequestMapping(value = "/createReport")
 	@ResponseBody
 	public ResultJSON createReport(HttpServletRequest request,String seriesId,String starId,String partsType,String beginTime,String endTime) {
+		
+		long begin = System.currentTimeMillis();
+		String flag = UUIDGeneratorUtil.getUUID();
+		System.out.println();
+		System.out.println("begintime:" + DateUtil.format(new Date())+" 开始生成报告： flag="+flag);
+		
 		ResultJSON res = ResultJSON.getSuccessResultJSON();
 		
 		String templateUrl = OptionConfig.getWebPath() + "\\report\\wordtemplate\\卫星状态报告.doc";
@@ -202,6 +209,10 @@ public class ReportController {
 			 res.setMsg(ex.getMessage());
 			 res.setResult(CommonsConstant.RESULT_FALSE);
 		 }
+		
+		long end = System.currentTimeMillis();
+		System.out.println("endtime: " + DateUtil.format(new Date())+" flag="+flag);
+		System.out.println("flag="+flag+": 生成报告 " + filename + " time: " + (end-begin));
 		 return res;
 	}
 	

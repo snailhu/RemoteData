@@ -40,7 +40,6 @@ import DataAn.wordManager.config.OptionConfig;
 
 @Service
 public class JfreechartServiceImpl implements IJfreechartServcie {
-
 	@Resource
 	private IMongoService mongoService;
 
@@ -54,7 +53,7 @@ public class JfreechartServiceImpl implements IJfreechartServcie {
 			Map<String, List<ConstraintDto>> constraintsMap) throws Exception {
 		
 		StringBuffer sb = new StringBuffer();
-		sb.append("come in createLineChart.."+"\n");
+		sb.append(DateUtil.format(new Date())+" come in createLineChart.."+"\n");
 		sb.append("series: " + series+"\n");
 		sb.append("star: " + star+"\n");
 		sb.append("paramType: " + paramType+"\n");

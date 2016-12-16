@@ -23,6 +23,7 @@ import DataAn.common.pageModel.JsonMessage;
 import DataAn.common.utils.DateUtil;
 import DataAn.galaxyManager.domain.DeviceType;
 import DataAn.galaxyManager.dto.DeviceDto;
+import DataAn.galaxyManager.dto.DeviceViewDTO;
 import DataAn.galaxyManager.dto.QueryDeviceDTO;
 import DataAn.galaxyManager.dto.QueryDeviceTypeDTO;
 import DataAn.galaxyManager.dto.SeriesDto;
@@ -61,6 +62,11 @@ public class DeviceController {
 		return "admin/galaxy/deviceList";
 	}
 
+	@RequestMapping("/deviceIndex")
+	public String indexOfDevice(Model model) {
+		return "admin/galaxy/deviceIndex";
+	}
+
 	@RequestMapping(value = "getDeviceTypePager", method = RequestMethod.POST)
 	@ResponseBody
 	public EasyuiDataGridJson getDeviceTypePager(int page, int rows, HttpServletRequest request,
@@ -85,12 +91,35 @@ public class DeviceController {
 		return json;
 	}
 
+	@RequestMapping(value = "getDeviceIndexPager", method = RequestMethod.POST)
+	@ResponseBody
+	public EasyuiDataGridJson getDeviceIndexPager(int page, int rows, HttpServletRequest request,
+			HttpServletResponse response) {
+		String deviceType = request.getParameter("parameterType");
+		String model = request.getParameter("model");
+		EasyuiDataGridJson json = new EasyuiDataGridJson();
+		System.out.println("come in getDeviceTypePager...");
+		System.out.println("pageIndex: " + page);
+		System.out.println("pageSize: " + rows);
+		System.out.println("deviceType: " + deviceType);
+		System.out.println("model: " + model);
+		try {
+			Pager<DeviceViewDTO> pager = deviceService.pageDeviceViewDTO(page, rows, deviceType, model);
+			json.setRows(pager.getDatas());
+			json.setTotal(pager.getTotalCount());
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return json;
+	}
+
 	@RequestMapping("/getDevicesByParam")
 	@ResponseBody
-	public List<QueryDeviceDTO> getDevicesByParam(String series, String star, String deviceType) {
+	public List<QueryDeviceDTO> getDevicesByParam(String series, String star, String deviceType, String model) {
 		List<QueryDeviceDTO> list = null;
 		try {
-			list = deviceService.getDeviceByParam(series, star, deviceType);
+			list = deviceService.getDeviceByParam(series, star, deviceType, model);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

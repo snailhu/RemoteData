@@ -29,11 +29,11 @@ public class SaveFileTaskSingleServiceImpl implements ISaveFileTaskSingleService
 	@Override
 	public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
 		if(!flag){
+			flag=true;
 			//开另外一个线程处理存入kafka的数据
 			//new Thread(new SaveFileToKafka(paramService, mongoService)).start();
 			//初始化数据 //TODO ?
 			//initDataService.initDataBase();
-			flag=true;
 		}
 		return bean;
 	}

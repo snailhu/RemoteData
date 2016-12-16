@@ -12,6 +12,7 @@ import DataAn.common.dao.Pager;
 import DataAn.common.utils.DateUtil;
 import DataAn.galaxyManager.dao.IDeviceDao;
 import DataAn.galaxyManager.domain.Device;
+import DataAn.galaxyManager.domain.Star;
 
 @Repository
 public class DeviceDaoImpl extends BaseDaoImpl<Device> implements IDeviceDao {
@@ -29,7 +30,7 @@ public class DeviceDaoImpl extends BaseDaoImpl<Device> implements IDeviceDao {
 		if (StringUtils.isNotBlank(deviceType)) {
 			hql += " and d.deviceType = " + deviceType;
 		}
-		hql += " order by d.createDate";
+		hql += " order by d.seriersId,d.starId,d.editDate desc";
 		return this.getSession().createQuery(hql).list();
 	}
 
@@ -46,7 +47,7 @@ public class DeviceDaoImpl extends BaseDaoImpl<Device> implements IDeviceDao {
 			hql += " and d.starId = " + star;
 			countHQL += " and d.starId = " + star;
 		}
-		hql += " order by d.editDate desc";
+		hql += " order by d.seriersId,d.starId,d.editDate desc";
 		Query query = this.getSession().createQuery(hql);
 		Query countQuery = this.getSession().createQuery(countHQL);
 		List<Device> list = query.setMaxResults(pageSize).setFirstResult(pageSize * (pageIndex - 1)).list();
@@ -66,25 +67,24 @@ public class DeviceDaoImpl extends BaseDaoImpl<Device> implements IDeviceDao {
 		List<Device> devices = this.getSession().createQuery(hql).list();
 		int totalDays = 0;
 		for (Device device : devices) {
-			int days = DateUtil.daysOfTwo(device.getStartDate(), new Date());
-			if (device.getEndDate() != null) {
-				days = DateUtil.daysOfTwo(device.getStartDate(), device.getEndDate());
+			if (device.getRunStatus() == 0) {
+				totalDays += device.getRunDays();
+			} else if (device.getRunStatus() == 1) {
+				int days = DateUtil.daysOfTwo(device.getStartDate(), new Date());
+				days += device.getRunDays();
+				totalDays += days;
 			}
-			totalDays += days;
 		}
 		return totalDays;
 	}
 
 	@Override
 	public int getTotalRuntimeByStar(String series, String star) {
-		String hql = "from Device d where d.seriersId = " + series + " and d.starId=" + star;
-		List<Device> devices = this.getSession().createQuery(hql).list();
+		String hql = "from Star d where d.series.id= " + series + " and d.id=" + star;
+		List<Star> stars = this.getSession().createQuery(hql).list();
 		int totalDays = 0;
-		for (Device device : devices) {
-			int days = DateUtil.daysOfTwo(device.getStartDate(), new Date());
-			if (device.getEndDate() != null) {
-				days = DateUtil.daysOfTwo(device.getStartDate(), device.getEndDate());
-			}
+		for (Star starDomain : stars) {
+			int days = DateUtil.daysOfTwo(starDomain.getStartRunDate(), new Date());
 			totalDays += days;
 		}
 		return totalDays;
@@ -92,14 +92,11 @@ public class DeviceDaoImpl extends BaseDaoImpl<Device> implements IDeviceDao {
 
 	@Override
 	public int getTotalRuntimeBySeries(String series) {
-		String hql = "from Device d where d.seriersId = " + series;
-		List<Device> devices = this.getSession().createQuery(hql).list();
+		String hql = "from Star d where d.series.id = " + series;
+		List<Star> stars = this.getSession().createQuery(hql).list();
 		int totalDays = 0;
-		for (Device device : devices) {
-			int days = DateUtil.daysOfTwo(device.getStartDate(), new Date());
-			if (device.getEndDate() != null) {
-				days = DateUtil.daysOfTwo(device.getStartDate(), device.getEndDate());
-			}
+		for (Star starDomain : stars) {
+			int days = DateUtil.daysOfTwo(starDomain.getStartRunDate(), new Date());
 			totalDays += days;
 		}
 		return totalDays;

@@ -11,11 +11,11 @@ import org.springframework.stereotype.Service;
 
 import DataAn.Analysis.dto.ConstraintDto;
 import DataAn.common.dao.Pager;
-import DataAn.galaxyManager.option.J9Series_Star_ParameterType;
 import DataAn.galaxyManager.dao.ISeriesDao;
 import DataAn.galaxyManager.dao.IStarDao;
 import DataAn.galaxyManager.domain.Series;
 import DataAn.galaxyManager.domain.Star;
+import DataAn.galaxyManager.option.J9Series_Star_ParameterType;
 import DataAn.galaxyManager.service.IJ9Series_Star_Service;
 import DataAn.galaxyManager.service.IParameterService;
 import DataAn.reportManager.dao.IStarParamDao;
@@ -31,53 +31,56 @@ public class StarParamServiceImpl implements IStarParamService {
 	
 	@Resource
 	private ISeriesDao seriesDao;
-	
+
 	@Resource
 	private IStarDao starDao;
-	
+
 	@Resource
 	private IJ9Series_Star_Service j9Series_Star_Service;
-	
+
 	@Resource
 	private IParameterService iParameterService;
-	
-	
-	@Override
-	public Pager<StarParamDto> getStarParamList(int pageIndex, int pageSize, String series, String star, String partsType,String paramCode) throws Exception {
 
-		if(pageIndex == 0){
+	@Override
+	public Pager<StarParamDto> getStarParamList(int pageIndex, int pageSize, String series, String star,
+			String partsType, String paramCode) throws Exception {
+
+		if (pageIndex == 0) {
 			pageIndex = 1;
 		}
-		List<StarParamDto>  starParamModelList = new ArrayList<StarParamDto>();
-		Pager<StarParam> paramPager = starParamDao.selectByOption(pageIndex, pageSize, series, 
-				star, partsType,paramCode); 
+		List<StarParamDto> starParamModelList = new ArrayList<StarParamDto>();
+		Pager<StarParam> paramPager = starParamDao.selectByOption(pageIndex, pageSize, series, star, partsType,
+				paramCode);
 		List<StarParam> userList = paramPager.getDatas();
 		for (StarParam starParam : userList) {
 			starParamModelList.add(pojoToDto(starParam));
 		}
-		Pager<StarParamDto> pager = new Pager<StarParamDto>(pageIndex, pageSize, paramPager.getTotalCount(), starParamModelList);
-		return pager;			
+		Pager<StarParamDto> pager = new Pager<StarParamDto>(pageIndex, pageSize, paramPager.getTotalCount(),
+				starParamModelList);
+		return pager;
 	}
-	
+
 	private StarParamDto pojoToDto(StarParam starParam) throws Exception {
 		StarParamDto starParamDto = new StarParamDto();
 		starParamDto.setId(starParam.getId());
 		starParamDto.setParamCode(starParam.getParamCode());
-		starParamDto.setParamName(getParamCNname(starParam.getSeries(),starParam.getStar(),starParam.getParamCode()));
+		starParamDto.setParamName(getParamCNname(starParam.getSeries(), starParam.getStar(), starParam.getParamCode()));
 		starParamDto.setEffeMin(starParam.getEffeMin());
 		starParamDto.setEffeMax(starParam.getEffeMax());
 		starParamDto.setParameterType(starParam.getParameterType());
 		starParamDto.setProductName(starParam.getProductName());
-		starParamDto.setPartsType(J9Series_Star_ParameterType.getJ9SeriesStarParameterType(starParam.getPartsType()).getName());
+		starParamDto.setPartsType(
+				J9Series_Star_ParameterType.getJ9SeriesStarParameterType(starParam.getPartsType()).getName());
 		starParamDto.setSeries(getSeriesName(starParam.getSeries()));
-		starParamDto.setStar(getStarName(starParam.getSeries(),starParam.getStar()));
+		starParamDto.setStar(getStarName(starParam.getSeries(), starParam.getStar()));
 		starParamDto.setCreater(starParam.getCreater());
 		starParamDto.setCreateDate(starParam.getCreateDate());
+		starParamDto.setValueUnit(starParam.getValueUnit());
 		return starParamDto;
 	}
 
-	private String getStarName(String series,String star) {
-		return starDao.getStarName(series,star);
+	private String getStarName(String series, String star) {
+		return starDao.getStarName(series, star);
 	}
 
 	private String getSeriesName(String series) {
@@ -91,25 +94,29 @@ public class StarParamServiceImpl implements IStarParamService {
 		starParam.setSeries(starParamDto.getSeries());
 		starParam.setStar(starParamDto.getStar());
 		starParam.setPartsType(starParamDto.getPartsType());
-		starParam.setParameterType(j9Series_Star_Service.getFlyWheelParameterType(starParamDto.getSeries(),starParamDto.getStar(),starParamDto.getPartsType(),starParamDto.getParamCode()));
-		starParam.setProductName(j9Series_Star_Service.getFlyWheelName(starParamDto.getSeries(),starParamDto.getStar(),starParamDto.getPartsType(),starParamDto.getParamCode()));
+		starParam.setParameterType(j9Series_Star_Service.getFlyWheelParameterType(starParamDto.getSeries(),
+				starParamDto.getStar(), starParamDto.getPartsType(), starParamDto.getParamCode()));
+		starParam.setProductName(j9Series_Star_Service.getFlyWheelName(starParamDto.getSeries(), starParamDto.getStar(),
+				starParamDto.getPartsType(), starParamDto.getParamCode()));
 		starParam.setParamCode(starParamDto.getParamCode());
-		starParam.setParamName(iParameterService.getParameter_simpleZh_by_en(starParamDto.getSeries(),starParamDto.getStar(),starParamDto.getPartsType(),starParamDto.getParamCode()));
+		starParam.setParamName(iParameterService.getParameter_simpleZh_by_en(starParamDto.getSeries(),
+				starParamDto.getStar(), starParamDto.getPartsType(), starParamDto.getParamCode()));
 		starParam.setEffeMin(starParamDto.getEffeMin());
 		starParam.setEffeMax(starParamDto.getEffeMax());
 		starParam.setCreateDate(new Date());
+		starParam.setValueUnit(starParamDto.getValueUnit());
 		starParamDao.add(starParam);
 	}
-	
-	private String getParamCNname(String series ,String star,String EnName) throws Exception {
+
+	private String getParamCNname(String series, String star, String EnName) throws Exception {
 		String cnName = "";
-		for (ConstraintDto constraintDto : j9Series_Star_Service.getFlyWheelParameterList(series,star)) {
+		for (ConstraintDto constraintDto : j9Series_Star_Service.getFlyWheelParameterList(series, star)) {
 			if (EnName.equals(constraintDto.getValue())) {
 				cnName = constraintDto.getName();
 				break;
 			}
 		}
-		for (ConstraintDto constraintDto : j9Series_Star_Service.getTopParameterList(series,star)) {
+		for (ConstraintDto constraintDto : j9Series_Star_Service.getTopParameterList(series, star)) {
 			if (EnName.equals(constraintDto.getValue())) {
 				cnName = constraintDto.getName();
 				break;
@@ -119,13 +126,13 @@ public class StarParamServiceImpl implements IStarParamService {
 	}
 
 	@Override
-	public boolean cherkStarParam(String series,String star,String partsType,String paramCode) {
-		return starParamDao.cherkStarParam( series, star, partsType, paramCode);
+	public boolean cherkStarParam(String series, String star, String partsType, String paramCode) {
+		return starParamDao.cherkStarParam(series, star, partsType, paramCode);
 	}
 
 	@Override
 	public void update(StarParamDto starParamDto) throws Exception {
-		
+
 		StarParam starParam = starParamDao.get(starParamDto.getId());
 		if (StringUtils.isNotBlank(starParamDto.getSeries())) {
 			starParam.setSeries(starParamDto.getSeries());
@@ -138,24 +145,28 @@ public class StarParamServiceImpl implements IStarParamService {
 		}
 		if (StringUtils.isNotBlank(starParamDto.getParamCode())) {
 			starParam.setParamCode(starParamDto.getParamCode());
-			starParam.setParamName(getParamCNname(starParamDto.getSeries(),starParamDto.getStar(),starParamDto.getParamCode()));
-			starParam.setParameterType(j9Series_Star_Service.getFlyWheelParameterType(starParamDto.getSeries(),starParamDto.getStar(),starParamDto.getPartsType(),starParamDto.getParamCode()));
-			starParam.setProductName(j9Series_Star_Service.getFlyWheelName(starParamDto.getSeries(),starParamDto.getStar(),starParamDto.getPartsType(),starParamDto.getParamCode()));
+			starParam.setParamName(
+					getParamCNname(starParamDto.getSeries(), starParamDto.getStar(), starParamDto.getParamCode()));
+			starParam.setParameterType(j9Series_Star_Service.getFlyWheelParameterType(starParamDto.getSeries(),
+					starParamDto.getStar(), starParamDto.getPartsType(), starParamDto.getParamCode()));
+			starParam.setProductName(j9Series_Star_Service.getFlyWheelName(starParamDto.getSeries(),
+					starParamDto.getStar(), starParamDto.getPartsType(), starParamDto.getParamCode()));
 		}
 		starParam.setEffeMax(starParamDto.getEffeMax());
 		starParam.setEffeMin(starParamDto.getEffeMin());
+		starParam.setValueUnit(starParamDto.getValueUnit());
 		starParamDao.update(starParam);
 	}
 
 	@Override
 	public void delete(String[] starParamIdArray) {
 		for (String starParamId : starParamIdArray) {
-			starParamDao.delete(Long.parseLong(starParamId)); 
+			starParamDao.delete(Long.parseLong(starParamId));
 		}
 	}
 
 	@Override
-	public List<Series> getSeriesList() { 
+	public List<Series> getSeriesList() {
 		return seriesDao.list("from Series s");
 	}
 
@@ -166,15 +177,16 @@ public class StarParamServiceImpl implements IStarParamService {
 
 	@Override
 	public List<StarParam> getStarParamForReport(String seriesId, String starId, String partsType) {
-		return starParamDao.getStarParamForReport(seriesId,starId,partsType);
+		return starParamDao.getStarParamForReport(seriesId, starId, partsType);
 	}
+
 	@Override
-	public List<ConstraintDto> getConstraintList(String series,String star,String paramType) throws Exception{
+	public List<ConstraintDto> getConstraintList(String series, String star, String paramType) throws Exception {
 		List<ConstraintDto> constraintDtoList = new ArrayList<ConstraintDto>();
-		
+
 		List<ConstraintDto> list = j9Series_Star_Service.getParameterList(series, star, paramType);
 		for (ConstraintDto constraintDto : list) {
-			if(constraintDto.getParentId() != 0) {
+			if (constraintDto.getParentId() != 0) {
 				constraintDtoList.add(constraintDto);
 			}
 		}
@@ -183,6 +195,6 @@ public class StarParamServiceImpl implements IStarParamService {
 
 	@Override
 	public StarParam getParamById(Long id) {
-		return  starParamDao.get(id);
+		return starParamDao.get(id);
 	}
 }

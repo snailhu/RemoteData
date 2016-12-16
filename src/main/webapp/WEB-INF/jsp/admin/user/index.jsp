@@ -89,6 +89,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	border:1px solid #CCC;
 	border-radius:5px 5px 5px 5px;
 }
+.combo-arrow{
+	background:url('${pageContext.request.contextPath}/static/imgs/arrow.png') no-repeat right center;
+	width:300px;
+}
+.combo-arrow:hover {
+    background-color: transparent;
+}
 </style>
 <script type="text/javascript">
 	$(function() {
@@ -655,6 +662,7 @@ $("#search-createdatetimeEnd").keypress(function(){
 			    valueField:'value',
 			    textField:'text'
 			}); 
+    		$(".combo-arrow").css("width","300px");
         }
        function submit_editUserRole(){
 			var userId = $("#editUserRole-userId").attr("value");

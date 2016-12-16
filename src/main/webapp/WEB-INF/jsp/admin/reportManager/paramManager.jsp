@@ -235,6 +235,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						}
 					}
 				},
+				valueUnit : {
+					validators : {
+						notEmpty : {
+							message : '单位不能为空'
+						}
+					}
+				},
 				effeMax : {
 					validators : {
 						notEmpty : {
@@ -305,6 +312,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					validators : {
 						notEmpty : {
 							message : '请选择参数'
+						}
+					}
+				},
+				valueUnit : {
+					validators : {
+						notEmpty : {
+							message : '单位不能为空'
 						}
 					}
 				},
@@ -516,6 +530,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 										<input type="text" name="effeMax" id="add-starParam-effeMax" placeholder="最大有效值" class="form-control" />
 									</div>
 								</div>
+								<div class="space-4"></div>
+								<div class="form-group">
+									<label class="col-sm-3 control-label no-padding-right" for="add-starParam-valueUnit"> 单位： </label>
+									<div class="col-sm-6">
+										<input type="text" name="valueUnit" id="add-starParam-valueUnit" placeholder="单位" class="form-control" />
+									</div>
+								</div>
 								
 							</div>
 							<div class="modal-footer">
@@ -584,6 +605,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 									<label class="col-sm-3 control-label no-padding-right" for="edit-starParam-effeMax"> 最大有效值： </label>
 									<div class="col-sm-6">
 										<input type="text" name="effeMax" id="edit-starParam-effeMax" placeholder="最大有效值" class="form-control" />
+									</div>
+								</div>
+								<div class="space-4"></div>
+								<div class="form-group">
+									<label class="col-sm-3 control-label no-padding-right" for="edit-starParam-valueUnit"> 单位： </label>
+									<div class="col-sm-6">
+										<input type="text" name="valueUnit" id="edit-starParam-valueUnit" placeholder="单位" class="form-control" />
 									</div>
 								</div>
 								<input type="hidden" name="id" id="edit-starParam-id" />
@@ -685,6 +713,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                     field: 'effeMax',
                     title: '最大有效值',
                     width: 100
+                }, {
+                    field: 'valueUnit',
+                    title: '单位',
+                    width: 80
                 }
                 ]],
 
@@ -1175,6 +1207,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							 $('#edit-starParam-id').val(sp.data.starParam.id);
 							 $('#edit-starParam-effeMin').val(sp.data.starParam.effeMin);
 							 $('#edit-starParam-effeMax').val(sp.data.starParam.effeMax);
+							 $('#edit-starParam-valueUnit').val(sp.data.starParam.valueUnit);
 						  }
 					  });
 					 $('#editStarParamModal').modal('show');

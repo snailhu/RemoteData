@@ -1,6 +1,7 @@
 package DataAn.jfreechart.thread;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -23,7 +24,7 @@ import DataAn.jfreechart.dto.LineTimeSeriesDto2;
 import DataAn.mongo.client.MongodbUtil;
 import DataAn.mongo.init.InitMongo;
 
-public class SearchByDayTask2 extends RecursiveTask<LineChartDto>{
+public class SearchByDayTask4 extends RecursiveTask<LineChartDto>{
 
 	private static final long serialVersionUID = 1L;
 	
@@ -35,7 +36,7 @@ public class SearchByDayTask2 extends RecursiveTask<LineChartDto>{
 	private Map<String, List<ConstraintDto>> constraintsMap;
 	
 	
-	public SearchByDayTask2(String series, String star, String paramType,
+	public SearchByDayTask4(String series, String star, String paramType,
 			Date beginDate, Date endDate,
 			Map<String, List<ConstraintDto>> constraintsMap) {
 		super();
@@ -80,19 +81,37 @@ public class SearchByDayTask2 extends RecursiveTask<LineChartDto>{
 		long begin = System.currentTimeMillis();
 		System.out.println("begin get mongodb data...");
 		
-		
 		//获取数据
-		List<SearchByDayDoneTask2> forks = new LinkedList<SearchByDayDoneTask2>();
-		Calendar cal = Calendar.getInstance();
-		cal.setTime(beginDate);
-		while(cal.getTime().before(endDate)){
-			Date tempDate = cal.getTime();
-//			cal.set(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DATE)+1);
-			cal.set(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DATE),cal.get(Calendar.HOUR_OF_DAY)+12,0);
-			SearchByDayDoneTask2 task = new SearchByDayDoneTask2(arrayDataMap, databaseName, collectionName, 
-					beginDate, tempDate, cal.getTime(), paramMinMap, paramMaxMap, paramsMap);
-			forks.add(task);
-			task.fork();
+		List<Integer> taskIntervalList = new ArrayList<Integer>();
+		for (int j = 1; j <= 10; j++) {
+			taskIntervalList.add(getFibo(j));
+		}
+		Date tempBeginDate = beginDate;
+		Date tempEndDate = null;
+		List<List<SearchByDayDoneTask2>> forksList = new ArrayList<List<SearchByDayDoneTask2>>();
+		List<SearchByDayDoneTask2> forks = null;
+		boolean flag = false;
+		for (Integer taskInterval : taskIntervalList) {
+			forks = new LinkedList<SearchByDayDoneTask2>();
+			for (int i = 0; i < taskInterval; i++) {
+				long tempTime = tempBeginDate.getTime() + 1000 * 60 * 60 * 12;
+				if(tempTime <= endDate.getTime()){
+					tempEndDate = new Date(tempTime);
+					
+					SearchByDayDoneTask2 task = new SearchByDayDoneTask2(arrayDataMap, databaseName, collectionName, 
+							beginDate, tempBeginDate, tempEndDate, paramMinMap, paramMaxMap, paramsMap);
+					forks.add(task);
+					task.fork();
+					
+					tempBeginDate = tempEndDate;
+				}else{
+					flag = true;
+					break;
+				}
+			}
+			forksList.add(forks);
+			if(flag)
+				break;
 		}
 		
 		//参数集
@@ -104,60 +123,35 @@ public class SearchByDayTask2 extends RecursiveTask<LineChartDto>{
 		Map<String, Double> maxMap = new HashMap<String, Double>();
 		
 		LineMapDto lineMapDto = null;
-//		Map<String, Double> tempMinMap = null;	
-//		Map<String, Double> tempMaxMap = null;
 		LineTimeSeriesDto2[] arrayData = null;
 		LineTimeSeriesDto2 lineTimeSeriesDto = null;
-		for (SearchByDayDoneTask2 task : forks) {
-			lineMapDto = task.join();
-			int task_index = lineMapDto.getIndex();
-			int task_count = lineMapDto.getCount();
-			System.out.println(lineMapDto);	
-			
-//			// 获取最小值
-//			tempMinMap = lineMapDto.getMinMap();
-//			if(tempMinMap != null){
-//				for (String paramCode : en_params) {
-//					Double min = minMap.get(paramCode);
-//					if (min == null) {
-//						min = tempMinMap.get(paramCode);
-//					}
-//					if(tempMinMap.get(paramCode) != null){
-//						minMap.put(paramCode, this.getMin(min, tempMinMap.get(paramCode)));							
-//					}
-//				}
-//			}
-//			//获取最大值
-//			tempMaxMap = lineMapDto.getMaxMap();
-//			if(tempMaxMap != null){
-//				for (String paramCode : en_params) {
-//					Double max = maxMap.get(paramCode);
-//					if (max == null) {
-//						max = tempMaxMap.get(paramCode);
-//					}
-//					if(tempMaxMap.get(paramCode) != null){
-//						maxMap.put(paramCode, this.getMax(max, tempMaxMap.get(paramCode)));							
-//					}
-//				}
-//			}
-			
-			////遍历数据
-			for (String paramCode : en_params) {
-				timeseries = lineMap.get(paramCode);
-				if (timeseries == null) {
-					timeseries = ChartUtils.createTimeseries(paramsMap.get(paramCode));
-				}
-				arrayData = arrayDataMap.get(paramCode);
-				for (int i = 0; i < task_count; i++) {
-					lineTimeSeriesDto = arrayData[task_index+i];
-					if(lineTimeSeriesDto != null){
-						// 往序列里面添加数据
-						timeseries.addOrUpdate(new Second(lineTimeSeriesDto.getDatetime()), lineTimeSeriesDto.getParamValue());
+		for (int j = 0; j < forksList.size(); j++) {
+			forks = forksList.get(j);
+			for (SearchByDayDoneTask2 task : forks) {
+				lineMapDto = task.join();
+				int task_index = lineMapDto.getIndex();
+				int task_count = lineMapDto.getCount();
+				System.out.println(lineMapDto);	
+				
+				////遍历数据
+				for (String paramCode : en_params) {
+					timeseries = lineMap.get(paramCode);
+					if (timeseries == null) {
+						timeseries = ChartUtils.createTimeseries(paramsMap.get(paramCode));
 					}
+					arrayData = arrayDataMap.get(paramCode);
+					for (int i = 0; i < task_count; i++) {
+						lineTimeSeriesDto = arrayData[task_index+i];
+						if(lineTimeSeriesDto != null){
+							// 往序列里面添加数据
+							timeseries.addOrUpdate(new Second(lineTimeSeriesDto.getDatetime()), lineTimeSeriesDto.getParamValue());
+						}
+					}
+					lineMap.put(paramCode, timeseries);
 				}
-				lineMap.put(paramCode, timeseries);
 			}
 		}
+		
 		
 		//获取最值
 		for (String paramCode : en_params) {
@@ -167,28 +161,7 @@ public class SearchByDayTask2 extends RecursiveTask<LineChartDto>{
 		}
 		
 		long end = System.currentTimeMillis();
-		System.out.println("获取 mongodb 数据总时间： " + (end-begin));
-		
-//		long beginTimeSeries = System.currentTimeMillis();
-//		System.out.println("begin TimeSeries...");
-//		//遍历数据
-//		Map<String,CreateTimeSeriesDataTask> dataForksMap = new HashMap<String,CreateTimeSeriesDataTask>();
-//		for (String paramCode : en_params) {
-//			CreateTimeSeriesDataTask task = new CreateTimeSeriesDataTask(arrayDataMap.get(paramCode), 
-//					paramCode, paramsMap.get(paramCode));
-//			dataForksMap.put(paramCode, task);
-//			task.fork();
-//		}
-//		// 多条线数据
-//		Map<String, TimeSeries> lineMap = new HashMap<String, TimeSeries>();
-//		TimeSeries timeseries = null;
-//		for (String key : dataForksMap.keySet()) {
-//			timeseries = dataForksMap.get(key).join();
-//			lineMap.put(key, timeseries);
-//		}
-//		long endTimeSeries = System.currentTimeMillis();
-//		System.out.println("获取 TimeSeries 数据总时间： " + (endTimeSeries-beginTimeSeries));
-		
+		System.out.println("获取 mongodb 数据总时间： " + (end-begin));		
 		
 		long beginChart = System.currentTimeMillis();
 		System.out.println("begin Chart...");
@@ -239,5 +212,12 @@ public class SearchByDayTask2 extends RecursiveTask<LineChartDto>{
 		if (data1 <= data2)
 			return data1;
 		return data2;
+	}
+	
+	protected int getFibo(int i) {
+		if (i == 1 || i == 2)
+			return 1;
+		else
+		return getFibo(i - 1) + getFibo(i - 2);
 	}
 }

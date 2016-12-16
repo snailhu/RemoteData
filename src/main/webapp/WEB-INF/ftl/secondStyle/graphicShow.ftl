@@ -382,43 +382,42 @@
              	  var i=0
              	  var yname = 0;
              	  var legendname ="";
-             	  var unit="";          	  
+             	  var unit=null;          	  
              	  var Y1name ="Y1轴";
              	  var Y1nametemp ="Y1轴";
+             	  
              	  var Y2name ="Y2轴";
              	  var Y2nametemp ="Y2轴";
              	  
              	  for(var param in data){             	  
 	             	  unit = names[names.length-1-i].unit;
-	             	  yname  = names[names.length-1-i].y;
+	             	  yname  = names[names.length-1-i].y;	  				  
+	  				  //Y1轴
 	  				  if(yname==0)
 	  				  {
 	  				  	Y1nametemp = Y1name;
-	  				  	Y1name ="Y1轴("+unit+")";
-	  				  	console.log(Y1nametemp+"-------"+Y1name)	  				  	
-	  				  	if((Y1name!=Y1nametemp))
-	  				  	{
-	  				  		if(Y1nametemp=="Y1轴")
-	  				  		{}
-	  				  		else{
-	  				  			Y1name ="Y1轴";
-	  				  		}	
+	  				  	Y1name ="Y1轴"+"("+unit+")";  				  	
+	  				  	if((Y1nametemp!="Y1轴") && (Y1name!=Y1nametemp))
+	  				  	{	  				  		
+	  				  			Y1name ="Y1轴 ";
+	  				  			
 	  				  	}
 	  				  	
 	  				  }
+	  				  //Y2轴
 	  				  if(yname==1)
 	  				  {
 	  				    var Y2nametemp =Y2name;
-	  				  	Y2name ="Y2轴("+unit+")";	  				  	
-	  				  	if(Y2name!=Y2nametemp)
+	  				  	Y2name ="Y2轴"+"("+unit+")";	  				  	
+	  				  	if((Y2nametemp!="Y2轴")&&(Y2name!=Y2nametemp))
 	  				  	{
-	  				  		Y2name ="Y2轴";
+	  				  		Y2name ="Y2轴 ";
 	  				  	}
 	  				  }
   				  
 	             	  legendname =names[names.length-1-i].name;
-	             	  console.log(names.length);
-	             	  console.log(yname+legendname+unit);            	  	
+	             	  //console.log(names.length);
+	             	  //console.log(yname+legendname+unit);            	  	
 	             	  	seriesOptions[i++] = {
 				            	type: 'line',
 				                //name: param,

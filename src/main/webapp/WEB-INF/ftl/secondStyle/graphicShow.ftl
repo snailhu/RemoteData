@@ -17,11 +17,11 @@
     <link type="text/css" rel="stylesheet" href="${base}/static/content/jeDate/jedate/skin/jedate.css">
     <script type="text/javascript" src="${base}/static/content/jeDate/jedate/jedate.js"></script>
     <!-- 颜色选择器 -->
-<!--     <link rel="stylesheet" href="${base}/static/content/minicolors/bootstrap.min.css"> -->
-<!-- 	<script type="text/javascript" src="${base}/static/content/minicolors/bootstrap.min.js"></script> -->
-<!--	<link rel="stylesheet" href="${base}/static/content/minicolors/jquery.minicolors.css"> -->
-<!--    <script type="text/javascript" src="${base}/static/content/minicolors/jquery.minicolors.js"></script> -->
-<!--    <script type="text/javascript" src="${base}/static/content/minicolors/jquery.colorpicker.js"></script> -->
+    	<link rel="stylesheet" href="${base}/static/content/minicolors/bootstrap.min.css">
+		<script type="text/javascript" src="${base}/static/content/minicolors/bootstrap.min.js"></script>
+		<link rel="stylesheet" href="${base}/static/content/minicolors/jquery.minicolors.css">
+		<script type="text/javascript" src="${base}/static/content/minicolors/jquery.minicolors.js"></script>
+		<script type="text/javascript" src="${base}/static/content/minicolors/jquery.colorpicker.js"></script>
     
     <!-- ps颜色选择器 -->
 <!--     <link rel="stylesheet" type="text/css" href="${base}/static/content/pscolors/css/colorpicker.css"/> -->
@@ -37,8 +37,8 @@
     <!--<script src=${base}/static/assets/js/bootstrap-tag.min.js"></script>-->
     <script src="${pageContext.request.contextPath}/DataRemote/static/assets/js/bootstrap.min.js"></script>
 	<script src="${pageContext.request.contextPath}/DataRemote/static/assets/js/typeahead-bs2.min.js"></script>
-	<!-- 颜色选择器 -->
-	<script type="text/javascript" src="${base}/static/content/minicolors/jscolor.js"></script>
+	<!-- 颜色选择器jscolor -->
+	<!-- <script type="text/javascript" src="${base}/static/content/minicolors/jscolor.js"></script> -->
     <style type="text/css">
     .dateStyle{
     	margin-left: 80px;
@@ -759,7 +759,7 @@ $.post("getDatabytap",
 					}
               }
         });
-/*
+
     	//设置颜色
     	$('.demo').each( function() {
 			$(this).minicolors({
@@ -804,7 +804,7 @@ $.post("getDatabytap",
         	options.series = eval(seriesOptionsDam);
             myChart.setOption(options);
         })
- */
+
     })
     
     function needGetDate(){

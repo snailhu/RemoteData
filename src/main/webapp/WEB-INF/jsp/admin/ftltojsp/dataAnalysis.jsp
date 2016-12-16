@@ -103,11 +103,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	.dateSelect select{
 		height: 35px;
     	width: 100px;
-    	color:  #b2b2b2;
-    	/* background-color: #4B92DD; */
+    	background-color: #f3f3f3;
     	border-width: 1px;
     	cursor: pointer;
     	margin-right:20px;
+    	border:1px solid #CCC;
 	}
 	#dateStart-div,#dateEnd-div{
 		display:inline;
@@ -517,9 +517,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 //     	$("#dateStart").jqxDateTimeInput({width: '175px', height: '30px'});
 //     	$("#dateEnd").jqxDateTimeInput({width: '175px', height: '30px'});
         
-         $("#btn_flywheel").jqxButton({ width: '60', height: '30'});
-         $("#btn_top").jqxButton({ width: '60', height: '30'});
-         $("#edit_component").jqxButton({ width: '60', height: '20'});
+         $("#btn_flywheel").jqxButton({ width: '35', height: '30'});
+         $("#btn_top").jqxButton({ width: '35', height: '30'});
+         $("#edit_component").jqxButton({ width: '35', height: '20'});
          
 		 $("#jqxButton-getParameters").jqxButton({ width: '100', height: '30'});	
 		 $("#jqxButton-getParameters").click( function ()  {    

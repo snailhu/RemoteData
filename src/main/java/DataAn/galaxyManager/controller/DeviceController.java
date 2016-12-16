@@ -20,13 +20,14 @@ import DataAn.common.dao.Pager;
 import DataAn.common.pageModel.Combo;
 import DataAn.common.pageModel.EasyuiDataGridJson;
 import DataAn.common.pageModel.JsonMessage;
-import DataAn.galaxyManager.option.J9Series_Star_ParameterType;
+import DataAn.common.utils.DateUtil;
 import DataAn.galaxyManager.domain.DeviceType;
 import DataAn.galaxyManager.dto.DeviceDto;
 import DataAn.galaxyManager.dto.QueryDeviceDTO;
 import DataAn.galaxyManager.dto.QueryDeviceTypeDTO;
 import DataAn.galaxyManager.dto.SeriesDto;
 import DataAn.galaxyManager.dto.StarDto;
+import DataAn.galaxyManager.option.J9Series_Star_ParameterType;
 import DataAn.galaxyManager.service.IDeviceService;
 import DataAn.galaxyManager.service.ISeriesService;
 import DataAn.galaxyManager.service.IStarService;
@@ -168,6 +169,51 @@ public class DeviceController {
 	public JsonMessage editDevice(DeviceDto deviceDto, HttpServletRequest request, HttpServletResponse response) {
 		JsonMessage jsonMsg = new JsonMessage();
 		try {
+			QueryDeviceDTO device = deviceService.getDeviceById(deviceDto.getDeviceId());
+			if (StringUtils.isNotBlank(deviceDto.getStartDate())) {
+				if (deviceDto.getRunStatus() == 0) {
+					if (StringUtils.isNotBlank(device.getEndDate())) {
+						if (DateUtil.format(deviceDto.getStartDate(), "yyyy-MM-dd")
+								.after(DateUtil.format(device.getEndDate(), "yyyy-MM-dd"))) {
+							jsonMsg.setSuccess(false);
+							jsonMsg.setMsg("开始时间不能大于结束时间！");
+							jsonMsg.setObj("开始时间不能大于结束时间！");
+							return jsonMsg;
+						}
+					}
+				}
+				if (deviceDto.getRunStatus() == 1) {
+					if (StringUtils.isNotBlank(device.getEndDate())) {
+						if (DateUtil.format(deviceDto.getStartDate(), "yyyy-MM-dd")
+								.before(DateUtil.format(device.getEndDate(), "yyyy-MM-dd"))) {
+							jsonMsg.setSuccess(false);
+							jsonMsg.setMsg("开始时间不能小于结束时间！");
+							jsonMsg.setObj("开始时间不能小于结束时间！");
+							return jsonMsg;
+						}
+					}
+				}
+			}
+			if (StringUtils.isNotBlank(deviceDto.getEndDate())) {
+				if (deviceDto.getRunStatus() == 0) {
+					if (DateUtil.format(deviceDto.getEndDate(), "yyyy-MM-dd")
+							.before(DateUtil.format(device.getStartDate(), "yyyy-MM-dd"))) {
+						jsonMsg.setSuccess(false);
+						jsonMsg.setMsg("结束时间不能小于开始时间！");
+						jsonMsg.setObj("结束时间不能小于开始时间！");
+						return jsonMsg;
+					}
+				}
+				if (deviceDto.getRunStatus() == 1) {
+					if (DateUtil.format(deviceDto.getEndDate(), "yyyy-MM-dd")
+							.after(DateUtil.format(device.getStartDate(), "yyyy-MM-dd"))) {
+						jsonMsg.setSuccess(false);
+						jsonMsg.setMsg("结束时间不能大于开始时间！");
+						jsonMsg.setObj("结束时间不能大于开始时间！");
+						return jsonMsg;
+					}
+				}
+			}
 			deviceService.updateDevice(deviceDto);
 		} catch (Exception e) {
 			e.printStackTrace();

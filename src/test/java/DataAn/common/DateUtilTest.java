@@ -1,5 +1,8 @@
 package DataAn.common;
 
+import java.util.Calendar;
+import java.util.Date;
+
 import org.junit.Test;
 
 import DataAn.common.utils.DateUtil;
@@ -16,11 +19,30 @@ public class DateUtilTest {
 	
 	@Test
 	public void test2(){
-		long interval = 86388 / 24;
-		System.out.println(interval + "s");
-		long interval1 = interval / 60;
-		System.out.println(interval1 + "m");
-		long interval2 = interval1 / 60;
-		System.out.println(interval2 + "h");
+		Calendar cal = Calendar.getInstance();
+		Date beginDate = DateUtil.format("2016-11-01 00:00:00");
+		cal.setTime(beginDate);
+		Date endDate = DateUtil.format("2016-12-07 00:00:00");
+		while(!endDate.before(cal.getTime())){
+			String day = DateUtil.format(cal.getTime(), "yyyy-MM-dd");
+			System.out.println(day);
+			//beginDate.setDate(beginDate.getDate()+1);
+			cal.set(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DATE)+1);
+		}
+	}
+	
+	@Test
+	public void test3(){
+		Date beginDate = DateUtil.format("2016-12-01 00:00:00");
+		Date endDate = DateUtil.format("2016-12-07 00:00:00");
+		
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(beginDate);
+		while(cal.getTime().before(endDate)){
+			beginDate = cal.getTime();
+			cal.set(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DATE)+1);
+			System.out.println(DateUtil.format(beginDate) + " 到 "+ DateUtil.format(cal.getTime()));
+
+		}
 	}
 }

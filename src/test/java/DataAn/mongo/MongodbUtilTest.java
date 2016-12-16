@@ -53,7 +53,7 @@ public class MongodbUtilTest {
 	@Test
 	public void testCount(){
 		Date beginDate = DateUtil.format("2016-12-01 00:00:00");
-		Date endDate = DateUtil.format("2016-12-07 00:00:00");
+		Date endDate = DateUtil.format("2016-12-01 00:00:00");
 		MongoCollection<Document> collection = mg.getCollection("db_j9_02", "flywheel1s");
 		long count = collection.count(Filters.and(Filters.gte("datetime", beginDate),
 							   Filters.lte("datetime", endDate)));

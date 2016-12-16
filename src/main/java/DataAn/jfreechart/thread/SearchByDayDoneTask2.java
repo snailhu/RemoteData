@@ -56,7 +56,11 @@ public class SearchByDayDoneTask2 extends RecursiveTask<LineMapDto>{
 		}
 		
 		System.out.println(DateUtil.format(beginDate) + " 到 "+ DateUtil.format(endDate) + " begin get mongodb data ...index: " + index);
-				
+		
+		long nowCount = mg.countByDate(databaseName, collectionName, beginDate, endDate);
+		if(nowCount == 0)
+			return null;
+		
 		Map<String, Double> minMap = new HashMap<String, Double>();
 		Map<String, Double> maxMap = new HashMap<String, Double>();
 		//参数集
@@ -78,8 +82,6 @@ public class SearchByDayDoneTask2 extends RecursiveTask<LineMapDto>{
 		long nextTime = 0; //下一个时间截
 		int second_count = 0; //秒级数据集的个数
 		while (cursor.hasNext()) {
-			
-			
 			doc = cursor.next();
 			nextTime = doc.getDate("datetime").getTime();
 			//如果这次的时间截跟上次的时间截不相等
@@ -133,7 +135,9 @@ public class SearchByDayDoneTask2 extends RecursiveTask<LineMapDto>{
 			count++;
 		}
 		if(count == 0){
-			throw new RuntimeException(DateUtil.format(beginDate) + " 到 "+ DateUtil.format(endDate) + " 报告数据记录数为：" + count);
+//			throw new RuntimeException(DateUtil.format(beginDate) + " 到 "+ DateUtil.format(endDate) + " 报告数据记录数为：" + count);
+			System.out.println(DateUtil.format(beginDate) + " 到 "+ DateUtil.format(endDate) + " 报告数据记录数为：" + count);
+			return null;
 		}
 		LineMapDto lineMapDto = new LineMapDto();
 		lineMapDto.setMinMap(minMap);

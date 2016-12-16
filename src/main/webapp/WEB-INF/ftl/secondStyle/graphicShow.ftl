@@ -290,7 +290,14 @@
                     magicType : {show: true, type: ['line', 'bar']},
                     restore: {},
                     saveAsImage: {}
-                }
+                	},
+                itemGap:20,
+                itemSize:20,
+                borderColor:'#ccc',
+                orient:'vertical',
+                x:'right',
+                y:'center'
+                
             },
             xAxis: {
             	// axisLabel: {					

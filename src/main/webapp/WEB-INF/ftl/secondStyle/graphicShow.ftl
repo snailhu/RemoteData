@@ -17,11 +17,11 @@
     <link type="text/css" rel="stylesheet" href="${base}/static/content/jeDate/jedate/skin/jedate.css">
     <script type="text/javascript" src="${base}/static/content/jeDate/jedate/jedate.js"></script>
     <!-- 颜色选择器 -->
-<!--     <link rel="stylesheet" href="${base}/static/content/minicolors/bootstrap.min.css"> -->
-<!-- 	<script type="text/javascript" src="${base}/static/content/minicolors/bootstrap.min.js"></script> -->
-<!--	<link rel="stylesheet" href="${base}/static/content/minicolors/jquery.minicolors.css"> -->
-<!--    <script type="text/javascript" src="${base}/static/content/minicolors/jquery.minicolors.js"></script> -->
-<!--    <script type="text/javascript" src="${base}/static/content/minicolors/jquery.colorpicker.js"></script> -->
+    	<link rel="stylesheet" href="${base}/static/content/minicolors/bootstrap.min.css">
+		<script type="text/javascript" src="${base}/static/content/minicolors/bootstrap.min.js"></script>
+		<link rel="stylesheet" href="${base}/static/content/minicolors/jquery.minicolors.css">
+		<script type="text/javascript" src="${base}/static/content/minicolors/jquery.minicolors.js"></script>
+		<script type="text/javascript" src="${base}/static/content/minicolors/jquery.colorpicker.js"></script>
     
     <!-- ps颜色选择器 -->
 <!--     <link rel="stylesheet" type="text/css" href="${base}/static/content/pscolors/css/colorpicker.css"/> -->
@@ -37,8 +37,8 @@
     <!--<script src=${base}/static/assets/js/bootstrap-tag.min.js"></script>-->
     <script src="${pageContext.request.contextPath}/DataRemote/static/assets/js/bootstrap.min.js"></script>
 	<script src="${pageContext.request.contextPath}/DataRemote/static/assets/js/typeahead-bs2.min.js"></script>
-	<!-- 颜色选择器 -->
-	<script type="text/javascript" src="${base}/static/content/minicolors/jscolor.js"></script>
+	<!-- 颜色选择器jscolor -->
+	<!-- <script type="text/javascript" src="${base}/static/content/minicolors/jscolor.js"></script> -->
     <style type="text/css">
     .dateStyle{
     	margin-left: 80px;
@@ -253,10 +253,11 @@
 		        var n={};
         		n.name = '${param.name}';
         		n.value = '${param.value}';
+        		n.unit = '${param.unit}';
         		n.y = '${param.yname}';
         		n.max = '${param.max}';
-        		n.min = '${param.min}'
-        		console.log("每条曲线的参数：参数名"+n.name+"*参数值:"+n.value+"*Y轴:"+n.y+"*最大值:"+n.max+"*最小值："+n.min);
+        		n.min = '${param.min}';
+        		console.log("每条曲线的参数：参数名"+n.name+"*参数值:"+n.value+"单位"+n.unit+"*Y轴:"+n.y+"*最大值:"+n.max+"*最小值："+n.min);
         		names.push(n);
         	</#list>       	
         <#else>
@@ -289,7 +290,14 @@
                     magicType : {show: true, type: ['line', 'bar']},
                     restore: {},
                     saveAsImage: {}
-                }
+                	},
+                itemGap:20,
+                itemSize:20,
+                borderColor:'#ccc',
+                orient:'vertical',
+                x:'right',
+                y:'center'
+                
             },
             xAxis: {
             	// axisLabel: {					
@@ -381,31 +389,78 @@
              	  var i=0
              	  var yname = 0;
              	  var legendname ="";
-             	  for(var param in data){
+             	  var unit=null;          	  
+             	  var Y1name ="Y1轴";
+             	  var Y1nametemp ="Y1轴";
              	  
-             	  yname  = names[names.length-1-i].y;
-             	  legendname =names[names.length-1-i].name;
-             	  console.log(names.length);
-             	  console.log(yname+legendname+data[param]);
-             	  	
-             	  	seriesOptions[i++] = {
-			            	type: 'line',
-			                //name: param,
-			                name:legendname,
-			                smooth:false,
-			               	yAxisIndex: yname,
-			                lineStyle:{
-		                    	normal:{
-		                    		width:0.5 
-		                    		}
-		                    },
-			                data: data[param].paramValue
-			            };
-			            //设置X轴，注意，这里X轴存在问题，默认使用了最后一组参数的X轴
-			            date =  data[param].yearValue;
+             	  var Y2name ="Y2轴";
+             	  var Y2nametemp ="Y2轴";
+             	  
+             	  for(var param in data){             	  
+	             	  unit = names[names.length-1-i].unit;
+	             	  yname  = names[names.length-1-i].y;	  				  
+	  				  //Y1轴
+	  				  if(yname==0)
+	  				  {
+	  				  	Y1nametemp = Y1name;
+	  				  	Y1name ="Y1轴"+"("+unit+")";  				  	
+	  				  	if((Y1nametemp!="Y1轴") && (Y1name!=Y1nametemp))
+	  				  	{	  				  		
+	  				  			Y1name ="Y1轴 ";
+	  				  			
+	  				  	}
+	  				  	
+	  				  }
+	  				  //Y2轴
+	  				  if(yname==1)
+	  				  {
+	  				    var Y2nametemp =Y2name;
+	  				  	Y2name ="Y2轴"+"("+unit+")";	  				  	
+	  				  	if((Y2nametemp!="Y2轴")&&(Y2name!=Y2nametemp))
+	  				  	{
+	  				  		Y2name ="Y2轴 ";
+	  				  	}
+	  				  }
+  				  
+	             	  legendname =names[names.length-1-i].name;
+	             	  //console.log(names.length);
+	             	  //console.log(yname+legendname+unit);            	  	
+	             	  	seriesOptions[i++] = {
+				            	type: 'line',
+				                //name: param,
+				                name:legendname,
+				                smooth:false,
+				               	yAxisIndex: yname,
+				                lineStyle:{
+			                    	normal:{
+			                    		width:0.5 
+			                    		}
+			                    },
+				                data: data[param].paramValue
+				            };
+				            //设置X轴，注意，这里X轴存在问题，默认使用了最后一组参数的X轴
+				            date =  data[param].yearValue;
              	  }
-             	  	pSeriesOptions = seriesOptions
+             	  
+             	  //修改Y轴坐标单位
+             	  var YAxixs =[{
+				        		name: Y1name,
+				            	type: 'value',
+				            	splitLine : {
+					                show: true
+					            }
+				        	},{
+				        		name: Y2name,
+					            type : 'value',
+					            splitLine : {
+					                show: false
+					            }
+				        	}
+				        ]
+             	 	
+             	  	pSeriesOptions = seriesOptions;
 	            	options.series = eval(seriesOptions);
+	            	options.yAxis =YAxixs;
 	            	pDate=options.xAxis.data = date;
 	                myChart.setOption(options);
              }
@@ -581,9 +636,39 @@ $.post("getDatabytap",
 								                 	  var i=0
 								                 	  var yname = 0;
 								                 	  var legendname ="";
-								                 	  for(var param in data){
 								                 	  
-								                 	  yname  = names[names.length-1-i].y;
+								                 	  var unit=null;
+								                 	  var Y1name ="Y1轴";
+										         	  var Y1nametemp ="Y1轴";
+										         	  
+										         	  var Y2name ="Y2轴";
+										         	  var Y2nametemp ="Y2轴";
+								                 	  for(var param in data){								                 	  
+									                 	  unit = names[names.length-1-i].unit;
+										             	  yname  = names[names.length-1-i].y;	  				  
+										  				  //Y1轴
+										  				  if(yname==0)
+										  				  {
+										  				  	Y1nametemp = Y1name;
+										  				  	Y1name ="Y1轴"+"("+unit+")";  				  	
+										  				  	if((Y1nametemp!="Y1轴") && (Y1name!=Y1nametemp))
+										  				  	{	  				  		
+										  				  			Y1name ="Y1轴 ";
+										  				  			
+										  				  	}
+										  				  	
+										  				  }
+										  				  //Y2轴
+										  				  if(yname==1)
+										  				  {
+										  				    var Y2nametemp =Y2name;
+										  				  	Y2name ="Y2轴"+"("+unit+")";	  				  	
+										  				  	if((Y2nametemp!="Y2轴")&&(Y2name!=Y2nametemp))
+										  				  	{
+										  				  		Y2name ="Y2轴 ";
+										  				  	}
+										  				  }
+										  				  
 						             	  			  legendname =names[names.length-1-i].name;
 								                 	  
 								                 	  console.log(yname+legendname)
@@ -681,7 +766,7 @@ $.post("getDatabytap",
 					}
               }
         });
-/*
+
     	//设置颜色
     	$('.demo').each( function() {
 			$(this).minicolors({
@@ -726,7 +811,7 @@ $.post("getDatabytap",
         	options.series = eval(seriesOptionsDam);
             myChart.setOption(options);
         })
- */
+
     })
     
     function needGetDate(){

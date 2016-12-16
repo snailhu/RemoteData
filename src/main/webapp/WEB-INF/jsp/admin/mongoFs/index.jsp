@@ -62,27 +62,19 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	line-height:30px;
 	text-align:left;
 }
-.daosanjiao{
-	margin:10px;
-	display: inline-block;
-	width:0px;height:0px;
-	border-top:8px solid black;
-	border-left:3px solid transparent;
-	border-bottom:0px solid transparent;
-	border-right:3px solid transparent;
-}
 .combo-arrow{
-	/* background:none; */
+	background:url('${pageContext.request.contextPath}/static/imgs/arrow.png') no-repeat right center;
+	width:238px;
+}
+.combo-arrow:hover {
+    background-color: transparent;
 }
 </style>
   <script type="text/javascript">
-  $(function(){
-	 // $(".combo-arrow").css("background","none");
-	 // $(".combo-arrow").append("<span class='daosanjiao'></span>");
-	 
+  $(function(){ 
 		//修改页面缩放，界面显示不正常
 		$(".col-lg-4").css("margin-left","25%");		
-
+		$(".textbox-addon").empty();
 		//左菜单栏
 		$("#fileview-img").attr("src","${pageContext.request.contextPath}/static/new/img/images/a_46.png");
 		$("#filemanage-img").attr("src","${pageContext.request.contextPath}/static/new/img/images/a_26.png");
@@ -354,7 +346,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				return;
 			  }
 			  if (nowStar == "") {
-				top.alertMsg('提示', '请选择星！');
+				top.alertMsg('提示', '请选择星号！');
 				return;
 			  }
 			  if (nowParamType == "") {
@@ -392,6 +384,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				    	//alert(node.value);
 				    }
 				});
+		    $(".combo-arrow").css("width","238px");	
 		    }
 		});
 		$("#search-star").combobox({
@@ -571,6 +564,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	      fsGrid.datagrid('unselectAll');
 	      fsGrid.datagrid('reload');
 	  }
+	  
+$(function(){
+	
+	  $(".combo-arrow").css("width","238px");
+	  
+})
 	</script>	
   </body>
 

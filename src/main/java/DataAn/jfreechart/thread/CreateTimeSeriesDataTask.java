@@ -1,8 +1,10 @@
 package DataAn.jfreechart.thread;
 
+import java.util.Date;
 import java.util.concurrent.RecursiveTask;
 
 import org.jfree.data.time.Millisecond;
+import org.jfree.data.time.Second;
 import org.jfree.data.time.TimeSeries;
 
 import DataAn.jfreechart.chart.ChartUtils;
@@ -32,7 +34,9 @@ public class CreateTimeSeriesDataTask extends RecursiveTask<TimeSeries>{
 		for (LineTimeSeriesDto2 lineTimeSeriesDto : arrayData) {
 			if(lineTimeSeriesDto != null){
 				// 往序列里面添加数据
-				timeseries.addOrUpdate(new Millisecond(lineTimeSeriesDto.getDatetime()), lineTimeSeriesDto.getParamValue());
+//				timeseries.addOrUpdate(new Millisecond(lineTimeSeriesDto.getDatetime()), lineTimeSeriesDto.getParamValue());
+				timeseries.addOrUpdate(new Second(lineTimeSeriesDto.getDatetime()), lineTimeSeriesDto.getParamValue());
+				
 			}
 		}
 		return timeseries;

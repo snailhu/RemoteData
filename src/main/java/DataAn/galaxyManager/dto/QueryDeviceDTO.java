@@ -17,6 +17,24 @@ public class QueryDeviceDTO implements java.io.Serializable {
 	private String startDate;
 	private String endDate;
 	private int runDays;
+	private int runStatus;
+	private String model;
+
+	public int getRunStatus() {
+		return runStatus;
+	}
+
+	public void setRunStatus(int runStatus) {
+		this.runStatus = runStatus;
+	}
+
+	public String getModel() {
+		return model;
+	}
+
+	public void setModel(String model) {
+		this.model = model;
+	}
 
 	public int getRunDays() {
 		return runDays;

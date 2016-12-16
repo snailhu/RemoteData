@@ -29,11 +29,14 @@ public class TemplateParameter {
 	@Column(name="name", nullable = false, length =64)
 	private String name;
 	
-	@Column(name="max", nullable = true)
-	private int max;
+	@Column(name="max", nullable = true,length =64)
+	private String max;
 	
-	@Column(name="min", nullable = true)
-	private int min;
+	@Column(name="min", nullable = true,length =64)
+	private String min;
+	
+	@Column(name="unit", nullable = true ,length =64)
+	private String unit;
 	
 	@Column(name="yname", nullable = false ,length =64)
 	private String yname;
@@ -53,16 +56,16 @@ public class TemplateParameter {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public int getMax() {
+	public String getMax() {
 		return max;
 	}
-	public void setMax(int max) {
+	public void setMax(String max) {
 		this.max = max;
 	}
-	public int getMin() {
+	public String getMin() {
 		return min;
 	}
-	public void setMin(int min) {
+	public void setMin(String min) {
 		this.min = min;
 	}
 	public String getYname() {
@@ -76,5 +79,11 @@ public class TemplateParameter {
 	}
 	public void setLinegraphtemplale(LineGraphTemplate linegraphtemplale) {
 		this.linegraphtemplale = linegraphtemplale;
+	}
+	public String getUnit() {
+		return unit;
+	}
+	public void setUnit(String unit) {
+		this.unit = unit;
 	}
 }

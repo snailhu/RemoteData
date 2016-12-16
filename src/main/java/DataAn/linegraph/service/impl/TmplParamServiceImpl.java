@@ -34,6 +34,7 @@ public class TmplParamServiceImpl implements ITmplParamService {
 		TemplateParameter param =new TemplateParameter();
 		param.setMax(tmplparamDto.getMax());
 		param.setMin(tmplparamDto.getMin());
+		param.setUnit(tmplparamDto.getUnit());
 		param.setName(tmplparamDto.getName());
 		param.setYname(tmplparamDto.getYname());
 		param.setLinegraphtemplale(template);
@@ -55,6 +56,7 @@ public class TmplParamServiceImpl implements ITmplParamService {
 			param.setName(paramdto.getName());
 			param.setMax(paramdto.getMax());
 			param.setMin(paramdto.getMin());
+			param.setUnit(paramdto.getUnit());
 			param.setYname(paramdto.getYname());
 			param.setLinegraphtemplale(template);
 			tmplparamDao.add(param);
@@ -90,6 +92,7 @@ public class TmplParamServiceImpl implements ITmplParamService {
 				dto.setName(tmplparam.getName());
 				dto.setMax(tmplparam.getMax());
 				dto.setMin(tmplparam.getMin());
+				dto.setUnit(tmplparam.getUnit());
 				dto.setYname(tmplparam.getYname());
 				paramList.add(dto);
 			}
@@ -131,6 +134,7 @@ public class TmplParamServiceImpl implements ITmplParamService {
 						//param.setTemplateName(template.getName());
 						param.setMax(tmplparam.getMax());
 						param.setMin(tmplparam.getMin());
+						param.setUnit(tmplparam.getUnit());
 						param.setYname(tmplparam.getYname());
 						count++;
 						paramList.add(param);
@@ -176,6 +180,7 @@ public class TmplParamServiceImpl implements ITmplParamService {
 						//param.setTemplateName(template.getName());
 						param.setMax(tmplparam.getMax());
 						param.setMin(tmplparam.getMin());
+						param.setUnit(tmplparam.getUnit());
 						param.setYname(tmplparam.getYname());
 						count++;
 						paramList.add(param);
@@ -198,6 +203,7 @@ public class TmplParamServiceImpl implements ITmplParamService {
 				dto.setName(tmplparam.getName());
 				dto.setMax(tmplparam.getMax());
 				dto.setMin(tmplparam.getMin());
+				dto.setUnit(tmplparam.getUnit());
 				dto.setYname(tmplparam.getYname());
 				dto.setTemplateName(tmplparam.getLinegraphtemplale(). getName());
 				dto.setTemplateid(tmplparam.getLinegraphtemplale().getId());

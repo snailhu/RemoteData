@@ -345,6 +345,7 @@ public class J9Series_Star_ServiceImpl implements IJ9Series_Star_Service{
 					//child.setMin(-Float.MAX_VALUE);
 					child.setMax(9999);
 					child.setMin(-9999);
+					child.setUnit("");
 					child.setYname("Y1");
 					children.add(child);
 					count ++;

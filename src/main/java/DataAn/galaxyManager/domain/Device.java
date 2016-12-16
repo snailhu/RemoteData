@@ -56,6 +56,50 @@ public class Device {
 	@Column(name = "editDate", nullable = true)
 	private Date editDate;
 
+	@Column(name = "runDays", nullable = true)
+	private int runDays;
+
+	@Column(name = "lastDays", nullable = true)
+	private int lastDays;
+
+	@Column(name = "runStatus", nullable = true)
+	private int runStatus;
+
+	@Column(name = "model", nullable = true)
+	private String model;
+
+	public int getLastDays() {
+		return lastDays;
+	}
+
+	public void setLastDays(int lastDays) {
+		this.lastDays = lastDays;
+	}
+
+	public int getRunStatus() {
+		return runStatus;
+	}
+
+	public void setRunStatus(int runStatus) {
+		this.runStatus = runStatus;
+	}
+
+	public int getRunDays() {
+		return runDays;
+	}
+
+	public void setRunDays(int runDays) {
+		this.runDays = runDays;
+	}
+
+	public String getModel() {
+		return model;
+	}
+
+	public void setModel(String model) {
+		this.model = model;
+	}
+
 	public Long getDeviceId() {
 		return deviceId;
 	}

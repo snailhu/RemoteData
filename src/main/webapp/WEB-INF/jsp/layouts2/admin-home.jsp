@@ -80,7 +80,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	
 </div>
 <div class="down">
-    版权所有 © 公司名称 2016-2020 All Reserved 今日网站访问量：201 累计网站访问量：168666
+    版权所有 © 苏州同元软控信息技术有限公司  
 </div>
 </body>
 </html>

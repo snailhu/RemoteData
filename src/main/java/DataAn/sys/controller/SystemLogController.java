@@ -66,8 +66,9 @@ public class SystemLogController {
 			)
 	{
 		try {
+			System.out.println("解码前的关键字："+keyWord);
 			keyWord =java.net.URLDecoder.decode(new String(keyWord.getBytes("ISO-8859-1"), "UTF-8"), "UTF-8");
-			System.out.println(keyWord);
+			System.out.println("解码后的关键字："+keyWord);
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}

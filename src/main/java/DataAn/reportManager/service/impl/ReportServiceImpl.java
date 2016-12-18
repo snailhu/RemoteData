@@ -709,7 +709,7 @@ public class ReportServiceImpl implements IReoportService {
 
 		// 封装产品转速、电流 图片list
 		List<ParamImgDataDto> twoParamImgList = new ArrayList<ParamImgDataDto>();
-		String chartPathTwo = OptionConfig.getWebPath() + "\\report\\wordtemplate\\satellite.jpg";
+		String chartPathTwo = OptionConfig.getWebPath() + "\\report\\wordtemplate\\NoData.png";
 		for (String product : productType) {
 			ParamImgDataDto paramImgData = new ParamImgDataDto();
 			paramImgData.setParName(product + paramStr);
@@ -722,7 +722,7 @@ public class ReportServiceImpl implements IReoportService {
 
 		// 封装产品非转速、电流 图片list
 		List<ParamImgDataDto> oneParamImgList = new ArrayList<ParamImgDataDto>();
-		String chartPathOne = OptionConfig.getWebPath() + "\\report\\wordtemplate\\satellite.jpg";
+		String chartPathOne = OptionConfig.getWebPath() + "\\report\\wordtemplate\\NoData.png";
 		for (StarParam starParam : firstList) {
 			ParamImgDataDto paramImgData = new ParamImgDataDto();
 			paramImgData.setParName(starParam.getProductName() + starParam.getParameterType());

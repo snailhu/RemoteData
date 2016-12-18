@@ -82,8 +82,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		$(".modal-dialog").css("margin","20px auto");
 
   		//左菜单栏
+		$("#galaxyview-img").attr("src","${pageContext.request.contextPath}/static/new/img/images/a_82.png");
 		$("#galaxymanage-img").attr("src","${pageContext.request.contextPath}/static/new/img/images/a_82.png");
-		$("#galaxymanage-text").css("color","#5d90d6");
+		$("#galaxyview-text").css("color", "#5d90d6");
+		$("#galaxymanage-text").css("color", "#5d90d6");
+		$("#galaxymanageUL").css("display","block");
   		
   		$('#addSeriesInfoForm').bootstrapValidator({
           message: 'This value is not valid',
@@ -279,10 +282,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				}
 			</script>
 			<ul class="breadcrumb" style="margin-top: 10px;">
-				<li>
-					<img src="${pageContext.request.contextPath}/static/imgs/DataImport/home.png" style="margin-bottom: 3px;">
-					<span>星系管理</span>
-				</li>
+				<li><img
+					src="${pageContext.request.contextPath}/static/imgs/DataImport/home.png"
+					style="margin-bottom: 3px;"> <span>星系管理</span></li>
+				<li class="active">星系查看</li>
 			</ul><!--  .breadcrumb -->
 		</div>
 		<div class="page-content">

@@ -548,7 +548,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		 $("#jqxButton_submitgroup").click(function(){
 		 	submitGroup();
 		 });
-		 
+		 intTemplateList()
 		 initTemplateTree();
 		 intTemplateList();
 		 $(".widget-body").slideUp("slow"); 

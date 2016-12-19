@@ -177,55 +177,52 @@ public class ReportController {
 		}
 	}
 	
-	@RequestMapping(value = "/createReport_Old")
-	@ResponseBody
-	public ResultJSON createReport_Old(HttpServletRequest request,
-			String seriesId,String starId,String partsType,String beginTime,String endTime) {
-		
-		ResultJSON res = new ResultJSON();
-		try {
-			
-			long begin = System.currentTimeMillis();
-			String flag = UUIDGeneratorUtil.getUUID();
-			System.out.println();
-			System.out.println("begintime:" + DateUtil.format(new Date())+" 开始生成报告： flag="+flag);
-			
-			String templateUrl = OptionConfig.getWebPath() + "\\report\\wordtemplate\\卫星状态报告.doc";
-			String time = DateUtil.getNowTime("yyyy-MM-dd");
-			String partsName = "";
-			if("flywheel".equals(partsType)) {
-				partsName = "飞轮";
-			}else if("top".equals(partsType)) {
-				partsName = "陀螺";
-			}
-			String filename = seriesId+"_"+starId+"_"+partsName+"_"+time+".doc";
-			String docPath = OptionConfig.getWebPath() + "report\\"+filename;
-			Date beginDate = DateUtil.format(beginTime,"yyyy-MM-dd");
-			Date endDate =  DateUtil.format(endTime,"yyyy-MM-dd");
-			
-			reoportService.createReport(beginDate, endDate, filename,templateUrl, docPath, seriesId, starId, partsType);
-	
-			Map<String, Object> data = new HashMap<String, Object>();
-			data.put("docPath", docPath);
-			data.put("filename", filename);
-			res.setData(data);
-			
-			long end = System.currentTimeMillis();
-			System.out.println("endtime: " + DateUtil.format(new Date())+" flag="+flag);
-			System.out.println("flag="+flag+": 生成报告 " + filename + " time: " + (end-begin));
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-			res.setMsg(e.getMessage());
-			res.setResult(CommonsConstant.RESULT_FALSE);
-		}
-		return res;
-		
-	}
-	
 	@RequestMapping(value = "/createReport")
 	@ResponseBody
-	public void createReport(HttpServletRequest request,HttpServletResponse response,
+	public ResultJSON createReport(HttpServletRequest request,String seriesId,String starId,String partsType,String beginTime,String endTime) {
+		
+		long begin = System.currentTimeMillis();
+		String flag = UUIDGeneratorUtil.getUUID();
+		System.out.println();
+		System.out.println("begintime:" + DateUtil.format(new Date())+" 开始生成报告： flag="+flag);
+		
+		ResultJSON res = ResultJSON.getSuccessResultJSON();
+		
+		String templateUrl = OptionConfig.getWebPath() + "\\report\\wordtemplate\\卫星状态报告.doc";
+		
+		String time = DateUtil.getNowTime("yyyy-MM-dd");
+		String partsName = "";
+		if("flywheel".equals(partsType)) {
+			partsName = "飞轮";
+		}else if("top".equals(partsType)) {
+			partsName = "陀螺";
+		}
+		String filename = seriesId+"_"+starId+"_"+partsName+"_"+time+".doc";
+		String docPath = OptionConfig.getWebPath() + "report\\"+filename;
+		Date beginDate = DateUtil.format(beginTime,"yyyy-MM-dd");
+		Date endDate =  DateUtil.format(endTime,"yyyy-MM-dd");
+		try {
+			 reoportService.createReport(beginDate, endDate, filename, templateUrl, docPath, seriesId, starId, partsType);
+			
+			 Map<String, Object> data = new HashMap<String, Object>();
+			 data.put("docPath", docPath);
+			 data.put("filename", filename);
+			 res.setData(data);
+		 } catch (Exception ex) {
+			 ex.printStackTrace();
+			 res.setMsg(ex.getMessage());
+			 res.setResult(CommonsConstant.RESULT_FALSE);
+		 }
+		
+		long end = System.currentTimeMillis();
+		System.out.println("endtime: " + DateUtil.format(new Date())+" flag="+flag);
+		System.out.println("flag="+flag+": 生成报告 " + filename + " time: " + (end-begin));
+		 return res;
+	}
+	
+	@RequestMapping(value = "/createReport1")
+	@ResponseBody
+	public void createReport1(HttpServletRequest request,HttpServletResponse response,
 			String seriesId,String starId,String partsType,String beginTime,String endTime) {
 		CreateReportDto reportLast = new CreateReportDto();
 		reportLast.setRequest(request);

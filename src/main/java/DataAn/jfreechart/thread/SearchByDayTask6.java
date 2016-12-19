@@ -135,11 +135,11 @@ public class SearchByDayTask6 extends RecursiveTask<LineChartDto>{
 		}
 		
 		//获取最值
-		for (String paramCode : en_params) {
-			timeseries = lineMap.get(paramCode);
-			minMap.put(paramCode, timeseries.getMinY());
-			maxMap.put(paramCode, timeseries.getMaxY());
-		}
+//		for (String paramCode : en_params) {
+//			timeseries = lineMap.get(paramCode);
+//			minMap.put(paramCode, timeseries.getMinY());
+//			maxMap.put(paramCode, timeseries.getMaxY());
+//		}
 		
 		long end = System.currentTimeMillis();
 		System.out.println("获取 mongodb 数据总时间： " + (end-begin));

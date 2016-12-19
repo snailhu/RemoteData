@@ -47,7 +47,7 @@ public class JfreechartServiceImpl implements IJfreechartServcie {
 
 	private Logger logger = Log4jUtil.getInstance().getLogger(JfreechartServiceImpl.class);
 	
-	private final static ForkJoinPool forkJoinPool = new ForkJoinPool();
+	private final static ForkJoinPool forkJoinPool = new ForkJoinPool(15);
 	
 	@Override
 	public LineChartDto createLineChart(String series, String star,

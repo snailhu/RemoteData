@@ -128,6 +128,8 @@ public class JobServiceImpl implements IJobService{
 				reoportService.createReport(beginDate, endDate, filename, templateUrl, docPath, seriesId, starId, partsType);
 				reoportService.insertReportToDB(filename, docPath,seriesId,starId, partsType,starTime,endTime,databaseName,partsName);
 				reoportService.removeDoc(docPath);
+				//线程休眠10s
+				Thread.sleep(10000);
 			} catch (Exception e) {
 				reoportService.reportNullDoc(filename,templateNullUrl, docPath, starTime, endTime,e.getMessage());
 				reoportService.insertReportToDB(filename, docPath,seriesId,starId, partsType,starTime,endTime,databaseName,partsName);

@@ -23,11 +23,14 @@ import DataAn.jfreechart.chart.ChartFactory;
 import DataAn.jfreechart.chart.ChartUtils;
 import DataAn.jfreechart.dto.ConstraintDto;
 import DataAn.jfreechart.dto.LineTimeSeriesDto;
-import DataAn.jfreechart.service.impl.JfreechartServiceImpl;
 
-public class CreateTimeSeriesChartTask extends RecursiveTask<String>{
+/**
+ * 多线程中生成TimeSeries和图片一起做
+ *
+ */
+public class CreateTimeSeriesChartTask1 extends RecursiveTask<String>{
 
-	private Logger logger = Log4jUtil.getInstance().getLogger(CreateTimeSeriesChartTask.class);
+	private Logger logger = Log4jUtil.getInstance().getLogger(CreateTimeSeriesChartTask1.class);
 	
 	private static final long serialVersionUID = 1L;
 	
@@ -38,7 +41,7 @@ public class CreateTimeSeriesChartTask extends RecursiveTask<String>{
 	private String cachePath;
 	private String chartName;
 	
-	public CreateTimeSeriesChartTask(List<ConstraintDto> constraintList,
+	public CreateTimeSeriesChartTask1(List<ConstraintDto> constraintList,
 			LineTimeSeriesDto[] arrayData, Date beginDate, Date endDate,
 			String cachePath, String chartName) {
 		super();

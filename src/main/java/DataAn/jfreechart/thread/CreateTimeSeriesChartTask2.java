@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.concurrent.RecursiveTask;
 import org.apache.log4j.Logger;
 import org.jfree.chart.ChartUtilities;
@@ -18,6 +17,10 @@ import DataAn.common.utils.Log4jUtil;
 import DataAn.jfreechart.chart.ChartFactory;
 import DataAn.jfreechart.dto.ConstraintDto;
 
+/**
+ * 只多线程生成图片
+ *
+ */
 public class CreateTimeSeriesChartTask2 extends RecursiveTask<String>{
 
 	private Logger logger = Log4jUtil.getInstance().getLogger(CreateTimeSeriesChartTask2.class);

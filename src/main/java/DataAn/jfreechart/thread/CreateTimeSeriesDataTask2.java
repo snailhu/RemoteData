@@ -6,20 +6,25 @@ import java.util.concurrent.RecursiveTask;
 import org.jfree.data.time.Millisecond;
 import org.jfree.data.time.Second;
 import org.jfree.data.time.TimeSeries;
+import org.jfree.data.time.TimeSeriesDataItem;
 
 import DataAn.jfreechart.chart.ChartUtils;
 import DataAn.jfreechart.dto.LineTimeSeriesDto2;
 
-public class CreateTimeSeriesDataTask extends RecursiveTask<TimeSeries>{
+/**
+ * 多线程生成：TimeSeries
+ *
+ */
+public class CreateTimeSeriesDataTask2 extends RecursiveTask<TimeSeries>{
 
 	private static final long serialVersionUID = 1L;
 	
-	private LineTimeSeriesDto2[] arrayData;
+	private TimeSeriesDataItem[] arrayData;
 	private String paramCode;
 	private String paramName;
 	
 	
-	public CreateTimeSeriesDataTask(LineTimeSeriesDto2[] arrayData,
+	public CreateTimeSeriesDataTask2(TimeSeriesDataItem[] arrayData,
 			String paramCode, String paramName) {
 		super();
 		this.arrayData = arrayData;
@@ -31,11 +36,11 @@ public class CreateTimeSeriesDataTask extends RecursiveTask<TimeSeries>{
 	@Override
 	protected TimeSeries compute() {
 		TimeSeries timeseries = ChartUtils.createTimeseries(paramName);
-		for (LineTimeSeriesDto2 lineTimeSeriesDto : arrayData) {
-			if(lineTimeSeriesDto != null){
+		for (TimeSeriesDataItem item : arrayData) {
+			if(item != null){
 				// 往序列里面添加数据
 //				timeseries.addOrUpdate(new Millisecond(lineTimeSeriesDto.getDatetime()), lineTimeSeriesDto.getParamValue());
-				timeseries.addOrUpdate(new Second(lineTimeSeriesDto.getDatetime()), lineTimeSeriesDto.getParamValue());
+				timeseries.addOrUpdate(item);
 				
 			}
 		}

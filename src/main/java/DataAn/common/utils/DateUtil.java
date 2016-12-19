@@ -79,7 +79,7 @@ public class DateUtil {
 
 		return new java.text.SimpleDateFormat(pattern).format(date);
 	}
-	
+
 	/**
 	 * 将String Date类型转换为 另一种格式字符串
 	 * 
@@ -98,7 +98,7 @@ public class DateUtil {
 		}
 		Date date = null;
 		try {
-			if(newPattern == null || newPattern.equals("") || newPattern.equals("null")){
+			if (newPattern == null || newPattern.equals("") || newPattern.equals("null")) {
 				newPattern = "yyyy年MM月dd日HH时mm分ss秒";
 			}
 			date = new java.text.SimpleDateFormat(oldPattern).parse(strDate);
@@ -238,10 +238,12 @@ public class DateUtil {
 	public static int daysOfTwo(Date fDate, Date oDate) {
 		Calendar aCalendar = Calendar.getInstance();
 		aCalendar.setTime(fDate);
-		int day1 = aCalendar.get(Calendar.DAY_OF_YEAR);
+		double day1Time = aCalendar.getTimeInMillis();
 		aCalendar.setTime(oDate);
-		int day2 = aCalendar.get(Calendar.DAY_OF_YEAR);
-		return day2 - day1;
+		double day2Time = aCalendar.getTimeInMillis();
+		double days = (day2Time - day1Time) / 1000 / 60 / 60 / 24;
+		int daysRound = (int)Math.floor(days);
+		return daysRound;
 	}
 
 }

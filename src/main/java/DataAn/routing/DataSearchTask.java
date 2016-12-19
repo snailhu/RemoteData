@@ -60,12 +60,7 @@ public class DataSearchTask extends RecursiveTask<YearAndParamDataDto> {
 				yearValue.add(DateUtil.format(doc.getDate("datetime")));
 				paramValue.add(paraVal);
 			}*/
-			String paraVal = doc.getString(dataSearchTaskConfig.getProperty());
-			if(dataSearchTaskConfig.getProperty().equals("sequence_00815"))
-			{
-				String paraVal2 = doc.getString("sequence_00814");				
-			}
-			
+			String paraVal = doc.getString(dataSearchTaskConfig.getProperty());			
 			if(paraVal==null){
 				paraVal = "\'-\'";
 			}else{

@@ -21,6 +21,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.ctc.wstx.util.DataUtil;
+
 import DataAn.Analysis.dto.ConstraintDto;
 import DataAn.Analysis.dto.GroupMenu;
 import DataAn.Analysis.dto.ParamAttributeDto;
@@ -57,6 +59,7 @@ public class CommonController {
 	
 	@RequestMapping(value = "/Index", method = { RequestMethod.GET })
 	public String goIndex(HttpServletRequest request, HttpServletResponse response) {
+		System.out.println("come in Index "+ DateUtil.format(new Date()));
 		return "index";
 	}
 	

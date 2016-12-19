@@ -595,6 +595,7 @@ $.post("getDatabytap",
               	console.log("开始日期"+startDate+"结束日期："+endDate);
               	if(timeZone>10){
               		 if(needGetDate()){
+              		 						parent.window.document.body.style.overflow = "hidden";//隐藏滚动条
 						                	$("#main").showLoading(); 
 											var a= stringToDate(startDate);
 							              	var b= stringToDate(endDate);
@@ -626,6 +627,7 @@ $.post("getDatabytap",
 								                 success: function(data){
 								                 	 console.log("请求后台完成时间："+new Date());
 								                	 $("#main").hideLoading(); 
+								                	 parent.window.document.body.style.overflow = "auto";//开启滚动
 								                	 console.log("111"+startDate_init);
 											         console.log("111"+endDate_init);
 								                	 startDate_init = startDate;

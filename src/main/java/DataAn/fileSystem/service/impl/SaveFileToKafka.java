@@ -128,36 +128,36 @@ public class SaveFileToKafka implements Runnable {
 					
 					Log4jUtil.getInstance().getLogger(SaveFileToKafka.class).info(nodeWorker.getId()+ " begin send data kafka..");
 					boundProducer.send(new Beginning(),topic);
-					while ((line = reader.readLine()) != null) {
-						//CSV格式文件为逗号分隔符文件，这里根据逗号切分
-						String[] items = line.split(",");
-						date = items[0].trim();
-						dateTime = DateUtil.format(date, "yyyy年MM月dd日HH时mm分ss秒");
-						if(count == 1){
-							dateTime1 = dateTime;
-						}
-						count ++;
-						
-						propertyVals = new String[array.length - 1];
-						for (int i = 1; i < items.length; i++) {
-							//获取值除时间外
-							propertyVals[i - 1] = items[i];
-						}
-						//
-						defaultFetchObj = new DefaultFetchObj();
-						defaultFetchObj.setId(UUIDGeneratorUtil.getUUID());
-						defaultFetchObj.setName(name);
-						defaultFetchObj.setSeries(series);
-						defaultFetchObj.setStar(star);
-						defaultFetchObj.setTime(DateUtil.format(dateTime));
-						defaultFetchObj.set_time(dateTime.getTime());
-						defaultFetchObj.setProperties(properties);
-						defaultFetchObj.setPropertyVals(propertyVals);
-						defaultFetchObj.setVersions(versions);
-						
-						//发送到kafka
-						boundProducer.send(defaultFetchObj,topic);
-					}
+//					while ((line = reader.readLine()) != null) {
+//						//CSV格式文件为逗号分隔符文件，这里根据逗号切分
+//						String[] items = line.split(",");
+//						date = items[0].trim();
+//						dateTime = DateUtil.format(date, "yyyy年MM月dd日HH时mm分ss秒");
+//						if(count == 1){
+//							dateTime1 = dateTime;
+//						}
+//						count ++;
+//						
+//						propertyVals = new String[array.length - 1];
+//						for (int i = 1; i < items.length; i++) {
+//							//获取值除时间外
+//							propertyVals[i - 1] = items[i];
+//						}
+//						//
+//						defaultFetchObj = new DefaultFetchObj();
+//						defaultFetchObj.setId(UUIDGeneratorUtil.getUUID());
+//						defaultFetchObj.setName(name);
+//						defaultFetchObj.setSeries(series);
+//						defaultFetchObj.setStar(star);
+//						defaultFetchObj.setTime(DateUtil.format(dateTime));
+//						defaultFetchObj.set_time(dateTime.getTime());
+//						defaultFetchObj.setProperties(properties);
+//						defaultFetchObj.setPropertyVals(propertyVals);
+//						defaultFetchObj.setVersions(versions);
+//						
+//						//发送到kafka
+//						boundProducer.send(defaultFetchObj,topic);
+//					}
 					boundProducer.send(new Ending(),topic);
 					Log4jUtil.getInstance().getLogger(SaveFileToKafka.class).info(nodeWorker.getId()+ " end send data kafka..count: " + count);
 					// mongo...

@@ -82,7 +82,7 @@ public class ChartFactoryTest5 {
 			Object[] newYorkDateValue = {date, df.format(data)};
 			newYorkDateValues.add(newYorkDateValue);
 			//System.out.println(date + " : " +df.format(data));
-			time = time + 60000;			
+			time = time + 1000*60*60*4;			
 		}
 		//时间向前一天
 		date1 = new Date(year,month-1,day-2,0,0,0);
@@ -101,7 +101,7 @@ public class ChartFactoryTest5 {
 			Object[] newYorkDateValue = {date, df.format(data)};
 			newYorkDateValues.add(newYorkDateValue);
 			//System.out.println(date + " : " +df.format(data));
-			time = time + 60000;			
+			time = time + 1000*60*60*4;			
 		}
 		List<TimeSeriesCollection> datasetList = new ArrayList<TimeSeriesCollection>();
 		

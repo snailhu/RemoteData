@@ -13,6 +13,10 @@ import DataAn.jfreechart.dto.LineMapDto;
 import DataAn.jfreechart.dto.LineTimeSeriesDto2;
 import DataAn.mongo.client.MongodbUtil;
 
+/**
+ * 多线程获取mongodb数据：Map<String,LineTimeSeriesDto2[]> arrayDataMap(每个参数一个数组)
+ *
+ */
 public class SearchByDayDoneTask2 extends RecursiveTask<LineMapDto>{
 
 	private static final long serialVersionUID = 1L;

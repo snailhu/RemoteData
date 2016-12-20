@@ -97,9 +97,49 @@ public class JobServiceImpl implements IJobService{
 	//每个星期一晚上11点触发 生产环境
 //	@Scheduled(cron = "0 0 23 ? * MON") 
 	//每天晚上22点执行此方法 测试使用
-	@Scheduled(cron = "0 0 23 * * ?") 
+	@Scheduled(cron = "0 0 13 * * ?") 
 	@Override
 	public void createReport() throws Exception {
+		String templateUrl = OptionConfig.getWebPath() + "\\report\\wordtemplate\\卫星状态报告.doc";
+		String templateNullUrl = OptionConfig.getWebPath() + "\\report\\wordtemplate\\nullData.doc";
+		List<StarParam> starList = starParamDao.getStarParamByParts();
+		for (StarParam starParam : starList) {
+			String seriesId = starParam.getSeries();
+			String starId = starParam.getStar();
+			String partsType = starParam.getPartsType() ;
+			
+			String  endTime = DateUtil.getYesterdayTime();
+			String  starTime =DateUtil.getLastWeekTime();
+			String time = DateUtil.getNowTime("yyyy-MM-dd");
+			
+			Date beginDate = DateUtil.format(starTime,"yyyy-MM-dd HH:mm:ss");
+			Date endDate =  DateUtil.format(endTime,"yyyy-MM-dd HH:mm:ss");
+			String partsName = "";
+			if("flywheel".equals(partsType)) {
+				partsName = "飞轮";
+			}else if("top".equals(partsType)) {
+				partsName = "陀螺";
+			}
+			
+			String databaseName = InitMongo.DATABASE_TEST;
+			String filename = seriesId+"_"+starId+"_"+partsName+"_"+time+".doc";
+			String docPath = OptionConfig.getWebPath() + "report\\"+filename;
+			try {
+				reoportService.createReport(beginDate, endDate, filename, templateUrl, docPath, seriesId, starId, partsType);
+				reoportService.insertReportToDB(filename, docPath,seriesId,starId, partsType,starTime,endTime,databaseName,partsName);
+				reoportService.removeDoc(docPath);
+				//线程休眠10s
+				Thread.sleep(10000);
+			} catch (Exception e) {
+				reoportService.reportNullDoc(filename,templateNullUrl, docPath, starTime, endTime,e.getMessage());
+				reoportService.insertReportToDB(filename, docPath,seriesId,starId, partsType,starTime,endTime,databaseName,partsName);
+				reoportService.removeDoc(docPath);
+			}
+		}
+	}
+	//每天晚上22点执行此方法 测试使用
+	@Scheduled(cron = "0 0 22 * * ?") 
+	public void createReport2() throws Exception {
 		String templateUrl = OptionConfig.getWebPath() + "\\report\\wordtemplate\\卫星状态报告.doc";
 		String templateNullUrl = OptionConfig.getWebPath() + "\\report\\wordtemplate\\nullData.doc";
 		List<StarParam> starList = starParamDao.getStarParamByParts();

@@ -9,13 +9,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.RecursiveTask;
-
-import org.jfree.data.time.Second;
 import org.jfree.data.time.TimeSeries;
-
 import DataAn.common.config.CommonConfig;
 import DataAn.common.utils.DateUtil;
-import DataAn.jfreechart.chart.ChartUtils;
 import DataAn.jfreechart.dto.ConstraintDto;
 import DataAn.jfreechart.dto.LineChartDto;
 import DataAn.jfreechart.dto.LineMapDto;
@@ -23,6 +19,12 @@ import DataAn.jfreechart.dto.LineTimeSeriesDto2;
 import DataAn.mongo.client.MongodbUtil;
 import DataAn.mongo.init.InitMongo;
 
+/**
+ * 多线程获取mongodb数据：Map<String,LineTimeSeriesDto2[]> arrayDataMap(每个参数一个数组)
+ * 多线程中生成TimeSeries
+ * 多线程生成图片
+ *
+ */
 public class SearchByDayTask2 extends RecursiveTask<LineChartDto>{
 
 	private static final long serialVersionUID = 1L;
@@ -97,97 +99,68 @@ public class SearchByDayTask2 extends RecursiveTask<LineChartDto>{
 		
 		//参数集
 		Set<String> en_params = paramsMap.keySet();
-		// 多条线数据
-		Map<String, TimeSeries> lineMap = new HashMap<String, TimeSeries>();
-		TimeSeries timeseries = null;
+
 		Map<String, Double> minMap = new HashMap<String, Double>();
 		Map<String, Double> maxMap = new HashMap<String, Double>();
 		
 		LineMapDto lineMapDto = null;
-//		Map<String, Double> tempMinMap = null;	
-//		Map<String, Double> tempMaxMap = null;
-		LineTimeSeriesDto2[] arrayData = null;
-		LineTimeSeriesDto2 lineTimeSeriesDto = null;
+		Map<String, Double> tempMinMap = null;	
+		Map<String, Double> tempMaxMap = null;
 		for (SearchByDayDoneTask2 task : forks) {
 			lineMapDto = task.join();
-			int task_index = lineMapDto.getIndex();
-			int task_count = lineMapDto.getCount();
 			System.out.println(lineMapDto);	
 			
-//			// 获取最小值
-//			tempMinMap = lineMapDto.getMinMap();
-//			if(tempMinMap != null){
-//				for (String paramCode : en_params) {
-//					Double min = minMap.get(paramCode);
-//					if (min == null) {
-//						min = tempMinMap.get(paramCode);
-//					}
-//					if(tempMinMap.get(paramCode) != null){
-//						minMap.put(paramCode, this.getMin(min, tempMinMap.get(paramCode)));							
-//					}
-//				}
-//			}
-//			//获取最大值
-//			tempMaxMap = lineMapDto.getMaxMap();
-//			if(tempMaxMap != null){
-//				for (String paramCode : en_params) {
-//					Double max = maxMap.get(paramCode);
-//					if (max == null) {
-//						max = tempMaxMap.get(paramCode);
-//					}
-//					if(tempMaxMap.get(paramCode) != null){
-//						maxMap.put(paramCode, this.getMax(max, tempMaxMap.get(paramCode)));							
-//					}
-//				}
-//			}
-			
-			////遍历数据
-			for (String paramCode : en_params) {
-				timeseries = lineMap.get(paramCode);
-				if (timeseries == null) {
-					timeseries = ChartUtils.createTimeseries(paramsMap.get(paramCode));
-				}
-				arrayData = arrayDataMap.get(paramCode);
-				for (int i = 0; i < task_count; i++) {
-					lineTimeSeriesDto = arrayData[task_index+i];
-					if(lineTimeSeriesDto != null){
-						// 往序列里面添加数据
-						timeseries.addOrUpdate(new Second(lineTimeSeriesDto.getDatetime()), lineTimeSeriesDto.getParamValue());
+			// 获取最小值
+			tempMinMap = lineMapDto.getMinMap();
+			if(tempMinMap != null){
+				for (String paramCode : en_params) {
+					Double min = minMap.get(paramCode);
+					if (min == null) {
+						min = tempMinMap.get(paramCode);
+					}
+					if(tempMinMap.get(paramCode) != null){
+						minMap.put(paramCode, this.getMin(min, tempMinMap.get(paramCode)));							
 					}
 				}
-				lineMap.put(paramCode, timeseries);
 			}
-		}
-		
-		//获取最值
-		for (String paramCode : en_params) {
-			timeseries = lineMap.get(paramCode);
-			minMap.put(paramCode, timeseries.getMinY());
-			maxMap.put(paramCode, timeseries.getMaxY());
+			//获取最大值
+			tempMaxMap = lineMapDto.getMaxMap();
+			if(tempMaxMap != null){
+				for (String paramCode : en_params) {
+					Double max = maxMap.get(paramCode);
+					if (max == null) {
+						max = tempMaxMap.get(paramCode);
+					}
+					if(tempMaxMap.get(paramCode) != null){
+						maxMap.put(paramCode, this.getMax(max, tempMaxMap.get(paramCode)));							
+					}
+				}
+			}
+			
 		}
 		
 		long end = System.currentTimeMillis();
 		System.out.println("获取 mongodb 数据总时间： " + (end-begin));
 		
-//		long beginTimeSeries = System.currentTimeMillis();
-//		System.out.println("begin TimeSeries...");
-//		//遍历数据
-//		Map<String,CreateTimeSeriesDataTask> dataForksMap = new HashMap<String,CreateTimeSeriesDataTask>();
-//		for (String paramCode : en_params) {
-//			CreateTimeSeriesDataTask task = new CreateTimeSeriesDataTask(arrayDataMap.get(paramCode), 
-//					paramCode, paramsMap.get(paramCode));
-//			dataForksMap.put(paramCode, task);
-//			task.fork();
-//		}
-//		// 多条线数据
-//		Map<String, TimeSeries> lineMap = new HashMap<String, TimeSeries>();
-//		TimeSeries timeseries = null;
-//		for (String key : dataForksMap.keySet()) {
-//			timeseries = dataForksMap.get(key).join();
-//			lineMap.put(key, timeseries);
-//		}
-//		long endTimeSeries = System.currentTimeMillis();
-//		System.out.println("获取 TimeSeries 数据总时间： " + (endTimeSeries-beginTimeSeries));
+		long beginTimeSeries = System.currentTimeMillis();
+		System.out.println("begin TimeSeries...");
+		//遍历数据
+		Map<String,CreateTimeSeriesDataTask1> dataForksMap = new HashMap<String,CreateTimeSeriesDataTask1>();
+		for (String paramCode : en_params) {
+			CreateTimeSeriesDataTask1 task = new CreateTimeSeriesDataTask1(arrayDataMap.get(paramCode), 
+					paramCode, paramsMap.get(paramCode));
+			dataForksMap.put(paramCode, task);
+			task.fork();
+		}
+		// 多条线数据
+		Map<String, TimeSeries> lineMap = new HashMap<String, TimeSeries>();
+		TimeSeries timeseries = null;
+		for (String key : dataForksMap.keySet()) {
+			timeseries = dataForksMap.get(key).join();
+			lineMap.put(key, timeseries);
+		}
+		long endTimeSeries = System.currentTimeMillis();
+		System.out.println("获取 TimeSeries 数据总时间： " + (endTimeSeries-beginTimeSeries));
 		
 		
 		long beginChart = System.currentTimeMillis();

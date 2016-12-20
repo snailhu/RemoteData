@@ -13,7 +13,11 @@ import DataAn.jfreechart.dto.LineMapDto;
 import DataAn.jfreechart.dto.LineTimeSeriesDto;
 import DataAn.mongo.client.MongodbUtil;
 
-public class SearchByDayDoneTask extends RecursiveTask<LineMapDto>{
+/**
+ * 多线程获取mongodb数据:LineTimeSeriesDto[] arrayData
+ *
+ */
+public class SearchByDayDoneTask1 extends RecursiveTask<LineMapDto>{
 
 	private static final long serialVersionUID = 1L;
 	
@@ -27,7 +31,7 @@ public class SearchByDayDoneTask extends RecursiveTask<LineMapDto>{
 	private Map<String, Double> paramMaxMap;
 	private Map<String, String> paramsMap;	
 
-	public SearchByDayDoneTask(LineTimeSeriesDto[] arrayData,
+	public SearchByDayDoneTask1(LineTimeSeriesDto[] arrayData,
 			String databaseName, String collectionName,Date beginDate0,
 			Date beginDate, Date endDate, Map<String, Double> paramMinMap,
 			Map<String, Double> paramMaxMap, Map<String, String> paramsMap) {

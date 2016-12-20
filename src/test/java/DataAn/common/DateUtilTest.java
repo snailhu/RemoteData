@@ -19,6 +19,13 @@ public class DateUtilTest {
 		String datetime2 = DateUtil.formatString(datetime, "yyyy年MM月dd日HH时mm分ss.SSS秒","yyyy年MM月dd日HH时mm分ss秒");
 		
 		System.out.println(datetime2);
+		Date beginDate = DateUtil.format("2016-12-01 01:05:00");
+		Date endDate = DateUtil.format("2016-12-07 02:05:00");
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(beginDate);
+		System.out.println("分钟： " + cal.get(Calendar.MINUTE));
+		cal.setTime(endDate);
+		System.out.println("分钟： " + cal.get(Calendar.MINUTE));
 	}
 	
 	@Test

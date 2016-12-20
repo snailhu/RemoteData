@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.RecursiveTask;
@@ -50,12 +51,17 @@ public class CreateTimeSeriesChartTask2 extends RecursiveTask<String>{
 
 	@Override
 	protected String compute() {
-		
+		if(constraintList == null || constraintList.size() == 0)
+			return null;
 		try {
 			long begin = System.currentTimeMillis();	
 			
+			String y1Label = "";
+			String y2Label = "";
 			List<TimeSeriesCollection> datasetList = new ArrayList<TimeSeriesCollection>();
 			if(constraintList.size() == 2){
+				y1Label = constraintList.get(0).getUnits();
+				y2Label = constraintList.get(1).getUnits();
 				//双Y轴
 				for (ConstraintDto constraintDto : constraintList) {
 					TimeSeriesCollection dataset = new TimeSeriesCollection();
@@ -82,17 +88,24 @@ public class CreateTimeSeriesChartTask2 extends RecursiveTask<String>{
 				}
 				//至少有一次
 				if(flag){
-					datasetList.add(dataset);					
+					datasetList.add(dataset);	
+					y1Label = constraintList.get(0).getUnits();
 				}
 			}
 			
 			String title = "";
 			String categoryAxisLabel = "";
 			String valueAxisLabel = "";
-
 			
-			JFreeChart chart = ChartFactory.createTimeSeriesChart(title,
-					categoryAxisLabel, valueAxisLabel, datasetList, beginDate, endDate);
+			Map<String,String> configMap = new HashMap<String,String>();
+			configMap.put("title", title);
+			configMap.put("categoryAxisLabel", categoryAxisLabel);
+			configMap.put("valueAxisLabel", valueAxisLabel);
+			configMap.put("y1Label", y1Label);
+			configMap.put("y2Label", y2Label);
+
+			JFreeChart chart = ChartFactory.createTimeSeriesChart(datasetList, beginDate, endDate, configMap);
+			
 			chartName = chartName+"_lineChart.png";
 			File file = new File(cachePath, chartName);
 			if(chart != null){

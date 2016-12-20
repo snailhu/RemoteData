@@ -556,7 +556,7 @@ $(function() {
             width: 50
         },{
 			field : 'runDays',
-			title : '星累计运行时间(天)',
+			title : '卫星在轨时间(天)',
 			width : 50
 		}, {
             field: 'description',

@@ -261,7 +261,7 @@ public class J9Series_Star_ServiceImpl implements IJ9Series_Star_Service{
 	public Map<String,String> getAllParameterList_allZh_and_en() throws Exception{
 		Map<String,String> map = (Map<String, String>) ehCache.getCacheElement("allParameterList_allZh_and_en");
 		if(map == null || map.size() == 0){
-			System.out.println("getAllParameterList_allZh_and_en cache is null");
+//			System.out.println("getAllParameterList_allZh_and_en cache is null");
 			map = new HashMap<String,String>();
 			Class<?> pojoClass = Class.forName("DataAn.galaxyManager.option.J9Series_Star_FlywheelParameterConfig");
 			Object obj = pojoClass.newInstance();

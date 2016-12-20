@@ -107,8 +107,10 @@ public class SearchByDayTask6 extends RecursiveTask<LineChartDto>{
 		Map<String, Double> maxMap = new HashMap<String, Double>();
 		
 		LineMapDto lineMapDto = null;
-		Map<String, Double> tempMinMap = null;	
+		Map<String, Double> tempMinMap = null;
+		Double min = null;
 		Map<String, Double> tempMaxMap = null;
+		Double max = null;
 		TimeSeriesDataItem[] arrayData = null;
 		TimeSeriesDataItem dataItem = null;
 		for (SearchByDayDoneTask3 task : forks) {
@@ -124,7 +126,7 @@ public class SearchByDayTask6 extends RecursiveTask<LineChartDto>{
 				tempMinMap = lineMapDto.getMinMap();
 				if(tempMinMap != null){
 					for (String paramCode : en_params) {
-						Double min = minMap.get(paramCode);
+						min = minMap.get(paramCode);
 						if (min == null) {
 							min = tempMinMap.get(paramCode);
 						}
@@ -137,7 +139,7 @@ public class SearchByDayTask6 extends RecursiveTask<LineChartDto>{
 				tempMaxMap = lineMapDto.getMaxMap();
 				if(tempMaxMap != null){
 					for (String paramCode : en_params) {
-						Double max = maxMap.get(paramCode);
+						max = maxMap.get(paramCode);
 						if (max == null) {
 							max = tempMaxMap.get(paramCode);
 						}

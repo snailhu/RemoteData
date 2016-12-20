@@ -9,6 +9,7 @@ public class ConstraintDto {
 	private String paramCode; //英文值
 	private double max; //最大值区间
 	private double min; //最小值区间
+	private String units; //单位
 	
 	public String getParamName() {
 		return paramName;
@@ -34,12 +35,17 @@ public class ConstraintDto {
 	public void setMin(double min) {
 		this.min = min;
 	}
+	
+	public String getUnits() {
+		return units;
+	}
+	public void setUnits(String units) {
+		this.units = units;
+	}
 	@Override
 	public String toString() {
-		return "ConstraintDto [paramName=" + paramName + ", paramCode="
-				+ paramCode + ", max=" + max + ", min=" + min + "]";
+		return "ConstraintDto [paramName=" + paramName + ", paramCode=" + paramCode + ", max=" + max + ", min=" + min
+				+ ", units=" + units + "]";
 	}
-	
-	
 	
 }

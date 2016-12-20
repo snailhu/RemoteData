@@ -103,7 +103,7 @@
 
 		//左菜单栏
 		$("#deviceview-img").attr("src","${pageContext.request.contextPath}/static/new/img/images/a_14.png");
-		$("#galaxymanage-img").attr("src","${pageContext.request.contextPath}/static/new/img/images/a_14.png");
+		$("#galaxymanage-img").attr("src","${pageContext.request.contextPath}/static/new/img/images/a_82.png");
 		$("#deviceview-text").css("color", "#5d90d6");
 		$("#galaxymanage-text").css("color", "#5d90d6");
 		$("#galaxymanageUL").css("display","block");

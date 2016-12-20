@@ -73,7 +73,7 @@ public class VirtualFileSystemServiceTest {
 	@Test
 	public void saveFile() throws Exception{
 		long begin = System.currentTimeMillis();
-		String csv = "E:\\data\\flywheel\\2000\\01\\j9-02--2000-01-01.csv";
+		String csv = "E:\\data\\flywheel\\j9-02--2016-02-01.csv";
 //		String dat = "C:\\XX9(02)--20150817(公开).DAT";
 		this.saveFile(csv, null);
 		long end = System.currentTimeMillis();

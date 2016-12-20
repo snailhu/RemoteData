@@ -634,10 +634,14 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 		String title = result.getTitle();
 		//数据不为空
 		if(StringUtils.isNotBlank(title)){
-			//test 等级
-			mongoService.saveCSVData(series, star, parameterType, date, result.getMap(), uuId);
+			//test 分级
+			Map<String, List<Document>> map = result.getMap();
+			if(map != null && map.size() > 0)
+				mongoService.saveCSVData(series, star, parameterType, date, map, uuId);				
 			//保存csv文件数据
-			//mongoService.saveCSVData(series, star,parameterType, date, docList, uuId);
+			List<Document> docList = result.getDatas();
+			if(docList != null && docList.size() > 0)
+				mongoService.saveCSVData(series, star,parameterType, date, docList, uuId);
 			DateParameters dateParameters = new DateParameters();
 			dateParameters.setSeries(series);
 			dateParameters.setStar(star);

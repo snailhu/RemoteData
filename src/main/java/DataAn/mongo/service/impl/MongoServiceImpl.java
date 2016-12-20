@@ -4,12 +4,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
 import org.bson.Document;
 import org.springframework.stereotype.Service;
-
 import com.mongodb.client.MongoCursor;
-
 import DataAn.common.utils.DateUtil;
 import DataAn.galaxyManager.option.J9Series_Star_ParameterType;
 import DataAn.mongo.client.MongodbUtil;
@@ -25,17 +22,24 @@ public class MongoServiceImpl implements IMongoService{
 	public void saveCSVData(String series, String star,String paramType, String date,
 			List<Document> documents, String versions) throws Exception {
 		String databaseName = InitMongo.getDataBaseNameBySeriesAndStar(series, star);
-//		String databaseName = InitMongo.DATABASE_TEST;
+		Set<String> isexistCols = mg.getExistCollections(databaseName);		
 		String collectionName = paramType;
 		try {
+			long begin = System.currentTimeMillis();
 			if(documents != null && documents.size() > 0){
-				//设置同一时间段的数据的状态为0
-//				Date beginDate = documents.get(0).getDate("datetime");
-//				Date endDate = documents.get(documents.size() - 1).getDate("datetime");
-//				mg.updateByDate(databaseName, collectionName, beginDate, endDate);
-				
+				if(isexistCols != null && isexistCols.size() > 0){
+					if(isexistCols.contains(collectionName)){
+						//设置同一时间段的数据的状态为0
+						Date beginDate = documents.get(0).getDate("datetime");
+						Date endDate = documents.get(documents.size() - 1).getDate("datetime");
+						mg.updateByDate(databaseName, collectionName, beginDate, endDate);						
+					}
+				}
 				mg.insertMany(databaseName, collectionName, documents);					
 			}
+			long end = System.currentTimeMillis();
+			System.out.println("保存数据在： " + databaseName + "." + collectionName + " 记录： " + documents.size());
+			System.out.println("耗时： " + (end - begin) );
 		} catch (Exception e) {
 			e.printStackTrace();
 			mg.update(databaseName, collectionName, "versions", versions);

@@ -278,7 +278,7 @@
 		if(keyWord=="")
 		{keyWord="all"}
 				  //logurl  = "${pageContext.request.contextPath}/admin/log/showSystemLog/"+beginTime+"/"+endTime+"/"+keyWord;
-				  logurl  = "${pageContext.request.contextPath}/admin/log/showSystemLog/"+beginTime+"/"+endTime+"/"+encodeURI(keyWord);				  
+				  logurl  = "${pageContext.request.contextPath}/admin/log/showSystemLog/"+beginTime+"/"+endTime+"/"+encodeURI(encodeURI(keyWord));	//两次编码			  
 				  intlogList();			  			  
 			 });
 				  

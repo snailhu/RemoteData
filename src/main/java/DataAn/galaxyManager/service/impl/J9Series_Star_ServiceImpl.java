@@ -328,6 +328,10 @@ public class J9Series_Star_ServiceImpl implements IJ9Series_Star_Service{
 			c = new ConstraintDto();
 			c.setId(count);
 			c.setName(dataType);
+			c.setMin("");
+			c.setMin("");
+			c.setUnit("");
+			c.setYname("");
 			parentId = count;
 			count ++;
 			children = new ArrayList<ConstraintDto>();
@@ -343,8 +347,8 @@ public class J9Series_Star_ServiceImpl implements IJ9Series_Star_Service{
 					child.setValue(map.get(flyWheelData)); //设置英文
 					//child.setMax(Float.MAX_VALUE);
 					//child.setMin(-Float.MAX_VALUE);
-					child.setMax(9999);
-					child.setMin(-9999);
+					child.setMax("9999");
+					child.setMin("-9999");
 					child.setUnit("");
 					child.setYname("Y1");
 					children.add(child);

@@ -35,8 +35,8 @@ public class LineMapDto {
 	}
 	@Override
 	public String toString() {
-		return "LineMapDto [minMap=" + minMap + ", maxMap=" + maxMap
-				+ ", index=" + index + ", count=" + count + "]";
+		return "LineMapDto [index=" + index + ", count=" + count +
+				", minMap=" + minMap + ", maxMap=" + maxMap + "]";
 	}
 	
 	

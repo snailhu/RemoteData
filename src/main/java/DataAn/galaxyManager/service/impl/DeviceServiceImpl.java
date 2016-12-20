@@ -16,11 +16,13 @@ import DataAn.common.pageModel.Combo;
 import DataAn.common.utils.DateUtil;
 import DataAn.galaxyManager.dao.IDeviceDao;
 import DataAn.galaxyManager.dao.IDeviceTypeDao;
+import DataAn.galaxyManager.dao.ISeriesDao;
 import DataAn.galaxyManager.dao.IStarDao;
 import DataAn.galaxyManager.domain.Device;
 import DataAn.galaxyManager.domain.DeviceType;
 import DataAn.galaxyManager.domain.Star;
 import DataAn.galaxyManager.dto.DeviceDto;
+import DataAn.galaxyManager.dto.DeviceViewDTO;
 import DataAn.galaxyManager.dto.QueryDeviceDTO;
 import DataAn.galaxyManager.dto.QueryDeviceTypeDTO;
 import DataAn.galaxyManager.service.IDeviceService;
@@ -33,6 +35,8 @@ public class DeviceServiceImpl implements IDeviceService {
 	private IDeviceTypeDao deviceTypeDao;
 	@Resource
 	private IStarDao starDao;
+	@Resource
+	private ISeriesDao seriesDao;
 
 	@Override
 	public void addDevice(DeviceDto deviceDto) throws Exception {
@@ -113,9 +117,10 @@ public class DeviceServiceImpl implements IDeviceService {
 	}
 
 	@Override
-	public List<QueryDeviceDTO> getDeviceByParam(String series, String star, String deviceType) throws Exception {
+	public List<QueryDeviceDTO> getDeviceByParam(String series, String star, String deviceType, String model)
+			throws Exception {
 		List<QueryDeviceDTO> deviceDtos = new ArrayList<QueryDeviceDTO>();
-		List<Device> devices = deviceDao.getDevicesBySeriesAndStar(series, star, deviceType);
+		List<Device> devices = deviceDao.getDevicesBySeriesAndStar(series, star, deviceType, model);
 		for (Device device : devices) {
 			QueryDeviceDTO deviceDto = new QueryDeviceDTO();
 			deviceDto.setDeviceId(device.getDeviceId());
@@ -215,6 +220,25 @@ public class DeviceServiceImpl implements IDeviceService {
 			}
 		}
 		return map;
+	}
+
+	@Override
+	public Pager<DeviceViewDTO> pageDeviceViewDTO(int pageIndex, int pageSize, String deviceType, String model)
+			throws Exception {
+		Pager<DeviceViewDTO> pager = deviceDao.selectViewDTObyPager(deviceType, model, pageIndex, pageSize);
+		for (DeviceViewDTO deviceViewDTO : pager.getDatas()) {
+			Long seriesId = deviceViewDTO.getSeriersId();
+			Long starId = deviceViewDTO.getStarId();
+			deviceViewDTO.setDeviceNum(
+					deviceDao.getTotalNumByStarAndModel(seriesId.toString(), starId.toString(), model, deviceType));
+			deviceViewDTO.setDeviceTypeId(Long.parseLong(deviceType));
+			deviceViewDTO.setRunDays(
+					deviceDao.getTotalRuntimeByStarAndModel(seriesId.toString(), starId.toString(), model, deviceType));
+			deviceViewDTO.setSeriesName(seriesDao.get(seriesId).getName());
+			deviceViewDTO.setStarName(starDao.get(starId).getName());
+			deviceViewDTO.setDeviceTypeName(deviceTypeDao.get(Long.parseLong(deviceType)).getDeviceName());
+		}
+		return pager;
 	}
 
 }

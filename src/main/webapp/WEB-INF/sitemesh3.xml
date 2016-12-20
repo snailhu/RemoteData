@@ -2,6 +2,7 @@
 <sitemesh>
 	
 	<!-- 指明满足“/*”的页面，将被“/WEB-INF/jsp/layouts/admin-home.jsp”所装饰 -->
+	<mapping path="/admin/device/*" decorator="/WEB-INF/jsp/layouts2/admin-home.jsp" />
 	<mapping path="/new/index" decorator="/WEB-INF/jsp/layouts2/admin-home.jsp" />
 	<mapping path="/admin/index" decorator="/WEB-INF/jsp/layouts2/admin-home.jsp" />
 	<mapping path="/admin/*/index" decorator="/WEB-INF/jsp/layouts2/admin-home.jsp" />

@@ -5,19 +5,24 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.RecursiveTask;
+
 import org.apache.commons.lang3.StringUtils;
 import org.bson.Document;
+import org.jfree.data.time.Second;
+import org.jfree.data.time.TimeSeriesDataItem;
+
 import com.mongodb.client.MongoCursor;
+
 import DataAn.common.utils.DateUtil;
 import DataAn.jfreechart.dto.LineMapDto;
 import DataAn.jfreechart.dto.LineTimeSeriesDto2;
 import DataAn.mongo.client.MongodbUtil;
 
-public class SearchByDayDoneTask2 extends RecursiveTask<LineMapDto>{
+public class SearchByDayDoneTask3 extends RecursiveTask<LineMapDto>{
 
 	private static final long serialVersionUID = 1L;
 	
-	private Map<String,LineTimeSeriesDto2[]> arrayDataMap;
+	private Map<String,TimeSeriesDataItem[]> arrayDataMap;
 	private String databaseName;
 	private String collectionName;
 	private Date beginDate0;
@@ -29,7 +34,7 @@ public class SearchByDayDoneTask2 extends RecursiveTask<LineMapDto>{
 
 	
 
-	public SearchByDayDoneTask2(Map<String, LineTimeSeriesDto2[]> arrayDataMap,
+	public SearchByDayDoneTask3(Map<String, TimeSeriesDataItem[]> arrayDataMap,
 			String databaseName, String collectionName, Date beginDate0,
 			Date beginDate, Date endDate, Map<String, Double> paramMinMap,
 			Map<String, Double> paramMaxMap, Map<String, String> paramsMap) {
@@ -74,8 +79,8 @@ public class SearchByDayDoneTask2 extends RecursiveTask<LineMapDto>{
 			throw new RuntimeException(DateUtil.format(beginDate) + " 到 "+ DateUtil.format(endDate) +" 未找到报告数据！");
 		}
 		int count = 0;// 迭代器
-		LineTimeSeriesDto2[] arrayData = null;
-		LineTimeSeriesDto2 lineTimeSeriesDto = null;
+		TimeSeriesDataItem[] arrayData = null;
+		TimeSeriesDataItem dataItem = null;
 		Document doc = null;
 		Date datetime = null;
 		long lastTime = 0; //上一个时间截
@@ -109,12 +114,9 @@ public class SearchByDayDoneTask2 extends RecursiveTask<LineMapDto>{
 					
 					// 获取对应参数的数组
 					arrayData = arrayDataMap.get(key);
-					lineTimeSeriesDto = new LineTimeSeriesDto2();
-					lineTimeSeriesDto.setDatetime(datetime);
-					lineTimeSeriesDto.setParamCode(key);
-					lineTimeSeriesDto.setParamValue(dValue);
+					dataItem = new TimeSeriesDataItem(new Second(datetime), dValue);
 					//往数组里面添加
-					arrayData[index+count] = lineTimeSeriesDto;
+					arrayData[index+count] = dataItem;
 					//往Map里面添加
 					arrayDataMap.put(key, arrayData);
 					

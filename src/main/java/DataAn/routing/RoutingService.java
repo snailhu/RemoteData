@@ -89,7 +89,7 @@ public class RoutingService {
 				}
 		}
 		
-		
+		/*//方法一：轴哥多线程获取数据
 		MongoFilter mongoFilter=new MongoFilter();
 		mongoFilter.setStartDate(startDate);
 		mongoFilter.setEndDate(endDate);
@@ -98,7 +98,14 @@ public class RoutingService {
 		if(repo==null)
 		{System.out.println("数据库为空");}
 		Map<String, YearAndParamDataDto> vals=forkJoinPool.invoke(new DataSearchRoutingTask(requestConfig, repo, mongoFilter));
-		return vals;
+		return vals;*/
+		
+		//方法二：
+		//-----------查询多线程迭代获取结果----------------//
+		Map<String, YearAndParamDataDto> vals=forkJoinPool.invoke(new DataSearchServiceTask(requestConfig,repo));
+		return vals;	
+		//-----------查询多线程迭代获取结果----------------//
+		
 		
 	}
 	

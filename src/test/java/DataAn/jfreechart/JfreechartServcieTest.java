@@ -88,9 +88,11 @@ public class JfreechartServcieTest {
 		
 		List<ConstraintDto> list3 = new ArrayList<ConstraintDto>();
 		ConstraintDto c31 = new ConstraintDto();
+
 		c31.setParamName("飞轮温度Xa(00815)");
 		c31.setParamCode("sequence_00815");
 		list3.add(c31);
+	
 		ConstraintDto c32 = new ConstraintDto();
 		c32.setParamName("飞轮温度Ya(00817)");
 		c32.setParamCode("sequence_00817");

@@ -293,7 +293,14 @@
                     magicType : {show: true, type: ['line', 'bar']},
                     restore: {},
                     saveAsImage: {}
-                }
+                	},
+                itemGap:20,
+                itemSize:20,
+                borderColor:'#ccc',
+                orient:'vertical',
+                x:'right',
+                y:'center'
+                
             },
             xAxis: {
             	// axisLabel: {					
@@ -385,43 +392,42 @@
              	  var i=0
              	  var yname = 0;
              	  var legendname ="";
-             	  var unit="";          	  
+             	  var unit=null;          	  
              	  var Y1name ="Y1轴";
              	  var Y1nametemp ="Y1轴";
+             	  
              	  var Y2name ="Y2轴";
              	  var Y2nametemp ="Y2轴";
              	  
              	  for(var param in data){             	  
 	             	  unit = names[names.length-1-i].unit;
-	             	  yname  = names[names.length-1-i].y;
+	             	  yname  = names[names.length-1-i].y;	  				  
+	  				  //Y1轴
 	  				  if(yname==0)
 	  				  {
 	  				  	Y1nametemp = Y1name;
-	  				  	Y1name ="Y1轴("+unit+")";
-	  				  	console.log(Y1nametemp+"-------"+Y1name)	  				  	
-	  				  	if((Y1name!=Y1nametemp))
-	  				  	{
-	  				  		if(Y1nametemp=="Y1轴")
-	  				  		{}
-	  				  		else{
-	  				  			Y1name ="Y1轴";
-	  				  		}	
+	  				  	Y1name ="Y1轴"+"("+unit+")";  				  	
+	  				  	if((Y1nametemp!="Y1轴") && (Y1name!=Y1nametemp))
+	  				  	{	  				  		
+	  				  			Y1name ="Y1轴 ";
+	  				  			
 	  				  	}
 	  				  	
 	  				  }
+	  				  //Y2轴
 	  				  if(yname==1)
 	  				  {
 	  				    var Y2nametemp =Y2name;
-	  				  	Y2name ="Y2轴("+unit+")";	  				  	
-	  				  	if(Y2name!=Y2nametemp)
+	  				  	Y2name ="Y2轴"+"("+unit+")";	  				  	
+	  				  	if((Y2nametemp!="Y2轴")&&(Y2name!=Y2nametemp))
 	  				  	{
-	  				  		Y2name ="Y2轴";
+	  				  		Y2name ="Y2轴 ";
 	  				  	}
 	  				  }
   				  
 	             	  legendname =names[names.length-1-i].name;
-	             	  console.log(names.length);
-	             	  console.log(yname+legendname+unit);            	  	
+	             	  //console.log(names.length);
+	             	  //console.log(yname+legendname+unit);            	  	
 	             	  	seriesOptions[i++] = {
 				            	type: 'line',
 				                //name: param,
@@ -592,6 +598,7 @@ $.post("getDatabytap",
               	console.log("开始日期"+startDate+"结束日期："+endDate);
               	if(timeZone>10){
               		 if(needGetDate()){
+              		 						parent.window.document.body.style.overflow = "hidden";//隐藏滚动条
 						                	$("#main").showLoading(); 
 											var a= stringToDate(startDate);
 							              	var b= stringToDate(endDate);
@@ -623,6 +630,7 @@ $.post("getDatabytap",
 								                 success: function(data){
 								                 	 console.log("请求后台完成时间："+new Date());
 								                	 $("#main").hideLoading(); 
+								                	 parent.window.document.body.style.overflow = "auto";//开启滚动
 								                	 console.log("111"+startDate_init);
 											         console.log("111"+endDate_init);
 								                	 startDate_init = startDate;
@@ -633,9 +641,39 @@ $.post("getDatabytap",
 								                 	  var i=0
 								                 	  var yname = 0;
 								                 	  var legendname ="";
-								                 	  for(var param in data){
 								                 	  
-								                 	  yname  = names[names.length-1-i].y;
+								                 	  var unit=null;
+								                 	  var Y1name ="Y1轴";
+										         	  var Y1nametemp ="Y1轴";
+										         	  
+										         	  var Y2name ="Y2轴";
+										         	  var Y2nametemp ="Y2轴";
+								                 	  for(var param in data){								                 	  
+									                 	  unit = names[names.length-1-i].unit;
+										             	  yname  = names[names.length-1-i].y;	  				  
+										  				  //Y1轴
+										  				  if(yname==0)
+										  				  {
+										  				  	Y1nametemp = Y1name;
+										  				  	Y1name ="Y1轴"+"("+unit+")";  				  	
+										  				  	if((Y1nametemp!="Y1轴") && (Y1name!=Y1nametemp))
+										  				  	{	  				  		
+										  				  			Y1name ="Y1轴 ";
+										  				  			
+										  				  	}
+										  				  	
+										  				  }
+										  				  //Y2轴
+										  				  if(yname==1)
+										  				  {
+										  				    var Y2nametemp =Y2name;
+										  				  	Y2name ="Y2轴"+"("+unit+")";	  				  	
+										  				  	if((Y2nametemp!="Y2轴")&&(Y2name!=Y2nametemp))
+										  				  	{
+										  				  		Y2name ="Y2轴 ";
+										  				  	}
+										  				  }
+										  				  
 						             	  			  legendname =names[names.length-1-i].name;
 								                 	  
 								                 	  console.log(yname+legendname)

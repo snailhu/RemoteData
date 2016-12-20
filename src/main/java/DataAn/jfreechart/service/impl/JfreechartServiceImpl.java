@@ -2,15 +2,12 @@ package DataAn.jfreechart.service.impl;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.Vector;
 import java.util.concurrent.ForkJoinPool;
 
 import javax.annotation.Resource;
@@ -32,28 +29,25 @@ import DataAn.common.utils.DateUtil;
 import DataAn.common.utils.Log4jUtil;
 import DataAn.jfreechart.chart.ChartFactory;
 import DataAn.jfreechart.chart.ChartUtils;
-import DataAn.jfreechart.chart.Serie;
 import DataAn.jfreechart.dto.ConstraintDto;
 import DataAn.jfreechart.dto.LineChartDto;
-import DataAn.jfreechart.dto.LineMapDto;
 import DataAn.jfreechart.service.IJfreechartServcie;
-import DataAn.jfreechart.thread.SearchByDayDoneTask;
-import DataAn.jfreechart.thread.SearchByDayTask;
 import DataAn.jfreechart.thread.SearchByDayTask2;
-import DataAn.mongo.init.InitMongo;
+import DataAn.jfreechart.thread.SearchByDayTask3;
+import DataAn.jfreechart.thread.SearchByDayTask4;
+import DataAn.jfreechart.thread.SearchByDayTask6;
+import DataAn.jfreechart.thread.SearchByDayTask7;
 import DataAn.mongo.service.IMongoService;
-import DataAn.routing.DataSearchTask;
 import DataAn.wordManager.config.OptionConfig;
 
 @Service
 public class JfreechartServiceImpl implements IJfreechartServcie {
-
 	@Resource
 	private IMongoService mongoService;
 
 	private Logger logger = Log4jUtil.getInstance().getLogger(JfreechartServiceImpl.class);
 	
-//	private final ForkJoinPool forkJoinPool = new ForkJoinPool();
+	private final static ForkJoinPool forkJoinPool = new ForkJoinPool();
 	
 	@Override
 	public LineChartDto createLineChart(String series, String star,
@@ -61,7 +55,7 @@ public class JfreechartServiceImpl implements IJfreechartServcie {
 			Map<String, List<ConstraintDto>> constraintsMap) throws Exception {
 		
 		StringBuffer sb = new StringBuffer();
-		sb.append("come in createLineChart.."+"\n");
+		sb.append(DateUtil.format(new Date())+" come in createLineChart.."+"\n");
 		sb.append("series: " + series+"\n");
 		sb.append("star: " + star+"\n");
 		sb.append("paramType: " + paramType+"\n");
@@ -84,9 +78,9 @@ public class JfreechartServiceImpl implements IJfreechartServcie {
 	protected LineChartDto createTimeSeriesChart3(String series, String star,
 			String paramType, Date beginDate, Date endDate,
 			Map<String, List<ConstraintDto>> constraintsMap) throws Exception {
-		ForkJoinPool forkJoinPool = new ForkJoinPool(15);
+//		ForkJoinPool forkJoinPool = new ForkJoinPool(15);
 		
-		LineChartDto lineChartDto = forkJoinPool.invoke(new SearchByDayTask2(series, star, paramType, beginDate, endDate, constraintsMap));
+		LineChartDto lineChartDto = forkJoinPool.invoke(new SearchByDayTask6(series, star, paramType, beginDate, endDate, constraintsMap));
 		return lineChartDto;
 	}
 	protected LineChartDto createTimeSeriesChart2(String series, String star,

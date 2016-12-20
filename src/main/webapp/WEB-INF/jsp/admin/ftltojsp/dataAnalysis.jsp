@@ -533,8 +533,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		 	var type_current = $('#SatelliteComponents').attr('name');
 		 	console.log("当前"+Series_current+"----"+Star_current);
             var url = "${pageContext.request.contextPath}/getConstraint?beginDate="+beginDate+"&endDate="+endDate+"&Series_current="+Series_current+"&Star_current="+Star_current+"&type_current="+type_current;
-            updateParamTree(url);
             intTemplateList();
+            updateParamTree(url);
+            
             
 		 });
 		 

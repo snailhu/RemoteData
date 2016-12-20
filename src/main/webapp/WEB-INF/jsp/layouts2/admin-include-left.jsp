@@ -378,12 +378,27 @@ a {
 			</ul>
 		</li>
 	
-		<li><a
-			href="${pageContext.request.contextPath}/admin/galaxy/index"
-			class="tab_title"> <img class="img_head" id="galaxymanage-img"
-				src="${pageContext.request.contextPath}/static/new/img/images/images/A_82.png">
-				<span id="galaxymanage-text">星系管理</span>
-		</a></li>
+		<li id="galaxymanage-li">
+			<a href="#" class="dropdown-toggle tab_title"> 
+				<img class="img_head" id="galaxymanage-img" src="${pageContext.request.contextPath}/static/new/img/images/images/A_82.png">
+				<span class="menu-text" id="galaxymanage-text"> 星系管理</span> 
+				<img class="img_down" src="${pageContext.request.contextPath}/static/new/img/DataImport/xiala.png">
+			</a>
+			<ul class="submenu" id="galaxymanageUL">
+				<li>
+					<a href="${pageContext.request.contextPath}/admin/galaxy/index" class="tab_li"> 
+						<img class="img_head" id="galaxyview-img" src="${pageContext.request.contextPath}/static/new/img/images/images/A_82.png">
+						<span id="galaxyview-text">星系查看</span>
+					</a>
+				</li>
+				<li>
+					<a href="${pageContext.request.contextPath}/admin/device/deviceIndex" class="tab_li"> 
+						<img class="img_head" id="deviceview-img" src="${pageContext.request.contextPath}/static/new/img/images/images/A_14.png">
+						<span id="deviceview-text">设备查看</span>
+					</a>
+				</li>
+			</ul>
+		</li>
 
 		<li id="sysPermission-li"><a href="#"
 			class="dropdown-toggle tab_title"> <img class="img_head"

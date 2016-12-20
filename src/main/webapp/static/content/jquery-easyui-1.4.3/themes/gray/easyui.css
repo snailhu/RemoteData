@@ -1467,7 +1467,7 @@
 .datagrid-row-alt {
   background: #fafafa;
 }
-.datagrid-row-over,
+/* .datagrid-row-over, */
 .datagrid-header td.datagrid-header-over {
   background: #e2e2e2;
   color: #000000;

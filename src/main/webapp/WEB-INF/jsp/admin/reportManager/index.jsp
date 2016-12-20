@@ -148,6 +148,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	line-height:30px;
 	text-align:left;
 }
+a:hover{color:#0909df;}
   </style>
   <script type="text/javascript">
 	$(function(){

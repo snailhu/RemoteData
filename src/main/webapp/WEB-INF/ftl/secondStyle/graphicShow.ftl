@@ -87,12 +87,15 @@
 	#add-series-close{
 	color: white;
     font-size: 14px;
-    width: 100px;
+    width: 80px;
     background-color: #abbac3;
-    height: 32px;
+    height: 34px;
     border-width: 0;
+	margin-left: 20px;
 	}
 	#add-series-close:hover{background-color:#8b9aa3;border-color:#abbac3;}
+	#submit_configChart{ width: 80px;}
+	.col-lg-4{text-align:center;}
     </style>
 </head>
 <body>

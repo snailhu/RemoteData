@@ -66,13 +66,21 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 .form-horizontal {
     margin-bottom: 0px;
 }
-
+.combo-arrow{
+	background:url('${pageContext.request.contextPath}/static/imgs/arrow.png') no-repeat right center;
+	width:348px;
+}
+.combo-arrow:hover {
+    background-color: transparent;
+}
 </style>
 <script type="text/javascript">
 $(function() {
 	//修改页面缩放，界面显示不正常
 	$(".col-lg-7").css("text-align","center");
 	$(".modal-dialog").css("margin","20px auto");
+	$(".combo-arrow").css({"width":"348px","height":"34px"});
+	$(".textbox").css("height","34px");
 
 	//左菜单栏
 	$("#galaxymanage-img").attr("src","${pageContext.request.contextPath}/static/new/img/images/a_82.png");

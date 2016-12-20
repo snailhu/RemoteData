@@ -1,9 +1,14 @@
 package DataAn.reportManager.controller;
 
+import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Callable;
+import java.util.concurrent.Executors;
+import java.util.concurrent.LinkedBlockingQueue;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -29,6 +34,7 @@ import DataAn.jfreechart.service.IJfreechartServcie;
 import DataAn.mongo.init.InitMongo;
 import DataAn.reportManager.dao.IStarParamDao;
 import DataAn.reportManager.domain.StarParam;
+import DataAn.reportManager.dto.CreateReportDto;
 import DataAn.reportManager.service.IReoportService;
 import DataAn.reportManager.service.IStarParamService;
 import DataAn.reportManager.util.CommonsConstant;
@@ -41,15 +47,13 @@ import DataAn.wordManager.config.OptionConfig;
 public class ReportController {
 	@Resource
 	private IReoportService reoportService;
-	
 	@Resource
 	private IStarParamService starParamService;
-	
 	@Resource
 	private IJfreechartServcie jfreechartServcie;
-	
 	@Resource
 	private IStarParamDao starParamDao;
+	LinkedBlockingQueue<CreateReportDto> createReports = new LinkedBlockingQueue<CreateReportDto>();
 	
 //	@RequestMapping("/index/{series}/{star}/{paramType}/{dirId}/")
 	@RequestMapping("/index")
@@ -216,6 +220,85 @@ public class ReportController {
 		 return res;
 	}
 	
+	@RequestMapping(value = "/createReport1")
+	@ResponseBody
+	public void createReport1(HttpServletRequest request,HttpServletResponse response,
+			String seriesId,String starId,String partsType,String beginTime,String endTime) {
+		CreateReportDto reportLast = new CreateReportDto();
+		reportLast.setRequest(request);
+		reportLast.setResponse(response);
+		reportLast.setSeriesId(seriesId);
+		reportLast.setStarId(starId);
+		reportLast.setPartsType(partsType);
+		reportLast.setBeginTime(beginTime);
+		reportLast.setEndTime(endTime);
+		try {
+			createReports.put(reportLast);
+			CreateReportDto reportFirst = createReports.take();
+			while(reportFirst != null){
+				
+				long begin = System.currentTimeMillis();
+				String flag = UUIDGeneratorUtil.getUUID();
+				System.out.println();
+				System.out.println("begintime:" + DateUtil.format(new Date())+" 开始生成报告： flag="+flag);
+				
+				ResultJSON res = ResultJSON.getSuccessResultJSON();
+				String templateUrl = OptionConfig.getWebPath() + "\\report\\wordtemplate\\卫星状态报告.doc";
+				String time = DateUtil.getNowTime("yyyy-MM-dd");
+				String partsName = "";
+				if("flywheel".equals(partsType)) {
+					partsName = "飞轮";
+				}else if("top".equals(partsType)) {
+					partsName = "陀螺";
+				}
+				String filename = seriesId+"_"+starId+"_"+partsName+"_"+time+".doc";
+				String docPath = OptionConfig.getWebPath() + "report\\"+filename;
+				Date beginDate = DateUtil.format(beginTime,"yyyy-MM-dd");
+				Date endDate =  DateUtil.format(endTime,"yyyy-MM-dd");
+				
+//				reoportService.createReport(beginDate, endDate, filename,templateUrl, docPath, seriesId, starId, partsType);
+
+				Map<String, Object> data = new HashMap<String, Object>();
+				data.put("docPath", docPath);
+				data.put("filename", filename);
+				res.setData(data);
+				
+				long end = System.currentTimeMillis();
+				System.out.println("endtime: " + DateUtil.format(new Date())+" flag="+flag);
+				System.out.println("flag="+flag+": 生成报告 " + filename + " time: " + (end-begin));
+				//
+				reportFirst = createReports.take();
+			}
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+			
+		}
+	}
+	
+	@RequestMapping(value = "/createReport2")
+	public Callable<String> processUpload(HttpServletRequest request,  
+            final HttpServletResponse response) {  
+        System.out.println(DateUtil.format(new Date()) +" 线程名称："+Thread.currentThread().getName());  
+        
+        
+        
+        Callable<String> s= new Callable<String>() {  
+            public String call() throws Exception {  
+                try {  
+                    System.out.println("线程名称："+Thread.currentThread().getName());  
+                    response.setContentType("text/plain;charset=utf-8");  
+                    response.getWriter().write("nihao");  
+                    response.getWriter().close();  
+                } catch (IOException e) {  
+                    e.printStackTrace();  
+                }  
+                return null;  
+            }  
+        };  
+        
+//        Executors.newFixedThreadPool(1).submit(s).g
+        return s;
+    }  
 	
 	@RequestMapping(value = { "/createReportTest" })
 	public void createReprotTest() throws Exception{

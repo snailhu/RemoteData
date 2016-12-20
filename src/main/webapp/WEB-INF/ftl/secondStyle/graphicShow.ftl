@@ -10,7 +10,9 @@
     <script  src="${base}/static/showLoading/js/jquery.showLoading.min.js"></script>
     <link rel="stylesheet"  href="${base}/static/showLoading/css/showLoading.css" />
     <script type="text/javascript" src="${base}/static/scripts/echarts.min.js"></script>
+    <!--Echart主题-->
     <script type="text/javascript" src="${base}/static/scripts/vintage.js"></script>
+    <script type="text/javascript" src="${base}/static/scripts/macarons.js"></script>
     <script type="text/javascript" src="${base}/static/js/conditionMonitoring/datediff.js"></script>
     <!--<script type="text/javascript" src="${base}/static/scripts/test.js"></script>-->
     <!-- 时间选择器 -->
@@ -166,7 +168,7 @@
 		</div>
 	</div>
 	<hr/>
-	<div id="main" style="width: 850px;height:480px;"></div>
+	<div id="main" style="width: 870px;height:480px;"></div>
 </div><!-- /.page-content -->		
 </div><!-- /.main-content -->	
 </body>
@@ -241,7 +243,7 @@
     	$(".modal-dialog").css("margin","20px auto");
     	
     	var paramObject={};	
-    	var myChart = echarts.init(document.getElementById('main'),'vintage');
+    	var myChart = echarts.init(document.getElementById('main'),'macarons');
     	var seriesOptions = []
     	var pSeriesOptions = []
         var seriesCounter = 0

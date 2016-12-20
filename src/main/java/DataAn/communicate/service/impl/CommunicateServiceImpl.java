@@ -19,6 +19,7 @@ import DataAn.communicate.service.ICommunicateService;
 import DataAn.fileSystem.dao.IVirtualFileSystemDao;
 import DataAn.fileSystem.domain.VirtualFileSystem;
 import DataAn.fileSystem.service.IVirtualFileSystemService;
+import DataAn.galaxy.option.J9Series_Star_ParameterType;
 import DataAn.galaxyManager.service.IParameterService;
 import DataAn.prewarning.domain.WarningValue;
 import DataAn.prewarning.service.IPrewarningService;
@@ -44,61 +45,139 @@ public class CommunicateServiceImpl implements ICommunicateService{
 	@Resource
 	private IStormServerService stormServerService;
 	
+	
 	@Override
 	public String getExceptionJobConfigList(String series, String star,
-			String parameterType) {
+			String parameterType) {		
 		if (StringUtils.isBlank(series) || StringUtils.isBlank(star) || StringUtils.isBlank(parameterType)) {
 			System.out.println("请求参数：星系，星，设备类型 不能为空！！！");
 			return null;
 		}
-		//特殊工况参数配置
-		List<WarningValue> jobWarningValues = prewarningService.getWarningValueByParams(series, star, null, parameterType, "0");
-		if(jobWarningValues != null && jobWarningValues.size() > 0){
-			Map<String,String> map = new HashMap<String,String>();
-			List<ExceptionJobConfig> jobConfigList = new ArrayList<ExceptionJobConfig>();
-			ExceptionJobConfig jobConfig = null;
-			for (WarningValue wv : jobWarningValues) {
-				String deviceName = parameterService.getParameter_deviceName_by_en(series, star, wv.getParameterType(), wv.getParameter());
-				if(StringUtils.isNotBlank(deviceName)){
-					jobConfig = new ExceptionJobConfig();
-					jobConfig.setDeviceName(deviceName);
-					jobConfig.setDeviceType(wv.getParameterType());
-					jobConfig.setParamCode(wv.getParameter());
-					jobConfig.setMax(wv.getMaxVal());
-					jobConfig.setMin(wv.getMinVal());
-					jobConfig.setDelayTime(wv.getLimitTimes());//时间单位
-					jobConfig.setCount(wv.getTimeZone());
-					jobConfigList.add(jobConfig);
-				}else{
-					throw new RuntimeException(series+"-"+star+"-"+wv.getParameterType()+"-"+wv.getParameter()+" : 找不到设备1");
-				}
-			}
-			map.put("exceptionJobConfig", JSON.toJSONString(jobConfigList));
-			//异常参数配置
-			List<WarningValue> exceWarningValues = prewarningService.getWarningValueByParams(series, star, null, parameterType, "1");
-			if(exceWarningValues != null && exceWarningValues.size() > 0){
-				List<ExceptionPointConfig> exceConfigList = new ArrayList<ExceptionPointConfig>();
-				ExceptionPointConfig exceConfig = null;
-				for (WarningValue ew : exceWarningValues) {
-					String deviceName = parameterService.getParameter_deviceName_by_en(series, star, ew.getParameterType(), ew.getParameter());
+		System.out.println("查询的参数的是："+parameterType);
+		int type=1;
+		if(parameterType.equals(J9Series_Star_ParameterType.TOP.getValue()))
+		{
+			type = 2;
+		}
+		if(parameterType.equals(J9Series_Star_ParameterType.FLYWHEEL.getValue()))
+		{
+			type = 1;
+		}
+		switch(type){
+		case 1: //如果是飞轮
+			//特殊工况参数配置
+			List<WarningValue> jobWarningValues = prewarningService.getWarningValueByParams(series, star, null, parameterType, "0");
+			if(jobWarningValues != null && jobWarningValues.size() > 0){
+				Map<String,String> map = new HashMap<String,String>();
+				List<ExceptionJobConfig> jobConfigList = new ArrayList<ExceptionJobConfig>();
+				ExceptionJobConfig jobConfig = null;
+				for (WarningValue wv : jobWarningValues) {
+					String deviceName = parameterService.getParameter_deviceName_by_en(series, star, wv.getParameterType(), wv.getParameter());
 					if(StringUtils.isNotBlank(deviceName)){
-						exceConfig = new ExceptionPointConfig();
-						exceConfig.setDeviceType(ew.getParameterType());
-						exceConfig.setDeviceName(deviceName);
-						exceConfig.setParamCode(ew.getParameter());
-						exceConfig.setMax(ew.getMaxVal());
-						exceConfig.setMin(ew.getMinVal());
-						exceConfig.setDelayTime(ew.getLimitTimes());//时间单位
-						exceConfigList.add(exceConfig);						
+						jobConfig = new ExceptionJobConfig();
+						jobConfig.setDeviceName(deviceName);
+						jobConfig.setDeviceType(wv.getParameterType());
+						jobConfig.setParamCode(wv.getParameter());
+						jobConfig.setMax(wv.getMaxVal());
+						jobConfig.setMin(wv.getMinVal());
+						jobConfig.setDelayTime(wv.getLimitTimes());//时间单位
+						jobConfig.setCount(wv.getTimeZone());
+						jobConfigList.add(jobConfig);
 					}else{
-						throw new RuntimeException(series+"-"+star+"-"+ew.getParameterType()+"-"+ew.getParameter()+" : 找不到设备2");
+						throw new RuntimeException(series+"-"+star+"-"+wv.getParameterType()+"-"+wv.getParameter()+" : 找不到设备1");
 					}
 				}
-				map.put("exceptionPointConfig", JSON.toJSONString(exceConfigList));
-				return JSON.toJSONString(map);
+				map.put("exceptionJobConfig", JSON.toJSONString(jobConfigList));
+				//异常参数配置
+				List<WarningValue> exceWarningValues = prewarningService.getWarningValueByParams(series, star, null, parameterType, "1");
+				if(exceWarningValues != null && exceWarningValues.size() > 0){
+					List<ExceptionPointConfig> exceConfigList = new ArrayList<ExceptionPointConfig>();
+					ExceptionPointConfig exceConfig = null;
+					for (WarningValue ew : exceWarningValues) {
+						String deviceName = parameterService.getParameter_deviceName_by_en(series, star, ew.getParameterType(), ew.getParameter());
+						if(StringUtils.isNotBlank(deviceName)){
+							exceConfig = new ExceptionPointConfig();
+							exceConfig.setDeviceType(ew.getParameterType());
+							exceConfig.setDeviceName(deviceName);
+							exceConfig.setParamCode(ew.getParameter());
+							exceConfig.setMax(ew.getMaxVal());
+							exceConfig.setMin(ew.getMinVal());
+							exceConfig.setDelayTime(ew.getLimitTimes());//时间单位
+							exceConfigList.add(exceConfig);						
+						}else{
+							throw new RuntimeException(series+"-"+star+"-"+ew.getParameterType()+"-"+ew.getParameter()+" : 找不到设备2");
+						}
+					}
+					map.put("exceptionPointConfig", JSON.toJSONString(exceConfigList));
+					return JSON.toJSONString(map);
+				}
+//				return JSON.toJSONString(jobConfigList);
 			}
-//			return JSON.toJSONString(jobConfigList);
+			break;
+		case 2: //如果陀螺
+			//特殊工况参数配置
+			List<WarningValue> topjobWarningValues = prewarningService.getWarningValueByParams(series, star, null, parameterType, "0");
+			if(topjobWarningValues != null && topjobWarningValues.size() > 0){
+				Map<String,String> map = new HashMap<String,String>();
+				List<ExceptionJobConfig> jobConfigList = new ArrayList<ExceptionJobConfig>();
+				ExceptionJobConfig jobConfig = null;
+				for (WarningValue wv : topjobWarningValues) {
+					//TODO 根据参数的qequence值获取参数所属的设备	当前设计中陀螺的设置在配置文件JSON中，所以没有获取			
+					/*//String deviceName = parameterService.getParameter_deviceName_by_en(series, star, wv.getParameterType(), wv.getParameter());
+					if(StringUtils.isNotBlank(deviceName)){
+						jobConfig = new ExceptionJobConfig();
+						jobConfig.setDeviceName(deviceName);
+						jobConfig.setDeviceType(wv.getParameterType());
+						jobConfig.setParamCode(wv.getParameter());
+						jobConfig.setMax(wv.getMaxVal());
+						jobConfig.setMin(wv.getMinVal());
+						jobConfig.setDelayTime(wv.getLimitTimes());//时间单位
+						jobConfig.setCount(wv.getTimeZone());
+						jobConfigList.add(jobConfig);
+					}else{
+						throw new RuntimeException(series+"-"+star+"-"+wv.getParameterType()+"-"+wv.getParameter()+" : 找不到设备1");
+					}*/
+					jobConfig = new ExceptionJobConfig();
+					jobConfig.setParamCode(wv.getParameter());
+					jobConfig.setDelayTime(wv.getLimitTimes());
+					jobConfig.setMax(wv.getMaxVal());
+					jobConfig.setMin(wv.getMinVal());
+					jobConfigList.add(jobConfig);
+					
+				}
+				map.put("exceptionJobConfig", JSON.toJSONString(jobConfigList));
+				//异常参数配置
+				List<WarningValue> exceWarningValues = prewarningService.getWarningValueByParams(series, star, null, parameterType, "1");
+				if(exceWarningValues != null && exceWarningValues.size() > 0){
+					List<ExceptionPointConfig> exceConfigList = new ArrayList<ExceptionPointConfig>();
+					ExceptionPointConfig exceConfig = null;
+					for (WarningValue ew : exceWarningValues) {
+						//TODO 这里应该根据陀螺CSV文件参数的命名规则，用sequence值获取到所属陀螺的名字
+						//String deviceName = parameterService.getParameter_deviceName_by_en(series, star, ew.getParameterType(), ew.getParameter());
+						String deviceName = "陀螺1";
+						if(StringUtils.isNotBlank(deviceName)){
+							exceConfig = new ExceptionPointConfig();
+							exceConfig.setDeviceType(ew.getParameterType());
+							exceConfig.setDeviceName(deviceName);
+							exceConfig.setParamCode(ew.getParameter());
+							exceConfig.setMax(ew.getMaxVal());
+							exceConfig.setMin(ew.getMinVal());
+							//exceConfig.setDelayTime(ew.getLimitTimes());//时间单位
+							exceConfigList.add(exceConfig);						
+						}else{
+							throw new RuntimeException(series+"-"+star+"-"+ew.getParameterType()+"-"+ew.getParameter()+" : 找不到设备2");
+						}
+					}
+					map.put("exceptionPointConfig", JSON.toJSONString(exceConfigList));
+					return JSON.toJSONString(map);
+				}
+//				return JSON.toJSONString(jobConfigList);
+			}
+			break;
+		default:
+			return null;
 		}
+		
 		return null;
 	}
 

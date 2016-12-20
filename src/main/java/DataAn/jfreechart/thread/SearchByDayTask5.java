@@ -23,6 +23,12 @@ import DataAn.jfreechart.dto.LineTimeSeriesDto2;
 import DataAn.mongo.client.MongodbUtil;
 import DataAn.mongo.init.InitMongo;
 
+/**
+ * 多线程获取mongodb数据：Map<String,LineTimeSeriesDto2[]> arrayDataMap(每个参数一个数组)
+ * 主线程中使用 LinkedList 循环是否有值，生成TimeSeries
+ * 多线程生成图片
+ *
+ */
 public class SearchByDayTask5 extends RecursiveTask<LineChartDto>{
 
 	private static final long serialVersionUID = 1L;
@@ -104,6 +110,8 @@ public class SearchByDayTask5 extends RecursiveTask<LineChartDto>{
 		Map<String, Double> maxMap = new HashMap<String, Double>();
 		
 		LineMapDto lineMapDto = null;
+		Map<String, Double> tempMinMap = null;	
+		Map<String, Double> tempMaxMap = null;
 		LineTimeSeriesDto2[] arrayData = null;
 		LineTimeSeriesDto2 lineTimeSeriesDto = null;
 		for (SearchByDayDoneTask2 task : forks) {
@@ -114,6 +122,34 @@ public class SearchByDayTask5 extends RecursiveTask<LineChartDto>{
 				int task_index = lineMapDto.getIndex();
 				int task_count = lineMapDto.getCount();
 				System.out.println(lineMapDto);	
+				
+				// 获取最小值
+				tempMinMap = lineMapDto.getMinMap();
+				if(tempMinMap != null){
+					for (String paramCode : en_params) {
+						Double min = minMap.get(paramCode);
+						if (min == null) {
+							min = tempMinMap.get(paramCode);
+						}
+						if(tempMinMap.get(paramCode) != null){
+							minMap.put(paramCode, this.getMin(min, tempMinMap.get(paramCode)));							
+						}
+					}
+				}
+				//获取最大值
+				tempMaxMap = lineMapDto.getMaxMap();
+				if(tempMaxMap != null){
+					for (String paramCode : en_params) {
+						Double max = maxMap.get(paramCode);
+						if (max == null) {
+							max = tempMaxMap.get(paramCode);
+						}
+						if(tempMaxMap.get(paramCode) != null){
+							maxMap.put(paramCode, this.getMax(max, tempMaxMap.get(paramCode)));							
+						}
+					}
+				}
+				
 				////遍历数据
 				for (String paramCode : en_params) {
 					timeseries = lineMap.get(paramCode);
@@ -131,13 +167,6 @@ public class SearchByDayTask5 extends RecursiveTask<LineChartDto>{
 					lineMap.put(paramCode, timeseries);
 				}
 			}
-		}
-		
-		//获取最值
-		for (String paramCode : en_params) {
-			timeseries = lineMap.get(paramCode);
-			minMap.put(paramCode, timeseries.getMinY());
-			maxMap.put(paramCode, timeseries.getMaxY());
 		}
 		
 		long end = System.currentTimeMillis();

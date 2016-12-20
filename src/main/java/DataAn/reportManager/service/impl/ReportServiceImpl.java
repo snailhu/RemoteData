@@ -683,7 +683,7 @@ public class ReportServiceImpl implements IReoportService {
 
 		// 封装参数类型 图片list
 		List<ParamImgDataDto> threeParamImgList = new ArrayList<ParamImgDataDto>();
-		String chartPathThree = OptionConfig.getWebPath() + "\\report\\wordtemplate\\satellite.jpg";
+		String chartPathThree = OptionConfig.getWebPath() + "\\report\\wordtemplate\\NoData.png";
 		for (String parName : parameterType) {
 			ParamImgDataDto paramImgData = new ParamImgDataDto();
 			paramImgData.setParName(parName);

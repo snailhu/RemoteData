@@ -17,6 +17,8 @@ import DataAn.common.utils.Log4jUtil;
 import DataAn.common.utils.UUIDGeneratorUtil;
 import DataAn.galaxyManager.service.IParameterService;
 import DataAn.mongo.service.IMongoService;
+import DataAn.status.option.StatusTrackingType;
+import DataAn.status.service.IStatusTrackingService;
 import DataAn.storm.BaseConfig;
 import DataAn.storm.Communication;
 import DataAn.storm.FlowUtils;
@@ -49,8 +51,11 @@ public class SaveFileToKafka implements Runnable {
 	private IParameterService paramService;
 	
 	private IMongoService mongoService;
+	
+	private IStatusTrackingService statusTrackingService;
 
-	public SaveFileToKafka(IParameterService paramService, IMongoService mongoService) {
+	public SaveFileToKafka(IParameterService paramService, IMongoService mongoService,
+			IStatusTrackingService statusTrackingService) {
 		BaseConfig baseConfig=null;
 		try {
 			baseConfig= StormUtils.getBaseConfig(BaseConfig.class);
@@ -72,6 +77,7 @@ public class SaveFileToKafka implements Runnable {
 		
 		this.paramService = paramService;
 		this.mongoService = mongoService;
+		this.statusTrackingService = statusTrackingService;
 	}
 
 
@@ -95,6 +101,7 @@ public class SaveFileToKafka implements Runnable {
 					
 					communication = FlowUtils.getBegin(executor,sequence);
 					
+					String fileName = communication.getFileName();
 					String filePath=communication.getFilePath();
 					String series, star, name,versions;
 					series=communication.getSeries();
@@ -160,10 +167,17 @@ public class SaveFileToKafka implements Runnable {
 					}
 					boundProducer.send(new Ending(),topic);
 					Log4jUtil.getInstance().getLogger(SaveFileToKafka.class).info(nodeWorker.getId()+ " end send data kafka..count: " + count);
+					if(count <= 3){
+						String msg = "文件记录数过少, count: "+count;
+						statusTrackingService.updateStatusTracking(fileName, StatusTrackingType.IMPORTFAIL.getValue(),name, msg);
+						throw new RuntimeException(msg);
+					}
 					// mongo...
 					Log4jUtil.getInstance().getLogger(SaveFileToKafka.class).info(nodeWorker.getId()+ " to update mongodb data..");
 					mongoService.updateCSVDataByDate(series, star, name, dateTime1, dateTime);
 					Log4jUtil.getInstance().getLogger(SaveFileToKafka.class).info(nodeWorker.getId()+ " finish push data to kafka!!!!!!!!");
+					//更行文件状态
+					statusTrackingService.updateStatusTracking(fileName, StatusTrackingType.PREHANDLE.getValue(),name, "");
 				} catch (Exception e) {
 					Log4jUtil.getInstance().getLogger(SaveFileToKafka.class).error(nodeWorker.getId()+ " Exception!!!!!!");
 					FlowUtils.setError(executor, communication, e.getMessage());

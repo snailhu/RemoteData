@@ -415,7 +415,9 @@ input[type=text]::-webkit-focus-inner {
   	$(function(){
 //   		swal("Hello world!");
 		$("input[type=file]").change(function() {
-			$(this).parents(".uploader").find(".filename").val($(this).val());
+			var fileName = $(this).val();
+			fileName = fileName.substr(fileName.lastIndexOf("\\")+1);
+			$(this).parents(".uploader").find(".filename").val(fileName);
 		});
 		$("input[type=file]").each(function() {
 			if ($(this).val() == "") {
@@ -433,7 +435,10 @@ input[type=text]::-webkit-focus-inner {
         	var datFile = $('#datFile').val();
         	var flag = true;
         	if(datFile.length != 0){
-        		if(!regexp.test(datFile)){
+        		var toLowerCaseDatFile = datFile.toLowerCase();
+        		var datFileNameLength = toLowerCaseDatFile.length;
+        		var datIndex = toLowerCaseCsvFile.indexOf(".dat");
+        		if(!regexp.test(datFile) || ((datFileNameLength-datIndex)!=4)){
             		$("#returnMsg").html("<img src='${pageContext.request.contextPath}/static/imgs/error.png'/><font color='red'>dat文件名输入不合法</font>");
 					return false;
         		}else{
@@ -458,7 +463,10 @@ input[type=text]::-webkit-focus-inner {
         	}
         	if(flag){
         		$("#returnMsg").empty();
-        		if(regexp.test(fileName)){
+        		var toLowerCaseCsvFile = fileName.toLowerCase();
+        		var csvFileNameLength = toLowerCaseCsvFile.length;
+        		var csvIndex = toLowerCaseCsvFile.indexOf(".csv");
+        		if(regexp.test(fileName) && ((csvFileNameLength-csvIndex)==4)){
             		var activeUser = '${activeUser}';
             		if(activeUser != null){
         				var permissionItemsJSON = '${activeUser.permissionItemsJSON}';
@@ -478,9 +486,10 @@ input[type=text]::-webkit-focus-inner {
     	    					if (data.success) {
     	    						$("#returnMsg").html("<img src='${pageContext.request.contextPath}/static/imgs/error.png'/><font color='red'>csv"+data.msg+"</font>");
     	    					}else{
+    	    						var showName = fileName.substr(fileName.lastIndexOf("\\")+1);
     	    						swal({
     	    							title : "你是否确定上传？",
-    	    							text : fileName,
+    	    							text : showName,
     	    							type : "warning",
     	    							showCancelButton : true,
     	    							confirmButtonColor : "#DD6B55",

@@ -386,8 +386,7 @@ $(function() {
 	          }, {
 	              field: 'fullName',
 	              title: '参数名',
-	              width: 500
-	              ,
+	              width: 500,
 	              sortable: true
 	          }, {
 	              field: 'code',

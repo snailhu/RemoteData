@@ -249,9 +249,16 @@ public class JfreechartServiceImpl implements IJfreechartServcie {
 			String title = "";
 			String categoryAxisLabel = "";
 			String valueAxisLabel = "";
+			String y1Label = "";
+			String y2Label = "";
+			Map<String,String> configMap = new HashMap<String,String>();
+			configMap.put("title", title);
+			configMap.put("categoryAxisLabel", categoryAxisLabel);
+			configMap.put("valueAxisLabel", valueAxisLabel);
+			configMap.put("y1Label", y1Label);
+			configMap.put("y2Label", y2Label);
 
-			JFreeChart chart = ChartFactory.createTimeSeriesChart(title,
-					categoryAxisLabel, valueAxisLabel, datasetList, beginDate, endDate);
+			JFreeChart chart = ChartFactory.createTimeSeriesChart(datasetList, beginDate, endDate, configMap);
 			if(chart != null){
 				String chartName = key+"_lineChart.png";
 				File file = new File(cachePath, chartName);
@@ -407,9 +414,16 @@ public class JfreechartServiceImpl implements IJfreechartServcie {
 			String title = "";
 			String categoryAxisLabel = "";
 			String valueAxisLabel = "";
+			String y1Label = "";
+			String y2Label = "";
+			Map<String,String> configMap = new HashMap<String,String>();
+			configMap.put("title", title);
+			configMap.put("categoryAxisLabel", categoryAxisLabel);
+			configMap.put("valueAxisLabel", valueAxisLabel);
+			configMap.put("y1Label", y1Label);
+			configMap.put("y2Label", y2Label);
 
-			JFreeChart chart = ChartFactory.createTimeSeriesChart(title,
-					categoryAxisLabel, valueAxisLabel, datasetList, beginDate, endDate);
+			JFreeChart chart = ChartFactory.createTimeSeriesChart(datasetList, beginDate, endDate, configMap);
 			if(chart != null){
 				String cachePath = CommonConfig.getChartCachePath();
 				File parentDir = new File(cachePath);

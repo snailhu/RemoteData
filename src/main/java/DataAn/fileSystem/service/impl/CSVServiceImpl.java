@@ -73,14 +73,14 @@ public class CSVServiceImpl implements ICSVService{
 
 //		return this.readCSVFileToDoc_delFrontAndBack_arithmetic1(in, versions, 4, 0);
 		
-		return this.readCSVFileToDoc_delFrontAndBack_arithmetic1_grading(in, versions, 4, 0);
+//		return this.readCSVFileToDoc_delFrontAndBack_arithmetic1_grading(in, versions, 4, 0);
 		
 //		return this.readCSVFileToDoc_delFrontAndBack_arithmetic2(in, versions, 4, 50);
 		
 		
 //		return this.readCSVFileToDoc_delOneItem(in, versions, 0);
 		
-//		return this.readCSVFileToDoc_delOneSecondItems(in, versions,0);
+		return this.readCSVFileToDoc_delOneSecondItems(in, versions,0);
 	}
 	
 	/**
@@ -138,7 +138,7 @@ public class CSVServiceImpl implements ICSVService{
 			doc.append(j9SeriesPatameterMap.get(array[0]), dateTime);
 			for (int i = 1; i < items.length; i++) {
 				colData = items[i].trim();
-				if(colData.indexOf("#") == 0){ //TODO ?
+				if(colData.indexOf("#") >= 0){ //TODO ?
 					flag = true;
 					break;
 				}else{

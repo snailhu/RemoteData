@@ -114,7 +114,7 @@
     <div class="tail">
         <div class="container">
             <div>
-                Copyright © 2016 xxxxxxx.com All Rights Reserved 版权所有·lxxxxxxxxx 苏ICP备00000000号-1
+                	版权所有 © 苏州同元软控信息技术有限公司
             </div>
         </div>
     </div>

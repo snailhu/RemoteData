@@ -94,6 +94,42 @@ public class SystemLogController {
 		return null;
 	}
 	
+	@RequestMapping(value = "showSystemLog",method = RequestMethod.GET)
+	@ResponseBody
+	public List<SystemLogDto> getSystemLogByTimeandkeyword(
+			 String beginTime, 
+			 String endTime,
+			 String keyWord
+			)
+	{	
+		System.out.println("参数单独列出"+beginTime+"()"+endTime+"()"+keyWord);
+		try {
+			System.out.println("解码前的关键字："+keyWord);
+			keyWord =java.net.URLDecoder.decode(new String(keyWord.getBytes("ISO-8859-1"), "UTF-8"), "UTF-8");
+			System.out.println("解码后的关键字："+keyWord);
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+		List<SystemLogDto> sLDtos = new ArrayList<SystemLogDto>();
+		List<SystemLog> sLogs;
+		try {
+			//sLogs = systemLogService.getSyetemLogsByTime(beginTime, endTime);
+			sLogs = systemLogService.getSyetemLogsByTimeAndkeyWord(beginTime, endTime,keyWord);
+			for(SystemLog sl:sLogs){
+				SystemLogDto sDto = new SystemLogDto();
+				sDto.setLoginIp(sl.getLoginIp());
+				sDto.setUserName(sl.getUserName());
+				sDto.setOperateTime(changeDateStyle(sl.getOperateTime()));
+				sDto.setOperateJob(sl.getOperateJob());
+				sLDtos.add(sDto);
+			}
+			return sLDtos;
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
 	
 	public String changeDateStyle(Date date){
 		

@@ -610,12 +610,7 @@ public class ReportServiceImpl implements IReoportService {
 			if (!parList.contains(starParam.getParameterType())) {
 				String key = starParam.getProductName() + starParam.getParameterType();
 				List<ConstraintDto> listSingle = new ArrayList<ConstraintDto>();
-				ConstraintDto constraintDto = new ConstraintDto();
-				constraintDto.setParamName(starParam.getParamName());
-				constraintDto.setParamCode(starParam.getParamCode());
-				constraintDto.setMax(starParam.getEffeMax());
-				constraintDto.setMin(starParam.getEffeMin());
-				listSingle.add(constraintDto);
+				listSingle.add(this.StarParamToConstraintDto(starParam));
 				constraintsMap.put(key, listSingle);
 				firstList.add(starParam);
 			} else {
@@ -634,12 +629,8 @@ public class ReportServiceImpl implements IReoportService {
 			List<ConstraintDto> productlist = new ArrayList<ConstraintDto>();
 			for (StarParam starParam : doubleList) {
 				if (product.equals(starParam.getProductName())) {
-					ConstraintDto constraintDto = new ConstraintDto();
-					constraintDto.setParamName(starParam.getParamName());
-					constraintDto.setParamCode(starParam.getParamCode());
-					constraintDto.setMax(starParam.getEffeMax());
-					constraintDto.setMin(starParam.getEffeMin());
-					productlist.add(constraintDto);
+					
+					productlist.add(this.StarParamToConstraintDto(starParam));
 				}
 			}
 			constraintsMap.put(product + paramStr, productlist);
@@ -658,12 +649,8 @@ public class ReportServiceImpl implements IReoportService {
 			List<ConstraintDto> parameterTypelist = new ArrayList<ConstraintDto>();
 			for (StarParam starParam : starParamList) {
 				if (string.equals(starParam.getParameterType())) {
-					ConstraintDto constraintDto = new ConstraintDto();
-					constraintDto.setParamName(starParam.getParamName());
-					constraintDto.setParamCode(starParam.getParamCode());
-					constraintDto.setMax(starParam.getEffeMax());
-					constraintDto.setMin(starParam.getEffeMin());
-					parameterTypelist.add(constraintDto);
+					
+					parameterTypelist.add(this.StarParamToConstraintDto(starParam));
 				}
 			}
 			constraintsMap.put(string, parameterTypelist);
@@ -696,7 +683,7 @@ public class ReportServiceImpl implements IReoportService {
 
 		// 封装参数类型 图片list
 		List<ParamImgDataDto> threeParamImgList = new ArrayList<ParamImgDataDto>();
-		String chartPathThree = OptionConfig.getWebPath() + "\\report\\wordtemplate\\satellite.jpg";
+		String chartPathThree = OptionConfig.getWebPath() + "\\report\\wordtemplate\\NoData.png";
 		for (String parName : parameterType) {
 			ParamImgDataDto paramImgData = new ParamImgDataDto();
 			paramImgData.setParName(parName);
@@ -778,12 +765,8 @@ public class ReportServiceImpl implements IReoportService {
 			if (!parList.contains(starParam.getParameterType())) {
 				String key = starParam.getProductName() + starParam.getParameterType();
 				List<ConstraintDto> listSingle = new ArrayList<ConstraintDto>();
-				ConstraintDto constraintDto = new ConstraintDto();
-				constraintDto.setParamName(starParam.getParamName());
-				constraintDto.setParamCode(starParam.getParamCode());
-				constraintDto.setMax(starParam.getEffeMax());
-				constraintDto.setMin(starParam.getEffeMin());
-				listSingle.add(constraintDto);
+				
+				listSingle.add(this.StarParamToConstraintDto(starParam));
 				constraintsMap.put(key, listSingle);
 				firstList.add(starParam);
 			} else {
@@ -802,12 +785,8 @@ public class ReportServiceImpl implements IReoportService {
 			List<ConstraintDto> productlist = new ArrayList<ConstraintDto>();
 			for (StarParam starParam : doubleList) {
 				if (product.equals(starParam.getProductName())) {
-					ConstraintDto constraintDto = new ConstraintDto();
-					constraintDto.setParamName(starParam.getParamName());
-					constraintDto.setParamCode(starParam.getParamCode());
-					constraintDto.setMax(starParam.getEffeMax());
-					constraintDto.setMin(starParam.getEffeMin());
-					productlist.add(constraintDto);
+					
+					productlist.add(this.StarParamToConstraintDto(starParam));
 				}
 			}
 			constraintsMap.put(product + paramStr, productlist);
@@ -826,12 +805,8 @@ public class ReportServiceImpl implements IReoportService {
 			List<ConstraintDto> parameterTypelist = new ArrayList<ConstraintDto>();
 			for (StarParam starParam : starParamList) {
 				if (string.equals(starParam.getParameterType())) {
-					ConstraintDto constraintDto = new ConstraintDto();
-					constraintDto.setParamName(starParam.getParamName());
-					constraintDto.setParamCode(starParam.getParamCode());
-					constraintDto.setMax(starParam.getEffeMax());
-					constraintDto.setMin(starParam.getEffeMin());
-					parameterTypelist.add(constraintDto);
+					
+					parameterTypelist.add(this.StarParamToConstraintDto(starParam));
 				}
 			}
 			constraintsMap.put(string, parameterTypelist);
@@ -839,6 +814,15 @@ public class ReportServiceImpl implements IReoportService {
 		return constraintsMap;
 	}
 
+	private ConstraintDto StarParamToConstraintDto(StarParam starParam){
+		ConstraintDto constraintDto = new ConstraintDto();
+		constraintDto.setParamName(starParam.getParamName());
+		constraintDto.setParamCode(starParam.getParamCode());
+		constraintDto.setMax(starParam.getEffeMax());
+		constraintDto.setMin(starParam.getEffeMin());
+		constraintDto.setUnits(starParam.getValueUnit());
+		return constraintDto;
+	}
 	private int getMovableNumByParamCode(String seriesId, String starId, String partsType, Date beginDate, Date endDate,
 			String paramCode) {
 		String collectionName = partsType + "_SpecialCase";

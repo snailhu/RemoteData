@@ -3,7 +3,9 @@ package DataAn.jfreechart;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Vector;
 
 import javax.swing.JFrame;
@@ -45,7 +47,18 @@ public class ChartFactoryTest5 {
 		List<TimeSeriesCollection> datasetList = createDataset();
         System.out.println("createChart Tokyo: " + datasetList.get(0).getItemCount(0));
         System.out.println("createChart NewYork: " + datasetList.get(1).getItemCount(0));
-        JFreeChart chart = ChartFactory.createTimeSeriesChart("天气", "", "", datasetList,beginDate, endDate);
+        String title = "";
+		String categoryAxisLabel = "";
+		String valueAxisLabel = "";
+		String y1Label = "A";
+		String y2Label = "B";
+		Map<String,String> configMap = new HashMap<String,String>();
+		configMap.put("title", title);
+		configMap.put("categoryAxisLabel", categoryAxisLabel);
+		configMap.put("valueAxisLabel", valueAxisLabel);
+		configMap.put("y1Label", y1Label);
+		configMap.put("y2Label", y2Label);
+        JFreeChart chart = ChartFactory.createTimeSeriesChart(datasetList,beginDate, endDate,configMap);
         // 设置图例位置
         // 6:使用chartPanel接收
         ChartPanel chartPanel = new ChartPanel(chart);

@@ -7,6 +7,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Vector;
 
 import org.jfree.chart.JFreeChart;
@@ -118,12 +119,24 @@ public class ChartFactory {
 		return chart;
 	}
 	
-	public static JFreeChart createTimeSeriesChart(String title,
-			String categoryAxisLabel, String valueAxisLabel,
-			List<TimeSeriesCollection> datasetList, Date beginDate, Date endDate) {
+	public static JFreeChart createTimeSeriesChart(List<TimeSeriesCollection> datasetList, 
+			Date beginDate, Date endDate, Map<String,String> configMap) {
 		TimeSeriesCollection dataset1 = null;
 		if(datasetList == null || datasetList.size() == 0)
 			return null;
+		
+		String title = "";
+		String categoryAxisLabel = ""; 
+		String valueAxisLabel = "";
+		String y1Label = "";
+		String y2Label = "";
+		if(configMap != null){
+			title = configMap.get("title");
+			categoryAxisLabel = configMap.get("categoryAxisLabel"); 
+			valueAxisLabel = configMap.get("valueAxisLabel");
+			y1Label = "单位( " + configMap.get("y1Label") + " )";
+			y2Label = "单位( " + configMap.get("y2Label") + " )";
+		}
 		dataset1 = datasetList.get(0);			
         JFreeChart chart = org.jfree.chart.ChartFactory.createTimeSeriesChart(title, categoryAxisLabel, valueAxisLabel,dataset1);
         
@@ -140,6 +153,10 @@ public class ChartFactory {
 			// 显示Y刻度
 			axis2.setAxisLineVisible(true);
 			axis2.setTickMarksVisible(true);
+			//y2单位
+			axis2.setLabel(y2Label);
+			//数据轴数据标签是否旋转到垂直
+//			axis2.setVerticalTickLabels(true);
 			
 			xyplot.setRangeAxis(1, axis2);
 			xyplot.setDataset(1, dataset2);
@@ -172,6 +189,8 @@ public class ChartFactory {
         // 5:对其他部分进行渲染
         ChartUtils.setXY_XAixs(xyplot);
         ChartUtils.setXY_YAixs(xyplot);
+        xyplot.getRangeAxis().setLabel(y1Label);
+        
         // 数据过多,不显示数据
         XYLineAndShapeRenderer xyRenderer = (XYLineAndShapeRenderer) xyplot.getRenderer();
         xyRenderer.setBaseItemLabelsVisible(false);
@@ -218,6 +237,7 @@ public class ChartFactory {
         
 		return chart;
 	}
+	
 	
 	public static JFreeChart createLineChartDoubleY(String title,
 			String categoryAxisLabel, String valueAxisLabel,

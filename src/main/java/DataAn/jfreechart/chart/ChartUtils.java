@@ -538,7 +538,6 @@ public class ChartUtils {
 		
 		plot.getRangeAxis().setUpperMargin(0.12);// 设置顶部Y坐标轴间距,防止数据无法显示
 		plot.getRangeAxis().setLowerMargin(0.12);// 设置底部Y坐标轴间距
-
 	}
 
 	/**

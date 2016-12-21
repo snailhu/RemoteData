@@ -82,13 +82,15 @@ public class CSVServiceTest {
 //		CSVFileDataResultDto<Document> result= csvService.readCSVFileToDoc(fs.downLoadToStream(InitMongo.FS_J9STAR2, "48d504d0612d46819956979cc5c2e37c"),uuId);
 		List<Document> list = result.getDatas();
 		if(list != null && list.size() > 0)
-			System.out.println("size: " + list.size());
+			System.out.println("list size: " + list.size());
 		
 		Map<String,List<Document>> map = result.getMap();
-		for (String key : map.keySet()){
-			list = map.get(key);
-			if(list != null && list.size() > 0)
-				System.out.println(key + " size: " + list.size());
+		if(map != null){
+			for (String key : map.keySet()){
+				list = map.get(key);
+				if(list != null && list.size() > 0)
+					System.out.println(key + " size: " + list.size());
+			}			
 		}
 
 		long end = System.currentTimeMillis();

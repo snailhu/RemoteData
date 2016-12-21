@@ -762,10 +762,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         		'JsonParams':JSON.stringify(paramarray)        	
         	},
         	function(data){
-        		//添加模板后刷新常用模板
-        		initTemplateTree();
         		//添加模板后刷新模板下拉框
-        		intTemplateList(); 
+        		//intTemplateList(); 
+        		//添加模板后刷新常用模板
+        		//initTemplateTree();
+        		//var url = "${pageContext.request.contextPath}/getConstraint?beginDate="+beginDate+"&endDate="+endDate+"&Series_current="+Series_current+"&Star_current="+Star_current+"&type_current="+type_current;
+            	//updateParamTree(url);
+        		
         	})
         	$(id_template_name).val("");
         	$(id_template_description).val("")

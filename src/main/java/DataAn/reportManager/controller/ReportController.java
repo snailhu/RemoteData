@@ -1,5 +1,6 @@
 package DataAn.reportManager.controller;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;
@@ -167,7 +168,7 @@ public class ReportController {
 		return jsonMsg;
 	}
 	@RequestMapping(value = { "/downloadReport" })
-	public void  downloadReport(HttpServletResponse response,HttpServletRequest request,String docPath,String filename) throws Exception {
+	public void downloadReport(HttpServletResponse response,HttpServletRequest request,String docPath,String filename) throws Exception {
 		
 		try {	
 			reoportService.downloadReport(response, docPath,filename);
@@ -198,7 +199,11 @@ public class ReportController {
 			partsName = "陀螺";
 		}
 		String filename = seriesId+"_"+starId+"_"+partsName+"_"+time+".doc";
-		String docPath = OptionConfig.getWebPath() + "report\\"+filename;
+		String docPath = OptionConfig.getWebPath() + File.separator + 
+				"report" + File.separator + 
+				DateUtil.format(new Date(), "yyyy-MM-dd")+ File.separator + 
+				UUIDGeneratorUtil.getUUID()+filename;
+		
 		Date beginDate = DateUtil.format(beginTime,"yyyy-MM-dd");
 		Date endDate =  DateUtil.format(endTime,"yyyy-MM-dd");
 		try {

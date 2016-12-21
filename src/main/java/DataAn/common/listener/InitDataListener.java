@@ -50,37 +50,37 @@ public class InitDataListener implements ApplicationListener<ContextRefreshedEve
 //				}
 //			});
 			//配置服务器
-			new Thread(new Runnable() {
-
-				@Override
-				public void run() {
-					try {
-						Map conf=new HashMap<>();
-						BaseConfig baseConfig=null;
-						baseConfig= StormUtils.getBaseConfig(BaseConfig.class);
-						ZooKeeperNameKeys.setZooKeeperServer(conf, baseConfig.getZooKeeper());
-						ZooKeeperNameKeys.setNamespace(conf, baseConfig.getNamespace());
-						ZookeeperExecutor executor=new ZooKeeperClient()
-								.connectString(ZooKeeperNameKeys.getZooKeeperServer(conf))
-								.namespace(ZooKeeperNameKeys.getNamespace(conf))
-								.build();
-						String path = "serverConfig";
-						String serverConfig = CommonConfig.getServerConfig();
-						boolean flag = executor.exists(path);
-						if(flag){
-							byte[] bytes = executor.getPath(path);
-							String config = new String(bytes, Charset.forName("utf-8"));
-							if(!serverConfig.equals(config))
-								executor.setPath(path, serverConfig);
-						}else{
-							executor.createPath(path,serverConfig.getBytes(Charset.forName("utf-8")));
-						}
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
-				}
-				
-			});
+//			new Thread(new Runnable() {
+//
+//				@Override
+//				public void run() {
+//					try {
+//						Map conf=new HashMap<>();
+//						BaseConfig baseConfig=null;
+//						baseConfig= StormUtils.getBaseConfig(BaseConfig.class);
+//						ZooKeeperNameKeys.setZooKeeperServer(conf, baseConfig.getZooKeeper());
+//						ZooKeeperNameKeys.setNamespace(conf, baseConfig.getNamespace());
+//						ZookeeperExecutor executor=new ZooKeeperClient()
+//								.connectString(ZooKeeperNameKeys.getZooKeeperServer(conf))
+//								.namespace(ZooKeeperNameKeys.getNamespace(conf))
+//								.build();
+//						String path = "serverConfig";
+//						String serverConfig = CommonConfig.getServerConfig();
+//						boolean flag = executor.exists(path);
+//						if(flag){
+//							byte[] bytes = executor.getPath(path);
+//							String config = new String(bytes, Charset.forName("utf-8"));
+//							if(!serverConfig.equals(config))
+//								executor.setPath(path, serverConfig);
+//						}else{
+//							executor.createPath(path,serverConfig.getBytes(Charset.forName("utf-8")));
+//						}
+//					} catch (Exception e) {
+//						e.printStackTrace();
+//					}
+//				}
+//				
+//			});
 			
 		}
 	}

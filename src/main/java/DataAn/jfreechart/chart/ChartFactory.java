@@ -134,8 +134,8 @@ public class ChartFactory {
 			title = configMap.get("title");
 			categoryAxisLabel = configMap.get("categoryAxisLabel"); 
 			valueAxisLabel = configMap.get("valueAxisLabel");
-			y1Label = configMap.get("y1Label");
-			y2Label = configMap.get("y2Label");
+			y1Label = "单位( " + configMap.get("y1Label") + " )";
+			y2Label = "单位( " + configMap.get("y2Label") + " )";
 		}
 		dataset1 = datasetList.get(0);			
         JFreeChart chart = org.jfree.chart.ChartFactory.createTimeSeriesChart(title, categoryAxisLabel, valueAxisLabel,dataset1);

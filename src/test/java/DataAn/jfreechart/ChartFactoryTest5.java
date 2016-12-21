@@ -50,8 +50,8 @@ public class ChartFactoryTest5 {
         String title = "";
 		String categoryAxisLabel = "";
 		String valueAxisLabel = "";
-		String y1Label = "";
-		String y2Label = "";
+		String y1Label = "A";
+		String y2Label = "B";
 		Map<String,String> configMap = new HashMap<String,String>();
 		configMap.put("title", title);
 		configMap.put("categoryAxisLabel", categoryAxisLabel);

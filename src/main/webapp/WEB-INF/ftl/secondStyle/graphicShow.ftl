@@ -381,6 +381,8 @@
  
    		  		
      	//一次性组装所有参数的x和y值
+     	console.log("开始隐藏");
+     	$("#main").showLoading();
    		$.ajax({
              url: '${base}/getData',
              type: 'POST',
@@ -391,6 +393,7 @@
               //成功执行方法
              success: function(data){
              	  //var json = eval(data);
+             	  $("#main").hideLoading(); 
              	  var i=0
              	  var yname = 0;
              	  var legendname ="";

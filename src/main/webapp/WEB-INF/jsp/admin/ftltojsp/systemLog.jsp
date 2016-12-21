@@ -168,7 +168,9 @@
     var keyWord = "all";
     //请求日志URL
     //var logurl  = "${pageContext.request.contextPath}/showSystemLog/"+beginTime+"+"/"+"+endTime+";
-    var logurl  ="${pageContext.request.contextPath}/admin/log/showSystemLog/"+beginTime+"/"+endTime+"/all";
+    //var logurl  ="${pageContext.request.contextPath}/admin/log/showSystemLog/"+beginTime+"/"+endTime+"/all";
+    keyWord=encodeURI(encodeURI(keyWord));
+    varlogurl  = "${pageContext.request.contextPath}/admin/log/showSystemLog?beginTime="+beginTime+"&endTime="+endTime+"&keyWord="+keyWord;		  
     
     //刷新日志列表   
 	function intlogList(){
@@ -255,7 +257,8 @@
 		})
 		
 		 $('#change-search-box').click();
-		 logurl  ="${pageContext.request.contextPath}/admin/log/showSystemLog/"+beginTime+"/"+endTime+"/"+keyWord;
+		 //logurl  ="${pageContext.request.contextPath}/admin/log/showSystemLog/"+beginTime+"/"+endTime+"/"+keyWord;
+		 logurl  = "${pageContext.request.contextPath}/admin/log/showSystemLog?beginTime="+beginTime+"&endTime="+endTime+"&keyWord="+keyWord;		  
 		 intlogList();
 		 //$.post("${pageContext.request.contextPath}/admin/systemLog", {'beginTime':"1800-01-01",'endTime':"9999-01-01"},function(data){intlogList()});
 		  
@@ -278,7 +281,9 @@
 		if(keyWord=="")
 		{keyWord="all"}
 				  //logurl  = "${pageContext.request.contextPath}/admin/log/showSystemLog/"+beginTime+"/"+endTime+"/"+keyWord;
-				  logurl  = "${pageContext.request.contextPath}/admin/log/showSystemLog/"+beginTime+"/"+endTime+"/"+encodeURI(encodeURI(keyWord));	//两次编码			  
+				  //logurl  = "${pageContext.request.contextPath}/admin/log/showSystemLog/"+beginTime+"/"+endTime+"/"+encodeURI(encodeURI(keyWord));	//两次编码
+				  keyWord=encodeURI(encodeURI(keyWord));	
+				  logurl  = "${pageContext.request.contextPath}/admin/log/showSystemLog?beginTime="+beginTime+"&endTime="+endTime+"&keyWord="+keyWord;		  
 				  intlogList();			  			  
 			 });
 				  

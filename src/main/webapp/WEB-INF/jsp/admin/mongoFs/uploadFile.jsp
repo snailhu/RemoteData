@@ -16,13 +16,84 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<meta http-equiv="expires" content="0">    
 	<meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
 	<meta http-equiv="description" content="This is my page">
-	
-	<%@include file="/WEB-INF/jsp/layouts/admin-include-public.jsp"%> 
-	
+		
 	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/static/content/sweetalert/dist/sweetalert.css">
 	<script src="${pageContext.request.contextPath}/static/content/sweetalert/dist/sweetalert.min.js"></script>
+	
 <style type="text/css">
-  .form-horizontal .has-feedback .form-control-feedback {
+/* 弹出框居中样式  */
+.sweet-alert h2 {
+	color: rgb(87, 87, 87);
+	font-size: 30px;
+	text-align: center;
+	font-weight: 600;
+	text-transform: none;
+	position: relative;
+	line-height: 40px;
+	display: block;
+	margin: 25px 0px;
+	padding: 0px;
+}
+
+.sweet-alert p {
+	color: rgb(121, 121, 121);
+	font-size: 16px;
+	font-weight: 300;
+	position: relative;
+	text-align: inherit;
+	float: none;
+	line-height: normal;
+	margin: 0px;
+	padding: 0px;
+}
+
+.sweet-alert .sa-error-container {
+	background-color: rgb(241, 241, 241);
+	margin-left: -17px;
+	margin-right: -17px;
+	max-height: 0px;
+	overflow: hidden;
+	padding: 0px 10px;
+	transition: padding 0.15s, max-height 0.15s;
+}
+
+.sweet-alert button.cancel {
+	background-color: rgb(193, 193, 193);
+}
+
+.sweet-alert button {
+	font-size: 14px;
+	width: 100px;
+	height: 32px;
+	border-width: 0;
+	margin-right: 20px;
+/* 	background-color: rgb(140, 212, 245);
+	color: white;
+	box-shadow: none;
+	font-size: 17px;
+	font-weight: 500;
+	cursor: pointer;
+	border: none;
+	border-radius: 5px;
+	padding: 10px 32px;
+	margin: 26px 30px 0px; */
+}
+
+.sweet-alert .sa-confirm-button-container {
+	display: inline-block;
+	position: relative;
+	/*     padding-left: 20px; */
+}
+
+.sa-button-container {
+    margin-top: 20px;
+	text-align: center;
+}
+
+.sa-confirm-button-container{
+	text-align: center;
+}
+.form-horizontal .has-feedback .form-control-feedback {
     top: 0;
     right: 15px;
 	}
@@ -48,7 +119,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 /*     -moz-osx-font-smoothing: grayscale; */
 }
 .form-group>label[class*="col-"] {
-    padding-top: 15px;
+/*     padding-top: 15px; */
     margin-bottom: -4px;
 }
   </style>
@@ -106,7 +177,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 .button {
 	float: left;
 	height: 32px;
-	width: 80px;
+/* 	width: 80px; */
 	display: inline-block;
 	outline: 0 none;
 	padding: 8px 12px;
@@ -211,186 +282,239 @@ input[type=text]::-webkit-focus-inner {
     text-align: center;
     padding-left: 60px;
 }
-</style>
-<!-- basic styles -->
-<link href="${pageContext.request.contextPath}/static/assets/css/bootstrap.min.css" rel="stylesheet" />
-<link rel="stylesheet" href="${pageContext.request.contextPath}/static/assets/css/font-awesome.min.css" />
-<!--[if IE 7]>
-<link rel="stylesheet" href="${pageContext.request.contextPath}/static/assets/css/font-awesome-ie7.min.css" />
-<![endif]-->
+.form-horizontal{
+	font-size: 14px;   
+    margin-top: 40px;
+	margin-left: 75px;
+}
+.btn {
+	margin-right: 30px;
+}
 
-<link rel="stylesheet" href="${pageContext.request.contextPath}/static/assets/css/ace.min.css" />
-<link rel="stylesheet" href="${pageContext.request.contextPath}/static/assets/css/ace-rtl.min.css" />
-<link rel="stylesheet" href="${pageContext.request.contextPath}/static/assets/css/ace-skins.min.css" />
-<!-- <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/buttons.css" /> -->
-<!--[if lte IE 8]>
-<link rel="stylesheet" href="${pageContext.request.contextPath}/static/assets/css/ace-ie.min.css" />
-<![endif]-->
+.breadcrumb {
+    margin-top: 10px;
+}
+.sweet-alert {
+    background-color: #ffffff;
+    width: 478px;
+    height: 305px;
+    padding: 17px;
+    border-radius: 5px;
+    text-align: center;
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    margin-left: -256px;
+    margin-top: -200px;
+    overflow: hidden;
+    display: none;
+    z-index: 2000;
+}
+</style>
 <script type="text/javascript">
 	$(function(){
-		var scroll_offset = $("#main-container").offset();  //得到pos这个div层的offset，包含两个值，top和left
-		  $("body,html").animate({
-		     scrollTop:scroll_offset.top  //让body的scrollTop等于pos的top，就实现了滚动
-		   },0);
+		//左菜单栏
+		$("#uploadFile-img").attr("src","${pageContext.request.contextPath}/static/new/img/images/a_30.png");
+		$("#filemanage-img").attr("src","${pageContext.request.contextPath}/static/new/img/images/a_26.png");
+		$("#uploadFile-text").css("color","#5d90d6");
+		$("#filemange-text").css("color", "#5d90d6");
+		$("#filemanageUL").css("display","block");
 	})
 </script>
 </head>
   <body>
-	<jsp:include page="/WEB-INF/jsp/layouts/admin-include-header2.jsp"></jsp:include>
-  	<div class="main-container" id="main-container">
-<!-- 		<script type="text/javascript">
-			try {
-				ace.settings.check('main-container', 'fixed')
-			} catch (e) {
-			}
-		</script> -->
-
-		<div class="main-container-inner">
-			<a class="menu-toggler" id="menu-toggler" href="#"> <span
-				class="menu-text"></span>
-			</a>
-			<jsp:include page="/WEB-INF/jsp/layouts/admin-include-left.jsp"></jsp:include>
-			<div class="main-content">
-				<div class="page-content" id="page-content">
-					<div class="page-header" style="padding-bottom: 10px; /**margin: -5px 0px 5px;*/">
-						<h1>文件上传</h1>
-					</div>					
-					<!-- /.page-header -->
-					<div class="row">
- 						<div class="col-xs-12 col-sm-12"> 
-							<!-- PAGE CONTENT BEGINS -->
-							<!-- 文件上传form -->
-							<form id="fileupload" action="admin/file/uploadFiles" class="form-horizontal" role="form" method="post" enctype="multipart/form-data">
-								<div class="space-20"></div>
-								<div class="form-group">
-									<label class="col-sm-3 control-label no-padding-right" > DAT文件:  </label>
-									<div class="col-sm-8">
-										<div class="uploader white">
-											<input type="text" class="filename" name="showDatFileName" placeholder="No file selected..." readonly/>
-											<input type="button" class="button" value="Browse..."/>
-											<input type="file" accept=".DAT" name="datFile" id="datFile"/>
-										</div>
-									</div>
+	<div class="main-content">
+		<div class="breadcrumbs" id="breadcrumbs">
+			<script type="text/javascript">
+				try {
+					ace.settings.check('breadcrumbs', 'fixed')
+				} catch (e) {
+				}
+			</script>
+			<ul class="breadcrumb">
+				<li>
+					<img src="${pageContext.request.contextPath}/static/imgs/DataImport/home.png" style="margin-bottom: 3px;">
+					<span>文件管理</span>
+				</li>
+				<li class="active">数据导入</li>
+			</ul><!--  .breadcrumb -->
+		</div>
+		<div class="page-content" id="page-content">
+<!-- 			<div class="page-header" style="padding-bottom: 10px; /**margin: -5px 0px 5px;*/"> -->
+<!-- 				<h1>文件上传</h1> -->
+<!-- 			</div>					 -->
+			<!-- /.page-header -->
+			<div class="row">
+				<div class="col-xs-12 col-sm-12"> 
+					<!-- PAGE CONTENT BEGINS -->
+					
+					<!-- 文件上传form -->
+					<form id="fileupload" action="admin/file/uploadFiles" class="form-horizontal" role="form" method="post" enctype="multipart/form-data">
+						<div class="space-20"></div>
+						<div class="form-group">
+							<label class="col-sm-3 control-label no-padding-right" >DAT文件：</label>
+							<div class="col-sm-8">
+								<div class="uploader white">
+									<input type="text" class="filename" name="showDatFileName" placeholder="请选择文件..." readonly/>
+									<input type="button" class="button" value=" 浏  览 "/>
+									<input type="file" accept=".DAT" name="datFile" id="datFile"/>
 								</div>
-								<div class="space-8"></div>
-								<div class="form-group">
-									<label class="col-sm-3 control-label no-padding-right"> CSV文件:  </label>
-									<div class="col-sm-8">
-										<div class="uploader blue">
-											<input type="text" class="filename" placeholder="No file selected..." readonly/>
-											<input type="button" class="button" value="Browse..."/>
-											<input type="file" accept=".csv" name="csvFile" id="csvFile"/>
-										</div>
-									</div>
+							</div>
+						</div>
+						<div class="space-12"></div>
+						<div class="form-group">
+							<label class="col-sm-3 control-label no-padding-right">CSV文件：</label>
+							<div class="col-sm-8">
+								<div class="uploader blue">
+									<input type="text" class="filename" placeholder="请选择文件..." readonly/>
+									<input type="button" class="button" value=" 浏  览 "/>
+									<input type="file" accept=".csv" name="csvFile" id="csvFile"/>
 								</div>
-								<div class="space-8"></div>
-								<div class="form-group">
-									<label class="col-sm-3 control-label no-padding-right">文件类型:</label>
-									<div class="col-sm-8">
-										<label>
-											<input name="paramType" type="radio" class="ace" value="flywheel" checked="true"/>
-											<span class="lbl"> 飞轮</span>
-										</label>
-										&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-										<label>
-											<input name="paramType" type="radio" class="ace" value="top"/>
-											<span class="lbl"> 陀螺</span>
-										</label>
-									</div>
-								</div>
-								<div class="space-8"></div>
-								<div style="margin-left: 300px;">
-									<span id="returnMsg"></span>
-								</div>
-								<div class="space-12"></div>
-								<div class="form-group">
-		                           <div class="col-sm-8" style="float: right;">
-				                        <button type="button" id="submit-fileupload" class="btn btn-primary start">
-						                    <i class="icon-upload icon-white"></i>
-						                    <span>开始 上传</span>
-						                </button>
-						                <button type="reset" id="resetBtn" class="btn btn-warning cancel">
-						                    <i class="icon-ban-circle icon-white"></i>
-						                    <span>取消 上传</span>
-						                </button>
-		                           </div>
-		                       </div>
-							</form>
-						</div><!-- /.col -->								
-					</div><!-- /.row -->
-				</div><!-- /.page-content -->
-			</div><!-- /.main-content -->			
-		</div><!-- /.main-container-inner -->
-		<a href="#" id="btn-scroll-up"
-			class="btn-scroll-up btn btn-sm btn-inverse"> <i
-			class="icon-double-angle-up icon-only bigger-110"></i>
-		</a>
-	</div><!-- /.main-container -->
-  </body>
+							</div>
+						</div>
+						<div class="space-12"></div>
+						<div class="form-group">
+							<label class="col-sm-3 control-label no-padding-right">文件类型：</label>
+							<div class="col-sm-8" style="margin-top: 4px;">
+								<label style="margin-right: 50px;">
+									<input name="paramType" type="radio" class="ace" value="flywheel" checked="true"/>
+									<span class="lbl"> 飞轮</span>
+								</label>
+								<label>
+									<input name="paramType" type="radio" class="ace" value="top"/>
+									<span class="lbl"> 陀螺</span>
+								</label>
+							</div>
+						</div>
+						<div class="space-1"></div>
+						<div class="form-group">
+							<div style="margin-left:30%;">
+								<span id="returnMsg"></span>
+							</div>
+						</div>
+						<div class="space-4"></div>
+						<div class="form-group">
+                           <div class="col-sm-8" style="margin-left:25%;">
+		                        <button type="button" id="submit-fileupload" class=" button btn btn-primary start">
+				                    <i class="icon-upload icon-white"></i>
+				                    <span>开始 上传</span>
+				                </button>
+				                <button type="reset" id="resetBtn" class="button btn btn-warning cancel">
+				                    <i class="icon-ban-circle icon-white"></i>
+				                    <span>取消 上传</span>
+				                </button>
+                           </div>
+                       </div>
+					</form>
+				</div><!-- /.col -->								
+			</div><!-- /.row -->
+		</div><!-- /.page-content -->
+	</div><!-- /.main-content -->
+	
   <script type="text/javascript">
   	$(function(){
 //   		swal("Hello world!");
 		$("input[type=file]").change(function() {
-			$(this).parents(".uploader").find(".filename").val($(this).val());
+			var fileName = $(this).val();
+			fileName = fileName.substr(fileName.lastIndexOf("\\")+1);
+			$(this).parents(".uploader").find(".filename").val(fileName);
 		});
 		$("input[type=file]").each(function() {
 			if ($(this).val() == "") {
-				$(this).parents(".uploader").find(".filename").val("No file selected...");
+				$(this).parents(".uploader").find(".filename").val("请选择文件...");
 			}
 		});
   		
 	$('#submit-fileupload').click(function() {
         var fileName = $('#csvFile').val();
+        var parameterType = $("input[name='paramType']:checked").val(); 
         if(fileName.length == 0){
         	$("#returnMsg").html("<img src='${pageContext.request.contextPath}/static/imgs/error.png'/><font color='red'>csv文件不能为空</font>");
         }else{
-        	var regexp = /j9-0[1-9]--([0-9]{3}[1-9]|[0-9]{2}[1-9][0-9]{1}|[0-9]{1}[1-9][0-9]{2}|[1-9][0-9]{3})-(((0[13578]|1[02])-(0[1-9]|[12][0-9]|3[01]))|((0[469]|11)-(0[1-9]|[12][0-9]|30))|(02-(0[1-9]|[1][0-9]|2[0-8]))).csv/;
-        	if(regexp.test(fileName)){
-        		var activeUser = '${activeUser}';
-        		if(activeUser != null){
-    				var permissionItemsJSON = '${activeUser.permissionItemsJSON}';
-    				var type=$('input:radio[name="paramType"]:checked').val();
-    				//console.log('type: ' + type);
-    				var obj = eval("(" + permissionItemsJSON + ")");
-    				var flag = false;
-    				$.each(obj, function (n, value) { 
-    					if(value == type){
-    						//console.log(n + ' : ' + value);
-    						flag = true;
-    					}
-    				});
-    				if(flag){
-	   	 				$.post("${pageContext.request.contextPath}/admin/file/existFile", { fileName: fileName},function(data){
-	    					console.log("flag: " + data.success);
-	    					if (data.success) {
-	    						$("#returnMsg").html("<img src='${pageContext.request.contextPath}/static/imgs/error.png'/><font color='red'>csv文件已存在</font>");
-	    					}else{
-	    						swal({
-	    							title : "你是否确定上传?",
-	    							text : fileName,
-	    							type : "warning",
-	    							showCancelButton : true,
-	    							confirmButtonColor : "#DD6B55",
-	    							confirmButtonText : "上传!",
-	    							cancelButtonText : "取消!",
-	    							closeOnConfirm : false,
-	    							closeOnCancel : false
-	    						},
-	    						function(isConfirm) {
-	    							if (isConfirm) {
-	    								$("#fileupload").submit();
-	    							} else {
-	    								swal("取消上传", "","error");
-	    							}
-	    						});
-	    					}
-	    				});
-    				}else{
-    					swal("无上传权限！");
-    				}
-    			}
-        	}else{
-        		$("#returnMsg").html("<img src='${pageContext.request.contextPath}/static/imgs/error.png'/><font color='red'>csv文件名输入不合法</font>");
+        	var regexp = /[a-zA-Z0-9]-\d{1,}--([0-9]{3}[1-9]|[0-9]{2}[1-9][0-9]{1}|[0-9]{1}[1-9][0-9]{2}|[1-9][0-9]{3})-(((0[13578]|1[02])-(0[1-9]|[12][0-9]|3[01]))|((0[469]|11)-(0[1-9]|[12][0-9]|30))|(02-(0[1-9]|[1][0-9]|2[0-8])))/;
+        	var datFile = $('#datFile').val();
+        	var flag = true;
+        	if(datFile.length != 0){
+        		var toLowerCaseDatFile = datFile.toLowerCase();
+        		var datFileNameLength = toLowerCaseDatFile.length;
+        		var datIndex = toLowerCaseCsvFile.indexOf(".dat");
+        		if(!regexp.test(datFile) || ((datFileNameLength-datIndex)!=4)){
+            		$("#returnMsg").html("<img src='${pageContext.request.contextPath}/static/imgs/error.png'/><font color='red'>dat文件名输入不合法</font>");
+					return false;
+        		}else{
+        			$.ajax({  
+        		        url : "${pageContext.request.contextPath}/admin/file/existFile",  
+        		        data : {
+        		        	parameterType : parameterType,
+        		        	fileName : datFile
+						},
+						cache : false,
+        		        async : false, // 注意此处需要同步，因为返回完数据后，下面才能让结果的第一条selected  
+        		        type : "POST",  
+        		        dataType : "json",  
+        		        success : function(data) {  
+        		        	if (data.success) {
+	        		        	$("#returnMsg").html("<img src='${pageContext.request.contextPath}/static/imgs/error.png'/><font color='red'>dat"+data.msg+"</font>");
+	    						flag = false;
+        		        	}
+        		        }  
+        		    });  
+        		}
+        	}
+        	if(flag){
+        		$("#returnMsg").empty();
+        		var toLowerCaseCsvFile = fileName.toLowerCase();
+        		var csvFileNameLength = toLowerCaseCsvFile.length;
+        		var csvIndex = toLowerCaseCsvFile.indexOf(".csv");
+        		if(regexp.test(fileName) && ((csvFileNameLength-csvIndex)==4)){
+            		var activeUser = '${activeUser}';
+            		if(activeUser != null){
+        				var permissionItemsJSON = '${activeUser.permissionItemsJSON}';
+        				var type=$('input:radio[name="paramType"]:checked').val();
+        				//console.log('type: ' + type);
+        				var obj = eval("(" + permissionItemsJSON + ")");
+        				var flag = false;
+        				$.each(obj, function (n, value) { 
+        					if(value == type){
+        						//console.log(n + ' : ' + value);
+        						flag = true;
+        					}
+        				});
+        				if(flag){
+    	   	 				$.post("${pageContext.request.contextPath}/admin/file/existFile", { parameterType : parameterType,fileName: fileName},function(data){
+//     	    					console.log("flag: " + data.success);
+    	    					if (data.success) {
+    	    						$("#returnMsg").html("<img src='${pageContext.request.contextPath}/static/imgs/error.png'/><font color='red'>csv"+data.msg+"</font>");
+    	    					}else{
+    	    						var showName = fileName.substr(fileName.lastIndexOf("\\")+1);
+    	    						swal({
+    	    							title : "你是否确定上传？",
+    	    							text : showName,
+    	    							type : "warning",
+    	    							showCancelButton : true,
+    	    							confirmButtonColor : "#DD6B55",
+    	    							confirmButtonText : "上传",
+    	    							cancelButtonText : "取消",
+    	    							closeOnConfirm : false,
+    	    							closeOnCancel : false
+    	    						},
+    	    						function(isConfirm) {
+    	    							if (isConfirm) {
+    	    								$(".cancel").attr("disabled", true);//按钮失效
+    	    								$("#fileupload").submit();
+    	    							} else {
+    	    								swal("取消上传", "","error");
+    	    							}
+    	    						});
+    	    					}
+    	    				});
+        				}else{
+        					swal("无上传权限！");
+        				}
+        			}
+            	}else{
+            		$("#returnMsg").html("<img src='${pageContext.request.contextPath}/static/imgs/error.png'/><font color='red'>csv文件名输入不合法</font>");
+            	}
         	}
         }
     });
@@ -400,7 +524,8 @@ input[type=text]::-webkit-focus-inner {
     $('#resetBtn').click(function() {
     	$("#returnMsg").empty();
     });	
+    
   });
   </script>
-
+  </body>
 </html>

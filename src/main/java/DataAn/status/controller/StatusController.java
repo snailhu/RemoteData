@@ -5,23 +5,25 @@ import java.util.List;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.context.request.WebRequest;
 
 import com.alibaba.fastjson.JSON;
 
 import DataAn.common.dao.Pager;
 import DataAn.common.pageModel.EasyuiDataGridJson;
 import DataAn.common.pageModel.JsonMessage;
+import DataAn.galaxyManager.option.J9Series_Star_ParameterType;
 import DataAn.status.dto.StatusTrackingDTO;
 import DataAn.status.dto.StatusYstepDTO;
-import DataAn.status.option.StatusTrackingType;
 import DataAn.status.service.IStatusTrackingService;
+import DataAn.sys.dto.ActiveUserDto;
 
 @Controller
 @RequestMapping("/admin/status")
@@ -37,7 +39,26 @@ public class StatusController {
 
 	@RequestMapping("/startingIndex")
 	public String startingIndex(Model model, HttpServletRequest request, HttpServletResponse response) {
+		HttpSession session = request.getSession();
+		ActiveUserDto acticeUser = (ActiveUserDto) session.getAttribute("activeUser");
+		String flywheel = J9Series_Star_ParameterType.FLYWHEEL.getValue();
+		String top = J9Series_Star_ParameterType.TOP.getValue();
 		String userType = "";
+		int i = 0;
+		if (acticeUser == null) {
+			return "/admin/status/startingIndex";
+		}
+		if (StringUtils.isNotBlank(acticeUser.getPermissionItems().get(flywheel))) {
+			userType = J9Series_Star_ParameterType.FLYWHEEL.getValue();
+			i++;
+		}
+		if (StringUtils.isNotBlank(acticeUser.getPermissionItems().get(top))) {
+			userType = J9Series_Star_ParameterType.TOP.getValue();
+			i++;
+		}
+		if (i > 1) {
+			userType = "";
+		}
 		try {
 			List<StatusYstepDTO> statusYstepList = statusTrackingService.getSatusYstepList(userType);
 			System.out.println(JSON.toJSONString(statusYstepList));
@@ -52,10 +73,31 @@ public class StatusController {
 
 	@RequestMapping(value = "/getStatusList", method = RequestMethod.POST)
 	@ResponseBody
-	public EasyuiDataGridJson getStatusList(int page, int rows, WebRequest request) {
-		EasyuiDataGridJson json = new EasyuiDataGridJson();
+	public EasyuiDataGridJson getStatusList(int page, int rows, HttpServletRequest request,
+			HttpServletResponse response) {
+		HttpSession session = request.getSession();
+		ActiveUserDto acticeUser = (ActiveUserDto) session.getAttribute("activeUser");
+		String flywheel = J9Series_Star_ParameterType.FLYWHEEL.getValue();
+		String top = J9Series_Star_ParameterType.TOP.getValue();
 		String userType = "";
-		String statusType = StatusTrackingType.END.getValue();
+		int i = 0;
+		if (acticeUser == null) {
+			return null;
+		}
+		if (StringUtils.isNotBlank(acticeUser.getPermissionItems().get(flywheel))) {
+			userType = J9Series_Star_ParameterType.FLYWHEEL.getValue();
+			i++;
+		}
+		if (StringUtils.isNotBlank(acticeUser.getPermissionItems().get(top))) {
+			userType = J9Series_Star_ParameterType.TOP.getValue();
+			i++;
+		}
+		if (i > 1) {
+			userType = "";
+		}
+
+		EasyuiDataGridJson json = new EasyuiDataGridJson();
+		String statusType = request.getParameter("statusType");
 		String fileName = request.getParameter("fileName");
 		String createdateStart = request.getParameter("createdatetimeStart");
 		String createdateEnd = request.getParameter("createdatetimeEnd");

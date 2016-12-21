@@ -2,6 +2,9 @@ package DataAn.routing;
 
 import java.io.Serializable;
 
+import DataAn.Analysis.dto.ParamAttributeDto;
+import DataAn.Analysis.dto.SingleParamDto;
+
 public class RequestConfig implements Serializable {
 	
 	/**
@@ -22,7 +25,8 @@ public class RequestConfig implements Serializable {
 	/**
 	 * 参数
 	 */
-	private String[] properties;
+	//private String[] properties;
+	private ParamAttributeDto properties[];
 	
 	private String timeStart;
 	
@@ -41,11 +45,11 @@ public class RequestConfig implements Serializable {
 		this.device = device;
 	}
 
-	public String[] getProperties() {
+	public ParamAttributeDto[] getProperties() {
 		return properties;
 	}
 
-	public void setProperties(String[] properties) {
+	public void setProperties(ParamAttributeDto[] properties) {
 		this.properties = properties;
 	}
 

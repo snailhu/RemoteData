@@ -2,15 +2,15 @@ package DataAn.mongo.client;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.Logger;
 import org.bson.Document;
-
-import DataAn.common.utils.DataTypeUtil;
-import DataAn.common.utils.LogUtil;
-import DataAn.mongo.init.InitMongo;
 
 import com.mongodb.BasicDBObject;
 import com.mongodb.CommandResult;
@@ -25,6 +25,11 @@ import com.mongodb.client.MongoIterable;
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.Updates;
 
+import DataAn.common.utils.DataTypeUtil;
+import DataAn.common.utils.Log4jUtil;
+import DataAn.common.utils.LogUtil;
+import DataAn.mongo.init.InitMongo;
+
 public class MongodbUtil {
 	
 	private MongoClient mg = null;
@@ -36,7 +41,9 @@ public class MongodbUtil {
 	private static volatile boolean isShard = true; //分片标示
 	
 	private volatile static MongodbUtil singleton = null;
-		
+	
+	private Logger logger = Log4jUtil.getInstance().getLogger(MongodbUtil.class);
+	
 	public static MongodbUtil getInstance() {
 		if (singleton == null) {
 			synchronized (MongodbUtil.class) {
@@ -44,19 +51,15 @@ public class MongodbUtil {
 					singleton = new MongodbUtil();
 				}
 			}
-			singleton = new MongodbUtil();
 		}
 		return singleton;
 	}
 	
 	private MongodbUtil(){
-		if (LogUtil.getInstance().getLogger(MongodbUtil.class).isDebugEnabled()) {
-			LogUtil.getInstance().getLogger(MongodbUtil.class).debug("DataAn.mongo.client.MongodbUtil() - start "); //$NON-NLS-1$
-		}
+		logger.info("DataAn.mongo.client.MongodbUtil() - start "); //$NON-NLS-1$
 		if(mg == null){
 			if (isShard && DataTypeUtil.isNotEmpty(InitMongo.SERVER_HOSTS)) {
-				System.out.println("-----启动集群分片数据库：{}" + InitMongo.SERVER_HOSTS);
-				LogUtil.getInstance().getLogger(this.getClass()).info("-----启动集群分片数据库：{}",InitMongo.SERVER_HOSTS);
+				logger.info("-----启动集群分片数据库：{}" + InitMongo.SERVER_HOSTS + ":" +InitMongo.DB_SERVER_PORT);
 				List<ServerAddress> addresses = new ArrayList<ServerAddress>();
 				String[] list = InitMongo.SERVER_HOSTS.split(",");
 				for (String ip : list) {
@@ -65,12 +68,11 @@ public class MongodbUtil {
 				}
 				mg = new MongoClient(addresses);
 			}else{
-				System.out.println("启动数据存储数据库：{}" + InitMongo.DB_SERVER_HOST + ":" +InitMongo.DB_SERVER_PORT);
-				LogUtil.getInstance().getLogger(this.getClass()).info("启动数据库：{}",InitMongo.DB_SERVER_HOST);
+				logger.info("启动数据存储数据库：{}" + InitMongo.DB_SERVER_HOST + ":" +InitMongo.DB_SERVER_PORT);
 				mg = new MongoClient(InitMongo.DB_SERVER_HOST, InitMongo.DB_SERVER_PORT);
 			}
 			//dbs.put(InitMongo.DATABASE_TEST, getDB(InitMongo.DATABASE_TEST));
-			dbs.put(InitMongo.DB_J9STAR2, getDB(InitMongo.DB_J9STAR2));
+//			dbs.put(InitMongo.DB_J9STAR2, getDB(InitMongo.DB_J9STAR2));
 			//test
 //			mg = new MongoClient("127.0.0.1", 10000);
 //			dbs.put(InitMongo.DATABASE_TEST, getDB(InitMongo.DATABASE_TEST));
@@ -83,8 +85,7 @@ public class MongodbUtil {
 	 * @param databaseName
 	 */
 	private void createShardDB(String databaseName) {
-		System.out.println("创建新的数据库{},并分片" + databaseName);
-		LogUtil.getInstance().getLogger(getClass()).info("创建新的数据库{},并分片",databaseName);
+		logger.info("创建新的数据库{},并分片" + databaseName);
 //		MongoDatabase admin = mg.getDatabase("admin");
 //		Document doc = new Document();
 //		doc.put("enablesharding", databaseName);
@@ -103,7 +104,7 @@ public class MongodbUtil {
 	 * @return
 	 */
 	public void dropDB(String databaseName){
-		LogUtil.getInstance().getLogger(getClass()).info("删除数据库",databaseName);
+		logger.info("删除数据库" + databaseName);
 		MongoDatabase db = dbs.get(databaseName);
 		if (db==null) {
 			db = mg.getDatabase(databaseName);
@@ -150,8 +151,7 @@ public class MongodbUtil {
 	 * @param collectionName
 	 */
 	private void createShardCollection(String databaseName,String collectionName) {
-		System.out.println("数据存储创建新的表{}.{},并分片"+databaseName+"."+collectionName);
-		LogUtil.getInstance().getLogger(getClass()).info("创建新的表{}.{},并分片",databaseName,collectionName);
+		logger.info("数据存储创建新的表{}.{},并分片"+databaseName+"."+collectionName);
 //		MongoDatabase admin = mg.getDatabase("admin");
 //		Document shard = new Document();
 //		Document key = new Document();
@@ -201,6 +201,78 @@ public class MongodbUtil {
 		}
 		return dbCollection;
 	}
+	
+	public boolean isExistCollection(String databaseName, String collectionName){
+		MongoDatabase db = getDB(databaseName);
+		 MongoIterable<String> cols = db.listCollectionNames();
+		 for (String col : cols) {
+			if(col.equals(collectionName)){
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public Set<String> getExistCollections(String databaseName){
+		Set<String> set = new HashSet<String>();
+		MongoDatabase db = getDB(databaseName);
+		 MongoIterable<String> cols = db.listCollectionNames();
+		 for (String col : cols) {
+			 set.add(col);
+		}
+		return set;
+	}
+	/**
+	 * 获取所有数据库
+	 * 
+	 * @param databaseName
+	 * @return
+	 */
+	public List<String> getDBsBySeriersAndStar(String seriers, String star) {
+		List<String> databaseNames = mg.getDatabaseNames();
+		List<String> namesResult = new ArrayList<String>();
+		for (String name : databaseNames) {
+			if (StringUtils.isNotBlank(seriers) && StringUtils.isNotBlank(star)) {
+				if (name.contains(seriers) && name.contains(star)) {
+					namesResult.add(name);
+				}
+			} else if (StringUtils.isNotBlank(seriers) && StringUtils.isBlank(star)) {
+				if (name.contains(seriers)) {
+					namesResult.add(name);
+				}
+			} else {
+				if (name.contains("db")) {
+					namesResult.add(name);
+				}
+			}
+
+		}
+		return namesResult;
+	}
+	
+	
+	public MongoCollection<Document> getCollectionNotShard(String databaseName, String collectionName) {
+		MongoCollection<Document> dbCollection = cols.get(databaseName + collectionName);
+		if (dbCollection == null) {
+			MongoDatabase db = getDB(databaseName);
+			// 需要判断集合时候存在
+			MongoIterable<String> collectionNames = db.listCollectionNames();
+			boolean flag = false;
+			for (String collection : collectionNames) {
+				if (collection.equals(collectionName)) {
+					flag = true;
+					break;
+				}
+			}
+			if (!flag && isShard) {
+				return null;
+			}
+			dbCollection = db.getCollection(collectionName);
+			cols.put(databaseName + collectionName, dbCollection);
+		}
+		return dbCollection;
+	}
+
 	
 	/**
 	 * dropCollection:(删除表集合). 
@@ -324,14 +396,27 @@ public class MongodbUtil {
 	
 	public MongoCursor<Document> find(String databaseName,String collectionName, String key, Object value){
 		MongoCollection<Document> collection = this.getCollection(databaseName, collectionName);
-		
 		return collection.find(Filters.eq(key, value)).iterator();
 	}
 	
 	public MongoCursor<Document> find(String databaseName,String collectionName,Date beginDate, Date endDate){
 		MongoCollection<Document> collection = this.getCollection(databaseName, collectionName);
-		
 		return collection.find(Filters.and(Filters.gte("datetime", beginDate),
 							   Filters.lte("datetime", endDate))).iterator();
+	}
+	
+	public long countByDate(String databaseName,String collectionName,
+			Date beginDate, Date endDate,String fieldName,String value ){
+		MongoCollection<Document> collection = this.getCollection(databaseName, collectionName);
+		return collection.count(Filters.and(Filters.gte("datetime", beginDate),
+							   				Filters.lte("datetime", endDate),
+							   				Filters.eq(fieldName, value)));
+	}
+	
+	public long countByDate(String databaseName,String collectionName,
+			Date beginDate, Date endDate){
+		MongoCollection<Document> collection = this.getCollection(databaseName, collectionName);
+		return collection.count(Filters.and(Filters.gte("datetime", beginDate),
+							   				Filters.lte("datetime", endDate)));
 	}
 }

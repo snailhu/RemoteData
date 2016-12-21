@@ -1,6 +1,7 @@
 package DataAn.mongo;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -14,12 +15,17 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoCursor;
+import com.mongodb.client.model.Filters;
+
+import DataAn.common.utils.DateUtil;
 import DataAn.common.utils.UUIDGeneratorUtil;
 import DataAn.fileSystem.dto.CSVFileDataResultDto;
-import DataAn.fileSystem.option.J9SeriesType;
-import DataAn.fileSystem.option.J9Series_Star_ParameterType;
-import DataAn.fileSystem.option.SeriesType;
 import DataAn.fileSystem.service.ICSVService;
+import DataAn.galaxyManager.option.J9SeriesType;
+import DataAn.galaxyManager.option.J9Series_Star_ParameterType;
+import DataAn.galaxyManager.option.SeriesType;
 import DataAn.mongo.service.IMongoService;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -31,7 +37,7 @@ public class MongoServiceTest {
 	
 	@Resource
 	private ICSVService csvService;
-	private String filePath = "c:\\j9-02--2016-02-01.csv";
+	private String filePath = "E:\\data\\flywheel\\2000\\01\\j9-02--2000-01-01.csv";
 	
 	@Test
 	public void saveCSVData() throws Exception{
@@ -71,7 +77,23 @@ public class MongoServiceTest {
 	
 	@Test
 	public void find(){
-		mongoService.find();
+		long begin = System.currentTimeMillis();
+		Date beginDate = DateUtil.format("2016-12-01 00:00:00");
+		Date endDate = DateUtil.format("2016-12-02 00:00:00");
+		MongoCursor<Document> cursor = mongoService.findByDate("j9", "02","flywheel", beginDate, endDate);
+		int i=0;
+		while (cursor.hasNext()) {
+			i++;
+//			System.out.println(i+++"..");
+//			cursor.next().get("datatime");
+//			long startt = System.currentTimeMillis();
+			cursor.next();
+//			long endddd = System.currentTimeMillis();
+//			System.out.println("time: " + (endddd - startt));
+		}
+		long end = System.currentTimeMillis();
+		System.out.println(i + " time: " + (end - begin));
+		
 	}
 	
 	

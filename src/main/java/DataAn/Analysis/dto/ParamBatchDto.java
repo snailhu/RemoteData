@@ -1,5 +1,6 @@
 package DataAn.Analysis.dto;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -7,7 +8,7 @@ import java.util.List;
  * @author snailHU
  *
  */
-public class ParamBatchDto {
+public class ParamBatchDto implements Serializable {
 	
 		private String nowSeries;
 		
@@ -18,7 +19,7 @@ public class ParamBatchDto {
 		private  String startTime;
 		
 		private String  endTime;
-		
+		//参数格式为 name value y max min()
 		private List<ParamAttributeDto> paramAttribute;
 
 		public String getNowSeries() {
@@ -69,8 +70,8 @@ public class ParamBatchDto {
 			this.paramAttribute = paramAttribute;
 		}
 
-		
-		
-		
-		
+	
+
+			
 }
+

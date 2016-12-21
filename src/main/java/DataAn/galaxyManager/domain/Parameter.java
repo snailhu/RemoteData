@@ -2,11 +2,15 @@ package DataAn.galaxyManager.domain;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 /**
 * Title: Parameter
@@ -31,14 +35,26 @@ public class Parameter {
 	@Column(name = "star", nullable = false, length = 16)
 	private String star;
 	
-	//参数名
-	@Column(name = "name", nullable = false, length = 64)
-	private String name;
+	//参数 如: flywheel、top
+	@Column(name = "deviceTypeCode", nullable = true, length = 16)
+	private String deviceTypeCode;
+		
+	//参数名全称
+	@Column(name = "fullName", nullable = false, length = 128)
+	private String fullName;
+	
+	//参数名简写
+	@Column(name = "simplyName", nullable = true, length = 64)
+	private String simplyName;
 	
 	//参数码
 	@Column(name = "code", nullable = false, length = 64)
 	private String code;
 
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "createDate", nullable = true)
+	private Date createDate = new Date();
+	
 	public Long getId() {
 		return id;
 	}
@@ -63,12 +79,28 @@ public class Parameter {
 		this.star = star;
 	}
 
-	public String getName() {
-		return name;
+	public String getDeviceTypeCode() {
+		return deviceTypeCode;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setDeviceTypeCode(String deviceTypeCode) {
+		this.deviceTypeCode = deviceTypeCode;
+	}
+
+	public String getFullName() {
+		return fullName;
+	}
+
+	public void setFullName(String fullName) {
+		this.fullName = fullName;
+	}
+
+	public String getSimplyName() {
+		return simplyName;
+	}
+
+	public void setSimplyName(String simplyName) {
+		this.simplyName = simplyName;
 	}
 
 	public String getCode() {
@@ -77,6 +109,14 @@ public class Parameter {
 
 	public void setCode(String code) {
 		this.code = code;
+	}
+
+	public Date getCreateDate() {
+		return createDate;
+	}
+
+	public void setCreateDate(Date createDate) {
+		this.createDate = createDate;
 	}
 	
 	

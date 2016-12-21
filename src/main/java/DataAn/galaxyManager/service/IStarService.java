@@ -2,6 +2,7 @@ package DataAn.galaxyManager.service;
 
 import java.util.List;
 
+import DataAn.common.pageModel.Combo;
 import DataAn.galaxyManager.dto.StarDto;
 
 /**
@@ -29,7 +30,11 @@ public interface IStarService {
 	*/
 	public List<StarDto> getStarsBySeriesId(long seriesId);
 	
-	public StarDto getStarDto(long starId);
+	public StarDto getStarDtoById(long starId);
 	
-
+	public StarDto getStarDtoBySeriesCodeAndStarCode(String seriesCode, String starCode);
+	
+	public boolean isExistStarByName(StarDto starDto);
+	
+	public List<Combo> getStarComboData(String seriesCode, String starCode);
 }

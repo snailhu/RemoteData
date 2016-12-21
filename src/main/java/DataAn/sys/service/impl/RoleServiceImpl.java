@@ -45,12 +45,14 @@ public class RoleServiceImpl implements IRoleService {
 	@Transactional
 	public void save(RoleDto roleDto) {
 		Role role = new Role();
-		role.setRoleName(roleDto.getName());
-		role.setDescription(roleDto.getDescription());
-		role.setCreateDate(new Date());
-		role.setUpdateDate(role.getCreateDate());
-		role.setVersion(1);
-		roleDao.add(role);
+		if (StringUtils.isNotBlank(roleDto.getName())) {
+			role.setRoleName(roleDto.getName());
+			role.setDescription(roleDto.getDescription());
+			role.setCreateDate(new Date());
+			role.setUpdateDate(role.getCreateDate());
+			role.setVersion(1);
+			roleDao.add(role);			
+		}
 	}
 	
 	@Override
@@ -66,14 +68,15 @@ public class RoleServiceImpl implements IRoleService {
 	public void update(RoleDto roleDto) {
 		Role role = roleDao.get(roleDto.getId());
 		if (StringUtils.isNotBlank(roleDto.getName())){
-			role.setRoleName(roleDto.getName());			
+			role.setRoleName(roleDto.getName());	
+//			if (StringUtils.isNotBlank(roleDto.getDescription())){
+//				role.setDescription(roleDto.getDescription());		
+//			}
+			role.setDescription(roleDto.getDescription());	
+			role.setUpdateDate(new Date());
+			role.setVersion(role.getVersion() + 1);
+			roleDao.update(role);
 		}
-		if (StringUtils.isNotBlank(roleDto.getDescription())){
-			role.setDescription(roleDto.getDescription());		
-		}
-		role.setUpdateDate(new Date());
-		role.setVersion(role.getVersion() + 1);
-		roleDao.update(role);
 	}
 	
 	@Override
@@ -89,8 +92,17 @@ public class RoleServiceImpl implements IRoleService {
 	
 	@Override
 	public boolean existRole(RoleDto role) {
-		roleDao.findByParam("roleName", role.getName());
-		return true;
+		List<Role> list = roleDao.findByParam("roleName", role.getName());
+		if(list != null && list.size() > 0){
+			if(role.getId() == 0){
+				return true;				
+			}else{
+				if(role.getId() != list.get(0).getRoleId()){
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 	@Override
 	public Pager<RoleDto> getRoleList(int pageIndex, int pageSize) {

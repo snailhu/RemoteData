@@ -14,7 +14,6 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import DataAn.fileSystem.option.FileDataType;
 import DataAn.fileSystem.option.FileType;
 import DataAn.reportManager.option.ReportDataType;
 
@@ -30,20 +29,20 @@ public class ReportFileSystem {
 	@Column(name = "parentId", nullable = true)
 	private Long parentId;
 	
-	@Column(name = "fileName", nullable = false, length = 64)
+	@Column(name = "fileName", nullable = true, length = 64)
 	private String fileName;
 	
 	//系列 如：j9
-	@Column(name = "series", nullable = false, length = 16)
+	@Column(name = "series", nullable = true, length = 16)
 	private String series;
 	
 	//星 如: 02
-	@Column(name = "star", nullable = false, length = 16)
+	@Column(name = "star", nullable = true, length = 16)
 	private String star;
 	
 	//参数 如: flywheel、top
-	@Column(name = "parameterType", nullable = false, length = 32)
-	private String parameterType;
+	@Column(name = "partsType", nullable = true, length = 32)
+	private String partsType;
 	
 	@Enumerated(EnumType.STRING)
 	@Column(name = "dataType", nullable = true, length = 16)
@@ -62,12 +61,6 @@ public class ReportFileSystem {
 	
 	@Column(name = "mongoFSUUId", nullable = true, length = 32)
 	private String mongoFSUUId;
-	
-//	@Column(name = "year", nullable = true, length = 32)
-//	private String year;
-//	
-//	@Column(name = "year_month", nullable = true, length = 32)
-//	private String year_month;
 	
 	@Column(name = "year_month_day", nullable = true, length = 32)
 	private String year_month_day;
@@ -132,12 +125,12 @@ public class ReportFileSystem {
 		this.star = star;
 	}
 
-	public String getParameterType() {
-		return parameterType;
+	public String getPartsType() {
+		return partsType;
 	}
 
-	public void setParameterType(String parameterType) {
-		this.parameterType = parameterType;
+	public void setPartsType(String partsType) {
+		this.partsType = partsType;
 	}
 
 	public ReportDataType getDataType() {
@@ -196,21 +189,6 @@ public class ReportFileSystem {
 		this.mongoFSUUId = mongoFSUUId;
 	}
 
-//	public String getYear() {
-//		return year;
-//	}
-//
-//	public void setYear(String year) {
-//		this.year = year;
-//	}
-//
-//	public String getYear_month() {
-//		return year_month;
-//	}
-//
-//	public void setYear_month(String year_month) {
-//		this.year_month = year_month;
-//	}
 
 	public String getYear_month_day() {
 		return year_month_day;
@@ -228,15 +206,4 @@ public class ReportFileSystem {
 	public void setCachePath(String cachePath) {
 		this.cachePath = cachePath;
 	}
-
-	@Override
-	public String toString() {
-		return "VirtualFileSystem [id=" + id + ", series=" + series + ", star="
-				+ star + ", dataType=" + dataType + ", parentId=" + parentId
-				+ ", fileName=" + fileName + ", fileType=" + fileType
-				+ ", fileSize=" + fileSize + ", updateDate=" + updateDate
-				+ ", mongoFSUUId=" + mongoFSUUId + ", year_month_day="
-				+ year_month_day + ", cachePath=" + cachePath + "]";
-	}
-	
 }

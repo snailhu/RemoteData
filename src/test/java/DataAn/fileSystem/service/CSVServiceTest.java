@@ -1,45 +1,26 @@
 package DataAn.fileSystem.service;
 
-import java.io.BufferedInputStream;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.FileWriter;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.lang.reflect.Field;
 import java.nio.charset.Charset;
 import java.text.DecimalFormat;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
 import javax.annotation.Resource;
-
 import org.bson.Document;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-
-import DataAn.Analysis.dto.ConstraintDto;
 import DataAn.common.utils.DateUtil;
 import DataAn.common.utils.UUIDGeneratorUtil;
 import DataAn.fileSystem.dto.CSVFileDataResultDto;
-import DataAn.fileSystem.option.J9Series_Star_ParameterType;
-import DataAn.fileSystem.service.impl.CSVServiceImpl;
-import DataAn.mongo.db.MongodbUtil;
-import DataAn.mongo.fs.IDfsDb;
-import DataAn.mongo.fs.MongoDfsDb;
-import DataAn.mongo.init.InitMongo;
+import DataAn.galaxyManager.option.J9Series_Star_ParameterType;
+import DataAn.galaxyManager.service.IJ9Series_Star_Service;
 
-import com.alibaba.fastjson.JSON;
 import com.csvreader.CsvWriter;
 
 
@@ -54,7 +35,7 @@ public class CSVServiceTest {
 	
 	
 	
-	private String filePath = "C:\\j9-02--2016-02-01.csv";
+	private String filePath = "E:\\data\\flywheel\\2000\\01\\j9-02--2000-01-01.csv";
 	
 //	private String filePath = "C:\\excel_result\\数管分系统.csv";
 	
@@ -100,39 +81,17 @@ public class CSVServiceTest {
 //		IDfsDb fs = MongoDfsDb.getInstance();
 //		CSVFileDataResultDto<Document> result= csvService.readCSVFileToDoc(fs.downLoadToStream(InitMongo.FS_J9STAR2, "48d504d0612d46819956979cc5c2e37c"),uuId);
 		List<Document> list = result.getDatas();
-		System.out.println("size: " + list.size());
-//		System.out.println(list.get(list.size() - 1));
-//		list.remove(list.size()-1);
-//		System.out.println("size: " + list.size());
-//		for (Document document : list) {
-//			System.out.println(document);
-//		}
+		if(list != null && list.size() > 0)
+			System.out.println("list size: " + list.size());
 		
-//		Map<String,List<Document>> map = result.getMap();
-//		List<Document> docList_1s = map.get("1s");
-//		System.out.println("1s..." + docList_1s.size());
-//		List<Document> docList_5s = map.get("5s");
-//		System.out.println("5s..." + docList_5s.size());
-//		List<Document> docList_15s = map.get("15s");
-//		System.out.println("15s..." + docList_15s.size());
-//		List<Document> docList_30s = map.get("30s");
-//		System.out.println("30s..." + docList_30s.size());
-//		List<Document> docList_1m = map.get("1m");
-//		System.out.println("1m..." + docList_1m.size());
-//		List<Document> docList_5m = map.get("5m");
-//		System.out.println("5m..." + docList_5m.size());
-//		List<Document> docList_15m = map.get("15m");
-//		System.out.println("15m..." + docList_15m.size());
-//		List<Document> docList_30m = map.get("30m");
-//		System.out.println("30m..." + docList_30m.size());
-//		List<Document> docList_1h = map.get("1h");
-//		System.out.println("1h..." + docList_1h.size());
-//		List<Document> docList_6h = map.get("6h");
-//		System.out.println("6h..." + docList_6h.size());
-//		List<Document> docList_12h = map.get("12h");
-//		System.out.println("12h..." + docList_12h.size());
-//		List<Document> docList_1d = map.get("1d");
-//		System.out.println("1d..." + docList_1d.size());
+		Map<String,List<Document>> map = result.getMap();
+		if(map != null){
+			for (String key : map.keySet()){
+				list = map.get(key);
+				if(list != null && list.size() > 0)
+					System.out.println(key + " size: " + list.size());
+			}			
+		}
 
 		long end = System.currentTimeMillis();
 		System.out.println("time: " + (end - begin));
@@ -142,7 +101,7 @@ public class CSVServiceTest {
 	public void testWriteCSVByJavacsv(int year,int month,int day) throws Exception{
 		String type = J9Series_Star_ParameterType.FLYWHEEL.getName();
 		//飞轮-->"电流","转速","温度","指令","供电状态","角动量"
-		List<String> params = J9Series_Star_ParameterType.getFlywheelTypeOnParams();
+		List<String> params = J9Series_Star_ParameterType.getFlywheelTypeOnDataType();
 		Map<String,String> map =  j9Series_Star_Service.getAllParameterList_allZh_and_enByOption(type,params);
 		Set<String> keys = map.keySet();
 		List<String> titleList = new ArrayList<String>();
@@ -163,7 +122,7 @@ public class CSVServiceTest {
 			count++;
 		}
 		//目录
-		String dirPath = "E:\\data\\flywheel\\" + year + "\\" + "-0" + month;
+		String dirPath = "E:\\data\\flywheel\\" + year + "\\" + "0" + month;
 		//文件路径
 		String outputFile = dirPath +"\\" +"j9-02--" + year +"-0" + month +"-0" + day +".csv";
 		if(month > 9){
@@ -252,9 +211,5 @@ public class CSVServiceTest {
 		}
 	}
 	
-	@Test
-	public void testMath(){
-		Double data = Math.random() * Math.random();
-		System.out.println(data.floatValue());
-	}
+	
 }

@@ -61,7 +61,49 @@ public enum StatusTrackingType {
 		public String getValue() {
 			return "5";
 		}
+	},
+	/** 文件上传失败 */
+	FILEUPLOADFAIL {
+		@Override
+		public String getName() {
+			return "文件上传失败";
+		}
+
+		@Override
+		public String getValue() {
+			return "e2";
+		}
+
+	},
+	/** 数据导入失败 */
+	IMPORTFAIL {
+
+		@Override
+		public String getName() {
+			return "数据导入失败";
+		}
+
+		@Override
+		public String getValue() {
+			return "e3";
+		}
+
+	},
+	/** 数据预处理失败 */
+	PREHANDLEFAIL {
+
+		@Override
+		public String getName() {
+			return "数据预处理失败";
+		}
+
+		@Override
+		public String getValue() {
+			return "e4";
+		}
+
 	};
+
 	public abstract String getName();
 
 	public abstract String getValue();
@@ -82,6 +124,15 @@ public enum StatusTrackingType {
 
 		case "5":
 			return StatusTrackingType.END;
+
+		case "e2":
+			return StatusTrackingType.FILEUPLOADFAIL;
+
+		case "e3":
+			return StatusTrackingType.IMPORTFAIL;
+
+		case "e4":
+			return StatusTrackingType.PREHANDLEFAIL;
 
 		default:
 			return null;

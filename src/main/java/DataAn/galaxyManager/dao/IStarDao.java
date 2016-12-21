@@ -9,9 +9,19 @@ public interface IStarDao extends IBaseDao<Star> {
 
 	public void deleteBySeriesId(long seriesId);
 
-	public List<Star> getStarList(long seriesId);
+	public List<Star> getStarList(String seriesId);
 
-	public String getStarName(String starId);
+	public List<Star> getStarListBySeriesId(String seriesId);
+	
+	public List<Star> getStarListBySeriesId(long seriesId);
+
+	public String getStarName(String series,String star);
 
 	public String getStarIdByName(String starName);
+	
+	public List<Star> getStarBySeriesIdAndName(long seriesId,String name);
+	
+	public List<Star> getStarBySeriesIdAndCode(long seriesId,String code);
+	
+	public List<Star> getStarBySeriesCodeAndCode(String seriesCode,String code);
 }

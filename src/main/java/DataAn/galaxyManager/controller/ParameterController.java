@@ -1,18 +1,22 @@
 package DataAn.galaxyManager.controller;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+
 import DataAn.common.dao.Pager;
 import DataAn.common.pageModel.EasyuiDataGridJson;
 import DataAn.common.pageModel.JsonMessage;
 import DataAn.galaxyManager.dto.ParameterDto;
 import DataAn.galaxyManager.service.IParameterService;
+import DataAn.galaxyManager.service.ISeriesService;
+import DataAn.galaxyManager.service.IStarService;
 
 @Controller
 @RequestMapping("/admin/parameter")
@@ -20,26 +24,40 @@ public class ParameterController {
 
 	@Resource
 	private IParameterService parameterService;
+	@Resource
+	private ISeriesService seriesService;
+	@Resource
+	private IStarService starService;
 	
 	// 返回参数管理主页
-	@RequestMapping()
-	public String toParameterIndex() {
-		return "redirect:/admin/parameter/index";
+	@RequestMapping("/index")
+	public String index(Model model) {
+		//当前所在系列
+		model.addAttribute("nowSeries", "j9");
+		
+		return "admin/galaxy/parameterList";
 	}
-	
-	@RequestMapping("index")
-	public String parameterIndex() {
+	@RequestMapping("/index/{series}/{star}/")
+	public String indexOfSeries(@PathVariable String series,@PathVariable String star, Model model) {
+		//当前所在系列
+		model.addAttribute("nowSeries", series);
+		model.addAttribute("nowSeriesName", seriesService.getSeriesDtoByCode(series).getName());
+		model.addAttribute("nowStar", star);
+		model.addAttribute("nowStarName", starService.getStarDtoBySeriesCodeAndStarCode(series, star).getName());
 		return "admin/galaxy/parameterList";
 	}
 	
-	@RequestMapping(value = "/getList", method = RequestMethod.POST)
+	@RequestMapping(value = "/getList/{series}/{star}", method = RequestMethod.POST)
 	@ResponseBody
-	public EasyuiDataGridJson getParamList(int page, int rows) {
-//		System.out.println("getParamList..");
-//		System.out.println("pageIndex: " + page);
-//		System.out.println("pageSize: " + rows);
+	public EasyuiDataGridJson getParamList(@PathVariable String series,@PathVariable String star,
+										int page, int rows) {
+		System.out.println("getParamList..");
+		System.out.println("series: " + series);
+		System.out.println("star: " + star);
+		System.out.println("pageIndex: " + page);
+		System.out.println("pageSize: " + rows);
 		EasyuiDataGridJson json = new EasyuiDataGridJson();
-		Pager<ParameterDto> pager = parameterService.getParameterList(page, rows);
+		Pager<ParameterDto> pager = parameterService.getParameterListByPager(series, star, page, rows);
 		json.setRows(pager.getDatas());
 		json.setTotal(pager.getTotalCount());
 		return json;
@@ -47,12 +65,24 @@ public class ParameterController {
 
 	@RequestMapping(value="/createParam")
 	@ResponseBody
-	public JsonMessage createParam(ParameterDto param,HttpServletRequest request,HttpServletResponse response){
+	public JsonMessage createParam(@RequestParam(value = "series", required = true) String series,
+								   @RequestParam(value = "star", required = true) String star,
+								   @RequestParam(value = "deviceTypeCode", required = true) String deviceTypeCode,
+								   @RequestParam(value = "name", required = true) String name){
 		System.out.println("come in createParam");
-		System.out.println(param);
+		System.out.println("series: " + series);
+		System.out.println("star: " + star);
+		System.out.println("deviceTypeCode: " + deviceTypeCode);
+		System.out.println("name: " + name);
 		JsonMessage jsonMsg = new JsonMessage();
+		if (parameterService.isExistParameter(0, series, star, name)) {
+			jsonMsg.setSuccess(false);
+			jsonMsg.setMsg("参数名已存在！");
+			jsonMsg.setObj("参数名已存在！");
+			return jsonMsg;
+		} 
 		try {
-			parameterService.save(param.getSeries(),param.getStar(),param.getName());
+			parameterService.saveOne(series,star,deviceTypeCode, name);
 		} catch (Exception e) {
 			e.printStackTrace();
 			jsonMsg.setSuccess(false);
@@ -67,17 +97,28 @@ public class ParameterController {
 	@RequestMapping(value="/editParam", method = RequestMethod.POST)
 	@ResponseBody
 	public JsonMessage editParam(@RequestParam(value = "id", required = true) long id,
-			  					@RequestParam(value = "name", required = true) String name,
-			  					@RequestParam(value = "description", required = false) String description){
-		ParameterDto Param = new ParameterDto();
-		Param.setId(id);
-		Param.setName(name);
-		System.out.println("come in editParam");
-		System.out.println(Param);
-		JsonMessage jsonMsg = new JsonMessage();
+								@RequestParam(value = "series", required = true) String series,
+								@RequestParam(value = "star", required = true) String star,
+								@RequestParam(value = "deviceTypeCode", required = true) String deviceTypeCode,
+			  					@RequestParam(value = "name", required = true) String name){
 
+		System.out.println("come in editParam");
+		System.out.println("id: " + id);
+		System.out.println("series: " + series);
+		System.out.println("star: " + star);
+		System.out.println("deviceTypeCode: " + deviceTypeCode);
+		System.out.println("name: " + name);
+		JsonMessage jsonMsg = new JsonMessage();
+		boolean flag = parameterService.isExistParameter(id, series, star, name);
+		System.out.println("flag: " + flag);
+		if (flag) {
+			jsonMsg.setSuccess(false);
+			jsonMsg.setMsg("参数名已存在！");
+			jsonMsg.setObj("参数名已存在！");
+			return jsonMsg;
+		} 
 		try {
-			
+			parameterService.updateParamter(id, name);
 		} catch (Exception e) {
 			e.printStackTrace();
 			jsonMsg.setSuccess(false);
@@ -93,9 +134,11 @@ public class ParameterController {
 	@RequestMapping("/deleteParam")
 	@ResponseBody
 	public JsonMessage deleteParam(String paramIds) {
-		String[] paramIdArray = paramIds.split(",");
+		System.out.println("come in deleteParam");
+		System.out.println(paramIds);
 		JsonMessage jsonMsg = new JsonMessage();
 		try {
+			parameterService.deleteParamter(paramIds);
 		} catch (Exception e) {
 			e.printStackTrace();
 			jsonMsg.setSuccess(false);

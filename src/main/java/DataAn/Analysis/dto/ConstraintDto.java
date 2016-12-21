@@ -1,5 +1,6 @@
 package DataAn.Analysis.dto;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -8,14 +9,16 @@ import java.util.List;
 * @author  Shewp
 * @date 2016年7月15日
 */
-public class ConstraintDto {
+
+public class ConstraintDto implements Serializable {
 
 	private int id;
 	private int parentId;
 	private String name; //中文键
 	private String value; //英文值
-	private float max;
-	private float min;
+	private String max;
+	private String min;
+	private String unit; //参数单位
 	private String yname; //hanz添加约束条件中当前参数Y轴名称
 	private List<ConstraintDto> children;
 	
@@ -45,18 +48,6 @@ public class ConstraintDto {
 	public void setValue(String value) {
 		this.value = value;
 	}
-	public float getMax() {
-		return max;
-	}
-	public void setMax(float max) {
-		this.max = max;
-	}
-	public float getMin() {
-		return min;
-	}
-	public void setMin(float min) {
-		this.min = min;
-	}
 	public String getYname() {
 		return yname;
 	}
@@ -73,7 +64,25 @@ public class ConstraintDto {
 	public String toString() {
 		return "ConstraintDto [id=" + id + ", parentId=" + parentId + ", name="
 				+ name + ", value=" + value + ", max=" + max + ", min=" + min
-				+ ",yname="+yname+", children=" + children + "]";
+				+ ", unit="+unit+",yname="+yname+", children=" + children + "]";
+	}
+	public String getUnit() {
+		return unit;
+	}
+	public void setUnit(String unit) {
+		this.unit = unit;
+	}
+	public String getMax() {
+		return max;
+	}
+	public void setMax(String max) {
+		this.max = max;
+	}
+	public String getMin() {
+		return min;
+	}
+	public void setMin(String min) {
+		this.min = min;
 	}
 	
 	

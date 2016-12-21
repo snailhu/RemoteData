@@ -18,9 +18,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<meta http-equiv="description" content="This is my page">
 	
 	<jsp:include page="/WEB-INF/jsp/inc/include-easyUI.jsp"></jsp:include>
-	
-	<link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/static/content/jeDate/jedate/skin/jedate.css">
-    <script type="text/javascript" src="${pageContext.request.contextPath}/static/content/jeDate/jedate/jedate.js"></script>
     
 	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/static/content/sweetalert/dist/sweetalert.css">
 	<script src="${pageContext.request.contextPath}/static/content/sweetalert/dist/sweetalert.min.js"></script>
@@ -33,78 +30,16 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<script src="${pageContext.request.contextPath}/static/content/js/outlook2.js" type="text/javascript"></script>
 	<script type="text/javascript" src="${pageContext.request.contextPath}/static/content/js/validDate.js"></script>
 	<script type="text/javascript" src="${pageContext.request.contextPath}/static/content/jquery-easyui-datagridview/datagrid-detailview.js"></script>
-  	<script src="${pageContext.request.contextPath}/static/assets/js/bootstrap.min.js"></script>
-	<script src="${pageContext.request.contextPath}/static/assets/js/typeahead-bs2.min.js"></script>
-	<script src="${pageContext.request.contextPath}/static/assets/js/bootstrap-colorpicker.min.js"></script>
-	<script src="${pageContext.request.contextPath}/static/assets/js/jquery.knob.min.js"></script>
-	<script src="${pageContext.request.contextPath}/static/assets/js/jquery.autosize.min.js"></script>
-	<script src="${pageContext.request.contextPath}/static/assets/js/jquery.inputlimiter.1.3.1.min.js"></script>
-	<script src="${pageContext.request.contextPath}/static/assets/js/jquery.maskedinput.min.js"></script>
-	<script src="${pageContext.request.contextPath}/static/assets/js/bootstrap-tag.min.js"></script>
-	
+  	<!-- 时间选择器 -->
+	<link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/static/content/jeDate/jedate/skin/jedate.css">
+    <script type="text/javascript" src="${pageContext.request.contextPath}/static/content/jeDate/jedate/jedate.js"></script>
+    
+    <!-- 时间选择器 -->
+	<link rel="stylesheet" href="${pageContext.request.contextPath}/static/content/jQueryCalendar/calendar.css">
+	<script src="${pageContext.request.contextPath}/static/content/jQueryCalendar/calendar.js"></script>   
+    
   <style type="text/css">
-  .sweet-alert h2 {
-    color: rgb(87, 87, 87);
-    font-size: 30px;
-    text-align: center;
-    font-weight: 600;
-    text-transform: none;
-    position: relative;
-    line-height: 40px;
-    display: block;
-    margin: 25px 0px;
-    padding: 0px;
-}
- .sweet-alert p {
-    color: rgb(121, 121, 121);
-    font-size: 16px;
-    font-weight: 300;
-    position: relative;
-    text-align: inherit;
-    float: none;
-    line-height: normal;
-    margin: 0px;
-    padding: 0px;
-}
-.sweet-alert .sa-error-container {
-    background-color: rgb(241, 241, 241);
-    margin-left: -17px;
-    margin-right: -17px;
-    max-height: 0px;
-    overflow: hidden;
-    padding: 0px 10px;
-    transition: padding 0.15s, max-height 0.15s;
-}
-.sweet-alert button.cancel {
-    background-color: rgb(193, 193, 193);
-}
-.sweet-alert button {
-    background-color: rgb(140, 212, 245);
-    color: white;
-    box-shadow: none;
-    font-size: 17px;
-    font-weight: 500;
-    cursor: pointer;
-    border: none;
-    border-radius: 5px;
-    padding: 10px 32px;
-    margin: 26px 30px 0px;
-/*     width: 150px; */
-}
-.sweet-alert .sa-confirm-button-container {
-    display: inline-block;
-    position: relative;
-/*     padding-left: 20px; */
-}
-p, span, b, div {
-    text-align: center;
-}
-.icon-remove {
-    background: url('') no-repeat center center;
-}
-.icon-edit {
-    background: url('') no-repeat center center;
-}
+
 .glyphicon {
     position: relative;
     top: -23px;
@@ -123,11 +58,37 @@ p, span, b, div {
     margin-bottom: 0px;
     color: #737373;
 }
-  </style>
+.form-horizontal {
+    margin-bottom: 0px;
+}
+.parmdev{
+	display:block;
+	color:#000;
+	text-align:center;
+	height:26px;
+	line-height:26px;
+	margin:0px auto;
+}
+.parmdev:hover{
+	background:#e2e2e2;
+	border:1px solid #CCC;
+	border-radius:5px 5px 5px 5px;
+}
+</style>
   <script type="text/javascript">
   	$(function(){
+  		//修改页面缩放，界面显示不正常
+		$(".col-lg-7").css("text-align","center");
+		$(".modal-dialog").css("margin","20px auto");
+
+  		//左菜单栏
+		$("#galaxyview-img").attr("src","${pageContext.request.contextPath}/static/new/img/images/a_82.png");
+		$("#galaxymanage-img").attr("src","${pageContext.request.contextPath}/static/new/img/images/a_82.png");
+		$("#galaxyview-text").css("color", "#5d90d6");
+		$("#galaxymanage-text").css("color", "#5d90d6");
+		$("#galaxymanageUL").css("display","block");
+  		
   		$('#addSeriesInfoForm').bootstrapValidator({
-//          live: 'disabled',
           message: 'This value is not valid',
           feedbackIcons: {
               valid: 'glyphicon glyphicon-ok',
@@ -143,16 +104,30 @@ p, span, b, div {
                       }
                   }
               },
+              code: {
+                  message: '系列编码不能为空',
+                  validators: {
+                      notEmpty: {
+                          message: '系列编码不能为空'
+                      },
+                      regexp : { 
+                          regexp : /^[A-Za-z0-9]+$/,
+                          message : '系列编码由字母和数字组成'
+                      },
+                  }
+              },
               description : {
             	  message: '',
               }
           }
       });
-	$('#add-series-close').click(function() {
-	    $('#addSeriesInfoForm').data('bootstrapValidator').resetForm(true);
-	});	
+// 	$('#reset_addSeriesInfo').click(function() {
+// 	    $('#addSeriesInfoForm').data('bootstrapValidator').resetForm(true);
+// 	});	
+// 	$('#close_addSeriesInfo').click(function() {
+// 	    $('#addSeriesInfoForm').data('bootstrapValidator').resetForm(true);
+// 	});
   	$('#editSeriesInfoForm').bootstrapValidator({
-//          live: 'disabled',
           message: 'This value is not valid',
           feedbackIcons: {
               valid: 'glyphicon glyphicon-ok',
@@ -168,16 +143,30 @@ p, span, b, div {
                       }
                   }
               },
+              code: {
+                  message: '系列编码不能为空',
+                  validators: {
+                      notEmpty: {
+                          message: '系列编码不能为空'
+                      },
+                      regexp : { 
+                          regexp : /^[A-Za-z0-9]+$/,
+                          message : '系列编码由字母和数字组成'
+                      },
+                  }
+              },
               description : {
             	  message: '',
               }
           }
       });
-  	$('#edit-series-close').click(function() {
+  	$('#reset_editSeriesInfo').click(function() {
 	    $('#editSeriesInfoForm').data('bootstrapValidator').resetForm(true);
 	});	
+	$('#close_editSeriesInfo').click(function() {
+	    $('#editSeriesInfoForm').data('bootstrapValidator').resetForm(true);
+	});
   	$('#addStarInfoForm').bootstrapValidator({
-//      live: 'disabled',
       message: 'This value is not valid',
       feedbackIcons: {
           valid: 'glyphicon glyphicon-ok',
@@ -193,15 +182,27 @@ p, span, b, div {
                   }
               }
           },
+          code: {
+              message: '星编码不能为空',
+              validators: {
+                  notEmpty: {
+                      message: '星编码不能为空'
+                  },
+                  regexp : { 
+                      regexp : /^[A-Za-z0-9]+$/,
+                      message : '星编码由字母和数字组成'
+                  },
+              }
+          },
           beginDate: {
               validators: {
             	  notEmpty: {
                       message: '开始运行时间不能为空'
                   },
-              regexp: {
-                  regexp: /^(\d{4})-(0\d{1}|1[0-2])-(0\d{1}|[12]\d{1}|3[01])$/,
-                  message: '时间格式不对'
-              },
+	              regexp: {
+	                  regexp: /^(?:(?!0000)[0-9]{4}-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1[0-9]|2[0-8])|(?:0[13-9]|1[0-2])-(?:29|30)|(?:0[13578]|1[02])-31)|(?:[0-9]{2}(?:0[48]|[2468][048]|[13579][26])|(?:0[48]|[2468][048]|[13579][26])00)-02-29)\s+([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]$/,
+	                  message: '时间格式不对'
+	              },
               }
           },
           description : {
@@ -209,11 +210,13 @@ p, span, b, div {
           }
       }
   	});  
-  	$('#add-star-close').click(function() {
-	    $('#addStarInfoForm').data('bootstrapValidator').resetForm(true);
-	});	
+//   	$('#reset_addStarInfo').click(function() {
+// 	    $('#addStarInfoForm').data('bootstrapValidator').resetForm(true);
+// 	});	
+// 	$('#close_addStarInfo').click(function() {
+// 	    $('#addStarInfoForm').data('bootstrapValidator').resetForm(true);
+// 	});	
     $('#editStarInfoForm').bootstrapValidator({
-//        live: 'disabled',
         message: 'This value is not valid',
         feedbackIcons: {
             valid: 'glyphicon glyphicon-ok',
@@ -229,23 +232,37 @@ p, span, b, div {
                     }
                 }
             },
+            code: {
+                message: '星编码不能为空',
+                validators: {
+                    notEmpty: {
+                        message: '星编码不能为空'
+                    },
+                    regexp : { 
+                        regexp : /^[A-Za-z0-9]+$/,
+                        message : '星编码由字母和数字组成'
+                    },
+                }
+            },
             beginDate: {
                 validators: {
-              	  notEmpty: {
+              	    notEmpty: {
                         message: '开始运行时间不能为空'
                     },
-                regexp: {
-                    regexp: /^(\d{4})-(0\d{1}|1[0-2])-(0\d{1}|[12]\d{1}|3[01])$/,
-                    message: '时间格式不对'
-                },
+	                regexp: {
+		                regexp: /^(?:(?!0000)[0-9]{4}-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1[0-9]|2[0-8])|(?:0[13-9]|1[0-2])-(?:29|30)|(?:0[13578]|1[02])-31)|(?:[0-9]{2}(?:0[48]|[2468][048]|[13579][26])|(?:0[48]|[2468][048]|[13579][26])00)-02-29)\s+([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]$/,
+	                    message: '时间格式不对'
+	                },
                 }
             }
         }
     });  	
-    $('#edit-star-close').click(function() {
-	    $('#editStarInfoForm').data('bootstrapValidator').resetForm(true);
-	});	
-    
+//     $('#reset_editStarInfo').click(function() {
+// 	    $('#editStarInfoForm').data('bootstrapValidator').resetForm(true);
+// 	});	
+// 	$('#close_editStarInfo').click(function() {
+// 	    $('#editStarInfoForm').data('bootstrapValidator').resetForm(true);
+// 	});
 	$('#add-series11-close').click(function() {
         $('#defaultForm').bootstrapValidator('validate');
     });
@@ -257,219 +274,244 @@ p, span, b, div {
   
   <body>
     <div class="main-content">
-<!-- 		<div class="breadcrumbs" id="breadcrumbs"> -->
-<!-- 			<script type="text/javascript"> -->
-<!-- 				try { -->
-<!-- 					ace.settings.check('breadcrumbs', 'fixed') -->
-<!-- 				} catch (e) { -->
-<!-- 				} -->
-<!-- 			</script> -->
-<!-- 			<ul class="breadcrumb"> -->
-<!-- 				<li><i class="icon-home home-icon"></i> <a href="javascript:void(0);">首页</a></li> -->
-<!-- 				<li class="active">欢迎页面</li> -->
-<!-- 			</ul>.breadcrumb -->
-<!-- 			<div class="nav-search" id="nav-search"> -->
-<!-- 				<form class="form-search"> -->
-<!-- 					<span class="input-icon"> <input type="text" -->
-<!-- 						placeholder="Search ..." class="nav-search-input" -->
-<!-- 						id="nav-search-input" autocomplete="off" /> <i -->
-<!-- 						class="icon-search nav-search-icon"></i> -->
-<!-- 					</span> -->
-<!-- 				</form> -->
-<!-- 			</div>#nav-search -->
-<!-- 		</div> -->
+		<div class="breadcrumbs" id="breadcrumbs">
+			<script type="text/javascript">
+				try {
+					ace.settings.check('breadcrumbs', 'fixed')
+				} catch (e) {
+				}
+			</script>
+			<ul class="breadcrumb" style="margin-top: 10px;">
+				<li><img
+					src="${pageContext.request.contextPath}/static/imgs/DataImport/home.png"
+					style="margin-bottom: 3px;"> <span>星系管理</span></li>
+				<li class="active">星系查看</li>
+			</ul><!--  .breadcrumb -->
+		</div>
 		<div class="page-content">
-			<div class="page-header">
-				<h1 style="text-align: left;">星系管理</h1>
-			</div>
+<!-- 			<div class="page-header"> -->
+<!-- 				<h1 style="text-align: left;">星系管理</h1> -->
+<!-- 			</div> -->
 			<div id="content" region="center" style="overflow: hidden">
 				<div id="toolbar" class="datagrid-toolbar" style="height: 28px;">
 					<div style="height: 28px;">
-						<button class="easyui-linkbutton" iconcls="icon-add" style="float: left;" 
-							data-toggle="modal" data-target="#addSeriesInfoModal">创建</button>
+						<button class="easyui-linkbutton" iconcls="icon-add" plain="true" style="float: left;" 
+							id="addSeriesInfoModal-btn">创建</button>
 						<div class="datagrid-btn-separator"></div>
-						<button class="easyui-linkbutton" iconcls="icon-edit" style="float: left;"
+						<button class="easyui-linkbutton" iconcls="icon-remove" plain="true" style="float: left;"
+							onclick="deleteSeries();">删除</button>
+						<div class="datagrid-btn-separator"></div>
+						<button class="easyui-linkbutton" iconcls="icon-edit" plain="true" style="float: left;"
 							onclick="editSeries();">编辑</button>
 						<div class="datagrid-btn-separator"></div>
-						<button class="easyui-linkbutton" iconcls="icon-remove"
-							onclick="deleteSeries();" style="float: left;">删除</button>
-						<div class="datagrid-btn-separator"></div>
-						<button class="easyui-linkbutton" iconcls="icon-undo"
-							onclick="galaxyGrid.datagrid('unselectAll');" style="float: left;">取消选中</button>
+						<button class="easyui-linkbutton" iconcls="icon-undo" plain="true" style="float: left;"
+							onclick="galaxyGrid.datagrid('unselectAll');">取消选中</button>
 					</div>
 				</div>
 			</div>
-			<table id="galaxyList" fit="true" border="false" height="400px">
-				<thead>
-					<tr>
-						<th field="ck" checkbox="true"></th>
-						<th field="name" width="80">名称</th>
-						<th field="description" width="200" align="center">描述</th>
-						<th field="createDate" width="120" align="center">创建日期</th>
-					</tr>
-				</thead>
+			<table id="galaxyList" fit="false" border="false" height="450px">
+				
 			</table>
 			<!-- 添加系列表单 -->
-			<div class="modal fade" id="addSeriesInfoModal" tabindex="-1" role="dialog" aria-labelledby="addSeriesInfoModalLabel"  >
-			  <div class="modal-dialog" role="document" style="margin:55px -300px">
-			    <div class="modal-content">
-			      <div class="modal-header">
-			        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-			        <h4 class="modal-title" id="addSeriesInfoModalLabel">添加系列</h4>
-			      </div>
-			      <div class="modal-body">
-					<form id="addSeriesInfoForm" class="form-horizontal" role="form">
-						<div class="space-4"></div>
-						<div class="form-group">
-							<label class="col-sm-3 control-label no-padding-right" for="add-series-name"> 系列名称:</label>
-							<div class="col-sm-8">
-								<input type="text" name="name" id="add-series-name" placeholder="系列名称" class="form-control" />
+			<div class="modal fade" id="addSeriesInfoModal" tabindex="-1" role="dialog" aria-labelledby="addSeriesInfoModalLabel">
+				<div class="modal-dialog" role="document" style="margin:150px 450px">
+					<div class="modal-content">
+						<form id="addSeriesInfoForm" class="form-horizontal" role="form">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal" aria-label="Close" id="close_addSeriesInfo">
+									<span aria-hidden="true">&times;</span>
+								</button>
+								<h4 class="modal-title" id="addSeriesInfoModalLabel">添加系列</h4>
 							</div>
-						</div>
-						<div class="space-8"></div>
-						<div class="form-group">
-							<label class="col-sm-3 control-label no-padding-right" for="add-series-description"> 系列描述： </label>
-							<div class="col-sm-8">
-								<textarea class="form-control" name="description" id="add-series-description" placeholder="系列描述"></textarea>
+							<div class="modal-body">
+								<div class="space-4"></div>
+								<div class="form-group">
+									<label class="col-sm-3 control-label no-padding-right" for="add-series-name"> 系列名称：</label>
+									<div class="col-sm-8">
+										<input type="text" name="name" id="add-series-name" placeholder="系列名称" class="form-control" />
+									</div>
+								</div>
+								<div class="space-4"></div>
+								<div class="form-group">
+									<label class="col-sm-3 control-label no-padding-right" for="add-series-code"> 系列编码：</label>
+									<div class="col-sm-8">
+										<input type="text" name="code" id="add-series-code" placeholder="系列编码" class="form-control" />
+									</div>
+								</div>
+								<div class="space-8"></div>
+								<div class="form-group">
+									<label class="col-sm-3 control-label no-padding-right" for="add-series-description"> 系列描述：</label>
+									<div class="col-sm-8">
+										<textarea class="form-control" name="description" id="add-series-description" placeholder="系列描述"></textarea>
+									</div>
+								</div>
 							</div>
-						</div>
-					</form>
-			      </div>
-			      <div class="modal-footer">
-			      	<div class="col-lg-4 col-lg-offset-5">
-<!--                         <button type="submit" class="btn btn-primary" name="signup" value="Sign up">提交</button> -->
-<!--                         <button type="button" class="btn btn-info" id="resetBtn">重置表单</button> -->
-				        <button type="button" class="btn btn-default" id="add-series-close" data-dismiss="modal">关闭</button>
-				        <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="submit_addSeriesInfo()">确定</button>
-                    </div>
-			      </div>
-			    </div>
-			  </div>
+							<div class="modal-footer">
+								<div class="col-lg-7 col-lg-offset-3">
+									<button type="button" class="subbutton_1" onclick="submit_addSeriesInfo()">确定</button>
+									<button type="button" class="cancelbutton_1" data-dismiss="modal" id="reset_addSeriesInfo">关闭</button>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
 			</div>
 			<!-- 编辑系列表单 -->
-			<div class="modal fade" id="editSeriesInfoModal" tabindex="-1" role="dialog" aria-labelledby="editSeriesInfoModalLabel"  >
-			  <div class="modal-dialog" role="document" style="margin:55px -300px">
-			    <div class="modal-content">
-			      <div class="modal-header">
-			        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-			        <h4 class="modal-title" id="editSeriesInfoModalLabel">编辑系列</h4>
-			      </div>
-			      <div class="modal-body">
-					<form id="editSeriesInfoForm" class="form-horizontal" role="form">
-						<div class="space-4"></div>
-						<div class="form-group">
-							<label class="col-sm-3 control-label no-padding-right" for="edit-series-name"> 系列名称:</label>
-							<div class="col-sm-8">
-								<input type="text" name="name" id="edit-series-name" placeholder="系列名称" class="form-control" />
+			<div class="modal fade" id="editSeriesInfoModal" tabindex="-1"
+				role="dialog" aria-labelledby="editSeriesInfoModalLabel">
+				<div class="modal-dialog" role="document" style="margin:150px 450px">
+					<div class="modal-content">
+						<form id="editSeriesInfoForm" class="form-horizontal" role="form">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal" aria-label="Close" id="close_editSeriesInfo">
+									<span aria-hidden="true">&times;</span>
+								</button>
+								<h4 class="modal-title" id="editSeriesInfoModalLabel">编辑系列</h4>
 							</div>
-						</div>
-						<div class="space-8"></div>
-						<div class="form-group">
-							<label class="col-sm-3 control-label no-padding-right" for="edit-series-description"> 系列描述： </label>
-							<div class="col-sm-8">
-								<textarea class="form-control" name="description" id="edit-series-description" placeholder="系列描述"></textarea>
+							<div class="modal-body">
+									<input type="hidden" name="id" id="edit-series-id"/>
+									<div class="space-4"></div>
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="edit-series-name"> 系列名称：</label>
+										<div class="col-sm-8">
+											<input type="text" name="name" id="edit-series-name" placeholder="系列名称" class="form-control" />
+										</div>
+									</div>
+									<div class="space-4"></div>
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="edit-series-code"> 系列编码：</label>
+										<div class="col-sm-8">
+											<input type="text" name="code" id="edit-series-code" placeholder="系列编码" class="form-control" />
+										</div>
+									</div>
+									<div class="space-8"></div>
+									<div class="form-group">
+										<label class="col-sm-3 control-label no-padding-right" for="edit-series-description"> 系列描述：</label>
+										<div class="col-sm-8">
+											<textarea class="form-control" name="description" id="edit-series-description" placeholder="系列描述"></textarea>
+										</div>
+									</div>
 							</div>
-						</div>
-					</form>
-			      </div>
-			      <div class="modal-footer">
-			      	<div class="col-lg-4 col-lg-offset-5">
-<!--                         <button type="submit" class="btn btn-primary" name="signup" value="Sign up">提交</button> -->
-<!--                         <button type="button" class="btn btn-info" id="resetBtn">重置表单</button> -->
-				        <button type="button" class="btn btn-default" id="edit-series-close" data-dismiss="modal">关闭</button>
-				        <button type="button" class="btn btn-primary" data-dismiss="modal" id="submit_editSeriesInfo" >确定</button>
-                    </div>
-			      </div>
-			    </div>
-			  </div>
+							<div class="modal-footer">
+								<div class="col-lg-7 col-lg-offset-3">
+									<button type="button" class="subbutton_1" id="submit_editSeriesInfo">确定</button>
+									<button type="button" class="cancelbutton_1" data-dismiss="modal" id="reset_editSeriesInfo">关闭</button>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
 			</div>
 			<!-- 添加一颗星 -->
-			<div class="modal fade" id="addStarInfoModal" tabindex="-1" role="dialog" aria-labelledby="addStarInfoModalLabel"  >
-			  <div class="modal-dialog" role="document" style="margin:55px -300px">
-			    <div class="modal-content">
-			      <div class="modal-header">
-			        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-			        <h4 class="modal-title" id="addStarInfoModalLabel">添加星</h4>
-			      </div>
-			      <div class="modal-body">
-					<form id="addStarInfoForm" class="form-horizontal" role="form">
-						<div class="space-4"></div>
-						<div class="form-group">
-							<label class="col-sm-3 control-label no-padding-right" for="add-star-name"> 星名称:</label>
-							<div class="col-sm-8">
-								<input type="text" name="name" id="add-star-name" placeholder="星名称" class="form-control" />
+			<div class="modal fade" id="addStarInfoModal" tabindex="-1"
+				role="dialog" aria-labelledby="addStarInfoModalLabel">
+				<div class="modal-dialog" role="document" style="margin:150px 450px">
+					<div class="modal-content">
+						<form id="addStarInfoForm" class="form-horizontal" role="form">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal" aria-label="Close" id="close_addStarInfo">
+									<span aria-hidden="true">&times;</span>
+								</button>
+								<h4 class="modal-title" id="addStarInfoModalLabel">添加星</h4>
 							</div>
-						</div>
-						<div class="space-8"></div>
-						<div class="form-group">
-							<label class="col-sm-3 control-label no-padding-right" for="add-star-beginDate"> 开始运行时间:</label>
-							<div class="col-sm-8">
-								<input type="text" class="form-control input-mask-date" name="beginDate" id="add-star-beginDate" placeholder="yyyy-MM-dd HH:mm:ss">
+							<div class="modal-body">
+								<input type="hidden" name="datagridId" id="add-star-datagridId"/>
+								<input type="hidden" name="seriesId" id="add-star-seriesId"/>
+								<div class="space-4"></div>
+								<div class="form-group">
+									<label class="col-sm-3 control-label no-padding-right" for="add-star-name"> 星名称：</label>
+									<div class="col-sm-8">
+										<input type="text" name="name" id="add-star-name" placeholder="星名称" class="form-control" />
+									</div>
+								</div>
+								<div class="space-8"></div>
+								<div class="form-group">
+									<label class="col-sm-3 control-label no-padding-right" for="add-star-code"> 星编码：</label>
+									<div class="col-sm-8">
+										<input type="text" name="code" id="add-star-code" placeholder="星编码" class="form-control" />
+									</div>
+								</div>
+								<div class="space-8"></div>
+								<div class="form-group">
+									<label class="col-sm-3 control-label no-padding-right" for="add-star-beginDate"> 开始运行时间：</label>
+									<div class="col-sm-8">
+										<input type="text" class="form-control input-mask-date" name="beginDate" id="add-star-beginDate"
+											placeholder="yyyy-MM-dd HH:mm:ss" readonly="true">
+										<div id="getBeginTime"></div>
+									</div>
+								</div>
+								<div class="space-8"></div>
+								<div class="form-group">
+									<label class="col-sm-3 control-label no-padding-right" for="add-star-description"> 星描述：</label>
+									<div class="col-sm-8">
+										<textarea class="form-control" name="description" id="add-star-description" placeholder="星描述"></textarea>
+									</div>
+								</div>
 							</div>
-						</div>
-						<div class="space-8"></div>
-						<div class="form-group">
-							<label class="col-sm-3 control-label no-padding-right" for="add-star-description"> 星描述： </label>
-							<div class="col-sm-8">
-								<textarea class="form-control" name="description" id="add-star-description" placeholder="星描述"></textarea>
+							<div class="modal-footer">
+								<div class="col-lg-7 col-lg-offset-3">
+									<button type="button" class="subbutton_1" id="submit_addStarInfo">确定</button>
+									<button type="button" class="cancelbutton_1" data-dismiss="modal" id="reset_addStarInfo">关闭</button>
+								</div>
 							</div>
-						</div>
-					</form>
-			      </div>
-			      <div class="modal-footer">
-			      	<div class="col-lg-4 col-lg-offset-5">
-<!--                         <button type="submit" class="btn btn-primary" name="signup" value="Sign up">提交</button> -->
-<!--                         <button type="button" class="btn btn-info" id="resetBtn">重置表单</button> -->
-				        <button type="button" class="btn btn-default" id="add-star-close" data-dismiss="modal">关闭</button>
-				        <button type="button" class="btn btn-primary" data-dismiss="modal" id="submit_addStarInfo">确定</button>
-                    </div>
-			      </div>
-			    </div>
-			  </div>
+						</form>
+					</div>
+				</div>
 			</div>
 			<!-- 编辑一颗星 -->
-			<div class="modal fade" id="editStarInfoModal" tabindex="-1" role="dialog" aria-labelledby="editStarInfoModalLabel"  >
-			  <div class="modal-dialog" role="document" style="margin:55px -300px">
-			    <div class="modal-content">
-			      <div class="modal-header">
-			        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-			        <h4 class="modal-title" id="editStarInfoModalLabel">添加星</h4>
-			      </div>
-			      <div class="modal-body">
-					<form id="editStarInfoForm" class="form-horizontal" role="form">
-						<div class="space-4"></div>
-						<div class="form-group">
-							<label class="col-sm-3 control-label no-padding-right" for="edit-star-name"> 星名称:</label>
-							<div class="col-sm-8">
-								<input type="text" name="name" id="edit-star-name" placeholder="星名称" class="form-control" />
+			<div class="modal fade" id="editStarInfoModal" tabindex="-1" role="dialog" aria-labelledby="editStarInfoModalLabel">
+				<div class="modal-dialog" role="document" style="margin:150px 450px">
+					<div class="modal-content">
+						<form id="editStarInfoForm" class="form-horizontal" role="form">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal" aria-label="Close" id="close_editStarInfo">
+									<span aria-hidden="true">&times;</span>
+								</button>
+								<h4 class="modal-title" id="editStarInfoModalLabel">编辑星</h4>
 							</div>
-						</div>
-						<div class="space-8"></div>
-						<div class="form-group">
-							<label class="col-sm-3 control-label no-padding-right" for="edit-star-beginDate"> 开始运行时间:</label>
-							<div class="col-sm-8">
-								<input type="text" class="form-control input-mask-date" name="beginDate" id="edit-star-beginDate" placeholder="yyyy-MM-dd HH:mm:ss">
+							<div class="modal-body">
+								<input type="hidden" name="datagridId" id="edit-star-datagridId"/>
+								<input type="hidden" name="seriesId" id="edit-star-seriesId"/>
+								<input type="hidden" name="id" id="edit-star-id"/>
+								<div class="space-4"></div>
+								<div class="form-group">
+									<label class="col-sm-3 control-label no-padding-right" for="edit-star-name"> 星名称：</label>
+									<div class="col-sm-8">
+										<input type="text" name="name" id="edit-star-name" placeholder="星名称" class="form-control" />
+									</div>
+								</div>
+								<div class="space-8"></div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label no-padding-right" for="edit-star-code"> 星编码：</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" name="code" id="edit-star-code" placeholder="星编码" class="form-control" />
+                                    </div>
+                                </div>
+								<div class="space-8"></div>
+								<div class="form-group">
+									<label class="col-sm-3 control-label no-padding-right" for="edit-star-beginDate"> 开始运行时间：</label>
+									<div class="col-sm-8">
+										<input type="text" class="form-control input-mask-date" name="beginDate" id="edit-star-beginDate"
+											placeholder="yyyy-MM-dd HH:mm:ss" readonly="true">
+									</div>
+								</div>
+								<div class="space-8"></div>
+								<div class="form-group">
+									<label class="col-sm-3 control-label no-padding-right" for="edit-star-description"> 星描述：</label>
+									<div class="col-sm-8">
+										<textarea class="form-control" name="description" id="edit-star-description" placeholder="星描述"></textarea>
+									</div>
+								</div>
 							</div>
-						</div>
-						<div class="space-8"></div>
-						<div class="form-group">
-							<label class="col-sm-3 control-label no-padding-right" for="edit-star-description"> 星描述： </label>
-							<div class="col-sm-8">
-								<textarea class="form-control" name="description" id="edit-star-description" placeholder="星描述"></textarea>
+							<div class="modal-footer">
+								<div class="col-lg-7 col-lg-offset-3">
+									<button type="button" class="subbutton_1" id="submit_editStarInfo">确定</button>
+									<button type="button" class="cancelbutton_1" data-dismiss="modal" id="reset_editStarInfo">关闭</button>
+								</div>
 							</div>
-						</div>
-					</form>
-			      </div>
-			      <div class="modal-footer">
-			      	<div class="col-lg-4 col-lg-offset-5">
-<!--                         <button type="submit" class="btn btn-primary" name="signup" value="Sign up">提交</button> -->
-<!--                         <button type="button" class="btn btn-info" id="resetBtn">重置表单</button> -->
-				        <button type="button" class="btn btn-default" id="edit-star-close" data-dismiss="modal">关闭</button>
-				        <button type="button" class="btn btn-primary" data-dismiss="modal" id="submit_editStarInfo">确定</button>
-                    </div>
-			      </div>
-			    </div>
-			  </div>
+						</form>
+					</div>
+				</div>
 			</div>
 			<!-- /.page-header -->
 			<div class="row">
@@ -481,16 +523,12 @@ p, span, b, div {
 		</div><!-- /.page-content -->
 	</div><!-- /.main-content -->
 <script type="text/javascript">
-// jeDate({
-//     dateCell:"#add-star-beginDate",//isinitVal:true,
-//     format:"YYYY-MM-DD",
-//     isTime:false, //isClear:false,
-//     minDate:"2014-09-19 00:00:00",
-// });
+
 var galaxyGrid;
 $(function() {
-	$('#add-star-beginDate').mask('9999-99-99 99:99:99');
-	$('#edit-star-beginDate').mask('9999-99-99 99:99:99');
+	
+// 	$('#add-star-beginDate').mask('9999-99-99 99:99:99');
+// 	$('#edit-star-beginDate').mask('9999-99-99 99:99:99');
 	
 	galaxyGrid = $('#galaxyList').datagrid({
 		view : detailview,
@@ -502,6 +540,31 @@ $(function() {
 		pageSize: 10,
 		pagination: true,
 		pageList: [10, 20, 30, 40, 50, 60, 70, 80, 90, 100],
+        frozenColumns: [[{
+            title: 'id',
+            field: 'id',
+            width: 50,
+            checkbox: true
+        }]],
+        columns: [[{
+            field: 'name',
+            title: '名称',
+            width: 80,
+        }, {
+            field: 'code',
+            title: '编码',
+            width: 50
+        },{
+			field : 'runDays',
+			title : '卫星在轨总时间(天)',
+			width : 50,
+			hidden : true,
+		}, {
+            field: 'description',
+            title: '描述',
+            width: 100
+        }
+        ]],
 		onLoadError:function(data){
 			$.messager.alert("信息", "暂无数据信息", "error");
 		},	
@@ -509,6 +572,8 @@ $(function() {
 			return '<div><table id="ddv-' + index + '"></table></div>';
 		},
 		onExpandRow : function(index, row) {
+			var seriesCode = row.code;
+			var seriesId = row.id;
 			var subgridId = 'ddv-' + index;
 			$('#' + subgridId).datagrid({
 				url : '${pageContext.request.contextPath}/admin/star/getStars?seriesId='+ row.id,
@@ -516,7 +581,7 @@ $(function() {
 						fitColumns : true,
 						rownumbers : true,
 						singleSelect : true,
-						loadMsg : '正在载入权限项，请稍后...',
+						loadMsg : '正在载入系列下面的星项，请稍后...',
 						height : 'auto',
 						toolbar : [ {
 							text : '创建',
@@ -527,26 +592,50 @@ $(function() {
 						}
 
 						],
+						frozenColumns: [[{
+				            title: 'id',
+				            field: 'id',
+				            width: 20,
+				            checkbox: false,
+				            hidden: true
+				        }]],
 						columns : [ [
-								{
-									field : 'ck',
-									checkbox : false
-								},
 								{
 									field : 'name',
 									title : '名称',
-									width : 100
+									width : 30
 								},
+								{
+                                    field : 'code',
+                                    title : '星编码',
+                                    width : 30
+                                },
 								{
 									field : 'beginDate',
 									title : '开始运行时间',
-									width : 100
+									width : 80
 								},
 								{
-									field : 'description',
-									title : '描述',
-									width : 150
+									field : 'runDays',
+									title : '卫星在轨时间(天)',
+									width : 80
 								},
+								{
+									field : 'editDevice',
+									title : '设备管理',
+									width : 50,
+									formatter: function (value, row, index) {
+						                return "<a class='parmdev' style='color:#0909df' href=\"javascript:doEditDevice('" + seriesId + "','" + row.id +"');\"" + " title='设备管理'>设备管理</a>";
+						            }
+								},
+								{
+						            field: 'editParam',
+						            title: '参数列表',
+						            width: 50,
+						            formatter: function (value, row, index) {
+						                return "<a class='parmdev' style='color:#0909df' href=\"javascript:doEditParam('" + seriesCode + "','" + row.code +"');\"" + " title='参数列表'>参数列表</a>";
+						            }
+						        },
 								{
 									field : 'operation',
 									title : '操作选项',
@@ -558,7 +647,7 @@ $(function() {
 												+ subgridId
 												+ "','"
 												+ row.id
-												+ "')\" style=\"float: left;\"><span class=\"l-btn-left\"><span class=\"l-btn-text icon-edit\" style=\"padding-left: 60px;\">编辑</span></span></a>";
+												+ "')\" style=\"float: left;\"><span class=\"l-btn-left\" style=\"margin:0px 20px;\" ><span class=\"l-btn-text icon-edit\" style=\"/*padding-left: 60px;*/\">编辑</span></span></a>";
 										// var delStr = "<a name=\"operButton\" class=\"easyui-linkbutton\"  iconcls=\"icon-remove\"  plain=\"true\" href=\"javascript:DeletePermissionItem('" + row.Id + "');\"> 删除</a>"
 										var delStr = "<a class=\"l-btn l-btn-plain\" href=\"javascript:deleteStarInfo('"
 												+ subgridId
@@ -566,7 +655,7 @@ $(function() {
 												+ row.id
 												+ "','"
 												+ row.name
-												+ "')\" style=\"float: left;\"><span class=\"l-btn-left\"><span class=\"l-btn-text icon-remove\" style=\"padding-left: 80px;\">删除</span></span></a>";
+												+ "')\" style=\"float: left;\"><span class=\"l-btn-left\" style=\"margin:0px 20px;\" ><span class=\"l-btn-text icon-remove\" style=\"/*padding-left: 80px;*/\">删除</span></span></a>";
 										return editStr
 												+ '<div class="datagrid-btn-separator"></div>'
 												+ delStr;
@@ -586,6 +675,14 @@ $(function() {
 			}
 		});
 	});
+	
+	function doEditParam(series,star){
+		 window.location.href='${pageContext.request.contextPath}/admin/parameter/index/'+series+'/'+star+'/'; 
+	}
+	function doEditDevice(series,star){
+		 window.location.href='${pageContext.request.contextPath}/admin/device/index/'+series+'/'+star+'/'; 
+	}
+	
 	function reloadDatagrid(datagridId) {
 		$('#' + datagridId).datagrid("unselectAll");
 		$('#' + datagridId).datagrid('reload');
@@ -593,72 +690,63 @@ $(function() {
 		var arr = datagridId.split('-');
 		galaxyGrid.datagrid('fixDetailRowHeight', arr[1]);
 	}
+	
+	$('#addSeriesInfoModal-btn').click(function(){
+		$('#addSeriesInfoModal').modal('show');
+	});
+	$('#addSeriesInfoModal').on('hide.bs.modal', function () {
+		$('#addSeriesInfoForm').data('bootstrapValidator').resetForm(true);
+	});
 	//提交创建系列
 	function submit_addSeriesInfo(){
-		var name = $('#add-series-name').val();
-		var description = $('#add-series-description').val();
-		$('#add-series-name').val("");
-		$('#add-series-description').val("");
-		if(name != ""){
-			$.ajax({
-				url : '${pageContext.request.contextPath}/admin/series/createSeries',
-				data : {
-					name : name,
-					description : description
-				},
-				cache : false,
-				dataType : "json",
-				success : function(data) {
-					if (data.success) {
-						galaxyGrid.datagrid("unselectAll");
-						galaxyGrid.datagrid('reload');
-						top.showMsg('提示', data.msg);
-					} else {
-						top.alertMsg('警告', data.msg);
-					}
-				}
-			});
+		var f = $('#addSeriesInfoForm');
+		f.data('bootstrapValidator').validate();
+		var isValid = f.data('bootstrapValidator').isValid();
+		if(!isValid){
+			//top.alertMsg('错误', '请满足提交条件！');
+			return false;
 		}
+		var name = $('#add-series-name').val();
+		var code = $('#add-series-code').val();
+		var description = $('#add-series-description').val();
+		$.ajax({
+			url : '${pageContext.request.contextPath}/admin/series/createSeries',
+			data : {
+				name : name,
+				code : code,
+				description : description
+			},
+			cache : false,
+			dataType : "json",
+			success : function(data) {
+				if (data.success) {
+					$('#addSeriesInfoModal').modal('hide');
+					galaxyGrid.datagrid("unselectAll");
+					galaxyGrid.datagrid('reload');
+					top.showMsg('提示', data.msg);
+				} else {
+					top.alertMsg('警告', data.msg);
+				}
+			}
+		});
 	}	
+	
 	//编辑系列信息
+	$('#editSeriesInfoModal').on('hide.bs.modal', function () {
+		$('#editSeriesInfoForm').data('bootstrapValidator').resetForm(true);
+	});
 	function editSeries(){
 		var rows = galaxyGrid.datagrid('getSelections');
 		if (rows.length > 0) {
 			if (rows.length == 1) {
 				//赋值
-				var oldName = rows[0].name;
-				var oldDescription = rows[0].description;
-				$('#edit-series-name').val(oldName);
-				$('#edit-series-description').val(oldDescription);
+				$('#edit-series-id').val(rows[0].id);
+				$('#edit-series-name').val(rows[0].name);
+				$('#edit-series-code').val(rows[0].code);
+				$('#edit-series-description').val(rows[0].description);
 				//弹出编辑框
 				$('#editSeriesInfoModal').modal('show');
-				$('#submit_editSeriesInfo').click(function(){
-					var name = $('#edit-series-name').val();
-					var description = $('#edit-series-description').val();
-					if(oldName != name || oldDescription != description){
-						$.ajax({
-							url : '${pageContext.request.contextPath}/admin/series/editSeries',
-							data : {
-								id : rows[0].id,
-								name : name,
-								description : description
-							},
-							cache : false,
-							dataType : "json",
-							success : function(data) {
-								if (data.success) {
-									galaxyGrid.datagrid("unselectAll");
-									galaxyGrid.datagrid('reload');
-									top.showMsg('提示', data.msg);
-								} else {
-									top.alertMsg('警告', data.msg);
-								}
-							}
-						});
-					}else{
-						top.showMsg('提示', "系列信息没有被修改！");
-					}
-				});
+				
 			}else{
 				top.showMsg("提示", "只能编辑一列！");
 			}
@@ -666,6 +754,41 @@ $(function() {
 			top.showMsg("提示", "请选择要编辑的系列！");
 		}
 	}
+	$('#submit_editSeriesInfo').click(function(){
+		var f = $('#editSeriesInfoForm');
+		f.data('bootstrapValidator').validate();
+		var isValid = f.data('bootstrapValidator').isValid();
+		if(!isValid){
+			return false;
+		}
+		
+		var id = $('#edit-series-id').val();
+		var name = $('#edit-series-name').val();
+		var code = $('#edit-series-code').val();
+		var description = $('#edit-series-description').val();
+		$.ajax({
+            url : '${pageContext.request.contextPath}/admin/series/editSeries',
+            data : {
+                id : id,
+                name : name,
+                code : code,
+                description : description
+            },
+            cache : false,
+            dataType : "json",
+            success : function(data) {
+                if (data.success) {
+                	$('#editSeriesInfoModal').modal('hide');
+                    galaxyGrid.datagrid("unselectAll");
+                    galaxyGrid.datagrid('reload');
+                    top.showMsg('提示', data.msg);
+                } else {
+                    top.alertMsg('警告', data.msg);
+                }
+            }
+        });
+	});
+	
 	//删除已选中的系列
 	function deleteSeries(){
 		var ids = [];
@@ -676,15 +799,15 @@ $(function() {
 				names.push(rows[i].name);
 			}
 			swal({
-				title : "你是否确定删除?",
+				title : "你是否确定删除？",
 				text : names.join(','),
 				type : "warning",
 				showCancelButton : true,
 				confirmButtonColor : "#DD6B55",
-				confirmButtonText : "删除!",
-				cancelButtonText : "取消!",
+				confirmButtonText : "删除",
+				cancelButtonText : "取消",
 				closeOnConfirm : false,
-				closeOnCancel : false
+// 				closeOnCancel : false
 			},
 			function(isConfirm) {
 				if (isConfirm) {
@@ -703,7 +826,7 @@ $(function() {
 								galaxyGrid.datagrid("unselectAll");
 								galaxyGrid.datagrid('reload');
 // 								top.showMsg('提示', data.msg);
-								swal("删除成功!","","success");
+								swal("删除成功","","success");
 							} else {
 // 								top.alertMsg('警告', data.msg);
 								swal("删除失败", data.obj,"error");
@@ -711,102 +834,178 @@ $(function() {
 						}
 					});
 					
-				} else {
-					swal("取消删除", "","error");
-				}
+				} 
+// 				else {
+// 					swal("取消删除", "","error");
+// 				}
 			});
 		} else {
 			top.showMsg("提示", "请选择要删除的系列！");
 		}
 	}
+
+//添加一颗星的开始运行时间选择--创建
+	$('#add-star-beginDate').click(function(){
+ 		jeDate({
+  			dateCell:"#add-star-beginDate",//直接显示日期层的容器，可以是ID  CLASS
+  			format:"YYYY-MM-DD hh:mm:ss",//日期格式
+  			isinitVal:false, //是否初始化时间
+  			festival:false, //是否显示节日
+  			isTime:true, //是否开启时间选择
+  			//isClear:false, //是否显示清空
+  			//minDate:"2000-01-01 00:00:00",//最小日期
+  			maxDate:jeDate.now(0), //设定最大日期为当前日期
+  			zIndex:9999,//弹出层的层级高度
+  		});
+ 	}); 
+	//添加一颗星的开始运行时间选择--编辑
+	$('#edit-star-beginDate').click(function(){
+ 		jeDate({
+  			dateCell:"#edit-star-beginDate",//直接显示日期层的容器，可以是ID  CLASS
+  			format:"YYYY-MM-DD hh:mm:ss",//日期格式
+  			isinitVal:false, //是否初始化时间
+  			festival:false, //是否显示节日
+  			isTime:true, //是否开启时间选择
+  			//isClear:false, //是否显示清空
+  			//minDate:"2000-01-01 00:00:00",//最小日期
+  			maxDate:jeDate.now(0), //设定最大日期为当前日期
+  			zIndex:9999,//弹出层的层级高度
+  		});
+ 	});
+	$("#add-star-beginDate").keypress(function(){
+	  return false;
+	});
+	$("#edit-star-beginDate").keypress(function(){
+	  return false;
+	});
+// 	$('#add-star-beginDate').click(function(){
+// 		jeDate({
+//  			dateCell:"#add-star-beginDate",//直接显示日期层的容器，可以是ID  CLASS
+//  			format:"YYYY-MM-DD hh:mm:ss",//日期格式
+//  			isinitVal:false, //是否初始化时间
+//  			festival:false, //是否显示节日
+//  			isTime:true, //是否开启时间选择
+//  			minDate:"2014-09-19 00:00:00",//最小日期
+//  			maxDate:jeDate.now(0), //设定最大日期为当前日期
+//  		});
+// 	});
+	
+// 	$('#getBeginTime').calendar({
+//         trigger: '#add-star-beginDate',
+//         zIndex: 999,
+// 		format: 'yyyy-mm-dd',
+//         onSelected: function (view, date, data) {
+//         },
+//         onClose: function (view, date, data) {
+//         }
+//     });
 	
 	//在一个系列下创建一颗星
+	$('#addStarInfoModal').on('hide.bs.modal', function () {
+		$('#addStarInfoForm').data('bootstrapValidator').resetForm(true);
+	});
 	function createStar(datagridId, seriesId){
+		$('#add-star-datagridId').val(datagridId);
+		$('#add-star-seriesId').val(seriesId);
  		$('#addStarInfoModal').modal('show');
- 		$('#submit_addStarInfo').click(function(){
-			var name = $('#add-star-name').val();
-			var beginDate = $('#add-star-beginDate').val();
-			var description = $('#add-star-description').val();
-			$('#add-star-name').val("");
-			$('#add-star-description').val("");
-			$('#add-star-beginDate').val("");
-			if(name != ""){
-				$.ajax({
-					url : '${pageContext.request.contextPath}/admin/star/createStar',
-					data : {
-						seriesId : seriesId,
-						name : name,
-						beginDate : beginDate,
-						description : description
-					},
-					cache : false,
-					dataType : "json",
-					success : function(data) {
-						if (data.success) {
-							reloadDatagrid(datagridId);
-							top.showMsg('提示', data.msg);
-						} else {
-							top.alertMsg('警告', data.msg);
-						}
-					}
-				});
-			}
- 		});
 	}
+	$('#submit_addStarInfo').click(function(){
+		var f = $('#addStarInfoForm');
+		f.data('bootstrapValidator').validate();
+		var isValid = f.data('bootstrapValidator').isValid();
+		if(!isValid){
+			return false;
+		}
+		var datagridId = $('#add-star-datagridId').val();
+		var seriesId = $('#add-star-seriesId').val();
+		var name = $('#add-star-name').val();
+		var code = $('#add-star-code').val();
+		var beginDate = $('#add-star-beginDate').val();
+		var description = $('#add-star-description').val();
+		$.ajax({
+			url : '${pageContext.request.contextPath}/admin/star/createStar',
+			data : {
+				seriesId : seriesId,
+				name : name,
+				code : code,
+				beginDate : beginDate,
+				description : description
+			},
+			cache : false,
+			dataType : "json",
+			success : function(data) {
+				if (data.success) {
+					$('#addStarInfoModal').modal('hide');
+					reloadDatagrid(datagridId);
+					top.showMsg('提示', data.msg);
+				} else {
+					top.alertMsg('警告', data.msg);
+				}
+			}
+		});
+	});
+ 		
+	$('#editStarInfoModal').on('hide.bs.modal', function () {
+		$('#editStarInfoForm').data('bootstrapValidator').resetForm(true);
+	});
 	function editStarInfo(datagridId, starId) {
-		var rows = $('#' + datagridId).datagrid("getSelections");
-		var oldName = rows[0].name;
-		var oldBeginDate = rows[0].beginDate;
-		var oldDescription = rows[0].description;
-		$('#edit-star-name').val(oldName);
-		$('#edit-star-beginDate').val(oldBeginDate);
-		$('#edit-star-description').val(oldDescription);
+		$('#edit-star-datagridId').val(datagridId);
+		$('#editStarInfoForm').form('load', '${pageContext.request.contextPath}/admin/star/getStarForm' + '?starId=' + starId);
 		$('#editStarInfoModal').modal('show');
-		//$('#editStarInfoForm').form('load', '${pageContext.request.contextPath}/admin/star/getStarForm' + '?starId=' + starId);
- 		$('#submit_editStarInfo').click(function(){
-			var name = $('#edit-star-name').val();
-			var beginDate = $('#edit-star-beginDate').val();
-			var description = $('#edit-star-description').val();
-			if(oldName != name || oldDescription != description || oldBeginDate != oldBeginDate){
-				$.ajax({
-					url : '${pageContext.request.contextPath}/admin/star/editStar',
-					data : {
-						id : starId,
-						name : name,
-						beginDate : beginDate,
-						description : description
-					},
-					cache : false,
-					dataType : "json",
-					success : function(data) {
-						if (data.success) {
-							reloadDatagrid(datagridId);
-							top.showMsg('提示', data.msg);
-						} else {
-							top.alertMsg('警告', data.msg);
-						}
-					}
-				});
-			}else{
-				top.showMsg('提示', "星信息没有被修改！");
-			}
- 		});
-
+ 		
 	}
+	
+	$('#submit_editStarInfo').click(function(){
+		var f = $('#editStarInfoForm');
+		f.data('bootstrapValidator').validate();
+		var isValid = f.data('bootstrapValidator').isValid();
+		if(!isValid){
+			return false;
+		}
+		var datagridId = $('#edit-star-datagridId').val();
+		var starId = $('#edit-star-id').val();
+		var name = $('#edit-star-name').val();
+		var code = $('#edit-star-code').val();
+		var beginDate = $('#edit-star-beginDate').val();
+		var description = $('#edit-star-description').val();
+		
+		$.ajax({
+			url : '${pageContext.request.contextPath}/admin/star/editStar',
+			data : {
+				id : starId,
+				name : name,
+				code : code,
+				beginDate : beginDate,
+				description : description
+			},
+			cache : false,
+			dataType : "json",
+			success : function(data) {
+				if (data.success) {
+					$('#editStarInfoModal').modal('hide');
+					reloadDatagrid(datagridId);
+					top.showMsg('提示', data.msg);
+				} else {
+					top.alertMsg('警告', data.msg);
+				}
+			}
+		});
+	});
+	
 	function deleteStarInfo(datagridId, starId,starName){
 // 		console.log('datagridId:' + datagridId);
 // 		console.log('starId:'+starId);
 // 		console.log('starName:'+starName);
 		swal({
-			title : "你是否确定删除?",
+			title : "你是否确定删除？",
 			text : starName,
 			type : "warning",
 			showCancelButton : true,
 			confirmButtonColor : "#DD6B55",
-			confirmButtonText : "删除!",
-			cancelButtonText : "取消!",
+			confirmButtonText : "删除",
+			cancelButtonText : "取消",
 			closeOnConfirm : false,
-			closeOnCancel : false
+// 			closeOnCancel : false
 		},
 		function(isConfirm) {
 			if (isConfirm) {
@@ -820,7 +1019,7 @@ $(function() {
 					success : function(data) {
 						if (data.success) {
 //								top.showMsg('提示', data.msg);
-							swal("删除成功!","","success");
+							swal("删除成功","","success");
 							galaxyGrid.datagrid("unselectAll");
 							galaxyGrid.datagrid('reload');
 						} else {
@@ -830,9 +1029,10 @@ $(function() {
 					}
 				});
 				
-			} else {
-				swal("取消删除", "","error");
-			}
+			} 
+// 			else {
+// 				swal("取消删除", "","error");
+// 			}
 		});
 	}
 </script>

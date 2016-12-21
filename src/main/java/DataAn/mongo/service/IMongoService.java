@@ -27,7 +27,9 @@ public interface IMongoService {
 	public void saveCSVData(String series, String star, String paramType,
 			String date, List<Document> documents, String versions)
 			throws Exception;
-	
+	/**
+	 * 分级Test
+	 * */
 	public void saveCSVData(String series, String star, String paramType,
 			String date, Map<String,List<Document>> map, String versions)
 			throws Exception;
@@ -49,6 +51,9 @@ public interface IMongoService {
 	public void updateCSVDataByVersions(String series, String star, String paramType,
 			String versions);
 	
+	public void updateCSVDataByDate(String series, String star, String paramType,
+			Date beginDate, Date endDate);
+	
 	public void find();
 	
 	public MongoCursor<Document> findByYear_month_day(String series,
@@ -59,4 +64,7 @@ public interface IMongoService {
 	
 	public MongoCursor<Document> findByDate(String series,
 			String star, String paramType, Date beginDate, Date endDate);
+	
+	public long findMovableNumByParamCode(String series,String star , 
+			String collectionName, String paramCode,Date beginDate, Date endDate);
 }

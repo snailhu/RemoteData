@@ -1,8 +1,14 @@
 package DataAn.mongo.init;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import DataAn.common.utils.PropertiesUtil;
-import DataAn.fileSystem.option.J9SeriesType;
-import DataAn.fileSystem.option.SeriesType;
+import DataAn.galaxyManager.option.J9SeriesType;
+import DataAn.galaxyManager.option.J9Series_Star_ParameterType;
+import DataAn.galaxyManager.option.SeriesType;
+import DataAn.storm.hierarchy.HierarchyModel;
+import DataAn.storm.hierarchy.HieraychyUtils;
 
 
 public class InitMongo {
@@ -73,9 +79,9 @@ public class InitMongo {
 	* @version 1.0
 	*/
 	public static final String getDataBaseNameBySeriesAndStar(String series,String star){
-		String seriesName = SeriesType.getSeriesType(series).getName();
-		String starName = J9SeriesType.getJ9SeriesType(star).getName();
-		String dbName = "db_" + seriesName + "_" + starName;
+//		String seriesName = SeriesType.getSeriesType(series).getName();
+//		String starName = J9SeriesType.getJ9SeriesType(star).getName();
+		String dbName = "db_" + series + "_" + star;
 		return dbName;
 	}
 	
@@ -89,9 +95,26 @@ public class InitMongo {
 	* @version 1.0
 	*/
 	public static final String getFSBDNameBySeriesAndStar(String series,String star){
-		String seriesName = SeriesType.getSeriesType(series).getName();
-		String starName = J9SeriesType.getJ9SeriesType(star).getName();
-		String dbName =  "fs_" + seriesName + "_" + starName;
+//		String seriesName = SeriesType.getSeriesType(series).getName();
+//		String starName = J9SeriesType.getJ9SeriesType(star).getName();
+		String dbName =  "fs_" + series + "_" + star;
 		return dbName;
+	}
+	
+	//集合名称： 参数名+等级
+	public static List<String> getGradingCollectionNames(String paramType){
+		List<HierarchyModel> hierarchyModelList = null;
+		try {
+			paramType = J9Series_Star_ParameterType.getJ9SeriesStarParameterType(paramType).getValue();
+			hierarchyModelList = HieraychyUtils.getHierarchyModels();
+			List<String> list = new ArrayList<String>();
+			for (HierarchyModel hierarchyModel : hierarchyModelList) {
+				list.add(paramType + hierarchyModel.getName());
+			}
+			return list;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 }

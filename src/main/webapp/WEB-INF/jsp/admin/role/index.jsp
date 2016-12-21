@@ -35,67 +35,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	
 	<script src="${pageContext.request.contextPath}/static/assets/js/bootstrap.min.js"></script>
 <style type="text/css">
-  .sweet-alert h2 {
-    color: rgb(87, 87, 87);
-    font-size: 30px;
-    text-align: center;
-    font-weight: 600;
-    text-transform: none;
-    position: relative;
-    line-height: 40px;
-    display: block;
-    margin: 25px 0px;
-    padding: 0px;
-}
- .sweet-alert p {
-    color: rgb(121, 121, 121);
-    font-size: 16px;
-    font-weight: 300;
-    position: relative;
-    text-align: inherit;
-    float: none;
-    line-height: normal;
-    margin: 0px;
-    padding: 0px;
-}
-.sweet-alert .sa-error-container {
-    background-color: rgb(241, 241, 241);
-    margin-left: -17px;
-    margin-right: -17px;
-    max-height: 0px;
-    overflow: hidden;
-    padding: 0px 10px;
-    transition: padding 0.15s, max-height 0.15s;
-}
-.sweet-alert button.cancel {
-    background-color: rgb(193, 193, 193);
-}
-.sweet-alert button {
-    background-color: rgb(140, 212, 245);
-    color: white;
-    box-shadow: none;
-    font-size: 17px;
-    font-weight: 500;
-    cursor: pointer;
-    border: none;
-    border-radius: 5px;
-    padding: 10px 32px;
-/*     margin: 26px 30px 0px; */
-/*     width: 150px; */
-}
-.sweet-alert .sa-confirm-button-container {
-    display: inline-block;
-    position: relative;
-/*     padding-left: 20px; */
-}
-.cancel{
-	margin-top: 15px;
-	margin-left: 50px;
-}
-.confirm{
-	margin-top: 15px;
-	margin-left: 150px;
-}
 .glyphicon {
 	position: relative;
 	top: -23px;
@@ -115,112 +54,143 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	margin-bottom: 0px;
 	color: #737373;
 }
+
 .widget-toolbar>a {
-    font-size: 36px;
-    margin: 0 1px;
-    display: inline-block;
-    padding: 0;
-/*     line-height: 24px; */
+	font-size: 36px;
+	margin: 0 1px;
+	display: inline-block;
+	padding: 0;
+	/*     line-height: 24px; */
 }
+
 .form-horizontal {
-    margin-bottom: 0px;
+	margin-bottom: 0px;
+}
+a {
+    color: #428bca;
+}
+.powedit{
+	display:block;
+	width:80px;
+	height:26px;
+	line-height:26px;
+	color:#000;
+	text-align:center;
+	margin:0px auto;
+	overflow:hidden;
+}
+.powedit:hover{
+	background:#e2e2e2;
+	border:1px solid #CCC;
+	border-radius:5px 5px 5px 5px;
 }
 </style>
 <script type="text/javascript">
-$(function() {
-	//创建角色表单验证
-	$('#addRoleInfoForm').bootstrapValidator({
-		message : '这个值不能为空！',
-		feedbackIcons : {
-			valid : 'glyphicon glyphicon-ok',
-			invalid : 'glyphicon glyphicon-remove',
-			validating : 'glyphicon glyphicon-refresh'
-		},
-		fields : {
-			name : {
-				message : '角色名不能为空',
-				validators : {
-					notEmpty : {
-						message : '角色名不能为空'
-					},
-				}
+	$(function() {
+		//修改页面缩放，界面显示不正常
+		$(".col-lg-7").css("text-align","center");
+		$(".modal-dialog").css("margin","20px auto");
+		
+		//左菜单栏
+		$("#rolemanage-img").attr("src","${pageContext.request.contextPath}/static/new/img/images/a_03.png");
+		$("#sysmanage-img").attr("src","${pageContext.request.contextPath}/static/new/img/images/a_50.png");
+		$("#rolemanage-text").css("color","#5d90d6");
+		$("#sysmanage-text").css("color", "#5d90d6");
+		$("#sysmanageUL").css("display","block");
+		
+		//创建角色表单验证
+		$('#addRoleInfoForm').bootstrapValidator({
+			message : '这个值不能为空！',
+			feedbackIcons : {
+				valid : 'glyphicon glyphicon-ok',
+				invalid : 'glyphicon glyphicon-remove',
+				validating : 'glyphicon glyphicon-refresh'
 			},
-			description : {
-          	  message: '',
-            }
-		}
-	});
-	$('#reset_addRoleInfo').click(function() {
-		$('#addRoleInfoForm').data('bootstrapValidator').resetForm(true);
-	});
-	//编辑角色表单验证
-	$('#editRoleInfoForm').bootstrapValidator({
-		message : '这个值不能为空！',
-		feedbackIcons : {
-			valid : 'glyphicon glyphicon-ok',
-			invalid : 'glyphicon glyphicon-remove',
-			validating : 'glyphicon glyphicon-refresh'
-		},
-		fields : {
-			name : {
-				message : '角色名不能为空',
-				validators : {
-					notEmpty : {
-						message : '角色名不能为空'
-					},
+			fields : {
+				name : {
+					message : '角色名不能为空',
+					validators : {
+						notEmpty : {
+							message : '角色名不能为空'
+						},
+					}
+				},
+				description : {
+					message : '',
 				}
+			}
+		});
+// 		$('#reset_addRoleInfo').click(function() {
+// 			$('#addRoleInfoForm').data('bootstrapValidator').resetForm(true);
+// 		});
+// 		$('#close_addRoleInfo').click(function() {
+// 			$('#addRoleInfoForm').data('bootstrapValidator').resetForm(true);
+// 		});
+		//编辑角色表单验证
+		$('#editRoleInfoForm').bootstrapValidator({
+			message : '这个值不能为空！',
+			feedbackIcons : {
+				valid : 'glyphicon glyphicon-ok',
+				invalid : 'glyphicon glyphicon-remove',
+				validating : 'glyphicon glyphicon-refresh'
 			},
-			description : {
-          	  message: '',
-            }
-		}
+			fields : {
+				name : {
+					message : '角色名不能为空',
+					validators : {
+						notEmpty : {
+							message : '角色名不能为空'
+						},
+					}
+				},
+				description : {
+					message : '',
+				}
+			}
+		});
+// 		$('#reset_editRoleInfo').click(function() {
+// 			$('#editRoleInfoForm').data('bootstrapValidator').resetForm(true);
+// 		});
+// 		$('#close_editRoleInfo').click(function() {
+// 			$('#editRoleInfoForm').data('bootstrapValidator').resetForm(true);
+// 		});
 	});
-	$('#reset_editRoleInfo').click(function() {
-		$('#editRoleInfoForm').data('bootstrapValidator').resetForm(true);
-	});
-});
 </script>
   </head>
   
   <body>
   
     <div class="main-content">
-<!-- 		<div class="breadcrumbs" id="breadcrumbs"> -->
-<!-- 			<script type="text/javascript"> -->
-<!-- 				try { -->
-<!-- 					ace.settings.check('breadcrumbs', 'fixed') -->
-<!-- 				} catch (e) { -->
-<!-- 				} -->
-<!-- 			</script> -->
-<!-- 			<ul class="breadcrumb"> -->
-<!-- 				<li><i class="icon-home home-icon"></i> <a href="javascript:void(0);">首页</a></li> -->
-<!-- 				<li class="active">欢迎页面</li> -->
-<!-- 			</ul>.breadcrumb -->
-<!-- 			<div class="nav-search" id="nav-search"> -->
-<!-- 				<form class="form-search"> -->
-<!-- 					<span class="input-icon"> <input type="text" -->
-<!-- 						placeholder="Search ..." class="nav-search-input" -->
-<!-- 						id="nav-search-input" autocomplete="off" /> <i -->
-<!-- 						class="icon-search nav-search-icon"></i> -->
-<!-- 					</span> -->
-<!-- 				</form> -->
-<!-- 			</div>#nav-search -->
-<!-- 		</div> -->
+		<div class="breadcrumbs" id="breadcrumbs">
+			<script type="text/javascript">
+				try {
+					ace.settings.check('breadcrumbs', 'fixed')
+				} catch (e) {
+				}
+			</script>
+			<ul class="breadcrumb" style="margin-top: 10px;">
+				<li>
+					<img src="${pageContext.request.contextPath}/static/imgs/DataImport/home.png" style="margin-bottom: 3px;">
+					<span>系统管理</span>
+				</li>
+				<li class="active">角色管理</li>
+			</ul><!--  .breadcrumb -->
+		</div>
 		<div class="page-content">
-			<div class="page-header">
-				<h1>角色管理</h1>
-			</div>
+<!-- 			<div class="page-header"> -->
+<!-- 				<h1>角色管理</h1> -->
+<!-- 			</div> -->
 			<!-- /.page-header -->
 			<div id="content" region="center" style="overflow: hidden">
 				<div id="toolbar" class="datagrid-toolbar" style="height: 28px;">
 					<div style="height: 28px;">
 						<button class="easyui-linkbutton" iconcls="icon-add" plain="true" style="float: left;" 
-							data-toggle="modal" data-target="#addRoleModal">创建</button>
+							id="createRole-btn">创建</button>
 						<div class="datagrid-btn-separator"></div>
-						<button class="easyui-linkbutton" iconcls="icon-remove" plain="true" style="float: left;"
+						<button class="easyui-linkbutton" iconcls="icon-remove" plain="true" style="float: left;" 
 							onclick="deleteRole();">删除</button>
 						<div class="datagrid-btn-separator"></div>
-						<button class="easyui-linkbutton" iconcls="icon-edit" plain="true" style="float: left;"
+						<button class="easyui-linkbutton" iconcls="icon-edit" plain="true" style="float: left;" 
 							onclick="editRole();">编辑</button>
 						<div class="datagrid-btn-separator"></div>
 						<button class="easyui-linkbutton" iconcls="icon-undo" plain="true" style="float: left;"
@@ -228,18 +198,18 @@ $(function() {
 					</div>
 				</div>
 			</div>
-			<table id="roleList" width="100%" height="500px" border="false">
+			<table id="roleList" width="100%" height="450px" border="false">
 			</table>
 			
 			<!-- 创建角色 -->
 			<div class="modal fade" id="addRoleModal" tabindex="-1" role="dialog" aria-labelledby="addRoleModalLabel"  >
-			  <div class="modal-dialog" role="document" style="margin:55px -300px">
+			  <div class="modal-dialog" role="document" style="margin:150px 450px">
 			    <div class="modal-content">
 					<form id="addRoleInfoForm" class="form-horizontal" role="form">
 						<div class="modal-header">
-<!-- 							<button type="button" class="close" data-dismiss="modal" aria-label="Close"> -->
-<!-- 								<span aria-hidden="true">&times;</span> -->
-<!-- 							</button> -->
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close" id="close_addRoleInfo">
+								<span aria-hidden="true">&times;</span>
+							</button>
 							<h4 class="modal-title" id="addRoleModalLabel">系统角色信息</h4>
 						</div>
 						<div class="modal-body">
@@ -259,9 +229,9 @@ $(function() {
 							</div>
 						</div>
 						<div class="modal-footer">
-							<div class="col-lg-4 col-lg-offset-5">
-								<button type="button" class="btn btn-default" data-dismiss="modal" id="reset_addRoleInfo">关闭</button>
-								<button type="submit" class="btn btn-primary" data-dismiss="modal" id="submit_addRoleInfo">确定</button>
+							<div class="col-lg-7 col-lg-offset-3">
+								<button type="button" class="subbutton_1" id="submit_addRoleInfo">确定</button>
+								<button type="button" class="cancelbutton_1" data-dismiss="modal" id="reset_addRoleInfo">关闭</button>
 							</div>
 						</div>
 					</form>
@@ -270,13 +240,13 @@ $(function() {
 			</div>
 			<!-- 编辑角色 -->
 			<div class="modal fade" id="editRoleModal" tabindex="-1" role="dialog" aria-labelledby="editRoleModalLabel">
-				<div class="modal-dialog" role="document" style="margin:55px -300px">
+				<div class="modal-dialog" role="document" style="margin:150px 450px">
 					<div class="modal-content">
 						<form id="editRoleInfoForm" class="form-horizontal" role="form">
 							<div class="modal-header">
-<!-- 								<button type="button" class="close" data-dismiss="modal" aria-label="Close"> -->
-<!-- 									<span aria-hidden="true">&times;</span> -->
-<!-- 								</button> -->
+								<button type="button" class="close" data-dismiss="modal" aria-label="Close" id="close_editRoleInfo">
+									<span aria-hidden="true">&times;</span>
+								</button>
 								<h4 class="modal-title" id="editRoleModalLabel">系统角色信息</h4>
 							</div>
 							<div class="modal-body">
@@ -297,9 +267,9 @@ $(function() {
 								</div>
 							</div>
 							<div class="modal-footer">
-								<div class="col-lg-4 col-lg-offset-5">
-									<button type="button" class="btn btn-default" data-dismiss="modal" id="reset_editRoleInfo">关闭</button>
-									<button type="submit" class="btn btn-primary" data-dismiss="modal" id="submit_editRoleInfo">确定</button>
+								<div class="col-lg-7 col-lg-offset-3">
+									<button type="button" class="subbutton_1" id="submit_editRoleInfo">确定</button>
+									<button type="button" class="cancelbutton_1" data-dismiss="modal" id="reset_editRoleInfo">关闭</button>
 								</div>
 							</div>
 						</form>
@@ -308,7 +278,7 @@ $(function() {
 			</div>
 			<!-- 编辑角色权限 -->
 			<div class="modal fade" id="editRolePermissionModal" tabindex="-1" role="dialog" aria-labelledby="editRolePermissionModalLabel"  >
-			  <div class="modal-dialog" role="document" style="margin:55px -300px">
+			  <div class="modal-dialog" role="document" style="margin:150px 450px">
 			    <div class="modal-content">
 			      <div class="modal-header">
 			        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -321,9 +291,9 @@ $(function() {
 			      	</div>
 			      </div>
 			      <div class="modal-footer">
-			      	<div class="col-lg-4 col-lg-offset-5">
-				        <button type="button" class="btn btn-default" data-dismiss="modal" id="reset_editRolePermission">关闭</button>
-				        <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="submit_editRolePermission()">确定</button>
+			      	<div class="col-lg-7 col-lg-offset-3">
+				        <button type="button" class="subbutton_1" data-dismiss="modal" onclick="submit_editRolePermission()">确定</button>
+				        <button type="button" class="cancelbutton_1" data-dismiss="modal" id="reset_editRolePermission">关闭</button>
                     </div>
 			      </div>
 			    </div>
@@ -378,7 +348,7 @@ $(function() {
 	              title: '编辑权限',
 	              width: 80,
 	              formatter: function (value, row, index) {
-	                  return "<a href=\"javascript:doEditPermission('" + row.id +  "');\"" + " title='编辑权限'>编辑权限</a>";
+	                  return "<a class='powedit' style='color:#0909df' href=\"javascript:doEditPermission('" + row.id +  "');\"" + " title='编辑权限'>编辑权限</a>";
 	              }
 	          }
 	          ]]
@@ -427,39 +397,50 @@ $(function() {
 			top.showMsg("提示", "请选择要关联的权限！");
 		}
 	}
+	
+	$('#addRoleModal').on('hide.bs.modal', function () {
+		$('#addRoleInfoForm').data('bootstrapValidator').resetForm(true);
+	});
+	$('#createRole-btn').click(function(){
+		$('#addRoleModal').modal('show');
+	});
+	
 	//创建系统角色
 	$('#submit_addRoleInfo').click(function(){
-		var isValid = $('#addRoleInfoForm').data('bootstrapValidator').isValid();
-		if(isValid){
-			var toUrl='${pageContext.request.contextPath}/admin/role/createRole';
-			var f = $('#addRoleInfoForm');
-			         f.form('submit', {
-			             url: toUrl,
-			             onsubmit: function () {
-			                 var flag = $(this).form('validate');
-			                 if (flag) {
-			                     top.showProcess(true, '温馨提示', '正在提交数据...');
-			                 }
-			                 return flag;
-			             },
-			             success: function (data) {
-			                 top.showProcess(false);
-			                 var map = $.parseJSON(data);
-			                 if (map.success) {
-			                     top.showMsg('提示', map.msg);
-			                     reloadDataGrid();
-			                 }
-			                 else {
-			                 	top.alertMsg('错误', map.msg+"\n"+map.obj==null?"":map.obj);
-			                 }
-			             },
-			             onLoadError: function () {
-			                 top.showProcess(false);
-			                 top.$.messager.alert('温馨提示', '由于网络或服务器太忙，提交失败，请重试！');
-			             }
-			         });
-			$('#addRoleInfoForm').data('bootstrapValidator').resetForm(true);
+		var f = $('#addRoleInfoForm');
+		f.data('bootstrapValidator').validate();
+		var isValid = f.data('bootstrapValidator').isValid();
+		if(!isValid){
+			//top.alertMsg('错误', '请满足提交条件！');
+			return false;
 		}
+		var toUrl='${pageContext.request.contextPath}/admin/role/createRole';
+        f.form('submit', {
+            url: toUrl,
+            onsubmit: function () {
+                var flag = $(this).form('validate');
+                if (flag) {
+                    top.showProcess(true, '温馨提示', '正在提交数据...');
+                }
+                return flag;
+            },
+            success: function (data) {
+                top.showProcess(false);
+                var map = $.parseJSON(data);
+                if (map.success) {
+                	$('#addRoleModal').modal('hide');
+                    top.showMsg('提示', map.msg);
+                    reloadDataGrid();
+                }
+                else {
+                	top.alertMsg('错误', map.msg+"\n"+map.obj==null?"":map.obj);
+                }
+            },
+            onLoadError: function () {
+                top.showProcess(false);
+                top.$.messager.alert('温馨提示', '由于网络或服务器太忙，提交失败，请重试！');
+            }
+        });
 	});
 	  //编辑系统角色
 	  function editRole(){
@@ -467,40 +448,12 @@ $(function() {
 	      if (rows.length > 0) {
 	          if (rows.length == 1) {
 	        	//赋值
-				var oldName = rows[0].name;
-				var oldDescription = rows[0].description;
-				$('#edit-role-name').val(oldName);
-				$('#edit-role-description').val(oldDescription);
+				$('#edit-role-id').val(rows[0].id);
+				$('#edit-role-name').val(rows[0].name);
+				$('#edit-role-description').val(rows[0].description);
 				//弹出编辑框
 				$('#editRoleModal').modal('show');
-				$('#submit_editRoleInfo').click(function(){
-					var isValid = $('#editRoleInfoForm').data('bootstrapValidator').isValid();
-					if(isValid){
-						var name = $('#edit-role-name').val();
-						var description = $('#edit-role-description').val();
-						if(oldName != name || oldDescription != description){
-							
-							$.post('${pageContext.request.contextPath}/admin/role/editRole', 
-									{
-										id : rows[0].id,
-										name : name,
-										description : description 
-									},
-									function(data){
-										top.showProcess(false);
-										if (data.success) {
-											top.showMsg('提示', data.msg);
-											reloadDataGrid();
-										} else {
-											top.alertMsg('警告', data.msg);
-										}
-								});
-							
-						}else{
-							top.showMsg('提示', "权限组信息没有被修改！");
-						}
-					}
-				});	               
+				           
 	          }else {
 	              var names = [];
 	              for (var i = 0; i < rows.length; i++) {
@@ -512,6 +465,37 @@ $(function() {
 	          top.showMsg("提示", "请选择要编辑的记录！");
 	      }
 	  }	
+	  
+	$('#editRoleModal').on('hide.bs.modal', function () {
+		$('#editRoleInfoForm').data('bootstrapValidator').resetForm(true);
+	});
+	  $('#submit_editRoleInfo').click(function(){
+		    var f = $('#editRoleInfoForm');
+			f.data('bootstrapValidator').validate();
+			var isValid = f.data('bootstrapValidator').isValid();
+			if(!isValid){
+				return false;
+			}
+			var id = $('#edit-role-id').val();
+			var name = $('#edit-role-name').val();
+			var description = $('#edit-role-description').val();
+			$.post('${pageContext.request.contextPath}/admin/role/editRole', 
+				{
+					id : id,
+					name : name,
+					description : description 
+				},
+				function(data){
+					top.showProcess(false);
+					if (data.success) {
+						$('#editRoleModal').modal('hide');
+						top.showMsg('提示', data.msg);
+						reloadDataGrid();
+					} else {
+						top.alertMsg('警告', data.msg);
+					}
+			});
+		});	    
 	  //删除系统角色
 	  function deleteRole() {
 	      var ids = [];
@@ -523,15 +507,15 @@ $(function() {
 					ids.push(rows[i].id);
 				}
 				swal({
-					title : "你是否确定删除?",
+					title : "你是否确定删除？",
 					text : names.join(','),
 					type : "warning",
 					showCancelButton : true,
 					confirmButtonColor : "#DD6B55",
-					confirmButtonText : "删除!",
-					cancelButtonText : "取消!",
+					confirmButtonText : "删除",
+					cancelButtonText : "取消",
 					closeOnConfirm : false,
-					closeOnCancel : false
+// 					closeOnCancel : false
 				},
 				function(isConfirm) {
 					if (isConfirm) {
@@ -544,16 +528,17 @@ $(function() {
 							dataType : "json",
 							success : function(data) {
 								if (data.success) {
-									swal("删除成功!","","success");
+									swal("删除成功","","success");
 									reloadDataGrid();
 								} else {
 									swal("删除失败", data.obj,"error");
 								}
 							}
 						});
-					} else {
-						swal("取消删除", "","error");
-					}
+					} 
+// 					else {
+// 						swal("取消删除", "","error");
+// 					}
 				});
 	      }
 	      else {
@@ -564,6 +549,7 @@ $(function() {
 	      roleGrid.datagrid('unselectAll');
 	      roleGrid.datagrid('reload');
 	  }
+	  
 	</script>	
   </body>
 

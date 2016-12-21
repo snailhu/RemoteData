@@ -18,6 +18,16 @@ public class StatusTrackingDTO implements java.io.Serializable {
 
 	private String statusType; // 所处状态（00 文件上传成功 01 过滤噪点成功 02.。。。。 ）
 
+	private String exceptionInfo;
+
+	public String getExceptionInfo() {
+		return exceptionInfo;
+	}
+
+	public void setExceptionInfo(String exceptionInfo) {
+		this.exceptionInfo = exceptionInfo;
+	}
+
 	public String getCreateDate() {
 		return createDate;
 	}

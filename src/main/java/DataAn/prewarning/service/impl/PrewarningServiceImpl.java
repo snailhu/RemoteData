@@ -9,17 +9,19 @@ import javax.annotation.Resource;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
-import DataAn.Analysis.dto.ConstraintDto;
 import DataAn.common.dao.Pager;
 import DataAn.common.utils.DateUtil;
-import DataAn.fileSystem.option.J9Series_Star_ParameterType;
-import DataAn.fileSystem.service.IJ9Series_Star_Service;
+import DataAn.galaxyManager.option.J9Series_Star_ParameterType;
+import DataAn.galaxyManager.dao.IParameterDao;
 import DataAn.galaxyManager.dao.ISeriesDao;
 import DataAn.galaxyManager.dao.IStarDao;
+import DataAn.galaxyManager.domain.Parameter;
 import DataAn.galaxyManager.domain.Series;
 import DataAn.galaxyManager.domain.Star;
 import DataAn.galaxyManager.dto.StarDto;
+import DataAn.galaxyManager.service.IParameterService;
 import DataAn.prewarning.dao.IWarningLogDao;
+import DataAn.prewarning.dao.IWarningLogMongoDao;
 import DataAn.prewarning.dao.IWarningValueDao;
 import DataAn.prewarning.domain.WarningLog;
 import DataAn.prewarning.domain.WarningValue;
@@ -38,11 +40,15 @@ public class PrewarningServiceImpl implements IPrewarningService {
 	@Resource
 	private IWarningLogDao warningLogDao;
 	@Resource
+	private IWarningLogMongoDao warningLogMongoDao;
+	@Resource
 	private ISeriesDao seriersDao;
 	@Resource
 	private IStarDao starDao;
 	@Resource
-	private IJ9Series_Star_Service j9Series_Star_Service;
+	private IParameterDao parameterDao;
+	@Resource
+	private IParameterService parameterService;
 
 	@Override
 	public void addErrorValue(ErrorValueDTO errorValueDTO) throws Exception {
@@ -54,7 +60,7 @@ public class PrewarningServiceImpl implements IPrewarningService {
 		warningValue.setParameterType(errorValueDTO.getParameterType());
 		warningValue.setSeries(errorValueDTO.getSeries());
 		warningValue.setStar(errorValueDTO.getStar());
-		warningValue.setTimeZone(0);
+		warningValue.setTimeZone(errorValueDTO.getTimeZone());
 		warningValue.setLimitTimes(0);
 		warningValue.setWarningType(1);
 		warningValueDao.add(warningValue);
@@ -69,6 +75,7 @@ public class PrewarningServiceImpl implements IPrewarningService {
 		warningValue.setParameterType(errorValueDTO.getParameterType());
 		warningValue.setSeries(errorValueDTO.getSeries());
 		warningValue.setStar(errorValueDTO.getStar());
+		warningValue.setTimeZone(errorValueDTO.getTimeZone());
 		warningValueDao.update(warningValue);
 	}
 
@@ -78,11 +85,11 @@ public class PrewarningServiceImpl implements IPrewarningService {
 	}
 
 	@Override
-	public Pager<QueryValueDTO> pageQueryWarningValue(int pageIndex, int pageSize, String series, String star,
-			String parameter, String parameterType, String warningType) throws Exception {
+	public Pager<QueryValueDTO> pageQueryWarningValue(int pageIndex, int pageSize, String sort, String order,
+			String series, String star, String parameter, String parameterType, String warningType) throws Exception {
 		List<QueryValueDTO> valueDTOs = new ArrayList<QueryValueDTO>();
-		Pager<WarningValue> warningPger = warningValueDao.selectByOption(pageIndex, pageSize, series, star, parameter,
-				parameterType, warningType);
+		Pager<WarningValue> warningPger = warningValueDao.selectByOption(pageIndex, pageSize, sort, order, series, star,
+				parameter, parameterType, warningType);
 		List<WarningValue> warningValues = warningPger.getDatas();
 		if (warningValues != null && warningValues.size() > 0) {
 			for (WarningValue value : warningValues) {
@@ -90,18 +97,19 @@ public class PrewarningServiceImpl implements IPrewarningService {
 				valueDTO.setLimitTimes(value.getLimitTimes());
 				valueDTO.setMaxVal(value.getMaxVal());
 				valueDTO.setMinVal(value.getMinVal());
-				valueDTO.setParameter(getParamCNname(value.getParameter()));
 				valueDTO.setParameterType(
 						J9Series_Star_ParameterType.getJ9SeriesStarParameterType(value.getParameterType()).getName());
 				Series seriesDomain = seriersDao.get(value.getSeries());
+				Star starDomain = starDao.get(value.getStar());
 				if (seriesDomain != null) {
-					valueDTO.setSeries(seriesDomain.getDescription());
+					valueDTO.setSeries(seriesDomain.getName());
+					valueDTO.setParameter(
+							getParamCNname(seriesDomain.getCode(), starDomain.getCode(), value.getParameter()));
 				} else {
 					valueDTO.setSeries(value.getSeries().toString());
 				}
-				Star starDomain = starDao.get(value.getStar());
 				if (starDomain != null) {
-					valueDTO.setStar(starDomain.getDescription());
+					valueDTO.setStar(starDomain.getName());
 				} else {
 					valueDTO.setStar(value.getStar().toString());
 				}
@@ -155,53 +163,49 @@ public class PrewarningServiceImpl implements IPrewarningService {
 	}
 
 	@Override
-	public void deleteWarningLog(long logId) throws Exception {
-		warningLogDao.delete(logId);
+	public void deleteWarningLog(String logId, String series, String star, String parameterType, String warningType)
+			throws Exception {
+		warningLogMongoDao.deleteWainingById(logId, series, star, parameterType, warningType);
 	}
 
 	@Override
 	public Pager<QueryLogDTO> pageQueryWarningLog(int pageIndex, int pageSize, String series, String star,
-			String parameterType, String createdatetimeStart, String createdatetimeEnd, String warningType,
-			String hadRead) throws Exception {
+			String parameterType, String parameter, String createdatetimeStart, String createdatetimeEnd,
+			String warningType, String hadRead) throws Exception {
+		if (StringUtils.isBlank(series) || StringUtils.isBlank(star)) {
+			return null;
+		}
+		Series seriesDomain = seriersDao.get(Long.parseLong(series));
+		if (seriesDomain == null) {
+			return null;
+		}
+		String seriesName = seriesDomain.getCode();
+		Star starDomain = starDao.get(Long.parseLong(star));
+		if (starDomain == null) {
+			return null;
+		}
+		String starName = starDomain.getCode();
 
-		List<QueryLogDTO> logDTOs = new ArrayList<QueryLogDTO>();
-		Pager<WarningLog> logPager = warningLogDao.selectByOption(pageIndex, pageSize, series, star, parameterType,
-				createdatetimeStart, createdatetimeEnd, warningType, hadRead);
-		List<WarningLog> warningLogs = logPager.getDatas();
-		if (warningLogs != null && warningLogs.size() > 0) {
-			for (WarningLog warnLog : warningLogs) {
-				QueryLogDTO logDTO = new QueryLogDTO();
-				logDTO.setHadRead("1");
-				logDTO.setLogId(warnLog.getLogId());
-				logDTO.setParameter(getParamCNname(warnLog.getParameter()));
-				logDTO.setParameterType(
-						J9Series_Star_ParameterType.getJ9SeriesStarParameterType(warnLog.getParameterType()).getName());
-				logDTO.setParamValue(warnLog.getParamValue());
-				Series seriesDomain = seriersDao.get(warnLog.getSeries());
-				if (seriesDomain != null) {
-					logDTO.setSeries(seriesDomain.getDescription());
-				} else {
-					logDTO.setSeries(warnLog.getSeries().toString());
-				}
-				Star starDomain = starDao.get(warnLog.getStar());
-				if (starDomain != null) {
-					logDTO.setStar(starDomain.getDescription());
-				} else {
-					logDTO.setStar(warnLog.getStar().toString());
-				}
-				logDTO.setTimeValue(DateUtil.formatSSS(warnLog.getTimeValue()));
-				if (warnLog.getWarningType() == 0) {
-					logDTO.setWarningType("特殊工况");
-				} else if (warnLog.getWarningType() == 1) {
-					logDTO.setWarningType("异常");
-				}
-				logDTOs.add(logDTO);
-				warnLog.setHadRead(1);
-				warningLogDao.update(warnLog);
+		Pager<QueryLogDTO> logPager = warningLogMongoDao.selectByOption(pageIndex, pageSize, seriesName, starName,
+				parameterType, parameter, createdatetimeStart, createdatetimeEnd, warningType, hadRead);
+		for (QueryLogDTO warnLog : logPager.getDatas()) {
+			warnLog.setParameterType(
+					J9Series_Star_ParameterType.getJ9SeriesStarParameterType(warnLog.getParameterType()).getName());
+			if (seriesDomain != null) {
+				warnLog.setSeries(seriesDomain.getName());
+				warnLog.setParameter(
+						getParamCNname(seriesDomain.getCode(), starDomain.getCode(), warnLog.getParameter()));
+			}
+			if (starDomain != null) {
+				warnLog.setStar(starDomain.getName());
+			}
+			if (warnLog.getWarningType().equals("0")) {
+				warnLog.setWarningType("特殊工况");
+			} else if (warnLog.getWarningType().equals("1")) {
+				warnLog.setWarningType("异常");
 			}
 		}
-		Pager<QueryLogDTO> pager = new Pager<QueryLogDTO>(pageSize, pageIndex, logPager.getTotalCount(), logDTOs);
-		return pager;
+		return logPager;
 	}
 
 	@Override
@@ -212,13 +216,12 @@ public class PrewarningServiceImpl implements IPrewarningService {
 	@Override
 	public Long getNotReadCount(String series, String star, String parameterType, String parameter, String warningType)
 			throws Exception {
-		return warningLogDao.getNotReadCount(series, star, parameterType, parameter, warningType);
+		return warningLogMongoDao.getNotReadCount(series, star, parameterType, parameter, warningType);
 	}
 
 	@Override
 	public void addWarnValue(WarnValueDTO warnValueDTO) throws Exception {
 		WarningValue warningValue = new WarningValue();
-		System.out.println(warningValue.getMaxVal());
 		warningValue.setCreateDate(new Date());
 		warningValue.setMaxVal(warnValueDTO.getMaxVal().doubleValue());
 		warningValue.setMinVal(warnValueDTO.getMinVal().doubleValue());
@@ -247,46 +250,39 @@ public class PrewarningServiceImpl implements IPrewarningService {
 	}
 
 	@Override
-	public SelectOptionDTO getSelectOption(String series, String paramaterType) throws Exception {
+	public SelectOptionDTO getSelectOption(String series, String paramaterType, String star) throws Exception {
 		SelectOptionDTO selectOptionDTO = new SelectOptionDTO();
-		if ("flywheel".equals(paramaterType)) {
-			selectOptionDTO.setParamaters(j9Series_Star_Service.getFlyWheelParameterList());
+		if (StringUtils.isBlank(series) || StringUtils.isBlank(star)) {
+			return selectOptionDTO;
 		}
-		if ("top".equals(paramaterType)) {
-			selectOptionDTO.setParamaters(j9Series_Star_Service.getTopParameterList());
+		Series seriesDomain = seriersDao.get(Long.parseLong(series));
+		Star starDomain = starDao.get(Long.parseLong(star));
+		if (seriesDomain != null && starDomain != null) {
+			selectOptionDTO.setParamaters(
+					parameterService.getParameterList(seriesDomain.getCode(), starDomain.getCode(), paramaterType));
 		}
-		if (StringUtils.isNoneBlank(series)) {
-			List<StarDto> starDtoList = new ArrayList<StarDto>();
-			List<Star> list = starDao.findByParam("series.id", Long.parseLong(series));
-			if (list != null && list.size() > 0) {
-				StarDto dto = null;
-				for (Star star : list) {
-					dto = new StarDto();
-					dto.setId(star.getId());
-					dto.setName(star.getName());
-					dto.setBeginDate(DateUtil.format(star.getStartRunDate()));
-					dto.setDescription(star.getDescription());
-					starDtoList.add(dto);
-				}
+		List<StarDto> starDtoList = new ArrayList<StarDto>();
+		List<Star> list = starDao.findByParam("series.id", Long.parseLong(series));
+		if (list != null && list.size() > 0) {
+			StarDto dto = null;
+			for (Star starBean : list) {
+				dto = new StarDto();
+				dto.setId(starBean.getId());
+				dto.setName(starBean.getName());
+				dto.setBeginDate(DateUtil.format(starBean.getStartRunDate()));
+				dto.setDescription(starBean.getDescription());
+				starDtoList.add(dto);
 			}
-			selectOptionDTO.setStars(starDtoList);
 		}
+		selectOptionDTO.setStars(starDtoList);
 		return selectOptionDTO;
 	}
 
-	private String getParamCNname(String EnName) throws Exception {
+	private String getParamCNname(String series, String star, String EnName) throws Exception {
 		String cnName = "";
-		for (ConstraintDto constraintDto : j9Series_Star_Service.getFlyWheelParameterList()) {
-			if (EnName.equals(constraintDto.getValue())) {
-				cnName = constraintDto.getName();
-				break;
-			}
-		}
-		for (ConstraintDto constraintDto : j9Series_Star_Service.getTopParameterList()) {
-			if (EnName.equals(constraintDto.getValue())) {
-				cnName = constraintDto.getName();
-				break;
-			}
+		Parameter constraintDto = parameterDao.selectBySeriesAndStarAndCode(series, star, EnName);
+		if (constraintDto != null) {
+			cnName = constraintDto.getSimplyName();
 		}
 		return cnName;
 	}
@@ -301,11 +297,52 @@ public class PrewarningServiceImpl implements IPrewarningService {
 	public List<WarningValue> getWarningValueByParams(String series, String star, String parameter,
 			String parameterType, String warningType) {
 		String seriesId = seriersDao.getSeriesIdByName(series);
-		String starId = starDao.getStarIdByName(star);
-		if (StringUtils.isBlank(seriesId) || StringUtils.isBlank(starId)) {
-			return null;
+		if (StringUtils.isNotBlank(seriesId)) {
+			List<Star> list = starDao.getStarBySeriesIdAndCode(Long.parseLong(seriesId), star);
+			if (list != null && list.size() > 0) {
+				return warningValueDao.getWarningValueByParams(seriesId, String.valueOf(list.get(0).getId()), parameter,
+						parameterType, warningType);
+			}
 		}
-		return warningValueDao.getWarningValueByParams(seriesId, starId, parameter, parameterType, warningType);
+		return null;
+	}
+
+	@Override
+	public void addWarningLogFromMongo() throws Exception {
+		List<QueryLogDTO> queryLogDTOs = warningLogMongoDao.getQueryLogDTOs();
+		for (QueryLogDTO logDTO : queryLogDTOs) {
+			WarningLog warningLog = new WarningLog();
+			WarningLog hadwarn = warningLogDao.get(logDTO.getLogId());
+			if (hadwarn != null) {
+				continue;
+			}
+			warningLog.setLogId(logDTO.getLogId());
+			warningLog.setCreateDate(new Date());
+			warningLog.setHadRead(0);
+			warningLog.setParameter(logDTO.getParameter());
+			warningLog.setParameterType(logDTO.getParameterType());
+			warningLog.setParamValue(logDTO.getParamValue());
+			String seriersId = seriersDao.getSeriesIdByName(logDTO.getSeries());
+			if (StringUtils.isNotBlank(seriersId)) {
+				warningLog.setSeries(Long.parseLong(seriersId));
+			} else {
+				continue;
+			}
+			String starId = starDao.getStarIdByName(logDTO.getStar());
+			if (StringUtils.isNotBlank(starId)) {
+				warningLog.setStar(Long.parseLong(starId));
+			} else {
+				continue;
+			}
+			warningLog.setWarningType(Integer.parseInt(logDTO.getWarningType()));
+			warningLog.setTimeValue(DateUtil.format(logDTO.getTimeValue(), "yyyy-MM-dd HH:mm:ss.SSS"));
+			warningLogDao.add(warningLog);
+		}
+	}
+
+	@Override
+	public List<Star> getStarList(String seriesId) {
+		return starDao.getStarListBySeriesId(seriesId);
 	}
 
 }

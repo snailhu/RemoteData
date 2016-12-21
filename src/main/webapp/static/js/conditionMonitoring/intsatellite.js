@@ -4,8 +4,12 @@ function intsatellite(seriesId) {
 	 //var base=window.location;
 	 var containerdiv=$("#id_container");
 	 	 containerdiv.empty();
-	 	 timeout = false;
-		 time();
+	 	 //alert("执行到定时函数，timeout的值为："+timeout);
+	 	 if(!timestate) {
+	 		timeout =false;
+	 		timestate=true;
+	 		time();
+	 	 }
 /*    $.post(url, { "seriesId": seriesId },
     		   function(data){
 		        $.each(data, function (i, item) {
@@ -52,9 +56,7 @@ function intsatellite(seriesId) {
 		            var div = $('<div></div>');
 		            div.attr('class','imagediv')
 		            var a = $('<a></a>');
-		            //a.attr('href','analysisData/j9/01');
 		            a.attr('href','analysisData/'+seriesId+'/'+item.name);
-		            //a.attr('href','analysisData');
 		            var img = $('<img/>');
 		            var span = $('<span></span>');
 		            span.text(item.name);
@@ -70,10 +72,9 @@ function intsatellite(seriesId) {
 		            a.append(span);
 		            div.append(a);
 		            containerdiv.append(div);
-		            
-         })	
+		            })	
 			//中心点横坐标
-			var dotLeft = ($(".container").width()-$(".dot").width())/2-100;
+			var dotLeft = ($(".container").width()-$(".dot").width())/2;
 			//中心点纵坐标
 			var dotTop = ($(".container").height()-$(".dot").height())/2-100;
 			//椭圆长边
@@ -101,100 +102,35 @@ function intsatellite(seriesId) {
 			 fun_animat = function(){
 				speed = speed<360?speed:2;
 				//运运的速度
-				speed+=2;
+				speed+=1;
 				//运动距离，即运动的弧度数;
 				var ainhd = speed*Math.PI/180;
 				//按速度来定位DIV元素
 				$(".imagediv").each(function(index, element){
-				var allpers = (Math.cos((ahd*index+ainhd))*b+dotTop)/totTop;
-				var wpers = Math.max(0.1,allpers);
-				var hpers = Math.max(0.1,allpers);
-				$(this).css({
-					"left":Math.sin((ahd*index+ainhd))*a+dotLeft,
-					"top":Math.cos((ahd*index+ainhd))*b+dotTop,
-					//"z-index":Math.ceil(allpers*10),
-					"z-index":2,
-					"width":wpers*wid,
-					"height":hpers*hei,
-					"opacity":1
-				});
+					var allpers = (Math.cos((ahd*index+ainhd))*b+dotTop)/totTop;
+					var wpers = Math.max(0.1,allpers);
+					var hpers = Math.max(0.1,allpers);
+					$(this).css({
+						"left":Math.sin((ahd*index+ainhd))*a+dotLeft,
+						"top":Math.cos((ahd*index+ainhd))*b+dotTop,
+						//"z-index":Math.ceil(allpers*10),
+						"z-index":2,
+						"width":wpers*wid,
+						"height":hpers*hei,
+						"opacity":1
+					});
 				});
 			}
-         
-         }  
-    });
-/*			//中心点横坐标
-			var dotLeft = ($(".container").width()-$(".dot").width())/2-100;
-			//中心点纵坐标
-			var dotTop = ($(".container").height()-$(".dot").height())/2-100;
-			//椭圆长边
-			//a = document.documentElement.clientWidth/3;//获取可见区域的宽度和高度
-			//a = document.body.clientWidth/3;//body区域的宽度和高度
-			//a = $(".container").width()/3;
-			a=460;
-			//椭圆短边
-			//b = document.documentElement.clientHeight/3;
-			//b = document.body.clientHeight/3;
-			//b = $(".container").height()/3;
-			b=150;
-			//起始角度
-			var stard = 0;
-		
-			//每一个BOX对应的角度;
-			var avd = 360/$(".container img").length;
-			//每一个BOX对应的弧度;
-			var ahd = avd*Math.PI/180;
-			//运动的速度
-			var speed = 2;
-			//图片的宽高
-			//var wid = $(".container img").width();
-			//var hei = $(".container img").height();
-			var wid = $(".imagediv").width();
-			var hei = $(".imagediv").height();
-			//总的TOP值
-			var totTop = dotTop+100;
-		
-			//设置圆的中心点的位置
-			$(".dot").css({"left":dotLeft,"top":dotTop});
-			
-			//运动函数
-			 fun_animat = function(){
-				speed = speed<360?speed:2;
-				//运运的速度
-				speed+=2;
-				//运动距离，即运动的弧度数;
-				var ainhd = speed*Math.PI/180;
-				//按速度来定位DIV元素
-				$(".imagediv").each(function(index, element){
-				var allpers = (Math.cos((ahd*index+ainhd))*b+dotTop)/totTop;
-				var wpers = Math.max(0.1,allpers);
-				var hpers = Math.max(0.1,allpers);
-				$(this).css({
-					"left":Math.sin((ahd*index+ainhd))*a+dotLeft,
-					"top":Math.cos((ahd*index+ainhd))*b+dotTop,
-					//"z-index":Math.ceil(allpers*10),
-					"z-index":2,
-					"width":wpers*wid,
-					"height":hpers*hei,
-					"opacity":1
-				});
-				});
-			}*/
-			//定时调用运动函数
-			 //var setAnimate = setInterval(fun_animat,100);
-			 //clearInterval(setAnimate);
-
-			time();
-			 
+         }
+    	});
 			//加载悬浮提示窗口
 			$("[data-toggle='popover']").popover({  
 	        html : true,    
 	        title: title(),    
-	        delay:{show:10, hide:10},  
+	        delay:{show:1, hide:100},  
 	        content: function() { 
-				//clearInterval(setAnimate);
 	        	timeout = true;
-				time();
+		        time();
 				var nowid = $(this).attr('id');
 				//alert(starList[nowid].name);
 				//var nowname =
@@ -204,8 +140,9 @@ function intsatellite(seriesId) {
 			});
 			//悬浮窗口消失时继续旋转
 			$("[data-toggle='popover']").on('hidden.bs.popover', function() {
-				//setAnimate = setInterval(fun_animat,100);
-				timeout = false;
-				time();
+		        //clearTimeout(timeoutProcess);
+					clearTimeout(timeoutProcess);
+					timeout = false;
+					time();	
 				});
   }

@@ -1,0 +1,115 @@
+body {
+  margin: 0px;
+  background-color: #F3F3F3;
+  font-family: "微软雅黑";
+}
+body .container {
+  width: 1176px;
+  margin: 0 auto;
+  overflow: auto;
+}
+body input {
+  outline: none;
+}
+body .left {
+  float: left;
+  width: 200px;
+  background-color: #F3F3F3;
+}
+body .left .title {
+  height: 46px;
+}
+body .left .content {
+  height: 990px;
+  border: 1px solid #DEDEDE;
+}
+body .left .content .tab_title {
+  height: 40px;
+  line-height: 40px;
+  padding: 0 40px 0 35px;
+  font-size: 15px;
+  color: #525252;
+  border-bottom: 2px solid #DEDEDE;
+}
+body .left .content .tab_title .img_head {
+  vertical-align: text-bottom;
+  margin-right: 5px;
+}
+body .left .content .tab_title .img_down {
+  margin-top: 12px;
+  float: right;
+}
+body .right {
+  float: left;
+  width: 970px;
+  height:1036px;
+  background-color: white;
+}
+body .right .right_head {
+  font-size: 12px;
+  color: #7a7a7a;
+  line-height: 46px;
+  padding-left: 20px;
+  height: 46px;
+  box-sizing:border-box;
+  background-color: #F5F5F5;
+  border-bottom: 1px solid  #E5E5E5;
+}
+body .right .right_head > img {
+  vertical-align: text-bottom;
+}
+
+.right_content{
+	text-align: center;
+	}
+.right_content p{
+	margin: 0;
+	font-size: 18px;
+	color: #333333;
+	text-align: center;
+	}
+.status1,.status2,.status3,.status4{
+	border-bottom: 1px dashed #b9b9b9;
+	}
+.status1 p{
+  padding:40px 0 25px 0;
+}
+.status2 p,.status3 p,.status4 p,.status5 p{
+  padding:55px 0 25px 0;
+}
+.status-box1,.status-box2,.status-box3,.status-box4,.status-box5{
+  font-size: 14px;
+  color: #5f5f5f;
+  background-color: #F1F1F1;
+  height: 46px;
+  margin:0 0 40px 20px;
+  border-radius: 25px;
+}
+.status-box5{
+	margin:0 60px 90px 20px;
+	}
+.status-box1-1,.status-box2-1,.status-box3-1,.status-box4-1,.status-box5-1{
+  float: left;
+  vertical-align: middle;
+  background-color: #FBFBFB;
+  height: 44px;
+  line-height: 44px;
+  border-radius: 25px;
+  box-shadow: 2px 2px 2px #E0E0E0;
+}
+.status-box1-1{width:175px;}
+.status-box2-1{width:356px;}
+.status-box3-1{width:534px;}
+.status-box4-1{width:714px;}
+.status-box5-1{width:892px;}
+.statu-l,.statu-r{
+  display: inline-block;
+  box-sizing:border-box;
+  width: 175px;
+  height: 46px;
+  line-height: 46px;
+  padding: 0 25px;
+}
+.statu-l img,.statu-r img{vertical-align: middle;}
+.spacing-1{letter-spacing: 15px;}
+.spacing-4{margin-right: 10px;}

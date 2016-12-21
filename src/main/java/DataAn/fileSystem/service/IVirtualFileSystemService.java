@@ -2,7 +2,10 @@ package DataAn.fileSystem.service;
 
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import DataAn.common.pageModel.Pager;
+import DataAn.fileSystem.domain.VirtualFileSystem;
 import DataAn.fileSystem.dto.FileDto;
 import DataAn.fileSystem.dto.MongoFSDto;
 
@@ -24,7 +27,9 @@ public interface IVirtualFileSystemService {
 	* @date 2016年7月8日
 	* @version 1.0
 	*/
-	public String saveFile(Map<String,FileDto> map) throws Exception;
+	public String saveFile(Map<String,FileDto> map,String serverConfig) throws Exception;
+	
+	public String saveFileMock(Map<String,FileDto> map) throws Exception;
 	
 	/**
 	* Description: 删除一个或多个文件和目录
@@ -33,8 +38,9 @@ public interface IVirtualFileSystemService {
 	* @date 2016年8月9日
 	* @version 1.0
 	*/
-	public void deleteFile(String ids);
+	public void deleteFile(HttpServletRequest request,String ids);
 	
+	public void deleteFileByUUId(String uuId) throws Exception;
 	/**
 	* @Title: downloadFile
 	* @Description: 下载单个文件
@@ -76,11 +82,8 @@ public interface IVirtualFileSystemService {
 	* @Description: 判断当前文件时候存在
 	* @param fileName *.csv 或  *.DAT 文件名
 	* @return
-	* @author Shenwp
-	* @date 2016年7月5日
-	* @version 1.0
 	*/
-	public boolean isExistFile(String fileName);
+	public boolean isExistFile(String parameterType, String fileName);
 	
 	/**
 	* @Title: getMongoFSList
@@ -89,15 +92,12 @@ public interface IVirtualFileSystemService {
 	* @param pageSize
 	* @param dirId
 	* @return
-	* @author Shenwp
-	* @date 2016年7月8日
-	* @version 1.0
-	*/
-	public Pager<MongoFSDto> getMongoFSList(int pageIndex, int pageSize,long dirId);
+	*/	
+	public Pager<MongoFSDto> getMongoFSList(int pageIndex, int pageSize,
+			String series, String star, String parameterType, long dirId, String dataTypes);
 	
-	public Pager<MongoFSDto> getMongoFSList(int pageIndex, int pageSize,String series, String star, String parameterType, long dirId);
-	
-	public Pager<MongoFSDto> getMongoFSList(int pageIndex, int pageSize,String series, String star, String parameterType, long dirId,
+	public Pager<MongoFSDto> getMongoFSList(int pageIndex, int pageSize,
+			String series, String star, String parameterType, Long dirId,
 			String beginTime,String endTime,String dataTypes);
 	
 	/**

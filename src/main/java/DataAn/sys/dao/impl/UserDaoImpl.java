@@ -64,7 +64,7 @@ public class UserDaoImpl extends BaseDaoImpl<User> implements IUserDao {
 		if(StringUtils.isNotBlank(order)){
 			hql += " order by u." + order;
 		}else{
-			hql += " order by u.createDate";
+			hql += " order by u.createDate desc";
 		}
 		
 		Query query = this.getSession().createQuery(hql);

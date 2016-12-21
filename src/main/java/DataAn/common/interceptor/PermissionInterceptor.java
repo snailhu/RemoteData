@@ -22,11 +22,12 @@ public class PermissionInterceptor implements HandlerInterceptor{
 			HttpServletResponse response, Object handler) throws Exception {
 		//得到请求的url
 		String uri = request.getRequestURI();
-//		System.out.println("PermissionInterceptor...");
-//		System.out.println("uri: " + uri);
 		//获取session
 		HttpSession session = request.getSession();
 		ActiveUserDto activeUser = (ActiveUserDto) session.getAttribute("activeUser");
+//		System.out.println("PermissionInterceptor...");
+//		System.out.println(activeUser);
+//		System.out.println("uri: " + uri);
 		//从session中取权限范围的权限
 		Map<String, String> map = activeUser.getPermissionItems();
 		Object userManager = map.get("userManager");

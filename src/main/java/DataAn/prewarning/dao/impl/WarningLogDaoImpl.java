@@ -42,8 +42,8 @@ public class WarningLogDaoImpl extends BaseDaoImpl<WarningLog> implements IWarni
 
 	@Override
 	public Pager<WarningLog> selectByOption(int pageIndex, int pageSize, String series, String star,
-			String parameterType, String createdatetimeStart, String createdatetimeEnd, String warningType,
-			String hadRead) {
+			String parameterType, String parameter, String createdatetimeStart, String createdatetimeEnd,
+			String warningType, String hadRead) {
 		String hql = "from WarningLog where 1=1";
 		String countHQL = "select count(*) from WarningLog where 1=1";
 		if (StringUtils.isNotBlank(series)) {
@@ -65,6 +65,10 @@ public class WarningLogDaoImpl extends BaseDaoImpl<WarningLog> implements IWarni
 		if (StringUtils.isNotBlank(parameterType)) {
 			hql += " and parameterType = '" + parameterType + "'";
 			countHQL += " and parameterType = '" + parameterType + "'";
+		}
+		if (StringUtils.isNotBlank(parameter)) {
+			hql += " and parameter = '" + parameter + "'";
+			countHQL += " and parameter = '" + parameter + "'";
 		}
 		if (StringUtils.isNotBlank(warningType)) {
 			hql += " and warningType = " + warningType;

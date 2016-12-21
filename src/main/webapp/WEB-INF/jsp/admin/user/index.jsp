@@ -36,74 +36,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/static/content/jeDate/jedate/skin/jedate.css">
     <script type="text/javascript" src="${pageContext.request.contextPath}/static/content/jeDate/jedate/jedate.js"></script>
     
+    <link rel="stylesheet" href="<%=request.getContextPath()%>/static/css/all.css" type="text/css" />
+    
 <style type="text/css">
-.sweet-alert h2 {
-	color: rgb(87, 87, 87);
-	font-size: 30px;
-	text-align: center;
-	font-weight: 600;
-	text-transform: none;
-	position: relative;
-	line-height: 40px;
-	display: block;
-	margin: 25px 0px;
-	padding: 0px;
-}
-
-.sweet-alert p {
-	color: rgb(121, 121, 121);
-	font-size: 16px;
-	font-weight: 300;
-	position: relative;
-	text-align: inherit;
-	float: none;
-	line-height: normal;
-	margin: 0px;
-	padding: 0px;
-}
-
-.sweet-alert .sa-error-container {
-	background-color: rgb(241, 241, 241);
-	margin-left: -17px;
-	margin-right: -17px;
-	max-height: 0px;
-	overflow: hidden;
-	padding: 0px 10px;
-	transition: padding 0.15s, max-height 0.15s;
-}
-
-.sweet-alert button.cancel {
-	background-color: rgb(193, 193, 193);
-}
-
-.sweet-alert button {
-	background-color: rgb(140, 212, 245);
-	color: white;
-	box-shadow: none;
-	font-size: 17px;
-	font-weight: 500;
-	cursor: pointer;
-	border: none;
-	border-radius: 5px;
-	padding: 10px 32px;
-	margin: 26px 30px 0px;
-	/*     width: 150px; */
-}
-
-.sweet-alert .sa-confirm-button-container {
-	display: inline-block;
-	position: relative;
-	/*     padding-left: 20px; */
-}
-
-.icon-remove {
-	background: url('') no-repeat center center;
-}
-
-.icon-edit {
-	background: url('') no-repeat center center;
-}
-
 .glyphicon {
 	position: relative;
 	top: -23px;
@@ -133,10 +68,52 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 .form-horizontal {
     margin-bottom: 0px;
 }
-
+.form-group input,.form-group select{
+	width: 240px;
+	height:30px;
+	line-height:30px;
+	text-align:left;
+}
+.posrole{
+	display:block;
+	width:100px;
+	height:26px;
+	line-height:26px;
+	color:#000;
+	text-align:center;
+	margin:0 auto;
+	overflow:hidden;
+}
+.posrole:hover{
+	background:#e2e2e2;
+	border:1px solid #CCC;
+	border-radius:5px 5px 5px 5px;
+}
+.combo-arrow{
+	background:url('${pageContext.request.contextPath}/static/imgs/arrow.png') no-repeat right center;
+	width:300px;
+}
+.combo-arrow:hover {
+    background-color: transparent;
+}
 </style>
 <script type="text/javascript">
 	$(function() {
+		$(function(){
+			//修改页面缩放，界面显示不正常
+			$(".col-lg-3").addClass("col-sm-3");
+			$(".col-lg-7").css("text-align","center");
+			$(".modal-dialog").css("margin","20px auto");
+			$(".col-lg-4").css({"margin-left":"25%","width":"300px"});
+			//$(".col-lg-4").find("button").css("display","inline");
+			//左菜单栏
+			$("#usermanage-img").attr("src","${pageContext.request.contextPath}/static/new/img/images/a_74.png");
+			$("#sysmanage-img").attr("src","${pageContext.request.contextPath}/static/new/img/images/a_50.png");
+			$("#usermanage-text").css("color","#5d90d6");
+			$("#sysmanage-text").css("color", "#5d90d6");
+			$("#sysmanageUL").css("display","block");
+		})
+		
 		$('#addUserInfoForm').bootstrapValidator({
 			message : '这个值不能为空！',
 			feedbackIcons : {
@@ -158,7 +135,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						},
 						regexp : {
 							regexp : /^[a-zA-Z0-9_\.]+$/,
-							message : '用户名只能由字母、数字、数字和下划线组成'
+							message : '用户名只能由字母、数字和下划线组成'
 						},
 
 					}
@@ -187,9 +164,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				},
 				mobile : {
 					validators : {
-						notEmpty : {
-							message : '手机号码不能为空'
-						},
 						regexp : {
 							regexp : /^1[3578]\d{9}$/,
 							message : '手机号码格式不对'
@@ -198,9 +172,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				},
 				email : {
 					validators : {
-						notEmpty : {
-							message : '手机号码不能为空'
-						},
 						emailAddress : {
 							message : '请输入正确的邮箱地址'
 						}
@@ -208,9 +179,15 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				},
 			}
 		});
-		$('#reset_addUserInfo').click(function() {
-			$('#addUserInfoForm').data('bootstrapValidator').resetForm(true);
-		});
+		
+// 		$('#reset_addUserInfo').click(function() {
+// 			$('#addUserInfoForm').data('bootstrapValidator').resetForm(true);
+// 		});
+// 		$('#close_addUserInfo').click(function() {
+// 			$('#addUserInfoForm').data('bootstrapValidator').resetForm(true);
+// 		});
+		
+		
 		$('#editUserInfoForm').bootstrapValidator({
 			message : '这个值不能为空！',
 			feedbackIcons : {
@@ -232,16 +209,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						},
 						regexp : {
 							regexp : /^[a-zA-Z0-9_\.]+$/,
-							message : '用户名只能由字母、数字、数字和下划线组成'
+							message : '用户名只能由字母、数字和下划线组成'
 						},
 					}
 				},
 				passWord : {
 					validators : {
-						different : {
-							field : 'userName',
-							message : '密码不能跟用户名一样'
-						}
+						
 					}
 				},
 				confirmPassword : {
@@ -254,9 +228,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				},
 				mobile : {
 					validators : {
-						notEmpty : {
-							message : '手机号码不能为空'
-						},
 						regexp : {
 							regexp : /^1[3578]\d{9}$/,
 							message : '手机号码格式不对'
@@ -265,9 +236,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				},
 				email : {
 					validators : {
-						notEmpty : {
-							message : '手机号码不能为空'
-						},
 						emailAddress : {
 							message : '请输入正确的邮箱地址'
 						}
@@ -275,44 +243,56 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				},
 			}
 		});
-		$('#reset_editUserInfo').click(function() {
-			$('#editUserInfoForm').data('bootstrapValidator').resetForm(true);
-		});
+// 		$('#reset_editUserInfo').click(function() {
+// 			$('#editUserInfoForm').data('bootstrapValidator').resetForm(true);
+// 		});
+// 		$('#close_editUserInfo').click(function() {
+// 			$('#editUserInfoForm').data('bootstrapValidator').resetForm(true);
+// 		});
 		$('#vss').click(function() {
 			$('#addUserInfoForm').bootstrapValidator('validate');
 		});
-		$('#change-search-box').click();
+		//修改搜索框图标
+		var flag=false;
+		$("#change-search-box").click(function(){		
+			if(flag){
+				
+				$("#toolimg").attr("src","${pageContext.request.contextPath}/static/imgs/DataImport_manage/xia.png")
+				$(".widget-body").slideUp("slow");
+				flag=false;
+			}else{
+				$("#toolimg").attr("src","${pageContext.request.contextPath}/static/imgs/DataImport_manage/xia2.png")
+		 		$(".widget-body").slideDown("slow");
+				flag=true;
+			}
+		});
+		$("#change-search-box").click();
 	});
 </script>
   </head>
   <body>
 
     <div class="main-content">
-<!-- 		<div class="breadcrumbs" id="breadcrumbs"> -->
-<!-- 			<script type="text/javascript"> -->
-<!-- 				try { -->
-<!-- 					ace.settings.check('breadcrumbs', 'fixed') -->
-<!-- 				} catch (e) { -->
-<!-- 				} -->
-<!-- 			</script> -->
-<!-- 			<ul class="breadcrumb"> -->
-<!-- 				<li><i class="icon-home home-icon"></i> <a href="javascript:void(0);">首页</a></li> -->
-<!-- 				<li class="active">欢迎页面</li> -->
-<!-- 			</ul>.breadcrumb -->
-<!-- 			<div class="nav-search" id="nav-search"> -->
-<!-- 				<form class="form-search"> -->
-<!-- 					<span class="input-icon"> <input type="text" -->
-<!-- 						placeholder="Search ..." class="nav-search-input" -->
-<!-- 						id="nav-search-input" autocomplete="off" /> <i -->
-<!-- 						class="icon-search nav-search-icon"></i> -->
-<!-- 					</span> -->
-<!-- 				</form> -->
-<!-- 			</div>#nav-search -->
-<!-- 		</div> -->
+		<div class="breadcrumbs" id="breadcrumbs">
+			<script type="text/javascript">
+				try {
+					ace.settings.check('breadcrumbs', 'fixed')
+				} catch (e) {
+				}
+			</script>
+			<ul class="breadcrumb" style="margin-top: 10px;">
+				<li>
+					<img src="${pageContext.request.contextPath}/static/imgs/DataImport/home.png" style="margin-bottom: 3px;">
+					<span>系统管理</span>
+				</li>
+				<li class="active">用户管理</li>
+			</ul><!--  .breadcrumb -->
+		</div>
 		<div class="page-content">
-			<div class="page-header" style="margin: 0px;float: left;">
-				<h1>用户管理</h1>
-			</div><!-- /.page-header -->
+<!-- 			<div class="page-header" style="margin: 0px;float: left;"> -->
+<!-- 				<h1>用户管理</h1> -->
+<!-- 			</div> -->
+			<!-- /.page-header -->
 			
 			<div >
 				<div class="col-xs-12 col-sm-12">
@@ -322,49 +302,61 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							<h4 >搜索</h4>
 							<div class="widget-toolbar">
 								<a href="javascript:void(0);">
-									<i class="icon-chevron-up"></i>
+									<div hidden="hidden"><i class="icon-chevron-up" hidden="hidden"></i></div>
+									<img id="toolimg" style="margin-top: 3px;"
+									src="${pageContext.request.contextPath}/static/imgs/DataImport_manage/xia.png">
 								</a>
 							</div>
 						</div>
 						<div class="widget-body">
 							<div class="widget-main">
 								<!-- 搜索form -->
-								<form id="searchUserForm" action="" class="form-horizontal" role="form" >
+								<form id="searchUserForm" action="" class="form-horizontal" role="form" style="margin-left:170px;">
 									<div class="space-1"></div>
 									<div class="form-group">
-										<label class="col-sm-3 control-label no-padding-right" for="search-userName"> 开始时间 </label>
+										<label class="col-sm-3 control-label no-padding-right" for="search-userName"> 用户名：</label>
 										<div class="col-sm-9">
-											<input type="text" id="search-userName" name="userName" placeholder="用户名" class="col-xs-10 col-sm-5" />
+											<input type="text" id="search-userName" name="userName" placeholder="--请输入用户名--" class="col-xs-10 col-sm-5" />
 										</div>
 									</div>
 									<div class="space-4"></div>
 									<div class="form-group">
-										<label class="col-sm-3 control-label no-padding-right" for="search-createdatetimeStart"> 创建开始时间 </label>
+										<label class="col-sm-3 control-label no-padding-right" for="search-createdatetimeStart"> 创建开始时间：</label>
 										<div class="col-sm-9">
-											<input type="text" id="search-createdatetimeStart" name="createdatetimeStart" placeholder="创建开始时间" class="col-xs-10 col-sm-5" />
+											<input type="text" id="search-createdatetimeStart" name="createdatetimeStart" 
+											placeholder="--请选择创建开始时间--" class="col-xs-10 col-sm-5" readonly="true" />
 											<div id="getBeginTime"></div>
 										</div>
 									</div>
 									<div class="space-4"></div>
 									<div class="form-group">
-										<label class="col-sm-3 control-label no-padding-right" for="search-createdatetimeEnd"> 创建结束时间 </label>
+										<label class="col-sm-3 control-label no-padding-right" for="search-createdatetimeEnd"> 创建结束时间：</label>
 										<div class="col-sm-9">
-											<input type="text" id="search-createdatetimeEnd" name="createdatetimeEnd" placeholder="创建结束时间" class="col-xs-10 col-sm-5" />
+											<input type="text" id="search-createdatetimeEnd" name="createdatetimeEnd" 
+											placeholder="--请选择创建结束时间--" class="col-xs-10 col-sm-5" readonly="true" />
 											<div id="getEndTime"></div>
 										</div>
 									</div>
 									<div class="space-4"></div>
 									<div class="form-group">
-			                           <div class="col-lg-4 col-lg-offset-6">
-					                        <button type="button" id="btn-search" class="btn btn-primary start">
-							                    <i></i>
-							                    <span>搜索</span>
-							                </button>
-							                <button type="reset" class="btn btn-warning cancel">
-							                    <i></i>
-							                    <span>取消</span>
-							                </button>
-			                           </div>
+<!-- 			                           <div class="col-lg-4 col-lg-offset-6"> -->
+<!-- 					                        <button type="button" id="btn-search" class="btn btn-primary start"> -->
+<!-- 							                    <i></i> -->
+<!-- 							                    <span>搜索</span> -->
+<!-- 							                </button> -->
+<!-- 							                <button type="reset" class="btn btn-warning cancel"> -->
+<!-- 							                    <i></i> -->
+<!-- 							                    <span>取消</span> -->
+<!-- 							                </button> -->
+<!-- 			                           </div> -->
+										<div class="col-lg-4 col-lg-offset-4">
+											<button type="button" id="btn-search" class="subbutton_1">
+												<i></i> <span>搜索</span>
+											</button>
+											<button type="reset" id="btn-reset" class="cancelbutton_1">
+												<i></i> <span>取消</span>
+											</button>
+										</div>
 			                       </div>
 								</form>
 							</div>
@@ -376,60 +368,60 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			
 			<div id="content" region="center" title="用户信息" style="overflow: hidden">
 			</div>
-			<table id="userList" border="false" width="100%" height="500px">
+			<table id="userList" border="false" width="100%" height="450px">
 			</table>
 			
 			<!-- 创建用户 -->
 			<div class="modal fade" id="addUserModal" tabindex="-1" role="dialog" aria-labelledby="addUserModalLabel">
-				<div class="modal-dialog" role="document" style="margin:55px -300px">
+				<div class="modal-dialog" role="document" style="margin:150px 450px">
 					<div class="modal-content">
 						<form id="addUserInfoForm" class="form-horizontal" role="form" style="margin: 0px;">
 							<div class="modal-header">
-<!-- 								<button type="button" class="close" data-dismiss="modal" aria-label="Close"> -->
-<!-- 									<span aria-hidden="true">&times;</span> -->
-<!-- 								</button> -->
+								<button type="button" class="close" data-dismiss="modal" aria-label="Close" id="close_addUserInfo">
+									<span aria-hidden="true">&times;</span>
+								</button>
 								<h4 class="modal-title" id="addUserModalLabel">用户信息</h4>
 							</div>
 							<div class="modal-body">
 								<div class="form-group">
-									<label class="col-sm-3 control-label no-padding-right" for="add-user-name"> 用户名: </label>
+									<label class="col-sm-3 control-label no-padding-right" for="add-user-name"> 用户名：</label>
 									<div class="col-sm-8">
 										<input type="text" name="userName" id="add-user-name" placeholder="用户名" class="form-control" />
 									</div>
 								</div>
 								<div class="space-4"></div>
 								<div class="form-group">
-									<label class="col-sm-3 control-label no-padding-right" for="add-user-passWord"> 密码： </label>
+									<label class="col-sm-3 control-label no-padding-right" for="add-user-passWord"> 密码：</label>
 									<div class="col-sm-8">
 										<input type="password" name="passWord" id="add-user-passWord" placeholder="密码" class="form-control" />
 									</div>
 								</div>
 								<div class="space-4"></div>
 								<div class="form-group">
-									<label class="col-sm-3 control-label no-padding-right" for="add-user-confirmPassword"> 确认密码： </label>
+									<label class="col-sm-3 control-label no-padding-right" for="add-user-confirmPassword"> 确认密码：</label>
 									<div class="col-sm-8">
 										<input type="password" name="confirmPassword" id="add-user-confirmPassword" placeholder="确认密码" class="form-control" />
 									</div>
 								</div>
 								<div class="space-4"></div>
 								<div class="form-group">
-									<label class="col-sm-3 control-label no-padding-right" for="add-user-mobile"> 联系方式： </label>
+									<label class="col-sm-3 control-label no-padding-right" for="add-user-mobile"> 联系方式：</label>
 									<div class="col-sm-8">
 										<input type="text" name="mobile" id="add-user-mobile" placeholder="联系方式" class="form-control" />
 									</div>
 								</div>
 								<div class="space-4"></div>
 								<div class="form-group">
-									<label class="col-lg-3 control-label no-padding-right" for="add-user-email"> 邮箱： </label>
+									<label class="col-lg-3 control-label no-padding-right" for="add-user-email"> 邮箱：</label>
 									<div class="col-sm-8">
 										<input type="text" name="email" id="add-user-email" placeholder="邮箱" class="form-control" />
 									</div>
 								</div>
 							</div>
 							<div class="modal-footer">
-								<div class="col-lg-4 col-lg-offset-5">
-									<button type="button" class="btn btn-default" id="reset_addUserInfo" data-dismiss="modal">关闭</button>
-									<button type="submit" class="btn btn-primary" id="submit_addUserInfo" data-dismiss="modal">确定</button>
+								<div class="col-lg-7 col-lg-offset-3">
+									<button type="button" class="subbutton_1" id="submit_addUserInfo">确定</button>
+									<button type="button" class="cancelbutton_1" data-dismiss="modal" id="reset_addUserInfo">关闭</button>
 								</div>
 							</div>
 						</form>
@@ -438,11 +430,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			</div>
 			<!-- 编辑用户 -->
 			<div class="modal fade" id="editUserModal" tabindex="-1" role="dialog" aria-labelledby="editUserModalLabel">
-				<div class="modal-dialog" role="document" style="margin:55px -300px">
+				<div class="modal-dialog" role="document" style="margin:150px 450px">
 					<div class="modal-content">
 						<form id="editUserInfoForm" class="form-horizontal" role="form" style="margin: 0px;">
 							<div class="modal-header">
-								<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+								<button type="button" class="close" data-dismiss="modal" aria-label="Close" id="close_editUserInfo">
 									<span aria-hidden="true">&times;</span>
 								</button>
 								<h4 class="modal-title" id="editUserModalLabel">用户信息</h4>
@@ -450,44 +442,44 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							<div class="modal-body">
 								<input type="hidden" name="id" id="edit-user-id"/>
 								<div class="form-group">
-									<label class="col-sm-3 control-label no-padding-right" for="edit-user-name"> 用户名: </label>
+									<label class="col-sm-3 control-label no-padding-right" for="edit-user-name"> 用户名：</label>
 									<div class="col-sm-8">
 										<input type="text" name="userName" id="edit-user-name" placeholder="用户名" class="form-control" />
 									</div>
 								</div>
 								<div class="space-4"></div>
 								<div class="form-group">
-									<label class="col-sm-3 control-label no-padding-right" for="edit-user-passWord"> 密码： </label>
+									<label class="col-sm-3 control-label no-padding-right" for="edit-user-passWord"> 密码：</label>
 									<div class="col-sm-8">
 										<input type="password" name="passWord" id="edit-user-passWord" placeholder="密码" class="form-control" />
 									</div>
 								</div>
 								<div class="space-4"></div>
 								<div class="form-group">
-									<label class="col-sm-3 control-label no-padding-right" for="edit-user-confirmPassword"> 确认密码： </label>
+									<label class="col-sm-3 control-label no-padding-right" for="edit-user-confirmPassword"> 确认密码：</label>
 									<div class="col-sm-8">
 										<input type="password" name="confirmPassword" id="edit-user-confirmPassword" placeholder="确认密码" class="form-control" />
 									</div>
 								</div>
 								<div class="space-4"></div>
 								<div class="form-group">
-									<label class="col-sm-3 control-label no-padding-right" for="edit-user-mobile"> 联系方式： </label>
+									<label class="col-sm-3 control-label no-padding-right" for="edit-user-mobile"> 联系方式：</label>
 									<div class="col-sm-8">
 										<input type="text" name="mobile" id="edit-user-mobile" placeholder="联系方式" class="form-control" />
 									</div>
 								</div>
 								<div class="space-4"></div>
 								<div class="form-group">
-									<label class="col-lg-3 control-label no-padding-right" for="edit-user-email"> 邮箱： </label>
+									<label class="col-lg-3 control-label no-padding-right" for="edit-user-email"> 邮箱：</label>
 									<div class="col-sm-8">
 										<input type="text" name="email" id="edit-user-email" placeholder="邮箱" class="form-control" />
 									</div>
 								</div>
 							</div>
 							<div class="modal-footer">
-								<div class="col-lg-4 col-lg-offset-5">
-									<button type="button" class="btn btn-default" id="reset_editUserInfo" data-dismiss="modal">关闭</button>
-									<button type="submit" class="btn btn-primary" id="submit_editUserInfo" data-dismiss="modal">确定</button>
+								<div class="col-lg-7 col-lg-offset-3">
+									<button type="button" class="subbutton_1" id="submit_editUserInfo">确定</button>
+									<button type="button" class="cancelbutton_1" id="reset_editUserInfo" data-dismiss="modal">关闭</button>
 								</div>
 							</div>
 						</form>
@@ -496,16 +488,16 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			</div>
 			<!-- 编辑用户角色 -->
 			<div class="modal fade" id="editUserRoleModal" tabindex="-1" role="dialog" aria-labelledby="editUserRoleModalLabel"  >
-			  <div class="modal-dialog" role="document" style="margin:55px -300px">
+			  <div class="modal-dialog" role="document" style="margin:150px 450px">
 			    <div class="modal-content">
 			      <div class="modal-header">
 			        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-			        <h4 class="modal-title" id="editUserRoleModalLabel">编辑角色：</h4>
+			        <h4 class="modal-title" id="editUserRoleModalLabel">编辑角色</h4>
 			      </div>
 			      <div class="modal-body">
 			      	<form id="editUserRoleForm" class="form-horizontal" role="form" style="margin: 0px;">
 			      		<div class="form-group">
-					      	<div class="col-sm-9">
+					      	<div class="col-lg-7 col-lg-offset-2">
 					      		<input type="hidden" id="editUserRole-userId">
 								<input id="roleList" name="roleId" style="width: 300px;height: 35px"/>
 							</div>
@@ -513,9 +505,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					</form>
 			      </div>
 			      <div class="modal-footer">
-			      	<div class="col-lg-4 col-lg-offset-5">
-				        <button type="button" class="btn btn-default" data-dismiss="modal" id="reset_editUserRole">关闭</button>
-				        <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="submit_editUserRole()">确定</button>
+			      	<div class="col-lg-7 col-lg-offset-3">
+				        <button type="button" class="subbutton_1" data-dismiss="modal" onclick="submit_editUserRole()">确定</button>
+				        <button type="button" class="cancelbutton_1" data-dismiss="modal" id="reset_editUserRole">关闭</button>
                     </div>
 			      </div>
 			    </div>
@@ -526,6 +518,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			<div class="row">
 				<div class="col-xs-12">
 					<!-- PAGE CONTENT BEGINS -->
+					
+					
 					<!-- PAGE CONTENT ENDS -->
 				</div><!-- /.col -->
 			</div><!-- /.row -->
@@ -549,6 +543,13 @@ jeDate({
 	isTime:true, //是否开启时间选择
 	//minDate:"2014-09-19 00:00:00",//最小日期
 	maxDate:jeDate.now(0), //设定最大日期为当前日期
+});
+$("#search-createdatetimeStart").keypress(function(){
+ return false;
+});
+$("#search-createdatetimeEnd").keypress(function(){
+  return false;
+
 });
 		var userGrid;
 		var deptTree;
@@ -575,7 +576,7 @@ jeDate({
                     field: 'userName',
                     title: '用户名',
                     width: 100,
-                    sortable: true
+                    sortable:true
                 }]],
                 columns: [[ {
                     field: 'mobile',
@@ -592,7 +593,8 @@ jeDate({
                 }, {
                     field: 'createDate',
                     title: '创建时间',
-                    width: 100
+                    width: 100,
+                    sortable:true
                 }, 
 //                 {
 //                     field: 'loginLimit',
@@ -607,7 +609,7 @@ jeDate({
                     title: '个人角色',
                     width: 100,
                     formatter: function (value, row, index) {
-                        return "<a href=\"javascript:doEditRole('" + row.id + "');\"" + " title='个人角色'>"+ row.userRole +"</a>";
+                        return "<a class='posrole' style='color:#0909df' href=\"javascript:doEditRole('" + row.id + "');\"" + " title='个人角色'>"+ row.userRole +"</a>";
                     }
                 }
                 ]],
@@ -660,6 +662,7 @@ jeDate({
 			    valueField:'value',
 			    textField:'text'
 			}); 
+    		$(".combo-arrow").css("width","300px");
         }
        function submit_editUserRole(){
 			var userId = $("#editUserRole-userId").attr("value");
@@ -711,41 +714,51 @@ jeDate({
 				orgIds:orgIds.join(',')
 			});
 		});
+		
+		$('#addUserModal').on('hide.bs.modal', function () {
+			$('#addUserInfoForm').data('bootstrapValidator').resetForm(true);
+		});
 		//创建用户
 		function createUser() {
 			//弹出创建用户
 			$('#addUserModal').modal('show');
-			$('#submit_addUserInfo').click(function(){
-				var toUrl='${pageContext.request.contextPath}/admin/user/createUser';
-				var f = $('#addUserInfoForm');
-				         f.form('submit', {
-				             url: toUrl,
-				             onsubmit: function () {
-				                 var flag = $(this).form('validate');
-				                 if (flag) {
-				                     top.showProcess(true, '温馨提示', '正在提交数据...');
-				                 }
-				                 return flag;
-				             },
-				             success: function (data) {
-				                 top.showProcess(false);
-				                 var map = $.parseJSON(data);
-				                 if (map.success) {
-				                     top.showMsg('提示', map.msg);
-				                     reloadDataGrid();
-				                 }
-				                 else {
-				                 	top.alertMsg('错误', map.msg+"\n"+map.obj==null?"":map.obj);
-				                 }
-				             },
-				             onLoadError: function () {
-				                 top.showProcess(false);
-				                 top.$.messager.alert('温馨提示', '由于网络或服务器太忙，提交失败，请重试！');
-				             }
-				         });
-			});
-			$('#addUserInfoForm').data('bootstrapValidator').resetForm(true);
 		}
+		$('#submit_addUserInfo').click(function(){
+			var f = $('#addUserInfoForm');
+			f.data('bootstrapValidator').validate();
+			var isValid = f.data('bootstrapValidator').isValid();
+			if(!isValid){
+				//top.alertMsg('错误', '请满足提交条件！');
+				return false;
+			}
+			var toUrl='${pageContext.request.contextPath}/admin/user/createUser';
+			var f = $('#addUserInfoForm');
+				f.form('submit', {
+				    url: toUrl,
+				    onsubmit: function () {
+				        var flag = $(this).form('validate');
+				        if (flag) {
+				            top.showProcess(true, '温馨提示', '正在提交数据...');
+				        }
+				        return flag;
+				    },
+				    success: function (data) {
+				        top.showProcess(false);
+				        var map = $.parseJSON(data);
+				        if (map.success) {
+				        	$('#addUserModal').modal('hide');
+				            top.showMsg('提示', map.msg);
+				            reloadDataGrid();
+				        } else {
+				        	top.alertMsg('错误', map.msg);
+				        }
+				    },
+				    onLoadError: function () {
+				        top.showProcess(false);
+				        top.$.messager.alert('温馨提示', '由于网络或服务器太忙，提交失败，请重试！');
+				    }
+				});
+		});
 		//删除用户
 		function deleteUser() {
 			var ids = [];
@@ -756,15 +769,15 @@ jeDate({
 					names.push(rows[i].userName);
 				}
 				swal({
-					title : "你是否确定删除?",
+					title : "你是否确定删除？",
 					text : names.join(','),
 					type : "warning",
 					showCancelButton : true,
 					confirmButtonColor : "#DD6B55",
-					confirmButtonText : "删除!",
-					cancelButtonText : "取消!",
+					confirmButtonText : "删除",
+					cancelButtonText : "取消",
 					closeOnConfirm : false,
-					closeOnCancel : false
+// 					closeOnCancel : false
 				},
 				function(isConfirm) {
 					if (isConfirm) {
@@ -780,22 +793,26 @@ jeDate({
 							dataType : "json",
 							success : function(data) {
 								if (data.success) {
-									swal("删除成功!","","success");
+									swal("删除成功","","success");
 									reloadDataGrid();
 								} else {
 									swal("删除失败", data.obj,"error");
 								}
 							}
 						});
-					} else {
-						swal("取消删除", "","error");
-					}
+					} 
+// 					else {
+// 						swal("取消删除", "","error");
+// 					}
 				});
 			} else {
 				top.showMsg("提示", "请选择要删除的用户！");
 			}
 		}
 		//编辑用户
+		$('#editUserModal').on('hide.bs.modal', function () {
+			$('#editUserInfoForm').data('bootstrapValidator').resetForm(true);
+		});
 		function editUser() {
 			var rows = userGrid.datagrid('getSelections');
 			if (rows.length > 0) {
@@ -806,35 +823,6 @@ jeDate({
 					$('#edit-user-mobile').val(rows[0].mobile);
 					$('#edit-user-email').val(rows[0].email);
 					$('#editUserModal').modal('show');
-					$('#submit_editUserInfo').click(function(){
-						var toUrl='${pageContext.request.contextPath}/admin/user/editUser';
-						var f = $('#editUserInfoForm');
-	                    f.form('submit', {
-	                        url: toUrl,
-	                        onsubmit: function () {
-	                            var flag = $(this).form('validate');
-	                            if (flag) {
-	                                top.showProcess(true, '温馨提示', '正在提交数据...');
-	                            }
-	                            return flag;
-	                        },
-	                        success: function (data) {
-	                            top.showProcess(false);
-	                            var map = $.parseJSON(data);
-	                            if (map.success) {
-	                                top.showMsg('提示', map.msg);
-	                                reloadDataGrid();
-	                            } else {
-	                            	top.alertMsg('错误', map.msg+"\n"+map.obj==null?"":map.obj);
-	                            }
-	                        },
-	                        onLoadError: function () {
-	                            top.showProcess(false);
-	                            top.$.messager.alert('温馨提示', '由于网络或服务器太忙，提交失败，请重试！');
-	                        }
-	                    });
-					});
-
 				} else {
 					var names = [];
 					for ( var i = 0; i < rows.length; i++) {
@@ -846,8 +834,40 @@ jeDate({
 			} else {
 				top.showMsg("提示", "请选择要编辑的用户！");
 			}
-
 		}
+		$('#submit_editUserInfo').click(function(){
+			var f = $('#editUserInfoForm');
+			f.data('bootstrapValidator').validate();
+			var isValid = f.data('bootstrapValidator').isValid();
+			if(!isValid){
+				return false;
+			}
+			var id = $('#edit-user-id').val()
+			var userName = $('#edit-user-name').val();
+			var passWord = $('#edit-user-passWord').val();
+			var mobile = $('#edit-user-mobile').val();
+			var email = $('#edit-user-email').val();
+			var toUrl='${pageContext.request.contextPath}/admin/user/editUser';
+			$.post(toUrl, 
+					{
+						id : id,
+						userName : userName,
+						passWord : passWord,
+						mobile : mobile,
+						email : email,
+					},
+					function(data){
+						top.showProcess(false);
+						if (data.success) {
+							$('#editUserModal').modal('hide');
+							top.showMsg('提示', data.msg);
+							reloadDataGrid();
+						} else {
+							top.alertMsg('警告', data.msg);
+						}
+			});
+			
+		});
 		function getSelectId() {
 			var row = userGrid.datagrid('getSelected');
 

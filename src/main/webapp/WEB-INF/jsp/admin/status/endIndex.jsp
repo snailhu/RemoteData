@@ -19,6 +19,8 @@
 <meta http-equiv="description" content="This is my page">
 
 <jsp:include page="/WEB-INF/jsp/inc/include-easyUI.jsp"></jsp:include>
+<link rel="stylesheet"
+	href="<%=request.getContextPath()%>/static/css/all.css" type="text/css" />
 <!-- 弹出框 -->
 <link rel="stylesheet" type="text/css"
 	href="${pageContext.request.contextPath}/static/content/sweetalert/dist/sweetalert.css">
@@ -97,8 +99,10 @@
 	cursor: pointer;
 	border: none;
 	border-radius: 5px;
+	border-width: 0;
 	padding: 10px 32px;
 	margin: 26px 30px 0px;
+	height:100%;
 	/*     width: 150px; */
 }
 
@@ -147,26 +151,94 @@
 .form-group {
 	margin-bottom: 0px;
 }
-
+.form-group input,.form-group select{
+	width: 240px;
+	height:30px;
+	line-height:30px;
+	text-align:left;
+}
+.form-group select{
+	color:#858585;
+	font-size:14px;
+	padding-left:0px;
+}
 .form-group>label[class*="col-"] {
 	padding-top: 2px;
 	margin-bottom: 0px;
 }
+
+.breadcrumb {
+    margin-top: 10px;
+}
+.detailexp{
+	display:block;
+	width:80px;
+	height:26px;
+	line-height:26px;
+	color:#000;
+	text-align:center;
+	overflow:hidden;
+}
+.detailexp:hover{
+	background:#e2e2e2;
+	border:1px solid #CCC;
+	border-radius:5px 5px 5px 5px;
+}
 </style>
 <script type="text/javascript">
 	$(function() {
-		$('#change-search-box').click();
+		//修改页面缩放，界面显示不正常
+		$(".modal-dialog").css("margin","20px auto");
+		$(".modal-footer").find(".col-lg-4").css("text-align","center");
+		$(".form-group").find(".col-lg-4").css("margin-left","33.3%");
+
+		//左菜单栏
+		$("#ending-img").attr("src","${pageContext.request.contextPath}/static/new/img/images/a_42.png");
+		$("#statustracking-img").attr("src","${pageContext.request.contextPath}/static/new/img/images/a_34.png");
+		$("#filemanage-img").attr("src","${pageContext.request.contextPath}/static/new/img/images/a_26.png");
+		$("#ending-text").css("color", "#5d90d6");
+		$("#statustracking-text").css("color", "#5d90d6");
+		$("#filemange-text").css("color", "#5d90d6");
+		$("#statustrackingUL").css("display","block");
+		$("#filemanageUL").css("display", "block");		
+		
+		//修改搜索框图标
+		var flag=false;
+		$("#change-search-box").click(function(){		
+			if(flag){
+				$("#toolimg").attr("src","${pageContext.request.contextPath}/static/imgs/DataImport_manage/xia.png")
+				$(".widget-body").slideUp("slow");
+				flag=false;
+			}else{
+				$("#toolimg").attr("src","${pageContext.request.contextPath}/static/imgs/DataImport_manage/xia2.png")
+		 		$(".widget-body").slideDown("slow");
+				flag=true;
+			}
+		});
+		$("#change-search-box").click();
 	});
 </script>
 </head>
 <body>
 	<div class="main-content">
+		<div class="breadcrumbs" id="breadcrumbs">
+			<script type="text/javascript">
+				try {
+					ace.settings.check('breadcrumbs', 'fixed')
+				} catch (e) {
+				}
+			</script>
+			<ul class="breadcrumb">
+				<li>
+					<img src="${pageContext.request.contextPath}/static/imgs/DataImport/home.png" style="margin-bottom: 3px;">
+					<span>文件管理</span>
+				</li>
+				<li class="active">文件状态</li>
+				<li class="active">已结束</li>
+			</ul><!--  .breadcrumb -->
+		</div>
 		<div class="page-content">
-			<div class="page-header" style="margin: 0px; float: left;">
-				<h1>已完成列表</h1>
-			</div>
 			<!-- /.page-header -->
-
 			<div>
 				<div class="col-xs-12 col-sm-12">
 					<!-- PAGE CONTENT BEGINS -->
@@ -175,7 +247,12 @@
 							data-action="collapse">
 							<h4>搜索</h4>
 							<div class="widget-toolbar">
-								<a href="javascript:void(0);"> <i class="icon-chevron-up"></i>
+								<div hidden="hidden">
+									<i class="icon-chevron-up" hidden="hidden"></i>
+								</div>
+								<a href="javascript:void(0);"> <img id="toolimg"
+									style="margin-top: 3px;"
+									src="${pageContext.request.contextPath}/static/imgs/DataImport_manage/xia.png">
 								</a>
 							</div>
 						</div>
@@ -186,43 +263,55 @@
 									role="form">
 									<div class="space-1"></div>
 									<div class="form-group">
-										<label class="col-sm-3 control-label no-padding-right"
-											for="search-series"> 文件名 </label>
-										<div class="col-sm-9">
+										<label class="col-sm-4 control-label no-padding-right"
+											for="search-series"> 文件名：</label>
+										<div class="col-sm-8">
 											<input type="text" id="search-fileName" name="fileName"
-												placeholder="文件名" class="col-xs-10 col-sm-5" /> </select>
+												placeholder="--请输入文件名--" class="col-xs-10 col-sm-5" /> </select>
 										</div>
 									</div>
 									<div class="space-4"></div>
 									<div class="form-group">
-										<label class="col-sm-3 control-label no-padding-right"
-											for="search-createdatetimeStart"> 创建开始时间 </label>
-										<div class="col-sm-9">
+										<label class="col-sm-4 control-label no-padding-right"
+											for="search-status"> 文件状态：</label>
+										<div class="col-sm-8">
+											<select class="col-xs-10 col-sm-5" id="search-statusType"
+												name="statusType">
+												<option value="">--请选择文件状态--</option>
+												<option value="0">已成功</option>
+												<option value="1">失败</option>
+											</select>
+										</div>
+									</div>
+									<div class="space-4"></div>
+									<div class="form-group">
+										<label class="col-sm-4 control-label no-padding-right"
+											for="search-createdatetimeStart"> 创建开始时间：</label>
+										<div class="col-sm-8">
 											<input type="text" id="search-createdatetimeStart"
-												name="createdatetimeStart" placeholder="创建开始时间"
-												class="col-xs-10 col-sm-5" />
+												name="createdatetimeStart" placeholder="--请选择创建开始时间--"
+												class="col-xs-10 col-sm-5" readonly="true" />
 											<div id="getBeginTime"></div>
 										</div>
 									</div>
 									<div class="space-4"></div>
 									<div class="form-group">
-										<label class="col-sm-3 control-label no-padding-right"
-											for="search-createdatetimeEnd"> 创建结束时间 </label>
-										<div class="col-sm-9">
+										<label class="col-sm-4 control-label no-padding-right"
+											for="search-createdatetimeEnd"> 创建结束时间：</label>
+										<div class="col-sm-8">
 											<input type="text" id="search-createdatetimeEnd"
-												name="createdatetimeEnd" placeholder="创建结束时间"
-												class="col-xs-10 col-sm-5" />
+												name="createdatetimeEnd" placeholder="--请选择创建结束时间--"
+												class="col-xs-10 col-sm-5" readonly="true" />
 											<div id="getEndTime"></div>
 										</div>
 									</div>
-									<div class="space-4"></div>
+									<div class="space-8"></div>
 									<div class="form-group">
-										<div class="col-lg-4 col-lg-offset-6">
-											<button type="button" id="btn-search"
-												class="btn btn-primary start">
+										<div class="col-lg-4 col-lg-offset-4">
+											<button type="button" id="btn-search" class="subbutton_1">
 												<i></i> <span>搜索</span>
 											</button>
-											<button type="reset" class="btn btn-warning cancel">
+											<button type="reset" class="cancelbutton_1">
 												<i></i> <span>取消</span>
 											</button>
 										</div>
@@ -236,6 +325,40 @@
 				<!-- /.col -->
 			</div>
 			<!-- /.row -->
+
+			<!-- 异常详情 -->
+			<div class="modal fade" id="exceptionInfoModal" role="dialog"
+				aria-labelledby="exceptionInfoModalLabel">
+				<div class="modal-dialog" role="document" style="margin: 55px 30%">
+					<div class="modal-content">
+						<form class="form-horizontal" role="form" style="margin: 0px;">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal"
+									aria-label="Close">
+									<span aria-hidden="true">&times;</span>
+								</button>
+								<h4 class="modal-title" id="exceptionInfoModalLabel">异常信息</h4>
+							</div>
+							<div class="modal-body">
+								<div class="form-group">
+									<label class="col-sm-3 control-label no-padding-right"
+										for="edit-series"> 详情：</label>
+									<div class="col-sm-8">
+										<textarea rows="5" cols="20" id="exceptionInfoModalArea"
+											class="form-control"></textarea>
+									</div>
+								</div>
+							</div>
+							<div class="modal-footer">
+								<div class="col-lg-4 col-lg-offset-4">
+									<button type="button" class="cancelbutton_1"
+										id="closeExceptionInfoModal" data-dismiss="modal">关闭</button>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
 
 			<div id="content" region="center" title="已完成信息"
 				style="overflow: hidden"></div>
@@ -256,6 +379,13 @@
 	</div>
 	<!-- /.main-content -->
 	<script type="text/javascript">
+$("#search-createdatetimeStart").keypress(function(){
+	  return false;
+});
+$("#search-createdatetimeEnd").keypress(function(){
+	   return false;
+});	
+	
 jeDate({
 	dateCell:"#search-createdatetimeStart",//直接显示日期层的容器，可以是ID  CLASS
 	format:"YYYY-MM-DD hh:mm:ss",//日期格式
@@ -274,7 +404,6 @@ jeDate({
 	//minDate:"2014-09-19 00:00:00",//最小日期
 	maxDate:jeDate.now(0), //设定最大日期为当前日期
 });
-		var hadRead = '${hadRead}';
 		var logGrid;
         $(function () {
         	logGrid = $("#logList").datagrid({
@@ -296,20 +425,27 @@ jeDate({
 									field : 'trackingId',//'trackingId',
 									width : 50,
 									checkbox : true
-
 								} ] ],
 								columns : [ [ {
 									field : 'fileName',
 									title : '文件名',
 									width : 100,
+								//sortable : true
 								}, {
 									field : 'createDate',
 									title : '上传时间',
 									width : 100,
+								//sortable : true
 								}, {
 									field : 'statusType',
 									title : '状态',
 									width : 100,
+								//sortable : true
+								}, {
+									field : 'exceptionInfo',
+									title : '操作',
+									width : 100,
+									formatter : formatOper
 								} ] ],
 
 								toolbar : [ {
@@ -323,6 +459,28 @@ jeDate({
 
 		});
 
+		function formatOper(val, row, index) {
+			if (row.statusType == "结束") {
+				return '<input type="hidden" id="search-fileName" value = "'+row.exceptionInfo+'"/>'
+			} else {
+				return '<a class="detailexp" style="color:#0909df" href="javascript:ShowexceptionInfo('
+						+ index
+						+ '" onclick="ShowexceptionInfo('
+						+ index
+						+ ')">异常详情</a><input type="hidden" id="ShowexceptionInfo'+index+'" value = "'+row.exceptionInfo+'"/>';
+			}
+		}
+
+		function ShowexceptionInfo(index) {
+			$('#exceptionInfoModalArea').text(
+					$('#ShowexceptionInfo' + index).val());
+			$('#exceptionInfoModal').modal('show');
+		}
+
+		$('#closeExceptionInfoModal').click(function() {
+			$('#exceptionInfoModalArea').text("");
+		});
+
 		function reloadDataGrid() {
 			logGrid.datagrid('clearChecked');
 			logGrid.datagrid('reload');
@@ -331,12 +489,14 @@ jeDate({
 		//快速搜索按钮
 		$('#btn-search').click(function() {
 			var fileName = $('#search-fileName').val();
+			var statusType = $('#search-statusType').val();
 			var createdatetimeStart = $('#search-createdatetimeStart').val();
 			var createdatetimeEnd = $('#search-createdatetimeEnd').val();
 			logGrid.datagrid('load', {
 				fileName : fileName,
 				createdatetimeStart : createdatetimeStart,
-				createdatetimeEnd : createdatetimeEnd
+				createdatetimeEnd : createdatetimeEnd,
+				statusType : statusType
 			});
 		});
 		//删除用户
@@ -346,13 +506,13 @@ jeDate({
 			if (rows.length > 0) {
 				swal(
 						{
-							title : "你是否确定删除?",
+							title : "你是否确定删除？",
 							text : "确认删除？",
 							type : "warning",
 							showCancelButton : true,
 							confirmButtonColor : "#DD6B55",
-							confirmButtonText : "删除!",
-							cancelButtonText : "取消!",
+							confirmButtonText : "删除",
+							cancelButtonText : "取消",
 							closeOnConfirm : false,
 							closeOnCancel : false
 						},
@@ -371,7 +531,7 @@ jeDate({
 											dataType : "json",
 											success : function(data) {
 												if (data.success) {
-													swal("删除成功!", "", "success");
+													swal("删除成功", "", "success");
 													reloadDataGrid();
 												} else {
 													swal("删除失败", data.obj,
@@ -402,9 +562,9 @@ jeDate({
 			}
 		}
 
-		function clearFun() {
-			$('#frmSearchLog').form('clear');
-		}
+// 		function clearFun() {
+// 			$('#frmSearchLog').form('clear');
+// 		}
 	</script>
 </body>
 </html>

@@ -4,56 +4,49 @@ import java.util.List;
 
 public class DataToDocDto {
 	
-	private String reporttitle;
+	private String series;
 	
-	private String parts;
+	private String star;
 	
-	private String healthcondition;
+	private String beginDate;
 	
-	private String PhotoBLOB;
+	private String endDate;
+	
+	private String createDate;
+	
+	private List<ProductDto> products;
 	
 	private List<ParamDto> params;
 	
-	private List<ParamImgDataDto> paramImgData;
-
-	public List<ParamImgDataDto> getParamImgData() {
-		return paramImgData;
+	private List<ParamImgDataDto> threeParamImg;
+	
+	private List<ParamImgDataDto> twoParamImg;
+	
+	private List<ParamImgDataDto> oneParamImg;
+	
+	
+	public List<ParamImgDataDto> getThreeParamImg() {
+		return threeParamImg;
 	}
 
-	public void setParamImgData(List<ParamImgDataDto> paramImgData) {
-		this.paramImgData = paramImgData;
+	public void setThreeParamImg(List<ParamImgDataDto> threeParamImg) {
+		this.threeParamImg = threeParamImg;
 	}
 
-	public String getReporttitle() {
-		return reporttitle;
+	public List<ParamImgDataDto> getTwoParamImg() {
+		return twoParamImg;
 	}
 
-	public void setReporttitle(String reporttitle) {
-		this.reporttitle = reporttitle;
+	public void setTwoParamImg(List<ParamImgDataDto> twoParamImg) {
+		this.twoParamImg = twoParamImg;
 	}
 
-	public String getParts() {
-		return parts;
+	public List<ParamImgDataDto> getOneParamImg() {
+		return oneParamImg;
 	}
 
-	public void setParts(String parts) {
-		this.parts = parts;
-	}
-
-	public String getHealthcondition() {
-		return healthcondition;
-	}
-
-	public void setHealthcondition(String healthcondition) {
-		this.healthcondition = healthcondition;
-	}
-
-	public String getPhotoBLOB() {
-		return PhotoBLOB;
-	}
-
-	public void setPhotoBLOB(String photoBLOB) {
-		PhotoBLOB = photoBLOB;
+	public void setOneParamImg(List<ParamImgDataDto> oneParamImg) {
+		this.oneParamImg = oneParamImg;
 	}
 
 	public List<ParamDto> getParams() {
@@ -62,5 +55,52 @@ public class DataToDocDto {
 
 	public void setParams(List<ParamDto> params) {
 		this.params = params;
+	}
+	public String getSeries() {
+		return series;
+	}
+
+	public void setSeries(String series) {
+		this.series = series;
+	}
+
+	public String getStar() {
+		return star;
+	}
+
+	public void setStar(String star) {
+		this.star = star;
+	}
+
+	public String getBeginDate() {
+		return beginDate;
+	}
+
+	public void setBeginDate(String beginDate) {
+		this.beginDate = beginDate;
+	}
+
+	public String getEndDate() {
+		return endDate;
+	}
+
+	public void setEndDate(String endDate) {
+		this.endDate = endDate;
+	}
+
+	public String getCreateDate() {
+		return createDate;
+	}
+
+	public void setCreateDate(String createDate) {
+		this.createDate = createDate;
+	}
+
+	public List<ProductDto> getProducts() {
+		return products;
+	}
+
+	public void setProducts(List<ProductDto> products) {
+		this.products = products;
 	}
 }

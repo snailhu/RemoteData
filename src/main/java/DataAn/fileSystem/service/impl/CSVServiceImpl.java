@@ -14,13 +14,17 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
 import javax.annotation.Resource;
+
+import org.apache.commons.lang3.StringUtils;
 import org.bson.Document;
 import org.springframework.stereotype.Service;
+
 import DataAn.common.utils.DateUtil;
 import DataAn.fileSystem.dto.CSVFileDataResultDto;
 import DataAn.fileSystem.service.ICSVService;
-import DataAn.fileSystem.service.IJ9Series_Star_Service;
+import DataAn.galaxyManager.service.IJ9Series_Star_Service;
 
 
 @Service
@@ -67,14 +71,16 @@ public class CSVServiceImpl implements ICSVService{
 	@Override
 	public CSVFileDataResultDto<Document> readCSVFileToDoc(InputStream in, String versions) throws Exception {
 
-		return this.readCSVFileToDoc_delFrontAndBack_arithmetic1(in, versions, 4, 0);
+//		return this.readCSVFileToDoc_delFrontAndBack_arithmetic1(in, versions, 4, 0);
+		
+//		return this.readCSVFileToDoc_delFrontAndBack_arithmetic1_grading(in, versions, 4, 0);
 		
 //		return this.readCSVFileToDoc_delFrontAndBack_arithmetic2(in, versions, 4, 50);
 		
 		
 //		return this.readCSVFileToDoc_delOneItem(in, versions, 0);
 		
-//		return this.readCSVFileToDoc_delOneSecondItems(in, versions,0);
+		return this.readCSVFileToDoc_delOneSecondItems(in, versions,0);
 	}
 	
 	/**
@@ -132,7 +138,7 @@ public class CSVServiceImpl implements ICSVService{
 			doc.append(j9SeriesPatameterMap.get(array[0]), dateTime);
 			for (int i = 1; i < items.length; i++) {
 				colData = items[i].trim();
-				if(colData.indexOf("#") == 0){ //TODO ?
+				if(colData.indexOf("#") >= 0){ //TODO ?
 					flag = true;
 					break;
 				}else{
@@ -218,15 +224,21 @@ public class CSVServiceImpl implements ICSVService{
 			doc.append("year_month_day", DateUtil.format(dateTime, "yyyy-MM-dd"));
 			
 			//doc.append(j9SeriesPatameterMap.get(array[0]), DateUtil.formatString(date, "yyyy-MM-dd HH:mm:ss"));
-			doc.append(j9SeriesPatameterMap.get(array[0]), dateTime);
+//			doc.append(j9SeriesPatameterMap.get(array[0]), dateTime);
+			doc.append("datetime", dateTime);
 			for (int i = 1; i < items.length; i++) {
 				colData = items[i].trim();
 				if(colData.indexOf("#") == 0){ //TODO ?
 					flag = true;
 					break;
 				}else{
-					doc.append(j9SeriesPatameterMap.get(array[i]), colData);
+					String key = j9SeriesPatameterMap.get(array[i]);
+					if(StringUtils.isNotBlank(key))
+						doc.append(key, colData);
+					else
+						throw new RuntimeException(array[i] + " 找不到key..");
 				}
+						
 			}
 			//删除前后4行
 			if(flag){
@@ -271,16 +283,19 @@ public class CSVServiceImpl implements ICSVService{
 			//排除无效点保存
 			if(!delDateSet.contains(i)){
 				doc = tempList.get(i);
+				//原始数据集
 				docList.add(doc);
 				
 				//获取时间区间
 				time = (doc.getDate("datetime").getTime() - time0) / 1000;
-				if(time % 1 == 0){
+				
+				if(time % 1 == 0){ //1s使用原始数据集
 					if(datetime_1s.compareTo(doc.getDate("datetime")) != 0){
 						datetime_1s = doc.getDate("datetime");						
 						docList_1s.add(doc);
 					}
 				}
+				
 				if(time % 5 == 0){
 					if(datetime_5s.compareTo(doc.getDate("datetime")) != 0){
 						datetime_5s = doc.getDate("datetime");						
@@ -352,11 +367,12 @@ public class CSVServiceImpl implements ICSVService{
 		
 		//返回读取文件结果集
 		CSVFileDataResultDto<Document> result = new CSVFileDataResultDto<Document>();
-		result.setDatas(docList);
+		//result.setDatas(docList);
 		result.setTitle(title);
 		
 		Map<String,List<Document>> map = new HashMap<String,List<Document>>();
-		map.put("1s", docList);
+		map.put("0s", docList);
+		map.put("1s", docList_1s);
 		map.put("5s", docList_5s);
 		map.put("15s", docList_15s);
 		map.put("30s", docList_30s);

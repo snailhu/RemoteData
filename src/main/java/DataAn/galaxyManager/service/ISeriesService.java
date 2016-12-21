@@ -2,8 +2,8 @@ package DataAn.galaxyManager.service;
 
 import java.util.List;
 
+import DataAn.common.dao.Pager;
 import DataAn.common.pageModel.Combo;
-import DataAn.common.pageModel.Pager;
 import DataAn.galaxyManager.dto.SeriesDto;
 
 /**
@@ -20,11 +20,19 @@ public interface ISeriesService {
 	
 	public void updateSeries(SeriesDto dto);
 	
-	public Pager<SeriesDto> getRoleList(int pageIndex, int pageSize);
+	public Pager<SeriesDto> getSeriesList(int pageIndex, int pageSize);
 	
-	public SeriesDto getSeriesDto(long seriesId);
+	public List<SeriesDto> getAllSeries();
+	
+	public SeriesDto getSeriesDtoById(long seriesId);
+	
+	public SeriesDto getSeriesDtoByCode(String code);
 
-	public void initSeries();
-
-	public List<Combo> getSeriesComboData(long seriesId);
+	public List<Combo> getSeriesComboData(String seriesCode);
+	
+	public boolean checkSeriesAndStar(String series, String star);
+	
+	public boolean isExistSeries(SeriesDto dto);
+	
+	public void initJ9Series();
 }

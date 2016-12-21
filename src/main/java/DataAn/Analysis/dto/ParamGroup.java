@@ -1,8 +1,9 @@
 package DataAn.Analysis.dto;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class ParamGroup {
+public class ParamGroup implements Serializable{
 	private int id;
 	
 	private String Ycount;
@@ -107,7 +108,8 @@ public class ParamGroup {
 	public String toString() {
 		return "ParamGroup [id=" + id + ", Ycount=" + Ycount + ", Y1name="
 				+ Y1name + ", Y2name=" + Y2name + ", beginDate=" + beginDate
-				+ ", endDate=" + endDate + ", secectRow=" + secectRow + "]";
+				+ ", endDate=" + endDate + ", nowSeries="+nowSeries+", nowStar="
+				+nowStar+",component="+component+",secectRow=" + secectRow + "]";
 	}
 
 	

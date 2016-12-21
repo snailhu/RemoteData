@@ -9,7 +9,7 @@
             maxElementsInMemory="10000"  
             eternal="false"  
             timeToIdleSeconds="120"  
-            timeToLiveSeconds="120"  
+            timeToLiveSeconds="0"  
             overflowToDisk="true"  
             maxElementsOnDisk="10000000"  
             diskPersistent="false"  
@@ -18,7 +18,7 @@
             />  	
 	<cache name="ehcache" maxElementsInMemory="50000"
 		maxElementsOnDisk="60000" eternal="false" overflowToDisk="true"
-		diskSpoolBufferSizeMB="20" timeToIdleSeconds="300" timeToLiveSeconds="0"
+		diskSpoolBufferSizeMB="20" timeToIdleSeconds="3600" timeToLiveSeconds="0"
 		memoryStoreEvictionPolicy="LFU" />
 
 	<cache name="captcha" maxElementsInMemory="10000"

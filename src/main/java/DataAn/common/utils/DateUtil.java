@@ -89,20 +89,23 @@ public class DateUtil {
 	 *            字符串格式
 	 * @return 日期字符串
 	 */
-	public static String formatString(String strDate, String oldPattern, String pattern) {
+	public static String formatString(String strDate, String oldPattern, String newPattern) {
 		if (strDate == null) {
 			return null;
 		}
-		if (pattern == null || pattern.equals("") || pattern.equals("null")) {
-			pattern = "yyyy-MM-dd HH-mm-ss";
+		if (oldPattern == null || oldPattern.equals("") || oldPattern.equals("null")) {
+			oldPattern = "yyyy-MM-dd HH-mm-ss";
 		}
 		Date date = null;
 		try {
+			if (newPattern == null || newPattern.equals("") || newPattern.equals("null")) {
+				newPattern = "yyyy年MM月dd日HH时mm分ss秒";
+			}
 			date = new java.text.SimpleDateFormat(oldPattern).parse(strDate);
 		} catch (ParseException pe) {
 		}
 
-		return new java.text.SimpleDateFormat(pattern).format(date);
+		return new java.text.SimpleDateFormat(newPattern).format(date);
 	}
 
 	/**
@@ -197,6 +200,50 @@ public class DateUtil {
 		Calendar c = Calendar.getInstance();
 		c.setTime(date);
 		return c.get(Calendar.YEAR);
+	}
+
+	public static String getBeforeDate() {
+		Calendar c = Calendar.getInstance();
+		c.add(Calendar.DAY_OF_MONTH, -1);
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+		String mDateTime = formatter.format(c.getTime());
+		return mDateTime;
+	}
+
+	public static String getYesterdayTime() {
+		Calendar c = Calendar.getInstance();
+		c.add(Calendar.DAY_OF_MONTH, -1);
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		String mDateTime = formatter.format(c.getTime());
+		return mDateTime;
+	}
+
+	public static String getLastWeekTime() {
+		Calendar c = Calendar.getInstance();
+		c.add(Calendar.DAY_OF_MONTH, -7);
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		String mDateTime = formatter.format(c.getTime());
+		return mDateTime;
+	}
+
+	/**
+	 * daysOfTwo:(两个日期相差的天数).
+	 * 
+	 * @return_type:int
+	 * @author wj
+	 * @param fDate
+	 * @param oDate
+	 * @return
+	 */
+	public static int daysOfTwo(Date fDate, Date oDate) {
+		Calendar aCalendar = Calendar.getInstance();
+		aCalendar.setTime(fDate);
+		double day1Time = aCalendar.getTimeInMillis();
+		aCalendar.setTime(oDate);
+		double day2Time = aCalendar.getTimeInMillis();
+		double days = (day2Time - day1Time) / 1000 / 60 / 60 / 24;
+		int daysRound = (int)Math.floor(days);
+		return daysRound;
 	}
 
 }

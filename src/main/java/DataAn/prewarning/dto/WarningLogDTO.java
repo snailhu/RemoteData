@@ -10,7 +10,7 @@ public class WarningLogDTO implements java.io.Serializable {
 
 	/** serialVersionUID */
 	private static final long serialVersionUID = 1L;
-	private Long logId; // 记录Id
+	private String logId; // 记录Id
 
 	private Long series; // 星系
 
@@ -44,11 +44,11 @@ public class WarningLogDTO implements java.io.Serializable {
 		this.timeValue = timeValue;
 	}
 
-	public Long getLogId() {
+	public String getLogId() {
 		return logId;
 	}
 
-	public void setLogId(Long logId) {
+	public void setLogId(String logId) {
 		this.logId = logId;
 	}
 

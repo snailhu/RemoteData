@@ -11,12 +11,18 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
+
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.commons.lang3.StringUtils;
 import org.bson.Document;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import DataAn.common.config.CommonConfig;
 import DataAn.common.pageModel.Pager;
 import DataAn.common.utils.DateUtil;
@@ -31,20 +37,37 @@ import DataAn.fileSystem.dto.FileDto;
 import DataAn.fileSystem.dto.MongoFSDto;
 import DataAn.fileSystem.option.FileDataType;
 import DataAn.fileSystem.option.FileType;
-import DataAn.fileSystem.option.J9SeriesType;
-import DataAn.fileSystem.option.SeriesType;
 import DataAn.fileSystem.service.ICSVService;
 import DataAn.fileSystem.service.IVirtualFileSystemService;
+import DataAn.galaxyManager.option.J9SeriesType;
+import DataAn.galaxyManager.option.SeriesType;
+import DataAn.galaxyManager.dao.ISeriesDao;
+import DataAn.galaxyManager.dao.IStarDao;
+import DataAn.galaxyManager.domain.Series;
+import DataAn.galaxyManager.domain.Star;
+import DataAn.galaxyManager.service.IParameterService;
 import DataAn.mongo.fs.IDfsDb;
 import DataAn.mongo.fs.MongoDfsDb;
 import DataAn.mongo.init.InitMongo;
 import DataAn.mongo.service.IMongoService;
 import DataAn.mongo.zip.ZipCompressorByAnt;
+import DataAn.status.option.StatusTrackingType;
+import DataAn.status.service.IStatusTrackingService;
+import DataAn.storm.BaseConfig;
+import DataAn.storm.Communication;
+import DataAn.storm.StormNames;
+import DataAn.storm.StormUtils;
+import DataAn.storm.kafka.KafkaNameKeys;
+import DataAn.storm.zookeeper.CommunicationUtils;
+import DataAn.storm.zookeeper.ZooKeeperClient;
+import DataAn.storm.zookeeper.ZooKeeperClient.ZookeeperExecutor;
+import DataAn.storm.zookeeper.ZooKeeperNameKeys;
+import DataAn.sys.service.SystemLogService;
 
 
 @Service("virtualFileSystemServiceImpl")
 public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
-
+	
 	@Resource
 	private IVirtualFileSystemDao fileDao;
 	@Resource
@@ -53,11 +76,21 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 	private ICSVService csvService;	
 	@Resource
 	private IMongoService mongoService;
+	@Resource
+	private IStatusTrackingService statusTrackingService;
+	@Resource
+	private IParameterService paramService;
+	@Resource
+	private SystemLogService systemLogService;
+	@Resource
+	private IStarDao starDao;
+	@Resource
+	private ISeriesDao seriesDao;
 	
 	@Override
 	@Transactional
-	public String saveFile(Map<String, FileDto> map) throws Exception {
-		
+	public String saveFile(Map<String, FileDto> map,String serverConfig) throws Exception {
+	
 		//获取map中的csv文件
 		FileDto csvFileDto = map.get("csv");
 		Map<String,String> dataMap = new HashMap<String,String>();
@@ -81,15 +114,99 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 		
 		String versions = UUIDGeneratorUtil.getUUID();
 		dataMap.put("versions", versions);
-				
+		
+		try {
+			
+			//保存csv临时文件
+			String csvTempFilePath = CommonConfig.getUplodCachePath() + File.separator + versions;
+			FileUtil.saveFile(csvTempFilePath, fileName, csvFileDto.getIn());
+			csvTempFilePath = csvTempFilePath + File.separator + fileName;
+			csvFileDto.setFilePath(csvTempFilePath);
+			
+			// 保存 *.csv文件
+			this.saveFileOfCSV(csvFileDto, dataMap);
+			
+			
+//		//获取map中的csv文件
+			FileDto datFile = map.get("dat");
+			if(datFile != null){			
+				// 保存 *.DAT文件
+				this.saveFileOfDAT(datFile, dataMap);
+			}
+			
+			statusTrackingService.updateStatusTracking(csvFileDto.getFileName(), StatusTrackingType.IMPORT.getValue(),
+					csvFileDto.getParameterType(), "");
+			
+			// 调用文件队列API，  zookeeper 
+			Map conf=new HashMap<>();
+			BaseConfig baseConfig=null;
+			try {
+				baseConfig= StormUtils.getBaseConfig(BaseConfig.class);
+			} catch (Exception e) {
+				e.printStackTrace();
+				statusTrackingService.updateStatusTracking(csvFileDto.getFileName(), StatusTrackingType.IMPORTFAIL.getValue(),
+						csvFileDto.getParameterType(), e.getMessage());
+			}
+			ZooKeeperNameKeys.setZooKeeperServer(conf, baseConfig.getZooKeeper());
+			ZooKeeperNameKeys.setNamespace(conf, baseConfig.getNamespace());
+			ZookeeperExecutor executor=new ZooKeeperClient()
+			.connectString(ZooKeeperNameKeys.getZooKeeperServer(conf))
+			.namespace(ZooKeeperNameKeys.getNamespace(conf))
+			.build();
+			CommunicationUtils communicationUtils=CommunicationUtils.get(executor);
+			Communication communication=new Communication();
+			communication.setServerConfig(serverConfig);
+			communication.setFileName(csvFileDto.getFileName());
+			communication.setFilePath(csvFileDto.getFilePath());
+			communication.setVersions(versions);
+			communication.setSeries(nowSeries);
+			communication.setStar(nowStar);
+			communication.setName(csvFileDto.getParameterType());
+			communicationUtils.add(communication);
+			statusTrackingService.updateStatusTracking(csvFileDto.getFileName(), StatusTrackingType.PREHANDLE.getValue(),
+					csvFileDto.getParameterType(), "");
+			
+		} catch (Exception e) {
+//			e.printStackTrace();
+			statusTrackingService.updateStatusTracking(csvFileDto.getFileName(), StatusTrackingType.FILEUPLOADFAIL.getValue(),
+					csvFileDto.getParameterType(), e.getMessage());
+			
+		}
+		
+	
+		return versions;
+	}
+
+	@Override
+	public String saveFileMock(Map<String, FileDto> map) throws Exception {
+		//获取map中的csv文件
+		FileDto csvFileDto = map.get("csv");
+		Map<String,String> dataMap = new HashMap<String,String>();
+		//解析csv中的文件名称 以获取信息
+		String fileName = csvFileDto.getFileName();
+		String[] strs = fileName.substring(0, fileName.lastIndexOf(".csv")).split("--");
+		String[] ss = strs[0].split("-");
+		String nowSeries = SeriesType.J9_SERIES.getName();
+		dataMap.put("series", nowSeries);
+		String nowStar = J9SeriesType.getJ9SeriesType(ss[1]).getValue();
+		dataMap.put("star", nowStar);
+		String date = strs[1];
+		dataMap.put("date", DateUtil.formatString(date, "yyyy-MM-dd", "yyyy-MM-dd"));
+		String year = DateUtil.formatString(date, "yyyy-MM-dd", "yyyy");
+		dataMap.put("year", year);
+		String month = DateUtil.formatString(date, "yyyy-MM-dd", "MM");
+		dataMap.put("month", month);
+		String versions = UUIDGeneratorUtil.getUUID();
+		dataMap.put("versions", versions);
 		//保存csv临时文件
-		String csvTempFilePath = CommonConfig.getUplodCachePath() + File.separator + versions;
-		FileUtil.saveFile(csvTempFilePath, fileName, csvFileDto.getIn());
-		csvTempFilePath = csvTempFilePath + File.separator + fileName;
-		csvFileDto.setFilePath(csvTempFilePath);
+//		String csvTempFilePath = CommonConfig.getUplodCachePath() + File.separator + versions;
+//		FileUtil.saveFile(csvTempFilePath, fileName, csvFileDto.getIn());
+//		csvTempFilePath = csvTempFilePath + File.separator + fileName;
+//		csvFileDto.setFilePath(csvTempFilePath);
 		
 		// 保存 *.csv文件
-		this.saveFileOfCSV(csvFileDto, dataMap);
+		//测试分级数据存储
+		this.saveFileOfCSVMock(csvFileDto, dataMap);
 		
 		//获取map中的csv文件
 		FileDto datFile = map.get("dat");
@@ -97,50 +214,74 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 			// 保存 *.DAT文件
 			this.saveFileOfDAT(datFile, dataMap);
 		}
-				
 		return versions;
 	}
-	
+
 	@Override
-	@Transactional(readOnly = true)
-	public void deleteFile(String ids) {
+	@Transactional
+	public void deleteFile(HttpServletRequest request,String ids) {
 		String[] arrayIds = ids.split(",");
-		VirtualFileSystem file = null;
-		
+		final List<VirtualFileSystem> files = new ArrayList<VirtualFileSystem>();
 		for (String id : arrayIds) {
 			String[] items = id.split("/");
 			//遍历目录写文件
-			if("dir".equals(items[1])){
-				VirtualFileSystem dir = fileDao.get(Long.parseLong(items[0]));
-				this.deleteFile(dir);
-			}else{
-				file = fileDao.get(Long.parseLong(items[0]));
-				this.deleteFile(file);
-			}
+			VirtualFileSystem file = fileDao.get(Long.parseLong(items[0]));
+			//TODO 这里的operateJob为日志操作的具体内容格式应该为：删除文件+文件名
+			String operateJob;
+			operateJob = "删除文件"+file.getFileName();
+			systemLogService.addOneSystemlogs( request,operateJob);
+			this.deleteFile(files, file);
 		}
-		
+		this.deleteMongodbFile(files);
 	}
-	private void deleteFile(VirtualFileSystem file) {
+
+	@Override
+	@Transactional
+	public void deleteFileByUUId(String uuId) throws Exception {
+		VirtualFileSystem file = fileDao.selectByFileTypeIsFileAndMongoFSUUId(uuId);
+		if(file != null){
+			final List<VirtualFileSystem> files = new ArrayList<VirtualFileSystem>();
+			files.add(file);
+			this.deleteFile(null,file);	
+			this.deleteMongodbFile(files);
+		}
+	}
+
+	private void deleteFile(List<VirtualFileSystem> files, VirtualFileSystem file) {
 		if(file.getFileType().getName().equals("dir")){
 			List<VirtualFileSystem> fileList = fileDao.findByParam("parentId", file.getId());
 			if(fileList != null && fileList.size() > 0){
 				for (VirtualFileSystem childFile : fileList) {
-					this.deleteFile(childFile);				
+					this.deleteFile(files,childFile);				
 				}
 			}
 		}else{
+			if(files != null){
+				files.add(file);
+			}
 			fileDao.delete(file);
-			//删除mongodb的文件和标志记录状态
-			IDfsDb dfs = MongoDfsDb.getInstance();
-			//根据星系获取数据库名称
-			String databaseName = InitMongo.getFSBDNameBySeriesAndStar(file.getSeries(), file.getStar());
-			//删除文件数据记录
-			dfs.delete(databaseName,file.getMongoFSUUId());
-			//更新记录状态
-			mongoService.updateCSVDataByVersions(file.getSeries(), file.getStar(), file.getParameterType(), file.getMongoFSUUId());
 		}
 	}
-	
+	private void deleteMongodbFile(final List<VirtualFileSystem> files){
+		new Thread(new Runnable(){
+			@Override
+			public void run() {
+				try {
+					for (VirtualFileSystem file : files) {
+						//删除mongodb的文件和标志记录状态
+						IDfsDb dfs = MongoDfsDb.getInstance();
+						//根据星系获取数据库名称
+						String databaseName = InitMongo.getFSBDNameBySeriesAndStar(file.getSeries(), file.getStar());
+						//删除文件数据记录
+						dfs.delete(databaseName,file.getMongoFSUUId());
+						//更新记录状态
+						mongoService.updateCSVDataByVersions(file.getSeries(), file.getStar(), file.getParameterType(), file.getMongoFSUUId());
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}				
+			}}).start();
+	}
 	@Override
 	@Transactional(readOnly = true)
 	public FileDto downloadFile(long fileId) throws Exception {
@@ -166,18 +307,19 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 	@Override
 	@Transactional(readOnly = true)
 	public FileDto downloadFiles(String ids) throws Exception {
-		FileDto fileDto = new FileDto();
 		String[] arrayIds = ids.split(",");
 		String mogodbFilePath = CommonConfig.getDownloadCachePath();
-		VirtualFileSystem file = null;
 		IDfsDb dfs = MongoDfsDb.getInstance();
+		//下载一个目录
+		VirtualFileSystem dir = null;
 		for (String id : arrayIds) {
 			String[] items = id.split("/");
 			//遍历目录写文件
 			if("dir".equals(items[1])){
-				this.writeDirFile(Long.parseLong(items[0]), dfs, mogodbFilePath);
+				dir = fileDao.get(Long.parseLong(items[0]));
+				this.writeDirFile(dir, dfs, mogodbFilePath);
 			}else{
-				file = fileDao.get(Long.parseLong(items[0]));
+				VirtualFileSystem file = fileDao.get(Long.parseLong(items[0]));
 				//判断临时文件是否存在
 				if(file.getCachePath() != null && !file.getCachePath().equals("")){
 					FileUtil.copyFile(file.getCachePath(), mogodbFilePath, true);
@@ -187,7 +329,16 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 				}
 			}
 		}
-		String zipFileName = DateUtil.format(new Date(),"yyyy-MM-dd-HH-mm-ss") + ".zip";
+		FileDto fileDto = new FileDto();
+		Series series = seriesDao.selectByCode(dir.getSeries());
+		List<Star> starList = starDao.getStarBySeriesIdAndCode(series.getId(), dir.getStar());
+		String zipFileName = series.getName()+"-"+starList.get(0).getName()+"--"+
+				dir.getFileName() + ".zip";	
+		if(dir.getParentId() != null){
+			VirtualFileSystem parentDir = fileDao.get(dir.getParentId());
+			zipFileName = series.getName()+"-"+starList.get(0).getName()+"--"+
+					parentDir.getFileName()+"-"+ dir.getFileName() + ".zip";			
+		}
 		String zipPath = CommonConfig.getZipCachePath() + File.separator + zipFileName;
 		ZipCompressorByAnt zca = new ZipCompressorByAnt(zipPath);  
 	    zca.compressExe(mogodbFilePath);  
@@ -196,15 +347,14 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 		return fileDto;
 	}
 	
-	private void writeDirFile(long dirId,IDfsDb dfs,String path) throws Exception{
-		VirtualFileSystem dir = fileDao.get(dirId);
+	private void writeDirFile(VirtualFileSystem dir,IDfsDb dfs,String path) throws Exception{
 		path = path + File.separator + dir.getFileName();
-		List<VirtualFileSystem> fileList = fileDao.findByParam("parentId", dirId);
+		List<VirtualFileSystem> fileList = fileDao.findByParam("parentId", dir.getId());
 		if(fileList != null && fileList.size() > 0){
 			for (VirtualFileSystem childFile : fileList) {
 				
 				if(childFile.getFileType().getName().equals("dir")){
-					this.writeDirFile(childFile.getId(), dfs, path);					
+					this.writeDirFile(childFile, dfs, path);					
 				}else{
 					//判断临时文件是否存在
 					if(childFile.getCachePath() != null && !childFile.getCachePath().equals("")){
@@ -266,8 +416,8 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 
 	@Override
 	@Transactional(readOnly = true)
-	public boolean isExistFile(String fileName) {
-		VirtualFileSystem file = fileDao.selectByFileName(fileName);
+	public boolean isExistFile(String parameterType, String fileName) {
+		VirtualFileSystem file = fileDao.selectByParameterTypeAndFileName(parameterType,fileName);
 		if(file == null){
 			return false;
 		}
@@ -275,32 +425,21 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 	}
 	
 	@Override
-	public Pager<MongoFSDto> getMongoFSList(int pageIndex, int pageSize, long dirId) {
-		List<VirtualFileSystem> fileList = null;
-		if(dirId == 0){
-			fileList = fileDao.selectByParentIdisNullAndOrder("updateDate");
-		}else{
-			fileList = fileDao.findByParam("parentId", dirId, "updateDate");
-		}
-		return this.returnPager(pageIndex, pageSize, fileList,0);
-	}
-	
-	@Override
-	public Pager<MongoFSDto> getMongoFSList(int pageIndex, int pageSize, String series,
-			String star, String parameterType, long dirId) {
-		Pager<VirtualFileSystem> pager = null;
-		if(dirId == 0){
-			pager = fileDao.selectBySeriesAndStarAndParameterTypeAndParentIdisNullAndOrder(series, star, parameterType, "updateDate", pageIndex, pageSize);
-		}else{
-			pager = fileDao.selectBySeriesAndStarAndParameterTypeAndParentIdAndOrder(series, star, parameterType, dirId, "updateDate", pageIndex, pageSize);
-		}
-		return this.returnPager(pageIndex, pageSize, pager.getRows(),pager.getTotalCount());
+	public Pager<MongoFSDto> getMongoFSList(int pageIndex, int pageSize,
+			String series, String star, String parameterType, long dirId, String dataTypes) {
+		Pager<VirtualFileSystem> pager = fileDao
+				.selectBySeriesAndStarAndParameterTypeAndParentIdAndOrder(
+						series, star, parameterType, dirId, dataTypes, "updateDate",
+						pageIndex, pageSize);
+
+		return this.returnPager(pageIndex, pageSize, pager.getRows(),
+				pager.getTotalCount());
 	}
 	
 	@Override
 	@Transactional(readOnly = true)
 	public Pager<MongoFSDto> getMongoFSList(int pageIndex, int pageSize, String series,String star, String parameterType, 
-			long dirId, String beginTime, String endTime,String dataTypes) {
+			Long dirId, String beginTime, String endTime,String dataTypes) {
 		Pager<VirtualFileSystem> pager = fileDao.selectByOption(series, star,parameterType, dirId, beginTime, endTime, dataTypes, "updateDate",pageIndex,pageSize);
 		return this.returnPager(pageIndex, pageSize, pager.getRows(),pager.getTotalCount());
 	}
@@ -351,8 +490,119 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 		return sb.toString();
 	}
 	
-	private void saveFileOfCSV(FileDto fileDto, Map<String,String> dataMap) throws Exception{
+	protected void saveFileOfCSV(FileDto fileDto, Map<String,String> dataMap) throws Exception{
 		
+		String uuId = dataMap.get("versions");
+		final String series = dataMap.get("series");
+		final String star = dataMap.get("star");
+		final String parameterType = fileDto.getParameterType();
+		String date = dataMap.get("date");
+		String year = dataMap.get("year");
+		String month = dataMap.get("month");
+//		String day = dataMap.get("day");
+		
+		//保存csv 原文件	--部署后定时任务做			
+		IDfsDb dfs = MongoDfsDb.getInstance();
+		BufferedInputStream bis = null;
+		try {
+			bis = new BufferedInputStream(new FileInputStream(fileDto.getFilePath()));  
+			String databaseName = InitMongo.getFSBDNameBySeriesAndStar(series, star);
+			dfs.upload(databaseName, fileDto.getFileName(), uuId, bis);
+		} catch(Exception e){
+			//删除上传csv原文件
+			dfs.delete(uuId);
+			throw new RuntimeException("csv 文件上传失败！！！");
+		}finally {
+			if(bis != null){
+				bis.close();
+			}
+		}
+		
+		//获取参数信息保存
+		CSVFileDataResultDto<Document> result = csvService.readCSVFileToDocAndgetTitle(fileDto.getFilePath());
+		//存储某一天的参数信息
+		final String title = result.getTitle();
+		DateParameters dateParameters = new DateParameters();
+		dateParameters.setSeries(series);
+		dateParameters.setStar(star);
+		dateParameters.setParameterType(parameterType);
+		dateParameters.setParameters(title);
+		dateParameters.setYear_month_day(date);
+		parametersDao.add(dateParameters);
+		
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				//保存参数
+				paramService.saveMany(series, star, parameterType, title);
+			}
+		});
+		
+		//查找csv的文件夹是否存在
+//		VirtualFileSystem csvDir = fileDao.selectByParentIdisNullAndFileName("csv");
+//		VirtualFileSystem csvDir = fileDao.selectByParentIdAndFileNameAndParameterType(0, "csv", parameterType);
+		VirtualFileSystem csvDir = fileDao.selectBySeriesAndStarAndParameterTypeAndParentIdAndFileName(series, star, parameterType, 0, "csv");
+		if(csvDir == null){
+			csvDir = new VirtualFileSystem();
+			csvDir.setSeries(series);
+			csvDir.setStar(star);
+			csvDir.setDataType(FileDataType.CSV);
+			csvDir.setFileName("csv");
+			csvDir.setFileType(FileType.DIR);
+			csvDir.setParameterType(parameterType);
+			csvDir = fileDao.add(csvDir);
+		}
+		//查找年份的文件夹是否存在
+//		VirtualFileSystem yearDir = fileDao.selectByParentIdAndFileName(csvDir.getId(), year);
+//		VirtualFileSystem yearDir = fileDao.selectByParentIdAndFileNameAndParameterType(csvDir.getId(), year, parameterType);
+		VirtualFileSystem yearDir = fileDao.selectBySeriesAndStarAndParameterTypeAndParentIdAndFileName(series, star, parameterType, csvDir.getId(), year);
+		if(yearDir == null){
+			yearDir = new VirtualFileSystem();
+			yearDir.setSeries(series);
+			yearDir.setStar(star);
+			yearDir.setDataType(FileDataType.CSV);
+			yearDir.setFileName(year);
+			yearDir.setFileType(FileType.DIR);
+			yearDir.setYear_month_day(year);
+			yearDir.setParentId(csvDir.getId());
+			yearDir.setParameterType(parameterType);
+			yearDir = fileDao.add(yearDir);
+		}
+		//查找月份的文件夹是否存在
+//		VirtualFileSystem monthDir = fileDao.selectByParentIdAndFileName(yearDir.getId(), month);
+//		VirtualFileSystem monthDir = fileDao.selectByParentIdAndFileNameAndParameterType(yearDir.getId(), month, parameterType);
+		VirtualFileSystem monthDir = fileDao.selectBySeriesAndStarAndParameterTypeAndParentIdAndFileName(series, star, parameterType, yearDir.getId(), month);
+		if(monthDir == null){
+			monthDir = new VirtualFileSystem();
+			monthDir.setSeries(series);
+			monthDir.setStar(star);
+			monthDir.setDataType(FileDataType.CSV);
+			monthDir.setFileName(month);
+			monthDir.setFileType(FileType.DIR);
+			monthDir.setYear_month_day(year + "-" + month);
+			monthDir.setParentId(yearDir.getId());
+			monthDir.setParameterType(parameterType);
+			monthDir = fileDao.add(monthDir);
+		}
+		//保存文件记录
+		VirtualFileSystem file = new VirtualFileSystem();
+		file.setSeries(series);
+		file.setStar(star);
+		file.setDataType(FileDataType.CSV);
+		file.setFileName(fileDto.getFileName());
+		file.setFileSize(fileDto.getFileSize());
+		file.setFileType(FileType.FILE);
+		file.setParentId(monthDir.getId());
+		file.setYear_month_day(date);
+		file.setMongoFSUUId(uuId);
+		file.setParameterType(parameterType);
+		//保存缓存路径，以后通过定时任务上传
+//		file.setCachePath(fileDto.getFilePath());
+		fileDao.add(file);
+		
+	}
+	
+	protected void saveFileOfCSVMock(FileDto fileDto, Map<String,String> dataMap) throws Exception{
 		String uuId = dataMap.get("versions");
 		String series = dataMap.get("series");
 		String star = dataMap.get("star");
@@ -362,7 +612,7 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 		String month = dataMap.get("month");
 //		String day = dataMap.get("day");
 		
-		//保存csv 原文件	--部署后定时任务做			
+		//保存csv 原文件				
 		IDfsDb dfs = MongoDfsDb.getInstance();
 		BufferedInputStream bis = null;
 		try {
@@ -379,40 +629,32 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 			}
 		}
 		
-//		CSVFileDataResultDto<Document> result = csvService.readCSVFileToDoc(fileDto.getFilePath(),uuId);
-//		List<Document> docList = result.getDatas();		
-//		//数据不为空
-//		if(docList != null && docList.size() > 0){
-//			//test 等级
-//			mongoService.saveCSVData(series, star, parameterType, date, result.getMap(), uuId);
-//			//保存csv文件数据
-//			//mongoService.saveCSVData(series, star,parameterType, date, docList, uuId);
-//			//存储某一天的参数信息
-//			String title = result.getTitle();
-//			DateParameters dateParameters = new DateParameters();
-//			dateParameters.setSeries(series);
-//			dateParameters.setStar(star);
-//			dateParameters.setParameterType(parameterType);
-//			dateParameters.setParameters(title);
-//			dateParameters.setYear_month_day(date);
-//			parametersDao.add(dateParameters);
-//		}
-		
-		//获取参数信息保存
-		CSVFileDataResultDto<Document> result = csvService.readCSVFileToDocAndgetTitle(fileDto.getFilePath());
+		CSVFileDataResultDto<Document> result = csvService.readCSVFileToDoc(fileDto.getFilePath(),uuId);
 		//存储某一天的参数信息
 		String title = result.getTitle();
-		DateParameters dateParameters = new DateParameters();
-		dateParameters.setSeries(series);
-		dateParameters.setStar(star);
-		dateParameters.setParameterType(parameterType);
-		dateParameters.setParameters(title);
-		dateParameters.setYear_month_day(date);
-		parametersDao.add(dateParameters);
+		//数据不为空
+		if(StringUtils.isNotBlank(title)){
+			//test 分级
+			Map<String, List<Document>> map = result.getMap();
+			if(map != null && map.size() > 0)
+				mongoService.saveCSVData(series, star, parameterType, date, map, uuId);				
+			//保存csv文件数据
+			List<Document> docList = result.getDatas();
+			if(docList != null && docList.size() > 0)
+				mongoService.saveCSVData(series, star,parameterType, date, docList, uuId);
+			DateParameters dateParameters = new DateParameters();
+			dateParameters.setSeries(series);
+			dateParameters.setStar(star);
+			dateParameters.setParameterType(parameterType);
+			dateParameters.setParameters(title);
+			dateParameters.setYear_month_day(date);
+			parametersDao.add(dateParameters);
+		}
 		
 		//查找csv的文件夹是否存在
 //		VirtualFileSystem csvDir = fileDao.selectByParentIdisNullAndFileName("csv");
-		VirtualFileSystem csvDir = fileDao.selectByParentIdAndFileNameAndParameterType(0, "csv", parameterType);
+//		VirtualFileSystem csvDir = fileDao.selectByParentIdAndFileNameAndParameterType(0, "csv", parameterType);
+		VirtualFileSystem csvDir = fileDao.selectBySeriesAndStarAndParameterTypeAndParentIdAndFileName(series, star, parameterType, 0, "csv");
 		if(csvDir == null){
 			csvDir = new VirtualFileSystem();
 			csvDir.setSeries(series);
@@ -425,7 +667,8 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 		}
 		//查找年份的文件夹是否存在
 //		VirtualFileSystem yearDir = fileDao.selectByParentIdAndFileName(csvDir.getId(), year);
-		VirtualFileSystem yearDir = fileDao.selectByParentIdAndFileNameAndParameterType(csvDir.getId(), year, parameterType);
+//		VirtualFileSystem yearDir = fileDao.selectByParentIdAndFileNameAndParameterType(csvDir.getId(), year, parameterType);
+		VirtualFileSystem yearDir = fileDao.selectBySeriesAndStarAndParameterTypeAndParentIdAndFileName(series, star, parameterType, csvDir.getId(), year);
 		if(yearDir == null){
 			yearDir = new VirtualFileSystem();
 			yearDir.setSeries(series);
@@ -440,7 +683,8 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 		}
 		//查找月份的文件夹是否存在
 //		VirtualFileSystem monthDir = fileDao.selectByParentIdAndFileName(yearDir.getId(), month);
-		VirtualFileSystem monthDir = fileDao.selectByParentIdAndFileNameAndParameterType(yearDir.getId(), month, parameterType);
+//		VirtualFileSystem monthDir = fileDao.selectByParentIdAndFileNameAndParameterType(yearDir.getId(), month, parameterType);
+		VirtualFileSystem monthDir = fileDao.selectBySeriesAndStarAndParameterTypeAndParentIdAndFileName(series, star, parameterType, yearDir.getId(), month);
 		if(monthDir == null){
 			monthDir = new VirtualFileSystem();
 			monthDir.setSeries(series);
@@ -473,9 +717,11 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 	
 	private void saveFileOfDAT(FileDto fileDto, Map<String,String> dataMap){
 		
-		String uuId = dataMap.get("versions");
+//		String uuId = dataMap.get("versions");
+		String uuId = UUIDGeneratorUtil.getUUID();
 		String series = dataMap.get("series");
 		String star = dataMap.get("star");
+		String parameterType = fileDto.getParameterType();
 		String date = dataMap.get("date");
 		String year = dataMap.get("year");
 		String month = dataMap.get("month");
@@ -487,22 +733,28 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 		dfs.upload(databaseName,fileDto.getFileName(), uuId, fileDto.getIn());
 
 		//查找dat的文件夹是否存在
-		VirtualFileSystem datDir = fileDao.selectByParentIdisNullAndFileName("dat");
+//		VirtualFileSystem datDir = fileDao.selectByParentIdisNullAndFileName("dat");
+//		VirtualFileSystem datDir = fileDao.selectByParentIdAndFileNameAndParameterType(0, "dat", parameterType);
+		VirtualFileSystem datDir = fileDao.selectBySeriesAndStarAndParameterTypeAndParentIdAndFileName(series, star, parameterType, 0, "dat");
 		if(datDir == null){
 			datDir = new VirtualFileSystem();
 			datDir.setSeries(series);
 			datDir.setStar(star);
+			datDir.setParameterType(parameterType);
 			datDir.setDataType(FileDataType.DAT);
 			datDir.setFileName("dat");
 			datDir.setFileType(FileType.DIR);
 			datDir = fileDao.add(datDir);
 		}
 		//查找年份的文件夹是否存在
-		VirtualFileSystem yearDir = fileDao.selectByParentIdAndFileName(datDir.getId(), year);
+//		VirtualFileSystem yearDir = fileDao.selectByParentIdAndFileName(datDir.getId(), year);
+//		VirtualFileSystem yearDir = fileDao.selectByParentIdAndFileNameAndParameterType(datDir.getId(), year, parameterType);
+		VirtualFileSystem yearDir = fileDao.selectBySeriesAndStarAndParameterTypeAndParentIdAndFileName(series, star, parameterType, datDir.getId(), year);
 		if(yearDir == null){
 			yearDir = new VirtualFileSystem();
 			yearDir.setSeries(series);
 			yearDir.setStar(star);
+			yearDir.setParameterType(parameterType);
 			yearDir.setDataType(FileDataType.DAT);
 			yearDir.setFileName(year);
 			yearDir.setFileType(FileType.DIR);
@@ -511,11 +763,14 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 			yearDir = fileDao.add(yearDir);
 		}
 		//查找月份的文件夹是否存在
-		VirtualFileSystem monthDir = fileDao.selectByParentIdAndFileName(yearDir.getId(), month);
+//		VirtualFileSystem monthDir = fileDao.selectByParentIdAndFileName(yearDir.getId(), month);
+//		VirtualFileSystem monthDir = fileDao.selectByParentIdAndFileNameAndParameterType(yearDir.getId(), month, parameterType);
+		VirtualFileSystem monthDir = fileDao.selectBySeriesAndStarAndParameterTypeAndParentIdAndFileName(series, star, parameterType, yearDir.getId(), month);
 		if(monthDir == null){
 			monthDir = new VirtualFileSystem();
 			monthDir.setSeries(series);
 			monthDir.setStar(star);
+			monthDir.setParameterType(parameterType);
 			monthDir.setDataType(FileDataType.DAT);
 			monthDir.setFileName(month);
 			monthDir.setFileType(FileType.DIR);
@@ -527,6 +782,7 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 		VirtualFileSystem file = new VirtualFileSystem();
 		file.setSeries(series);
 		file.setStar(star);
+		file.setParameterType(parameterType);
 		file.setDataType(FileDataType.DAT);
 		file.setFileName(fileDto.getFileName());
 		file.setFileSize(fileDto.getFileSize());
@@ -537,6 +793,5 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 		fileDao.add(file);
 		
 	}
-
 
 }

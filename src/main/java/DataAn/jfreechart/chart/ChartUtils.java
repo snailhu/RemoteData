@@ -16,6 +16,7 @@ import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.StandardChartTheme;
 import org.jfree.chart.axis.CategoryAxis;
+import org.jfree.chart.axis.CategoryLabelPositions;
 import org.jfree.chart.axis.DateAxis;
 import org.jfree.chart.axis.DateTickUnit;
 import org.jfree.chart.axis.DateTickUnitType;
@@ -353,6 +354,22 @@ public class ChartUtils {
 		
 		xyRenderer.setBaseShapesVisible(false);// 数据点绘制形状
 		
+		xyRenderer.setSeriesStroke(0, new BasicStroke(0.5F)); //设置线的大小
+		// xyRenderer.setSeriesPaint(0, Color.RED);//红色
+		xyRenderer.setSeriesStroke(1, new BasicStroke(0.5F));
+		// xyRenderer.setSeriesPaint(1, Color.GREEN);//绿色
+		xyRenderer.setSeriesStroke(3, new BasicStroke(0.5F));
+		// xyRenderer.setSeriesPaint(3, Color.BLUE);//蓝色
+		xyRenderer.setSeriesStroke(4, new BasicStroke(0.5F));
+		// xyRenderer.setSeriesPaint(4, Color.BLACK);//黑色
+		xyRenderer.setSeriesStroke(5, new BasicStroke(0.5F));
+		// xyRenderer.setSeriesPaint(5, Color.CYAN);
+		xyRenderer.setSeriesStroke(6, new BasicStroke(0.5F));
+		xyRenderer.setSeriesStroke(7, new BasicStroke(0.5F));
+		xyRenderer.setSeriesStroke(8, new BasicStroke(0.5F));
+		xyRenderer.setSeriesStroke(9, new BasicStroke(0.5F));
+		xyRenderer.setSeriesStroke(10, new BasicStroke(0.5F));
+		
 		setXY_XAixs(xyplot);
 		setXY_YAixs(xyplot);
 
@@ -446,9 +463,18 @@ public class ChartUtils {
 	 */
 	public static void setXAixs(CategoryPlot plot) {
 		Color lineColor = new Color(31, 121, 170);
-		CategoryAxis domainAxis = plot.getDomainAxis();
+		CategoryAxis domainAxis = plot.getDomainAxis();// 取得横轴
 		domainAxis.setAxisLinePaint(lineColor);// X坐标轴颜色
 		domainAxis.setTickMarkPaint(lineColor);// X坐标轴标记|竖线颜色
+        
+		domainAxis.setCategoryLabelPositions(CategoryLabelPositions.UP_45);
+		// 设置横轴的字体
+		domainAxis.setLabelFont(new Font("宋体", Font.BOLD, 16));
+		// 设置分类标签以45度倾斜
+		domainAxis.setCategoryLabelPositions(CategoryLabelPositions.STANDARD);//
+		// 设置分类标签字体
+		domainAxis.setTickLabelFont(new Font("宋体", Font.BOLD, 18));
+		
 	}
 
 	/**
@@ -483,7 +509,8 @@ public class ChartUtils {
 		Color lineColor = new Color(0, 0, 0);
 		plot.getDomainAxis().setAxisLinePaint(lineColor);// X坐标轴颜色
 		plot.getDomainAxis().setTickMarkPaint(lineColor);// X坐标轴标记|竖线颜色
-		plot.getDomainAxis().setVerticalTickLabels(true);
+		plot.getDomainAxis().setVerticalTickLabels(true); //X坐标轴数据垂直显示
+		//plot.getDomainAxis().setLabelFont(new Font("宋体", Font.BOLD, 16));// 设置横轴的字体
 	}
 
 	/**
@@ -500,14 +527,17 @@ public class ChartUtils {
 		// false隐藏Y刻度 true 显示
  		axis.setAxisLineVisible(true);
 		axis.setTickMarksVisible(true);
+		//
+		axis.setTickLabelsVisible(true);
 		// Y轴网格线条
 		plot.setRangeGridlinePaint(new Color(192, 192, 192));
 		plot.setRangeGridlineStroke(new BasicStroke(1));
-		plot.setDomainGridlinesVisible(false);
-
+		
+		plot.setRangeGridlinesVisible(false); // 数据轴网格是否可见
+		plot.setDomainGridlinesVisible(false); //垂直方向：分类轴网格是否可见
+		
 		plot.getRangeAxis().setUpperMargin(0.12);// 设置顶部Y坐标轴间距,防止数据无法显示
 		plot.getRangeAxis().setLowerMargin(0.12);// 设置底部Y坐标轴间距
-
 	}
 
 	/**

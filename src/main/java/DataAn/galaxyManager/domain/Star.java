@@ -34,6 +34,9 @@ public class Star {
 	@Column(name = "name", nullable = false, length = 64)
 	private String name;
 	
+	@Column(name = "code", nullable = false, length = 64)
+	private String code;
+	
 	@Column(name = "description", nullable = true, length = 512)
 	private String description;
 	
@@ -63,6 +66,14 @@ public class Star {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public String getCode() {
+		return code;
+	}
+
+	public void setCode(String code) {
+		this.code = code;
 	}
 
 	public String getDescription() {
@@ -95,6 +106,14 @@ public class Star {
 
 	public void setSeries(Series series) {
 		this.series = series;
+	}
+
+	@Override
+	public String toString() {
+		return "Star [id=" + id + ", name=" + name + ", code=" + code
+				+ ", description=" + description + ", startRunDate="
+				+ startRunDate + ", createDate=" + createDate + ", series="
+				+ series + "]";
 	}
 	
 	

@@ -5,22 +5,71 @@ import java.util.Date;
 public class StarParamDto {
 
 	private Long id;
-	
+
 	private String paramCode;
-	
+
 	private String paramName;
-	
+
 	private String creater;
-	
+
 	private String series;
-	
+
 	private String star;
-	
+
 	private String parameterType;
-	
+
+	private String productName;
+
+	private String partsType;
+
+	private double effeMin;
+
+	private double effeMax;
+
+	private String valueUnit;
+
+	public String getValueUnit() {
+		return valueUnit;
+	}
+
+	public void setValueUnit(String valueUnit) {
+		this.valueUnit = valueUnit;
+	}
+
 	private Date createDate = new Date();
-	
-	
+
+	public String getProductName() {
+		return productName;
+	}
+
+	public void setProductName(String productName) {
+		this.productName = productName;
+	}
+
+	public double getEffeMin() {
+		return effeMin;
+	}
+
+	public void setEffeMin(double effeMin) {
+		this.effeMin = effeMin;
+	}
+
+	public double getEffeMax() {
+		return effeMax;
+	}
+
+	public void setEffeMax(double effeMax) {
+		this.effeMax = effeMax;
+	}
+
+	public String getPartsType() {
+		return partsType;
+	}
+
+	public void setPartsType(String partsType) {
+		this.partsType = partsType;
+	}
+
 	public Long getId() {
 		return id;
 	}

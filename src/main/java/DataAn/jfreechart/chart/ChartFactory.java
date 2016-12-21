@@ -1,10 +1,18 @@
 package DataAn.jfreechart.chart;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
+import java.awt.Font;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Vector;
+
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.axis.CategoryAxis;
+import org.jfree.chart.axis.CategoryLabelPositions;
 import org.jfree.chart.axis.DateAxis;
 import org.jfree.chart.axis.DateTickUnit;
 import org.jfree.chart.axis.DateTickUnitType;
@@ -16,6 +24,7 @@ import org.jfree.chart.renderer.category.LineAndShapeRenderer;
 import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.general.DefaultPieDataset;
+import org.jfree.data.time.TimeSeries;
 import org.jfree.data.time.TimeSeriesCollection;
 import org.jfree.ui.RectangleEdge;
 
@@ -32,6 +41,7 @@ public class ChartFactory {
 			String categoryAxisLabel, String valueAxisLabel,
 			TimeSeriesCollection dataset) {
         JFreeChart chart = org.jfree.chart.ChartFactory.createTimeSeriesChart(title, categoryAxisLabel, valueAxisLabel, dataset);
+        
         // 3:设置抗锯齿，防止字体显示不清楚
         ChartUtils.setAntiAlias(chart);// 抗锯齿
         // 4:对柱子进行渲染[创建不同图形]
@@ -43,8 +53,8 @@ public class ChartFactory {
         // 日期X坐标轴
         DateAxis domainAxis = (DateAxis) xyplot.getDomainAxis();
         domainAxis.setAutoTickUnitSelection(false);
-        DateTickUnit dateTickUnit = null;
         
+//        DateTickUnit dateTickUnit = null;
 //        if (dataset.getItemCount(0) < 16) {
 //            //刻度单位月,半年为间隔
 //            dateTickUnit = new DateTickUnit(DateTickUnitType.SECOND, 6, new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")); // 第二个参数是时间轴间距
@@ -56,30 +66,86 @@ public class ChartFactory {
         
 //        XYLineAndShapeRenderer xyRenderer = (XYLineAndShapeRenderer) xyplot.getRenderer();
 //        xyRenderer.setBaseItemLabelsVisible(false);
-        dateTickUnit = new DateTickUnit(DateTickUnitType.DAY, 1, new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")); // 第二个参数是时间轴间距
-
-        
+//        dateTickUnit = new DateTickUnit(DateTickUnitType.HOUR, 4, new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")); // 第二个参数是时间轴间距
         // 设置时间单位
-        domainAxis.setTickUnit(dateTickUnit);
+//        domainAxis.setTickUnit(dateTickUnit);
+        if(dataset != null && dataset.getSeriesCount() >0){
+			DateTickUnit dateTickUnit = null;
+			int seriesCount = 0;
+			int itemCount = 0;
+			TimeSeries timeSeries = null;
+			for (int i = 0; i < dataset.getSeriesCount(); i++) {
+				timeSeries = dataset.getSeries(i);
+				if(itemCount < timeSeries.getItemCount()){
+					itemCount = timeSeries.getItemCount();
+					seriesCount = i;
+				}
+			}
+			timeSeries = dataset.getSeries(seriesCount);
+			long interval = timeSeries.getDataItem(timeSeries.getItemCount()-1).getPeriod().getLastMillisecond() - timeSeries.getDataItem(0).getPeriod().getLastMillisecond();
+			interval = interval / 24; //显示24个间隔
+			int s_interval = (int) (interval / 1000); // 得到 1秒钟几个点
+			if(s_interval > 0){ 
+				int m_interval = s_interval / 60; // 得到 1分钟几个点
+				if(m_interval > 0){ 
+					int h_interval = m_interval / 60; // 等到1小时几个点
+					if(h_interval > 0){ 
+						int d_interval = h_interval / 24; // 等到1天几个点
+						if(d_interval > 0){ 
+							int y_interval = d_interval / 365; // 等到1年几个点
+							if(y_interval > 0){ 
+								dateTickUnit = new DateTickUnit(DateTickUnitType.YEAR, y_interval, new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"));
+							}else{
+								dateTickUnit = new DateTickUnit(DateTickUnitType.DAY, d_interval, new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"));
+							}
+						}else{
+							dateTickUnit = new DateTickUnit(DateTickUnitType.HOUR, h_interval, new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"));
+						}
+					}else{
+						dateTickUnit = new DateTickUnit(DateTickUnitType.MINUTE, m_interval, new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"));
+					}
+				}else{
+					dateTickUnit = new DateTickUnit(DateTickUnitType.SECOND, s_interval, new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"));
+				}
+			}else{
+				dateTickUnit = new DateTickUnit(DateTickUnitType.SECOND, 1, new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"));
+			}
+			// 设置时间单位
+	       domainAxis.setTickUnit(dateTickUnit);
+        }
+        
         ChartUtils.setLegendEmptyBorder(chart);
+       
 		return chart;
 	}
 	
-	public static JFreeChart createTimeSeriesChart(String title,
-			String categoryAxisLabel, String valueAxisLabel,
-			List<TimeSeriesCollection> datasetList) {
-        JFreeChart chart = org.jfree.chart.ChartFactory.createTimeSeriesChart(title, categoryAxisLabel, valueAxisLabel, datasetList.get(0));
-        // 3:设置抗锯齿，防止字体显示不清楚
-        ChartUtils.setAntiAlias(chart);// 抗锯齿
-        // 4:对柱子进行渲染[创建不同图形]
-        ChartUtils.setTimeSeriesRender(chart.getPlot(), false, false);
-        // 5:对其他部分进行渲染
+	public static JFreeChart createTimeSeriesChart(List<TimeSeriesCollection> datasetList, 
+			Date beginDate, Date endDate, Map<String,String> configMap) {
+		TimeSeriesCollection dataset1 = null;
+		if(datasetList == null || datasetList.size() == 0)
+			return null;
+		
+		String title = "";
+		String categoryAxisLabel = ""; 
+		String valueAxisLabel = "";
+		String y1Label = "";
+		String y2Label = "";
+		if(configMap != null){
+			title = configMap.get("title");
+			categoryAxisLabel = configMap.get("categoryAxisLabel"); 
+			valueAxisLabel = configMap.get("valueAxisLabel");
+			y1Label = "单位( " + configMap.get("y1Label") + " )";
+			y2Label = "单位( " + configMap.get("y2Label") + " )";
+		}
+		dataset1 = datasetList.get(0);			
+        JFreeChart chart = org.jfree.chart.ChartFactory.createTimeSeriesChart(title, categoryAxisLabel, valueAxisLabel,dataset1);
+        
         XYPlot xyplot = (XYPlot) chart.getPlot();
         //第二个Y轴的数据构造
         if(datasetList.size() > 1){
         	TimeSeriesCollection dataset2  = datasetList.get(1);
 			// 添加第2个Y轴
-			NumberAxis axis2 = new NumberAxis(" Second Axis");
+			NumberAxis axis2 = new NumberAxis();
 			// -- 修改第2个Y轴的显示效果
 			axis2.setAxisLinePaint(Color.BLUE);
 			axis2.setLabelPaint(Color.BLUE);
@@ -87,6 +153,10 @@ public class ChartFactory {
 			// 显示Y刻度
 			axis2.setAxisLineVisible(true);
 			axis2.setTickMarksVisible(true);
+			//y2单位
+			axis2.setLabel(y2Label);
+			//数据轴数据标签是否旋转到垂直
+//			axis2.setVerticalTickLabels(true);
 			
 			xyplot.setRangeAxis(1, axis2);
 			xyplot.setDataset(1, dataset2);
@@ -96,37 +166,78 @@ public class ChartFactory {
 			xyplot.getRangeAxis(1).setLowerMargin(0.1);// 设置底部Y坐标轴间距
 			
 			XYLineAndShapeRenderer xyrenderer1 =  new XYLineAndShapeRenderer();
-			xyrenderer1.setBaseItemLabelsVisible(false);// 数据点绘制形状
+			xyrenderer1.setBaseItemLabelsVisible(false);// 数据点绘制形状,数据过多,不显示数据
 			xyrenderer1.setBaseShapesVisible(false);// 数据点绘制形状
 			xyplot.setRenderer(1,xyrenderer1);
+			xyrenderer1.setSeriesStroke(0, new BasicStroke(0.5F)); //设置线的大小
+			// xyrenderer1.setSeriesPaint(0, Color.RED);//红色
+			xyrenderer1.setSeriesStroke(1, new BasicStroke(0.5F));
+			// xyrenderer1.setSeriesPaint(1, Color.GREEN);//绿色
+			xyrenderer1.setSeriesStroke(3, new BasicStroke(0.5F));
+			// xyrenderer1.setSeriesPaint(3, Color.BLUE);//蓝色
+			xyrenderer1.setSeriesStroke(4, new BasicStroke(0.5F));
+			// xyrenderer1.setSeriesPaint(4, Color.BLACK);//黑色
+			xyrenderer1.setSeriesStroke(5, new BasicStroke(0.5F));
+			// xyrenderer1.setSeriesPaint(5, Color.CYAN);
+			
+			
 		}
-        
+     // 3:设置抗锯齿，防止字体显示不清楚
+        ChartUtils.setAntiAlias(chart);// 抗锯齿
+        // 4:对柱子进行渲染[创建不同图形]
+        ChartUtils.setTimeSeriesRender(chart.getPlot(), false, false);
+        // 5:对其他部分进行渲染
         ChartUtils.setXY_XAixs(xyplot);
         ChartUtils.setXY_YAixs(xyplot);
+        xyplot.getRangeAxis().setLabel(y1Label);
+        
+        // 数据过多,不显示数据
+        XYLineAndShapeRenderer xyRenderer = (XYLineAndShapeRenderer) xyplot.getRenderer();
+        xyRenderer.setBaseItemLabelsVisible(false);
+        
         // 日期X坐标轴
         DateAxis domainAxis = (DateAxis) xyplot.getDomainAxis();
         domainAxis.setAutoTickUnitSelection(false);
-        DateTickUnit dateTickUnit = null;
-        
-//        if (dataset.getItemCount(0) < 16) {
-//            //刻度单位月,半年为间隔
-//            dateTickUnit = new DateTickUnit(DateTickUnitType.SECOND, 6, new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")); // 第二个参数是时间轴间距
-//        } else {// 数据过多,不显示数据
-//            XYLineAndShapeRenderer xyRenderer = (XYLineAndShapeRenderer) xyplot.getRenderer();
-//            xyRenderer.setBaseItemLabelsVisible(false);
-//            dateTickUnit = new DateTickUnit(DateTickUnitType.DAY, 1, new SimpleDateFormat("yyyy-MM-dd")); // 第二个参数是时间轴间距
-//        }
-        
-//        XYLineAndShapeRenderer xyRenderer = (XYLineAndShapeRenderer) xyplot.getRenderer();
-//        xyRenderer.setBaseItemLabelsVisible(false);
-        dateTickUnit = new DateTickUnit(DateTickUnitType.DAY, 1, new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")); // 第二个参数是时间轴间距
-
-        // 设置时间单位
-        domainAxis.setTickUnit(dateTickUnit);
+    	
+    	if(dataset1 != null && dataset1.getSeriesCount() >0){
+			DateTickUnit dateTickUnit = null;
+			long ss_interval = endDate.getTime() - beginDate.getTime();
+			int s_interval = (int) (ss_interval / 1000); // 得到 1秒钟几个点
+			s_interval = s_interval / 24; //显示24个间隔
+			if(s_interval > 0){ 
+				int m_interval = s_interval / 60; // 得到 1分钟几个点
+				if(m_interval > 0){ 
+					int h_interval = m_interval / 60; // 等到1小时几个点
+					if(h_interval > 0){ 
+						int d_interval = h_interval / 24; // 等到1天几个点
+						if(d_interval > 0){ 
+							int y_interval = d_interval / 365; // 等到1年几个点
+							if(y_interval > 0){ 
+								dateTickUnit = new DateTickUnit(DateTickUnitType.YEAR, y_interval, new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"));
+							}else{
+								dateTickUnit = new DateTickUnit(DateTickUnitType.DAY, d_interval, new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"));
+							}
+						}else{
+							dateTickUnit = new DateTickUnit(DateTickUnitType.HOUR, h_interval, new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"));
+						}
+					}else{
+						dateTickUnit = new DateTickUnit(DateTickUnitType.MINUTE, m_interval, new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"));
+					}
+				}else{
+					dateTickUnit = new DateTickUnit(DateTickUnitType.SECOND, s_interval, new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"));
+				}
+			}else{
+				dateTickUnit = new DateTickUnit(DateTickUnitType.SECOND, 1, new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"));
+			}
+			// 设置时间单位
+	       domainAxis.setTickUnit(dateTickUnit);
+        }
+    	
         ChartUtils.setLegendEmptyBorder(chart);
         
 		return chart;
 	}
+	
 	
 	public static JFreeChart createLineChartDoubleY(String title,
 			String categoryAxisLabel, String valueAxisLabel,
@@ -148,16 +259,6 @@ public class ChartFactory {
 		
 		JFreeChart chart = org.jfree.chart.ChartFactory.createLineChart(title,
 				categoryAxisLabel, valueAxisLabel, dataset1);
-		
-		// 3:设置抗锯齿，防止字体显示不清楚
-		ChartUtils.setAntiAlias(chart);// 抗锯齿
-		// 4:对柱子进行渲染[[采用不同渲染]]
-		ChartUtils.setLineRender(chart.getCategoryPlot(), false, false);//
-		// 5:对其他部分进行渲染
-		ChartUtils.setXAixs(chart.getCategoryPlot());// X坐标轴渲染
-		ChartUtils.setYAixs(chart.getCategoryPlot());// Y坐标轴渲染
-		// 设置标注无边框
-		chart.getLegend().setFrame(new BlockBorder(Color.WHITE));
 		
 		if(series2.size() > 1){
 			CategoryPlot plot = chart.getCategoryPlot();
@@ -184,6 +285,15 @@ public class ChartFactory {
 			renderer1.setBaseShapesVisible(false);// 数据点绘制形状
 			plot.setRenderer(1, renderer1);
 		}
+		// 3:设置抗锯齿，防止字体显示不清楚
+		ChartUtils.setAntiAlias(chart);// 抗锯齿
+		// 4:对柱子进行渲染[[采用不同渲染]]
+		ChartUtils.setLineRender(chart.getCategoryPlot(), false, false);//
+		// 5:对其他部分进行渲染
+		ChartUtils.setXAixs(chart.getCategoryPlot());// X坐标轴渲染
+		ChartUtils.setYAixs(chart.getCategoryPlot());// Y坐标轴渲染
+		// 设置标注无边框
+		chart.getLegend().setFrame(new BlockBorder(Color.WHITE));
 		
 		return chart;
 	}

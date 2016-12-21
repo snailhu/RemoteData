@@ -13,6 +13,7 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
+import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
@@ -22,7 +23,7 @@ import DataAn.common.pageModel.Pager;
 import DataAn.fileSystem.domain.VirtualFileSystem;
 import DataAn.fileSystem.dto.FileDto;
 import DataAn.fileSystem.dto.MongoFSDto;
-import DataAn.fileSystem.option.J9Series_Star_ParameterType;
+import DataAn.galaxyManager.option.J9Series_Star_ParameterType;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -72,7 +73,7 @@ public class VirtualFileSystemServiceTest {
 	@Test
 	public void saveFile() throws Exception{
 		long begin = System.currentTimeMillis();
-		String csv = "c:\\j9-02--2016-02-01.csv";
+		String csv = "E:\\data\\flywheel\\j9-02--2016-02-01.csv";
 //		String dat = "C:\\XX9(02)--20150817(公开).DAT";
 		this.saveFile(csv, null);
 		long end = System.currentTimeMillis();
@@ -82,7 +83,7 @@ public class VirtualFileSystemServiceTest {
 	@Test
 	public void deleteFile(){
 		String str = "1/dir,8/file";
-		fileService.deleteFile(str);
+		//fileService.deleteFile(str);
 	}
 	
 	@Test
@@ -105,15 +106,30 @@ public class VirtualFileSystemServiceTest {
 	@Test
 	public void getMongoFSList(){
 		int pageIndex = 1;
-		int pageSize = 10;
+		int pageSize = 100;
 		String series = "j9";
-		String star = "02";
-		long dirId = 0;
-		String beginTime = "";
-		String endTime = "";
-		String dataTypes = "";
+		String star = "03";
+		String strDirId = "";
+//		long dirId = 0;
+		String beginTime = "";//"2009-11-17";
+		String endTime = "";//"2016-11-17";
+		String dataTypes = "dat,csv";
 		String paramType = J9Series_Star_ParameterType.FLYWHEEL.getValue();
-		Pager<MongoFSDto> pager = fileService.getMongoFSList(pageIndex, pageSize, series, star, paramType, dirId, beginTime, endTime, dataTypes);
+		Pager<MongoFSDto> pager = null;//fileService.getMongoFSList(pageIndex, pageSize, series, star, paramType, null, null, null, dataTypes);
+		if(StringUtils.isNotBlank(beginTime) || StringUtils.isNotBlank(endTime) || StringUtils.isBlank(paramType)){
+			if (StringUtils.isNotBlank(strDirId)) {
+				long dirId = Long.parseLong(strDirId);
+				pager = fileService.getMongoFSList(pageIndex, pageSize, series, star, paramType, dirId, beginTime, endTime, dataTypes);								
+			}else{
+				pager = fileService.getMongoFSList(pageIndex, pageSize, series, star, paramType, null, beginTime, endTime, dataTypes);
+			}
+		}else{
+			long dirId = 0;
+			if (StringUtils.isNotBlank(strDirId)) {
+				dirId = Long.parseLong(strDirId);
+			}
+			pager = fileService.getMongoFSList(pageIndex, pageSize, series, star, paramType, dirId, dataTypes);			
+		}
 		List<MongoFSDto> list =pager.getRows();
 		for (MongoFSDto fs : list) {
 			System.out.println(fs);
@@ -149,12 +165,13 @@ public class VirtualFileSystemServiceTest {
 			System.out.println("csvPath: " + csvPath);
 			FileDto csvFileDto = new FileDto();
 			File csvFile = new File(csvPath);
-			InputStream csvInput = new FileInputStream(csvFile);
+//			InputStream csvInput = new FileInputStream(csvFile);
+//			csvFileDto.setIn(csvInput);
+			csvFileDto.setFilePath(csvFile.getAbsolutePath());
 			csvFileDto.setFileName(csvFile.getName());
 			double size = csvFile.length() / 1024 /1024;
 			String strSize = df.format(size);
 			csvFileDto.setFileSize(Float.parseFloat(strSize));
-			csvFileDto.setIn(csvInput);
 			csvFileDto.setParameterType(parameterType);
 			map.put("csv", csvFileDto);			
 		}
@@ -162,15 +179,16 @@ public class VirtualFileSystemServiceTest {
 			System.out.println("datPath: " + datPath);
 			FileDto datFileDto = new FileDto();
 			File datFile = new File(datPath);
-			InputStream datInput = new FileInputStream(datFile);
+//			InputStream datInput = new FileInputStream(datFile);
+//			datFileDto.setIn(datInput);
+			datFileDto.setFilePath(datFile.getAbsolutePath());
 			datFileDto.setFileName(datFile.getName());
 			double size = datFile.length() / 1024 /1024;
 			String strSize = df.format(size);
 			datFileDto.setFileSize(Float.parseFloat(strSize));
-			datFileDto.setIn(datInput);
 			datFileDto.setParameterType(parameterType);
 			map.put("dat", datFileDto);			
 		}
-		fileService.saveFile(map);
+		fileService.saveFileMock(map);
 	}
 }

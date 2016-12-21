@@ -19,10 +19,10 @@
 <meta http-equiv="description" content="This is my page">
 
 <jsp:include page="/WEB-INF/jsp/inc/include-easyUI.jsp"></jsp:include>
-
-<link type="text/css" rel="stylesheet"
-	href="${pageContext.request.contextPath}/static/ystep/css/ystep.css">
-
+<link rel="stylesheet"
+	href="<%=request.getContextPath()%>/static/css/all.css" type="text/css" />
+<link rel="stylesheet" type="text/css"
+	href="${pageContext.request.contextPath}/static/statusstep/css/stateTracking.css">
 <link rel="stylesheet" type="text/css"
 	href="${pageContext.request.contextPath}/static/content/sweetalert/dist/sweetalert.css">
 <script
@@ -51,8 +51,6 @@
 	src="${pageContext.request.contextPath}/static/assets/js/jquery.maskedinput.min.js"></script>
 <script
 	src="${pageContext.request.contextPath}/static/assets/js/bootstrap-tag.min.js"></script>
-<script
-	src="${pageContext.request.contextPath}/static/ystep/js/ystep.js"></script>
 
 <style type="text/css">
 .sweet-alert h2 {
@@ -114,10 +112,6 @@
 	/*     padding-left: 20px; */
 }
 
-p, span, b, div {
-	text-align: center;
-}
-
 .icon-remove {
 	background: url('') no-repeat center center;
 }
@@ -150,70 +144,218 @@ p, span, b, div {
 	font-size: 17px;
 	width: 95%;
 }
+
+.breadcrumb {
+	margin-top: 10px;
+}
 </style>
 <script type="text/javascript">
-	
+	$(function() {
+		$("#starting-img")
+				.attr("src",
+						"${pageContext.request.contextPath}/static/new/img/images/a_38.png");
+		$("#statustracking-img")
+				.attr("src",
+						"${pageContext.request.contextPath}/static/new/img/images/a_34.png");
+		$("#filemanage-img")
+				.attr("src",
+						"${pageContext.request.contextPath}/static/new/img/images/a_26.png");
+		$("#starting-text").css("color", "#5d90d6");
+		$("#statustracking-text").css("color", "#5d90d6");
+		$("#filemange-text").css("color", "#5d90d6");
+		$("#statustrackingUL").css("display", "block");
+		$("#filemanageUL").css("display", "block");
+	})
 </script>
 </head>
 
 <body>
 	<div class="main-content">
+		<div class="breadcrumbs" id="breadcrumbs" style="text-align: left;">
+			<script type="text/javascript">
+				try {
+					ace.settings.check('breadcrumbs', 'fixed')
+				} catch (e) {
+				}
+			</script>
+			<ul class="breadcrumb">
+				<li><img
+					src="${pageContext.request.contextPath}/static/imgs/DataImport/home.png"
+					style="margin-bottom: 3px;"> <span>文件管理</span></li>
+				<li class="active">文件状态</li>
+				<li class="active">进行中</li>
+			</ul>
+			<!--  .breadcrumb -->
+		</div>
 		<div class="page-content">
-			<div class="page-header" style="padding-bottom: 10px;">
-				<h1>正在处理中的流程</h1>
-			</div>
-			<div class="row">
-				<div class="col-xs-12 col-sm-12" id="ystepDiv">
-					<!-- ystep容器 -->
-				</div>
-				<!-- /.col -->
-			</div>
-			<!-- /.row -->
+			<div class="right_content" id="stautsstep"></div>
 		</div>
 		<!-- /.page-content -->
 	</div>
 	<!-- /.main-content -->
 	<script type="text/javascript">
+		function getstatus1Div(filename) {
+			var status1Div = '<div class="status1"><p>'+filename+'</p>'
+					+'<div class="status-box1">\
+						<div class="status-box1-1">\
+							<div class="statu-l">\
+								<img src="${pageContext.request.contextPath}/static/statusstep/img/image/01c.png">\
+								<span class="spacing-1">开始</span>\
+								<img src="${pageContext.request.contextPath}/static/statusstep/img/image/01y.png">\
+							</div>\
+						</div>\
+						<div class="statu-r">\
+							<img src="${pageContext.request.contextPath}/static/statusstep/img/image/02s.png">\
+							<span>文件上传</span>\
+							<img src="${pageContext.request.contextPath}/static/statusstep/img/image/02ys.png">\
+						</div>\
+						<div class="statu-r">\
+							<img src="${pageContext.request.contextPath}/static/statusstep/img/image/03s.png">\
+							<span>数据导入</span>\
+							<img src="${pageContext.request.contextPath}/static/statusstep/img/image/03ys.png">\
+						</div>\
+						<div class="statu-r">\
+							<img src="${pageContext.request.contextPath}/static/statusstep/img/image/04s.png">\
+							<span class="spacing-4">预处理</span>\
+							<img src="${pageContext.request.contextPath}/static/statusstep/img/image/04ys.png">\
+						</div>\
+						<div class="statu-r">\
+							<img src="${pageContext.request.contextPath}/static/statusstep/img/image/05s.png">\
+							<span class="spacing-1">结束</span>\
+							<img src="${pageContext.request.contextPath}/static/statusstep/img/image/05ys.png">\
+						</div>\
+					</div>\
+				</div>';
+			return status1Div;
+		}
+		function getstatus2Div(filename) {
+			var status2Div = '<div class="status2"><p>'+filename+'</p>'
+						+'<div class="status-box2">\
+							<div class="status-box2-1">\
+								<div class="statu-l">\
+									<img src="${pageContext.request.contextPath}/static/statusstep/img/image/01c.png">\
+									<span class="spacing-1">开始</span>\
+									<img src="${pageContext.request.contextPath}/static/statusstep/img/image/01y.png">\
+								</div>\
+								<div class="statu-l">\
+									<img src="${pageContext.request.contextPath}/static/statusstep/img/image/02c.png">\
+									<span>文件上传</span>\
+									<img src="${pageContext.request.contextPath}/static/statusstep/img/image/02y.png">\
+								</div>\
+							</div>\
+							<div class="statu-r">\
+								<img src="${pageContext.request.contextPath}/static/statusstep/img/image/03s.png">\
+								<span>数据导入</span>\
+								<img src="${pageContext.request.contextPath}/static/statusstep/img/image/03ys.png">\
+							</div>\
+							<div class="statu-r">\
+								<img src="${pageContext.request.contextPath}/static/statusstep/img/image/04s.png">\
+								<span class="spacing-4">预处理</span>\
+								<img src="${pageContext.request.contextPath}/static/statusstep/img/image/04ys.png">\
+							</div>\
+							<div class="statu-r">\
+								<img src="${pageContext.request.contextPath}/static/statusstep/img/image/05s.png">\
+								<span class="spacing-1">结束</span>\
+								<img src="${pageContext.request.contextPath}/static/statusstep/img/image/05ys.png">\
+							</div>\
+						</div>\
+					</div>';
+			return status2Div;
+		}
+		function getstatus3Div(filename) {
+			var status3Div = '<div class="status3"><p>'+filename+'</p>'
+						+'<div class="status-box3">\
+							<div class="status-box3-1">\
+								<div class="statu-l">\
+									<img src="${pageContext.request.contextPath}/static/statusstep/img/image/01c.png">\
+									<span class="spacing-1">开始</span>\
+									<img src="${pageContext.request.contextPath}/static/statusstep/img/image/01y.png">\
+								</div>\
+								<div class="statu-l">\
+									<img src="${pageContext.request.contextPath}/static/statusstep/img/image/02c.png">\
+									<span>文件上传</span>\
+									<img src="${pageContext.request.contextPath}/static/statusstep/img/image/02y.png">\
+								</div>\
+								<div class="statu-l">\
+									<img src="${pageContext.request.contextPath}/static/statusstep/img/image/03c.png">\
+									<span>数据导入</span>\
+									<img src="${pageContext.request.contextPath}/static/statusstep/img/image/03y.png">\
+								</div>\
+							</div>\
+							<div class="statu-r">\
+								<img src="${pageContext.request.contextPath}/static/statusstep/img/image/04s.png">\
+								<span class="spacing-4">预处理</span>\
+								<img src="${pageContext.request.contextPath}/static/statusstep/img/image/04ys.png">\
+							</div>\
+							<div class="statu-r">\
+								<img src="${pageContext.request.contextPath}/static/statusstep/img/image/05s.png">\
+								<span class="spacing-1">结束</span>\
+								<img src="${pageContext.request.contextPath}/static/statusstep/img/image/05ys.png">\
+							</div>\
+						</div>\
+					</div>';
+			return status3Div;
+		}
+		function getstatus4Div(filename) {
+			var status4Div = '<div class="status4"><p>'+filename+'</p>'
+						+'<div class="status-box4">\
+							<div class="status-box4-1">\
+								<div class="statu-l">\
+									<img src="${pageContext.request.contextPath}/static/statusstep/img/image/01c.png">\
+									<span class="spacing-1">开始</span>\
+									<img src="${pageContext.request.contextPath}/static/statusstep/img/image/01y.png">\
+								</div>\
+								<div class="statu-l">\
+									<img src="${pageContext.request.contextPath}/static/statusstep/img/image/02c.png">\
+									<span>文件上传</span>\
+									<img src="${pageContext.request.contextPath}/static/statusstep/img/image/02y.png">\
+								</div>\
+								<div class="statu-l">\
+									<img src="${pageContext.request.contextPath}/static/statusstep/img/image/03c.png">\
+									<span>数据导入</span>\
+									<img src="${pageContext.request.contextPath}/static/statusstep/img/image/03y.png">\
+								</div>\
+								<div class="statu-l">\
+									<img src="${pageContext.request.contextPath}/static/statusstep/img/image/04c.png">\
+									<span class="spacing-4">预处理</span>\
+									<img src="${pageContext.request.contextPath}/static/statusstep/img/image/04y.png">\
+								</div>\
+							</div>\
+							<div class="statu-r">\
+								<img src="${pageContext.request.contextPath}/static/statusstep/img/image/05s.png">\
+								<span class="spacing-1">结束</span>\
+								<img src="${pageContext.request.contextPath}/static/statusstep/img/image/05ys.png">\
+							</div>\
+						</div>\
+					</div>';
+			return status4Div;
+		}
+
 		var statusYstepList = ${statusYstepList};
-		var i = 0;
+		var statusDiv = "";
+		var sumYstep = 0;
 		$.each(statusYstepList, function() {
-			i = i + 1;
-			$('#ystepDiv').append(
-					"<div><div class='ystep"+i+"'></div><div class='ysteptitle'>"
-							+ this.fileName + "</div><br></div>");
-
-			//根据jQuery选择器找到需要加载ystep的容器
-			//loadStep 方法可以初始化ystep
-			$(".ystep" + i).loadStep({
-				//ystep的外观大小
-				//可选值：small,large
-				size : "large",
-				//ystep配色方案
-				//可选值：green,blue
-				color : "blue",
-				//ystep中包含的步骤
-				steps : [ {
-					title : "开始",
-					content : "开始"
-				}, {
-					//步骤名称
-					title : "文件上传",
-					//步骤内容(鼠标移动到本步骤节点时，会提示该内容)
-					content : "文件上传至服务器"
-				}, {
-					title : "数据导入",
-					content : "文件数据导入数据库"
-				}, {
-					title : "预处理",
-					content : "数据预处理"
-				}, {
-					title : "结束",
-					content : "结束"
-				} ]
-			});
-
-			$(".ystep" + i).setStep(this.statusType);
+			if(this.statusType == '1'){
+				statusDiv = getstatus1Div(this.fileName);
+				sumYstep = sumYstep + 1;
+			}
+			if(this.statusType == '2'){
+				statusDiv = getstatus2Div(this.fileName);
+				sumYstep = sumYstep + 1;
+			}
+			if(this.statusType == '3'){
+				statusDiv = getstatus3Div(this.fileName);
+				sumYstep = sumYstep + 1;
+			}
+			if(this.statusType == '4'){
+				statusDiv = getstatus4Div(this.fileName);
+				sumYstep = sumYstep + 1;
+			}
+			$('#stautsstep').append(statusDiv);
 		});
+		if(sumYstep == 0){
+			$('#stautsstep').append('<div class="status1"><p>当前无进行中的文件</p></div>');
+		}
 	</script>
 </body>
 </html>

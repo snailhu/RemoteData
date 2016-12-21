@@ -1,12 +1,16 @@
 package DataAn.galaxyManager.controller;
 
 import java.util.List;
+
 import javax.annotation.Resource;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import DataAn.common.pageModel.Combo;
 import DataAn.common.pageModel.JsonMessage;
 import DataAn.galaxyManager.dto.StarDto;
 import DataAn.galaxyManager.service.IStarService;
@@ -35,21 +39,25 @@ public class StarController {
 	@ResponseBody
 	public JsonMessage createStar(@RequestParam(value = "seriesId", required = true) long seriesId,
 								  @RequestParam(value = "name", required = true) String name,
+								  @RequestParam(value = "code", required = true) String code,
 								  @RequestParam(value = "beginDate", required = true) String beginDate,
 								  @RequestParam(value = "description", required = false) String description){
+		StarDto starDto = new StarDto();
+		starDto.setSeriesId(seriesId);
+		starDto.setName(name);
+		starDto.setCode(code);
+		starDto.setDescription(description);
+		starDto.setBeginDate(beginDate);
+		System.out.println("come in createStar..");
+		System.out.println(starDto);
 		JsonMessage jsonMsg = new JsonMessage();
+		if (starService.isExistStarByName(starDto)) {
+			jsonMsg.setSuccess(false);
+			jsonMsg.setMsg("在此星系下的星名称已存在！");
+			jsonMsg.setObj("在此星系下的星名称已存在！");
+			return jsonMsg;
+		} 
 		try {
-//			System.out.println("come in createStar..");
-//			System.out.println("seriesId: " + seriesId);
-//			System.out.println("name: " + name);
-//			System.out.println("beginDate: " + beginDate);
-//			System.out.println("description: " + description);
-//			System.out.println();
-			StarDto starDto = new StarDto();
-			starDto.setSeriesId(seriesId);
-			starDto.setName(name);
-			starDto.setDescription(description);
-			starDto.setBeginDate(beginDate);
 			starService.saveStar(starDto);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -67,28 +75,32 @@ public class StarController {
 	@ResponseBody
 	public StarDto getStarForm(long starId){
 		
-		return starService.getStarDto(starId);
+		return starService.getStarDtoById(starId);
 	}
 	
 	@RequestMapping(value="/editStar", method = RequestMethod.POST)
 	@ResponseBody
 	public JsonMessage editStar(@RequestParam(value = "id", required = true) long id,
 								@RequestParam(value = "name", required = true) String name,
+								@RequestParam(value = "code", required = true) String code,
 								@RequestParam(value = "beginDate", required = true) String beginDate,
 								@RequestParam(value = "description", required = false) String description){
+		StarDto starDto = new StarDto();
+		starDto.setId(id);
+		starDto.setName(name);
+		starDto.setCode(code);
+		starDto.setDescription(description);
+		starDto.setBeginDate(beginDate);
+		System.out.println("come in editStar..");
+		System.out.println(starDto);
 		JsonMessage jsonMsg = new JsonMessage();
+		if (starService.isExistStarByName(starDto)) {
+			jsonMsg.setSuccess(false);
+			jsonMsg.setMsg("在此星系下的星名称已存在！");
+			jsonMsg.setObj("在此星系下的星名称已存在！");
+			return jsonMsg;
+		} 
 		try {
-//			System.out.println("come in editStar..");
-//			System.out.println("id: " + id);
-//			System.out.println("name: " + name);
-//			System.out.println("beginDate: " + beginDate);
-//			System.out.println("description: " + description);
-//			System.out.println();
-			StarDto starDto = new StarDto();
-			starDto.setId(id);
-			starDto.setName(name);
-			starDto.setDescription(description);
-			starDto.setBeginDate(beginDate);
 			starService.updateStar(starDto);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -104,11 +116,11 @@ public class StarController {
 	@RequestMapping(value="/deleteStar", method = RequestMethod.POST)
 	@ResponseBody
 	public JsonMessage deleteStar(@RequestParam(value = "starId", required = true) long starId){
+		System.out.println("come in deleteStar..");
+		System.out.println("starId: " + starId);
+		System.out.println();
 		JsonMessage jsonMsg = new JsonMessage();
 		try {
-//			System.out.println("come in deleteStar..");
-//			System.out.println("starId: " + starId);
-//			System.out.println();
 			starService.deleteStar(starId);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -120,5 +132,18 @@ public class StarController {
 		jsonMsg.setSuccess(true);
 		jsonMsg.setMsg("删除星成功！");
 	    return jsonMsg;
+	}
+	
+	@RequestMapping("/getStarComboData")
+	@ResponseBody
+	public List<Combo> getStarComboData(String seriesCode, String starCode) {
+		System.out.println("getStarComboData..");
+		System.out.println("seriesId: " + seriesCode);
+		System.out.println("starId: " + starCode);
+		List<Combo> list = starService.getStarComboData(seriesCode, starCode);
+//		for (Combo combo : list) {
+//			System.out.println(combo);
+//		}
+		return list;
 	}
 }

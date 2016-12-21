@@ -10,6 +10,7 @@ import DataAn.common.dao.BaseDaoImpl;
 import DataAn.common.dao.Pager;
 import DataAn.status.dao.IStatusTrackingDao;
 import DataAn.status.domain.StatusTracking;
+import DataAn.status.option.StatusTrackingType;
 
 @Repository
 public class StatusTrackingDaoImpl extends BaseDaoImpl<StatusTracking> implements IStatusTrackingDao {
@@ -17,11 +18,11 @@ public class StatusTrackingDaoImpl extends BaseDaoImpl<StatusTracking> implement
 	@Override
 	@SuppressWarnings("unchecked")
 	public List<StatusTracking> getStatusTrackingByParams(String userType) {
-		String hql = "from StatusTracking where statusType != '5'";
+		String hql = "from StatusTracking where statusType != '5' and statusType not like '%e%'";
 		if (StringUtils.isNotBlank(userType)) {
 			hql += " and userType = '" + userType + "'";
 		}
-		hql += "order by createDate";
+		hql += " order by createDate desc";
 		List<StatusTracking> statusTrackings = this.getSession().createQuery(hql).list();
 		return statusTrackings;
 	}
@@ -30,8 +31,10 @@ public class StatusTrackingDaoImpl extends BaseDaoImpl<StatusTracking> implement
 	@SuppressWarnings("unchecked")
 	public Pager<StatusTracking> selectByOption(int pageIndex, int pageSize, String fileName, String userType,
 			String statusType, String createdatetimeStart, String createdatetimeEnd) {
-		String hql = "from StatusTracking where 1=1";
-		String countHQL = "select count(*) from StatusTracking where 1=1";
+		String hql = "from StatusTracking where (statusType='" + StatusTrackingType.END.getValue()
+				+ "' or statusType like('%e%'))";
+		String countHQL = "select count(*) from StatusTracking where (statusType='" + StatusTrackingType.END.getValue()
+				+ "' or statusType like('%e%'))";
 		if (StringUtils.isNotBlank(fileName)) {
 			hql += " and fileName = '" + fileName + "'";
 			countHQL += " and fileName = '" + fileName + "'";
@@ -41,8 +44,14 @@ public class StatusTrackingDaoImpl extends BaseDaoImpl<StatusTracking> implement
 			countHQL += " and userType = '" + userType + "'";
 		}
 		if (StringUtils.isNotBlank(statusType)) {
-			hql += " and statusType = '" + statusType + "'";
-			countHQL += " and statusType = '" + statusType + "'";
+			if (statusType.equals("0")) {
+				hql += " and statusType = '" + StatusTrackingType.END.getValue() + "'";
+				countHQL += " and statusType = '" + StatusTrackingType.END.getValue() + "'";
+			} else {
+				hql += " and statusType like '%e%'";
+				countHQL += " and statusType like '%e%'";
+			}
+
 		}
 		if (StringUtils.isNotBlank(createdatetimeStart)) {
 			hql += " and createDate >= '" + createdatetimeStart + "'";
@@ -52,7 +61,7 @@ public class StatusTrackingDaoImpl extends BaseDaoImpl<StatusTracking> implement
 			hql += " and createDate <= '" + createdatetimeEnd + "'";
 			countHQL += " and createDate <= '" + createdatetimeEnd + "'";
 		}
-		hql += "order by createDate";
+		hql += "order by createDate desc";
 
 		List<StatusTracking> list = this.getSession().createQuery(hql).setMaxResults(pageSize)
 				.setFirstResult(pageSize * (pageIndex - 1)).list();

@@ -8,10 +8,12 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.Vector;
+import java.util.concurrent.ForkJoinPool;
 
 import javax.annotation.Resource;
 
+import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.Logger;
 import org.bson.Document;
 import org.jfree.chart.ChartUtilities;
 import org.jfree.chart.JFreeChart;
@@ -24,140 +26,265 @@ import com.mongodb.client.MongoCursor;
 
 import DataAn.common.config.CommonConfig;
 import DataAn.common.utils.DateUtil;
+import DataAn.common.utils.Log4jUtil;
 import DataAn.jfreechart.chart.ChartFactory;
 import DataAn.jfreechart.chart.ChartUtils;
-import DataAn.jfreechart.chart.Serie;
 import DataAn.jfreechart.dto.ConstraintDto;
 import DataAn.jfreechart.dto.LineChartDto;
 import DataAn.jfreechart.service.IJfreechartServcie;
+import DataAn.jfreechart.thread.SearchByDayTask2;
+import DataAn.jfreechart.thread.SearchByDayTask3;
+import DataAn.jfreechart.thread.SearchByDayTask4;
+import DataAn.jfreechart.thread.SearchByDayTask6;
+import DataAn.jfreechart.thread.SearchByDayTask7;
+import DataAn.jfreechart.thread.SearchByDayTask8;
 import DataAn.mongo.service.IMongoService;
 import DataAn.wordManager.config.OptionConfig;
 
 @Service
 public class JfreechartServiceImpl implements IJfreechartServcie {
-
 	@Resource
 	private IMongoService mongoService;
 
+	private Logger logger = Log4jUtil.getInstance().getLogger(JfreechartServiceImpl.class);
+	
+	private final static ForkJoinPool forkJoinPool = new ForkJoinPool(15);
+	
 	@Override
 	public LineChartDto createLineChart(String series, String star,
 			String paramType, Date beginDate, Date endDate,
 			Map<String, List<ConstraintDto>> constraintsMap) throws Exception {
-
-		return this.createTimeSeriesChart(series, star, paramType, beginDate,
-				endDate, constraintsMap, 0);
-	}
-
-	@Override
-	public String createLineChart(String title, String categoryAxisLabel,
-			String valueAxisLabel, Vector<Serie> series,
-			Vector<String> categories) throws Exception {
-
-		JFreeChart chart = ChartFactory.createLineChartDoubleY(title,
-				categoryAxisLabel, valueAxisLabel, series, categories);
-
-		String cachePath = CommonConfig.getChartCachePath();
-		File parentDir = new File(cachePath);
-		if (!parentDir.exists()) {
-			parentDir.mkdirs();
+		
+		StringBuffer sb = new StringBuffer();
+		sb.append(DateUtil.format(new Date())+" come in createLineChart.."+"\n");
+		sb.append("series: " + series+"\n");
+		sb.append("star: " + star+"\n");
+		sb.append("paramType: " + paramType+"\n");
+		sb.append("beginDate: " + DateUtil.format(beginDate)+"\n");
+		sb.append("endDate: " + DateUtil.format(endDate)+"\n");
+		sb.append("\n");
+		for (String key : constraintsMap.keySet()) {
+			sb.append(key+"\n");
+			for (ConstraintDto constraintDto : constraintsMap.get(key)) {
+				sb.append(constraintDto+"\n");
+			}
+			sb.append("\n");
 		}
-
-		File file = new File(cachePath, "lineChart.png");
-		int width = 1024;
-		int height = 420;
-		// ChartUtilities.saveChartAsJPEG(file, chart, width, height);
-		ChartUtilities.saveChartAsPNG(file, chart, width, height);
-		return file.getAbsolutePath();
+		System.out.println(sb.toString());
+//		logger.info(sb.toString());
+		
+		return this.createTimeSeriesChart3(series, star, paramType, beginDate,
+				endDate, constraintsMap);
 	}
-
-	protected LineChartDto createLineChart(String series, String star,
-			String paramType, String date, Map<String, String> params,
-			int totalNumber) throws Exception {
+	protected LineChartDto createTimeSeriesChart3(String series, String star,
+			String paramType, Date beginDate, Date endDate,
+			Map<String, List<ConstraintDto>> constraintsMap) throws Exception {
+//		ForkJoinPool forkJoinPool = new ForkJoinPool(15);
+		
+		LineChartDto lineChartDto = forkJoinPool.invoke(new SearchByDayTask8(series, star, paramType, beginDate, endDate, constraintsMap));
+		return lineChartDto;
+	}
+	protected LineChartDto createTimeSeriesChart2(String series, String star,
+			String paramType, Date beginDate, Date endDate,
+			Map<String, List<ConstraintDto>> constraintsMap) throws Exception {
+		
+		Map<String, String> params = new HashMap<String, String>();
+		Map<String, Double> paramMin = new HashMap<String, Double>();
+		Map<String, Double> paramMax = new HashMap<String, Double>();
+		Set<String> constraintsKeys = constraintsMap.keySet();
+		for (String key : constraintsKeys) {
+			List<ConstraintDto> constraintList = constraintsMap.get(key);
+			for (ConstraintDto constraintDto : constraintList) {
+				if (!params.containsKey(key)) {
+					params.put(constraintDto.getParamCode(),constraintDto.getParamName());
+					paramMin.put(constraintDto.getParamCode(),constraintDto.getMin());
+					paramMax.put(constraintDto.getParamCode(),constraintDto.getMax());
+				}
+			}
+		}
+		
 		// 多条线数据
-		Vector<Serie> lines = new Vector<Serie>();
-		// x轴数据
-		Vector<String> categories = new Vector<String>();
-
-		Map<String, Vector<Object>> lineMap = new HashMap<String, Vector<Object>>();
+		Map<String, TimeSeries> lineMap = new HashMap<String, TimeSeries>();
 		Map<String, Double> minMap = new HashMap<String, Double>();
 		Map<String, Double> maxMap = new HashMap<String, Double>();
-		Vector<Object> lineList = null;
+		//参数集
+		Set<String> en_params = params.keySet();
+		TimeSeries timeseries = null;
 		Double min = null;
 		Double max = null;
-		Set<String> en_params = params.keySet();
-		MongoCursor<Document> cursor = mongoService.findByYear_month_day(
-				series, star, paramType, date);
+		
+		long begin = System.currentTimeMillis();
+		
+		//查询mongodb数据集
+		MongoCursor<Document> cursor = mongoService.findByDate(series, star,
+				paramType, beginDate, endDate);
+		if(cursor == null){
+			throw new RuntimeException(DateUtil.format(beginDate) + " 到 "+ DateUtil.format(endDate) +" 未找到报告数据！");
+		}
 		Document doc = null;
-		int count = 0;
+		Date datetime = null;
+		int count = 0;//计数器
+		long lastTime = 0; //上一个时间截
+		long nextTime = 0; //下一个时间截
+		int second_count = 0; //秒级数据集的个数
 		while (cursor.hasNext()) {
-			// 设置总数
-			if (totalNumber != 0 && count == totalNumber) {
-				break;
-			}
+			
 			count++;
-
+			
 			doc = cursor.next();
-			categories.add(DateUtil.format(doc.getDate("datetime")));
+			nextTime = doc.getDate("datetime").getTime();
+			//如果这次的时间截跟上次的时间截不相等
+			if(nextTime != lastTime){
+				second_count = 0;
+				lastTime = nextTime;
+			}else{
+				nextTime = nextTime + (second_count * 100);
+				second_count ++;
+			}
+			datetime = new Date(nextTime);
+			
 			for (String key : en_params) {
-				lineList = lineMap.get(key);
-				if (lineList == null) {
-					lineList = new Vector<Object>();
+				timeseries = lineMap.get(key);
+				if (timeseries == null) {
+					timeseries = ChartUtils.createTimeseries(params.get(key));
 				}
-				lineList.add(doc.get(key));
-				lineMap.put(key, lineList);
-				// 获取最小值
-				min = minMap.get(key);
-				if (min == null) {
-					min = Double.parseDouble(doc.getString(key));
+				String strValue = doc.getString(key);
+				if(StringUtils.isNotBlank(strValue)){
+					
+					// 转换为double 类型
+					double dValue = Double.parseDouble(strValue.trim());
+					
+					//在有效值区间之内
+					if(paramMax.get(key) != null && dValue > paramMax.get(key))
+						continue;
+					
+					if(paramMin.get(key) != null && dValue < paramMin.get(key))
+						continue;
+					
+					// 往序列里面添加数据
+					timeseries.addOrUpdate(new Millisecond(datetime), dValue);
+					lineMap.put(key, timeseries);
+					// 获取最小值
+					min = minMap.get(key);
+					if (min == null) {
+						min = dValue;
+					}
+					minMap.put(key, this.getMin(min, dValue));
+					// 获取最大值
+					max = maxMap.get(key);
+					if (max == null) {
+						max = dValue;
+					}
+					maxMap.put(key, this.getMax(max, dValue));
 				}
-				minMap.put(key, this.getMin(min,
-						Double.parseDouble(doc.getString(key))));
-				// 获取最大值
-				max = maxMap.get(key);
-				if (max == null) {
-					max = Double.parseDouble(doc.getString(key));
+				else{
+//					throw new RuntimeException(DateUtil.format(beginDate) + " 到 "+ 
+//							DateUtil.format(endDate) +" " + params.get(key) + " 未找到报告数据！1");
 				}
-				maxMap.put(key, this.getMax(max,
-						Double.parseDouble(doc.getString(key))));
 			}
 		}
-
-		Serie line = null;
-		for (String key : en_params) {
-			line = new Serie();
-			line.setName(params.get(key));
-			line.setData(lineMap.get(key));
-			lines.add(line);
+		long end_getData = System.currentTimeMillis();
+		System.out.println("get mongodb data count: " + count);
+		System.out.println("getData time: " + (end_getData - begin));
+		if(count == 0){
+			throw new RuntimeException(DateUtil.format(beginDate) + " 到 "+ DateUtil.format(endDate) + " 报告数据记录数为：" + count);
 		}
-
-		String title = "";
-		String categoryAxisLabel = "";
-		String valueAxisLabel = "";
-
-		JFreeChart chart = ChartFactory.createLineChartOneY(title,
-				categoryAxisLabel, valueAxisLabel, lines, categories);
-
+		
+		for (String line : lineMap.keySet()) {
+			System.out.println(line + " count: " + lineMap.get(line).getItemCount());
+		}
+		
 		String cachePath = CommonConfig.getChartCachePath();
 		File parentDir = new File(cachePath);
 		if (!parentDir.exists()) {
 			parentDir.mkdirs();
 		}
+		Map<String, String> chartMap = new HashMap<String, String>();
+		for (String key : constraintsKeys) {
+			long begin_chart = System.currentTimeMillis();
+			System.out.println(key + " chart begin... ");
+			List<ConstraintDto> constraintList = constraintsMap.get(key);
+			List<TimeSeriesCollection> datasetList = new ArrayList<TimeSeriesCollection>();
+			if(constraintList.size() == 2){
+				//双Y轴
+				for (ConstraintDto constraintDto : constraintList) {
+					TimeSeriesCollection dataset = new TimeSeriesCollection();
+					TimeSeries timeSeries = lineMap.get(constraintDto.getParamCode());
+//					if(timeSeries == null){
+//						throw new RuntimeException(DateUtil.format(beginDate) + " 到 "+ 
+//								DateUtil.format(endDate) +" " + constraintDto.getName()+" 未找到报告数据！2");
+//					}
+//					datasetList.add(dataset);
+					if(timeSeries != null){
+						dataset.addSeries(timeSeries);						
+						datasetList.add(dataset);						
+					}else{
+						logger.info(DateUtil.format(beginDate) + " 到 "+ DateUtil.format(endDate) +" " + constraintDto.getParamName()+" 未找到报告数据！2");
+					}
+				}
+			}else{
+				// 多条线图表数据
+				TimeSeriesCollection dataset = new TimeSeriesCollection();
+				boolean flag = false;
+				for (ConstraintDto constraintDto : constraintList) {
+					TimeSeries timeSeries = lineMap.get(constraintDto.getParamCode());
+//					if(timeSeries == null){
+//						throw new RuntimeException(DateUtil.format(beginDate) + " 到 "+ 
+//								DateUtil.format(endDate) +" " + constraintDto.getName()+" 未找到报告数据！3");
+//					}
+//					dataset.addSeries(timeSeries);		
+					if(timeSeries != null){
+						dataset.addSeries(timeSeries);						
+						flag = true;
+					}else{
+						logger.info(DateUtil.format(beginDate) + " 到 "+ DateUtil.format(endDate) +" " + constraintDto.getParamName()+" 未找到报告数据！3");
+					}
+				}
+				//至少有一次
+				if(flag){
+					datasetList.add(dataset);					
+				}
+			}
 
-		File file = new File(cachePath, "lineChart.png");
-		int width = 1024;
-		int height = 620;
-		// ChartUtilities.saveChartAsJPEG(file, chart, width, height);
-		ChartUtilities.saveChartAsPNG(file, chart, width, height);
+			String title = "";
+			String categoryAxisLabel = "";
+			String valueAxisLabel = "";
+			String y1Label = "";
+			String y2Label = "";
+			Map<String,String> configMap = new HashMap<String,String>();
+			configMap.put("title", title);
+			configMap.put("categoryAxisLabel", categoryAxisLabel);
+			configMap.put("valueAxisLabel", valueAxisLabel);
+			configMap.put("y1Label", y1Label);
+			configMap.put("y2Label", y2Label);
+
+			JFreeChart chart = ChartFactory.createTimeSeriesChart(datasetList, beginDate, endDate, configMap);
+			if(chart != null){
+				String chartName = key+"_lineChart.png";
+				File file = new File(cachePath, chartName);
+				int width = 1024;
+				int height = 620;
+				// ChartUtilities.saveChartAsJPEG(file, chart, width, height);
+				ChartUtilities.saveChartAsPNG(file, chart, width, height);
+				chartMap.put(key, file.getAbsolutePath());				
+			}
+			long end_chart = System.currentTimeMillis();
+			System.out.println(key + " chart time: " + (end_chart-begin_chart));
+		}
+
 		LineChartDto lineChartDto = new LineChartDto();
-		// lineChartDto.setChartPath(file.getAbsolutePath());
+		lineChartDto.setChartMap(chartMap);
 		lineChartDto.setMinMap(minMap);
 		lineChartDto.setMaxMap(maxMap);
+		
+		System.out.println(lineChartDto);
+		
 		return lineChartDto;
 	}
 
 	protected LineChartDto createTimeSeriesChart(String series, String star,
 			String paramType, Date beginDate, Date endDate,
-			Map<String, List<ConstraintDto>> constraintsMap, int totalNumber)
+			Map<String, List<ConstraintDto>> constraintsMap)
 			throws Exception {
 
 		Map<String, String> params = new HashMap<String, String>();
@@ -168,18 +295,172 @@ public class JfreechartServiceImpl implements IJfreechartServcie {
 			List<ConstraintDto> constraintList = constraintsMap.get(key);
 			for (ConstraintDto constraintDto : constraintList) {
 				if (!params.containsKey(key)) {
-					params.put(constraintDto.getValue(),
-							constraintDto.getName());
-					paramMin.put(constraintDto.getValue(),
-							constraintDto.getMin());
-					paramMax.put(constraintDto.getValue(),
-							constraintDto.getMax());
+					params.put(constraintDto.getParamCode(),constraintDto.getParamName());
+					paramMin.put(constraintDto.getParamCode(),constraintDto.getMin());
+					paramMax.put(constraintDto.getParamCode(),constraintDto.getMax());
+				}
+			}
+		}
+		
+		Map<Date, List<Document>> tempMap = this.getEverySecondData(series, star, paramType, beginDate, endDate, 0);
+		// 多条线数据
+		Map<String, TimeSeries> lineMap = new HashMap<String, TimeSeries>();
+		Map<String, Double> minMap = new HashMap<String, Double>();
+		Map<String, Double> maxMap = new HashMap<String, Double>();
+		TimeSeries timeseries = null;
+		Double min = null;
+		Double max = null;
+		List<Document> tempDocList = null;
+		Document doc = null;
+		Set<Date> dateSet = tempMap.keySet();
+		Set<String> en_params = params.keySet();
+		for (Date datetime : dateSet) {
+			tempDocList = tempMap.get(datetime);
+			for (int i = 0; i < tempDocList.size(); i++) {
+				doc = tempDocList.get(i);
+				long time = doc.getDate("datetime").getTime() + (i * 100);
+				datetime = new Date(time);
+				for (String key : en_params) {
+					timeseries = lineMap.get(key);
+					if (timeseries == null) {
+						timeseries = ChartUtils.createTimeseries(params.get(key));
+					}
+					String strValue = doc.getString(key);
+					if(StringUtils.isNotBlank(strValue)){
+						
+						// 转换为double 类型
+						double dValue = Double.parseDouble(strValue.trim());
+						
+						//在有效值区间之内
+						if(paramMax.get(key) != null && dValue > paramMax.get(key))
+							continue;
+						
+						if(paramMin.get(key) != null && dValue < paramMin.get(key))
+							continue;
+						
+						// 往序列里面添加数据
+						timeseries.addOrUpdate(new Millisecond(datetime), dValue);
+						lineMap.put(key, timeseries);
+						// 获取最小值
+						min = minMap.get(key);
+						if (min == null) {
+							min = dValue;
+						}
+						minMap.put(key, this.getMin(min, dValue));
+						// 获取最大值
+						max = maxMap.get(key);
+						if (max == null) {
+							max = dValue;
+						}
+						maxMap.put(key, this.getMax(max, dValue));
+					}
+					else{
+//						throw new RuntimeException(DateUtil.format(beginDate) + " 到 "+ 
+//								DateUtil.format(endDate) +" " + params.get(key) + " 未找到报告数据！1");
+					}
 				}
 			}
 		}
 
+		for (String line : lineMap.keySet()) {
+			System.out.println(line + " count: " + lineMap.get(line).getItemCount());
+		}
+		
+		Map<String, String> chartMap = new HashMap<String, String>();
+		for (String key : constraintsKeys) {
+			List<ConstraintDto> constraintList = constraintsMap.get(key);
+			List<TimeSeriesCollection> datasetList = new ArrayList<TimeSeriesCollection>();
+			if(constraintList.size() == 2){
+				//双Y轴
+				for (ConstraintDto constraintDto : constraintList) {
+					TimeSeriesCollection dataset = new TimeSeriesCollection();
+					TimeSeries timeSeries = lineMap.get(constraintDto.getParamCode());
+//					if(timeSeries == null){
+//						throw new RuntimeException(DateUtil.format(beginDate) + " 到 "+ 
+//								DateUtil.format(endDate) +" " + constraintDto.getName()+" 未找到报告数据！2");
+//					}
+//					datasetList.add(dataset);
+					if(timeSeries != null && timeSeries.getItemCount() > 24){
+						dataset.addSeries(timeSeries);						
+						datasetList.add(dataset);						
+					}else{
+						logger.info(DateUtil.format(beginDate) + " 到 "+ DateUtil.format(endDate) +" " + constraintDto.getParamName()+" 未找到报告数据！2");
+					}
+				}
+			}else{
+				// 多条线图表数据
+				TimeSeriesCollection dataset = new TimeSeriesCollection();
+				boolean flag = false;
+				for (ConstraintDto constraintDto : constraintList) {
+					TimeSeries timeSeries = lineMap.get(constraintDto.getParamCode());
+//					if(timeSeries == null){
+//						throw new RuntimeException(DateUtil.format(beginDate) + " 到 "+ 
+//								DateUtil.format(endDate) +" " + constraintDto.getName()+" 未找到报告数据！3");
+//					}
+//					dataset.addSeries(timeSeries);		
+					if(timeSeries != null && timeSeries.getItemCount() > 24){
+						dataset.addSeries(timeSeries);						
+						flag = true;
+					}else{
+						logger.info(DateUtil.format(beginDate) + " 到 "+ DateUtil.format(endDate) +" " + constraintDto.getParamName()+" 未找到报告数据！3");
+					}
+				}
+				//至少有一次
+				if(flag){
+					datasetList.add(dataset);					
+				}
+			}
+
+			String title = "";
+			String categoryAxisLabel = "";
+			String valueAxisLabel = "";
+			String y1Label = "";
+			String y2Label = "";
+			Map<String,String> configMap = new HashMap<String,String>();
+			configMap.put("title", title);
+			configMap.put("categoryAxisLabel", categoryAxisLabel);
+			configMap.put("valueAxisLabel", valueAxisLabel);
+			configMap.put("y1Label", y1Label);
+			configMap.put("y2Label", y2Label);
+
+			JFreeChart chart = ChartFactory.createTimeSeriesChart(datasetList, beginDate, endDate, configMap);
+			if(chart != null){
+				String cachePath = CommonConfig.getChartCachePath();
+				File parentDir = new File(cachePath);
+				if (!parentDir.exists()) {
+					parentDir.mkdirs();
+				}
+				File file = new File(cachePath, "lineChart.png");
+				int width = 1024;
+				int height = 620;
+				// ChartUtilities.saveChartAsJPEG(file, chart, width, height);
+				ChartUtilities.saveChartAsPNG(file, chart, width, height);
+				chartMap.put(key, file.getAbsolutePath());				
+			}
+		}
+
+		LineChartDto lineChartDto = new LineChartDto();
+		lineChartDto.setChartMap(chartMap);
+		lineChartDto.setMinMap(minMap);
+		lineChartDto.setMaxMap(maxMap);
+		
+		System.out.println(lineChartDto);
+		
+		return lineChartDto;
+		
+		
+	}
+
+	/** 按每一秒获取数据集
+	 */
+	protected Map<Date, List<Document>> getEverySecondData(String series, String star,
+			String paramType, Date beginDate, Date endDate, int totalNumber){
+		
 		MongoCursor<Document> cursor = mongoService.findByDate(series, star,
 				paramType, beginDate, endDate);
+		if(cursor == null){
+			throw new RuntimeException(DateUtil.format(beginDate) + " 到 "+ DateUtil.format(endDate) +" 未找到报告数据！");
+		}
 		Document doc = null;
 		int count = 0;
 		Map<Date, List<Document>> tempMap = new LinkedHashMap<Date, List<Document>>();
@@ -200,87 +481,12 @@ public class JfreechartServiceImpl implements IJfreechartServcie {
 			tempDocList.add(doc);
 			tempMap.put(datetime, tempDocList);
 		}
-		System.out.println("count: " + count);
-		// 多条线数据
-		Map<String, TimeSeries> lineMap = new HashMap<String, TimeSeries>();
-		Map<String, Double> minMap = new HashMap<String, Double>();
-		Map<String, Double> maxMap = new HashMap<String, Double>();
-		TimeSeries timeseries = null;
-		Double min = null;
-		Double max = null;
-		Set<Date> dateSet = tempMap.keySet();
-		Set<String> en_params = params.keySet();
-		for (Date datetime : dateSet) {
-			tempDocList = tempMap.get(datetime);
-			for (int i = 0; i < tempDocList.size(); i++) {
-				doc = tempDocList.get(i);
-				long time = doc.getDate("datetime").getTime() + (i * 100);
-				datetime = new Date(time);
-				for (String key : en_params) {
-					timeseries = lineMap.get(key);
-					if (timeseries == null) {
-						timeseries = ChartUtils.createTimeseries(params
-								.get(key));
-					}
-					// 转换为double 类型
-					double dValue = Double.parseDouble(doc.getString(key));
-					// 往序列里面添加数据
-					timeseries.addOrUpdate(new Millisecond(datetime), dValue);
-					lineMap.put(key, timeseries);
-					// 获取最小值
-					min = minMap.get(key);
-					if (min == null) {
-						min = dValue;
-					}
-					minMap.put(key, this.getMin(min, dValue));
-					// 获取最大值
-					max = maxMap.get(key);
-					if (max == null) {
-						max = dValue;
-					}
-					maxMap.put(key, this.getMax(max, dValue));
-				}
-			}
+		System.out.println("get mongodb data count: " + count);
+		if(count == 0){
+			throw new RuntimeException(DateUtil.format(beginDate) + " 到 "+ DateUtil.format(endDate) +" 未找到报告数据！");
 		}
-
-		Map<String, String> chartMap = new HashMap<String, String>();
-		for (String key : constraintsKeys) {
-			List<ConstraintDto> constraintList = constraintsMap.get(key);
-			// 多条线图表数据
-			TimeSeriesCollection dataset = new TimeSeriesCollection();
-			for (ConstraintDto constraintDto : constraintList) {
-				dataset.addSeries(lineMap.get(constraintDto.getValue()));
-				System.out.println("constraintDto.getValue(): "
-						+ lineMap.get(constraintDto.getValue()).getItemCount());
-			}
-
-			String title = "";
-			String categoryAxisLabel = "";
-			String valueAxisLabel = "";
-
-			JFreeChart chart = ChartFactory.createTimeSeriesChart(title,
-					categoryAxisLabel, valueAxisLabel, dataset);
-
-			String cachePath = CommonConfig.getChartCachePath();
-			File parentDir = new File(cachePath);
-			if (!parentDir.exists()) {
-				parentDir.mkdirs();
-			}
-			File file = new File(cachePath, "lineChart.png");
-			int width = 1024;
-			int height = 620;
-			// ChartUtilities.saveChartAsJPEG(file, chart, width, height);
-			ChartUtilities.saveChartAsPNG(file, chart, width, height);
-			chartMap.put(key, file.getAbsolutePath());
-		}
-
-		LineChartDto lineChartDto = new LineChartDto();
-		lineChartDto.setChartMap(chartMap);
-		lineChartDto.setMinMap(minMap);
-		lineChartDto.setMaxMap(maxMap);
-		return lineChartDto;
+		return tempMap;
 	}
-
 	protected double getMax(double data1, double data2) {
 		if (data1 >= data2)
 			return data1;

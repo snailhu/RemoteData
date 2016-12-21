@@ -3,12 +3,14 @@ package DataAn.sys.controller;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.WebRequest;
+
 import DataAn.common.controller.BaseController;
 import DataAn.common.dao.Pager;
 import DataAn.common.pageModel.EasyuiDataGridJson;
@@ -43,7 +45,7 @@ public class UserController extends BaseController{
 	//获取用户列表
 	@RequestMapping(value = "/getUserList", method = RequestMethod.POST)
 	@ResponseBody
-	public EasyuiDataGridJson getUserList(int page, int rows, WebRequest request) {
+	public EasyuiDataGridJson getUserList(int page, int rows,String sort, String order, WebRequest request) {
 		EasyuiDataGridJson json = new EasyuiDataGridJson();
 		String userName = request.getParameter("name");
 		String createdateStart = request.getParameter("createdatetimeStart");
@@ -56,16 +58,19 @@ public class UserController extends BaseController{
 			deptIds = orgIds.split(",");
 		}
 		System.out.println("come in getUserList...");
-//		System.out.println("pageIndex: " + page);
-//		System.out.println("pageSize: " + rows);
-//		System.out.println("userName: " + userName);
-//		System.out.println("deptIds: " + orgIds);
-//		System.out.println("createdateStart: " + createdateStart);
-//		System.out.println("createdateEnd: " + createdateEnd);
-//		System.out.println("updatedateStart: " + updatedateStart);
-//		System.out.println("updatedateEnd: " + updatedateEnd);
+		System.out.println("pageIndex: " + page);
+		System.out.println("pageSize: " + rows);
+		System.out.println("sort: " + sort);
+		System.out.println("order: " + order);
+		System.out.println("userName: " + userName);
+		System.out.println("deptIds: " + orgIds);
+		System.out.println("createdateStart: " + createdateStart);
+		System.out.println("createdateEnd: " + createdateEnd);
+		System.out.println("updatedateStart: " + updatedateStart);
+		System.out.println("updatedateEnd: " + updatedateEnd);
+		
 		Pager<UserDto> pager = userService.getUserList(page, rows, userName,createdateStart,
-				createdateEnd, updatedateStart, updatedateEnd,deptIds);
+				createdateEnd, updatedateStart, updatedateEnd,deptIds,sort,order);
 		if(pager != null){
 			json.setTotal(pager.getTotalCount());
 			json.setRows(pager.getDatas());			
@@ -82,7 +87,7 @@ public class UserController extends BaseController{
 		System.out.println("come in createUser ");
 		System.out.println(user);
 		JsonMessage jsonMsg = new JsonMessage();
-		if (userService.existUserName(user.getUserName())) {
+		if (userService.existUserName(user)) {
 			jsonMsg.setSuccess(false);
 			jsonMsg.setMsg("用户名已存在！");
 			jsonMsg.setObj("用户名已存在！");
@@ -123,17 +128,20 @@ public class UserController extends BaseController{
 	}
 
 	// 编辑用户
-	@RequestMapping(value = "/editUser")
+	@RequestMapping(value = "/editUser", method = RequestMethod.POST)
 	@ResponseBody
 	public JsonMessage editUser(UserDto user, HttpServletRequest request, HttpServletResponse response) {
+		System.out.println("update user： "+ user.toString());
 		JsonMessage jsonMsg = new JsonMessage();
-		if (StringUtils.isNotBlank(user.getPassWord())) {
-			user.setPassWord(user.getPassWord());
-		}
-		String currentUserName = getCurrentUserName(request);
-		user.setUpdateUser(currentUserName);
+		if (userService.existUserName(user)) {
+			jsonMsg.setSuccess(false);
+			jsonMsg.setMsg("用户名已存在！");
+			jsonMsg.setObj("用户名已存在！");
+			return jsonMsg;
+		} 
 		try {
-			System.out.println("update user： "+ user.toString());
+			String currentUserName = getCurrentUserName(request);
+			user.setUpdateUser(currentUserName);
 			userService.update(user);
 //			UserDto userModel = userService.getUserByName(currentUserName);
 //			// 保存日志记录

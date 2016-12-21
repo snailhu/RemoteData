@@ -22,6 +22,7 @@
        <!-- 开发阶段建议最大连接数据尽量少，够用即可 -->
 			<property name="maxActive" value="${jdbc.maxActive}"/>
 			<property name="maxIdle" value="${jdbc.maxIdle}"/>
+			<property name="validationQuery"><value>select 1</value></property>
     </bean> 	
 	<!-- 主数据源 -->
 	<bean id="masterDataSource"  parent="parentDataSource">
@@ -44,7 +45,7 @@
 			<!-- <value> hibernate.dialect=org.hibernate.dialect.HSQLDialect </value> -->
 			<props>
 				<prop key="hibernate.dialect">org.hibernate.dialect.MySQL5Dialect</prop>
-<!--       				<prop key="hibernate.show_sql">true</prop>       -->
+       				<prop key="hibernate.show_sql">false</prop>        
  					<prop key="hibernate.hbm2ddl.auto">update</prop> 
 					<prop key="hibernate.format_sql">true</prop>
 				<prop key="hibernate.temp.use_jdbc_metadata_defaults">false</prop>  

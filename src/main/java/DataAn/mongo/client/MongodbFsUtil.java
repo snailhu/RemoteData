@@ -2,8 +2,12 @@ package DataAn.mongo.client;
 
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.apache.log4j.Logger;
+
+import DataAn.common.utils.Log4jUtil;
 import DataAn.common.utils.LogUtil;
 import DataAn.mongo.init.InitMongo;
+
 import com.mongodb.DB;
 import com.mongodb.Mongo;
 import com.mongodb.gridfs.GridFS;
@@ -14,6 +18,8 @@ public class MongodbFsUtil {
 	
 	private volatile static MongodbFsUtil singleton = null;
 	
+	private Logger logger = Log4jUtil.getInstance().getLogger(MongodbUtil.class);
+			
 	public static MongodbFsUtil getInstance() {
 		if (singleton == null) {
 			synchronized (MongodbFsUtil.class) {
@@ -21,7 +27,6 @@ public class MongodbFsUtil {
 					singleton = new MongodbFsUtil();
 				}
 			}
-			singleton = new MongodbFsUtil();
 		}
 		return singleton;
 	}

@@ -1,17 +1,15 @@
 package DataAn.reportManager.controller;
 
-import java.io.BufferedInputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.URLEncoder;
-import java.text.DecimalFormat;
-import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Callable;
+import java.util.concurrent.Executors;
+import java.util.concurrent.LinkedBlockingQueue;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -32,13 +30,16 @@ import DataAn.common.pageModel.Pager;
 import DataAn.common.utils.DateUtil;
 import DataAn.common.utils.UUIDGeneratorUtil;
 import DataAn.fileSystem.dto.MongoFSDto;
-import DataAn.fileSystem.option.J9Series_Star_ParameterType;
+import DataAn.galaxyManager.option.J9Series_Star_ParameterType;
+import DataAn.jfreechart.service.IJfreechartServcie;
 import DataAn.mongo.init.InitMongo;
-import DataAn.reportManager.dto.DataToDocDto;
-import DataAn.reportManager.dto.ParamDto;
-import DataAn.reportManager.dto.ParamImgDataDto;
-import DataAn.reportManager.dto.ReportFileDto;
+import DataAn.reportManager.dao.IStarParamDao;
+import DataAn.reportManager.domain.StarParam;
+import DataAn.reportManager.dto.CreateReportDto;
 import DataAn.reportManager.service.IReoportService;
+import DataAn.reportManager.service.IStarParamService;
+import DataAn.reportManager.util.CommonsConstant;
+import DataAn.reportManager.util.ResultJSON;
 import DataAn.sys.dto.ActiveUserDto;
 import DataAn.wordManager.config.OptionConfig;
 
@@ -47,63 +48,50 @@ import DataAn.wordManager.config.OptionConfig;
 public class ReportController {
 	@Resource
 	private IReoportService reoportService;
+	@Resource
+	private IStarParamService starParamService;
+	@Resource
+	private IJfreechartServcie jfreechartServcie;
+	@Resource
+	private IStarParamDao starParamDao;
+	LinkedBlockingQueue<CreateReportDto> createReports = new LinkedBlockingQueue<CreateReportDto>();
 	
+//	@RequestMapping("/index/{series}/{star}/{paramType}/{dirId}/")
 	@RequestMapping("/index")
 	public String reportIndex(Model model,HttpServletRequest request,HttpServletResponse response) {
-		//当前所在系列
-		model.addAttribute("nowSeries", "j9");
-		//当前所在星号
-		model.addAttribute("nowStar", "02");
 		
-		HttpSession session = request.getSession();
-		ActiveUserDto acticeUser = (ActiveUserDto) session.getAttribute("activeUser");
-		String flywheel = J9Series_Star_ParameterType.FLYWHEEL.getValue();
-		String type = acticeUser.getPermissionItems().get(flywheel);
-		String value = "";
-		String name = "";
-		if (StringUtils.isNotBlank(type)) {
-			value = J9Series_Star_ParameterType.getJ9SeriesStarParameterType(type).getValue();
-			name = J9Series_Star_ParameterType.getJ9SeriesStarParameterType(type).getName();
-		}else{
-			value = J9Series_Star_ParameterType.TOP.getValue();
-			name = J9Series_Star_ParameterType.TOP.getName();
-		}
-		//当前所在参数名称
-		model.addAttribute("nowParameterTypeValue", value);
-		model.addAttribute("nowParameterTypeName", name);			
-		//当前所在目录
-		model.addAttribute("nowDirId", 0);
+//		model.addAttribute("nowSeries", series);
+//		model.addAttribute("nowStar", star);
+//		model.addAttribute("nowDirId", dirId);
+//		model.addAttribute("nowParameterTypeValue", paramType);
+//		model.addAttribute("nowParameterTypeName", J9Series_Star_ParameterType.getJ9SeriesStarParameterType(paramType).getName());
+		
 		return "/admin/reportManager/index";
 	}
 	
-	@RequestMapping(value = "getList/{series}/{star}/{paramType}/{dirId}/", method = RequestMethod.POST)
+	@RequestMapping("/reportDownLoad")
+	public String reportDownLoad(Model model,HttpServletRequest request,HttpServletResponse response) {
+		
+		return "/admin/reportManager/createReport";
+	}
+	
+	//@RequestMapping(value = "getList/{series}/{star}/{paramType}/{dirId}/", method = RequestMethod.POST)
+	@RequestMapping(value = "getList", method = RequestMethod.POST)
 	@ResponseBody
-	public EasyuiDataGridJson getMongoFSList(@PathVariable String series, 
-			   								 @PathVariable String star,
-			   								 @PathVariable String paramType,
-			   								 @PathVariable long dirId ,
-			   								 HttpServletRequest request,HttpServletResponse response) {
+	public EasyuiDataGridJson getMongoFSList( HttpServletRequest request,HttpServletResponse response) {
 		EasyuiDataGridJson json = new EasyuiDataGridJson();
-		String strSeries = request.getParameter("series");
-		String strStar = request.getParameter("star");
-		String strParamType = request.getParameter("paramType");
-		String strDirId = request.getParameter("dirId");
+		String series = request.getParameter("series");
+		String star = request.getParameter("star");
+		String paramType = request.getParameter("paramType");
 		String strPage = request.getParameter("page");
-		String strRows= request.getParameter("rows");
+		String strRows = request.getParameter("rows");
+		String strDirId = request.getParameter("dirId");
 		String beginTime = request.getParameter("beginTime");
 		String endTime = request.getParameter("endTime");
 		String fileTypes= request.getParameter("fileTypes");
 		int page = 1;
 		int rows = 10;
-		if (StringUtils.isNotBlank(strSeries)) {
-			series = strSeries;
-		}
-		if (StringUtils.isNotBlank(strStar)) {
-			star = strStar;
-		}
-		if (StringUtils.isNotBlank(strParamType)) {
-			paramType = strParamType;
-		}
+		long dirId = 0L;
 		if (StringUtils.isNotBlank(strDirId)) {
 			dirId = Long.parseLong(strDirId);
 		}
@@ -113,9 +101,26 @@ public class ReportController {
 		if (StringUtils.isNotBlank(strRows)) {
 			rows = Integer.parseInt(strRows);
 		}
+		HttpSession session = request.getSession();
+		if(StringUtils.isBlank(paramType)) {
+			String value = "";
+			ActiveUserDto acticeUser = (ActiveUserDto) session.getAttribute("activeUser");
+			String flywheel = J9Series_Star_ParameterType.FLYWHEEL.getValue();
+			String flywheelRole = acticeUser.getPermissionItems().get(flywheel);
+			String top = J9Series_Star_ParameterType.TOP.getValue();
+			String topRole = acticeUser.getPermissionItems().get(top);
+			
+			if (StringUtils.isNotBlank(flywheelRole) && StringUtils.isBlank(topRole)) {
+				value = J9Series_Star_ParameterType.FLYWHEEL.getValue();
+			}
+			if (StringUtils.isNotBlank(topRole)&& StringUtils.isBlank(flywheelRole) ) {
+				value = J9Series_Star_ParameterType.TOP.getValue();
+			}
+			paramType = value;
+		}
 		Pager<MongoFSDto> pager = null;
-		if(StringUtils.isNotBlank(beginTime) || StringUtils.isNotBlank(endTime) || StringUtils.isNotBlank(fileTypes)){
-			pager = reoportService.getMongoFSList(page, rows, series, star, paramType, dirId, beginTime, endTime, fileTypes);			
+		if(StringUtils.isNotBlank(beginTime) || StringUtils.isNotBlank(endTime) || StringUtils.isNotBlank(fileTypes) ){
+			pager = reoportService.getMongoFSList(page, rows, series, star, paramType, dirId, beginTime, endTime);
 		}else{
 			pager = reoportService.getMongoFSList(page, rows, series, star, paramType, dirId);			
 		}
@@ -162,133 +167,181 @@ public class ReportController {
 		}
 		return jsonMsg;
 	}
-	@RequestMapping(value = { "/createReport2" }, method = { RequestMethod.GET})
-	public void  goCreateReport(HttpServletResponse response) throws Exception {
+	@RequestMapping(value = { "/downloadReport" })
+	public void downloadReport(HttpServletResponse response,HttpServletRequest request,String docPath,String filename) throws Exception {
 		
-		String filename = "report-20160922.doc";
-		
-		String imgUrl = OptionConfig.getWebPath() + "\\report\\wordtemplate\\satellite.jpg";  
-		
-		String templateUrl =OptionConfig.getWebPath() + "\\report\\wordtemplate\\卫星状态报告.doc";
-		
-		String templateName = "Employees";
-		
-		String docPath = OptionConfig.getWebPath() + "\\report\\"+filename;
-		
-		
-		/********************************导出报告到临时目录***********************************/
-		
-		DataToDocDto data = new DataToDocDto();
-		data.setHealthcondition("飞轮运行正常");
-		data.setParts("飞轮状态");
-		data.setReporttitle("卫星状态");
-		ParamDto param1 = new ParamDto();
-		param1.setParamName("飞轮a电压");
-		param1.setParamNumMax("5伏");
-		param1.setParamNumMin("2伏");
-		
-		ParamDto param2 = new ParamDto();
-		param2.setParamName("飞轮b电压");
-		param2.setParamNumMax("6伏");
-		param2.setParamNumMin("3伏");
-		
-		List<ParamDto> params = new ArrayList<ParamDto>();
-		params.add(param1);
-		params.add(param2);
-		
-		data.setParams(params);
-		
-		/********************************图片循环插入处理***********************************/
-		
-		List<ParamImgDataDto> paramImgDatas = new ArrayList<ParamImgDataDto>();
-		
-		ParamImgDataDto paramImgData1 = new ParamImgDataDto();
-		paramImgData1.setParName("飞轮a:温度");
-		paramImgData1.setParImg(imgUrl);
-		
-		
-		ParamImgDataDto paramImgData2 = new ParamImgDataDto();
-		paramImgData2.setParName("飞轮a：电流，转速");
-		paramImgData2.setParImg(imgUrl);
-		
-		ParamImgDataDto paramImgData3= new ParamImgDataDto();
-		paramImgData3.setParName("飞轮b:温度");
-		paramImgData3.setParImg(imgUrl);
-		
-		ParamImgDataDto paramImgData4 = new ParamImgDataDto();
-		paramImgData4.setParName("飞轮b：电流，转速");
-		paramImgData4.setParImg(imgUrl);
-		
-		paramImgDatas.add(paramImgData1);
-		paramImgDatas.add(paramImgData2);
-		paramImgDatas.add(paramImgData3);
-		paramImgDatas.add(paramImgData4);
-		
-		data.setParamImgData(paramImgDatas);
-		
-		
-		/********************************end图片循环插入处理***********************************/
-		
-
-		reoportService.reportDoc(filename, data, imgUrl, templateUrl, templateName, docPath);
-		
-		
-		/********************************服务器临时目录下载文档到客户端***********************************/
-		
-		InputStream inputStream = new FileInputStream(OptionConfig.getWebPath() + "\\report\\report-20160922.doc");
-		String fileName =  "report-20160922.doc";
-		reoportService.downLoadReportForDis(inputStream, fileName, response);
-		
-		
-		
-		/********************************保存报告到db***********************************/
-		Map<String,String> dataMap = new HashMap<String,String>();
-		dataMap.put("series", "j9");
-		dataMap.put("star", "02");
-		String date = "2016-09-22";
-		dataMap.put("date", DateUtil.formatString(date, "yyyy-MM-dd", "yyyy-MM-dd"));
-		String year = DateUtil.formatString(date, "yyyy-MM-dd", "yyyy");
-		dataMap.put("year", year);
-		String month = DateUtil.formatString(date, "yyyy-MM-dd", "MM");
-		dataMap.put("month", month);
-		String versions = UUIDGeneratorUtil.getUUID();
-		dataMap.put("versions", versions);
-		dataMap.put("startTime", "2016-09-22 00:00:01");
-		dataMap.put("endTime", "2016-09-22 11:11:11");
-		dataMap.put("parameterType","flywheel");
-		dataMap.put("databaseName",InitMongo.DATABASE_TEST); 
-		
-		InputStream input = new FileInputStream(OptionConfig.getWebPath() + "\\report\\report-20160922.doc");
-		
-		ReportFileDto reportFileDto = new ReportFileDto();
-		DecimalFormat df = new DecimalFormat("#.00");
-		reportFileDto.setFileName(filename);
-		double size = input.available() / 1024 /1024;
-		String strSize = df.format(size);
-		reportFileDto.setFileSize(Float.parseFloat(strSize));
-		reportFileDto.setIn(input);
-		
-		reoportService.saveReport(reportFileDto, dataMap);
-		
-		input.close();
-		
-		
-		/********************************删除服务器临时目录文件***********************************/
-		/*String filePath = OptionConfig.getWebPath() + "\\report\\"+filename;
-		File file = new File(filePath);
-		if (file.exists()) {
-		    file.delete();
-		}*/
-		
-		/********************************从db中下载文档***********************************/
-		long fileId=4L;
-		String databaseName = InitMongo.DATABASE_TEST;
-		//reoportService.downLoadReportForDb(fileId, databaseName,  response);
-		
-		
-//		String reportNmae="飞轮报告1.doc";
-//		response.sendRedirect("secondStyle/wordshow?file="
-//				+ URLEncoder.encode(reportNmae, "UTF-8"));
+		try {	
+			reoportService.downloadReport(response, docPath,filename);
+			reoportService.removeDoc(docPath);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
+	@RequestMapping(value = "/createReport")
+	@ResponseBody
+	public ResultJSON createReport(HttpServletRequest request,String seriesId,String starId,String partsType,String beginTime,String endTime) {
+		
+		long begin = System.currentTimeMillis();
+		String flag = UUIDGeneratorUtil.getUUID();
+		System.out.println();
+		System.out.println("begintime:" + DateUtil.format(new Date())+" 开始生成报告： flag="+flag);
+		
+		ResultJSON res = ResultJSON.getSuccessResultJSON();
+		
+		String templateUrl = OptionConfig.getWebPath() + "\\report\\wordtemplate\\卫星状态报告.doc";
+		
+		String time = DateUtil.getNowTime("yyyy-MM-dd");
+		String partsName = "";
+		if("flywheel".equals(partsType)) {
+			partsName = "飞轮";
+		}else if("top".equals(partsType)) {
+			partsName = "陀螺";
+		}
+		String filename = seriesId+"_"+starId+"_"+partsName+"_"+time+".doc";
+		String docPath = OptionConfig.getWebPath() + File.separator + 
+				"report" + File.separator + 
+				DateUtil.format(new Date(), "yyyy-MM-dd")+ File.separator + 
+				UUIDGeneratorUtil.getUUID()+filename;
+		
+		Date beginDate = DateUtil.format(beginTime,"yyyy-MM-dd");
+		Date endDate =  DateUtil.format(endTime,"yyyy-MM-dd");
+		try {
+			 reoportService.createReport(beginDate, endDate, filename, templateUrl, docPath, seriesId, starId, partsType);
+			
+			 Map<String, Object> data = new HashMap<String, Object>();
+			 data.put("docPath", docPath);
+			 data.put("filename", filename);
+			 res.setData(data);
+		 } catch (Exception ex) {
+			 ex.printStackTrace();
+			 res.setMsg(ex.getMessage());
+			 res.setResult(CommonsConstant.RESULT_FALSE);
+		 }
+		
+		long end = System.currentTimeMillis();
+		System.out.println("endtime: " + DateUtil.format(new Date())+" flag="+flag);
+		System.out.println("flag="+flag+": 生成报告 " + filename + " time: " + (end-begin));
+		 return res;
+	}
+	
+	@RequestMapping(value = "/createReport1")
+	@ResponseBody
+	public void createReport1(HttpServletRequest request,HttpServletResponse response,
+			String seriesId,String starId,String partsType,String beginTime,String endTime) {
+		CreateReportDto reportLast = new CreateReportDto();
+		reportLast.setRequest(request);
+		reportLast.setResponse(response);
+		reportLast.setSeriesId(seriesId);
+		reportLast.setStarId(starId);
+		reportLast.setPartsType(partsType);
+		reportLast.setBeginTime(beginTime);
+		reportLast.setEndTime(endTime);
+		try {
+			createReports.put(reportLast);
+			CreateReportDto reportFirst = createReports.take();
+			while(reportFirst != null){
+				
+				long begin = System.currentTimeMillis();
+				String flag = UUIDGeneratorUtil.getUUID();
+				System.out.println();
+				System.out.println("begintime:" + DateUtil.format(new Date())+" 开始生成报告： flag="+flag);
+				
+				ResultJSON res = ResultJSON.getSuccessResultJSON();
+				String templateUrl = OptionConfig.getWebPath() + "\\report\\wordtemplate\\卫星状态报告.doc";
+				String time = DateUtil.getNowTime("yyyy-MM-dd");
+				String partsName = "";
+				if("flywheel".equals(partsType)) {
+					partsName = "飞轮";
+				}else if("top".equals(partsType)) {
+					partsName = "陀螺";
+				}
+				String filename = seriesId+"_"+starId+"_"+partsName+"_"+time+".doc";
+				String docPath = OptionConfig.getWebPath() + "report\\"+filename;
+				Date beginDate = DateUtil.format(beginTime,"yyyy-MM-dd");
+				Date endDate =  DateUtil.format(endTime,"yyyy-MM-dd");
+				
+//				reoportService.createReport(beginDate, endDate, filename,templateUrl, docPath, seriesId, starId, partsType);
+
+				Map<String, Object> data = new HashMap<String, Object>();
+				data.put("docPath", docPath);
+				data.put("filename", filename);
+				res.setData(data);
+				
+				long end = System.currentTimeMillis();
+				System.out.println("endtime: " + DateUtil.format(new Date())+" flag="+flag);
+				System.out.println("flag="+flag+": 生成报告 " + filename + " time: " + (end-begin));
+				//
+				reportFirst = createReports.take();
+			}
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+			
+		}
+	}
+	
+	@RequestMapping(value = "/createReport2")
+	public Callable<String> processUpload(HttpServletRequest request,  
+            final HttpServletResponse response) {  
+        System.out.println(DateUtil.format(new Date()) +" 线程名称："+Thread.currentThread().getName());  
+        
+        
+        
+        Callable<String> s= new Callable<String>() {  
+            public String call() throws Exception {  
+                try {  
+                    System.out.println("线程名称："+Thread.currentThread().getName());  
+                    response.setContentType("text/plain;charset=utf-8");  
+                    response.getWriter().write("nihao");  
+                    response.getWriter().close();  
+                } catch (IOException e) {  
+                    e.printStackTrace();  
+                }  
+                return null;  
+            }  
+        };  
+        
+//        Executors.newFixedThreadPool(1).submit(s).g
+        return s;
+    }  
+	
+	@RequestMapping(value = { "/createReportTest" })
+	public void createReprotTest() throws Exception{
+
+		String templateUrl = OptionConfig.getWebPath() + "\\report\\wordtemplate\\卫星状态报告.doc";
+		String templateNullUrl = OptionConfig.getWebPath() + "\\report\\wordtemplate\\nullData.doc";
+		
+		List<StarParam> starList = starParamDao.getStarParamByParts();
+		for (StarParam starParam : starList) {
+			String seriesId = starParam.getSeries();
+			String starId = starParam.getStar();
+			String partsType = starParam.getPartsType() ;
+			
+			String  endTime = DateUtil.getYesterdayTime();
+			String  starTime =DateUtil.getLastWeekTime();
+			String time = DateUtil.getNowTime("yyyy-MM-dd");
+			
+			Date beginDate = DateUtil.format(starTime,"yyyy-MM-dd HH:mm:ss");
+			Date endDate =  DateUtil.format(endTime,"yyyy-MM-dd HH:mm:ss");
+			String partsName = "";
+			if("flywheel".equals(partsType)) {
+				partsName = "飞轮";
+			}else if("top".equals(partsType)) {
+				partsName = "陀螺";
+			}
+			
+			String databaseName = InitMongo.DATABASE_TEST;
+			String filename = seriesId+"_"+starId+"_"+partsName+"_"+time+".doc";
+			String docPath = OptionConfig.getWebPath() + "report\\"+filename;
+			try {
+				reoportService.createReport(beginDate, endDate, filename, templateUrl, docPath, seriesId, starId, partsType);
+				reoportService.insertReportToDB(filename, docPath,seriesId,starId, partsType,starTime,endTime,databaseName,partsName);
+				reoportService.removeDoc(docPath);
+			} catch (Exception e) {
+				reoportService.reportNullDoc(filename,templateNullUrl, docPath, starTime, endTime,e.getMessage());
+				reoportService.insertReportToDB(filename, docPath,seriesId,starId, partsType,starTime,endTime,databaseName,partsName);
+				reoportService.removeDoc(docPath);
+			}
+		}
+	}
 }

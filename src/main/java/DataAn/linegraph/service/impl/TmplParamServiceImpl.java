@@ -34,6 +34,7 @@ public class TmplParamServiceImpl implements ITmplParamService {
 		TemplateParameter param =new TemplateParameter();
 		param.setMax(tmplparamDto.getMax());
 		param.setMin(tmplparamDto.getMin());
+		param.setUnit(tmplparamDto.getUnit());
 		param.setName(tmplparamDto.getName());
 		param.setYname(tmplparamDto.getYname());
 		param.setLinegraphtemplale(template);
@@ -46,7 +47,8 @@ public class TmplParamServiceImpl implements ITmplParamService {
 	{
 		LineGraphTemplate template =new LineGraphTemplate();
 		template.setName(templateDto.getName());
-		template.setDescription(templateDto.getDescription());	
+		template.setDescription(templateDto.getDescription());
+		template.setOwnerid(templateDto.getOwnerid());
 		linetmpdao.add(template);
 		for(TemplateParameterDto paramdto:params)
 		{
@@ -54,6 +56,7 @@ public class TmplParamServiceImpl implements ITmplParamService {
 			param.setName(paramdto.getName());
 			param.setMax(paramdto.getMax());
 			param.setMin(paramdto.getMin());
+			param.setUnit(paramdto.getUnit());
 			param.setYname(paramdto.getYname());
 			param.setLinegraphtemplale(template);
 			tmplparamDao.add(param);
@@ -89,6 +92,7 @@ public class TmplParamServiceImpl implements ITmplParamService {
 				dto.setName(tmplparam.getName());
 				dto.setMax(tmplparam.getMax());
 				dto.setMin(tmplparam.getMin());
+				dto.setUnit(tmplparam.getUnit());
 				dto.setYname(tmplparam.getYname());
 				paramList.add(dto);
 			}
@@ -130,6 +134,53 @@ public class TmplParamServiceImpl implements ITmplParamService {
 						//param.setTemplateName(template.getName());
 						param.setMax(tmplparam.getMax());
 						param.setMin(tmplparam.getMin());
+						param.setUnit(tmplparam.getUnit());
+						param.setYname(tmplparam.getYname());
+						count++;
+						paramList.add(param);
+					}
+				}
+			}
+		}
+		return paramList;
+	}
+	
+	@Override
+	@Transactional
+	public List<TemplateParameterDto> getTemplateByUser(long Userid) {
+		List<TemplateParameterDto> paramList = new ArrayList<TemplateParameterDto>();
+		//List<LineGraphTemplate> templatelist = linetmpdao.findAll();
+		List<LineGraphTemplate> templatelist = linetmpdao.findByParam("ownerid", Userid);
+		List<TemplateParameter> list = new ArrayList<TemplateParameter>();
+		if(templatelist != null && templatelist.size() > 0){
+			TemplateParameterDto dto = null;
+			TemplateParameterDto param = null;
+			int count = 1;
+			for (LineGraphTemplate template : templatelist) {
+				dto = new TemplateParameterDto();
+				//dto.setId(template.getId());
+				dto.setRowid(count);
+				dto.setParentid(0);
+				dto.setTemplateid(template.getId());
+				dto.setYname("添加到分组");
+				count++;
+				dto.setTemplateName(template.getName());
+				paramList.add(dto);				
+				list= tmplparamDao.findByParam("linegraphtemplale.id",template.getId());				
+				//list = tmplparamDao.findByParam(propertyName, value)
+				//list = tmplparamDao.findAll();
+				if(list !=null && list.size()>0 ){
+					for (TemplateParameter tmplparam : list) {
+						param = new TemplateParameterDto();
+						param.setId(tmplparam.getId());
+						param.setRowid(count);
+						param.setName(tmplparam.getName());
+						param.setParentid(dto.getRowid());
+						//param.setTemplateid(tmplparam.getLinegraphtemplale().getId());
+						//param.setTemplateName(template.getName());
+						param.setMax(tmplparam.getMax());
+						param.setMin(tmplparam.getMin());
+						param.setUnit(tmplparam.getUnit());
 						param.setYname(tmplparam.getYname());
 						count++;
 						paramList.add(param);
@@ -152,6 +203,7 @@ public class TmplParamServiceImpl implements ITmplParamService {
 				dto.setName(tmplparam.getName());
 				dto.setMax(tmplparam.getMax());
 				dto.setMin(tmplparam.getMin());
+				dto.setUnit(tmplparam.getUnit());
 				dto.setYname(tmplparam.getYname());
 				dto.setTemplateName(tmplparam.getLinegraphtemplale(). getName());
 				dto.setTemplateid(tmplparam.getLinegraphtemplale().getId());
@@ -166,5 +218,6 @@ public class TmplParamServiceImpl implements ITmplParamService {
 	public TemplateParameterDto getTmplparamDto(long parameterid) {
 		return null;
 	}
+
 
 }

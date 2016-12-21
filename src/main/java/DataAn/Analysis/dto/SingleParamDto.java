@@ -1,16 +1,20 @@
 package DataAn.Analysis.dto;
 
+import java.io.Serializable;
 
-public class SingleParamDto {
+
+public class SingleParamDto implements Serializable{
 	private int id;
 	
 	private String name;//中文键
 	
 	private String value;//英文值
 	
-	private int max;
+	private String max;
 	
-	private int min;
+	private String min;
+	
+	private String unit;
 	
 	private String yname;
 	
@@ -42,22 +46,6 @@ public class SingleParamDto {
 		this.value = value;
 	}
 
-	public int getMax() {
-		return max;
-	}
-
-	public void setMax(int max) {
-		this.max = max;
-	}
-
-	public int getMin() {
-		return min;
-	}
-
-	public void setMin(int min) {
-		this.min = min;
-	}
-
 	public String getYname() {
 		return yname;
 	}
@@ -86,11 +74,31 @@ public class SingleParamDto {
 	@Override
 	public String toString() {
 		return "SingleParamDto [id=" + id + ", name=" + name + ", value="
-				+ value + ", max=" + max + ", min=" + min + ", yname=" + yname
+				+ value + ", max=" + max + ", min=" + min + ", unit=" + unit + ", yname=" + yname
 				+ "]";
 	}
 
-	
+	public String getUnit() {
+		return unit;
+	}
 
-	
+	public void setUnit(String unit) {
+		this.unit = unit;
+	}
+
+	public String getMax() {
+		return max;
+	}
+
+	public void setMax(String max) {
+		this.max = max;
+	}
+
+	public String getMin() {
+		return min;
+	}
+
+	public void setMin(String min) {
+		this.min = min;
+	}	
 }		

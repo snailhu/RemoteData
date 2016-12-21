@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.RecursiveTask;
 
+import DataAn.Analysis.dto.ParamAttributeDto;
+import DataAn.Analysis.dto.SingleParamDto;
 import DataAn.Analysis.dto.YearAndParamDataDto;
 
 public class DataSearchRoutingTask extends RecursiveTask<Map<String, YearAndParamDataDto>> {
@@ -30,19 +32,33 @@ public class DataSearchRoutingTask extends RecursiveTask<Map<String, YearAndPara
 	protected Map<String, YearAndParamDataDto> compute() {
 		Map<String, YearAndParamDataDto> vals=new HashMap<String, YearAndParamDataDto>();
 		List<DataSearchTask> forks = new LinkedList<>();
-		for (String property : requestConfig.getProperties()) {
+		//获取系列、星、设备
+		String series = requestConfig.getSeries();
+		String star = requestConfig.getStar();
+		String paramType =requestConfig.getDevice();
+		//for (String property : requestConfig.getProperties()) {
+		for (ParamAttributeDto property : requestConfig.getProperties()) {
 			DataSearchTaskConfig dataSearchTaskConfig=new DataSearchTaskConfig();
-			dataSearchTaskConfig.setProperty(property);
+			dataSearchTaskConfig.setProperty(property.getValue());
 			dataSearchTaskConfig.setStartDate(mongoFilter.getStartDate());
 			dataSearchTaskConfig.setEndDate(mongoFilter.getEndDate());
-			dataSearchTaskConfig.setRepo(routingRepoService.getTargetRepo(property, repo.index()));
+			dataSearchTaskConfig.setMaxvalue(property.getMax());
+			dataSearchTaskConfig.setMinvalue(property.getMin());
+			if(repo.index()==1){
+				dataSearchTaskConfig.setRepo(repo);
+			}
+			else{
+				dataSearchTaskConfig.setRepo(routingRepoService.getTargetRepo(requestConfig,property.getValue(),repo.index()));
+			}
 			DataSearchTask task = new DataSearchTask(dataSearchTaskConfig);
 		    forks.add(task);
 		    task.fork();
 		}
 		
 		for (DataSearchTask task : forks) {
-		    vals.put(task.getDataSearchTaskConfig().getProperty(), task.join());
+		    //把参数对应的squence值转换为简写中文simplezh
+			//需要实现vals.put(task.getDataSearchTaskConfig().getProperty(), task.join());
+			vals.put(task.getDataSearchTaskConfig().getProperty(), task.join());
 		}
 		return vals;
 	}

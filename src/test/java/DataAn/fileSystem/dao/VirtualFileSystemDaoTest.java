@@ -11,7 +11,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import DataAn.common.pageModel.Pager;
 import DataAn.fileSystem.domain.VirtualFileSystem;
-import DataAn.fileSystem.option.J9Series_Star_ParameterType;
+import DataAn.galaxyManager.option.J9Series_Star_ParameterType;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath:applicationContext-hibernate.xml")
@@ -53,5 +53,14 @@ public class VirtualFileSystemDaoTest {
 		for (VirtualFileSystem fs : list) {
 			System.out.println(fs);
 		}
+	}
+	
+	@Test
+	public void test(){
+		String series = "j9";
+		String star = "03";
+		String parameterType = "flywheel";
+		VirtualFileSystem csvDir = fileDao.selectBySeriesAndStarAndParameterTypeAndParentIdAndFileName(series, star, parameterType, 0, "csv");
+		System.out.println(csvDir);
 	}
 }

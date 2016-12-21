@@ -52,19 +52,19 @@ public class ReportFileSystemDaoImpl extends BaseDaoImpl<ReportFileSystem> imple
 	@SuppressWarnings("unchecked")
 	@Override
 	public ReportFileSystem selectByParentIdAndFileNameAndParameterType(long parentId,
-			String fileName, String parameterType) {
+			String fileName, String partsType) {
 		if(parentId == 0){
-			String hql = "from ReportFileSystem fs where fs.parentId is null and fs.fileName=? and fs.parameterType=?";
-			List<ReportFileSystem> list = this.getSession().createQuery(hql).setParameter(0, fileName).setParameter(1, parameterType).list();
+			String hql = "from ReportFileSystem fs where fs.parentId is null and fs.fileName=? and fs.partsType=?";
+			List<ReportFileSystem> list = this.getSession().createQuery(hql).setParameter(0, fileName).setParameter(1, partsType).list();
 			if(list != null && list.size() > 0){
 				return list.get(0);
 			}
 		}else{
-			String hql = "from ReportFileSystem fs where fs.parentId=? and fs.fileName=? and fs.parameterType=?";
+			String hql = "from ReportFileSystem fs where fs.parentId=? and fs.fileName=? and fs.partsType=?";
 			List<ReportFileSystem> list = this.getSession().createQuery(hql)
 															.setParameter(0, parentId)
 															.setParameter(1, fileName)
-															.setParameter(2, parameterType).list();
+															.setParameter(2, partsType).list();
 			if(list != null && list.size() > 0){
 				return list.get(0);
 			}
@@ -91,15 +91,44 @@ public class ReportFileSystemDaoImpl extends BaseDaoImpl<ReportFileSystem> imple
 	@SuppressWarnings("unchecked")
 	@Override
 	public Pager<ReportFileSystem> selectBySeriesAndStarAndParameterTypeAndParentIdisNullAndOrder(
-			String series, String star, String parameterType, String order, int pageIndex, int pageSize) {
-		String hql = "from ReportFileSystem fs where fs.series=? and fs.star=? and fs.parameterType=? and fs.parentId is null order by " + order;
-		String countHQl = "select count(*) from ReportFileSystem fs where fs.series=? and fs.star=? and fs.parameterType=? and fs.parentId is null";
-		Query query = this.getSession().createQuery(hql).setParameter(0, series).setParameter(1, star).setParameter(2, parameterType);
-		Query countQuery = this.getSession().createQuery(countHQl).setParameter(0, series).setParameter(1, star).setParameter(2, parameterType);
+			String series, String star, String partsType, String order, int pageIndex, int pageSize) {
+		String hql = "from ReportFileSystem fs where  fs.parentId is null  " ;
+		String countHQl = "select count(*) from ReportFileSystem fs where fs.parentId is null ";
+		if(StringUtils.isNotBlank(series)){
+			hql += " and fs.series = :series";
+			countHQl += " and fs.series = :series";
+		}
+		if(StringUtils.isNotBlank(star)){
+			hql += " and fs.star = :star";
+			countHQl += " and fs.star = :star";
+		}
+		if(StringUtils.isNotBlank(partsType)){
+			hql += " and fs.partsType = :partsType";
+			countHQl += " and fs.partsType = :partsType";
+		}
+		if(order != null && !"".equals(order)){
+			hql += " order by " + order;
+		}
+		
+		Query query = this.getSession().createQuery(hql);
+		Query countQuery = this.getSession().createQuery(countHQl);
+		
+		if(StringUtils.isNotBlank(series)){
+			query.setParameter("series", series);
+			countQuery.setParameter("series", series);
+		}
+		if(StringUtils.isNotBlank(star)){
+			query.setParameter("star", star);
+			countQuery.setParameter("star", star);
+		}
+		if(StringUtils.isNotBlank(partsType)){
+			query.setParameter("partsType", partsType);
+			countQuery.setParameter("partsType", partsType);
+		}
 		Long totalCount = (Long) countQuery.uniqueResult();
-		//设置每页显示多少个，设置多大结果。  
-        query.setMaxResults(pageSize);  
-        //设置起点  
+		//设置每页显示多少个，设置多大结果
+        query.setMaxResults(pageSize);
+        //设置起点
         query.setFirstResult(pageSize*(pageIndex-1));  
         Pager<ReportFileSystem> pager = new Pager<ReportFileSystem>(pageIndex,pageSize,totalCount,query.list());
 		return pager;
@@ -107,20 +136,46 @@ public class ReportFileSystemDaoImpl extends BaseDaoImpl<ReportFileSystem> imple
 	@SuppressWarnings("unchecked")
 	@Override
 	public Pager<ReportFileSystem> selectBySeriesAndStarAndParameterTypeAndParentIdAndOrder(
-			String series, String star, String parameterType, long parentId, String order, int pageIndex, int pageSize) {
-		String hql = "from ReportFileSystem fs where fs.series=? and fs.star=? and fs.parameterType=? and fs.parentId=?";
-		String countHQl = "select count(*) from ReportFileSystem fs where fs.series=? and fs.star=? and fs.parameterType=? and fs.parentId=?";
+			String series, String star, String partsType, long parentId, String order, int pageIndex, int pageSize) {
+		String hql = "from ReportFileSystem fs where 1 = 1 ";
+		String countHQl = "select count(*) from ReportFileSystem fs where 1 = 1 ";
+		if(StringUtils.isNotBlank(series)){
+			hql += " and fs.series = :series";
+			countHQl += " and fs.series = :series";
+		}
+		if(StringUtils.isNotBlank(star)){
+			hql += " and fs.star = :star";
+			countHQl += " and fs.star = :star";
+		}
+		if(StringUtils.isNotBlank(partsType)){
+			hql += " and fs.partsType = :partsType";
+			countHQl += " and fs.partsType = :partsType";
+		}
+		if(parentId != 0){
+			hql += " and fs.parentId = :parentId";
+			countHQl += " and fs.parentId = :parentId";
+		}
 		if(order != null && !"".equals(order)){
 			hql += " order by " + order;
 		}
-		Query query = this.getSession().createQuery(hql).setParameter(0, series)
-														.setParameter(1, star)
-														.setParameter(2, parameterType)
-														.setParameter(3, parentId);
-		Query countQuery = this.getSession().createQuery(countHQl).setParameter(0, series)
-																  .setParameter(1, star)
-																  .setParameter(2, parameterType)
-																  .setParameter(3, parentId);
+		Query query = this.getSession().createQuery(hql);
+		Query countQuery = this.getSession().createQuery(countHQl);
+		if(StringUtils.isNotBlank(series)){
+			query.setParameter("series", series);
+			countQuery.setParameter("series", series);
+		}
+		if(StringUtils.isNotBlank(star)){
+			query.setParameter("star", star);
+			countQuery.setParameter("star", star);
+		}
+		if(StringUtils.isNotBlank(partsType)){
+			query.setParameter("partsType", partsType);
+			countQuery.setParameter("partsType", partsType);
+		}
+		if(parentId != 0){
+			query.setParameter("parentId", parentId);
+			countQuery.setParameter("parentId", parentId);
+		}
 		Long totalCount = (Long) countQuery.uniqueResult();
 		//设置每页显示多少个，设置多大结果。  
         query.setMaxResults(pageSize);  
@@ -131,37 +186,52 @@ public class ReportFileSystemDaoImpl extends BaseDaoImpl<ReportFileSystem> imple
 	}
 	@SuppressWarnings("unchecked")
 	@Override
-	public Pager<ReportFileSystem> selectByOption(String series, String star, String parameterType, long parentId, 
-			String beginTime, String endTime, String dataTypes,String order, int pageIndex, int pageSize) {
-		String hql = "from ReportFileSystem fs where fs.fileType=:fileType and fs.series=:series and fs.star=:star and fs.parameterType=:parameterType";
-		String countHql = "select count (*) from ReportFileSystem fs where fs.fileType=:fileType and fs.series=:series and fs.star=:star and fs.parameterType=:parameterType";
-		
+	public Pager<ReportFileSystem> selectByOption(String series, String star, String partsType, long parentId, 
+			String beginTime, String endTime,String order, int pageIndex, int pageSize) {
+		String hql = "from ReportFileSystem fs where fs.fileType = :fileType ";
+		String countHQl = "select count (*) from ReportFileSystem fs where fs.fileType = :fileType ";
+		if(StringUtils.isNotBlank(series)){
+			hql += " and fs.series = :series";
+			countHQl += " and fs.series = :series";
+		}
+		if(StringUtils.isNotBlank(star)){
+			hql += " and fs.star = :star";
+			countHQl += " and fs.star = :star";
+		}
+		if(StringUtils.isNotBlank(partsType)){
+			hql += " and fs.partsType = :partsType";
+			countHQl += " and fs.partsType = :partsType";
+		}
 		if(parentId != 0){
 			hql += " and fs.parentId=:parentId";
-			countHql += " and fs.parentId=:parentId";
+			countHQl += " and fs.parentId=:parentId";
 		}
 		if(StringUtils.isNotBlank(beginTime)){
 			hql += " and fs.year_month_day>=:beginTime";
-			countHql += " and fs.year_month_day>=:beginTime";
+			countHQl += " and fs.year_month_day>=:beginTime";
 		}
 		if(StringUtils.isNotBlank(endTime)){
 			hql += " and fs.year_month_day<=:endTime";
-			countHql += " and fs.year_month_day<=:endTime";
-		}
-		if(StringUtils.isNotBlank(dataTypes)){
-			hql += " and fs.dataType in (:datatype)";	
-			countHql += " and fs.dataType in (:datatype)";
+			countHQl += " and fs.year_month_day<=:endTime";
 		}
 		hql += " order by " + order;
-		Query query = this.getSession().createQuery(hql).setParameter("fileType", FileType.FILE)
-														.setParameter("series", series)
-														.setParameter("star", star)
-														.setParameter("parameterType", parameterType);
-		Query countQuery = this.getSession().createQuery(countHql).setParameter("fileType", FileType.FILE)
-														.setParameter("series", series)
-														.setParameter("star", star)
-														.setParameter("parameterType", parameterType);
+		Query query = this.getSession().createQuery(hql);
+		Query countQuery = this.getSession().createQuery(countHQl);
 		
+		query.setParameter("fileType", FileType.FILE);
+		countQuery.setParameter("fileType", FileType.FILE);
+		if(StringUtils.isNotBlank(series)){
+			query.setParameter("series", series);
+			countQuery.setParameter("series", series);
+		}
+		if(StringUtils.isNotBlank(star)){
+			query.setParameter("star", star);
+			countQuery.setParameter("star", star);
+		}
+		if(StringUtils.isNotBlank(partsType)){
+			query.setParameter("partsType", partsType);
+			countQuery.setParameter("partsType", partsType);
+		}
 		if(parentId != 0){
 			query.setParameter("parentId", parentId);
 			countQuery.setParameter("parentId", parentId);
@@ -173,15 +243,6 @@ public class ReportFileSystemDaoImpl extends BaseDaoImpl<ReportFileSystem> imple
 		if(StringUtils.isNotBlank(endTime)){
 			query.setParameter("endTime", endTime);
 			countQuery.setParameter("endTime", endTime);
-		}
-		if(StringUtils.isNotBlank(dataTypes)){
-			String[] types = dataTypes.split(",");
-			List<FileDataType> list = new ArrayList<FileDataType>();
-			for (String type : types) {
-				list.add(FileDataType.getType(type));
-			}
-			query.setParameterList("datatype", list);
-			countQuery.setParameterList("datatype", list);
 		}
 		Long totalCount = (Long) countQuery.uniqueResult();
 		//设置每页显示多少个，设置多大结果。  

@@ -298,10 +298,11 @@
                 	},
                 itemGap:20,
                 itemSize:20,
-                borderColor:'#ccc',
+                //borderColor:'#ccc',
                 orient:'vertical',
-                x:'right',
-                y:'center'
+                right:'2%',
+        		height:'auto',
+        		top:'25%',
                 
             },
             xAxis: {

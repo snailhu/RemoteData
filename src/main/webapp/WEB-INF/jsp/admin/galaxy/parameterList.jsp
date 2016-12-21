@@ -312,7 +312,7 @@ $(function() {
                                 </div>
                                 <div class="space-4"></div>
                                 <div class="form-group">
-                                    <label class="col-sm-3 control-label no-padding-right" for="edit-param-star"> 星：</label>
+                                    <label class="col-sm-3 control-label no-padding-right" for="edit-param-star"> 星号：</label>
                                     <div class="col-sm-8">
                                         <input name="star" id="edit-param-star" class="form-control" readonly="true"/>
                                     </div>

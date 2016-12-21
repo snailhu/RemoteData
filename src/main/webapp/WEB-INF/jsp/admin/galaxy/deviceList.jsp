@@ -302,7 +302,7 @@
 								<div class="space-4"></div>
 								<div class="form-group">
 									<label class="col-sm-3 control-label no-padding-right"
-										for="edit-device-startDate"> 开始运行时间:</label>
+										for="edit-device-startDate"> 开始运行时间：</label>
 									<div class="col-sm-8">
 										<input type="text" name="startDate" id="edit-device-startDate"
 											placeholder="yyyy-MM-dd" class="form-control" />
@@ -311,7 +311,7 @@
 								<div class="space-4" id="editenddatehead"></div>
 								<div class="form-group" id="editenddatebody">
 									<label class="col-sm-3 control-label no-padding-right"
-										for="edit-device-endDate"> 运行结束时间:</label>
+										for="edit-device-endDate"> 运行结束时间：</label>
 									<div class="col-sm-8">
 										<input type="text" name="endDate" id="edit-device-endDate"
 											placeholder="yyyy-MM-dd" class="form-control" />

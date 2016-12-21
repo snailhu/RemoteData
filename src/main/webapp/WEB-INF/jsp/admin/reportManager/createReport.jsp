@@ -381,7 +381,7 @@ $(function(){
 				  return false;
 			}
 			if(Qstar == '') {
-				  top.showMsg('提示', "星不能为空");
+				  top.showMsg('提示', "星号不能为空");
 				  return false;
 			}
 			if(QpartsType == '') {

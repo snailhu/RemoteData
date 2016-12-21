@@ -222,14 +222,14 @@
 				series : {
 					validators : {
 						notEmpty : {
-							message : '请选择星系！'
+							message : '请选择星系'
 						}
 					}
 				},
 				star : {
 					validators : {
 						notEmpty : {
-							message : '请选择星！'
+							message : '请选择星号'
 						}
 					}
 				},
@@ -324,13 +324,13 @@
 				series : {
 					validators : {
 						notEmpty : {
-							message : '请选择星系！'
+							message : '请选择星系'
 						}
 					}
 				},star : {
 					validators : {
 						notEmpty : {
-							message : '请选择星！'
+							message : '请选择星号'
 						}
 					}
 				},
@@ -833,7 +833,7 @@
 									sortable:true
 								}, {
 									field : 'star',
-									title : '星',
+									title : '星号',
 									width : 100,
 									sortable:true
 								},{
@@ -1153,7 +1153,7 @@
 			var parameterType = $('#search-parameterType').val();
 			var parameter = $('#search-parameter').val();
 			if (parameterType == "") {
-				top.alertMsg('提示', '请选择设备！');
+				top.alertMsg('提示', '请选择设备');
 				return;
 			}
 			
@@ -1192,7 +1192,7 @@
 										sortable:true
 									}, {
 										field : 'star',
-										title : '星',
+										title : '星号',
 										width : 100,
 										sortable:true
 									},{
@@ -1290,7 +1290,7 @@
 										sortable:true
 									}, {
 										field : 'star',
-										title : '星',
+										title : '星号',
 										width : 100,
 										sortable:true
 									},{

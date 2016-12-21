@@ -285,7 +285,7 @@
 													width : 50,
 												}, {
 													field : 'starName',
-													title : '星',
+													title : '星号',
 													width : 50
 												}, {
 													field : 'deviceTypeName',

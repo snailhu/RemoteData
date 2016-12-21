@@ -3,6 +3,8 @@ package DataAn.common.config;
 import java.io.File;
 import java.util.Date;
 
+import org.apache.commons.lang3.StringUtils;
+
 import DataAn.common.utils.DateUtil;
 import DataAn.common.utils.PropertiesUtil;
 import DataAn.common.utils.UUIDGeneratorUtil;
@@ -19,7 +21,16 @@ public class CommonConfig {
 	/** mongodb服务IP*/
 	private static String CACHE_PATH ;
 
-	
+	public static String getServerConfig() {
+		String serverConfig = "http://localhost:8080";
+		String ip = PropertiesUtil.getProperties(config, charset).getProperty("http.server.ip");
+		String port = PropertiesUtil.getProperties(config, charset).getProperty("http.server.port");
+		if(StringUtils.isNotBlank(ip) && StringUtils.isNotBlank(port)){
+			serverConfig = "http://"+ip+":"+port;			
+		}
+		return serverConfig;
+		
+	}
 	public static String getCachePath() {
 		String cachePath = PropertiesUtil.getProperties(config, charset).getProperty("path.cache");
 		if(cachePath != null && !cachePath.equals("")){

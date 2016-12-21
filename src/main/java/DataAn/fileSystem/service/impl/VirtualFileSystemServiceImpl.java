@@ -89,7 +89,7 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 	
 	@Override
 	@Transactional
-	public String saveFile(Map<String, FileDto> map,String serverConfig) throws Exception {
+	public String saveFile(Map<String, FileDto> map) throws Exception {
 	
 		//获取map中的csv文件
 		FileDto csvFileDto = map.get("csv");
@@ -98,9 +98,9 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 		String fileName = csvFileDto.getFileName();
 		String[] strs = fileName.substring(0, fileName.lastIndexOf(".csv")).split("--");
 		String[] ss = strs[0].split("-");
-		String nowSeries = SeriesType.J9_SERIES.getName();
+		String nowSeries = ss[0];
 		dataMap.put("series", nowSeries);
-		String nowStar = J9SeriesType.getJ9SeriesType(ss[1]).getValue();
+		String nowStar = ss[1];
 		dataMap.put("star", nowStar);
 		String date = strs[1];
 		dataMap.put("date", DateUtil.formatString(date, "yyyy-MM-dd", "yyyy-MM-dd"));
@@ -126,8 +126,7 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 			// 保存 *.csv文件
 			this.saveFileOfCSV(csvFileDto, dataMap);
 			
-			
-//		//获取map中的csv文件
+			//获取map中的dat文件
 			FileDto datFile = map.get("dat");
 			if(datFile != null){			
 				// 保存 *.DAT文件
@@ -140,13 +139,8 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 			// 调用文件队列API，  zookeeper 
 			Map conf=new HashMap<>();
 			BaseConfig baseConfig=null;
-			try {
-				baseConfig= StormUtils.getBaseConfig(BaseConfig.class);
-			} catch (Exception e) {
-				e.printStackTrace();
-				statusTrackingService.updateStatusTracking(csvFileDto.getFileName(), StatusTrackingType.IMPORTFAIL.getValue(),
-						csvFileDto.getParameterType(), e.getMessage());
-			}
+			baseConfig= StormUtils.getBaseConfig(BaseConfig.class);
+			
 			ZooKeeperNameKeys.setZooKeeperServer(conf, baseConfig.getZooKeeper());
 			ZooKeeperNameKeys.setNamespace(conf, baseConfig.getNamespace());
 			ZookeeperExecutor executor=new ZooKeeperClient()
@@ -155,7 +149,6 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 			.build();
 			CommunicationUtils communicationUtils=CommunicationUtils.get(executor);
 			Communication communication=new Communication();
-			communication.setServerConfig(serverConfig);
 			communication.setFileName(csvFileDto.getFileName());
 			communication.setFilePath(csvFileDto.getFilePath());
 			communication.setVersions(versions);
@@ -163,14 +156,11 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 			communication.setStar(nowStar);
 			communication.setName(csvFileDto.getParameterType());
 			communicationUtils.add(communication);
-			statusTrackingService.updateStatusTracking(csvFileDto.getFileName(), StatusTrackingType.PREHANDLE.getValue(),
-					csvFileDto.getParameterType(), "");
 			
 		} catch (Exception e) {
-//			e.printStackTrace();
-			statusTrackingService.updateStatusTracking(csvFileDto.getFileName(), StatusTrackingType.FILEUPLOADFAIL.getValue(),
-					csvFileDto.getParameterType(), e.getMessage());
-			
+			statusTrackingService.updateStatusTracking(csvFileDto.getFileName(), StatusTrackingType.IMPORTFAIL.getValue(),
+					csvFileDto.getParameterType(), e.getMessage());			
+			e.printStackTrace();
 		}
 		
 	

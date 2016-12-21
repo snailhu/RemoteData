@@ -556,8 +556,9 @@ $(function() {
             width: 50
         },{
 			field : 'runDays',
-			title : '卫星在轨时间(天)',
-			width : 50
+			title : '卫星在轨总时间(天)',
+			width : 50,
+			hidden : true,
 		}, {
             field: 'description',
             title: '描述',
@@ -616,7 +617,7 @@ $(function() {
 								},
 								{
 									field : 'runDays',
-									title : '运行时间(天)',
+									title : '卫星在轨时间(天)',
 									width : 80
 								},
 								{

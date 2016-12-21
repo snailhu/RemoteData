@@ -55,10 +55,14 @@ public class DeviceController {
 		// 当前所在系列
 		SeriesDto seriesDto = seriesService.getSeriesDtoById(Long.parseLong(series));
 		StarDto starDto = starService.getStarDtoById(Long.parseLong(star));
-		model.addAttribute("nowSeries", seriesDto.getCode());
-		model.addAttribute("nowStar", starDto.getCode());
+
 		model.addAttribute("nowSeriesId", seriesDto.getId());
+		model.addAttribute("nowSeriesCode", seriesDto.getCode());
+		model.addAttribute("nowSeriesName", seriesDto.getName());
+		
 		model.addAttribute("nowStarId", starDto.getId());
+		model.addAttribute("nowStarCode", starDto.getCode());
+		model.addAttribute("nowStarName", starDto.getName());
 		return "admin/galaxy/deviceList";
 	}
 

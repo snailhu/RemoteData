@@ -201,7 +201,7 @@
 				<li><img
 					src="${pageContext.request.contextPath}/static/imgs/DataImport/home.png"
 					style="margin-bottom: 3px;"> <span>星系管理</span></li>
-				<li class="active">${nowSeries}系列${nowStar}星的设备列表</li>
+				<li class="active">${nowSeriesName}系列${nowStarName}星的设备列表</li>
 			</ul>
 			<!--  .breadcrumb -->
 		</div>
@@ -474,8 +474,8 @@
 			return false;
 		});
 		var deviceTypeGrid;
-		var nowSeries = "${nowSeries}";
-		var nowStar = "${nowStar}";
+		var nowSeriesCode = "${nowSeriesCode}";
+		var nowStarCode = "${nowStarCode}";
 		var nowSeriesId = "${nowSeriesId}";
 		var nowStarId = "${nowStarId}";
 		$(function() {
@@ -504,7 +504,8 @@
 								}, {
 									field : 'deviceCode',
 									title : '设备类型码',
-									width : 100
+									width : 100,
+									hidden: true,
 								}, {
 									field : 'runDays',
 									title : '累计设备工作时间(天)',

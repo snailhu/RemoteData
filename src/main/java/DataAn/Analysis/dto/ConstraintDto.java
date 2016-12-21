@@ -16,8 +16,8 @@ public class ConstraintDto implements Serializable {
 	private int parentId;
 	private String name; //中文键
 	private String value; //英文值
-	private float max;
-	private float min;
+	private String max;
+	private String min;
 	private String unit; //参数单位
 	private String yname; //hanz添加约束条件中当前参数Y轴名称
 	private List<ConstraintDto> children;
@@ -48,18 +48,6 @@ public class ConstraintDto implements Serializable {
 	public void setValue(String value) {
 		this.value = value;
 	}
-	public float getMax() {
-		return max;
-	}
-	public void setMax(float max) {
-		this.max = max;
-	}
-	public float getMin() {
-		return min;
-	}
-	public void setMin(float min) {
-		this.min = min;
-	}
 	public String getYname() {
 		return yname;
 	}
@@ -83,6 +71,18 @@ public class ConstraintDto implements Serializable {
 	}
 	public void setUnit(String unit) {
 		this.unit = unit;
+	}
+	public String getMax() {
+		return max;
+	}
+	public void setMax(String max) {
+		this.max = max;
+	}
+	public String getMin() {
+		return min;
+	}
+	public void setMin(String min) {
+		this.min = min;
 	}
 	
 	

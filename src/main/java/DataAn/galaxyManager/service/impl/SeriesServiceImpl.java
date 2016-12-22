@@ -146,8 +146,23 @@ public class SeriesServiceImpl implements ISeriesService {
 	}
 
 	@Override
-	public boolean isExistSeries(SeriesDto dto) {
+	public boolean isExistSeriesByName(SeriesDto dto) {
 		List<Series> list = seriesDao.findByParam("name", dto.getName());
+		if(list != null && list.size() > 0){
+			if(dto.getId() == 0){
+				return true;				
+			}else{
+				if(dto.getId() != list.get(0).getId()){
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	@Override
+	public boolean isExistSeriesByCode(SeriesDto dto) {
+		List<Series> list = seriesDao.findByParam("code", dto.getCode());
 		if(list != null && list.size() > 0){
 			if(dto.getId() == 0){
 				return true;				

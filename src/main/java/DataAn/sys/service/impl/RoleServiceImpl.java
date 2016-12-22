@@ -58,8 +58,14 @@ public class RoleServiceImpl implements IRoleService {
 	@Override
 	@Transactional
 	public void delete(String[] roleIdArray) {
+		List<Long> roleIds = new ArrayList<Long>();
 		for (String roleId : roleIdArray) {
-			roleDao.delete(Long.parseLong(roleId));
+			roleIds.add(Long.parseLong(roleId));
+		}
+		if(roleIds.size() > 0){
+			roleAuthDao.deleteByRoleIds(roleIds);
+			userRoleDao.deleteByRoleIds(roleIds);
+			roleDao.deleteByRoleIds(roleIds);			
 		}
 	}
 	
@@ -152,7 +158,7 @@ public class RoleServiceImpl implements IRoleService {
 	public void saveRolePermissionItems(long roleId,String[] permissionItemArray) {
 		//删除之前的角色权限
 		roleAuthDao.deleteByRoleId(roleId);
-		List<Auth> authList = authDao.selectByParentAuthIdByOrder(0, null);
+		List<Auth> authList = authDao.selectByParentIdByOrder(0, null);
 		Set<Long> roleAuthIds = new HashSet<Long>();
 		for (Auth a : authList) {
 			roleAuthIds.add(a.getAuthId());

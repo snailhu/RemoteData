@@ -57,10 +57,16 @@ public class SeriesController {
 		System.out.println("come in createSeries..");
 		System.out.println(dto);
 		JsonMessage jsonMsg = new JsonMessage();
-		if (seriesService.isExistSeries(dto)) {
+		if (seriesService.isExistSeriesByName(dto)) {
 			jsonMsg.setSuccess(false);
-			jsonMsg.setMsg("在系列名称已存在！");
-			jsonMsg.setObj("在系列名称已存在！");
+			jsonMsg.setMsg("该系列名称已存在！");
+			jsonMsg.setObj("该系列名称已存在！");
+			return jsonMsg;
+		}
+		if (seriesService.isExistSeriesByCode(dto)) {
+			jsonMsg.setSuccess(false);
+			jsonMsg.setMsg("该系列编码已存在！");
+			jsonMsg.setObj("该系列编码已存在！");
 			return jsonMsg;
 		} 
 		try {
@@ -98,10 +104,16 @@ public class SeriesController {
 		System.out.println(dto);
 		
 		JsonMessage jsonMsg = new JsonMessage();
-		if (seriesService.isExistSeries(dto)) {
+		if (seriesService.isExistSeriesByName(dto)) {
 			jsonMsg.setSuccess(false);
-			jsonMsg.setMsg("在系列名称已存在！");
-			jsonMsg.setObj("在系列名称已存在！");
+			jsonMsg.setMsg("该系列名称已存在！");
+			jsonMsg.setObj("该系列名称已存在！");
+			return jsonMsg;
+		} 
+		if (seriesService.isExistSeriesByCode(dto)) {
+			jsonMsg.setSuccess(false);
+			jsonMsg.setMsg("该系列编码已存在！");
+			jsonMsg.setObj("该系列编码已存在！");
 			return jsonMsg;
 		} 
 		try {

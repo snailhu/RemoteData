@@ -1,11 +1,16 @@
 package DataAn.common.interceptor;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
+
+import com.alibaba.fastjson.JSON;
 
 import DataAn.sys.dto.ActiveUserDto;
 
@@ -38,18 +43,34 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 //		System.out.println(new Date());
 //		System.out.println();
 		
-//		//得到请求servletPath 路径
-//		String servletPath = request.getServletPath();
-//		//判断是否是公开 地址
-//		if(servletPath.endsWith("Index")){
-//			return true;
-//		}
-//		HttpSession session = request.getSession();
-//		ActiveUserDto acticeUser = (ActiveUserDto) session.getAttribute("activeUser");
-//		if(acticeUser == null ){
-//			response.sendRedirect(request.getContextPath() + "/login");
-//			return false;
-//		}
+		//得到请求servletPath 路径
+		String servletPath = request.getServletPath();
+		//判断是否是公开 地址
+		if(servletPath.endsWith("Index")){
+			return true;
+		}
+		HttpSession session = request.getSession();
+		ActiveUserDto acticeUser = (ActiveUserDto) session.getAttribute("activeUser");
+		if(acticeUser == null ){
+			response.sendRedirect(request.getContextPath() + "/login");
+			return false;
+			
+//			acticeUser = new ActiveUserDto();
+//			//设置超级管理员
+//			acticeUser.setId(0);
+//			acticeUser.setUserName("admin");	
+//			acticeUser.setPassWord("admin");
+//			Map<String,String> map =  new HashMap<String,String>();
+//			map.put("flywheel", "flywheel");
+//			map.put("top", "top");
+//			map.put("userManager", "userManager");
+//			acticeUser.setPermissionItems(map);
+//			String json = JSON.toJSONString(map);
+//			acticeUser.setPermissionItemsJSON(json);
+//			session.setAttribute("warnCount", 0);
+//			session.setAttribute("activeUser", acticeUser);
+//			response.sendRedirect(request.getContextPath() + request.getRequestURI());
+		}
 		return super.preHandle(request, response, handler);
 	}
 

@@ -536,19 +536,19 @@ jeDate({
 			var createdatetimeStart = $('#search-createdatetimeStart').val();
 			var createdatetimeEnd = $('#search-createdatetimeEnd').val();
 			if (warningType == "") {
-				top.alertMsg('提示', '请选择预警类型！');
+				top.alertMsg('提示', '请选择预警类型');
 				return;
 			}
 			if (series == "") {
-				top.alertMsg('提示', '请选择星系！');
+				top.alertMsg('提示', '请选择星系');
 				return;
 			}
 			if (star == "") {
-				top.alertMsg('提示', '请选择星！');
+				top.alertMsg('提示', '请选择星号');
 				return;
 			}
 			if (parameterType == "") {
-				top.alertMsg('提示', '请选择设备！');
+				top.alertMsg('提示', '请选择设备');
 				return;
 			}
 			if(clickTotal == 0){

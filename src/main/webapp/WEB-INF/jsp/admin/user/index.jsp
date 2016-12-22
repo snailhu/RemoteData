@@ -104,8 +104,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			$(".col-lg-3").addClass("col-sm-3");
 			$(".col-lg-7").css("text-align","center");
 			$(".modal-dialog").css("margin","20px auto");
-			$(".col-lg-4").css({"margin-left":"25%","width":"300px"});
-			//$(".col-lg-4").find("button").css("display","inline");
+			$(".col-lg-4").css({"margin-left":"25%","width":"600px"});
+			$(".col-lg-4").find("button").css("display","inline");
 			//左菜单栏
 			$("#usermanage-img").attr("src","${pageContext.request.contextPath}/static/new/img/images/a_74.png");
 			$("#sysmanage-img").attr("src","${pageContext.request.contextPath}/static/new/img/images/a_50.png");
@@ -134,8 +134,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							message : '用户名必须超过3，不超过30个字符'
 						},
 						regexp : {
-							regexp : /^[a-zA-Z0-9_\.]+$/,
-							message : '用户名只能由字母、数字和下划线组成'
+							regexp : /^[a-zA-Z0-9\.]+$/,
+							message : '用户名只能由字母、数字组成'
+// 							regexp : /(^[A-Za-z0-9]{1,30}$)|(^[\u4E00-\u9FA5]{1,30}$)/,
+// 							message : '用户名只能由字母、中文、数字'
 						},
 
 					}
@@ -208,8 +210,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							message : '用户名必须超过3，不超过30个字符'
 						},
 						regexp : {
-							regexp : /^[a-zA-Z0-9_\.]+$/,
-							message : '用户名只能由字母、数字和下划线组成'
+							regexp : /^[a-zA-Z0-9\.]+$/,
+							message : '用户名只能由字母、数字组成'
+// 							regexp : /(^[A-Za-z0-9]{1,30}$)|(^[\u4E00-\u9FA5]{1,30}$)/,
+// 							message : '用户名只能由字母、中文、数字'
 						},
 					}
 				},
@@ -765,8 +769,15 @@ $("#search-createdatetimeEnd").keypress(function(){
 			var rows = userGrid.datagrid('getSelections');
 			if (rows.length > 0) {
 				var names = [];
-				for ( var i = 0; i < rows.length; i++) {
-					names.push(rows[i].userName);
+				
+				if(rows.length > 3){
+					names.push(rows[0].userName);
+					names.push("...");
+					names.push(rows[rows.length-1].userName);
+				}else{
+					for ( var i = 0; i < rows.length; i++) {
+						names.push(rows[i].userName);
+					}
 				}
 				swal({
 					title : "你是否确定删除？",
@@ -824,12 +835,7 @@ $("#search-createdatetimeEnd").keypress(function(){
 					$('#edit-user-email').val(rows[0].email);
 					$('#editUserModal').modal('show');
 				} else {
-					var names = [];
-					for ( var i = 0; i < rows.length; i++) {
-						names.push(rows[i].userName);
-					}
-					top.showMsg("提示", '只能选择一个用户进行编辑！您已经选择了【' + names.join(',')
-							+ '】' + rows.length + '个用户');
+					top.showMsg("提示", '只能选择一个用户进行编辑！');
 				}
 			} else {
 				top.showMsg("提示", "请选择要编辑的用户！");

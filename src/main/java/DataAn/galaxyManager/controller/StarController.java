@@ -56,6 +56,12 @@ public class StarController {
 			jsonMsg.setMsg("在此星系下的星名称已存在！");
 			jsonMsg.setObj("在此星系下的星名称已存在！");
 			return jsonMsg;
+		}
+		if (starService.isExistStarByCode(starDto)) {
+			jsonMsg.setSuccess(false);
+			jsonMsg.setMsg("在此星系下的星编码已存在！");
+			jsonMsg.setObj("在此星系下的星编码已存在！");
+			return jsonMsg;
 		} 
 		try {
 			starService.saveStar(starDto);
@@ -80,12 +86,14 @@ public class StarController {
 	
 	@RequestMapping(value="/editStar", method = RequestMethod.POST)
 	@ResponseBody
-	public JsonMessage editStar(@RequestParam(value = "id", required = true) long id,
+	public JsonMessage editStar(@RequestParam(value = "seriesId", required = true) long seriesId,
+								@RequestParam(value = "id", required = true) long id,
 								@RequestParam(value = "name", required = true) String name,
 								@RequestParam(value = "code", required = true) String code,
 								@RequestParam(value = "beginDate", required = true) String beginDate,
 								@RequestParam(value = "description", required = false) String description){
 		StarDto starDto = new StarDto();
+		starDto.setSeriesId(seriesId);
 		starDto.setId(id);
 		starDto.setName(name);
 		starDto.setCode(code);
@@ -98,6 +106,12 @@ public class StarController {
 			jsonMsg.setSuccess(false);
 			jsonMsg.setMsg("在此星系下的星名称已存在！");
 			jsonMsg.setObj("在此星系下的星名称已存在！");
+			return jsonMsg;
+		} 
+		if (starService.isExistStarByCode(starDto)) {
+			jsonMsg.setSuccess(false);
+			jsonMsg.setMsg("在此星系下的星编码已存在！");
+			jsonMsg.setObj("在此星系下的星编码已存在！");
 			return jsonMsg;
 		} 
 		try {

@@ -74,7 +74,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   $(function(){ 
 		//修改页面缩放，界面显示不正常
 		$(".col-lg-4").css("margin-left","25%");		
-		$(".textbox-addon").empty();
+		
 		//左菜单栏
 		$("#fileview-img").attr("src","${pageContext.request.contextPath}/static/new/img/images/a_46.png");
 		$("#filemanage-img").attr("src","${pageContext.request.contextPath}/static/new/img/images/a_26.png");
@@ -145,7 +145,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		</div>
 		<div class="page-content">
 <!-- 			<div class="page-header" style="padding-bottom: 10px; /**margin: -5px 0px 5px;*/"> -->
-<!-- 				<h1>${nowSeries}系列-${nowStar}星-${nowParameterTypeName}文件管理</h1> -->
+<!-- 				<h1>${nowSeries}星系-${nowStar}星-${nowParameterTypeName}文件管理</h1> -->
 <!-- 			</div> -->
 			
 			<!-- /.page-header -->
@@ -169,9 +169,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								<form id="fileupload" action="" class="form-horizontal" role="form" >
 									<div class="space-1"></div>
 									<div class="form-group">
-										<label class="col-sm-3 control-label no-padding-right" for="search-series"> 系列：</label>
+										<label class="col-sm-3 control-label no-padding-right" for="search-series"> 星系：</label>
 										<div class="col-sm-9">
-											<input type="text" id="search-series" name="series" placeholder="系列" class="col-xs-10 col-sm-5" style="height:30px;"/>																					
+											<input type="text" id="search-series" name="series" placeholder="星系" class="col-xs-10 col-sm-5" style="height:30px;"/>																					
 											<label class="mustchoose">*</label>
 										</div>
 									</div>
@@ -338,18 +338,19 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	      //隐藏文件列表
 	      $("#div-fsList").hide();
 	      $('#btn-search').click(function(){
+	      	  $('#fileCatalog').empty();
 	    	  var nowSeries = $("#search-series").combobox('getValue');
 	    	  var nowStar = $("#search-star").combobox('getValue');
 	    	  var nowParamType = $("#search-paramType").combobox('getValue');
-			  if (nowSeries == "") {
+			  if (nowSeries == "" || nowSeries.length == 0) {
 				top.alertMsg('提示', '请选择星系！');
 				return;
 			  }
-			  if (nowStar == "") {
+			  if (nowStar == "" || nowStar.length == 0) {
 				top.alertMsg('提示', '请选择星号！');
 				return;
 			  }
-			  if (nowParamType == "") {
+			  if (nowParamType == "" || nowParamType.length == 0) {
 				top.alertMsg('提示', '请选择设备！');
 				return;
 			  }
@@ -409,7 +410,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	  function doGetChildDir(dirId){
 		  var nowSeries = $("#search-series").combobox('getValue');
     	  var nowStar = $("#search-star").combobox('getValue');
-    	  var nowParamType = 'flywheel';
+		  var nowParamType = $("#search-paramType").combobox('getValue');
     	  
 		  fsGrid.datagrid('unselectAll');
 		  nowDirId = dirId;
@@ -515,10 +516,16 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 // 	                  }, "json");
 // 	              }
 // 	          });
-	          for (var i = 0; i < rows.length; i++) {
-	        	  names.push(rows[i].name);
-                  ids.push(rows[i].id +"/"+rows[i].type);
-              }
+
+			  if(rows.length > 3){
+					names.push(rows[0].name);
+					names.push("...");
+					names.push(rows[rows.length-1].name);
+				}else{
+					for ( var i = 0; i < rows.length; i++) {
+						names.push(rows[i].name);
+					}
+				}
 	          swal({
 					title : "你是否确定删除？",
 					text : names.join(','),
@@ -532,6 +539,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				},
 				function(isConfirm) {
 					if (isConfirm) {
+						for (var i = 0; i < rows.length; i++) {
+							  ids.push(rows[i].id +"/"+rows[i].type);
+						  }
 						$.ajax({
 							url : '${pageContext.request.contextPath}/admin/file/deleteFiles',
 							data : {

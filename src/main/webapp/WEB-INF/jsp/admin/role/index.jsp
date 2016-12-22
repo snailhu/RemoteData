@@ -455,11 +455,7 @@ a {
 				$('#editRoleModal').modal('show');
 				           
 	          }else {
-	              var names = [];
-	              for (var i = 0; i < rows.length; i++) {
-	                  names.push(rows[i].name);
-	              }
-	              top.showMsg("提示", '只能选择一个角色进行编辑！您已经选择了【'+names.join(',')+'】'+rows.length+'个角色');
+	              top.showMsg("提示", '只能选择一个角色进行编辑！');
 	          }
 	      }else {
 	          top.showMsg("提示", "请选择要编辑的记录！");
@@ -502,9 +498,14 @@ a {
 	      var rows = roleGrid.datagrid('getSelections');
 	      if (rows.length>0) {
 	    	  	var names = [];
-				for ( var i = 0; i < rows.length; i++) {
-					names.push(rows[i].name);
-					ids.push(rows[i].id);
+				if(rows.length > 3){
+					names.push(rows[0].name);
+					names.push("...");
+					names.push(rows[rows.length-1].name);
+				}else{
+					for ( var i = 0; i < rows.length; i++) {
+						names.push(rows[i].name);
+					}
 				}
 				swal({
 					title : "你是否确定删除？",
@@ -519,6 +520,9 @@ a {
 				},
 				function(isConfirm) {
 					if (isConfirm) {
+						for ( var i = 0; i < rows.length; i++) {
+							ids.push(rows[i].id);
+						}
 						$.ajax({
 							url : '${pageContext.request.contextPath}/admin/role/deleteRole',
 							data : {

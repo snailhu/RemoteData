@@ -748,7 +748,7 @@ $(function() {
 				$('#editSeriesInfoModal').modal('show');
 				
 			}else{
-				top.showMsg("提示", "只能编辑一列！");
+				top.showMsg("提示", "只能选择一个系列进行编辑！");
 			}
 		}else {
 			top.showMsg("提示", "请选择要编辑的系列！");
@@ -795,8 +795,15 @@ $(function() {
 		var rows = galaxyGrid.datagrid('getSelections');
 		if (rows.length > 0) {
 			var names = [];
-			for ( var i = 0; i < rows.length; i++) {
-				names.push(rows[i].name);
+
+			if(rows.length > 3){
+				names.push(rows[0].name);
+				names.push("...");
+				names.push(rows[rows.length-1].name);
+			}else{
+				for ( var i = 0; i < rows.length; i++) {
+					names.push(rows[i].name);
+				}
 			}
 			swal({
 				title : "你是否确定删除？",
@@ -963,6 +970,7 @@ $(function() {
 			return false;
 		}
 		var datagridId = $('#edit-star-datagridId').val();
+		var seriesId = $('#edit-star-seriesId').val();
 		var starId = $('#edit-star-id').val();
 		var name = $('#edit-star-name').val();
 		var code = $('#edit-star-code').val();
@@ -972,6 +980,7 @@ $(function() {
 		$.ajax({
 			url : '${pageContext.request.contextPath}/admin/star/editStar',
 			data : {
+				seriesId : seriesId,
 				id : starId,
 				name : name,
 				code : code,

@@ -9,11 +9,17 @@ import DataAn.sys.domain.UserRole;
 
 public interface IUserRoleDao extends IBaseDao<UserRole>{
 
-	public abstract void deleteByUserId(long userId);
-
-	public abstract UserRole selectByUserId(long userId);
+	public void deleteByUserId(long userId);
 	
-	public abstract Role selectRoleByUserId(long userId);
+	public void deleteByUserIds(List<Long> userIds);
 
-	public abstract User selectUserByRoleName(String roleName);
+	public void deleteByRoleId(long roleId);
+	
+	public void deleteByRoleIds(List<Long> roleIds);
+	
+	public UserRole selectByUserId(long userId);
+	
+	public Role selectRoleByUserId(long userId);
+
+	public User selectUserByRoleName(String roleName);
 }

@@ -104,8 +104,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			$(".col-lg-3").addClass("col-sm-3");
 			$(".col-lg-7").css("text-align","center");
 			$(".modal-dialog").css("margin","20px auto");
-			$(".col-lg-4").css({"margin-left":"25%","width":"300px"});
-			//$(".col-lg-4").find("button").css("display","inline");
+			$(".col-lg-4").css({"margin-left":"25%","width":"600px"});
+			$(".col-lg-4").find("button").css("display","inline");
 			//左菜单栏
 			$("#usermanage-img").attr("src","${pageContext.request.contextPath}/static/new/img/images/a_74.png");
 			$("#sysmanage-img").attr("src","${pageContext.request.contextPath}/static/new/img/images/a_50.png");

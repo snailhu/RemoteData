@@ -124,7 +124,7 @@ public class JfreechartServcieTest {
 		int count=0;
 		for (String key : keys) {
 			if(count==1)
-				break;
+				//break;
 			count++;
 			map2.put(key, map.get(key));			
 		}
@@ -132,11 +132,11 @@ public class JfreechartServcieTest {
 			System.out.println(map2.get(key));
 			System.out.println();
 		}
-//		Date beginDate = DateUtil.format("2016-12-01 00:00:00");
-//		Date endDate = DateUtil.format("2016-12-07 00:00:00");
+		Date beginDate = DateUtil.format("2016-12-13 13:00:00");
+		Date endDate = DateUtil.format("2016-12-19 13:00:00");
 		
-		Date beginDate = DateUtil.format("2016-02-01 00:00:00");
-		Date endDate = DateUtil.format("2016-02-02 00:00:00");
+//		Date beginDate = DateUtil.format("2016-02-01 00:00:00");
+//		Date endDate = DateUtil.format("2016-02-02 00:00:00");
 		
 		LineChartDto lineChartDto = jfreechartServcie.createLineChart(series, star, paramType, beginDate, endDate, map2);
 		System.out.println(lineChartDto);

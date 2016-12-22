@@ -72,9 +72,9 @@ public class JfreechartServiceImpl implements IJfreechartServcie {
 		}
 		System.out.println(sb.toString());
 //		logger.info(sb.toString());
-		
-		return this.createTimeSeriesChart3(series, star, paramType, beginDate,
-				endDate, constraintsMap);
+		LineChartDto lineChartDto = this.createTimeSeriesChart3(series, star, paramType, beginDate, endDate, constraintsMap);
+		System.out.println(lineChartDto);
+		return lineChartDto;
 	}
 	protected LineChartDto createTimeSeriesChart3(String series, String star,
 			String paramType, Date beginDate, Date endDate,

@@ -22,6 +22,24 @@ implements IUserRoleDao{
 	}
 
 	@Override
+	public void deleteByUserIds(List<Long> userIds) {
+		String hql = "delete from UserRole ur where ur.id.userId in (:userIds)";
+		this.getSession().createQuery(hql).setParameterList("userIds", userIds).executeUpdate();
+	}
+
+	@Override
+	public void deleteByRoleId(long roleId) {
+		String hql = "delete from UserRole ur where ur.id.roleId=:roleId";
+		this.getSession().createQuery(hql).setParameter("roleId", roleId).executeUpdate();
+		
+	}
+
+	@Override
+	public void deleteByRoleIds(List<Long> roleIds) {
+		String hql = "delete from UserRole ur where ur.id.roleId in (:roleIds)";
+		this.getSession().createQuery(hql).setParameterList("roleIds", roleIds).executeUpdate();
+	}
+	@Override
 	public UserRole selectByUserId(long userId) {
 		List<UserRole> userRoleList = this.findByParam("id.userId", userId);
 		if(userRoleList != null && userRoleList.size() > 0){
@@ -49,5 +67,6 @@ implements IUserRoleDao{
 		}
 		return null;
 	}
+
 	
 }

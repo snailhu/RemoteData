@@ -18,6 +18,13 @@ import DataAn.sys.domain.User;
 @Repository
 public class UserDaoImpl extends BaseDaoImpl<User> implements IUserDao {
 
+	
+	@Override
+	public void deleteByUserIds(List<Long> userIds) {
+		String hql = "delete from User u where u.userId in (:userIds)";
+		this.getSession().createQuery(hql).setParameterList("userIds", userIds).executeUpdate();
+	}
+	
 	@SuppressWarnings("unchecked")
 	@Override
 	public User getUserByName(String username) {
@@ -110,7 +117,5 @@ public class UserDaoImpl extends BaseDaoImpl<User> implements IUserDao {
 		Pager<User> pager = new Pager<User>(pageIndex, pageSize, totalCount, query.list());
 		return pager;
 	}
-
-
 
 }

@@ -622,7 +622,7 @@ $(function() {
 				$('#editPermissionGroupModal').modal('show');
 				
 			}else{
-				top.showMsg("提示", "只能编辑一列！");
+				top.showMsg("提示", "只能选择一个权限组进行编辑！");
 			}
 		}else {
 			top.showMsg("提示", "请选择要编辑的权限组！");
@@ -667,8 +667,14 @@ $(function() {
 		var rows = permissionGrid.datagrid('getSelections');
 		if (rows.length > 0) {
 			var names = [];
-			for ( var i = 0; i < rows.length; i++) {
-				names.push(rows[i].name);
+			if(rows.length > 3){
+				names.push(rows[0].name);
+				names.push("...");
+				names.push(rows[rows.length-1].name);
+			}else{
+				for ( var i = 0; i < rows.length; i++) {
+					names.push(rows[i].name);
+				}
 			}
 			swal({
 				title : "你是否确定删除？",

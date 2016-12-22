@@ -10,7 +10,7 @@ public interface IAuthDao extends IBaseDao<Auth>{
 
 	public void deleteByAuthIds(List<Long> ids);
 	
-	public void deleteByParentAuthId(Long parentAuthId);
+	public void deleteByParentId(Long parentId);
 	
 	public List<Auth> selectByAuthIds(List<Long> ids);
 	
@@ -18,5 +18,7 @@ public interface IAuthDao extends IBaseDao<Auth>{
 	
 	public Pager<Auth> selectByParentAuthIdIsNullByOrder(String order, int pageIndex, int pageSize);
 	
-	public List<Auth> selectByParentAuthIdByOrder(long parentAuthId, String order);
+	public List<Auth> selectByParentIdByOrder(long parentId, String order);
+	
+	public List<Auth> selectByParentIdAndAuthName(Long parentId, String authName);
 }

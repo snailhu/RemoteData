@@ -338,18 +338,19 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	      //隐藏文件列表
 	      $("#div-fsList").hide();
 	      $('#btn-search').click(function(){
+	      	  $('#fileCatalog').empty();
 	    	  var nowSeries = $("#search-series").combobox('getValue');
 	    	  var nowStar = $("#search-star").combobox('getValue');
 	    	  var nowParamType = $("#search-paramType").combobox('getValue');
-			  if (nowSeries == "") {
+			  if (nowSeries == "" || nowSeries.length == 0) {
 				top.alertMsg('提示', '请选择星系！');
 				return;
 			  }
-			  if (nowStar == "") {
+			  if (nowStar == "" || nowStar.length == 0) {
 				top.alertMsg('提示', '请选择星号！');
 				return;
 			  }
-			  if (nowParamType == "") {
+			  if (nowParamType == "" || nowParamType.length == 0) {
 				top.alertMsg('提示', '请选择设备！');
 				return;
 			  }
@@ -515,10 +516,16 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 // 	                  }, "json");
 // 	              }
 // 	          });
-	          for (var i = 0; i < rows.length; i++) {
-	        	  names.push(rows[i].name);
-                  ids.push(rows[i].id +"/"+rows[i].type);
-              }
+
+			  if(rows.length > 3){
+					names.push(rows[0].name);
+					names.push("...");
+					names.push(rows[rows.length-1].name);
+				}else{
+					for ( var i = 0; i < rows.length; i++) {
+						names.push(rows[i].name);
+					}
+				}
 	          swal({
 					title : "你是否确定删除？",
 					text : names.join(','),
@@ -532,6 +539,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				},
 				function(isConfirm) {
 					if (isConfirm) {
+						for (var i = 0; i < rows.length; i++) {
+							  ids.push(rows[i].id +"/"+rows[i].type);
+						  }
 						$.ajax({
 							url : '${pageContext.request.contextPath}/admin/file/deleteFiles',
 							data : {

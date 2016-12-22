@@ -10,6 +10,8 @@ import DataAn.sys.domain.User;
 
 public interface IUserDao extends IBaseDao<User> {
 	
+	public void deleteByUserIds(List<Long> userIds);
+	
 	public User getUserByName(String username);
 				
 	public Pager<User> selectByOption(int pageIndex, int pageSize, String userName,String createdateStart, 

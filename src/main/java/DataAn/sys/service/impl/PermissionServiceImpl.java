@@ -121,19 +121,32 @@ public class PermissionServiceImpl implements IPermissionService{
 	@Override
 	@Transactional
 	public void deleteById(long id) {
-		authDao.deleteByParentAuthId(id);
+		roleAuthDao.deleteByAuthId(id);
+		authDao.deleteByParentId(id);
 		authDao.delete(id);
 	}
 
 	@Override
 	@Transactional
 	public void delete(String[] permissionGroupIdArray) {
+		List<Long> groupIds = new ArrayList<Long>();
+		List<Long> itemIds = new ArrayList<Long>();
 		for (String permissionGroupId : permissionGroupIdArray) {
 			long id = Long.parseLong(permissionGroupId);
-			authDao.deleteByParentAuthId(id);
-			authDao.delete(id);
+			groupIds.add(id);
+			List<Auth> list = authDao.selectByParentIdByOrder(id, null);
+			for (Auth auth : list) {
+				itemIds.add(auth.getAuthId());
+			}
+//			authDao.deleteByParentAuthId(id);
+//			authDao.delete(id);
 		}
-		
+		if(itemIds.size() > 0){
+			roleAuthDao.deleteByAuthIds(itemIds);
+			authDao.deleteByAuthIds(itemIds);			
+		}
+		if(groupIds.size() > 0)
+			authDao.deleteByAuthIds(groupIds);
 	}
 
 	@Override
@@ -199,7 +212,7 @@ public class PermissionServiceImpl implements IPermissionService{
 	public List<PermissionItemDto> getPermissionItemsByPermissionGroupId(
 			long permissionGroupId) {
 		List<PermissionItemDto> permissions = new ArrayList<PermissionItemDto>();
-		List<Auth> list = authDao.selectByParentAuthIdByOrder(permissionGroupId,null);
+		List<Auth> list = authDao.selectByParentIdByOrder(permissionGroupId,null);
 		if(list != null && list.size() > 0){
 			PermissionItemDto permission = null;
 			for (Auth auth : list) {
@@ -219,7 +232,7 @@ public class PermissionServiceImpl implements IPermissionService{
 	@Override
 	public List<EasyuiTreeNode> getTree(long roleId) {
 		List<EasyuiTreeNode> nodes = new ArrayList<EasyuiTreeNode>();
-		List<Auth> list = authDao.selectByParentAuthIdByOrder(0, null);
+		List<Auth> list = authDao.selectByParentIdByOrder(0, null);
 		if(list != null && list.size() > 0){
 			//保存当前角色所关联的权限
 			Set<Long> roleAuthIds = new HashSet<Long>();
@@ -255,7 +268,7 @@ public class PermissionServiceImpl implements IPermissionService{
 	 * @return
 	 */
 	private EasyuiTreeNode toTree(Auth group, Set<Long> roleAuthIds) {
-		List<Auth> list = authDao.selectByParentAuthIdByOrder(group.getAuthId(),null);
+		List<Auth> list = authDao.selectByParentIdByOrder(group.getAuthId(),null);
 		if (list != null && list.size() > 0) {
 			EasyuiTreeNode node = new EasyuiTreeNode();
 			node.setId(group.getAuthId());
@@ -277,7 +290,7 @@ public class PermissionServiceImpl implements IPermissionService{
 		return null;
 	}
 	private EasyuiTreeNode toTree(Auth group) {
-		List<Auth> list = authDao.selectByParentAuthIdByOrder(group.getAuthId(),null);
+		List<Auth> list = authDao.selectByParentIdByOrder(group.getAuthId(),null);
 		if (list != null && list.size() > 0) {
 			EasyuiTreeNode node = new EasyuiTreeNode();
 			node.setId(group.getAuthId());
@@ -298,7 +311,7 @@ public class PermissionServiceImpl implements IPermissionService{
 
 	@Override
 	public boolean isExistPermissionGroup(PermissionGroupDto permissionGroup) {
-		List<Auth> list = authDao.findByParam("authName", permissionGroup.getName());
+		List<Auth> list = authDao.selectByParentIdAndAuthName(null, permissionGroup.getName());
 		if (list != null && list.size() > 0) {
 			if(permissionGroup.getId() == 0){
 				return true;				
@@ -313,7 +326,7 @@ public class PermissionServiceImpl implements IPermissionService{
 
 	@Override
 	public boolean isExistPermissionItem(PermissionItemDto permissionItem) {
-		List<Auth> list = authDao.findByParam("authName", permissionItem.getDisplayName());
+		List<Auth> list = authDao.selectByParentIdAndAuthName(permissionItem.getPermissionGroupId(), permissionItem.getDisplayName());
 		if (list != null && list.size() > 0) {
 			if(permissionItem.getId() == 0){
 				return true;				

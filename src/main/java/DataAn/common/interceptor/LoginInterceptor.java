@@ -38,18 +38,18 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 //		System.out.println(new Date());
 //		System.out.println();
 		
-//		//得到请求servletPath 路径
-//		String servletPath = request.getServletPath();
-//		//判断是否是公开 地址
-//		if(servletPath.endsWith("Index")){
-//			return true;
-//		}
-//		HttpSession session = request.getSession();
-//		ActiveUserDto acticeUser = (ActiveUserDto) session.getAttribute("activeUser");
-//		if(acticeUser == null ){
-//			response.sendRedirect(request.getContextPath() + "/login");
-//			return false;
-//		}
+		//得到请求servletPath 路径
+		String servletPath = request.getServletPath();
+		//判断是否是公开 地址
+		if(servletPath.endsWith("Index")){
+			return true;
+		}
+		HttpSession session = request.getSession();
+		ActiveUserDto acticeUser = (ActiveUserDto) session.getAttribute("activeUser");
+		if(acticeUser == null ){
+			response.sendRedirect(request.getContextPath() + "/login");
+			return false;
+		}
 		return super.preHandle(request, response, handler);
 	}
 

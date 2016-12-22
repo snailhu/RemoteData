@@ -410,7 +410,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	  function doGetChildDir(dirId){
 		  var nowSeries = $("#search-series").combobox('getValue');
     	  var nowStar = $("#search-star").combobox('getValue');
-    	  var nowParamType = 'flywheel';
+		  var nowParamType = $("#search-paramType").combobox('getValue');
     	  
 		  fsGrid.datagrid('unselectAll');
 		  nowDirId = dirId;

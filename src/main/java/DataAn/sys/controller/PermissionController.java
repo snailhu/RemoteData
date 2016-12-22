@@ -154,8 +154,8 @@ public class PermissionController {
 		permissionItem.setDisplayName(displayName);
 		permissionItem.setCode(code);
 		permissionItem.setDescription(description);
-//		System.out.println("come in createPermissionItem..");
-//		System.out.println(permissionItem);
+		System.out.println("come in createPermissionItem..");
+		System.out.println(permissionItem);
 		JsonMessage jsonMsg = new JsonMessage();
 		//判断权限项是否存在
 		boolean flag = permissionService.isExistPermissionItem(permissionItem);

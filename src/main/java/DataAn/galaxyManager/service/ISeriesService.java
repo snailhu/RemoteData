@@ -32,7 +32,9 @@ public interface ISeriesService {
 	
 	public boolean checkSeriesAndStar(String series, String star);
 	
-	public boolean isExistSeries(SeriesDto dto);
+	public boolean isExistSeriesByName(SeriesDto dto);
+	
+	public boolean isExistSeriesByCode(SeriesDto dto);
 	
 	public void initJ9Series();
 }

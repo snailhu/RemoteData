@@ -96,4 +96,11 @@ public class DateUtilTest {
 		else
 		return getFibo(i - 1) + getFibo(i - 2);
 	}
+	
+	@Test
+	public void test5(){
+		Date beginDate = DateUtil.format("2016-12-20 17:00:00");
+		Date endDate = DateUtil.format("2016-12-21 00:00:00");
+		System.out.println(DateUtil.daysOfTwo(beginDate, endDate));
+	}
 }

@@ -133,6 +133,7 @@ public class StarServiceImpl implements IStarService {
 	
 	private StarDto pojoToDto(Star star) {
 		StarDto dto = new StarDto();
+		dto.setSeriesId(star.getSeries().getId());
 		dto.setId(star.getId());
 		dto.setName(star.getName());
 		dto.setCode(star.getCode());

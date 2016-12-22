@@ -136,7 +136,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						regexp : {
 							//regexp : /^[a-zA-Z0-9_\.]+$/,
 							//message : '用户名只能由字母、数字和下划线组成'
-							regexp : /^[A-Za-z0-9]{3,30}$)|(^[\u4E00-\u9FA5]{2,8}$/,
+							regexp : /(^[A-Za-z0-9]{1,30}$)|(^[\u4E00-\u9FA5]{1,30}$)/,
 							message : '用户名只能由字母、中文、数字'
 						},
 
@@ -210,8 +210,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							message : '用户名必须超过3，不超过30个字符'
 						},
 						regexp : {
-							regexp : /^[a-zA-Z0-9_\.]+$/,
-							message : '用户名只能由字母、数字和下划线组成'
+							//regexp : /^[a-zA-Z0-9_\.]+$/,
+							//message : '用户名只能由字母、数字和下划线组成'
+							regexp : /(^[A-Za-z0-9]{1,30}$)|(^[\u4E00-\u9FA5]{1,30}$)/,
+							message : '用户名只能由字母、中文、数字'
 						},
 					}
 				},

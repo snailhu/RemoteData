@@ -970,6 +970,7 @@ $(function() {
 			return false;
 		}
 		var datagridId = $('#edit-star-datagridId').val();
+		var seriesId = $('#edit-star-seriesId').val();
 		var starId = $('#edit-star-id').val();
 		var name = $('#edit-star-name').val();
 		var code = $('#edit-star-code').val();
@@ -979,6 +980,7 @@ $(function() {
 		$.ajax({
 			url : '${pageContext.request.contextPath}/admin/star/editStar',
 			data : {
+				seriesId : seriesId,
 				id : starId,
 				name : name,
 				code : code,

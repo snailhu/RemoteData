@@ -286,13 +286,12 @@ public class FileController {
 			operateJob = "上传文件"+datFileDto.getFileName();
 			systemLogService.addOneSystemlogs( request,operateJob);
 		}
-		final String serverConfig = "http://"+request.getServerName()+":"+request.getServerPort();
 		//打开另外一个线程处理文件
 		new Thread(new Runnable(){
 			@Override
 			public void run() {
 				try {
-					fileService.saveFile(map,serverConfig);
+					fileService.saveFile(map);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}				

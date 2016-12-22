@@ -199,10 +199,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
             	  notEmpty: {
                       message: '开始运行时间不能为空'
                   },
-	              regexp: {
-	                  regexp: /^(?:(?!0000)[0-9]{4}-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1[0-9]|2[0-8])|(?:0[13-9]|1[0-2])-(?:29|30)|(?:0[13578]|1[02])-31)|(?:[0-9]{2}(?:0[48]|[2468][048]|[13579][26])|(?:0[48]|[2468][048]|[13579][26])00)-02-29)\s+([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]$/,
-	                  message: '时间格式不对'
-	              },
+// 	              regexp: {
+// 	                  regexp: /^(?:(?!0000)[0-9]{4}-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1[0-9]|2[0-8])|(?:0[13-9]|1[0-2])-(?:29|30)|(?:0[13578]|1[02])-31)|(?:[0-9]{2}(?:0[48]|[2468][048]|[13579][26])|(?:0[48]|[2468][048]|[13579][26])00)-02-29)\s+([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]$/,
+// 	                  message: '时间格式不对'
+// 	              },
               }
           },
           description : {
@@ -249,10 +249,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
               	    notEmpty: {
                         message: '开始运行时间不能为空'
                     },
-	                regexp: {
-		                regexp: /^(?:(?!0000)[0-9]{4}-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1[0-9]|2[0-8])|(?:0[13-9]|1[0-2])-(?:29|30)|(?:0[13578]|1[02])-31)|(?:[0-9]{2}(?:0[48]|[2468][048]|[13579][26])|(?:0[48]|[2468][048]|[13579][26])00)-02-29)\s+([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]$/,
-	                    message: '时间格式不对'
-	                },
+// 	                regexp: {
+// 		                regexp: /^(?:(?!0000)[0-9]{4}-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1[0-9]|2[0-8])|(?:0[13-9]|1[0-2])-(?:29|30)|(?:0[13578]|1[02])-31)|(?:[0-9]{2}(?:0[48]|[2468][048]|[13579][26])|(?:0[48]|[2468][048]|[13579][26])00)-02-29)\s+([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]$/,
+// 	                    message: '时间格式不对'
+// 	                },
                 }
             }
         }
@@ -436,7 +436,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 									<label class="col-sm-3 control-label no-padding-right" for="add-star-beginDate"> 开始运行时间：</label>
 									<div class="col-sm-8">
 										<input type="text" class="form-control input-mask-date" name="beginDate" id="add-star-beginDate"
-											placeholder="yyyy-MM-dd HH:mm:ss" readonly="true">
+											placeholder="yyyy-MM-dd" readonly="true">
 										<div id="getBeginTime"></div>
 									</div>
 								</div>
@@ -492,7 +492,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 									<label class="col-sm-3 control-label no-padding-right" for="edit-star-beginDate"> 开始运行时间：</label>
 									<div class="col-sm-8">
 										<input type="text" class="form-control input-mask-date" name="beginDate" id="edit-star-beginDate"
-											placeholder="yyyy-MM-dd HH:mm:ss" readonly="true">
+											placeholder="yyyy-MM-dd" readonly="true">
 									</div>
 								</div>
 								<div class="space-8"></div>
@@ -848,10 +848,10 @@ $(function() {
 	$('#add-star-beginDate').click(function(){
  		jeDate({
   			dateCell:"#add-star-beginDate",//直接显示日期层的容器，可以是ID  CLASS
-  			format:"YYYY-MM-DD hh:mm:ss",//日期格式
+  			format:"YYYY-MM-DD",//日期格式
   			isinitVal:false, //是否初始化时间
   			festival:false, //是否显示节日
-  			isTime:true, //是否开启时间选择
+  			//isTime:true, //是否开启时间选择
   			//isClear:false, //是否显示清空
   			//minDate:"2000-01-01 00:00:00",//最小日期
   			maxDate:jeDate.now(0), //设定最大日期为当前日期
@@ -862,10 +862,10 @@ $(function() {
 	$('#edit-star-beginDate').click(function(){
  		jeDate({
   			dateCell:"#edit-star-beginDate",//直接显示日期层的容器，可以是ID  CLASS
-  			format:"YYYY-MM-DD hh:mm:ss",//日期格式
+  			format:"YYYY-MM-DD",//日期格式
   			isinitVal:false, //是否初始化时间
   			festival:false, //是否显示节日
-  			isTime:true, //是否开启时间选择
+  			//isTime:true, //是否开启时间选择
   			//isClear:false, //是否显示清空
   			//minDate:"2000-01-01 00:00:00",//最小日期
   			maxDate:jeDate.now(0), //设定最大日期为当前日期

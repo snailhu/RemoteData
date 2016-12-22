@@ -41,7 +41,7 @@ public class StarServiceImpl implements IStarService {
 		star.setName(starDto.getName());
 		star.setCode(starDto.getCode());
 		star.setDescription(starDto.getDescription());
-		star.setStartRunDate(DateUtil.format(starDto.getBeginDate()));
+		star.setStartRunDate(DateUtil.format(starDto.getBeginDate(),"yyyy-MM-dd"));
 		starDao.add(star);
 		return true;
 	}
@@ -67,7 +67,7 @@ public class StarServiceImpl implements IStarService {
 			star.setDescription(starDto.getDescription());
 		}
 		if (StringUtils.isNotBlank(starDto.getBeginDate())) {
-			star.setStartRunDate(DateUtil.format(starDto.getBeginDate()));
+			star.setStartRunDate(DateUtil.format(starDto.getBeginDate(),"yyyy-MM-dd"));
 		}
 		starDao.update(star);
 		return false;
@@ -121,7 +121,7 @@ public class StarServiceImpl implements IStarService {
 		dto.setId(star.getId());
 		dto.setName(star.getName());
 		dto.setCode(star.getCode());
-		dto.setBeginDate(DateUtil.format(star.getStartRunDate()));
+		dto.setBeginDate(DateUtil.format(star.getStartRunDate(),"yyyy-MM-dd"));
 		dto.setDescription(star.getDescription());
 		dto.setRunDays(deviceDao.getTotalRuntimeByStar(star.getSeries().getId().toString(), star.getId().toString()));
 		return dto;

@@ -213,13 +213,13 @@
 				series : {
 					validators : {
 						notEmpty : {
-							message : '请选择星系！'
+							message : '请选择星系'
 						}
 					}
 				},star : {
 					validators : {
 						notEmpty : {
-							message : '请选择星！'
+							message : '请选择星号'
 						}
 					}
 				},
@@ -298,14 +298,14 @@
 				series : {
 					validators : {
 						notEmpty : {
-							message : '请选择星系！'
+							message : '请选择星系'
 						}
 					}
 				},
 				star : {
 					validators : {
 						notEmpty : {
-							message : '请选择星！'
+							message : '请选择星号'
 						}
 					}
 				},

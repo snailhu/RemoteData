@@ -562,7 +562,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							</div>
 							<div class="modal-body">
 								<div class="form-group">
-									<label class="col-sm-3 control-label no-padding-right" for="edit-starParam-series"> 星系: </label>
+									<label class="col-sm-3 control-label no-padding-right" for="edit-starParam-series"> 星系：</label>
 									<div class="col-sm-6">
 										<select name="series"  id="edit-starParam-series" class="form-control " >
 				                       	</select>

@@ -145,7 +145,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		</div>
 		<div class="page-content">
 <!-- 			<div class="page-header" style="padding-bottom: 10px; /**margin: -5px 0px 5px;*/"> -->
-<!-- 				<h1>${nowSeries}系列-${nowStar}星-${nowParameterTypeName}文件管理</h1> -->
+<!-- 				<h1>${nowSeries}星系-${nowStar}星-${nowParameterTypeName}文件管理</h1> -->
 <!-- 			</div> -->
 			
 			<!-- /.page-header -->
@@ -169,9 +169,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								<form id="fileupload" action="" class="form-horizontal" role="form" >
 									<div class="space-1"></div>
 									<div class="form-group">
-										<label class="col-sm-3 control-label no-padding-right" for="search-series"> 系列：</label>
+										<label class="col-sm-3 control-label no-padding-right" for="search-series"> 星系：</label>
 										<div class="col-sm-9">
-											<input type="text" id="search-series" name="series" placeholder="系列" class="col-xs-10 col-sm-5" style="height:30px;"/>																					
+											<input type="text" id="search-series" name="series" placeholder="星系" class="col-xs-10 col-sm-5" style="height:30px;"/>																					
 											<label class="mustchoose">*</label>
 										</div>
 									</div>

@@ -8,7 +8,7 @@ import DataAn.sys.domain.Role;
 
 public interface IRoleDao extends IBaseDao<Role>{
 
-	public void deleteByRoleIds(List<String> roleIds);
+	public void deleteByRoleIds(List<Long> roleIds);
 	
 	public Role selectByRoleName(String roleName);
 	

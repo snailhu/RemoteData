@@ -36,5 +36,7 @@ public interface IStarService {
 	
 	public boolean isExistStarByName(StarDto starDto);
 	
+	public boolean isExistStarByCode(StarDto starDto);
+	
 	public List<Combo> getStarComboData(String seriesCode, String starCode);
 }

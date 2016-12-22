@@ -312,7 +312,8 @@ a {
 	              title: 'id',
 	              field: 'id',
 	              width: 50,
-	              checkbox: true
+	              checkbox: true,
+	              hidden:true
 	          }]],
 	          columns: [[
 	          {

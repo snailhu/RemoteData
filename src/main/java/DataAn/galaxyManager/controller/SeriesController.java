@@ -59,8 +59,8 @@ public class SeriesController {
 		JsonMessage jsonMsg = new JsonMessage();
 		if (seriesService.isExistSeries(dto)) {
 			jsonMsg.setSuccess(false);
-			jsonMsg.setMsg("在系列名称已存在！");
-			jsonMsg.setObj("在系列名称已存在！");
+			jsonMsg.setMsg("该系列名称已存在！");
+			jsonMsg.setObj("该系列名称已存在！");
 			return jsonMsg;
 		} 
 		try {
@@ -100,8 +100,8 @@ public class SeriesController {
 		JsonMessage jsonMsg = new JsonMessage();
 		if (seriesService.isExistSeries(dto)) {
 			jsonMsg.setSuccess(false);
-			jsonMsg.setMsg("在系列名称已存在！");
-			jsonMsg.setObj("在系列名称已存在！");
+			jsonMsg.setMsg("该系列名称已存在！");
+			jsonMsg.setObj("该系列名称已存在！");
 			return jsonMsg;
 		} 
 		try {

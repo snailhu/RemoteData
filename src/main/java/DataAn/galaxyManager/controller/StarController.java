@@ -56,6 +56,12 @@ public class StarController {
 			jsonMsg.setMsg("在此星系下的星名称已存在！");
 			jsonMsg.setObj("在此星系下的星名称已存在！");
 			return jsonMsg;
+		}
+		if (starService.isExistStarByCode(starDto)) {
+			jsonMsg.setSuccess(false);
+			jsonMsg.setMsg("在此星系下的星编码已存在！");
+			jsonMsg.setObj("在此星系下的星编码已存在！");
+			return jsonMsg;
 		} 
 		try {
 			starService.saveStar(starDto);
@@ -98,6 +104,12 @@ public class StarController {
 			jsonMsg.setSuccess(false);
 			jsonMsg.setMsg("在此星系下的星名称已存在！");
 			jsonMsg.setObj("在此星系下的星名称已存在！");
+			return jsonMsg;
+		} 
+		if (starService.isExistStarByCode(starDto)) {
+			jsonMsg.setSuccess(false);
+			jsonMsg.setMsg("在此星系下的星编码已存在！");
+			jsonMsg.setObj("在此星系下的星编码已存在！");
 			return jsonMsg;
 		} 
 		try {

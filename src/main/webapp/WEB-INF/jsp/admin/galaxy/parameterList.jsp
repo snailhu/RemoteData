@@ -472,11 +472,7 @@ $(function() {
 			//弹出编辑框
 			$('#editParamModal').modal('show');
 	        }else {
-	            var names = [];
-	            for (var i = 0; i < rows.length; i++) {
-	                names.push(rows[i].fullName);
-	            }
-	            top.showMsg("提示", '只能选择一个参数进行编辑！您已经选择了'+rows.length+'个参数');
+	            top.showMsg("提示", '只能选择一个参数进行编辑！');
 	        }
 	    }else {
 	        top.showMsg("提示", "请选择要编辑的记录！");
@@ -522,9 +518,15 @@ $(function() {
 	      var rows = paramGrid.datagrid('getSelections');
 	      if (rows.length>0) {
 	    	  	var names = [];
-				for ( var i = 0; i < rows.length; i++) {
-					names.push(rows[i].fullName);
-					ids.push(rows[i].id);
+				
+				if(rows.length > 3){
+					names.push(rows[0].fullName);
+					names.push("...");
+					names.push(rows[rows.length-1].fullName);
+				}else{
+					for ( var i = 0; i < rows.length; i++) {
+						names.push(rows[i].fullName);
+					}
 				}
 				swal({
 					title : "你是否确定删除？",
@@ -539,6 +541,9 @@ $(function() {
 				},
 				function(isConfirm) {
 					if (isConfirm) {
+						for ( var i = 0; i < rows.length; i++) {
+							ids.push(rows[i].id);
+						}
 						$.ajax({
 							url : '${pageContext.request.contextPath}/admin/parameter/deleteParam',
 							data : {

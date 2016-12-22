@@ -94,8 +94,13 @@ public class UserServiceimpl implements IUserService{
 	@Override
 	@Transactional
 	public void delete(String[] userIdArray) {
+		List<Long> userIds = new ArrayList<Long>();
 		for (String userId : userIdArray) {
-			userDao.delete(Long.parseLong(userId));
+			userIds.add(Long.parseLong(userId));
+		}
+		if(userIds.size() > 0){
+			userRoleDao.deleteByUserIds(userIds);
+			userDao.deleteByUserIds(userIds);			
 		}
 	}
 

@@ -116,6 +116,21 @@ public class StarServiceImpl implements IStarService {
 		return false;
 	}
 
+	@Override
+	public boolean isExistStarByCode(StarDto starDto) {
+		List<Star> list = starDao.getStarBySeriesIdAndCode(starDto.getSeriesId(), starDto.getCode());
+		if(list != null && list.size() > 0){
+			if(starDto.getId() == 0){
+				return true;				
+			}else{
+				if(starDto.getId() != list.get(0).getId()){
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+	
 	private StarDto pojoToDto(Star star) {
 		StarDto dto = new StarDto();
 		dto.setId(star.getId());
@@ -150,5 +165,6 @@ public class StarServiceImpl implements IStarService {
 		}
 		return comboList;
 	}
+
 
 }

@@ -21,9 +21,9 @@ implements IAuthDao{
 	}
 
 	@Override
-	public void deleteByParentAuthId(Long parentAuthId) {
+	public void deleteByParentId(Long parentId) {
 		String hql = "delete from Auth a where a.auth.authId=?";
-		this.getSession().createQuery(hql).setParameter(0, parentAuthId).executeUpdate();			
+		this.getSession().createQuery(hql).setParameter(0, parentId).executeUpdate();			
 	}
 
 	@SuppressWarnings("unchecked")
@@ -70,20 +70,31 @@ implements IAuthDao{
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<Auth> selectByParentAuthIdByOrder(long parentAuthId, String order) {
+	public List<Auth> selectByParentIdByOrder(long parentId, String order) {
 		String o = "";
 		if(StringUtils.isNotBlank(order)){
 			o += " order by " + order + " desc";
 		}else{
 			o += " order by createDate desc";
 		}
-		if(parentAuthId == 0){
+		if(parentId == 0){
 			String hql = "from Auth a where a.auth.authId is null" + o;
 			return this.getSession().createQuery(hql).list();	
 		}else{
 			String hql = "from Auth a where a.auth.authId=?" + o;
-			return this.getSession().createQuery(hql).setParameter(0, parentAuthId).list();				
+			return this.getSession().createQuery(hql).setParameter(0, parentId).list();				
 		}
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Auth> selectByParentIdAndAuthName(Long parentId, String authName) {
+		if(parentId == null || parentId == 0){
+			String hql = "from Auth a where a.auth.authId is null and a.authName=?";
+			return this.getSession().createQuery(hql).setParameter(0, authName).list();	
+		}
+		String hql = "from Auth a where a.auth.authId=? and a.authName=?";
+		return this.getSession().createQuery(hql).setParameter(0, parentId).setParameter(1, authName).list();	
 	}
 
 

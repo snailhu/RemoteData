@@ -15,7 +15,7 @@ public class RoleDaoImpl extends BaseDaoImpl<Role>
 implements IRoleDao{
 
 	@Override
-	public void deleteByRoleIds(List<String> roleIds) {
+	public void deleteByRoleIds(List<Long> roleIds) {
 		String hql = "delete from Role r where r.roleId in (:roleIds)";
 		this.getSession().createQuery(hql).setParameterList("roleIds", roleIds).executeUpdate();
 	}

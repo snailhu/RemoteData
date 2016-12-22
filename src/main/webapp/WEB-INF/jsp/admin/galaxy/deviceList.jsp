@@ -958,7 +958,7 @@
 			swal(
 					{
 						title : "你是否确定删除？",
-						text : "确认删除？",
+						text : "",
 						type : "warning",
 						showCancelButton : true,
 						confirmButtonColor : "#DD6B55",

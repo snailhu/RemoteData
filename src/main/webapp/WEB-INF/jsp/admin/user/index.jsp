@@ -104,8 +104,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			$(".col-lg-3").addClass("col-sm-3");
 			$(".col-lg-7").css("text-align","center");
 			$(".modal-dialog").css("margin","20px auto");
-			$(".col-lg-4").css({"margin-left":"25%","width":"300px"});
-			//$(".col-lg-4").find("button").css("display","inline");
+			$(".col-lg-4").css({"margin-left":"25%","width":"600px"});
+			$(".col-lg-4").find("button").css("display","inline");
 			//左菜单栏
 			$("#usermanage-img").attr("src","${pageContext.request.contextPath}/static/new/img/images/a_74.png");
 			$("#sysmanage-img").attr("src","${pageContext.request.contextPath}/static/new/img/images/a_50.png");
@@ -134,10 +134,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							message : '用户名必须超过3，不超过30个字符'
 						},
 						regexp : {
-							//regexp : /^[a-zA-Z0-9_\.]+$/,
-							//message : '用户名只能由字母、数字和下划线组成'
-							regexp : /(^[A-Za-z0-9]{1,30}$)|(^[\u4E00-\u9FA5]{1,30}$)/,
-							message : '用户名只能由字母、中文、数字'
+							regexp : /^[a-zA-Z0-9\.]+$/,
+							message : '用户名只能由字母、数字组成'
+// 							regexp : /(^[A-Za-z0-9]{1,30}$)|(^[\u4E00-\u9FA5]{1,30}$)/,
+// 							message : '用户名只能由字母、中文、数字'
 						},
 
 					}
@@ -210,10 +210,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							message : '用户名必须超过3，不超过30个字符'
 						},
 						regexp : {
-							//regexp : /^[a-zA-Z0-9_\.]+$/,
-							//message : '用户名只能由字母、数字和下划线组成'
-							regexp : /(^[A-Za-z0-9]{1,30}$)|(^[\u4E00-\u9FA5]{1,30}$)/,
-							message : '用户名只能由字母、中文、数字'
+							regexp : /^[a-zA-Z0-9\.]+$/,
+							message : '用户名只能由字母、数字组成'
+// 							regexp : /(^[A-Za-z0-9]{1,30}$)|(^[\u4E00-\u9FA5]{1,30}$)/,
+// 							message : '用户名只能由字母、中文、数字'
 						},
 					}
 				},

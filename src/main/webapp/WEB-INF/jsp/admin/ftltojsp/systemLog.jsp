@@ -127,9 +127,9 @@
 									
 									<div class="space-4"></div>
 									<div class="form-group">
-										<label class="col-sm-5 control-label no-padding-right" for="form-beginTime"> 关键字：</label>
+										<label class="col-sm-5 control-label no-padding-right" for="form-beginTime"> 操作关键字：</label>
 										<div class="col-sm-3">
-											<input class="form-control"  id="form-keyWord"   name="keyWord" type="text" placeholder="--请输入关键字--">
+											<input class="form-control"  id="form-keyWord"   name="keyWord" type="text" placeholder="--请输入操作关键字--">
 										</div>
 									</div>
 									

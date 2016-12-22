@@ -74,7 +74,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   $(function(){ 
 		//修改页面缩放，界面显示不正常
 		$(".col-lg-4").css("margin-left","25%");		
-		$(".textbox-addon").empty();
+		
 		//左菜单栏
 		$("#fileview-img").attr("src","${pageContext.request.contextPath}/static/new/img/images/a_46.png");
 		$("#filemanage-img").attr("src","${pageContext.request.contextPath}/static/new/img/images/a_26.png");

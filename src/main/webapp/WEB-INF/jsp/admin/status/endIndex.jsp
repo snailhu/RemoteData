@@ -345,7 +345,7 @@
 										for="edit-series"> 详情：</label>
 									<div class="col-sm-8">
 										<textarea rows="5" cols="20" id="exceptionInfoModalArea"
-											class="form-control"></textarea>
+											class="form-control" readonly="true"></textarea>
 									</div>
 								</div>
 							</div>

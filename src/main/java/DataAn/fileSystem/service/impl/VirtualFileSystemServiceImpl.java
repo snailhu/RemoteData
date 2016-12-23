@@ -449,6 +449,7 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 				}
 				fsDto.setName(fs.getFileName());
 				fsDto.setType(fs.getFileType().getName());
+				fsDto.setParameterType(fs.getParameterType());
 				fsList.add(fsDto);
 			}
 		}

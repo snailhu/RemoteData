@@ -28,27 +28,27 @@ public class Parameter {
 	private Long id;
 	
 	//系列 如：j9
-	@Column(name = "series", nullable = false, length = 16)
+	@Column(name = "series", nullable = false, length = 64)
 	private String series;
 	
 	//星 如: 02
-	@Column(name = "star", nullable = false, length = 16)
+	@Column(name = "star", nullable = false, length = 64)
 	private String star;
 	
 	//参数 如: flywheel、top
-	@Column(name = "deviceTypeCode", nullable = true, length = 16)
+	@Column(name = "deviceTypeCode", nullable = true, length = 128)
 	private String deviceTypeCode;
 		
 	//参数名全称
-	@Column(name = "fullName", nullable = false, length = 128)
+	@Column(name = "fullName", nullable = false, length = 512)
 	private String fullName;
 	
 	//参数名简写
-	@Column(name = "simplyName", nullable = true, length = 64)
+	@Column(name = "simplyName", nullable = true, length = 256)
 	private String simplyName;
 	
 	//参数码
-	@Column(name = "code", nullable = false, length = 64)
+	@Column(name = "code", nullable = false, length = 128)
 	private String code;
 
 	@Temporal(TemporalType.TIMESTAMP)

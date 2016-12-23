@@ -121,23 +121,19 @@
 
 		//修改搜索框图标
 		var flag = false;
-		$("#change-search-box")
-				.click(
-						function() {
-							if (flag) {
-								$("#toolimg")
-										.attr("src",
-												"${pageContext.request.contextPath}/static/imgs/DataImport_manage/xia.png")
-								$(".widget-body").slideUp("slow");
-								flag = false;
-							} else {
-								$("#toolimg")
-										.attr("src",
-												"${pageContext.request.contextPath}/static/imgs/DataImport_manage/xia2.png")
-								$(".widget-body").slideDown("slow");
-								flag = true;
-							}
-						});
+		$("#change-search-box").click(function() {
+			if (flag) {
+				$("#toolimg").attr("src",
+								"${pageContext.request.contextPath}/static/imgs/DataImport_manage/xia.png")
+				$(".widget-body").slideUp("slow");
+				flag = false;
+			} else {
+				$("#toolimg").attr("src",
+								"${pageContext.request.contextPath}/static/imgs/DataImport_manage/xia2.png")
+				$(".widget-body").slideDown("slow");
+				flag = true;
+			}
+		});
 	});
 </script>
 </head>
@@ -244,168 +240,143 @@
 	<script type="text/javascript">
 		var deviceGrid;
 		//快速搜索按钮
-		$('#btn-search')
-				.click(
-						function() {
-							var parameterType = $('#search-parameterType')
-									.val();
-							var model = $('#search-model').val();
-							deviceGrid = $('#deviceList')
-									.datagrid(
-											{
-												view : detailview,
-												url : '${pageContext.request.contextPath}/admin/device/getDeviceIndexPager',
-												queryParams : {
-													parameterType : parameterType,
-													model : model
-												},
-												rownumbers : true,
-												fitColumns : true,
-												idField : 'id',//'id',
-												toolbar : '#toolbar',
-												pageSize : 10,
-												pagination : true,
-												pageList : [ 10, 20, 30, 40,
-														50, 60, 70, 80, 90, 100 ],
-												columns : [ [ {
-													title : 'seriersId',
-													field : 'seriersId',
-													hidden : true
-												}, {
-													title : 'starId',
-													field : 'starId',
-													hidden : true
-												}, {
-													title : 'deviceTypeId',
-													field : 'deviceTypeId',
-													hidden : true
-												}, {
-													field : 'seriesName',
-													title : '星系',
-													width : 50,
-												}, {
-													field : 'starName',
-													title : '星号',
-													width : 50
-												}, {
-													field : 'deviceTypeName',
-													title : '设备类型',
-													width : 80
-												}, {
-													field : 'deviceNum',
-													title : '设备总数',
-													width : 80
-												}, {
-													field : 'runDays',
-													title : '设备总运行时间',
-													width : 100
-												} ] ],
-												onLoadError : function(data) {
-													$.messager.alert("信息",
-															"暂无数据信息", "error");
-												},
-												detailFormatter : function(
-														index, row) {
-													return '<div><table id="ddv-' + index + '"></table></div>';
-												},
-												onExpandRow : function(index,
-														row) {
-													var subgridId = 'ddv-'
-															+ index;
-													$('#' + subgridId)
-															.datagrid(
-																	{
-																		url : '${pageContext.request.contextPath}/admin/device/getDevicesByParam?deviceType='
-																				+ row.deviceTypeId
-																				+ '&series='
-																				+ row.seriersId
-																				+ '&star='
-																				+ row.starId
-																				+ '&model='
-																				+ model,
-																		fitColumns : true,
-																		rownumbers : true,
-																		singleSelect : true,
-																		loadMsg : '正在载入设备列表，请稍后...',
-																		height : 'auto',
-																		columns : [ [
-																				{
-																					title : 'ID',
-																					field : 'deviceId',
-																					hidden : true,
-																				},
-																				{
-																					title : 'status',
-																					field : 'runStatus',
-																					hidden : true,
-																				},
-																				{
-																					field : 'deviceName',
-																					title : '设备名称',
-																					width : 50
-																				},
-																				{
-																					field : 'model',
-																					title : '型号',
-																					width : 50
-																				},
-																				{
-																					field : 'startDate',
-																					title : '开始运行时间',
-																					width : 80
-																				},
-																				{
-																					field : 'endDate',
-																					title : '结束运行时间',
-																					width : 80
-																				},
-																				{
-																					field : 'runDays',
-																					title : '累计工作时间(天)',
-																					width : 80
-																				},
-																				{
-																					field : 'descreption',
-																					title : '运行状态',
-																					width : 80,
-																					formatter : function(
-																							value,
-																							row,
-																							index) {
-																						if (row.runStatus == 1) {
-																							return '运行中';
-																						} else if (row.runStatus == 0) {
-																							return '已停止';
-																						}
-																					}
-																				} ] ],
-																		onResize : function() {
-																			$(
-																					'#deviceList')
-																					.datagrid(
-																							'fixDetailRowHeight',
-																							index);
-																		},
-																		onLoadSuccess : function() {
-																			setTimeout(
-																					function() {
-																						$(
-																								'#deviceList')
-																								.datagrid(
-																										'fixDetailRowHeight',
-																										index);
-																					},
-																					0);
-
-																		}
-																	});
-													$('#deviceList')
-															.datagrid(
-																	'fixDetailRowHeight',
-																	index);
-												}
-											});
-						});
+		$('#btn-search').click(function() {
+			var parameterType = $('#search-parameterType').val();
+			var model = $('#search-model').val();
+			deviceGrid = $('#deviceList').datagrid({
+				view : detailview,
+				url : '${pageContext.request.contextPath}/admin/device/getDeviceIndexPager',
+				queryParams : {
+					parameterType : parameterType,
+					model : model
+				},
+				rownumbers : true,
+				fitColumns : true,
+				idField : 'id',//'id',
+				toolbar : '#toolbar',
+				pageSize : 10,
+				pagination : true,
+				pageList : [ 10, 20, 30, 40,
+						50, 60, 70, 80, 90, 100 ],
+				columns : [ [ {
+					title : 'seriersId',
+					field : 'seriersId',
+					hidden : true
+				}, {
+					title : 'starId',
+					field : 'starId',
+					hidden : true
+				}, {
+					title : 'deviceTypeId',
+					field : 'deviceTypeId',
+					hidden : true
+				}, {
+					field : 'seriesName',
+					title : '星系',
+					width : 50,
+				}, {
+					field : 'starName',
+					title : '星号',
+					width : 50
+				}, {
+					field : 'deviceTypeName',
+					title : '设备类型',
+					width : 80
+				}, {
+					field : 'deviceNum',
+					title : '设备总数',
+					width : 80
+				}, {
+					field : 'runDays',
+					title : '设备总运行时间',
+					width : 100
+				} ] ],
+				onLoadError : function(data) {
+					$.messager.alert("信息",
+							"暂无数据信息", "error");
+				},
+				detailFormatter : function(
+						index, row) {
+					return '<div><table id="ddv-' + index + '"></table></div>';
+				},
+				onExpandRow : function(index,row) {
+					var subgridId = 'ddv-'+ index;
+					$('#' + subgridId).datagrid({
+						url : '${pageContext.request.contextPath}/admin/device/getDevicesByParam?deviceType='
+								+ row.deviceTypeId
+								+ '&series='
+								+ row.seriersId
+								+ '&star='
+								+ row.starId
+								+ '&model='
+								+ model,
+						fitColumns : true,
+						rownumbers : true,
+						singleSelect : true,
+						loadMsg : '正在载入设备列表，请稍后...',
+						height : 'auto',
+						columns : [ [
+								{
+									title : 'ID',
+									field : 'deviceId',
+									hidden : true,
+								},
+								{
+									title : 'status',
+									field : 'runStatus',
+									hidden : true,
+								},
+								{
+									field : 'deviceName',
+									title : '设备名称',
+									width : 50
+								},
+								{
+									field : 'model',
+									title : '型号',
+									width : 50
+								},
+								{
+									field : 'startDate',
+									title : '开始运行时间',
+									width : 80
+								},
+								{
+									field : 'endDate',
+									title : '结束运行时间',
+									width : 80
+								},
+								{
+									field : 'runDays',
+									title : '累计工作时间(天)',
+									width : 80
+								},
+								{
+									field : 'descreption',
+									title : '运行状态',
+									width : 80,
+									formatter : function(value,row,index) {
+										if (row.runStatus == 1) {
+											return '运行中';
+										} else if (row.runStatus == 0) {
+											return '已停止';
+										}
+									}
+								} ] ],
+						onResize : function() {
+							$('#deviceList').datagrid('fixDetailRowHeight',index);
+						},
+						onLoadSuccess : function() {
+							setTimeout(function() {
+										$('#deviceList').datagrid('fixDetailRowHeight',index);
+									},
+									0);
+						}
+					});
+					$('#deviceList').datagrid('fixDetailRowHeight',index);
+				}
+			});
+		});
 	</script>
 </body>
 </html>

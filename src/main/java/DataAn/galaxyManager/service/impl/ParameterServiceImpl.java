@@ -199,9 +199,8 @@ public class ParameterServiceImpl implements IParameterService{
 			}
 			param_en = param.getCode();
 			parameterList_allZh_and_en.put(param_zh, param_en);
-			return param_en;
 		}
-		return null;
+		return param_en;
 		
 //		Parameter param = parameterDao.selectBySeriesAndStarAndCode(series, star, param_zh);
 //		if(param == null){

@@ -80,8 +80,7 @@ public class InitDataListener implements ApplicationListener<ContextRefreshedEve
 //						e.printStackTrace();
 //					}
 //				}
-//			}).start();;
-			
+//			}).start();
 			
 		}
 	}

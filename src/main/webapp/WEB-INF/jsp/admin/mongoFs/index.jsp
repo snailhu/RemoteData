@@ -337,6 +337,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		  var nowDirId = '';
 	      //隐藏文件列表
 	      $("#div-fsList").hide();
+	      $("#btn-reset").click(function(){
+	      	  $("#search-series").combobox('clear');
+	    	  $("#search-star").combobox('clear');
+	    	  $("#search-paramType").combobox('clear');
+	      });
 	      $('#btn-search').click(function(){
 	      	  $('#fileCatalog').empty();
 	    	  var nowSeries = $("#search-series").combobox('getValue');
@@ -494,6 +499,18 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	    	 top.showMsg("提示", "请选择要下载的文件！");
 	     }  
 	  }
+	  var activeUser = '${activeUser}';
+	  var userPermissionItems = [];
+	  if (activeUser != '') {
+			var permissionItemsJSON = '${activeUser.permissionItemsJSON}';
+			var map = $.parseJSON(permissionItemsJSON);
+			if (map.flywheel == 'flywheel') {
+				userPermissionItems.push('flywheel');
+			}
+			if (map.top == 'top') {
+				userPermissionItems.push('top');
+			}
+		}
 	  function deleteFS() {
 	      var ids = [];
 	      var names = [];
@@ -516,7 +533,18 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 // 	                  }, "json");
 // 	              }
 // 	          });
-
+			  var flag = false;
+			  var paramType = rows[0].parameterType;
+			  
+			  for ( var i = 0; i < userPermissionItems.length; i++) {
+				if(userPermissionItems[i] == paramType){
+					flag = true;
+				}
+			  }
+			  if(!flag){
+				  top.showMsg("提示", "你无权限删除！");
+				  return;
+			  }
 			  if(rows.length > 3){
 					names.push(rows[0].name);
 					names.push("...");

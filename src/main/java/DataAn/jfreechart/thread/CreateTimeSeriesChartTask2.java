@@ -17,6 +17,7 @@ import DataAn.common.utils.DateUtil;
 import DataAn.common.utils.Log4jUtil;
 import DataAn.jfreechart.chart.ChartFactory;
 import DataAn.jfreechart.dto.ConstraintDto;
+import DataAn.reportManager.config.OptionConfig;
 
 /**
  * 只多线程生成图片
@@ -104,26 +105,27 @@ public class CreateTimeSeriesChartTask2 extends RecursiveTask<String>{
 			configMap.put("y1Label", y1Label);
 			configMap.put("y2Label", y2Label);
 
-			JFreeChart chart = ChartFactory.createTimeSeriesChart(datasetList, beginDate, endDate, configMap);
-			
-			chartName = chartName+"_lineChart.png";
-			File file = new File(cachePath, chartName);
-			if(chart != null){
-				int width = 1024;
-				int height = 620;
-				// ChartUtilities.saveChartAsJPEG(file, chart, width, height);
-				ChartUtilities.saveChartAsPNG(file, chart, width, height);
+			if(datasetList.size() >0 && datasetList.get(0).getSeries(0).getItemCount() > 0){
+				JFreeChart chart = ChartFactory.createTimeSeriesChart(datasetList, beginDate, endDate, configMap);
+				
+				chartName = chartName+"_lineChart.png";
+				File file = new File(cachePath, chartName);
+				if(chart != null){
+					int width = 1024;
+					int height = 620;
+					// ChartUtilities.saveChartAsJPEG(file, chart, width, height);
+					ChartUtilities.saveChartAsPNG(file, chart, width, height);
+					return file.getAbsolutePath();
+				}
+				long end_getData = System.currentTimeMillis();
+				System.out.println(chartName + "chart time: " + (end_getData - begin));
+				
 			}
-			long end_getData = System.currentTimeMillis();
-			
-			System.out.println(chartName + "chart time: " + (end_getData - begin));
-			
-			return file.getAbsolutePath();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}				
-		
-		return null;
+		String chartPathThree = OptionConfig.getWebPath() + "\\report\\wordtemplate\\NoData.png";
+		return chartPathThree;
 	}
 
 }

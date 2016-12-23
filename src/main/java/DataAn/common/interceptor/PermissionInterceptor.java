@@ -20,26 +20,38 @@ public class PermissionInterceptor implements HandlerInterceptor{
 	@Override
 	public boolean preHandle(HttpServletRequest request,
 			HttpServletResponse response, Object handler) throws Exception {
+		//得到请求servletPath 路径
+		String servletPath = request.getServletPath();
 		//得到请求的url
 		String uri = request.getRequestURI();
+//		System.out.println("come in PermissionInterceptor");
+//		System.out.println("servletPath: " + servletPath);
+//		System.out.println("uri: " + uri);
+		//判断是否是公开 地址
+		if(servletPath.equals("/Index")){
+			return true;
+		}
 		//获取session
 		HttpSession session = request.getSession();
 		ActiveUserDto activeUser = (ActiveUserDto) session.getAttribute("activeUser");
-//		System.out.println("PermissionInterceptor...");
-//		System.out.println(activeUser);
-//		System.out.println("uri: " + uri);
 		//从session中取权限范围的权限
 		Map<String, String> map = activeUser.getPermissionItems();
-		Object userManager = map.get("userManager");
-		if(userManager == null){
-			List<String> userManager_urls = ResourcesUtil.getkeyList("userManagerURL");
-			for (String u : userManager_urls) {
-				if (uri.indexOf(u) >= 0) {
-					response.sendRedirect(request.getContextPath() + "/refuse");
-					return false;					
+		if(map == null || map.isEmpty()){
+			response.sendRedirect(request.getContextPath() + "/refuse");
+			return false;
+		}else{
+			Object userManager = map.get("userManager");
+			if(userManager == null){
+				List<String> userManager_urls = ResourcesUtil.getkeyList("userManagerURL");
+				for (String u : userManager_urls) {
+					if (uri.indexOf(u) >= 0) {
+						response.sendRedirect(request.getContextPath() + "/refuse");
+						return false;					
+					}
 				}
 			}
 		}
+		
 		
 		return true;
 	}

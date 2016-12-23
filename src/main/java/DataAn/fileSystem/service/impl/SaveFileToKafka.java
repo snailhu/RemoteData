@@ -11,6 +11,9 @@ import java.nio.charset.Charset;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+
+import org.apache.commons.lang3.StringUtils;
+
 import DataAn.common.utils.DateUtil;
 import DataAn.common.utils.JJSON;
 import DataAn.common.utils.Log4jUtil;
@@ -21,6 +24,7 @@ import DataAn.status.option.StatusTrackingType;
 import DataAn.status.service.IStatusTrackingService;
 import DataAn.storm.BaseConfig;
 import DataAn.storm.Communication;
+import DataAn.storm.ErrorMsg;
 import DataAn.storm.FlowUtils;
 import DataAn.storm.StormUtils;
 import DataAn.storm.kafka.Beginning;
@@ -84,13 +88,14 @@ public class SaveFileToKafka implements Runnable {
 	@Override
 	public void run() {
 		while(true){
+			Communication communication=null;
 			try{
+				System.out.println(nodeWorker.getId()+ " to get lock. begin send to data kafka...");
 				Log4jUtil.getInstance().getLogger(SaveFileToKafka.class).info(nodeWorker.getId()+ " to get lock.");
 				nodeWorker.acquire();
 				Log4jUtil.getInstance().getLogger(SaveFileToKafka.class).info(nodeWorker.getId()+ " get lock , wait some time.");
 				InputStream in = null;
 				BufferedReader reader = null;
-				Communication communication=null;
 				try {
 					
 					final WorkerPathVal workerPathVal=
@@ -109,16 +114,26 @@ public class SaveFileToKafka implements Runnable {
 					name=communication.getName();
 					versions=communication.getVersions();
 					
+					Map<String,String> patameterMap = new HashMap<String,String>();
 //					IParameterService paramService = (IParameterService) SpringUtil.getSpringService("parameterService");
 					in = new BufferedInputStream(new FileInputStream(new File(filePath)));
 					reader = new BufferedReader(new InputStreamReader(in, "gb2312"));// 换成你的文件名
 					String title = reader.readLine();// 第一行信息，为标题信息，不用,如果需要，注释掉
 					//CSV格式文件为逗号分隔符文件，这里根据逗号切分
 					String[] array = title.split(",");
+					String param_en = null;
+					for (String param_zh : array) {
+						param_en = paramService.getParameter_en_by_allZh(series, star, name, param_zh);
+						if(StringUtils.isNotBlank(param_en))
+							patameterMap.put(param_zh, param_en);
+						else
+							System.out.println(param_zh + " code is " + param_en);
+					}
+
 					String[] properties = new String[array.length - 1];
 					for (int i = 1; i < array.length; i++) {
 						//将中文字符串转换为英文
-						properties[i - 1] = paramService.getParameter_en_by_allZh(series, star, name, array[i]);
+						properties[i - 1] = patameterMap.get(array[i]);//paramService.getParameter_en_by_allZh(series, star, name, array[i]);
 					}
 					String line = null;
 					String date = "";
@@ -139,6 +154,9 @@ public class SaveFileToKafka implements Runnable {
 						//CSV格式文件为逗号分隔符文件，这里根据逗号切分
 						String[] items = line.split(",");
 						date = items[0].trim();
+						if(date.length() > 20){
+							date =DateUtil.formatString(date, "yyyy年MM月dd日HH时mm分ss.SSS秒", "yyyy年MM月dd日HH时mm分ss秒");		
+						}
 						dateTime = DateUtil.format(date, "yyyy年MM月dd日HH时mm分ss秒");
 						if(count == 1){
 							dateTime1 = dateTime;
@@ -164,11 +182,15 @@ public class SaveFileToKafka implements Runnable {
 						
 						//发送到kafka
 						boundProducer.send(defaultFetchObj,topic);
+						
+						if(count < 50)
+							System.out.println(defaultFetchObj);
 					}
 					boundProducer.send(new Ending(),topic);
 					Log4jUtil.getInstance().getLogger(SaveFileToKafka.class).info(nodeWorker.getId()+ " end send data kafka..count: " + count);
 					if(count <= 3){
 						String msg = "文件记录数过少, count: "+count;
+						System.out.println(msg);
 						statusTrackingService.updateStatusTracking(fileName, StatusTrackingType.IMPORTFAIL.getValue(),name, msg);
 						throw new RuntimeException(msg);
 					}
@@ -176,9 +198,11 @@ public class SaveFileToKafka implements Runnable {
 					Log4jUtil.getInstance().getLogger(SaveFileToKafka.class).info(nodeWorker.getId()+ " to update mongodb data..");
 					mongoService.updateCSVDataByDate(series, star, name, dateTime1, dateTime);
 					Log4jUtil.getInstance().getLogger(SaveFileToKafka.class).info(nodeWorker.getId()+ " finish push data to kafka!!!!!!!!");
+					System.out.println(nodeWorker.getId()+ " finish push data to kafka!!!!!!!!");
 					//更行文件状态
 					statusTrackingService.updateStatusTracking(fileName, StatusTrackingType.PREHANDLE.getValue(),name, "");
 				} catch (Exception e) {
+					System.out.println(nodeWorker.getId()+ " Exception!!!!!!");
 					Log4jUtil.getInstance().getLogger(SaveFileToKafka.class).error(nodeWorker.getId()+ " Exception!!!!!!");
 					FlowUtils.setError(executor, communication, e.getMessage());
 					e.printStackTrace();
@@ -200,9 +224,15 @@ public class SaveFileToKafka implements Runnable {
 					}
 				}
 			}catch (Exception e) {
+				ErrorMsg errorMsg=new ErrorMsg();
+				errorMsg.setMsg(FlowUtils.getMsg(e));
+				errorMsg.setWorkerId(nodeWorker.getId());
+				errorMsg.setSequence(communication.getSequence());
+				FlowUtils.setError(executor, errorMsg);
 				e.printStackTrace();
 			}finally {
 				try {
+					System.out.println(nodeWorker.getId()+ " begin release lock");
 					Log4jUtil.getInstance().getLogger(SaveFileToKafka.class).info(nodeWorker.getId()+ " begin release lock");
 					nodeWorker.release();
 					Log4jUtil.getInstance().getLogger(SaveFileToKafka.class).info(nodeWorker.getId()+ " end release lock");

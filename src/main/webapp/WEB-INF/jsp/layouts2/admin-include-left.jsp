@@ -392,7 +392,7 @@ a {
 					</a>
 				</li>
 				<li>
-					<a href="${pageContext.request.contextPath}/admin/device/deviceIndex" class="tab_li"> 
+					<a href="${pageContext.request.contextPath}/admin/deviceIndex/deviceIndex" class="tab_li"> 
 						<img class="img_head" id="deviceview-img" src="${pageContext.request.contextPath}/static/new/img/images/images/A_14.png">
 						<span id="deviceview-text">设备查看</span>
 					</a>

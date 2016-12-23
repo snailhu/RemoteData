@@ -60,7 +60,9 @@ public class SearchByDayTask8 extends RecursiveTask<LineChartDto>{
 		//1s 等级数据集
 		String collectionName =  paramType + "1s";
 		int index = (int) mg.countByDate(databaseName, collectionName, beginDate, endDate);
-		
+		if(index < 24){
+			throw new RuntimeException(DateUtil.format(beginDate) + " 到 "+ DateUtil.format(endDate) +" 获取数据失败！");
+		}
 		System.out.println(DateUtil.format(beginDate) + " 到 "+ DateUtil.format(endDate) + " index: " + index);
 		
 		Map<String,TimeSeriesDataItem[]> arrayDataMap = new HashMap<String,TimeSeriesDataItem[]>();
@@ -77,7 +79,7 @@ public class SearchByDayTask8 extends RecursiveTask<LineChartDto>{
 					paramMinMap.put(constraintDto.getParamCode(),constraintDto.getMin());
 					paramMaxMap.put(constraintDto.getParamCode(),constraintDto.getMax());
 					//初始化每条参数的数组对象
-					arrayDataMap.put(constraintDto.getParamCode(), new TimeSeriesDataItem[index]);
+					arrayDataMap.put(constraintDto.getParamCode(), new TimeSeriesDataItem[index + 20]);
 				}
 			}
 		}

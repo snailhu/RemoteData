@@ -41,7 +41,7 @@ import DataAn.sys.dto.ActiveUserDto;
  */
 @Controller
 @RequestMapping("/admin/device")
-public class DeviceController {
+public class DeviceListController {
 
 	@Resource
 	private IDeviceService deviceService;
@@ -50,6 +50,7 @@ public class DeviceController {
 	@Resource
 	private IStarService starService;
 
+	//设备管理
 	@RequestMapping("/index/{series}/{star}/")
 	public String indexOfDeviceType(@PathVariable String series, @PathVariable String star, Model model) {
 		// 当前所在系列
@@ -65,12 +66,8 @@ public class DeviceController {
 		model.addAttribute("nowStarName", starDto.getName());
 		return "admin/galaxy/deviceList";
 	}
-
-	@RequestMapping("/deviceIndex")
-	public String indexOfDevice(Model model) {
-		return "admin/galaxy/deviceIndex";
-	}
-
+	
+	//获取设备类型
 	@RequestMapping(value = "getDeviceTypePager", method = RequestMethod.POST)
 	@ResponseBody
 	public EasyuiDataGridJson getDeviceTypePager(int page, int rows, HttpServletRequest request,
@@ -95,29 +92,7 @@ public class DeviceController {
 		return json;
 	}
 
-	@RequestMapping(value = "getDeviceIndexPager", method = RequestMethod.POST)
-	@ResponseBody
-	public EasyuiDataGridJson getDeviceIndexPager(int page, int rows, HttpServletRequest request,
-			HttpServletResponse response) {
-		String deviceType = request.getParameter("parameterType");
-		String model = request.getParameter("model");
-		EasyuiDataGridJson json = new EasyuiDataGridJson();
-		System.out.println("come in getDeviceTypePager...");
-		System.out.println("pageIndex: " + page);
-		System.out.println("pageSize: " + rows);
-		System.out.println("deviceType: " + deviceType);
-		System.out.println("model: " + model);
-		try {
-			Pager<DeviceViewDTO> pager = deviceService.pageDeviceViewDTO(page, rows, deviceType, model);
-			json.setRows(pager.getDatas());
-			json.setTotal(pager.getTotalCount());
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return json;
-	}
-
+	//通过 系列、星、设备类型、设备型号 获取设备
 	@RequestMapping("/getDevicesByParam")
 	@ResponseBody
 	public List<QueryDeviceDTO> getDevicesByParam(String series, String star, String deviceType, String model) {
@@ -129,30 +104,6 @@ public class DeviceController {
 			e.printStackTrace();
 		}
 		return list;
-	}
-
-	@RequestMapping(value = "/getDeviceTypeList")
-	@ResponseBody
-	public List<DeviceType> getDeviceTypeList(HttpServletRequest request) {
-		List<DeviceType> deviceTypes = null;
-		List<DeviceType> deviceTypesNew = new ArrayList<DeviceType>();
-		try {
-			deviceTypes = deviceService.getDeviceTypeList();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		String userType = getUserType(null, request);
-		if (StringUtils.isNotBlank(userType)) {
-			for (DeviceType deviceType : deviceTypes) {
-				if (userType.equals(deviceType.getDeviceCode())) {
-					deviceTypesNew.add(deviceType);
-				}
-			}
-		} else {
-			deviceTypesNew.addAll(deviceTypes);
-		}
-		return deviceTypesNew;
 	}
 
 	@RequestMapping(value = "/createDevice")
@@ -284,6 +235,43 @@ public class DeviceController {
 		return jsonMsg;
 	}
 
+	//获取设备类型
+	@RequestMapping(value = "/getDeviceTypeList")
+	@ResponseBody
+	public List<DeviceType> getDeviceTypeList(HttpServletRequest request) {
+		List<DeviceType> deviceTypes = null;
+		List<DeviceType> deviceTypesNew = new ArrayList<DeviceType>();
+		try {
+			deviceTypes = deviceService.getDeviceTypeList();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		String userType = getUserType(null, request);
+		if (StringUtils.isNotBlank(userType)) {
+			for (DeviceType deviceType : deviceTypes) {
+				if (userType.equals(deviceType.getDeviceCode())) {
+					deviceTypesNew.add(deviceType);
+				}
+			}
+		} else {
+			deviceTypesNew.addAll(deviceTypes);
+		}
+		return deviceTypesNew;
+	}
+
+	@RequestMapping("/getDeviceTypeComboData")
+	@ResponseBody
+	public List<Combo> getDeviceTypeComboData(String deviceTypeCode) {
+		// System.out.println("getDeviceTypeComboData..");
+		// System.out.println("deviceTypeCode: " + deviceTypeCode);
+		List<Combo> list = deviceService.getDeviceTypeComboData(deviceTypeCode);
+		// for (Combo combo : list) {
+		// System.out.println(combo);
+		// }
+		return list;
+	}
+	
 	private String getUserType(String parameterType, HttpServletRequest request) {
 		if (StringUtils.isNotBlank(parameterType)) {
 			return parameterType;
@@ -310,17 +298,5 @@ public class DeviceController {
 			}
 			return userType;
 		}
-	}
-
-	@RequestMapping("/getDeviceTypeComboData")
-	@ResponseBody
-	public List<Combo> getDeviceTypeComboData(String deviceTypeCode) {
-		// System.out.println("getDeviceTypeComboData..");
-		// System.out.println("deviceTypeCode: " + deviceTypeCode);
-		List<Combo> list = deviceService.getDeviceTypeComboData(deviceTypeCode);
-		// for (Combo combo : list) {
-		// System.out.println(combo);
-		// }
-		return list;
 	}
 }

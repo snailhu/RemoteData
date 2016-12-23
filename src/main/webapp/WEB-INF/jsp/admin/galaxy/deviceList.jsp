@@ -85,10 +85,8 @@
 		//修改页面缩放，界面显示不正常
 		$(".col-lg-7").css("text-align", "center");
 		$(".modal-dialog").css("margin", "20px auto");
-
 		//左菜单栏
-		$("#galaxymanage-img")
-				.attr("src",
+		$("#galaxymanage-img").attr("src",
 						"${pageContext.request.contextPath}/static/new/img/images/a_82.png");
 		$("#galaxymanage-text").css("color", "#5d90d6");
 
@@ -107,7 +105,15 @@
 							message : '设备名称不能为空'
 						}
 					}
-				}
+				},
+				model : {
+					message : '设备型号不能为空',
+					validators : {
+						notEmpty : {
+							message : '设备型号不能为空'
+						}
+					}
+				},
 			}
 		});
 		$('#editDeviceForm').bootstrapValidator({
@@ -125,7 +131,15 @@
 							message : '设备名称不能为空'
 						}
 					}
-				}
+				},
+				model : {
+					message : '设备型号不能为空',
+					validators : {
+						notEmpty : {
+							message : '设备型号不能为空'
+						}
+					}
+				},
 			}
 		});
 		$('#stopDeviceForm').bootstrapValidator({
@@ -172,18 +186,7 @@
 				}
 			}
 		});
-		$('#addDeviceModal').on('hide.bs.modal', function() {
-			$('#addDeviceForm').data('bootstrapValidator').resetForm(true);
-		});
-		$('#editDeviceModal').on('hide.bs.modal', function() {
-			$('#editDeviceForm').data('bootstrapValidator').resetForm(true);
-		});
-		$('#stopDeviceModal').on('hide.bs.modal', function() {
-			$('#stopDeviceForm').data('bootstrapValidator').resetForm(true);
-		});
-		$('#startDeviceModal').on('hide.bs.modal', function() {
-			$('#startDeviceForm').data('bootstrapValidator').resetForm(true);
-		});
+		
 	});
 </script>
 </head>
@@ -224,14 +227,11 @@
 								<h4 class="modal-title" id="addDeviceModalLabel">添加设备</h4>
 							</div>
 							<div class="modal-body">
-								<input type="hidden" name="datagridId"
-									id="add-device-datagridId" /> <input type="hidden"
-									name="deviceType" id="add-device-deviceType" /> <input
-									type="hidden" name="seriersId" id="add-device-seriesId" /> <input
-									type="hidden" name="starId" id="add-device-starId" /> <input
-									type="hidden" name="runStatus" id="add-device-runStatus"
-									value="1" />
-
+								<input type="hidden" name="datagridId" id="add-device-datagridId" /> 
+								<input type="hidden" name="deviceType" id="add-device-deviceType" /> 
+								<input type="hidden" name="seriersId" id="add-device-seriesId" /> 
+								<input type="hidden" name="starId" id="add-device-starId" /> 
+								<input type="hidden" name="runStatus" id="add-device-runStatus" value="1" />
 								<div class="space-4"></div>
 								<div class="form-group">
 									<label class="col-sm-3 control-label no-padding-right"
@@ -277,10 +277,9 @@
 								<h4 class="modal-title" id="editDeviceModalLabel">编辑设备</h4>
 							</div>
 							<div class="modal-body" id="editDeviceModalBody">
-								<input type="hidden" name="datagridId"
-									id="edit-device-datagridId" /> <input type="hidden"
-									name="deviceId" id="edit-device-deviceId" /> <input
-									type="hidden" name="runStatus" id="edit-device-runStatus" />
+								<input type="hidden" name="datagridId" id="edit-device-datagridId" /> 
+								<input type="hidden" name="deviceId" id="edit-device-deviceId" /> 
+								<input type="hidden" name="runStatus" id="edit-device-runStatus" />
 								<div class="space-4"></div>
 								<div class="form-group">
 									<label class="col-sm-3 control-label no-padding-right"
@@ -479,180 +478,176 @@
 		var nowSeriesId = "${nowSeriesId}";
 		var nowStarId = "${nowStarId}";
 		$(function() {
-			deviceTypeGrid = $('#deviceTypeList')
-					.datagrid(
-							{
-								view : detailview,
-								url : '${pageContext.request.contextPath}/admin/device/getDeviceTypePager?series='
-										+ nowSeriesId + '&star=' + nowStarId,
-								rownumbers : true,
-								fitColumns : true,
-								idField : 'deviceTypeId',//'deviceTypeId',
-								toolbar : '#toolbar',
-								pageSize : 10,
-								pagination : true,
-								pageList : [ 10, 20, 30, 40, 50, 60, 70, 80,
-										90, 100 ],
-								columns : [ [ {
+			deviceTypeGrid = $('#deviceTypeList').datagrid({
+				view : detailview,
+				url : '${pageContext.request.contextPath}/admin/device/getDeviceTypePager?series='
+						+ nowSeriesId + '&star=' + nowStarId,
+				rownumbers : true,
+				fitColumns : true,
+				idField : 'deviceTypeId',//'deviceTypeId',
+				toolbar : '#toolbar',
+				pageSize : 10,
+				pagination : true,
+				pageList : [ 10, 20, 30, 40, 50, 60, 70, 80,
+						90, 100 ],
+				columns : [ [ {
+					title : 'ID',
+					field : 'deviceTypeId',
+					hidden : true,
+				}, {
+					field : 'deviceName',
+					title : '设备类型名称',
+					width : 100,
+				}, {
+					field : 'deviceCode',
+					title : '设备类型码',
+					width : 100,
+					hidden: true,
+				}, {
+					field : 'runDays',
+					title : '累计设备工作时间(天)',
+					width : 100
+				} ] ],
+				onLoadError : function(data) {
+					$.messager.alert("信息", "暂无数据信息", "error");
+				},
+				detailFormatter : function(index, row) {
+					return '<div><table id="ddv-' + index + '"></table></div>';
+				},
+				onExpandRow : function(index, row) {
+					var seriesCode = row.code;
+					var subgridId = 'ddv-' + index;
+					$('#' + subgridId).datagrid({
+						url : '${pageContext.request.contextPath}/admin/device/getDevicesByParam?deviceType='
+								+ row.deviceTypeId
+								+ '&series='
+								+ nowSeriesId
+								+ '&star='
+								+ nowStarId,
+						fitColumns : true,
+						rownumbers : true,
+						singleSelect : true,
+						loadMsg : '正在载入设备列表，请稍后...',
+						height : 'auto',
+						toolbar : [ {
+							text : '创建',
+							iconCls : 'icon-add',
+							handler : function() {
+								createDevice(
+										subgridId,
+										row.deviceTypeId);
+							}
+						} ],
+						columns : [ [
+								{
 									title : 'ID',
-									field : 'deviceTypeId',
+									field : 'deviceId',
 									hidden : true,
-								}, {
+								},
+								{
+									title : 'status',
+									field : 'runStatus',
+									hidden : true,
+								},
+								{
 									field : 'deviceName',
-									title : '设备类型名称',
-									width : 100,
-								}, {
-									field : 'deviceCode',
-									title : '设备类型码',
-									width : 100,
-									hidden: true,
-								}, {
+									title : '设备名称',
+									width : 50
+								},
+								{
+									field : 'model',
+									title : '型号',
+									width : 50
+								},
+								{
+									field : 'startDate',
+									title : '开始运行时间',
+									width : 80
+								},
+								{
+									field : 'endDate',
+									title : '结束运行时间',
+									width : 80
+								},
+								{
 									field : 'runDays',
-									title : '累计设备工作时间(天)',
-									width : 100
-								} ] ],
-								onLoadError : function(data) {
-									$.messager.alert("信息", "暂无数据信息", "error");
+									title : '累计工作时间(天)',
+									width : 80
 								},
-								detailFormatter : function(index, row) {
-									return '<div><table id="ddv-' + index + '"></table></div>';
-								},
-								onExpandRow : function(index, row) {
-									var seriesCode = row.code;
-									var subgridId = 'ddv-' + index;
-									$('#' + subgridId)
-											.datagrid(
-													{
-														url : '${pageContext.request.contextPath}/admin/device/getDevicesByParam?deviceType='
-																+ row.deviceTypeId
-																+ '&series='
-																+ nowSeriesId
-																+ '&star='
-																+ nowStarId,
-														fitColumns : true,
-														rownumbers : true,
-														singleSelect : true,
-														loadMsg : '正在载入设备列表，请稍后...',
-														height : 'auto',
-														toolbar : [ {
-															text : '创建',
-															iconCls : 'icon-add',
-															handler : function() {
-																createDevice(
-																		subgridId,
-																		row.deviceTypeId);
-															}
-														} ],
-														columns : [ [
-																{
-																	title : 'ID',
-																	field : 'deviceId',
-																	hidden : true,
-																},
-																{
-																	title : 'status',
-																	field : 'runStatus',
-																	hidden : true,
-																},
-																{
-																	field : 'deviceName',
-																	title : '设备名称',
-																	width : 50
-																},
-																{
-																	field : 'model',
-																	title : '型号',
-																	width : 50
-																},
-																{
-																	field : 'startDate',
-																	title : '开始运行时间',
-																	width : 80
-																},
-																{
-																	field : 'endDate',
-																	title : '结束运行时间',
-																	width : 80
-																},
-																{
-																	field : 'runDays',
-																	title : '累计工作时间(天)',
-																	width : 80
-																},
-																{
-																	field : 'operation',
-																	title : '操作选项',
-																	align : 'center',
-																	width : 200,
-																	formatter : function(
-																			value,
-																			row,
-																			index) {
-																		var editStr = "<a class=\"l-btn l-btn-plain\" href=\"javascript:editDevice('"
-																				+ subgridId
-																				+ "','"
-																				+ row.deviceId
-																				+ "')\" style=\"float: left;\"><span class=\"l-btn-left\" style=\"margin:0px 20px;\" ><span class=\"l-btn-text icon-edit\" style=\"/*padding-left: 60px;*/\">编辑</span></span></a>";
-																		var delStr = "<a class=\"l-btn l-btn-plain\" href=\"javascript:deleteDevice('"
-																				+ subgridId
-																				+ "','"
-																				+ row.deviceId
-																				+ "')\" style=\"float: left;\"><span class=\"l-btn-left\" style=\"margin:0px 20px;\" ><span class=\"l-btn-text icon-remove\" style=\"/*padding-left: 80px;*/\">删除</span></span></a>";
-																		if (row.runStatus == 1) {
-																			var stopStr = "<a class=\"l-btn l-btn-plain\" href=\"javascript:stopDevice('"
-																					+ subgridId
-																					+ "','"
-																					+ row.deviceId
-																					+ "')\" style=\"float: center;\"><span class=\"l-btn-left\" style=\"margin:0px 20px;\" ><span class=\"l-btn-text icon-stop\" style=\"/*padding-left: 60px;*/\">手动停止</span></span></a>";
-																			return editStr
-																					+ '<div class="datagrid-btn-separator"></div>'
-																					+ delStr
-																					+ '<div class="datagrid-btn-separator"></div>'
-																					+ stopStr;
+								{
+									field : 'operation',
+									title : '操作选项',
+									align : 'center',
+									width : 200,
+									formatter : function(value,row,index) {
+										var editStr = "<a class=\"l-btn l-btn-plain\" href=\"javascript:editDevice('"
+												+ subgridId
+												+ "','"
+												+ row.deviceId
+												+ "')\" style=\"float: left;\"><span class=\"l-btn-left\" style=\"margin:0px 20px;\" ><span class=\"l-btn-text icon-edit\" style=\"/*padding-left: 60px;*/\">编辑</span></span></a>";
+										var delStr = "<a class=\"l-btn l-btn-plain\" href=\"javascript:deleteDevice('"
+												+ subgridId
+												+ "','"
+												+ row.deviceId
+												+ "')\" style=\"float: left;\"><span class=\"l-btn-left\" style=\"margin:0px 20px;\" ><span class=\"l-btn-text icon-remove\" style=\"/*padding-left: 80px;*/\">删除</span></span></a>";
+										if (row.runStatus == 1) {
+											var stopStr = "<a class=\"l-btn l-btn-plain\" href=\"javascript:stopDevice('"
+													+ subgridId
+													+ "','"
+													+ row.deviceId
+													+ "')\" style=\"float: center;\"><span class=\"l-btn-left\" style=\"margin:0px 20px;\" ><span class=\"l-btn-text icon-stop\" style=\"/*padding-left: 60px;*/\">手动停止</span></span></a>";
+											return editStr
+													+ '<div class="datagrid-btn-separator"></div>'
+													+ delStr
+													+ '<div class="datagrid-btn-separator"></div>'
+													+ stopStr;
 
-																		} else if (row.runStatus == 0) {
-																			var stopStr = "<a class=\"l-btn l-btn-plain\" href=\"javascript:startDevice('"
-																					+ subgridId
-																					+ "','"
-																					+ row.deviceId
-																					+ "')\" style=\"float: center;\"><span class=\"l-btn-left\" style=\"margin:0px 20px;\" ><span class=\"l-btn-text icon-stop\" style=\"/*padding-left: 60px;*/\">手动开始</span></span></a>";
-																			return editStr
-																					+ '<div class="datagrid-btn-separator"></div>'
-																					+ delStr
-																					+ '<div class="datagrid-btn-separator"></div>'
-																					+ stopStr;
+										} else if (row.runStatus == 0) {
+											var stopStr = "<a class=\"l-btn l-btn-plain\" href=\"javascript:startDevice('"
+													+ subgridId
+													+ "','"
+													+ row.deviceId
+													+ "')\" style=\"float: center;\"><span class=\"l-btn-left\" style=\"margin:0px 20px;\" ><span class=\"l-btn-text icon-stop\" style=\"/*padding-left: 60px;*/\">手动开始</span></span></a>";
+											return editStr
+													+ '<div class="datagrid-btn-separator"></div>'
+													+ delStr
+													+ '<div class="datagrid-btn-separator"></div>'
+													+ stopStr;
 
-																		} else {
-																			return editStr
-																					+ '<div class="datagrid-btn-separator"></div>'
-																					+ delStr;
-																		}
-																	}
-																} ] ],
-														onResize : function() {
-															$('#deviceTypeList')
-																	.datagrid(
-																			'fixDetailRowHeight',
-																			index);
-														},
-														onLoadSuccess : function() {
-															setTimeout(
-																	function() {
-																		$(
-																				'#deviceTypeList')
-																				.datagrid(
-																						'fixDetailRowHeight',
-																						index);
-																	}, 0);
-
-														}
-													});
-									$('#deviceTypeList').datagrid(
-											'fixDetailRowHeight', index);
-								}
-							});
+										} else {
+											return editStr
+													+ '<div class="datagrid-btn-separator"></div>'
+													+ delStr;
+										}
+									}
+								}]],
+						onResize : function() {
+							$('#deviceTypeList').datagrid('fixDetailRowHeight',index);
+						},
+						onLoadSuccess : function() {
+							setTimeout(function() {
+								$('#deviceTypeList').datagrid('fixDetailRowHeight',index);
+							}, 0);
+						}
+					});
+					$('#deviceTypeList').datagrid('fixDetailRowHeight', index);
+				}
+			});
 		});
-
+		
+		$('#addDeviceModal').on('hide.bs.modal', function() {
+			$('#addDeviceForm').data('bootstrapValidator').resetForm(true);
+		});
+		$('#editDeviceModal').on('hide.bs.modal', function() {
+			$('#editDeviceForm').data('bootstrapValidator').resetForm(true);
+		});
+		$('#stopDeviceModal').on('hide.bs.modal', function() {
+			$('#stopDeviceForm').data('bootstrapValidator').resetForm(true);
+		});
+		$('#startDeviceModal').on('hide.bs.modal', function() {
+			$('#startDeviceForm').data('bootstrapValidator').resetForm(true);
+		});
+		
 		function reloadDatagrid(datagridId) {
 			// 		$('#' + datagridId).datagrid("unselectAll");
 			// 		$('#' + datagridId).datagrid('reload');
@@ -663,10 +658,8 @@
 			// 		deviceTypeGrid.datagrid('refreshRow',arr[1]);
 			deviceTypeGrid.datagrid('reload');
 			setTimeout(function() {
-				$('#datagrid-row-r1-1-' + arr[1]).find(".datagrid-row-expand")
-						.click();
-				console.log($('#datagrid-row-r1-1-' + arr[1]).find(
-						".datagrid-row-expand"));
+				$('#datagrid-row-r1-1-' + arr[1]).find(".datagrid-row-expand").click();
+				console.log($('#datagrid-row-r1-1-' + arr[1]).find(".datagrid-row-expand"));
 			}, 500);
 		}
 
@@ -678,320 +671,281 @@
 			$('#addDeviceModal').modal('show');
 		}
 		//提交创建系列
-		$('#submit_addDevice')
-				.click(
-						function() {
-							var datagridId = $('#add-device-datagridId').val();
-							var f = $('#addDeviceForm');
-							f.data('bootstrapValidator').validate();
-							var isValid = f.data('bootstrapValidator')
-									.isValid();
-							if (!isValid) {
-								top.alertMsg('错误', '请满足提交条件！');
-								return false;
-							}
-							var toUrl = '${pageContext.request.contextPath}/admin/device/createDevice';
-							f.form('submit', {
-								url : toUrl,
-								onsubmit : function() {
-									var flag = $(this).form('validate');
-									if (flag) {
-										top.showProcess(true, '温馨提示',
-												'正在提交数据...');
-									}
-									return flag;
-								},
-								success : function(data) {
-									top.showProcess(false);
-									var map = $.parseJSON(data);
-									if (map.success) {
-										top.showMsg('提示', map.msg);
-										reloadDatagrid(datagridId);
-									} else {
-										top.alertMsg('错误', map.msg + "\n"
-												+ map.obj == null ? ""
-												: map.obj);
-									}
-								},
-								onLoadError : function() {
-									top.showProcess(false);
-									top.$.messager.alert('温馨提示',
-											'由于网络或服务器太忙，提交失败，请重试！');
-								}
-							});
-							$('#addDeviceModal').modal('hide');
-						});
+		$('#submit_addDevice').click(function() {
+			var datagridId = $('#add-device-datagridId').val();
+			var f = $('#addDeviceForm');
+			f.data('bootstrapValidator').validate();
+			var isValid = f.data('bootstrapValidator').isValid();
+			if (!isValid) {
+				//top.alertMsg('错误', '请满足提交条件！');
+				return false;
+			}
+			var toUrl = '${pageContext.request.contextPath}/admin/device/createDevice';
+			f.form('submit', {
+				url : toUrl,
+				onsubmit : function() {
+					var flag = $(this).form('validate');
+					if (flag) {
+						top.showProcess(true, '温馨提示','正在提交数据...');
+					}
+					return flag;
+				},
+				success : function(data) {
+					top.showProcess(false);
+					var map = $.parseJSON(data);
+					if (map.success) {
+						$('#addDeviceModal').modal('hide');
+						top.showMsg('提示', map.msg);
+						reloadDatagrid(datagridId);
+					} else {
+						top.alertMsg('错误', map.msg + "\n"+ map.obj == null ? "": map.obj);
+					}
+				},
+				onLoadError : function() {
+					top.showProcess(false);
+					top.$.messager.alert('温馨提示','由于网络或服务器太忙，提交失败，请重试！');
+				}
+			});
+		});
 
 		function editDevice(datagridId, deviceId) {
-			$
-					.ajax({
-						url : '${pageContext.request.contextPath}/admin/device/getDeviceById',
-						data : {
-							deviceId : deviceId
-						},
-						cache : false,
-						dataType : "json",
-						success : function(data) {
-							if (data) {
-								$('#edit-device-datagridId').val(datagridId);
-								$('#edit-device-deviceId').val(data.deviceId);
-								$('#edit-device-name').val(data.deviceName);
-								$('#edit-device-endDate').val(data.endDate);
-								$('#edit-device-startDate').val(data.startDate);
-								$('#edit-device-runStatus').val(data.runStatus);
-								$('#edit-device-model').val(data.model);
-								if (data.endDate && data.runStatus == 0) {
-									$('#editenddatehead').show();
-									$('#editenddatebody').show();
-								} else {
-									$('#editenddatehead').hide();
-									$('#editenddatebody').hide();
-									$('#edit-device-endDate').val('');
-								}
-
-								//弹出编辑框
-								$('#editDeviceModal').modal('show');
-							} else {
-								top.alertMsg('错误', "未找到参数信息！");
-							}
+			$.ajax({
+				url : '${pageContext.request.contextPath}/admin/device/getDeviceById',
+				data : {
+					deviceId : deviceId
+				},
+				cache : false,
+				dataType : "json",
+				success : function(data) {
+					if (data) {
+						$('#edit-device-datagridId').val(datagridId);
+						$('#edit-device-deviceId').val(data.deviceId);
+						$('#edit-device-name').val(data.deviceName);
+						$('#edit-device-endDate').val(data.endDate);
+						$('#edit-device-startDate').val(data.startDate);
+						$('#edit-device-runStatus').val(data.runStatus);
+						$('#edit-device-model').val(data.model);
+						if (data.endDate && data.runStatus == 0) {
+							$('#editenddatehead').show();
+							$('#editenddatebody').show();
+						} else {
+							$('#editenddatehead').hide();
+							$('#editenddatebody').hide();
+							$('#edit-device-endDate').val('');
 						}
-					});
+						//弹出编辑框
+						$('#editDeviceModal').modal('show');
+					} else {
+						top.alertMsg('错误', "未找到参数信息！");
+					}
+				}
+			});
 		}
-		$('#submit_editDevice')
-				.click(
-						function() {
-							var startDate = $('#edit-device-startDate').val();
-							var endDate = $('#edit-device-endDate').val();
-							var runStatus = $('#edit-device-runStatus').val();
-							if (endDate) {
-								if (runStatus == '0') {
-									if (startDate > endDate) {
-										top.alertMsg('警告', '开始日期不能大于结束日期！');
-										return false;
-									}
-								}
-								if (runStatus == '1') {
-									if (startDate < endDate) {
-										top.alertMsg('警告', '开始日期不能小于结束日期！');
-										return false;
-									}
-								}
-							}
-							var datagridId = $('#edit-device-datagridId').val();
-							var f = $('#editDeviceForm');
-							f.data('bootstrapValidator').validate();
-							var isValid = f.data('bootstrapValidator')
-									.isValid();
-							if (!isValid) {
-								top.alertMsg('错误', '请满足提交条件！');
-								return false;
-							}
+		$('#submit_editDevice').click(function() {
+			var startDate = $('#edit-device-startDate').val();
+			var endDate = $('#edit-device-endDate').val();
+			var runStatus = $('#edit-device-runStatus').val();
+			if (endDate) {
+				if (runStatus == '0') {
+					if (startDate > endDate) {
+						top.alertMsg('警告', '开始日期不能大于结束日期！');
+						return false;
+					}
+				}
+				if (runStatus == '1') {
+					if (startDate < endDate) {
+						top.alertMsg('警告', '开始日期不能小于结束日期！');
+						return false;
+					}
+				}
+			}
+			var datagridId = $('#edit-device-datagridId').val();
+			var f = $('#editDeviceForm');
+			f.data('bootstrapValidator').validate();
+			var isValid = f.data('bootstrapValidator').isValid();
+			if (!isValid) {
+				//top.alertMsg('错误', '请满足提交条件！');
+				return false;
+			}
 
-							var toUrl = '${pageContext.request.contextPath}/admin/device/editDevice';
-							f.form('submit', {
-								url : toUrl,
-								onsubmit : function() {
-									var flag = $(this).form('validate');
-									if (flag) {
-										top.showProcess(true, '温馨提示',
-												'正在提交数据...');
-									}
-									return flag;
-								},
-								success : function(data) {
-									top.showProcess(false);
-									var map = $.parseJSON(data);
-									if (map.success) {
-										top.showMsg('提示', map.msg);
-										reloadDatagrid(datagridId);
-									} else {
-										top.alertMsg('错误', map.msg + "\n"
-												+ map.obj == null ? ""
-												: map.obj);
-									}
-								},
-								onLoadError : function() {
-									top.showProcess(false);
-									top.$.messager.alert('温馨提示',
-											'由于网络或服务器太忙，提交失败，请重试！');
-								}
-							});
-							$('#editDeviceModal').modal('hide');
-						});
+			var toUrl = '${pageContext.request.contextPath}/admin/device/editDevice';
+			f.form('submit', {
+				url : toUrl,
+				onsubmit : function() {
+					var flag = $(this).form('validate');
+					if (flag) {
+						top.showProcess(true, '温馨提示','正在提交数据...');
+					}
+					return flag;
+				},
+				success : function(data) {
+					top.showProcess(false);
+					var map = $.parseJSON(data);
+					if (map.success) {
+						$('#editDeviceModal').modal('hide');
+						top.showMsg('提示', map.msg);
+						reloadDatagrid(datagridId);
+					} else {
+						top.alertMsg('错误', map.msg + "\n"+ map.obj == null ? "": map.obj);
+					}
+				},
+				onLoadError : function() {
+					top.showProcess(false);
+					top.$.messager.alert('温馨提示',
+							'由于网络或服务器太忙，提交失败，请重试！');
+				}
+			});
+		});
 
 		function stopDevice(datagridId, deviceId) {
-			$
-					.ajax({
-						url : '${pageContext.request.contextPath}/admin/device/getDeviceById',
-						data : {
-							deviceId : deviceId
-						},
-						cache : false,
-						dataType : "json",
-						success : function(data) {
-							if (data) {
-								$('#stop-device-datagridId').val(datagridId);
-								$('#stop-device-deviceId').val(data.deviceId);
-
-								//弹出编辑框
-								$('#stopDeviceModal').modal('show');
-							} else {
-								top.alertMsg('错误', "未找到设备信息！");
-							}
-						}
-					});
+			$.ajax({
+				url : '${pageContext.request.contextPath}/admin/device/getDeviceById',
+				data : {
+					deviceId : deviceId
+				},
+				cache : false,
+				dataType : "json",
+				success : function(data) {
+					if (data) {
+						$('#stop-device-datagridId').val(datagridId);
+						$('#stop-device-deviceId').val(data.deviceId);
+						//弹出编辑框
+						$('#stopDeviceModal').modal('show');
+					} else {
+						top.alertMsg('错误', "未找到设备信息！");
+					}
+				}
+			});
 		}
-		$('#submit_stopDevice')
-				.click(
-						function() {
-							var datagridId = $('#stop-device-datagridId').val();
-							var f = $('#stopDeviceForm');
-							f.data('bootstrapValidator').validate();
-							var isValid = f.data('bootstrapValidator')
-									.isValid();
-							if (!isValid) {
-								top.alertMsg('错误', '请满足提交条件！');
-								return false;
-							}
-
-							var toUrl = '${pageContext.request.contextPath}/admin/device/editDevice';
-							f.form('submit', {
-								url : toUrl,
-								onsubmit : function() {
-									var flag = $(this).form('validate');
-									if (flag) {
-										top.showProcess(true, '温馨提示',
-												'正在提交数据...');
-									}
-									return flag;
-								},
-								success : function(data) {
-									top.showProcess(false);
-									var map = $.parseJSON(data);
-									if (map.success) {
-										top.showMsg('提示', map.msg);
-										reloadDatagrid(datagridId);
-									} else {
-										top.alertMsg('错误', map.msg + "\n"
-												+ map.obj == null ? ""
-												: map.obj);
-									}
-								},
-								onLoadError : function() {
-									top.showProcess(false);
-									top.$.messager.alert('温馨提示',
-											'由于网络或服务器太忙，提交失败，请重试！');
-								}
-							});
-							$('#stopDeviceModal').modal('hide');
-						});
+		$('#submit_stopDevice').click(function() {
+			var datagridId = $('#stop-device-datagridId').val();
+			var f = $('#stopDeviceForm');
+			f.data('bootstrapValidator').validate();
+			var isValid = f.data('bootstrapValidator').isValid();
+			if (!isValid) {
+				top.alertMsg('错误', '请满足提交条件！');
+				return false;
+			}
+			var toUrl = '${pageContext.request.contextPath}/admin/device/editDevice';
+			f.form('submit', {
+				url : toUrl,
+				onsubmit : function() {
+					var flag = $(this).form('validate');
+					if (flag) {
+						top.showProcess(true, '温馨提示','正在提交数据...');
+					}
+					return flag;
+				},
+				success : function(data) {
+					top.showProcess(false);
+					var map = $.parseJSON(data);
+					if (map.success) {
+						top.showMsg('提示', map.msg);
+						reloadDatagrid(datagridId);
+					} else {
+						top.alertMsg('错误', map.msg + "\n"+ map.obj == null ? "": map.obj);
+					}
+				},
+				onLoadError : function() {
+					top.showProcess(false);
+					top.$.messager.alert('温馨提示','由于网络或服务器太忙，提交失败，请重试！');
+				}
+			});
+			$('#stopDeviceModal').modal('hide');
+		});
 
 		function startDevice(datagridId, deviceId) {
-			$
-					.ajax({
-						url : '${pageContext.request.contextPath}/admin/device/getDeviceById',
+			$.ajax({
+				url : '${pageContext.request.contextPath}/admin/device/getDeviceById',
+				data : {
+					deviceId : deviceId
+				},
+				cache : false,
+				dataType : "json",
+				success : function(data) {
+					if (data) {
+						$('#start-device-datagridId').val(datagridId);
+						$('#start-device-deviceId').val(data.deviceId);
+						//弹出编辑框
+						$('#startDeviceModal').modal('show');
+					} else {
+						top.alertMsg('错误', "未找到设备信息！");
+					}
+				}
+			});
+		}
+		$('#submit_startDevice').click(function() {
+			var datagridId = $('#start-device-datagridId').val();
+			var f = $('#startDeviceForm');
+			f.data('bootstrapValidator').validate();
+			var isValid = f.data('bootstrapValidator').isValid();
+			if (!isValid) {
+				top.alertMsg('错误', '请满足提交条件！');
+				return false;
+			}
+			var toUrl = '${pageContext.request.contextPath}/admin/device/editDevice';
+			f.form('submit', {
+				url : toUrl,
+				onsubmit : function() {
+					var flag = $(this).form('validate');
+					if (flag) {
+						top.showProcess(true, '温馨提示','正在提交数据...');
+					}
+					return flag;
+				},
+				success : function(data) {
+					top.showProcess(false);
+					var map = $.parseJSON(data);
+					if (map.success) {
+						top.showMsg('提示', map.msg);
+						reloadDatagrid(datagridId);
+					} else {
+						top.alertMsg('错误', map.msg + "\n"+ map.obj == null ? "": map.obj);
+					}
+				},
+				onLoadError : function() {
+					top.showProcess(false);
+					top.$.messager.alert('温馨提示','由于网络或服务器太忙，提交失败，请重试！');
+				}
+			});
+			$('#startDeviceModal').modal('hide');
+		});
+
+		function deleteDevice(datagridId, deviceId) {
+			swal({
+				title : "你是否确定删除？",
+				text : "",
+				type : "warning",
+				showCancelButton : true,
+				confirmButtonColor : "#DD6B55",
+				confirmButtonText : "删除",
+				cancelButtonText : "取消",
+				closeOnConfirm : false,
+				closeOnCancel : false
+			},
+			function(isConfirm) {
+				if (isConfirm) {
+					$.ajax({
+						url : '${pageContext.request.contextPath}/admin/device/deleteDevice',
 						data : {
-							deviceId : deviceId
+							deviceIds : deviceId
 						},
 						cache : false,
 						dataType : "json",
 						success : function(data) {
-							if (data) {
-								$('#start-device-datagridId').val(datagridId);
-								$('#start-device-deviceId').val(data.deviceId);
-
-								//弹出编辑框
-								$('#startDeviceModal').modal('show');
+							if (data.success) {
+								reloadDatagrid(datagridId);
+								swal("删除成功", "", "success");
 							} else {
-								top.alertMsg('错误', "未找到设备信息！");
+								//top.alertMsg('警告', data.msg);
+								swal("删除失败", data.obj, "error");
 							}
 						}
 					});
-		}
-		$('#submit_startDevice')
-				.click(
-						function() {
-							var datagridId = $('#start-device-datagridId')
-									.val();
-							var f = $('#startDeviceForm');
-							f.data('bootstrapValidator').validate();
-							var isValid = f.data('bootstrapValidator')
-									.isValid();
-							if (!isValid) {
-								top.alertMsg('错误', '请满足提交条件！');
-								return false;
-							}
-
-							var toUrl = '${pageContext.request.contextPath}/admin/device/editDevice';
-							f.form('submit', {
-								url : toUrl,
-								onsubmit : function() {
-									var flag = $(this).form('validate');
-									if (flag) {
-										top.showProcess(true, '温馨提示',
-												'正在提交数据...');
-									}
-									return flag;
-								},
-								success : function(data) {
-									top.showProcess(false);
-									var map = $.parseJSON(data);
-									if (map.success) {
-										top.showMsg('提示', map.msg);
-										reloadDatagrid(datagridId);
-									} else {
-										top.alertMsg('错误', map.msg + "\n"
-												+ map.obj == null ? ""
-												: map.obj);
-									}
-								},
-								onLoadError : function() {
-									top.showProcess(false);
-									top.$.messager.alert('温馨提示',
-											'由于网络或服务器太忙，提交失败，请重试！');
-								}
-							});
-							$('#startDeviceModal').modal('hide');
-						});
-
-		function deleteDevice(datagridId, deviceId) {
-			swal(
-					{
-						title : "你是否确定删除？",
-						text : "",
-						type : "warning",
-						showCancelButton : true,
-						confirmButtonColor : "#DD6B55",
-						confirmButtonText : "删除",
-						cancelButtonText : "取消",
-						closeOnConfirm : false,
-						closeOnCancel : false
-					},
-					function(isConfirm) {
-						if (isConfirm) {
-							$
-									.ajax({
-										url : '${pageContext.request.contextPath}/admin/device/deleteDevice',
-										data : {
-											deviceIds : deviceId
-										},
-										cache : false,
-										dataType : "json",
-										success : function(data) {
-											if (data.success) {
-												reloadDatagrid(datagridId);
-												swal("删除成功", "", "success");
-											} else {
-												// 								top.alertMsg('警告', data.msg);
-												swal("删除失败", data.obj, "error");
-											}
-										}
-									});
-
-						} else {
-							swal("取消删除", "", "error");
-						}
-					});
+				} else {
+					swal("取消删除", "", "error");
+				}
+			});
 		}
 	</script>
 </body>

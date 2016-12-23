@@ -8,13 +8,15 @@ public class MongoFSDto {
 	
 	private String type;  // dir\file
 	
-	private String fileType;
+	private String fileType; // dat,csv
 	
 	private String fileSize;
 	
 	private String createDate;
 	
 	private String mongoFSUUId;
+	
+	private String parameterType; //flywheel、top
 
 	public long getId() {
 		return id;
@@ -72,13 +74,14 @@ public class MongoFSDto {
 		this.mongoFSUUId = mongoFSUUId;
 	}
 
-	@Override
-	public String toString() {
-		return "MongoFSDto [id=" + id + ", name=" + name + ", type=" + type
-				+ ", fileType=" + fileType + ", fileSize=" + fileSize
-				+ ", createDate=" + createDate + ", mongoFSUUId=" + mongoFSUUId
-				+ "]";
+	public String getParameterType() {
+		return parameterType;
 	}
+
+	public void setParameterType(String parameterType) {
+		this.parameterType = parameterType;
+	}
+
 	
 	
 }

@@ -863,6 +863,21 @@ $(function() {
   			//minDate:"2000-01-01 00:00:00",//最小日期
   			maxDate:jeDate.now(0), //设定最大日期为当前日期
   			zIndex:9999,//弹出层的层级高度
+  			choosefun:function(elem, val) {//选中日期后的回调, elem当前输入框ID, val当前选择的值
+  				$('#addStarInfoForm').data('bootstrapValidator')
+			    .updateStatus('beginDate', 'NOT_VALIDATED')
+			    .validateField('beginDate');
+  			},
+  			clearfun:function(elem, val) {//清除日期后的回调, elem当前输入框ID, val当前选择的值
+  				$('#addStarInfoForm').data('bootstrapValidator')
+			    .updateStatus('beginDate', 'VALIDATED')
+			    .validateField('beginDate');
+  			},      
+  			okfun:function(elem, val) {
+  				$('#addStarInfoForm').data('bootstrapValidator')
+			    .updateStatus('beginDate', 'NOT_VALIDATED')
+			    .validateField('beginDate');
+  			},
   		});
  	}); 
 	//添加一颗星的开始运行时间选择--编辑
@@ -877,6 +892,21 @@ $(function() {
   			//minDate:"2000-01-01 00:00:00",//最小日期
   			maxDate:jeDate.now(0), //设定最大日期为当前日期
   			zIndex:9999,//弹出层的层级高度
+  			choosefun:function(elem, val) {//选中日期后的回调, elem当前输入框ID, val当前选择的值
+  				$('#editStarInfoForm').data('bootstrapValidator')
+			    .updateStatus('beginDate', 'NOT_VALIDATED')
+			    .validateField('beginDate');
+  			},
+  			clearfun:function(elem, val) {//清除日期后的回调, elem当前输入框ID, val当前选择的值
+  				$('#editStarInfoForm').data('bootstrapValidator')
+			    .updateStatus('beginDate', 'VALIDATED')
+			    .validateField('beginDate');
+  			},      
+  			okfun:function(elem, val) {
+  				$('#editStarInfoForm').data('bootstrapValidator')
+			    .updateStatus('beginDate', 'NOT_VALIDATED')
+			    .validateField('beginDate');
+  			},
   		});
  	});
 	$("#add-star-beginDate").keypress(function(){
@@ -967,6 +997,7 @@ $(function() {
 		f.data('bootstrapValidator').validate();
 		var isValid = f.data('bootstrapValidator').isValid();
 		if(!isValid){
+		    
 			return false;
 		}
 		var datagridId = $('#edit-star-datagridId').val();

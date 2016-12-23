@@ -24,10 +24,10 @@ public class DeviceType {
 	@Column(name = "deviceTypeId", unique = true, nullable = false)
 	private Long deviceTypeId;
 
-	@Column(name = "deviceCode", nullable = true)
+	@Column(name = "deviceCode", nullable = true, length = 128)
 	private String deviceCode;
 
-	@Column(name = "deviceName", nullable = true)
+	@Column(name = "deviceName", nullable = true, length = 128)
 	private String deviceName;
 
 	public Long getDeviceTypeId() {

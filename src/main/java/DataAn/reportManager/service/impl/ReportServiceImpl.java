@@ -666,8 +666,8 @@ public class ReportServiceImpl implements IReoportService {
 
 		// 封装参数列表list
 		List<ParamDto> params = new ArrayList<ParamDto>();
-		Double paramNumMax = 0D;
-		Double paramNumMin = 0D;
+		Double paramNumMax = null;
+		Double paramNumMin = null;
 		for (StarParam starParam : starParamList) {
 			ParamDto param = new ParamDto();
 			param.setParamName(starParam.getParamName());
@@ -676,8 +676,14 @@ public class ReportServiceImpl implements IReoportService {
 				paramNumMax = maxMap.get(starParam.getParamCode());
 				paramNumMin = minMap.get(starParam.getParamCode());
 			}
-			param.setParamNumMax(String.valueOf(paramNumMax));
-			param.setParamNumMin(String.valueOf(paramNumMin));
+			if(paramNumMax != null)
+				param.setParamNumMax(String.valueOf(paramNumMax));
+			else
+				param.setParamNumMax("null");
+			if(paramNumMin != null)
+				param.setParamNumMin(String.valueOf(paramNumMin));
+			else
+				param.setParamNumMin("null");
 			params.add(param);
 		}
 

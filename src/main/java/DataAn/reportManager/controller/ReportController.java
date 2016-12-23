@@ -214,8 +214,8 @@ public class ReportController {
 			 data.put("filename", filename);
 			 res.setData(data);
 		 } catch (Exception ex) {
-			 ex.printStackTrace();
-			 res.setMsg(ex.getMessage());
+			 //ex.printStackTrace();
+			 res.setMsg(DateUtil.format(beginDate) + " 到 "+ DateUtil.format(endDate) +" 获取数据失败！");
 			 res.setResult(CommonsConstant.RESULT_FALSE);
 		 }
 		

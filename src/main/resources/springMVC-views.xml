@@ -214,13 +214,20 @@
 			<mvc:exclude-mapping path="/login" />
 			<mvc:exclude-mapping path="/static/**" />
 			<mvc:exclude-mapping path="/Communicate/**" />
+			<mvc:exclude-mapping path="/refuse" />
 			<bean class="DataAn.common.interceptor.LoginInterceptor"></bean>
 		</mvc:interceptor>
 		<mvc:interceptor>
-			<mvc:mapping path="/admin/user/**" />
-			<mvc:mapping path="/admin/role/**" />
-			<mvc:mapping path="/admin/permission/**" />
-			<mvc:mapping path="/admin/log/**" />
+<!-- 			<mvc:mapping path="/admin/user/**" /> -->
+<!-- 			<mvc:mapping path="/admin/role/**" /> -->
+<!-- 			<mvc:mapping path="/admin/permission/**" /> -->
+<!-- 			<mvc:mapping path="/admin/log/**" /> -->
+			<mvc:mapping path="/**" />
+			<mvc:exclude-mapping path="/login" />
+			<mvc:exclude-mapping path="/static/**" />
+			<mvc:exclude-mapping path="/Communicate/**" />
+			<mvc:exclude-mapping path="/refuse" />
+			<mvc:exclude-mapping path="/loginOut"/>
 			<bean class="DataAn.common.interceptor.PermissionInterceptor"></bean>
 		</mvc:interceptor>
 	</mvc:interceptors>

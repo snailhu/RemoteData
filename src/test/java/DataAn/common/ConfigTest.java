@@ -24,6 +24,7 @@ public class ConfigTest {
 		System.out.println(str);
 		System.out.println(CommonConfig.getUplodCachePath());
 		System.out.println(CommonConfig.getDownloadCachePath());
+		System.out.println(String.valueOf(null));
 	}
 	
 	@Test

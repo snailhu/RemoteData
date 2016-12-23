@@ -85,10 +85,8 @@
 		//修改页面缩放，界面显示不正常
 		$(".col-lg-7").css("text-align", "center");
 		$(".modal-dialog").css("margin", "20px auto");
-
 		//左菜单栏
-		$("#galaxymanage-img")
-				.attr("src",
+		$("#galaxymanage-img").attr("src",
 						"${pageContext.request.contextPath}/static/new/img/images/a_82.png");
 		$("#galaxymanage-text").css("color", "#5d90d6");
 
@@ -107,7 +105,15 @@
 							message : '设备名称不能为空'
 						}
 					}
-				}
+				},
+				model : {
+					message : '设备型号不能为空',
+					validators : {
+						notEmpty : {
+							message : '设备型号不能为空'
+						}
+					}
+				},
 			}
 		});
 		$('#editDeviceForm').bootstrapValidator({
@@ -125,7 +131,15 @@
 							message : '设备名称不能为空'
 						}
 					}
-				}
+				},
+				model : {
+					message : '设备型号不能为空',
+					validators : {
+						notEmpty : {
+							message : '设备型号不能为空'
+						}
+					}
+				},
 			}
 		});
 		$('#stopDeviceForm').bootstrapValidator({
@@ -172,18 +186,7 @@
 				}
 			}
 		});
-		$('#addDeviceModal').on('hide.bs.modal', function() {
-			$('#addDeviceForm').data('bootstrapValidator').resetForm(true);
-		});
-		$('#editDeviceModal').on('hide.bs.modal', function() {
-			$('#editDeviceForm').data('bootstrapValidator').resetForm(true);
-		});
-		$('#stopDeviceModal').on('hide.bs.modal', function() {
-			$('#stopDeviceForm').data('bootstrapValidator').resetForm(true);
-		});
-		$('#startDeviceModal').on('hide.bs.modal', function() {
-			$('#startDeviceForm').data('bootstrapValidator').resetForm(true);
-		});
+		
 	});
 </script>
 </head>
@@ -224,14 +227,11 @@
 								<h4 class="modal-title" id="addDeviceModalLabel">添加设备</h4>
 							</div>
 							<div class="modal-body">
-								<input type="hidden" name="datagridId"
-									id="add-device-datagridId" /> <input type="hidden"
-									name="deviceType" id="add-device-deviceType" /> <input
-									type="hidden" name="seriersId" id="add-device-seriesId" /> <input
-									type="hidden" name="starId" id="add-device-starId" /> <input
-									type="hidden" name="runStatus" id="add-device-runStatus"
-									value="1" />
-
+								<input type="hidden" name="datagridId" id="add-device-datagridId" /> 
+								<input type="hidden" name="deviceType" id="add-device-deviceType" /> 
+								<input type="hidden" name="seriersId" id="add-device-seriesId" /> 
+								<input type="hidden" name="starId" id="add-device-starId" /> 
+								<input type="hidden" name="runStatus" id="add-device-runStatus" value="1" />
 								<div class="space-4"></div>
 								<div class="form-group">
 									<label class="col-sm-3 control-label no-padding-right"
@@ -277,10 +277,9 @@
 								<h4 class="modal-title" id="editDeviceModalLabel">编辑设备</h4>
 							</div>
 							<div class="modal-body" id="editDeviceModalBody">
-								<input type="hidden" name="datagridId"
-									id="edit-device-datagridId" /> <input type="hidden"
-									name="deviceId" id="edit-device-deviceId" /> <input
-									type="hidden" name="runStatus" id="edit-device-runStatus" />
+								<input type="hidden" name="datagridId" id="edit-device-datagridId" /> 
+								<input type="hidden" name="deviceId" id="edit-device-deviceId" /> 
+								<input type="hidden" name="runStatus" id="edit-device-runStatus" />
 								<div class="space-4"></div>
 								<div class="form-group">
 									<label class="col-sm-3 control-label no-padding-right"
@@ -623,15 +622,11 @@
 									}
 								}]],
 						onResize : function() {
-							$('#deviceTypeList').datagrid(
-											'fixDetailRowHeight',
-											index);
+							$('#deviceTypeList').datagrid('fixDetailRowHeight',index);
 						},
 						onLoadSuccess : function() {
 							setTimeout(function() {
-								$('#deviceTypeList').datagrid(
-									'fixDetailRowHeight',
-									index);
+								$('#deviceTypeList').datagrid('fixDetailRowHeight',index);
 							}, 0);
 						}
 					});
@@ -639,7 +634,20 @@
 				}
 			});
 		});
-
+		
+		$('#addDeviceModal').on('hide.bs.modal', function() {
+			$('#addDeviceForm').data('bootstrapValidator').resetForm(true);
+		});
+		$('#editDeviceModal').on('hide.bs.modal', function() {
+			$('#editDeviceForm').data('bootstrapValidator').resetForm(true);
+		});
+		$('#stopDeviceModal').on('hide.bs.modal', function() {
+			$('#stopDeviceForm').data('bootstrapValidator').resetForm(true);
+		});
+		$('#startDeviceModal').on('hide.bs.modal', function() {
+			$('#startDeviceForm').data('bootstrapValidator').resetForm(true);
+		});
+		
 		function reloadDatagrid(datagridId) {
 			// 		$('#' + datagridId).datagrid("unselectAll");
 			// 		$('#' + datagridId).datagrid('reload');
@@ -667,10 +675,9 @@
 			var datagridId = $('#add-device-datagridId').val();
 			var f = $('#addDeviceForm');
 			f.data('bootstrapValidator').validate();
-			var isValid = f.data('bootstrapValidator')
-					.isValid();
+			var isValid = f.data('bootstrapValidator').isValid();
 			if (!isValid) {
-				top.alertMsg('错误', '请满足提交条件！');
+				//top.alertMsg('错误', '请满足提交条件！');
 				return false;
 			}
 			var toUrl = '${pageContext.request.contextPath}/admin/device/createDevice';
@@ -679,8 +686,7 @@
 				onsubmit : function() {
 					var flag = $(this).form('validate');
 					if (flag) {
-						top.showProcess(true, '温馨提示',
-								'正在提交数据...');
+						top.showProcess(true, '温馨提示','正在提交数据...');
 					}
 					return flag;
 				},
@@ -688,21 +694,18 @@
 					top.showProcess(false);
 					var map = $.parseJSON(data);
 					if (map.success) {
+						$('#addDeviceModal').modal('hide');
 						top.showMsg('提示', map.msg);
 						reloadDatagrid(datagridId);
 					} else {
-						top.alertMsg('错误', map.msg + "\n"
-								+ map.obj == null ? ""
-								: map.obj);
+						top.alertMsg('错误', map.msg + "\n"+ map.obj == null ? "": map.obj);
 					}
 				},
 				onLoadError : function() {
 					top.showProcess(false);
-					top.$.messager.alert('温馨提示',
-							'由于网络或服务器太忙，提交失败，请重试！');
+					top.$.messager.alert('温馨提示','由于网络或服务器太忙，提交失败，请重试！');
 				}
 			});
-			$('#addDeviceModal').modal('hide');
 		});
 
 		function editDevice(datagridId, deviceId) {
@@ -730,7 +733,6 @@
 							$('#editenddatebody').hide();
 							$('#edit-device-endDate').val('');
 						}
-
 						//弹出编辑框
 						$('#editDeviceModal').modal('show');
 					} else {
@@ -762,7 +764,7 @@
 			f.data('bootstrapValidator').validate();
 			var isValid = f.data('bootstrapValidator').isValid();
 			if (!isValid) {
-				top.alertMsg('错误', '请满足提交条件！');
+				//top.alertMsg('错误', '请满足提交条件！');
 				return false;
 			}
 
@@ -780,6 +782,7 @@
 					top.showProcess(false);
 					var map = $.parseJSON(data);
 					if (map.success) {
+						$('#editDeviceModal').modal('hide');
 						top.showMsg('提示', map.msg);
 						reloadDatagrid(datagridId);
 					} else {
@@ -792,7 +795,6 @@
 							'由于网络或服务器太忙，提交失败，请重试！');
 				}
 			});
-			$('#editDeviceModal').modal('hide');
 		});
 
 		function stopDevice(datagridId, deviceId) {
@@ -887,8 +889,7 @@
 				onsubmit : function() {
 					var flag = $(this).form('validate');
 					if (flag) {
-						top.showProcess(true, '温馨提示',
-								'正在提交数据...');
+						top.showProcess(true, '温馨提示','正在提交数据...');
 					}
 					return flag;
 				},

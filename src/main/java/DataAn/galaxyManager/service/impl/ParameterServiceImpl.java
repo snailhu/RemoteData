@@ -38,7 +38,7 @@ public class ParameterServiceImpl implements IParameterService{
 	@Transactional
 	public Parameter saveOne(String series, String star, String deviceTypeCode, String param_zh) {
 		Parameter param = new Parameter();
-		if(param_zh.equals("接收地方时")){ // || param_zh.equals("时间")
+		if(param_zh.indexOf(":") == -1){ // || param_zh.equals("时间") 接收地方时
 			param.setSeries(series);
 			param.setStar(star);
 //			if(StringUtils.isNotBlank(paramType)){

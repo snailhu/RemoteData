@@ -187,6 +187,7 @@
 												name="parameterType">
 												<option value="">--请选择--</option>
 											</select>
+											<label class="mustchoose">*</label>
 										</div>
 									</div>
 									<div class="space-4"></div>
@@ -242,10 +243,14 @@
 		//快速搜索按钮
 		$('#btn-search').click(function() {
 			var parameterType = $('#search-parameterType').val();
+			if (parameterType == "" || parameterType.length == 0) {
+				top.alertMsg('提示', '请选择设备类型！');
+				return;
+			}
 			var model = $('#search-model').val();
 			deviceGrid = $('#deviceList').datagrid({
 				view : detailview,
-				url : '${pageContext.request.contextPath}/admin/device/getDeviceIndexPager',
+				url : '${pageContext.request.contextPath}/admin/deviceIndex/getDeviceIndexPager',
 				queryParams : {
 					parameterType : parameterType,
 					model : model

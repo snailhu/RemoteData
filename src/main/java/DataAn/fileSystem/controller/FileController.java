@@ -441,7 +441,6 @@ public class FileController {
 		System.out.println("itemIds: " + itemIds);
 		JsonMessage jsonMsg = new JsonMessage();
 		try {
-
 			fileService.deleteFile(request,itemIds);
 			jsonMsg.setSuccess(true);
 			jsonMsg.setMsg("删除成功！");

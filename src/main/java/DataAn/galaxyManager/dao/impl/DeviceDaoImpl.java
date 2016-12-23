@@ -34,7 +34,7 @@ public class DeviceDaoImpl extends BaseDaoImpl<Device> implements IDeviceDao {
 			hql += " and d.deviceType = " + deviceType;
 		}
 		if (StringUtils.isNotBlank(model)) {
-			hql += " and d.model = '" + model + "'";
+			hql += " and d.model like '%" + model + "%'";
 		}
 		hql += " order by d.seriersId,d.starId,d.editDate desc";
 		return this.getSession().createQuery(hql).list();
@@ -141,8 +141,8 @@ public class DeviceDaoImpl extends BaseDaoImpl<Device> implements IDeviceDao {
 			countSQL += " and deviceType = " + deviceType;
 		}
 		if (StringUtils.isNotBlank(model)) {
-			sql += " and model = '" + model + "'";
-			countSQL += " and model = '" + model + "'";
+			sql += " and model like '%" + model + "%'";
+			countSQL += " and model like '%" + model + "%'";
 		}
 		sql += " order by seriersid,starId,deviceType";
 		countSQL += ") ttt";

@@ -52,11 +52,13 @@ public class ParameterServiceImpl implements IParameterService{
 			String code = "sequence_" + num;
 			param.setSeries(series);
 			param.setStar(star);
-			if(StringUtils.isNotBlank(deviceTypeCode)){
-				param.setDeviceTypeCode(deviceTypeCode);					
-			}else{//TODO 通过数据库判断参数类型
-				param.setDeviceTypeCode(J9Series_Star_ParameterType.getJ9SeriesStarParameterTypeByName(param_zh).getValue());	
-			}
+			//TODO 通过数据库判断参数类型
+			if(param_zh.indexOf(J9Series_Star_ParameterType.FLYWHEEL.getName()) > -1)
+				deviceTypeCode = J9Series_Star_ParameterType.FLYWHEEL.getValue();
+			if(param_zh.indexOf(J9Series_Star_ParameterType.TOP.getName()) > -1)
+				deviceTypeCode = J9Series_Star_ParameterType.TOP.getValue();
+			
+			param.setDeviceTypeCode(deviceTypeCode);					
 			param.setFullName(param_zh);
 			param.setSimplyName(param_zh.split(":")[1]);
 			param.setCode(code);

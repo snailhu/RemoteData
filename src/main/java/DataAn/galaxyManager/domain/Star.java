@@ -31,7 +31,7 @@ public class Star {
 	private Long id;
 	
 	//系列 如：j9
-	@Column(name = "name", nullable = false, length = 64)
+	@Column(name = "name", nullable = false, length = 128)
 	private String name;
 	
 	@Column(name = "code", nullable = false, length = 64)

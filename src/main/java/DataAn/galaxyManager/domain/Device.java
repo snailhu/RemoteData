@@ -28,7 +28,7 @@ public class Device {
 	@Column(name = "deviceId", unique = true, nullable = false)
 	private Long deviceId;
 
-	@Column(name = "deviceName", nullable = true)
+	@Column(name = "deviceName", nullable = true, length = 128)
 	private String deviceName;
 
 	@Column(name = "starId", nullable = true)

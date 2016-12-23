@@ -856,6 +856,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
 		//快速搜索按钮
 		$('#btn-search').click(function(){
+			StarParamGrid.datagrid('unselectAll');
 			var Qseries =  $('#form-series').val();
 			var Qstar = $('#form-star').val();
 			var QpartsType = $('#form-partsType').val();

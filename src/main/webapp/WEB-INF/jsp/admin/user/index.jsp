@@ -694,6 +694,7 @@ $("#search-createdatetimeEnd").keypress(function(){
 
 		//快速搜索按钮
 		$('#btn-search').click(function(){
+		   userGrid.datagrid('unselectAll');
 		   var node = $('#deptTree').tree('getSelected');
            var orgIds=[];
            if(node){

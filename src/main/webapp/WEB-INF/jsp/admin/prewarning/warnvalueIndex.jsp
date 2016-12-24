@@ -1156,203 +1156,191 @@
 				top.alertMsg('提示', '请选择设备');
 				return;
 			}
-			
 			if(parameterType == "flywheel"){
 				valueGrid = $("#valueList").datagrid({
 	                url: '<%=request.getContextPath()%>/admin/prewarning/getValueList',
-	                				queryParams:{
-	                					series : series,
-	                					star : star,
-	                					parameterType : parameterType,
-	                					parameter : parameter,
-	                					warningType : "0"
-	                				},
-									rownumbers : true,
-									fitColumns : true,
-									idField : 'valueId',//'valueId',
-									pageSize : 10,
-									pagination : true,
-									pageList : [ 10, 20, 30, 40, 50, 60, 70, 80,
-											90, 100 ],
-									onLoadError : function(data) {
-										$.messager.alert("参数信息", "暂无特殊工况参数信息",
-												"error");
+           				queryParams:{
+           					series : series,
+           					star : star,
+           					parameterType : parameterType,
+           					parameter : parameter,
+           					warningType : "0"
+           				},
+						rownumbers : true,
+						fitColumns : true,
+						idField : 'valueId',//'valueId',
+						pageSize : 10,
+						pagination : true,
+						pageList : [ 10, 20, 30, 40, 50, 60, 70, 80,
+								90, 100 ],
+						onLoadError : function(data) {
+							$.messager.alert("参数信息", "暂无特殊工况参数信息",
+									"error");
 
-									},
-									frozenColumns : [ [ {
-										title : 'valueId',
-										field : 'valueId',//'valueId',
-										width : 50,
-										checkbox : true
-									} ] ],
-									columns : [ [ {
-										field : 'series',
-										title : '星系',
-										width : 100,
-										sortable:true
-									}, {
-										field : 'star',
-										title : '星号',
-										width : 100,
-										sortable:true
-									},{
-										field : 'parameterType',
-										title : '设备',
-										width : 100,
-										sortable:true
-									}, {
-										field : 'parameter',
-										title : '参数',
-										width : 200,
-										sortable:true
-									}, {
-										field : 'timeZone',
-										title : '时间区间(min)',
-										width : 100,
-										sortable:true
-									}, {
-										field : 'limitTimes',
-										title : '限定次数',
-										width : 100,
-										sortable:true
-									}, {
-										field : 'maxVal',
-										title : '最大值',
-										width : 100,
-										sortable:true
-									} ] ],
-//	 								}, {
-//	 									field : 'minVal',
-//	 									title : '最小值',
-//	 									width : 100,
-//	 									sortable:true
-							
-
-									toolbar : [ {
-										text : '创建',
-										iconCls : 'icon-add',
-										handler : function() {
-											createValue();
-										}
-									}, '-', {
-										text : '删除',
-										iconCls : 'icon-remove',
-										handler : function() {
-											deleteValue();
-										}
-									}, '-', {
-										text : '编辑',
-										iconCls : 'icon-edit',
-										handler : function() {
-											editValue();
-										}
-									}, '-', {
-										text : '取消选中',
-										iconCls : 'icon-undo',
-										handler : function() {
-											valueGrid.datagrid('unselectAll');
-										}
-									} ]
-								});
+						},
+						frozenColumns : [ [ {
+							title : 'valueId',
+							field : 'valueId',//'valueId',
+							width : 50,
+							checkbox : true
+						} ] ],
+						columns : [ [ {
+							field : 'series',
+							title : '星系',
+							width : 100,
+							sortable:true
+						}, {
+							field : 'star',
+							title : '星号',
+							width : 100,
+							sortable:true
+						},{
+							field : 'parameterType',
+							title : '设备',
+							width : 100,
+							sortable:true
+						}, {
+							field : 'parameter',
+							title : '参数',
+							width : 200,
+							sortable:true
+						}, {
+							field : 'timeZone',
+							title : '时间区间(min)',
+							width : 100,
+							sortable:true
+						}, {
+							field : 'limitTimes',
+							title : '限定次数',
+							width : 100,
+							sortable:true
+						}, {
+							field : 'maxVal',
+							title : '最大值',
+							width : 100,
+							sortable:true
+						} ] ],
+						toolbar : [ {
+							text : '创建',
+							iconCls : 'icon-add',
+							handler : function() {
+								createValue();
+							}
+						}, '-', {
+							text : '删除',
+							iconCls : 'icon-remove',
+							handler : function() {
+								deleteValue();
+							}
+						}, '-', {
+							text : '编辑',
+							iconCls : 'icon-edit',
+							handler : function() {
+								editValue();
+							}
+						}, '-', {
+							text : '取消选中',
+							iconCls : 'icon-undo',
+							handler : function() {
+								valueGrid.datagrid('unselectAll');
+							}
+						} ]
+					});
 			}
 			if(parameterType == "top"){
 				valueGrid = $("#valueList").datagrid({
 	                url: '<%=request.getContextPath()%>/admin/prewarning/getValueList',
-					                queryParams:{
-				    					series : series,
-				    					star : star,
-				    					parameterType : parameterType,
-				    					parameter : parameter,
-				    					warningType : "0"
-				    				},		
-	                				rownumbers : true,
-									fitColumns : true,
-									idField : 'valueId',//'valueId',
-									pageSize : 10,
-									pagination : true,
-									pageList : [ 10, 20, 30, 40, 50, 60, 70, 80,
-											90, 100 ],
-									onLoadError : function(data) {
-										$.messager.alert("参数信息", "暂无特殊工况参数信息",
-												"error");
-
-									},
-									frozenColumns : [ [ {
-										title : 'valueId',
-										field : 'valueId',//'valueId',
-										width : 50,
-										checkbox : true
-									} ] ],
-									columns : [ [ {
-										field : 'series',
-										title : '星系',
-										width : 100,
-										sortable:true
-									}, {
-										field : 'star',
-										title : '星号',
-										width : 100,
-										sortable:true
-									},{
-										field : 'parameterType',
-										title : '设备',
-										width : 100,
-										sortable:true
-									}, {
-										field : 'parameter',
-										title : '参数',
-										width : 200,
-										sortable:true
-									}, {
-										field : 'timeZone',
-										title : '时间区间(min)',
-										width : 100,
-										sortable:true
-									}, {
-										field : 'limitTimes',
-										title : '限定次数',
-										width : 100,
-										sortable:true
-									}, {
-										field : 'maxVal',
-										title : '最大变化绝对值',
-										width : 110,
-										sortable:true
-									}, {
-	 									field : 'minVal',
-	 									title : '最小变化绝对值',
-	 									width : 110,
-	 									sortable:true
-									} ] ],
-	 								
-							
-
-									toolbar : [ {
-										text : '创建',
-										iconCls : 'icon-add',
-										handler : function() {
-											createValue();
-										}
-									}, '-', {
-										text : '删除',
-										iconCls : 'icon-remove',
-										handler : function() {
-											deleteValue();
-										}
-									}, '-', {
-										text : '编辑',
-										iconCls : 'icon-edit',
-										handler : function() {
-											editValue();
-										}
-									}, '-', {
-										text : '取消选中',
-										iconCls : 'icon-undo',
-										handler : function() {
-											valueGrid.datagrid('unselectAll');
-										}
-									} ]
-								});
+		                queryParams:{
+	    					series : series,
+	    					star : star,
+	    					parameterType : parameterType,
+	    					parameter : parameter,
+	    					warningType : "0"
+	    				},		
+              				rownumbers : true,
+						fitColumns : true,
+						idField : 'valueId',//'valueId',
+						pageSize : 10,
+						pagination : true,
+						pageList : [ 10, 20, 30, 40, 50, 60, 70, 80,
+								90, 100 ],
+						onLoadError : function(data) {
+							$.messager.alert("参数信息", "暂无特殊工况参数信息",
+									"error");
+						},
+						frozenColumns : [ [ {
+							title : 'valueId',
+							field : 'valueId',//'valueId',
+							width : 50,
+							checkbox : true
+						} ] ],
+						columns : [ [ {
+							field : 'series',
+							title : '星系',
+							width : 100,
+							sortable:true
+						}, {
+							field : 'star',
+							title : '星号',
+							width : 100,
+							sortable:true
+						},{
+							field : 'parameterType',
+							title : '设备',
+							width : 100,
+							sortable:true
+						}, {
+							field : 'parameter',
+							title : '参数',
+							width : 200,
+							sortable:true
+						}, {
+							field : 'timeZone',
+							title : '时间区间(min)',
+							width : 100,
+							sortable:true
+						}, {
+							field : 'limitTimes',
+							title : '限定次数',
+							width : 100,
+							sortable:true
+						}, {
+							field : 'maxVal',
+							title : '最大变化绝对值',
+							width : 110,
+							sortable:true
+						}, {
+								field : 'minVal',
+								title : '最小变化绝对值',
+								width : 110,
+								sortable:true
+						} ] ],
+						toolbar : [ {
+							text : '创建',
+							iconCls : 'icon-add',
+							handler : function() {
+								createValue();
+							}
+						}, '-', {
+							text : '删除',
+							iconCls : 'icon-remove',
+							handler : function() {
+								deleteValue();
+							}
+						}, '-', {
+							text : '编辑',
+							iconCls : 'icon-edit',
+							handler : function() {
+								editValue();
+							}
+						}, '-', {
+							text : '取消选中',
+							iconCls : 'icon-undo',
+							handler : function() {
+								valueGrid.datagrid('unselectAll');
+							}
+						} ]
+					});
 			}
 			valueGrid.datagrid('unselectAll');
 		});
@@ -1411,6 +1399,7 @@
 					top.showProcess(false);
 					var map = $.parseJSON(data);
 					if (map.success) {
+						$('#addValueModal').modal('hide');
 						top.showMsg('提示', map.msg);
 						reloadDataGrid();
 					} else {
@@ -1422,7 +1411,6 @@
 					top.$.messager.alert('温馨提示','由于网络或服务器太忙，提交失败，请重试！');
 				}
 			});
-			$('#addValueModal').modal('hide');
 		});
 		
 		$('#submit_editValueInfo').click(function() {
@@ -1470,6 +1458,7 @@
 				top.showProcess(false);
 				var map = $.parseJSON(data);
 				if (map.success) {
+					$('#editValueModal').modal('hide');
 					top.showMsg('提示',map.msg);
 					reloadDataGrid();
 				} else {
@@ -1481,7 +1470,6 @@
 				top.$.messager.alert('温馨提示','由于网络或服务器太忙，提交失败，请重试！');
 			}
 			});
-			$('#editValueModal').modal('hide');
 		});
 		
 		
@@ -1551,85 +1539,48 @@
 						success : function(data) {
 							if (data) {
 								 $.get('<%=request.getContextPath()%>/admin/prewarning/getParamList',
-														{
-															'parameterType' : data.parameterType,
-															'series' : data.series,
-															'star' : data.star
-														},
-														function(res) {
-															if (res) {
-																$(
-																		'#edit-parameter')
-																		.find(
-																				"option")
-																		.remove();
-																$('#edit-star')
-																		.find(
-																				"option")
-																		.remove();
-																$(
-																		'#edit-parameter')
-																		.append(
-																				"<option value=''>--请选择--</option>");
-																$('#edit-star')
-																		.append(
-																				"<option value=''>--请选择--</option>");
-																$
-																		.each(
-																				res.paramaters,
-																				function() {
-																					if (this.code) {
-																						$(
-																								'#edit-parameter')
-																								.append(
-																										"<option value='"+ this.code+"'>"
-																												+ this.simplyName
-																												+ "</option>");
-																					}
-																				});
-																$("#edit-parameter").select2().val(
-																		data.parameter).trigger(
-																		"change");
-																$
-																		.each(
-																				res.stars,
-																				function() {
-																					if (this.id) {
-																						if (this.id == data.star) {
-																							$(
-																									'#edit-star')
-																									.append(
-																											"<option value='"+ this.id+"' selected = 'selected'>"
-																													+ this.name
-																													+ "</option>");
-																						} else {
-																							$(
-																									'#edit-star')
-																									.append(
-																											"<option value='"+ this.id+"'>"
-																													+ this.name
-																													+ "</option>");
-																						}
-																					}
-																				});
-															} else {
-																top
-																		.showMsg(
-																				'提示',
-																				res.msg);
-															}
-														});
-
+									{
+										'parameterType' : data.parameterType,
+										'series' : data.series,
+										'star' : data.star
+									},
+									function(res) {
+										if (res) {
+											$('#edit-parameter').find("option").remove();
+											$('#edit-star').find("option").remove();
+											$('#edit-parameter').append("<option value=''>--请选择--</option>");
+											$('#edit-star').append("<option value=''>--请选择--</option>");
+											$.each(res.paramaters,function() {
+												if (this.code) {
+													$('#edit-parameter').append("<option value='"+ this.code+"'>"
+																			+ this.simplyName
+																			+ "</option>");
+												}
+											});
+											$("#edit-parameter").select2().val(data.parameter).trigger("change");
+											$.each(res.stars,function() {
+												if (this.id) {
+													if (this.id == data.star) {
+														$('#edit-star').append("<option value='"+ this.id+"' selected = 'selected'>"
+																				+ this.name
+																				+ "</option>");
+													} else {
+														$('#edit-star').append("<option value='"+ this.id+"'>"
+																				+ this.name
+																				+ "</option>");
+													}
+												}
+											});
+										} else {
+											top.showMsg('提示',res.msg);
+										}
+									});
 										$('#edit-value-id').val(data.valueId)
 										$('#edit-series').val(data.series);
-										$('#edit-parameterType').val(
-												data.parameterType);
+										$('#edit-parameterType').val(data.parameterType);
 										$('#edit-timeZone').val(data.timeZone);
-										$('#edit-limitTimes').val(
-												data.limitTimes);
-
+										$('#edit-limitTimes').val(data.limitTimes);
 										if (data.parameterType == 'flywheel') {
-
 											$('#edit-flywheelValDiv').show();
 											$('#edit-topValDiv').hide();
 											$('#edit-maxVal').val(data.maxVal);
@@ -1638,12 +1589,9 @@
 										if (data.parameterType == 'top') {
 											$('#edit-flywheelValDiv').hide();
 											$('#edit-topValDiv').show();
-											$('#edit-maxValtop').val(
-													data.maxVal);
-											$('#edit-minValtop').val(
-													data.minVal);
+											$('#edit-maxValtop').val(data.maxVal);
+											$('#edit-minValtop').val(data.minVal);
 										}
-
 										//弹出编辑框
 										$('#editValueModal').modal('show');
 									} else {
@@ -1652,8 +1600,7 @@
 								}
 							});
 				} else {
-					top.showMsg("提示", '只能选择一个参数进行编辑！您已经选择了' + rows.length
-							+ '个参数');
+					top.showMsg("提示", '只能选择一个参数进行编辑！您已经选择了' + rows.length+ '个参数');
 				}
 			} else {
 				top.showMsg("提示", "请选择要编辑的参数！");
@@ -1662,7 +1609,6 @@
 		}
 		function getSelectId() {
 			var row = valueGrid.datagrid('getSelected');
-
 			if (!row) {
 				$.messager.show({
 					title : '提示',
@@ -1674,7 +1620,6 @@
 				return row.valueId;
 			}
 		}
-
 		// 		function clearFun() {
 		// 			$('#frmSearchValue').form('clear');
 		// 		}

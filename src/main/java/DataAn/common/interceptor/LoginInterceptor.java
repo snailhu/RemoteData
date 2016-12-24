@@ -68,7 +68,6 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 //			acticeUser.setPermissionItems(map);
 //			String json = JSON.toJSONString(map);
 //			acticeUser.setPermissionItemsJSON(json);
-//			
 //			String username = "admin";
 //			User user = new User();
 //			user.setUserName(username);
@@ -77,6 +76,7 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 //			session.setAttribute("userName", username);
 //			session.setAttribute("activeUser", acticeUser);
 //			response.sendRedirect(request.getContextPath() + request.getRequestURI());
+			
 		}
 		return super.preHandle(request, response, handler);
 	}

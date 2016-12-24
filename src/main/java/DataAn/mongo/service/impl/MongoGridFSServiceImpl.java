@@ -15,7 +15,7 @@ import DataAn.mongo.service.IMongoGridFSService;
 public class MongoGridFSServiceImpl implements IMongoGridFSService{
 
 	//从mongofs中获取数据流
-	private IDfsDb dfs = MongoDfsDb.getInstance();
+	private IDfsDb dfs = null;//MongoDfsDb.getInstance();
 	@Resource
 	private IVirtualFileSystemDao fileDao;
 	

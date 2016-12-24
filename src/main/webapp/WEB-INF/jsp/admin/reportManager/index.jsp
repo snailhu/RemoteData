@@ -403,11 +403,13 @@ a:hover{color:#0909df;}
 	          },  {
 	              field: 'createDate',
 	              title: '上传时间',
-	              width: 150
+	              width: 150,
+	              sortable:true
 	          }
 	          ]]
 	      });
 	      $('#btn-search').click(function(){
+	    	  $('#fileCatalog').empty();
 	    	  var Qseries =  $('#form-series').val();
 			  var Qstar = $('#form-star').val();
 			  var QpartsType = $('#form-partsType').val();

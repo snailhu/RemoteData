@@ -28,10 +28,10 @@ public interface IReoportService {
 	public  void downLoadReportForDis(InputStream inputStream ,String fileName ,HttpServletResponse response);
 	
 	public Pager<MongoFSDto> getMongoFSList(int pageIndex, int pageSize, String series,String star, String parameterType, 
-			long dirId, String beginTime, String endTime);
+			long dirId, String beginTime, String endTime, String sort, String order);
 	
 	public Pager<MongoFSDto> getMongoFSList(int pageIndex, int pageSize, String series,
-			String star, String parameterType, long dirId) ;
+			String star, String parameterType, long dirId, String sort, String order) ;
 	
 	public String getParentFSCatalog(long dirId);
 	

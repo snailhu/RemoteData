@@ -111,7 +111,7 @@ public class RoutingRepoService {
 			for (HierarchyModel hierarchyModel : hierarchyModelList) {
 				RepoDto repodto =new RepoDto();
 				repodto.setPeriod(hierarchyModel.getInterval());
-				String databasename = InitMongo.getDataBaseNameBySeriesAndStar(series,star);
+				String databasename = InitMongo.getDataDBBySeriesAndStar(series,star);
 				repodto.setDatabase(databasename);
 				repodto.setCollection(paramType+hierarchyModel.getName());
 				repodto.setName(hierarchyModel.getName());

@@ -16,12 +16,12 @@ import DataAn.mongo.service.IMongoService;
 @Service
 public class MongoServiceImpl implements IMongoService{
 
-	private MongodbUtil mg = MongodbUtil.getInstance();
+	private MongodbUtil mg = null;//MongodbUtil.getInstance();
 
 	@Override
 	public void saveCSVData(String series, String star,String paramType, String date,
 			List<Document> documents, String versions) throws Exception {
-		String databaseName = InitMongo.getDataBaseNameBySeriesAndStar(series, star);
+		String databaseName = InitMongo.getDataDBBySeriesAndStar(series, star);
 		Set<String> isexistCols = mg.getExistCollections(databaseName);		
 		String collectionName = paramType;
 		try {
@@ -51,7 +51,7 @@ public class MongoServiceImpl implements IMongoService{
 	public void saveCSVData(String series, String star, String paramType,
 			String date, Map<String, List<Document>> map, String versions)
 			throws Exception {
-		String databaseName = InitMongo.getDataBaseNameBySeriesAndStar(series, star);
+		String databaseName = InitMongo.getDataDBBySeriesAndStar(series, star);
 		
 		Set<String> isexistCols = mg.getExistCollections(databaseName);
 		
@@ -93,7 +93,7 @@ public class MongoServiceImpl implements IMongoService{
 	@Override
 	public void updateCSVDataByVersions(String series, String star, String paramType, 
 			String date, String versions){
-		String databaseName = InitMongo.getDataBaseNameBySeriesAndStar(series, star);
+		String databaseName = InitMongo.getDataDBBySeriesAndStar(series, star);
 		String collectionName = DateUtil.formatString(date, "yyyy-MM-dd", "yyyy");
 		collectionName = paramType + collectionName;
 		mg.update(databaseName, collectionName, "versions", versions);
@@ -102,7 +102,7 @@ public class MongoServiceImpl implements IMongoService{
 	@Override
 	public void updateCSVDataByVersions(String series, String star,
 			String paramType, String versions) {
-		String databaseName = InitMongo.getDataBaseNameBySeriesAndStar(series, star);
+		String databaseName = InitMongo.getDataDBBySeriesAndStar(series, star);
 		String collectionName =  paramType;
 		mg.update(databaseName, collectionName, "versions", versions);
 	}
@@ -111,7 +111,7 @@ public class MongoServiceImpl implements IMongoService{
 	@Override
 	public void updateCSVDataByDate(String series, String star,
 			String paramType, Date beginDate, Date endDate) {
-		String databaseName = InitMongo.getDataBaseNameBySeriesAndStar(series, star);
+		String databaseName = InitMongo.getDataDBBySeriesAndStar(series, star);
 		List<String> list = InitMongo.getGradingCollectionNames(J9Series_Star_ParameterType.FLYWHEEL.getValue());
 		if(list != null && list.size() > 0){
 			Set<String> isexistCols = mg.getExistCollections(databaseName);
@@ -141,7 +141,7 @@ public class MongoServiceImpl implements IMongoService{
 	@Override
 	public MongoCursor<Document> findByYear_month_day(String series,
 			String star, String paramType, String date) {
-		String databaseName = InitMongo.getDataBaseNameBySeriesAndStar(series, star);
+		String databaseName = InitMongo.getDataDBBySeriesAndStar(series, star);
 		String collectionName =  paramType;
 		
 		return mg.find(databaseName, collectionName, "year_month_day", date);
@@ -152,7 +152,7 @@ public class MongoServiceImpl implements IMongoService{
 	@Override
 	public MongoCursor<Document> findByWeek_of_year(String series,
 			String star, String paramType, int week_of_year) {
-		String databaseName = InitMongo.getDataBaseNameBySeriesAndStar(series, star);
+		String databaseName = InitMongo.getDataDBBySeriesAndStar(series, star);
 		String collectionName =  paramType;
 		
 		return mg.find(databaseName, collectionName, "week_of_year", week_of_year);
@@ -161,7 +161,7 @@ public class MongoServiceImpl implements IMongoService{
 	@Override
 	public MongoCursor<Document> findByDate(String series, String star,
 			String paramType, Date beginDate, Date endDate) {
-		String databaseName = InitMongo.getDataBaseNameBySeriesAndStar(series, star);
+		String databaseName = InitMongo.getDataDBBySeriesAndStar(series, star);
 		//1s 等级数据集
 		String collectionName =  paramType + "1s";
 		//开始时间向前推进 1m
@@ -173,7 +173,7 @@ public class MongoServiceImpl implements IMongoService{
 	@Override
 	public long findMovableNumByParamCode(String series, String star, String collectionName, String paramName,
 			Date beginDate, Date endDate) {
-		String databaseName = InitMongo.getDataBaseNameBySeriesAndStar(series, star);
+		String databaseName = InitMongo.getDataDBBySeriesAndStar(series, star);
 		return mg.countByDate(databaseName, collectionName, beginDate, endDate, "paramName", paramName);
 	}
 

@@ -106,6 +106,8 @@ public class StarParamDao extends BaseDaoImpl<StarParam> implements IStarParamDa
 		if(StringUtils.isNotBlank(partsType)){
 			hql += " and u.partsType = :partsType";
 		}
+		hql += " order by u.paramName";
+		
 		Query query = this.getSession().createQuery(hql);
 		if(StringUtils.isNotBlank(seriesId)){
 			query.setParameter("series", seriesId);

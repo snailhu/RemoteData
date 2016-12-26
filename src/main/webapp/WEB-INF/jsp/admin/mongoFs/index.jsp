@@ -542,7 +542,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				}
 			  }
 			  if(!flag){
-				  top.showMsg("提示", "你无权限删除！");
+				  top.showMsg("提示", "您无权限删除！");
 				  return;
 			  }
 			  if(rows.length > 3){
@@ -555,7 +555,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					}
 				}
 	          swal({
-					title : "你是否确定删除？",
+					title : "您是否确定删除？",
 					text : names.join(','),
 					type : "warning",
 					showCancelButton : true,

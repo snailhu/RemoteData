@@ -530,7 +530,7 @@ $(function() {
 					}
 				}
 				swal({
-					title : "你是否确定删除？",
+					title : "您是否确定删除？",
 					text : names.join(','),
 					type : "warning",
 					showCancelButton : true,

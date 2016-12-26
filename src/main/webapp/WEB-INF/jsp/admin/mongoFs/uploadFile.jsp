@@ -488,7 +488,7 @@ input[type=text]::-webkit-focus-inner {
     	    					}else{
     	    						var showName = fileName.substr(fileName.lastIndexOf("\\")+1);
     	    						swal({
-    	    							title : "你是否确定上传？",
+    	    							title : "您是否确定上传？",
     	    							text : showName,
     	    							type : "warning",
     	    							showCancelButton : true,

@@ -402,7 +402,7 @@ a:hover{color:#0909df;}
 	              width: 100
 	          },  {
 	              field: 'createDate',
-	              title: '上传时间',
+	              title: '生成时间',
 	              width: 150,
 	              sortable:true
 	          }
@@ -570,7 +570,7 @@ a:hover{color:#0909df;}
 		      var rows = fsGrid.datagrid('getSelections');
 		      if (rows.length>0) {
 				swal({
-					title : "你是否确定删除？",
+					title : "您是否确定删除？",
 					type : "warning",
 					showCancelButton : true,
 					confirmButtonColor : "#DD6B55",

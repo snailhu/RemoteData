@@ -108,7 +108,7 @@
 		<label>结束日期</label>
 		<input class="datainp" id="dateEnd" type="text" placeholder="- -请选择结束时间- -" readonly>
 		<!--<input class="btn btn-default getData-btn" id="getData"  type="button" name="getData" value="获取数据">-->
-		<input class="btn btn-default getData-btn" id="changeColor" type="button" name="changeColor" value="配置图信息" data-toggle="modal" data-target="#configChartModal" >
+		<input class="btn btn-default getData-btn" id="changeColor" type="button" name="changeColor" value="配置图参数" data-toggle="modal" data-target="#configChartModal" >
 	</div>
 	<div class="changeColor-div">
 <!--         <#if (params?size>0) > -->
@@ -122,7 +122,7 @@
 <!-- 		<div class="form-group"> -->
 <!-- 			<button name="changeColor" id="changeColor"> 确定改变颜色 </button> -->
 <!-- 		</div> -->
-		<!-- 配置图表信息表单 -->
+		<!-- 配置图表参数表单 -->
 		<div class="modal fade" id="configChartModal" tabindex="-1" role="dialog" aria-labelledby="configChartModalLabel"  >
 		  <div class="modal-dialog" role="document" style="margin:35px 180px" >
 		    <div class="modal-content">

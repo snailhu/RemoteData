@@ -151,10 +151,10 @@ public class CommunicateServiceImpl implements ICommunicateService{
 				if(exceWarningValues != null && exceWarningValues.size() > 0){
 					List<ExceptionPointConfig> exceConfigList = new ArrayList<ExceptionPointConfig>();
 					ExceptionPointConfig exceConfig = null;
+					String deviceName = "AA";
 					for (WarningValue ew : exceWarningValues) {
 						//TODO 这里应该根据陀螺CSV文件参数的命名规则，用sequence值获取到所属陀螺的名字
 						//String deviceName = parameterService.getParameter_deviceName_by_en(series, star, ew.getParameterType(), ew.getParameter());
-						String deviceName = "陀螺1";
 						if(StringUtils.isNotBlank(deviceName)){
 							exceConfig = new ExceptionPointConfig();
 							exceConfig.setDeviceType(ew.getParameterType());

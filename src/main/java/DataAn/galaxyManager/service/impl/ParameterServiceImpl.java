@@ -277,14 +277,21 @@ public class ParameterServiceImpl implements IParameterService{
 //		System.out.println("param_en: " + param_en);
 		String param_zh = this.getParameter_allZh_by_en(series, star, paramType, param_en);
 		if(StringUtils.isNotBlank(param_zh)){
-			if(!param_zh.equals("时间") && !param_zh.equals("接收地方时")){
+			if(param_zh.indexOf(":") != -1){
 				String param = param_zh.split(":")[1];//TODO 根据
-				List<String> typeList = J9Series_Star_ParameterType.getFlywheelTypeOnParamTypeName();
-				for (String type : typeList) {
-					if(param.indexOf(type) > -1){
-						return type;
-					}
+				List<String> typeList = null;
+				if("flywheel".equals(paramType))
+					typeList = J9Series_Star_ParameterType.getFlywheelTypeOnParamTypeName();					
+				if("top".equals(paramType))
+					typeList = J9Series_Star_ParameterType.getTopTypeOnParamTypeName();
+				if(typeList != null && typeList.size() >0){
+					for (String type : typeList) {
+						if(param.indexOf(type) > -1){
+							return type;
+						}
+					}	
 				}
+				
 			}
 		}
 		return null;

@@ -139,7 +139,7 @@ public class CommunicateServiceImpl implements ICommunicateService{
 					}*/
 					jobConfig = new ExceptionJobConfig();
 					jobConfig.setParamCode(wv.getParameter());
-					jobConfig.setDelayTime(wv.getLimitTimes());
+					jobConfig.setDelayTime(wv.getTimeZone());//TODO 设置持续时间 min，注意时间单位
 					jobConfig.setMax(wv.getMaxVal());
 					jobConfig.setMin(wv.getMinVal());
 					jobConfigList.add(jobConfig);
@@ -162,7 +162,7 @@ public class CommunicateServiceImpl implements ICommunicateService{
 							exceConfig.setParamCode(ew.getParameter());
 							exceConfig.setMax(ew.getMaxVal());
 							exceConfig.setMin(ew.getMinVal());
-							//exceConfig.setDelayTime(ew.getLimitTimes());//时间单位
+							//exceConfig.setDelayTime(ew.getTimeZone());//时间单位
 							exceConfigList.add(exceConfig);						
 						}else{
 							throw new RuntimeException(series+"-"+star+"-"+ew.getParameterType()+"-"+ew.getParameter()+" : 找不到设备2");

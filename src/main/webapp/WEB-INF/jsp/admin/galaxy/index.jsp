@@ -806,7 +806,7 @@ $(function() {
 				}
 			}
 			swal({
-				title : "你是否确定删除？",
+				title : "您是否确定删除？",
 				text : names.join(','),
 				type : "warning",
 				showCancelButton : true,
@@ -1037,7 +1037,7 @@ $(function() {
 // 		console.log('starId:'+starId);
 // 		console.log('starName:'+starName);
 		swal({
-			title : "你是否确定删除？",
+			title : "您是否确定删除？",
 			text : starName,
 			type : "warning",
 			showCancelButton : true,

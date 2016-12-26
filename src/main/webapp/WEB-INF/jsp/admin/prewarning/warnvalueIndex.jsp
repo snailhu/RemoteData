@@ -1480,8 +1480,8 @@
 			if (rows.length > 0) {
 				swal(
 						{
-							title : "你是否确定删除？",
-							text : "确认删除？",
+							title : "您是否确定删除？",
+							//text : "确认删除？",
 							type : "warning",
 							showCancelButton : true,
 							confirmButtonColor : "#DD6B55",

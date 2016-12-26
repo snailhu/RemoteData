@@ -18,13 +18,15 @@
     <!-- 时间选择器 -->
     <link type="text/css" rel="stylesheet" href="${base}/static/content/jeDate/jedate/skin/jedate.css">
     <script type="text/javascript" src="${base}/static/content/jeDate/jedate/jedate.js"></script>
-    <!-- 颜色选择器 -->
-    	<link rel="stylesheet" href="${base}/static/content/minicolors/bootstrap.min.css">
+    <!--颜色选择器 -->
+    	<!--<link rel="stylesheet" href="${base}/static/content/minicolors/bootstrap.min.css">
 		<script type="text/javascript" src="${base}/static/content/minicolors/bootstrap.min.js"></script>
 		<link rel="stylesheet" href="${base}/static/content/minicolors/jquery.minicolors.css">
 		<script type="text/javascript" src="${base}/static/content/minicolors/jquery.minicolors.js"></script>
 		<script type="text/javascript" src="${base}/static/content/minicolors/jquery.colorpicker.js"></script>
-    
+    	-->
+    	<!-- 颜色选择器jscolor-->
+		<script type="text/javascript" src="${base}/static/content/minicolors/jscolor.js"></script>
     <!-- ps颜色选择器 -->
 <!--     <link rel="stylesheet" type="text/css" href="${base}/static/content/pscolors/css/colorpicker.css"/> -->
 <!--     <link rel="stylesheet" media="screen" type="text/css" href="${base}/static/content/pscolors/css/layout.css" /> -->
@@ -39,8 +41,7 @@
     <!--<script src=${base}/static/assets/js/bootstrap-tag.min.js"></script>-->
     <script src="${pageContext.request.contextPath}/DataRemote/static/assets/js/bootstrap.min.js"></script>
 	<script src="${pageContext.request.contextPath}/DataRemote/static/assets/js/typeahead-bs2.min.js"></script>
-	<!-- 颜色选择器jscolor -->
-	<!-- <script type="text/javascript" src="${base}/static/content/minicolors/jscolor.js"></script> -->
+	
     <style type="text/css">
     .dateStyle{
     	margin-left: 80px;
@@ -143,7 +144,7 @@
 							<div class="form-group">
 								<label class="col-sm-5 control-label"> ${param.name} </label>
 								<div class="col-sm-3">
-									<input type="text" id="${param.value}-color" name="${param.value}" dataName="${param.name}" class=" form-control demo jscolor" style="border: none;" data-position="bottom left" value="">					       				
+									<input type="text" id="${param.value}-color" name="${param.value}" dataName="${param.name}" class=" form-control jscolor {onFineChange:'update(this)'}"  style="border: none;" data-position="bottom left" value="">					       				
 								</div>
 								<div class="col-sm-3">
 									<select class="form-control" id="${param.value}-size">
@@ -225,8 +226,7 @@
 		isTime:true, //是否开启时间选择
 		minDate:'${beginDate}',//最小日期
 		maxDate:'${endDate}', //设定最大日期为当前日期
-	});
-	
+	});	
 	//从滚轮处获取到的画布开始时间和结束时间
 	var startDate ="";
 	var endDate ="";
@@ -778,8 +778,8 @@ $.post("getDatabytap",
               }
         });
 
-    	//设置颜色
-    	$('.demo').each( function() {
+    	/*//设置颜色
+    	$('.jscolor').each( function() {
 			$(this).minicolors({
 				control: $(this).attr('data-control') || 'hue',
 				defaultValue: $(this).attr('data-defaultValue') || '',
@@ -798,14 +798,15 @@ $.post("getDatabytap",
 				},
 				theme: 'default'		                  
         	});
-		});
+		});	*/	
     	
         $('#submit_configChart').click(function(){
 	      	var seriesOptionsDam = [];
-        	$('.demo').each( function(i, n) {
+        	$('.jscolor').each( function(i, n) {
         	  var paramValue = $(this).attr('name');
-        	  var paramColor = $(this).attr('value');
+        	  var paramColor = '#'+$(this).val();    	  
         	  var width = $('#'+paramValue+'-size').val();
+        	  console.log("曲线颜色值："+paramColor+"曲线粗细："+width);
         	  if(paramColor != null && paramColor != 'undefined'){
 		      	  seriesOptionsDam[i] = {
 		      			name: $(this).attr('dataName'),
@@ -824,7 +825,17 @@ $.post("getDatabytap",
         })
 
     })
-    
+    //jscolor 设置颜色
+	function update(picker) {
+			var color = picker.toHEXString();
+			var id= picker.valueElement.name;   		
+    		var id2=id+"-color"; 
+    		//console.log('当前id:'+id2+'   RGB：'+color);
+    		//$("#"+id2).attr("value",value);
+    		document.getElementById(id2).value=color;    		
+   			//console.log('当前id:'+id2+'   RGB：'+document.getElementById(id2).value);
+	}
+		
     function needGetDate(){
 		var startInit = stringToDate(startDate_init);
 		var endInit = stringToDate(endDate_init);

@@ -102,5 +102,11 @@ public class DateUtilTest {
 		Date beginDate = DateUtil.format("2016-12-20 17:00:00");
 		Date endDate = DateUtil.format("2016-12-21 00:00:00");
 		System.out.println(DateUtil.daysOfTwo(beginDate, endDate));
+		String  starTime =DateUtil.getLastWeekTime();
+		String  endTime = DateUtil.getYesterdayTime();
+		beginDate = DateUtil.format(starTime,"yyyy-MM-dd");
+		endDate =  DateUtil.format(endTime,"yyyy-MM-dd");
+		System.out.println(starTime);
+		System.out.println(beginDate);
 	}
 }

@@ -1131,6 +1131,7 @@
 					top.showProcess(false);
 					var map = $.parseJSON(data);
 					if (map.success) {
+						$('#addValueModal').modal('hide');
 						top.showMsg('提示', map.msg);
 						reloadDataGrid();
 					} else {
@@ -1142,7 +1143,6 @@
 					top.$.messager.alert('温馨提示','由于网络或服务器太忙，提交失败，请重试！');
 				}
 			});
-			$('#addValueModal').modal('hide');
 		});
 		
 		$('#submit_editValueInfo').click(function() {
@@ -1182,6 +1182,7 @@
 					top.showProcess(false);
 					var map = $.parseJSON(data);
 					if (map.success) {
+						$('#editValueModal').modal('hide');
 						top.showMsg('提示',map.msg);
 						reloadDataGrid();
 					} else {
@@ -1193,7 +1194,6 @@
 					top.$.messager.alert('温馨提示','由于网络或服务器太忙，提交失败，请重试！');
 				}
 			});
-			$('#editValueModal').modal('hide');
 		});
 		
 		

@@ -80,8 +80,8 @@ public class CommunicateServiceImpl implements ICommunicateService{
 						jobConfig.setParamCode(wv.getParameter());
 						jobConfig.setMax(wv.getMaxVal());
 						jobConfig.setMin(wv.getMinVal());
-						jobConfig.setDelayTime(wv.getLimitTimes());//时间单位
-						jobConfig.setCount(wv.getTimeZone());
+						jobConfig.setDelayTime(wv.getTimeZone() * 60 * 1000);//TODO 设置持续时间 mm，注意时间单位
+						jobConfig.setCount(wv.getLimitTimes());// 设置 限定值出现的频次计为一次特殊工况
 						jobConfigList.add(jobConfig);
 					}else{
 						throw new RuntimeException(series+"-"+star+"-"+wv.getParameterType()+"-"+wv.getParameter()+" : 找不到设备1");
@@ -102,7 +102,7 @@ public class CommunicateServiceImpl implements ICommunicateService{
 							exceConfig.setParamCode(ew.getParameter());
 							exceConfig.setMax(ew.getMaxVal());
 							exceConfig.setMin(ew.getMinVal());
-							exceConfig.setDelayTime(ew.getLimitTimes());//时间单位
+							exceConfig.setDelayTime(ew.getTimeZone() * 60 * 1000);//时间单位
 							exceConfigList.add(exceConfig);						
 						}else{
 							throw new RuntimeException(series+"-"+star+"-"+ew.getParameterType()+"-"+ew.getParameter()+" : 找不到设备2");

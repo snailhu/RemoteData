@@ -39,27 +39,27 @@ public class InitMongo {
 	public static final int FS_SERVER_PORT = Integer.parseInt(PropertiesUtil.getProperties(config, charset).getProperty("fs.mongodb.port").trim());
 	
 	/** j9系列 01星数据库*/
-	public static final String DB_J9STAR1 = getDataBaseNameBySeriesAndStar(SeriesType.J9_SERIES.getName(), J9SeriesType.STRA1.getValue());
+	public static final String DB_J9STAR1 = getDataDBBySeriesAndStar(SeriesType.J9_SERIES.getName(), J9SeriesType.STRA1.getValue());
 	/** j9系列 01星文件库*/
 	public static final String FS_J9STAR1 = getFSBDNameBySeriesAndStar(SeriesType.J9_SERIES.getName(), J9SeriesType.STRA1.getValue());
 	
 	/** j9系列 02星数据库*/
-	public static final String DB_J9STAR2 = getDataBaseNameBySeriesAndStar(SeriesType.J9_SERIES.getName(), J9SeriesType.STRA2.getValue());
+	public static final String DB_J9STAR2 = getDataDBBySeriesAndStar(SeriesType.J9_SERIES.getName(), J9SeriesType.STRA2.getValue());
 	/** j9系列 02星文件库*/
 	public static final String FS_J9STAR2 = getFSBDNameBySeriesAndStar(SeriesType.J9_SERIES.getName(), J9SeriesType.STRA2.getValue());
 
 	/** j9系列 03星数据库*/
-	public static final String DB_J9STAR3 = getDataBaseNameBySeriesAndStar(SeriesType.J9_SERIES.getName(), J9SeriesType.STRA3.getValue());
+	public static final String DB_J9STAR3 = getDataDBBySeriesAndStar(SeriesType.J9_SERIES.getName(), J9SeriesType.STRA3.getValue());
 	/** j9系列 03星文件库*/
 	public static final String FS_J9STAR3 = getFSBDNameBySeriesAndStar(SeriesType.J9_SERIES.getName(), J9SeriesType.STRA3.getValue());
 
 	/** j9系列 04星数据库*/
-	public static final String DB_J9STAR4 = getDataBaseNameBySeriesAndStar(SeriesType.J9_SERIES.getName(), J9SeriesType.STRA4.getValue());
+	public static final String DB_J9STAR4 = getDataDBBySeriesAndStar(SeriesType.J9_SERIES.getName(), J9SeriesType.STRA4.getValue());
 	/** j9系列 04星文件库*/
 	public static final String FS_J9STAR4 = getFSBDNameBySeriesAndStar(SeriesType.J9_SERIES.getName(), J9SeriesType.STRA4.getValue());
 
 	/** j9系列 05星数据库*/
-	public static final String DB_J9STAR5 = getDataBaseNameBySeriesAndStar(SeriesType.J9_SERIES.getName(), J9SeriesType.STRA5.getValue());
+	public static final String DB_J9STAR5 = getDataDBBySeriesAndStar(SeriesType.J9_SERIES.getName(), J9SeriesType.STRA5.getValue());
 	/** j9系列 05星文件库*/
 	public static final String FS_J9STAR5 = getFSBDNameBySeriesAndStar(SeriesType.J9_SERIES.getName(), J9SeriesType.STRA5.getValue());
 	
@@ -70,15 +70,12 @@ public class InitMongo {
 	public static final String DATABASE_TEST = PropertiesUtil.getProperties(config, charset).getProperty("database.test");
 	
 	/**
-	* Description: 通过系列和星名称获取当前数据库名称
+	* Description: 通过系列和星名称获取当前数据存储数据库名称
 	* @param series SeriesType.J9_SERIES.getValue() .. j9
 	* @param star J9SeriesType.STRA1.getValue() .. 01、02
 	* @return
-	* @author Shenwp
-	* @date 2016年8月23日
-	* @version 1.0
 	*/
-	public static final String getDataBaseNameBySeriesAndStar(String series,String star){
+	public static final String getDataDBBySeriesAndStar(String series,String star){
 //		String seriesName = SeriesType.getSeriesType(series).getName();
 //		String starName = J9SeriesType.getJ9SeriesType(star).getName();
 		String dbName = "db_" + series + "_" + star;
@@ -86,18 +83,28 @@ public class InitMongo {
 	}
 	
 	/**
-	* Description: 通过系列和星名称获取当前数据库名称
-	* @param series J9SeriesType.SERIES.getName()
-	* @param star J9SeriesType.STRA1.getName()
+	* Description: 通过系列和星名称获取当前csv/dat原文件系统数据库名称
+	* @param series J9SeriesType.SERIES.getName() .. j9
+	* @param star J9SeriesType.STRA1.getName() .. 01、02
 	* @return
-	* @author Shenwp
-	* @date 2016年8月23日
-	* @version 1.0
 	*/
 	public static final String getFSBDNameBySeriesAndStar(String series,String star){
 //		String seriesName = SeriesType.getSeriesType(series).getName();
 //		String starName = J9SeriesType.getJ9SeriesType(star).getName();
 		String dbName =  "fs_" + series + "_" + star;
+		return dbName;
+	}
+	
+	/**
+	* Description: 通过系列和星名称获取当前报告文件数据库名称
+	* @param series SeriesType.J9_SERIES.getValue() .. j9
+	* @param star J9SeriesType.STRA1.getValue() .. 01、02
+	* @return
+	*/
+	public static final String getReportFSBySeriesAndStar(String series,String star){
+//		String seriesName = SeriesType.getSeriesType(series).getName();
+//		String starName = J9SeriesType.getJ9SeriesType(star).getName();
+		String dbName = "report_" + series + "_" + star;
 		return dbName;
 	}
 	

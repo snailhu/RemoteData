@@ -38,7 +38,7 @@ public class ParameterServiceImpl implements IParameterService{
 	@Transactional
 	public Parameter saveOne(String series, String star, String deviceTypeCode, String param_zh) {
 		Parameter param = new Parameter();
-		if(param_zh.equals("接收地方时")){ // || param_zh.equals("时间")
+		if(param_zh.indexOf(":") == -1){ // || param_zh.equals("时间") 接收地方时
 			param.setSeries(series);
 			param.setStar(star);
 //			if(StringUtils.isNotBlank(paramType)){
@@ -52,11 +52,13 @@ public class ParameterServiceImpl implements IParameterService{
 			String code = "sequence_" + num;
 			param.setSeries(series);
 			param.setStar(star);
-			if(StringUtils.isNotBlank(deviceTypeCode)){
-				param.setDeviceTypeCode(deviceTypeCode);					
-			}else{//TODO 通过数据库判断参数类型
-				param.setDeviceTypeCode(J9Series_Star_ParameterType.getJ9SeriesStarParameterTypeByName(param_zh).getValue());	
-			}
+			//TODO 通过数据库判断参数类型
+			if(param_zh.indexOf(J9Series_Star_ParameterType.FLYWHEEL.getName()) > -1)
+				deviceTypeCode = J9Series_Star_ParameterType.FLYWHEEL.getValue();
+			if(param_zh.indexOf(J9Series_Star_ParameterType.TOP.getName()) > -1)
+				deviceTypeCode = J9Series_Star_ParameterType.TOP.getValue();
+			
+			param.setDeviceTypeCode(deviceTypeCode);					
 			param.setFullName(param_zh);
 			param.setSimplyName(param_zh.split(":")[1]);
 			param.setCode(code);
@@ -197,9 +199,8 @@ public class ParameterServiceImpl implements IParameterService{
 			}
 			param_en = param.getCode();
 			parameterList_allZh_and_en.put(param_zh, param_en);
-			return param_en;
 		}
-		return null;
+		return param_en;
 		
 //		Parameter param = parameterDao.selectBySeriesAndStarAndCode(series, star, param_zh);
 //		if(param == null){

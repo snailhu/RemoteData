@@ -469,6 +469,7 @@ $(function() {
 	      	$('#edit-param-star').val(nowStarName);
 			$('#edit-param-id').val(rows[0].id);
 			$('#edit-param-fullName').val(rows[0].fullName);
+			$("#edit-param-deviceTypeCode").combobox('setValue',rows[0].deviceTypeCode);
 			//弹出编辑框
 			$('#editParamModal').modal('show');
 	        }else {

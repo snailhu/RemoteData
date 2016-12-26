@@ -213,7 +213,7 @@ public class DateUtil {
 	public static String getYesterdayTime() {
 		Calendar c = Calendar.getInstance();
 		c.add(Calendar.DAY_OF_MONTH, -1);
-		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 		String mDateTime = formatter.format(c.getTime());
 		return mDateTime;
 	}
@@ -221,7 +221,7 @@ public class DateUtil {
 	public static String getLastWeekTime() {
 		Calendar c = Calendar.getInstance();
 		c.add(Calendar.DAY_OF_MONTH, -7);
-		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 		String mDateTime = formatter.format(c.getTime());
 		return mDateTime;
 	}

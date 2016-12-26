@@ -268,14 +268,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				</div>
 			</div>
 			<table id="permissionList" fit="false" border="false" height="450px">
-				<thead>
-					<tr>
-						<th field="ck" checkbox="true"></th>
-						<th field="name" width="80">名称</th>
-						<th field="description" width="200" align="center">描述</th>
-						<th field="createDate" width="120" align="center">创建日期</th>
-					</tr>
-				</thead>
+				
 			</table>
 			<!-- 创建权限组 -->
 			<div class="modal fade" id="addPermissionGroupModal" tabindex="-1"
@@ -483,7 +476,28 @@ $(function() {
 		pageList: [10, 20, 30, 40, 50, 60, 70, 80, 90, 100],
 		onLoadError:function(data){
 			$.messager.alert("信息", "暂无数据信息", "error");
-		},	
+		},
+		frozenColumns: [[{
+            title: 'id',
+            field: 'id',//
+            width: 50,
+            checkbox: true
+            
+        }]],
+        columns: [[ {
+            field: 'name',
+            title: '名称',
+            width: 80,
+        }, {
+            field: 'description',
+            title: '描述',
+            width: 200,
+        }, {
+            field: 'createDate',
+            title: '创建时间',
+            width: 120,
+        }, 
+        ]],
 		detailFormatter : function(index, row) {
 			return '<div><table id="ddv-' + index + '"></table></div>';
 		},

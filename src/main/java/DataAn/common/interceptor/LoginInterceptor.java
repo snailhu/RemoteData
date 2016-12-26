@@ -12,6 +12,7 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import com.alibaba.fastjson.JSON;
 
+import DataAn.sys.domain.User;
 import DataAn.sys.dto.ActiveUserDto;
 
 
@@ -67,9 +68,15 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 //			acticeUser.setPermissionItems(map);
 //			String json = JSON.toJSONString(map);
 //			acticeUser.setPermissionItemsJSON(json);
+//			String username = "admin";
+//			User user = new User();
+//			user.setUserName(username);
 //			session.setAttribute("warnCount", 0);
+//			session.setAttribute("user", user);
+//			session.setAttribute("userName", username);
 //			session.setAttribute("activeUser", acticeUser);
 //			response.sendRedirect(request.getContextPath() + request.getRequestURI());
+			
 		}
 		return super.preHandle(request, response, handler);
 	}

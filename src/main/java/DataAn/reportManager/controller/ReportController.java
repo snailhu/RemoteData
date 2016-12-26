@@ -89,6 +89,8 @@ public class ReportController {
 		String beginTime = request.getParameter("beginTime");
 		String endTime = request.getParameter("endTime");
 		String fileTypes= request.getParameter("fileTypes");
+		String sort = request.getParameter("sort"); 
+		String order = request.getParameter("order"); 
 		int page = 1;
 		int rows = 10;
 		long dirId = 0L;
@@ -119,10 +121,12 @@ public class ReportController {
 			paramType = value;
 		}
 		Pager<MongoFSDto> pager = null;
+		if("createDate".equals(sort))
+			sort = "updateDate";
 		if(StringUtils.isNotBlank(beginTime) || StringUtils.isNotBlank(endTime) || StringUtils.isNotBlank(fileTypes) ){
-			pager = reoportService.getMongoFSList(page, rows, series, star, paramType, dirId, beginTime, endTime);
+			pager = reoportService.getMongoFSList(page, rows, series, star, paramType, dirId, beginTime, endTime, sort, order);
 		}else{
-			pager = reoportService.getMongoFSList(page, rows, series, star, paramType, dirId);			
+			pager = reoportService.getMongoFSList(page, rows, series, star, paramType, dirId, sort, order);			
 		}
 		json.setRows(pager.getRows());
 		json.setTotal(pager.getTotalCount());	
@@ -195,8 +199,10 @@ public class ReportController {
 		String partsName = "";
 		if("flywheel".equals(partsType)) {
 			partsName = "飞轮";
+			templateUrl = OptionConfig.getWebPath() + "\\report\\wordtemplate\\卫星状态报告_flywheel.doc";
 		}else if("top".equals(partsType)) {
 			partsName = "陀螺";
+			templateUrl = OptionConfig.getWebPath() + "\\report\\wordtemplate\\卫星状态报告_top.doc";
 		}
 		String filename = seriesId+"_"+starId+"_"+partsName+"_"+time+".doc";
 		String docPath = OptionConfig.getWebPath() + File.separator + 

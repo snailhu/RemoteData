@@ -20,6 +20,7 @@ import DataAn.common.utils.UUIDGeneratorUtil;
 import DataAn.fileSystem.dto.CSVFileDataResultDto;
 import DataAn.galaxyManager.option.J9Series_Star_ParameterType;
 import DataAn.galaxyManager.service.IJ9Series_Star_Service;
+import DataAn.galaxyManager.service.IParameterService;
 
 import com.csvreader.CsvWriter;
 
@@ -32,14 +33,15 @@ public class CSVServiceTest {
 	private ICSVService csvService;
 	@Resource
 	private IJ9Series_Star_Service j9Series_Star_Service;
+	@Resource
+	private IParameterService paramService;
 	
 	
-	
-	private String filePath = "E:\\data\\flywheel\\2000\\01\\j9-02--2000-01-01.csv";
+//	private String filePath = "E:\\data\\flywheel\\2000\\01\\j9-02--2000-01-01.csv";
 	
 //	private String filePath = "C:\\excel_result\\数管分系统.csv";
 	
-//	private String filePath = "D:\\temp\\data\\2015\\1\\j9-02--2015-01-01.csv";
+	private String filePath = "E:\\data\\top\\2005\\j9-04--2005-01-01.csv";
 	
 	@Test
 	public void test(){
@@ -63,8 +65,17 @@ public class CSVServiceTest {
 	public void readCSVFileToDocAndgetTitle(){
 		long begin = System.currentTimeMillis();
 		try {
-			CSVFileDataResultDto<Document> result = csvService.readCSVFileToDocAndgetTitle(filePath);
-			System.out.println(result.getTitle());
+			String series = "j9";
+			String star = "04";
+			String paramType = "top";
+//			CSVFileDataResultDto<Document> result = csvService.readCSVFileToDocAndgetTitle(filePath);
+//			System.out.println(result.getTitle());
+//			String title = result.getTitle();
+			String title = "星上系统钟,F0W53_54:滚动陀螺角速度(00131),F0W55_56:俯仰陀螺角速度(00133),F0W57_58:偏航陀螺角速度(00135),F6W81_84:1A星敏感器滚动姿态(00199),F6W85_88:1A星敏感器俯仰姿态(00208),F6W89_92:1A星敏感器偏航姿态(00217),F6W93_96:1B星敏感器滚动姿态(00225),F6W97_100:1B星敏感器俯仰姿态(00231),F6W101_104:1B星敏感器偏航姿态(00241),F7W81_82:陀螺组合标志(00200),F7W85_86:星敏感器组合标志(00209),F5W89_92:X轴陀螺漂移估计(00216),F5W93_96:Y轴陀螺漂移估计(00224),F5W97_100:Z轴陀螺漂移估计(00230),F23W214:陀螺1a温度(00925),F24W214:陀螺1b温度(00926),F25W214:陀螺2温度(00927)";
+			String[] param_zhs = title.split(",");
+			for (String param_zh : param_zhs) {
+				System.out.println(param_zh + "--->" + paramService.getParameter_en_by_allZh(series, star, paramType, param_zh));
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -83,6 +94,9 @@ public class CSVServiceTest {
 		List<Document> list = result.getDatas();
 		if(list != null && list.size() > 0)
 			System.out.println("list size: " + list.size());
+		for (Document document : list) {
+			System.out.println(document);
+		}
 		
 		Map<String,List<Document>> map = result.getMap();
 		if(map != null){

@@ -1,6 +1,7 @@
 package DataAn.common.service.impl;
 
 import java.io.BufferedInputStream;
+import java.io.File;
 import java.io.FileInputStream;
 import java.util.Date;
 import java.util.List;
@@ -15,6 +16,7 @@ import DataAn.common.config.CommonConfig;
 import DataAn.common.service.IJobService;
 import DataAn.common.utils.DateUtil;
 import DataAn.common.utils.FileUtil;
+import DataAn.common.utils.UUIDGeneratorUtil;
 import DataAn.fileSystem.dao.IVirtualFileSystemDao;
 import DataAn.fileSystem.domain.VirtualFileSystem;
 import DataAn.mongo.db.MongodbUtil;
@@ -97,7 +99,8 @@ public class JobServiceImpl implements IJobService{
 	//每个星期一晚上11点触发 生产环境
 //	@Scheduled(cron = "0 0 23 ? * MON") 
 	//每天晚上22点执行此方法 测试使用
-	@Scheduled(cron = "0 0 13 * * ?") 
+	//每两小时
+	@Scheduled(cron = "0 0 0/2 * * ?") 
 	@Override
 	public void createReport() throws Exception {
 		String templateUrl = OptionConfig.getWebPath() + "\\report\\wordtemplate\\卫星状态报告.doc";
@@ -108,22 +111,29 @@ public class JobServiceImpl implements IJobService{
 			String starId = starParam.getStar();
 			String partsType = starParam.getPartsType() ;
 			
-			String  endTime = DateUtil.getYesterdayTime();
-			String  starTime =DateUtil.getLastWeekTime();
+			String starTime =DateUtil.getLastWeekTime();
+			String endTime = DateUtil.getYesterdayTime();
+			Date beginDate = DateUtil.format(starTime,"yyyy-MM-dd");
+			Date endDate =  DateUtil.format(endTime,"yyyy-MM-dd");
 			String time = DateUtil.getNowTime("yyyy-MM-dd");
 			
-			Date beginDate = DateUtil.format(starTime,"yyyy-MM-dd HH:mm:ss");
-			Date endDate =  DateUtil.format(endTime,"yyyy-MM-dd HH:mm:ss");
 			String partsName = "";
 			if("flywheel".equals(partsType)) {
 				partsName = "飞轮";
+				templateUrl = OptionConfig.getWebPath() + "\\report\\wordtemplate\\卫星状态报告_flywheel.doc";
 			}else if("top".equals(partsType)) {
 				partsName = "陀螺";
+				templateUrl = OptionConfig.getWebPath() + "\\report\\wordtemplate\\卫星状态报告_top.doc";
 			}
-			
+			//TODO 切换数据库
 			String databaseName = InitMongo.DATABASE_TEST;
+//			String databaseName = InitMongo.getReportFSBySeriesAndStar(seriesId, starId);
 			String filename = seriesId+"_"+starId+"_"+partsName+"_"+time+".doc";
-			String docPath = OptionConfig.getWebPath() + "report\\"+filename;
+//			String docPath = OptionConfig.getWebPath() + "report\\"+filename;
+			String docPath = OptionConfig.getWebPath() + File.separator + 
+					"report" + File.separator + 
+					DateUtil.format(new Date(), "yyyy-MM-dd")+ File.separator + 
+					UUIDGeneratorUtil.getUUID()+filename;
 			try {
 				reoportService.createReport(beginDate, endDate, filename, templateUrl, docPath, seriesId, starId, partsType);
 				reoportService.insertReportToDB(filename, docPath,seriesId,starId, partsType,starTime,endTime,databaseName,partsName);
@@ -140,39 +150,46 @@ public class JobServiceImpl implements IJobService{
 	//每天晚上22点执行此方法 测试使用
 	@Scheduled(cron = "0 0 22 * * ?") 
 	public void createReport2() throws Exception {
-		String templateUrl = OptionConfig.getWebPath() + "\\report\\wordtemplate\\卫星状态报告.doc";
-		String templateNullUrl = OptionConfig.getWebPath() + "\\report\\wordtemplate\\nullData.doc";
-		List<StarParam> starList = starParamDao.getStarParamByParts();
-		for (StarParam starParam : starList) {
-			String seriesId = starParam.getSeries();
-			String starId = starParam.getStar();
-			String partsType = starParam.getPartsType() ;
-			
-			String  endTime = DateUtil.getYesterdayTime();
-			String  starTime =DateUtil.getLastWeekTime();
-			String time = DateUtil.getNowTime("yyyy-MM-dd");
-			
-			Date beginDate = DateUtil.format(starTime,"yyyy-MM-dd HH:mm:ss");
-			Date endDate =  DateUtil.format(endTime,"yyyy-MM-dd HH:mm:ss");
-			String partsName = "";
-			if("flywheel".equals(partsType)) {
-				partsName = "飞轮";
-			}else if("top".equals(partsType)) {
-				partsName = "陀螺";
-			}
-			
-			String databaseName = InitMongo.DATABASE_TEST;
-			String filename = seriesId+"_"+starId+"_"+partsName+"_"+time+".doc";
-			String docPath = OptionConfig.getWebPath() + "report\\"+filename;
-			try {
-				reoportService.createReport(beginDate, endDate, filename, templateUrl, docPath, seriesId, starId, partsType);
-				reoportService.insertReportToDB(filename, docPath,seriesId,starId, partsType,starTime,endTime,databaseName,partsName);
-				reoportService.removeDoc(docPath);
-			} catch (Exception e) {
-				reoportService.reportNullDoc(filename,templateNullUrl, docPath, starTime, endTime,e.getMessage());
-				reoportService.insertReportToDB(filename, docPath,seriesId,starId, partsType,starTime,endTime,databaseName,partsName);
-				reoportService.removeDoc(docPath);
-			}
-		}
+//		String templateUrl = OptionConfig.getWebPath() + "\\report\\wordtemplate\\卫星状态报告.doc";
+//		String templateNullUrl = OptionConfig.getWebPath() + "\\report\\wordtemplate\\nullData.doc";
+//		List<StarParam> starList = starParamDao.getStarParamByParts();
+//		for (StarParam starParam : starList) {
+//			String seriesId = starParam.getSeries();
+//			String starId = starParam.getStar();
+//			String partsType = starParam.getPartsType() ;
+//			
+//			String starTime =DateUtil.getLastWeekTime();
+//			String endTime = DateUtil.getYesterdayTime();
+//			Date beginDate = DateUtil.format(starTime,"yyyy-MM-dd");
+//			Date endDate =  DateUtil.format(endTime,"yyyy-MM-dd");
+//			String time = DateUtil.getNowTime("yyyy-MM-dd");
+//			
+//			String partsName = "";
+//			if("flywheel".equals(partsType)) {
+//				partsName = "飞轮";
+//				templateUrl = OptionConfig.getWebPath() + "\\report\\wordtemplate\\卫星状态报告_flywheel.doc";
+//			}else if("top".equals(partsType)) {
+//				partsName = "陀螺";
+//				templateUrl = OptionConfig.getWebPath() + "\\report\\wordtemplate\\卫星状态报告_top.doc";
+//			}
+//			//TODO 切换数据库
+//			String databaseName = InitMongo.DATABASE_TEST;
+////			String databaseName = InitMongo.getReportFSBySeriesAndStar(seriesId, starId);
+//			String filename = seriesId+"_"+starId+"_"+partsName+"_"+time+".doc";
+////			String docPath = OptionConfig.getWebPath() + "report\\"+filename;
+//			String docPath = OptionConfig.getWebPath() + File.separator + 
+//					"report" + File.separator + 
+//					DateUtil.format(new Date(), "yyyy-MM-dd")+ File.separator + 
+//					UUIDGeneratorUtil.getUUID()+filename;
+//			try {
+//				reoportService.createReport(beginDate, endDate, filename, templateUrl, docPath, seriesId, starId, partsType);
+//				reoportService.insertReportToDB(filename, docPath,seriesId,starId, partsType,starTime,endTime,databaseName,partsName);
+//				reoportService.removeDoc(docPath);
+//			} catch (Exception e) {
+//				reoportService.reportNullDoc(filename,templateNullUrl, docPath, starTime, endTime,e.getMessage());
+//				reoportService.insertReportToDB(filename, docPath,seriesId,starId, partsType,starTime,endTime,databaseName,partsName);
+//				reoportService.removeDoc(docPath);
+//			}
+//		}
 	}
 }

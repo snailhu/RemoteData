@@ -26,7 +26,7 @@ public class MakeCSVFile {
 	public void testCopyDataCSV() throws Exception{
 		List<String> list = new ArrayList<String>();
 //		String filePath = "C:\\feb-9-05.csv";
-		String filePath = "C:\\j9-02--2000-01-01";
+		String filePath = "C:\\2014-01.csv";
 		File file = new File(filePath);
 		InputStream in = new FileInputStream(file);
 		InputStreamReader inputStreamReader = new InputStreamReader(in, "gb2312");
@@ -37,9 +37,9 @@ public class MakeCSVFile {
 			list.add(line);
 		}
 		System.out.println("size: " + list.size());
-		for (int year = 2010; year <= 2012; year++) {
+		for (int year = 2005; year <= 2005; year++) {
 			for (int month = 1; month <= 12; month++) {
-				this.writeCSV(list, year, month);		
+				this.writeCSV(list.subList(0, 101), year, month);		
 			}
 		}
 	}

@@ -25,6 +25,7 @@ import DataAn.common.utils.DateUtil;
 import DataAn.fileSystem.dto.CSVFileDataResultDto;
 import DataAn.fileSystem.service.ICSVService;
 import DataAn.galaxyManager.service.IJ9Series_Star_Service;
+import DataAn.galaxyManager.service.IParameterService;
 
 
 @Service
@@ -32,6 +33,8 @@ public class CSVServiceImpl implements ICSVService{
 
 	@Resource
 	private IJ9Series_Star_Service j9SeriesStarService;
+	@Resource
+	private IParameterService paramService;
 	
 	@Override
 	public CSVFileDataResultDto<Document> readCSVFileToDocAndgetTitle(String filePath) throws Exception {		
@@ -561,14 +564,27 @@ public class CSVServiceImpl implements ICSVService{
 	* @version 1.0
 	*/
 	public CSVFileDataResultDto<Document> readCSVFileToDoc_delOneSecondItems(InputStream in,String versions, int totalNumber) throws Exception {
+		String series = "j9";
+		String star = "04";
+		String paramType = "top";
 		List<Document> docList = new ArrayList<Document>();
 		//获取j9系列参数列表
-		Map<String,String> j9SeriesPatameterMap = j9SeriesStarService.getAllParameterList_allZh_and_en();
+//		Map<String,String> j9SeriesPatameterMap = j9SeriesStarService.getAllParameterList_allZh_and_en();
+		Map<String,String> j9SeriesPatameterMap = new HashMap<String,String>();
+		
 		InputStreamReader inputStreamReader = new InputStreamReader(in, "gb2312");
 		BufferedReader reader = new BufferedReader(inputStreamReader);// 换成你的文件名
 		String title = reader.readLine();// 第一行信息，为标题信息，不用,如果需要，注释掉
 		//CSV格式文件为逗号分隔符文件，这里根据逗号切分
 		String[] array = title.split(",");
+		String param_en = null;
+		for (String param_zh : array) {
+			param_en = paramService.getParameter_en_by_allZh(series, star, paramType, param_zh);
+			if(StringUtils.isNotBlank(param_en))
+				j9SeriesPatameterMap.put(param_zh, param_en);
+			else
+				System.out.println(param_zh + " code is " + param_en);
+		}
 		String line = null;
 		Document doc = null;
 		String date = "";
@@ -602,7 +618,11 @@ public class CSVServiceImpl implements ICSVService{
 					flag = true;
 					break;
 				}else{
-					doc.append(j9SeriesPatameterMap.get(array[i]), colData);
+					param_en = j9SeriesPatameterMap.get(array[i]);
+					if(StringUtils.isNotBlank(param_en))
+						doc.append(j9SeriesPatameterMap.get(array[i]), colData);
+					else
+						System.out.println(array[i] + " code is " + param_en);
 				}
 			}
 			//删除某一秒 有序

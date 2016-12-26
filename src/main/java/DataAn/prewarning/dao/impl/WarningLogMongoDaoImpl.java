@@ -35,7 +35,7 @@ public class WarningLogMongoDaoImpl implements IWarningLogMongoDao {
 
 	@Override
 	public void deleteWainingById(String logId, String series, String star, String parameterType, String warningType) {
-		String databaseName = InitMongo.getDataBaseNameBySeriesAndStar(series, star);
+		String databaseName = InitMongo.getDataDBBySeriesAndStar(series, star);
 		String collectionName = getCollectionName(parameterType, warningType);
 		MongodbUtil.getInstance().deleteMany(databaseName, collectionName, "_id", logId);
 	}
@@ -168,7 +168,7 @@ public class WarningLogMongoDaoImpl implements IWarningLogMongoDao {
 
 	private void updateHadRead(QueryLogDTO queryLogDTO) {
 		MongodbUtil mongodbUtil = MongodbUtil.getInstance();
-		String databaseName = InitMongo.getDataBaseNameBySeriesAndStar(queryLogDTO.getSeries(), queryLogDTO.getStar());
+		String databaseName = InitMongo.getDataDBBySeriesAndStar(queryLogDTO.getSeries(), queryLogDTO.getStar());
 		String collectionName = getCollectionName(queryLogDTO.getParameterType(), queryLogDTO.getWarningType());
 		MongoCollection<Document> collection = mongodbUtil.getCollectionNotShard(databaseName, collectionName);
 		if (collection != null) {
@@ -212,7 +212,7 @@ public class WarningLogMongoDaoImpl implements IWarningLogMongoDao {
 					queryLogResultDTOs);
 			return pager;
 		} else {
-			String databaseName = InitMongo.getDataBaseNameBySeriesAndStar(series, star);
+			String databaseName = InitMongo.getDataDBBySeriesAndStar(series, star);
 			String collectionName = getCollectionName(parameterType, warningType);
 			MongoCollection<Document> collection = mongodbUtil.getCollectionNotShard(databaseName, collectionName);
 			FindIterable<Document> document_It = null;
@@ -325,7 +325,7 @@ public class WarningLogMongoDaoImpl implements IWarningLogMongoDao {
 				starList = starDao.getStarBySeriesIdAndCode(s.getId(), star);
 			}
 			for (Star str : starList) {
-				String db = InitMongo.getDataBaseNameBySeriesAndStar(s.getCode(), str.getCode());
+				String db = InitMongo.getDataDBBySeriesAndStar(s.getCode(), str.getCode());
 				dbName.add(db);
 			}
 		}

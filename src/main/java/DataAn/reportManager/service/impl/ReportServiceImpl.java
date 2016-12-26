@@ -467,9 +467,14 @@ public class ReportServiceImpl implements IReoportService {
 	@Override
 	@Transactional(readOnly = true)
 	public Pager<MongoFSDto> getMongoFSList(int pageIndex, int pageSize, String series, String star, String partsType,
-			long dirId, String beginTime, String endTime) {
+			long dirId, String beginTime, String endTime, String sort, String order) {
+		String sort_order = "";
+		if(StringUtils.isNotBlank(sort) && StringUtils.isNotBlank(order))
+			sort_order = sort + " " + order;
+		else
+			sort_order = "updateDate desc";
 		Pager<ReportFileSystem> pager = fileDao.selectByOption(series, star, partsType, dirId, beginTime, endTime,
-				"updateDate", pageIndex, pageSize);
+				sort_order, pageIndex, pageSize);
 		return returnPager(pageIndex, pageSize, pager.getRows(), pager.getTotalCount());
 	}
 
@@ -498,14 +503,19 @@ public class ReportServiceImpl implements IReoportService {
 
 	@Override
 	public Pager<MongoFSDto> getMongoFSList(int pageIndex, int pageSize, String series, String star, String partsType,
-			long dirId) {
+			long dirId, String sort, String order) {
+		String sort_order = "";
+		if(StringUtils.isNotBlank(sort) && StringUtils.isNotBlank(order))
+			sort_order = sort + " " + order;
+		else
+			sort_order = "updateDate desc";
 		Pager<ReportFileSystem> pager = null;
 		if (dirId == 0) {
 			pager = fileDao.selectBySeriesAndStarAndParameterTypeAndParentIdisNullAndOrder(series, star, partsType,
-					"updateDate", pageIndex, pageSize);
+					sort_order, pageIndex, pageSize);
 		} else {
 			pager = fileDao.selectBySeriesAndStarAndParameterTypeAndParentIdAndOrder(series, star, partsType, dirId,
-					"updateDate", pageIndex, pageSize);
+					sort_order, pageIndex, pageSize);
 		}
 		return this.returnPager(pageIndex, pageSize, pager.getRows(), pager.getTotalCount());
 	}

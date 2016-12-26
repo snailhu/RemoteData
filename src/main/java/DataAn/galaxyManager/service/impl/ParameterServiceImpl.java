@@ -74,7 +74,7 @@ public class ParameterServiceImpl implements IParameterService{
 			Set<String> paramSet = new HashSet<String>();
 			String[] items = param_zhs.split(",");
 			for (String item : items) {
-				if(!item.equals("接收地方时")){
+				if(item.indexOf(":") != -1){
 					paramSet.add(item);
 				}
 			}

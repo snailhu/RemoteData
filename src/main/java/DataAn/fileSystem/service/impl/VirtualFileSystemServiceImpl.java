@@ -527,7 +527,7 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 				//保存参数
 				paramService.saveMany(series, star, parameterType, title);
 			}
-		});
+		}).start();
 		
 		//查找csv的文件夹是否存在
 //		VirtualFileSystem csvDir = fileDao.selectByParentIdisNullAndFileName("csv");

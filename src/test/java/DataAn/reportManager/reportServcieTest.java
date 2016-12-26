@@ -12,6 +12,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import DataAn.common.utils.DateUtil;
 import DataAn.jfreechart.service.IJfreechartServcie;
+import DataAn.reportManager.domain.StarParam;
 import DataAn.reportManager.dto.DataToDocDto;
 import DataAn.reportManager.dto.ParamDto;
 import DataAn.reportManager.dto.ProductDto;
@@ -32,6 +33,16 @@ public class reportServcieTest {
 	@Resource
 	private IJfreechartServcie jfreechartServcie;
 	
+	@Test
+	public void getStarParamForReport(){
+		String seriesId = "j9";
+		String starId = "02";
+		String partsType = "flywheel";
+		List<StarParam> list = starParamService.getStarParamForReport(seriesId, starId, partsType);
+		for (StarParam starParam : list) {
+			System.out.println(starParam.getParamName());
+		}
+	}
 	@Test
 	public void createReprotTest() throws Exception{
 		

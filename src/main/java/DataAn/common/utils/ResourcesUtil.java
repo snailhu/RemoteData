@@ -18,10 +18,10 @@ public class ResourcesUtil {
 			return reslist;
 		//用户管理url
 		case "userManagerURL":
-			reslist.add("user");
-			reslist.add("role");
-			reslist.add("permission");
-			reslist.add("log");
+			reslist.add("/admin/user");
+			reslist.add("/admin/role");
+			reslist.add("/admin/permission");
+			reslist.add("/admin/log");
 			return reslist;
 		default:
 			return null;

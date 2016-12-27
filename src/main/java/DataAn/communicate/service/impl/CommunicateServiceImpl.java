@@ -327,12 +327,13 @@ public class CommunicateServiceImpl implements ICommunicateService{
 				System.out.println("updateStatus...");
 				System.out.println("file.getFileName(): " + file.getFileName());
 				System.out.println("statusType: " + statusType);
+				System.out.println("statusType: " + StatusTrackingType.getStatusTrackingType(statusType).getName());
 				statusTrackingService.updateStatusTracking(file.getFileName(), statusType, file.getParameterType(),
 						exceptionInfo);
 				
 				//storm 数据处理失败删除文件并更新状态
 				//如果出错则删除文件
-				if(statusType.equals(StatusTrackingType.FILEUPLOADFAIL)){
+				if(statusType.equals(StatusTrackingType.PREHANDLEFAIL.getValue())){
 					System.out.println("begin delete file version: " + version);
 					fileService.deleteFileByUUId(version);
 				}

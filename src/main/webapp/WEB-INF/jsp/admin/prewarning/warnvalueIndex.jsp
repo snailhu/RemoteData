@@ -147,7 +147,7 @@
 	color: red;
 }
 
-.form-group input, .form-group select {
+.form-group input, .form-group select{
 	width: 270px;
 	height: 30px;
 	line-height: 30px;
@@ -213,11 +213,7 @@
 		
 		$('#addValueInfoForm').bootstrapValidator({
 			message : '这个值不能为空！',
-			feedbackIcons : {
-				valid : 'glyphicon glyphicon-ok',
-				invalid : 'glyphicon glyphicon-remove',
-				validating : 'glyphicon glyphicon-refresh'
-			},
+			 ,
 			fields : {
 				series : {
 					validators : {
@@ -601,16 +597,21 @@
 											<option value="">--请选择--</option>
 										</select>
 									</div>
-								</div>
-								<div class="space-4"></div>
-								<div class="form-group">
+									</div>
+								
+								
+								<div id="add-flywheelValDiv" style="display: none;">
+									
+									<div class="space-4"></div>
+									
+									<div class="form-group">
 									<label class="col-lg-3 control-label no-padding-right"
 										for="add-timeZone"> 时间区间(min)：</label>
 									<div class="col-sm-6">
 										<input type="text" name="timeZone" id="add-timeZone"
 											placeholder="时间区间" class="form-control" />
 									</div>
-								</div>
+									</div>
 								<div class="space-4"></div>
 								<div class="form-group">
 									<label class="col-lg-3 control-label no-padding-right"
@@ -620,7 +621,7 @@
 											placeholder="限定次数" class="form-control" />
 									</div>
 								</div>
-								<div id="add-flywheelValDiv" style="display: none;">
+									
 									<div class="space-4"></div>
 									<div class="form-group">
 										<label class="col-lg-3 control-label no-padding-right"
@@ -640,7 +641,34 @@
 									<!-- 										</div> -->
 									<!-- 									</div> -->
 								</div>
-								<div id="add-topValDiv" style="display: none;">
+								<div id="add-topValDiv" style="display: none;">	
+									<div class="space-4"></div>
+									<div id="id_shuoming" style="width:230px;margin: 0px auto;">
+									<div class="form-group">
+										<div class="well well-sm" >
+											陀螺机动规则说明： 陀螺的X、Y、Z三个轴的 
+											任意两个角速度的变化绝对值满足在持续时间内
+											大于最小限制小于最大限制
+										</div>	
+									</div>
+									</div>	
+									<div class="form-group">
+									<label class="col-lg-3 control-label no-padding-right"
+										for="add-timeZone"> 持续时间(秒)：</label>
+									<div class="col-sm-6">
+										<input type="text" name="timeZone" id="add-timeZone"
+											placeholder="持续时间" class="form-control" />
+									</div>
+								</div>
+								<div class="space-4"></div>
+								<!--<div class="form-group">
+									<label class="col-lg-3 control-label no-padding-right"
+										for="add-limitTimes"> 限定次数：</label>
+									<div class="col-sm-6">
+										<input type="text" name="limitTimes" id="add-limitTimes"
+											placeholder="限定次数" class="form-control" />
+									</div>
+								</div>-->
 									<div class="space-4"></div>
 									<div class="form-group">
 										<label class="col-lg-3 control-label no-padding-right"
@@ -658,7 +686,7 @@
 											<input type="text" name="minVal" id="add-minValtop"
 												placeholder="最小变化绝对值" class="form-control" />
 										</div>
-									</div>
+									</div>			
 								</div>
 							</div>
 							<div class="modal-footer">
@@ -1093,7 +1121,18 @@
 	            		    	$('#add-parameter').append("<option value='"+ this.code+"'>"+ this.simplyName +"</option>"); 
 	            		    }
 						});
+						//如果是陀螺则设置默认的参数值
+						if(parameterType=='top')
+						{
+							$('#add-parameter').find("option").remove();
+							$('#add-parameter').append("<option value='sequence_jiaosudu'>陀螺角速度</option>"); 
+							$("#add-parameter").val("sequence_jiaosudu");
+							console.log("参数值选择框："+$("#add-parameter").val("sequence_jiaosudu"));
+							//$("#add-parameter").select2().val("sequence_jiaosudu");
+							
+						}
 	            	  $("#add-parameter").select2().val("").trigger("change");
+	            	  console.log("参数选择框的值："+$("#add-parameter").select2().val());
 	            	  $('#addValueInfoForm').data('bootstrapValidator').updateStatus('parameter', 'NOT_VALIDATED', null);
 	              }
 	              else {
@@ -1122,7 +1161,7 @@
 	            		    if(this.code){
 	            		    	$('#edit-parameter').append("<option value='"+ this.code+"'>"+ this.simplyName +"</option>"); 
 	            		    }
-						});
+						});						
 	            	  $("#edit-parameter").select2().val("").trigger("change");
 	            	  $('#editValueInfoForm').data('bootstrapValidator').updateStatus('parameter', 'NOT_VALIDATED', null);
 	              }
@@ -1296,15 +1335,17 @@
 							sortable:true
 						}, {
 							field : 'timeZone',
-							title : '时间区间(min)',
+							title : '时间区间(毫秒)',
 							width : 100,
 							sortable:true
-						}, {
-							field : 'limitTimes',
-							title : '限定次数',
-							width : 100,
-							sortable:true
-						}, {
+						}, 
+						//{
+						//	field : 'limitTimes',
+						//	title : '限定次数',
+						//	width : 100,
+						//	sortable:true
+						//}, 
+						{
 							field : 'maxVal',
 							title : '最大变化绝对值',
 							width : 110,

@@ -99,7 +99,8 @@ public class ReportServiceImpl implements IReoportService {
 	private List<Map<String, Object>> getNullDoc(String beginDate, String endDate, String msg) {
 		List<Map<String, Object>> dataList = new ArrayList<Map<String, Object>>();
 		Map<String, Object> record = new HashMap<String, Object>();
-		record.put("title", "日期区间" + beginDate + "到" + endDate + "导出报告失败，失败原因：" + msg);
+//		record.put("title", "日期区间" + beginDate + "到" + endDate + "导出报告失败，失败原因：" + msg);
+		record.put("title", "日期区间" + beginDate + "到" + endDate + "导出报告失败！");
 		dataList.add(record);
 		return dataList;
 	}

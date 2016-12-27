@@ -21,29 +21,29 @@ public class StarParam {
 	@Column(name = "id", unique = true, nullable = false)
 	private Long id;
 
-	@Column(name = "paramCode", nullable = false, length = 64)
+	@Column(name = "paramCode", nullable = false, length = 128)
 	private String paramCode;
 
-	@Column(name = "paramName", nullable = false, length = 64)
+	@Column(name = "paramName", nullable = false, length = 256)
 	private String paramName;
 
 	@Column(name = "creater", nullable = false, length = 64)
 	private String creater;
 
 	// 系列 如：j9
-	@Column(name = "series", nullable = false, length = 16)
+	@Column(name = "series", nullable = false, length = 64)
 	private String series;
 
 	// 星 如: 02
-	@Column(name = "star", nullable = false, length = 16)
+	@Column(name = "star", nullable = false, length = 64)
 	private String star;
 
 	// 参数 如: 电流current、电压voltage、转速speed
-	@Column(name = "parameterType", nullable = false, length = 32)
+	@Column(name = "parameterType", nullable = false, length = 64)
 	private String parameterType;
 
 	// 参数 如: flywheel、top
-	@Column(name = "partsType", nullable = false, length = 32)
+	@Column(name = "partsType", nullable = false, length = 64)
 	private String partsType;
 
 	@Column(name = "effeMin", nullable = false, length = 32)
@@ -52,10 +52,10 @@ public class StarParam {
 	@Column(name = "effeMax", nullable = false, length = 32)
 	private double effeMax;
 
-	@Column(name = "productName", nullable = false, length = 64)
+	@Column(name = "productName", nullable = false, length = 128)
 	private String productName;
 
-	@Column(name = "valueUnit", nullable = false, length = 10)
+	@Column(name = "valueUnit", nullable = false, length = 64)
 	private String valueUnit;
 
 	@Temporal(TemporalType.TIMESTAMP)

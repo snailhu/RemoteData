@@ -9,7 +9,7 @@ public class StatusTrackingDTO implements java.io.Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private Long trackingId; // 跟踪记录Id
-
+	
 	private String fileName; // 文件名
 
 	private String userType; // 用户类型

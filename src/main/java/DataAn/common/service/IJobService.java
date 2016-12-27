@@ -25,6 +25,8 @@ public interface IJobService {
 	*/
 	public void delCacheFileJob();
 	
+	public void updateFileStatusJob();
+	
 	/**
 	* Description: 通过定时任务来离线上传csv原文件
 	* @author Shenwp

@@ -24,7 +24,7 @@ public class StatusTracking implements java.io.Serializable {
 	@GeneratedValue(strategy = IDENTITY)
 	@Column(name = "trackingId", unique = true, nullable = false)
 	private Long trackingId; // 跟踪记录Id
-
+	
 	@Column(name = "fileName", nullable = true)
 	private String fileName; // 文件名
 

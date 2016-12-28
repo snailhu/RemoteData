@@ -127,7 +127,7 @@ public class SaveFileToKafka implements Runnable {
 						if(StringUtils.isNotBlank(param_en))
 							patameterMap.put(param_zh, param_en);
 						else
-							System.out.println(param_zh + " code is " + param_en);
+							throw new RuntimeException(param_zh + " code is " + param_en);
 					}
 
 					String[] properties = new String[array.length - 1];
@@ -183,8 +183,8 @@ public class SaveFileToKafka implements Runnable {
 						//发送到kafka
 						boundProducer.send(defaultFetchObj,topic);
 						
-						if(count < 50)
-							System.out.println(defaultFetchObj);
+//						if(count < 50)
+//							System.out.println(defaultFetchObj);
 					}
 					boundProducer.send(new Ending(),topic);
 					Log4jUtil.getInstance().getLogger(SaveFileToKafka.class).info(nodeWorker.getId()+ " end send data kafka..count: " + count);
@@ -198,7 +198,7 @@ public class SaveFileToKafka implements Runnable {
 					Log4jUtil.getInstance().getLogger(SaveFileToKafka.class).info(nodeWorker.getId()+ " to update mongodb data..");
 					mongoService.updateCSVDataByDate(series, star, name, dateTime1, dateTime);
 					Log4jUtil.getInstance().getLogger(SaveFileToKafka.class).info(nodeWorker.getId()+ " finish push data to kafka!!!!!!!!");
-					System.out.println(nodeWorker.getId()+ " finish push data to kafka!!!!!!!!");
+					System.out.println(nodeWorker.getId()+ " finish push data to kafka!!!!!!!!--> data count: " + count);
 					//更行文件状态
 					statusTrackingService.updateStatusTracking(fileName, StatusTrackingType.PREHANDLE.getValue(),name, "");
 				} catch (Exception e) {

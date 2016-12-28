@@ -19,6 +19,7 @@ import DataAn.common.utils.FileUtil;
 import DataAn.common.utils.UUIDGeneratorUtil;
 import DataAn.fileSystem.dao.IVirtualFileSystemDao;
 import DataAn.fileSystem.domain.VirtualFileSystem;
+import DataAn.fileSystem.service.IVirtualFileSystemService;
 import DataAn.mongo.db.MongodbUtil;
 import DataAn.mongo.fs.IDfsDb;
 import DataAn.mongo.fs.MongoDfsDb;
@@ -26,6 +27,11 @@ import DataAn.mongo.init.InitMongo;
 import DataAn.reportManager.dao.IStarParamDao;
 import DataAn.reportManager.domain.StarParam;
 import DataAn.reportManager.service.IReoportService;
+import DataAn.status.dao.IStatusTrackingDao;
+import DataAn.status.domain.StatusTracking;
+import DataAn.status.dto.StatusYstepDTO;
+import DataAn.status.service.IStatusTrackingService;
+import DataAn.storm.status.StatusTrackingType;
 import DataAn.wordManager.config.OptionConfig;
 
 @Service
@@ -33,12 +39,16 @@ public class JobServiceImpl implements IJobService{
 
 	@Resource
 	private IVirtualFileSystemDao fileDao;
-	
+	@Resource
+	private IVirtualFileSystemService fileService;
 	@Resource
 	private IStarParamDao starParamDao;
-	
 	@Resource
 	private IReoportService reoportService;
+	@Resource
+	private IStatusTrackingDao statusTrackingDao;
+	@Resource
+	private IStatusTrackingService statusTrackingService;
 	
 	//test 没5秒执行一次
 //	@Scheduled(cron = "0/5 * * * * *")  
@@ -63,6 +73,30 @@ public class JobServiceImpl implements IJobService{
 		}
 	}
 
+	//每天晚上22点执行此方法
+	@Scheduled(cron = "0 0 2 * * ?") 
+	@Override
+	public void updateFileStatusJob() {
+		try {
+			List<StatusTracking> statusTrackings = statusTrackingDao.getStatusTrackingByParams(null);
+			if(statusTrackings != null && statusTrackings.size() > 0){
+				VirtualFileSystem file = null;
+				String statusType = StatusTrackingType.PREHANDLEFAIL.getValue();
+				for (StatusTracking statusTracking : statusTrackings) {
+					file = fileDao.selectByParameterTypeAndFileName(statusTracking.getUserType(),statusTracking.getFileName());
+					if(file != null){
+						statusTrackingService.updateStatusTracking(file.getFileName(), statusType, 
+								file.getParameterType(),"后台数据处理超时...");
+						fileService.deleteFileByUUId(file.getMongoFSUUId());
+					}
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+	}
+	
 	//每天晚上22点执行此方法
 	@Scheduled(cron = "0 0 22 * * ?") 
 	@Override
@@ -192,4 +226,5 @@ public class JobServiceImpl implements IJobService{
 //			}
 //		}
 	}
+
 }

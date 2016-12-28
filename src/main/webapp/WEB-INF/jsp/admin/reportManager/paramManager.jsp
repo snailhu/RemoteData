@@ -541,7 +541,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							</div>
 							<div class="modal-footer">
 								<div class="col-lg-7 col-lg-offset-3">
-									<button type="submit" class="subbutton_1" id="submit_addStarParam" data-dismiss="modal">确定</button>
+									<button type="button" class="subbutton_1" id="submit_addStarParam">确定</button>
 									<button type="button" class="cancelbutton_1" id="reset_addStarParam" data-dismiss="modal">关闭</button>
 								</div>
 							</div>
@@ -618,7 +618,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							</div>
 							<div class="modal-footer">
 								<div class="col-lg-7 col-lg-offset-3">
-									<button type="submit" class="subbutton_1" id="submit_editStarParam" data-dismiss="modal">确定</button>
+									<button type="button" class="subbutton_1" id="submit_editStarParam">确定</button>
 									<button type="button" class="cancelbutton_1" id="reset_editStarParam" data-dismiss="modal">关闭</button>
 								</div>
 							</div>
@@ -1047,6 +1047,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			                 top.showProcess(false);
 			                 var map = $.parseJSON(data);
 			                 if (map.success) {
+			                	 $('#addStarParamModal').modal('hide');
 			                     top.showMsg('提示', map.msg);
 			                     reloadDataGrid();
 			                 }
@@ -1274,6 +1275,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                     top.showProcess(false);
                     var map = $.parseJSON(data);
                     if (map.success) {
+                    	$('#editStarParamModal').modal('hide');
                         top.showMsg('提示', map.msg);
                         reloadDataGrid();
                     } else {

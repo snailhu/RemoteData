@@ -100,7 +100,7 @@ public class JobServiceImpl implements IJobService{
 //	@Scheduled(cron = "0 0 23 ? * MON") 
 	//每天晚上22点执行此方法 测试使用
 	//每两小时
-	@Scheduled(cron = "0 0 0/2 * * ?") 
+	@Scheduled(cron = "0 0 13 * * ?") 
 	@Override
 	public void createReport() throws Exception {
 		String templateUrl = OptionConfig.getWebPath() + "\\report\\wordtemplate\\卫星状态报告.doc";

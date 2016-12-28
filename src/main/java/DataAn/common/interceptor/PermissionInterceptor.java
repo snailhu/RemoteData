@@ -23,7 +23,7 @@ public class PermissionInterceptor implements HandlerInterceptor{
 		//得到请求servletPath 路径
 		String servletPath = request.getServletPath();
 		//得到请求的url
-		String uri = request.getRequestURI();
+//		String uri = request.getRequestURI();
 //		System.out.println("come in PermissionInterceptor");
 //		System.out.println("servletPath: " + servletPath);
 //		System.out.println("uri: " + uri);
@@ -44,7 +44,7 @@ public class PermissionInterceptor implements HandlerInterceptor{
 			if(userManager == null){
 				List<String> userManager_urls = ResourcesUtil.getkeyList("userManagerURL");
 				for (String u : userManager_urls) {
-					if (uri.indexOf(u) >= 0) {
+					if (servletPath.indexOf(u) >= 0) {
 						response.sendRedirect(request.getContextPath() + "/refuse");
 						return false;					
 					}

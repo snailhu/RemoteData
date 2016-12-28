@@ -73,9 +73,13 @@ public class ConfigTest {
 	
 	@Test
 	public void test3(){
-		List<String> list = new ArrayList<String>(10);
-		list.add(0, "a");
-		list.add(5, "b");
-		System.out.println(list.size());
+		String servletPath = "/admin/log/systemLog";
+		String[] paths = servletPath.split("/");
+		for (String path : paths) {
+			
+			System.out.println(path);
+		}
+		if(paths.length > 2)
+			System.out.println("admin".equals(paths[0]));
 	}
 }

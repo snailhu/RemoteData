@@ -33,8 +33,8 @@ public class StatusTrackingServiceImpl implements IStatusTrackingService {
 	}
 
 	@Override
-	public void updateStatusTracking(String fileName, String statusType, String userType, String exceptionInfo)
-			throws Exception {
+	public void updateStatusTracking(String fileName, String statusType, String userType, 
+			String exceptionInfo)throws Exception {
 		// 判断是否已存在
 		boolean checkStatusTracking = statusTrackingDao.checkStatusTrackingByParams(fileName, userType);
 		if (checkStatusTracking) {

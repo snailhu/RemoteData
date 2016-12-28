@@ -539,6 +539,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			  for ( var i = 0; i < userPermissionItems.length; i++) {
 				if(userPermissionItems[i] == paramType){
 					flag = true;
+					break;
 				}
 			  }
 			  if(!flag){

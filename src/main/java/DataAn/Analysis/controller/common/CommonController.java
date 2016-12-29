@@ -1,5 +1,6 @@
 package DataAn.Analysis.controller.common;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -68,9 +69,10 @@ public class CommonController {
 	@ResponseBody
 	public List<ConstraintDto> getConstraint(String beginDate,String endDate,String Series_current,String Star_current,String type_current) 
 			throws Exception{
-		if(StringUtils.isNotBlank(beginDate) || StringUtils.isNotBlank(endDate)){
-			return j9Series_Star_Service.getAllParameterList(beginDate, endDate, Series_current, Star_current, type_current);			
-		}
+		if(StringUtils.isNotBlank(Series_current) && StringUtils.isNotBlank(Star_current) && StringUtils.isNotBlank(type_current))
+			if(StringUtils.isNotBlank(beginDate) || StringUtils.isNotBlank(endDate)){
+				return j9Series_Star_Service.getAllParameterList(beginDate, endDate, Series_current, Star_current, type_current);			
+			}
 		return new ArrayList<ConstraintDto>();
 	}
 	
@@ -384,7 +386,7 @@ public class CommonController {
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}
-		SeriesDto  nowSeries = seriesService.getSeriesDtoById(Long.parseLong(nowSeriesId));
+		SeriesDto nowSeries = seriesService.getSeriesDtoById(Long.parseLong(nowSeriesId));
 		//当前所在系列
 		//modelview.addObject("nowSeries", nowSeries.getName());
 		//把卫星所在系列的系列编码传递到参数选择页面，供参数查询时使用
@@ -392,22 +394,29 @@ public class CommonController {
 		//当前所在星号
 		modelview.addObject("nowStar", nowStar);
 		
-		HttpSession session = request.getSession();
-		ActiveUserDto acticeUser = (ActiveUserDto) session.getAttribute("activeUser");
-		String flywheel = J9Series_Star_ParameterType.FLYWHEEL.getValue();
-		String type = acticeUser.getPermissionItems().get(flywheel);
 		String value = "";
 		String name = "";
-		if (StringUtils.isNotBlank(type)) {
-			value = J9Series_Star_ParameterType.getJ9SeriesStarParameterType(type).getValue();
-			name = J9Series_Star_ParameterType.getJ9SeriesStarParameterType(type).getName();
-		}else{
-			value = J9Series_Star_ParameterType.TOP.getValue();
-			name = J9Series_Star_ParameterType.TOP.getName();
+		HttpSession session = request.getSession();
+		ActiveUserDto acticeUser = (ActiveUserDto) session.getAttribute("activeUser");
+		if(acticeUser.getPermissionItems() != null ){
+			String type = acticeUser.getPermissionItems().get(J9Series_Star_ParameterType.TOP.getValue());
+			if (StringUtils.isNotBlank(type)) {
+				value = J9Series_Star_ParameterType.TOP.getValue();
+				name = J9Series_Star_ParameterType.TOP.getName();
+			}
+			type = acticeUser.getPermissionItems().get(J9Series_Star_ParameterType.FLYWHEEL.getValue());
+			if (StringUtils.isNotBlank(type)) {
+				value = J9Series_Star_ParameterType.getJ9SeriesStarParameterType(type).getValue();
+				name = J9Series_Star_ParameterType.getJ9SeriesStarParameterType(type).getName();
+			}
 		}
-		//当前所在参数名称
-		modelview.addObject("nowParameterTypeValue", value);
-		modelview.addObject("nowParameterTypeName", name);
+		if(StringUtils.isNotBlank(value)){
+			//当前所在参数名称
+			modelview.addObject("nowParameterTypeValue", value);
+			modelview.addObject("nowParameterTypeName", name);			
+		}else{
+			return new ModelAndView("redirect:/refuse");
+		}
 		
 		return modelview;
 	}	

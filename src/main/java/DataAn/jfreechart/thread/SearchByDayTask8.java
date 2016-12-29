@@ -57,8 +57,8 @@ public class SearchByDayTask8 extends RecursiveTask<LineChartDto>{
 	protected LineChartDto compute() {
 		MongodbUtil mg = MongodbUtil.getInstance();
 		String databaseName = InitMongo.getDataDBBySeriesAndStar(series, star);
-		//1s 等级数据集
-		String collectionName =  paramType + "1s";
+		//1s 等级数据集 或原数据集
+		String collectionName =  paramType;
 		int index = (int) mg.countByDate(databaseName, collectionName, beginDate, endDate);
 		if(index < 24){
 			throw new RuntimeException(DateUtil.format(beginDate) + " 到 "+ DateUtil.format(endDate) +" 获取数据失败！");

@@ -173,8 +173,12 @@ public class SearchByDayTask8 extends RecursiveTask<LineChartDto>{
 		}
 		
 		for (String line : lineMap.keySet()) {
+			timeseries = lineMap.get(line);
 			System.out.println("code: "+line + "-name: " + paramsMap.get(line) + 
-					" count: " + lineMap.get(line).getItemCount());
+					" count: " + timeseries.getItemCount());
+//			for (int i = 0; i < timeseries.getItemCount(); i++) {
+//				System.out.println(timeseries.getDataItem(i).getPeriod() + " : " + timeseries.getDataItem(i).getValue());
+//			}
 		}
 		long endTimeSeries = System.currentTimeMillis();
 		System.out.println("获取 TimeSeries 数据总时间： " + (endTimeSeries-beginTimeSeries));

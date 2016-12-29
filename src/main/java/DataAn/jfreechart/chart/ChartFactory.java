@@ -2,7 +2,6 @@ package DataAn.jfreechart.chart;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
-import java.awt.Font;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -11,8 +10,6 @@ import java.util.Map;
 import java.util.Vector;
 
 import org.jfree.chart.JFreeChart;
-import org.jfree.chart.axis.CategoryAxis;
-import org.jfree.chart.axis.CategoryLabelPositions;
 import org.jfree.chart.axis.DateAxis;
 import org.jfree.chart.axis.DateTickUnit;
 import org.jfree.chart.axis.DateTickUnitType;
@@ -200,7 +197,17 @@ public class ChartFactory {
         domainAxis.setAutoTickUnitSelection(false);
     	
     	if(dataset1 != null && dataset1.getSeriesCount() >0){
-			DateTickUnit dateTickUnit = null;
+    		DateTickUnit dateTickUnit = null;
+    		
+//    		Calendar cal = Calendar.getInstance();
+//			cal.setTime(beginDate);
+//			cal.set(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DATE));
+//			beginDate = cal.getTime();
+//			cal.setTime(endDate);
+//			cal.set(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DATE)+1);
+//			endDate = cal.getTime();
+//			System.out.println("create chart beginDate: " + beginDate + " endDate " + endDate);
+			
 			long ss_interval = endDate.getTime() - beginDate.getTime();
 			int s_interval = (int) (ss_interval / 1000); // 得到 1秒钟几个点
 			s_interval = s_interval / 24; //显示24个间隔

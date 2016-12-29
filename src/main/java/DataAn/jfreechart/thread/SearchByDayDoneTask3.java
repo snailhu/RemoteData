@@ -96,8 +96,9 @@ public class SearchByDayDoneTask3 extends RecursiveTask<LineMapDto>{
 				second_count = 0;
 				lastTime = nextTime;
 			}else{
-				nextTime = nextTime + (second_count * 100);
-				second_count ++;
+//				nextTime = nextTime + (second_count * 100);
+//				second_count ++;
+				continue;
 			}
 			datetime = new Date(nextTime);
 			for (String key : en_params) {
@@ -106,6 +107,8 @@ public class SearchByDayDoneTask3 extends RecursiveTask<LineMapDto>{
 					
 					// 转换为double 类型
 					double dValue = Double.parseDouble(strValue.trim());
+					
+					//System.out.println(datetime +" : " + dValue);
 					
 					//在有效值区间之内
 					if(paramMaxMap.get(key) != null && dValue > paramMaxMap.get(key))

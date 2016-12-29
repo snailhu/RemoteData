@@ -60,7 +60,7 @@ public class SearchByDayTask8 extends RecursiveTask<LineChartDto>{
 		//1s 等级数据集 或原数据集
 		String collectionName =  paramType;
 		int index = (int) mg.countByDate(databaseName, collectionName, beginDate, endDate);
-		if(index < 24){
+		if(index == 0){
 			throw new RuntimeException(DateUtil.format(beginDate) + " 到 "+ DateUtil.format(endDate) +" 获取数据失败！");
 		}
 		System.out.println(DateUtil.format(beginDate) + " 到 "+ DateUtil.format(endDate) + " index: " + index);

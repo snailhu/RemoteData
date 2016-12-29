@@ -20,7 +20,7 @@ import DataAn.common.utils.UUIDGeneratorUtil;
 import DataAn.fileSystem.dao.IVirtualFileSystemDao;
 import DataAn.fileSystem.domain.VirtualFileSystem;
 import DataAn.fileSystem.service.IVirtualFileSystemService;
-import DataAn.mongo.db.MongodbUtil;
+import DataAn.mongo.client.MongodbUtil;
 import DataAn.mongo.fs.IDfsDb;
 import DataAn.mongo.fs.MongoDfsDb;
 import DataAn.mongo.init.InitMongo;
@@ -160,8 +160,8 @@ public class JobServiceImpl implements IJobService{
 				templateUrl = OptionConfig.getWebPath() + "\\report\\wordtemplate\\卫星状态报告_top.doc";
 			}
 			//TODO 切换数据库
-			String databaseName = InitMongo.DATABASE_TEST;
-//			String databaseName = InitMongo.getReportFSBySeriesAndStar(seriesId, starId);
+			String fsDBName = InitMongo.DATABASE_TEST;
+//			String fsDBName = InitMongo.getReportFSBySeriesAndStar(seriesId, starId);
 			String filename = seriesId+"_"+starId+"_"+partsName+"_"+time+".doc";
 //			String docPath = OptionConfig.getWebPath() + "report\\"+filename;
 			String docPath = OptionConfig.getWebPath() + File.separator + 
@@ -169,14 +169,21 @@ public class JobServiceImpl implements IJobService{
 					DateUtil.format(new Date(), "yyyy-MM-dd")+ File.separator + 
 					UUIDGeneratorUtil.getUUID()+filename;
 			try {
-				reoportService.createReport(beginDate, endDate, filename, templateUrl, docPath, seriesId, starId, partsType);
-				reoportService.insertReportToDB(filename, docPath,seriesId,starId, partsType,starTime,endTime,databaseName,partsName);
-				reoportService.removeDoc(docPath);
-				//线程休眠10s
-				Thread.sleep(10000);
+				MongodbUtil mg = MongodbUtil.getInstance();
+				String dataDB = InitMongo.getDataDBBySeriesAndStar(seriesId, starId);
+				//1s 等级数据集 或原数据集
+				String collectionName =  partsType;
+				long count = mg.countByDate(dataDB, collectionName, beginDate, endDate);
+				if(count > 0){
+					reoportService.createReport(beginDate, endDate, filename, templateUrl, docPath, seriesId, starId, partsType);
+					reoportService.insertReportToDB(filename, docPath,seriesId,starId, partsType,starTime,endTime,fsDBName,partsName);
+					reoportService.removeDoc(docPath);
+					//线程休眠10s
+					Thread.sleep(10000);
+				}
 			} catch (Exception e) {
 				reoportService.reportNullDoc(filename,templateNullUrl, docPath, starTime, endTime,e.getMessage());
-				reoportService.insertReportToDB(filename, docPath,seriesId,starId, partsType,starTime,endTime,databaseName,partsName);
+				reoportService.insertReportToDB(filename, docPath,seriesId,starId, partsType,starTime,endTime,fsDBName,partsName);
 				reoportService.removeDoc(docPath);
 			}
 		}

@@ -197,8 +197,7 @@ public class ChartFactory {
         domainAxis.setAutoTickUnitSelection(false);
     	
     	if(dataset1 != null && dataset1.getSeriesCount() >0){
-    		DateTickUnit dateTickUnit = null;
-    		
+    		//前后时间往前推一天，往后推一天
 //    		Calendar cal = Calendar.getInstance();
 //			cal.setTime(beginDate);
 //			cal.set(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DATE));
@@ -207,10 +206,25 @@ public class ChartFactory {
 //			cal.set(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DATE)+1);
 //			endDate = cal.getTime();
 //			System.out.println("create chart beginDate: " + beginDate + " endDate " + endDate);
-			
+			//通过算实际的时间区间
+    		TimeSeries timeSeries = null;
+    		int itemCount = 0;
+    		for (TimeSeriesCollection dataset : datasetList) {
+    			for (int i = 0; i < dataset.getSeriesCount(); i++) {
+    				if(dataset.getSeries(i).getItemCount() > itemCount){
+    					timeSeries =  dataset.getSeries(i);
+    					itemCount = dataset.getSeries(i).getItemCount();
+    				}
+    			}
+			}
+    		if(timeSeries != null){
+    			endDate = timeSeries.getDataItem(timeSeries.getItemCount()-1).getPeriod().getEnd();
+    			beginDate = timeSeries.getDataItem(0).getPeriod().getStart();
+    		}
+    		DateTickUnit dateTickUnit = null;
 			long ss_interval = endDate.getTime() - beginDate.getTime();
 			int s_interval = (int) (ss_interval / 1000); // 得到 1秒钟几个点
-			s_interval = s_interval / 24; //显示24个间隔
+			s_interval = s_interval / 18; //显示24个间隔
 			if(s_interval > 0){ 
 				int m_interval = s_interval / 60; // 得到 1分钟几个点
 				if(m_interval > 0){ 

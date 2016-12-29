@@ -324,7 +324,7 @@ public class CommunicateServiceImpl implements ICommunicateService{
 		try {
 			VirtualFileSystem file = fileDao.selectByFileTypeIsFileAndMongoFSUUId(version);
 			if (file != null) {
-				System.out.println("updateStatus...");
+				System.out.println("updateStatus by file ...");
 				System.out.println("file.getFileName(): " + file.getFileName());
 				System.out.println("statusType: " + statusType);
 				System.out.println("statusType: " + StatusTrackingType.getStatusTrackingType(statusType).getName());

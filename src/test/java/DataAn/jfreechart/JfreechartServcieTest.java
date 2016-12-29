@@ -115,7 +115,7 @@ public class JfreechartServcieTest {
 	public void test3() throws Exception{
 		long begin = System.currentTimeMillis();
 		String series = SeriesType.J9_SERIES.getValue();
-		String star = J9SeriesType.STRA2.getValue();
+		String star = J9SeriesType.STRA5.getValue();
 		String paramType = "flywheel";
 		Map<String,List<ConstraintDto>> map = reoportService.getConstraintDtoList(series,star,paramType);
 		
@@ -132,14 +132,14 @@ public class JfreechartServcieTest {
 			System.out.println(map2.get(key));
 			System.out.println();
 		}
-		Date beginDate = DateUtil.format("2016-12-13 13:00:00");
-		Date endDate = DateUtil.format("2016-12-19 13:00:00");
+//		Date beginDate = DateUtil.format("2016-12-13 13:00:00");
+//		Date endDate = DateUtil.format("2016-12-19 13:00:00");
 		
-//		Date beginDate = DateUtil.format("2016-02-01 00:00:00");
-//		Date endDate = DateUtil.format("2016-02-02 00:00:00");
+		Date beginDate = DateUtil.format("2015-01-01 00:00:00");
+		Date endDate = DateUtil.format("2015-01-07 00:00:00");
 		
 		LineChartDto lineChartDto = jfreechartServcie.createLineChart(series, star, paramType, beginDate, endDate, map2);
-		System.out.println(lineChartDto);
+//		System.out.println(lineChartDto);
 		long end = System.currentTimeMillis();
 		System.out.println("画图总时间： " + (end-begin));
 	}

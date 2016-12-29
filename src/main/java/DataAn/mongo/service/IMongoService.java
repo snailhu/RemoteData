@@ -20,16 +20,15 @@ public interface IMongoService {
 	* @param documents 文档集合
 	* @param versions 此次上传的版本号
 	* @throws Exception
-	* @author Shenwp
-	* @date 2016年9月2日
-	* @version 1.0
 	*/
+	@Deprecated
 	public void saveCSVData(String series, String star, String paramType,
 			String date, List<Document> documents, String versions)
 			throws Exception;
 	/**
 	 * 分级Test
 	 * */
+	@Deprecated
 	public void saveCSVData(String series, String star, String paramType,
 			String date, Map<String,List<Document>> map, String versions)
 			throws Exception;
@@ -39,23 +38,22 @@ public interface IMongoService {
 	* @param series 系列 如：j9
 	* @param star 星号 如：02
 	* @param paramType 参数类型 如：飞轮（flywheel)
-	* @param date 时间
 	* @param versions
-	* @author Shenwp
-	* @date 2016年9月2日
-	* @version 1.0
 	*/
-	public void updateCSVDataByVersions(String series, String star, String paramType,
-			String date, String versions);
-
 	public void updateCSVDataByVersions(String series, String star, String paramType,
 			String versions);
 	
+	/**
+	* Description: 通过系列、星、设备类型来 更新mongodb数据
+	* @param series 系列 如：j9
+	* @param star 星号 如：02
+	* @param paramType 参数类型 如：飞轮（flywheel)
+	* @param beginDate 开始时间
+	* @param endDate 结束时间
+	*/
 	public void updateCSVDataByDate(String series, String star, String paramType,
 			Date beginDate, Date endDate);
-	
-	public void find();
-	
+		
 	public MongoCursor<Document> findByYear_month_day(String series,
 			String star, String paramType, String date);
 	

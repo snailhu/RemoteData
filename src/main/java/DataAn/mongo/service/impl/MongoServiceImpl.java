@@ -91,28 +91,28 @@ public class MongoServiceImpl implements IMongoService{
 	}
 	
 	@Override
-	public void updateCSVDataByVersions(String series, String star, String paramType, 
-			String date, String versions){
-		String databaseName = InitMongo.getDataDBBySeriesAndStar(series, star);
-		String collectionName = DateUtil.formatString(date, "yyyy-MM-dd", "yyyy");
-		collectionName = paramType + collectionName;
-		mg.update(databaseName, collectionName, "versions", versions);
-	}
-	
-	@Override
 	public void updateCSVDataByVersions(String series, String star,
 			String paramType, String versions) {
 		String databaseName = InitMongo.getDataDBBySeriesAndStar(series, star);
-		String collectionName =  paramType;
-		mg.update(databaseName, collectionName, "versions", versions);
+		List<String> list = InitMongo.getGradingCollectionNames(paramType);
+		if(list != null && list.size() > 0){
+			Set<String> isexistCols = mg.getExistCollections(databaseName);
+			if(isexistCols != null && isexistCols.size() > 0){
+				for (String collectionName : list) {
+					if(isexistCols.contains(collectionName)){
+						//设置某一个版本的数据的状态为0
+						mg.update(databaseName, collectionName, "versions", versions);							
+					}
+				}			
+			}
+		}
 	}
 	
-
 	@Override
 	public void updateCSVDataByDate(String series, String star,
 			String paramType, Date beginDate, Date endDate) {
 		String databaseName = InitMongo.getDataDBBySeriesAndStar(series, star);
-		List<String> list = InitMongo.getGradingCollectionNames(J9Series_Star_ParameterType.FLYWHEEL.getValue());
+		List<String> list = InitMongo.getGradingCollectionNames(paramType);
 		if(list != null && list.size() > 0){
 			Set<String> isexistCols = mg.getExistCollections(databaseName);
 			if(isexistCols != null && isexistCols.size() > 0){
@@ -125,18 +125,6 @@ public class MongoServiceImpl implements IMongoService{
 			}
 		}
 	}
-	
-	@Override
-	public void find() {
-		String databaseName = InitMongo.DB_J9STAR2;
-		String collectionName = "tb2016";
-		MongoCursor<Document> cursor = mg.findAll(databaseName, collectionName);
-		while(cursor.hasNext()){
-			
-			Document doc = cursor.next();
-			System.out.println(DateUtil.format(doc.getDate("datetime")));
-		}
-	}
 
 	@Override
 	public MongoCursor<Document> findByYear_month_day(String series,
@@ -146,7 +134,6 @@ public class MongoServiceImpl implements IMongoService{
 		
 		return mg.find(databaseName, collectionName, "year_month_day", date);
 		
-//		return mg.findAll(databaseName, collectionName);
 	}
 
 	@Override

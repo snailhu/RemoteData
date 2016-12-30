@@ -256,6 +256,7 @@ public class PrewarningController extends BaseController {
 					&& value.getParameterType().equals(warnValue.getParameterType())
 					&& value.getSeries().equals(warnValue.getSeries())
 					&& value.getStar().equals(warnValue.getStar()))) {
+				System.out.println("编辑特殊工况：参数名称"+warnValue.getParameter());
 				boolean falg = prewarningService.cherkWarningValue(warnValue.getSeries().toString(),
 						warnValue.getStar().toString(), warnValue.getParameter(), warnValue.getParameterType(), "0");
 				if (falg) {

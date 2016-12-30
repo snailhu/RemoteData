@@ -412,7 +412,11 @@
 	  				  if(yname==0)
 	  				  {
 	  				  	Y1nametemp = Y1name;
-	  				  	Y1name ="Y1轴"+"("+unit+")";  				  	
+	  				  	Y1name ="Y1轴"+"("+unit+")"; 
+	  				  	if(Y1name=="Y1轴()")
+	  				  	{
+	  				  		Y1name="Y1轴";
+	  				  	} 				  	
 	  				  	if((Y1nametemp!="Y1轴") && (Y1name!=Y1nametemp))
 	  				  	{	  				  		
 	  				  			Y1name ="Y1轴 ";
@@ -424,7 +428,11 @@
 	  				  if(yname==1)
 	  				  {
 	  				    var Y2nametemp =Y2name;
-	  				  	Y2name ="Y2轴"+"("+unit+")";	  				  	
+	  				  	Y2name ="Y2轴"+"("+unit+")";	
+	  				  	if(Y2name=="Y2轴()")
+	  				  	{
+	  				  		Y2name="Y2轴";
+	  				  	}   				  	
 	  				  	if((Y2nametemp!="Y2轴")&&(Y2name!=Y2nametemp))
 	  				  	{
 	  				  		Y2name ="Y2轴 ";

@@ -669,10 +669,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		  var endDate = $("#dateEnd").val();
           if(rowindex.length>0){        	
               for(i=0;i<rowindex.length;i++){
-              	var rowObject={}
+              	var rowObject={}              		
                   var parentId = rowindex[i].parentId;
-              	  console.log("parentId: " + parentId);
-                  if(parentId != 0){
+              	
+                  if((parentId != 0) || (typeof(parentId)=="undefined")){
+                    console.log("parentId类型: " + typeof(parentId));
 	                  var value = rowindex[i].name;
 	                  rowObject.id=rowindex[i].id
 	                  rowObject.name=rowindex[i].name;
@@ -680,12 +681,16 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	                  rowObject.min=rowindex[i].min;
 	                  rowObject.unit=rowindex[i].unit;
 	                  var yname = rowindex[i].yname;
-	                  if(yname=='Y2'){
+	                  console.log("模板中Y轴名称"+yname+typeof(yname));
+	                  if((yname=='Y2') || (yname=='1')){
 	                  //这里统一一下（Y1轴的话用大写的‘Y1’,Y2轴用大写的‘Y2’）
 	                	  rowObject.yname=1;
-	                  }else{
+	                  }
+	                  if(yname=='Y1' || (yname=='0'))
+					  {
 		                  rowObject.yname=0;
 	                  }
+	                  console.log("模板中Y轴名称转换"+rowObject.yname);
 	                  selectRow.push( rowObject);
 	                  stringName+=value+",";
 	              }

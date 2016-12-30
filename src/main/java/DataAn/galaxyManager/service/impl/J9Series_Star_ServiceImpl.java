@@ -326,6 +326,7 @@ public class J9Series_Star_ServiceImpl implements IJ9Series_Star_Service{
 		String sameFlyWheelData = "";
 		for (String dataType : dataTypes) {
 			c = new ConstraintDto();
+			c.setParentId(0);
 			c.setId(count);
 			c.setName(dataType);
 			c.setMin("");

@@ -590,8 +590,24 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
            columns: [
 	             { text: '参数名称',  dataField: 'name',editable: false, width: 310 },
 	             { text: 'ID',  dataField: 'id',editable: false, width:200, hidden: true },
-	             { text: '最大值', dataField: 'max', width: 140 },
-	             { text: '最小值', dataField: 'min', width: 140 },
+	             { text: '最大值', dataField: 'max', width: 140,
+	               validation: function (cell, value) {
+	               			console.log(parseFloat(value));
+                         if (isNaN(parseFloat(value)) || parseFloat(value) < (-9999.0) || parseFloat(value) > (9999.0)) {
+                             return { message: "请输入正确的最大值最小值(-9999.00~+9999.00)", result: false };
+                         }
+                         return true;
+                     }
+	             },
+	             { text: '最小值', dataField: 'min', width: 140,
+	               validation: function (cell, value) {
+	               			console.log(parseFloat(value));
+                         if (isNaN(parseFloat(value)) || parseFloat(value) < (-9999.0) || parseFloat(value) > (9999.0)) {
+                             return { message: "请输入正确的最大值最小值(-9999.00~+9999.00)", result: false };
+                         }
+                         return true;
+                     }
+	             },
 	             { text: '单位',dataField: 'unit',width:105},
 	             { text: 'Y轴', dataField:'yname',width:105,columnType:'template',
 	             	cellsRenderer: function (row, column, value, rowData) {if(value=="0") {return "Y1"};if(value=="1"){return "Y2"}},

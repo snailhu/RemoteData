@@ -57,10 +57,10 @@ public class SearchByDayTask8 extends RecursiveTask<LineChartDto>{
 	protected LineChartDto compute() {
 		MongodbUtil mg = MongodbUtil.getInstance();
 		String databaseName = InitMongo.getDataDBBySeriesAndStar(series, star);
-		//1s 等级数据集
-		String collectionName =  paramType + "1s";
+		//1s 等级数据集 或原数据集
+		String collectionName =  paramType;
 		int index = (int) mg.countByDate(databaseName, collectionName, beginDate, endDate);
-		if(index < 24){
+		if(index == 0){
 			throw new RuntimeException(DateUtil.format(beginDate) + " 到 "+ DateUtil.format(endDate) +" 获取数据失败！");
 		}
 		System.out.println(DateUtil.format(beginDate) + " 到 "+ DateUtil.format(endDate) + " index: " + index);
@@ -173,8 +173,12 @@ public class SearchByDayTask8 extends RecursiveTask<LineChartDto>{
 		}
 		
 		for (String line : lineMap.keySet()) {
+			timeseries = lineMap.get(line);
 			System.out.println("code: "+line + "-name: " + paramsMap.get(line) + 
-					" count: " + lineMap.get(line).getItemCount());
+					" count: " + timeseries.getItemCount());
+//			for (int i = 0; i < timeseries.getItemCount(); i++) {
+//				System.out.println(timeseries.getDataItem(i).getPeriod() + " : " + timeseries.getDataItem(i).getValue());
+//			}
 		}
 		long endTimeSeries = System.currentTimeMillis();
 		System.out.println("获取 TimeSeries 数据总时间： " + (endTimeSeries-beginTimeSeries));

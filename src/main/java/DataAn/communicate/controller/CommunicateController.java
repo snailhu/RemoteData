@@ -96,7 +96,7 @@ public class CommunicateController extends BaseController {
 	@RequestMapping(value="/updateServerStatus")
 	@ResponseBody
 	public boolean updateServerStatus(String workerId){
-		System.out.println("come in updateServerStatus..");
+		System.out.println("come in updateServerStatus storm server ...");
 		System.out.println("workerId: " + workerId);
 		return communicateService.updateServerStatus(workerId);
 	

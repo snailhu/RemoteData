@@ -32,6 +32,7 @@ import DataAn.common.utils.UUIDGeneratorUtil;
 import DataAn.fileSystem.dto.MongoFSDto;
 import DataAn.galaxyManager.option.J9Series_Star_ParameterType;
 import DataAn.jfreechart.service.IJfreechartServcie;
+import DataAn.mongo.client.MongodbUtil;
 import DataAn.mongo.init.InitMongo;
 import DataAn.reportManager.dao.IStarParamDao;
 import DataAn.reportManager.domain.StarParam;
@@ -212,23 +213,34 @@ public class ReportController {
 		
 		Date beginDate = DateUtil.format(beginTime,"yyyy-MM-dd");
 		Date endDate =  DateUtil.format(endTime,"yyyy-MM-dd");
+		
+		MongodbUtil mg = MongodbUtil.getInstance();
+		String databaseName = InitMongo.getDataDBBySeriesAndStar(seriesId, starId);
+		//1s 等级数据集 或原数据集
+		String collectionName =  partsType;
+		long index = mg.countByDate(databaseName, collectionName, beginDate, endDate);
+		if(index == 0 ){
+			res.setMsg(DateUtil.format(beginDate) + " 到 "+ DateUtil.format(endDate) +" 暂无数据！");
+			res.setResult(CommonsConstant.RESULT_FALSE);
+			return res;
+		}
 		try {
-			 reoportService.createReport(beginDate, endDate, filename, templateUrl, docPath, seriesId, starId, partsType);
+			reoportService.createReport(beginDate, endDate, filename, templateUrl, docPath, seriesId, starId, partsType);
 			
-			 Map<String, Object> data = new HashMap<String, Object>();
-			 data.put("docPath", docPath);
-			 data.put("filename", filename);
-			 res.setData(data);
+			Map<String, Object> data = new HashMap<String, Object>();
+			data.put("docPath", docPath);
+			data.put("filename", filename);
+			res.setData(data);
 		 } catch (Exception ex) {
-			 //ex.printStackTrace();
-			 res.setMsg(DateUtil.format(beginDate) + " 到 "+ DateUtil.format(endDate) +" 获取数据失败！");
-			 res.setResult(CommonsConstant.RESULT_FALSE);
+			ex.printStackTrace();
+			res.setMsg(DateUtil.format(beginDate) + " 到 "+ DateUtil.format(endDate) +" 获取数据失败！");
+			res.setResult(CommonsConstant.RESULT_FALSE);
 		 }
 		
 		long end = System.currentTimeMillis();
 		System.out.println("endtime: " + DateUtil.format(new Date())+" flag="+flag);
 		System.out.println("flag="+flag+": 生成报告 " + filename + " time: " + (end-begin));
-		 return res;
+		return res;
 	}
 	
 	@RequestMapping(value = "/createReport1")

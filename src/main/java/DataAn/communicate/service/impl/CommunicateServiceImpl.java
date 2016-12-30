@@ -2,8 +2,10 @@ package DataAn.communicate.service.impl;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.annotation.Resource;
 
@@ -45,7 +47,6 @@ public class CommunicateServiceImpl implements ICommunicateService{
 	@Resource
 	private IStormServerService stormServerService;
 	
-	
 	@Override
 	public String getExceptionJobConfigList(String series, String star,
 			String parameterType) {		
@@ -54,26 +55,92 @@ public class CommunicateServiceImpl implements ICommunicateService{
 			return null;
 		}
 		System.out.println("查询的参数的是："+parameterType);
-		int type=1;
-		if(parameterType.equals(J9Series_Star_ParameterType.TOP.getValue()))
+		if(J9Series_Star_ParameterType.TOP.getValue().equals(parameterType))
 		{
-			type = 2;
+			return this.getTopExceptionJobConfigList(series, star, parameterType);
 		}
-		if(parameterType.equals(J9Series_Star_ParameterType.FLYWHEEL.getValue()))
+		if(J9Series_Star_ParameterType.FLYWHEEL.getValue().equals(parameterType))
 		{
-			type = 1;
+			return this.getFlywheelExceptionJobConfigList(series, star, parameterType);
 		}
-		switch(type){
-		case 1: //如果是飞轮
-			//特殊工况参数配置
-			List<WarningValue> jobWarningValues = prewarningService.getWarningValueByParams(series, star, null, parameterType, "0");
-			if(jobWarningValues != null && jobWarningValues.size() > 0){
-				Map<String,String> map = new HashMap<String,String>();
-				List<ExceptionJobConfig> jobConfigList = new ArrayList<ExceptionJobConfig>();
-				ExceptionJobConfig jobConfig = null;
-				for (WarningValue wv : jobWarningValues) {
-					String deviceName = parameterService.getParameter_deviceName_by_en(series, star, wv.getParameterType(), wv.getParameter());
+		return null;
+	}
+
+	private String getTopExceptionJobConfigList(String series, String star,
+			String parameterType){
+		List<WarningValue> topjobWarningValues = prewarningService.getWarningValueByParams(series, star, null, parameterType, "0");
+		if(topjobWarningValues != null && topjobWarningValues.size() > 0){
+			Map<String,String> map = new HashMap<String,String>();
+			List<ExceptionJobConfig> jobConfigList = new ArrayList<ExceptionJobConfig>();
+			ExceptionJobConfig jobConfig = null;
+			for (WarningValue wv : topjobWarningValues) {
+				//TODO 根据参数的qequence值获取参数所属的设备	当前设计中陀螺的设置在配置文件JSON中，所以没有获取			
+				/*//String deviceName = parameterService.getParameter_deviceName_by_en(series, star, wv.getParameterType(), wv.getParameter());
+				if(StringUtils.isNotBlank(deviceName)){
+					jobConfig = new ExceptionJobConfig();
+					jobConfig.setDeviceName(deviceName);
+					jobConfig.setDeviceType(wv.getParameterType());
+					jobConfig.setParamCode(wv.getParameter());
+					jobConfig.setMax(wv.getMaxVal());
+					jobConfig.setMin(wv.getMinVal());
+					jobConfig.setDelayTime(wv.getLimitTimes());//时间单位
+					jobConfig.setCount(wv.getTimeZone());
+					jobConfigList.add(jobConfig);
+				}else{
+					throw new RuntimeException(series+"-"+star+"-"+wv.getParameterType()+"-"+wv.getParameter()+" : 找不到设备1");
+				}*/
+				jobConfig = new ExceptionJobConfig();
+				jobConfig.setParamCode(wv.getParameter());
+				jobConfig.setDelayTime(wv.getTimeZone());//TODO 设置持续时间 min，注意时间单位
+				jobConfig.setMax(wv.getMaxVal());
+				jobConfig.setMin(wv.getMinVal());
+				jobConfigList.add(jobConfig);
+				
+			}
+			map.put("exceptionJobConfig", JSON.toJSONString(jobConfigList));
+			//异常参数配置
+			List<WarningValue> exceWarningValues = prewarningService.getWarningValueByParams(series, star, null, parameterType, "1");
+			if(exceWarningValues != null && exceWarningValues.size() > 0){
+				List<ExceptionPointConfig> exceConfigList = new ArrayList<ExceptionPointConfig>();
+				ExceptionPointConfig exceConfig = null;
+				String deviceName = "AA";
+				for (WarningValue ew : exceWarningValues) {
+					//TODO 这里应该根据陀螺CSV文件参数的命名规则，用sequence值获取到所属陀螺的名字
+					//String deviceName = parameterService.getParameter_deviceName_by_en(series, star, ew.getParameterType(), ew.getParameter());
 					if(StringUtils.isNotBlank(deviceName)){
+						exceConfig = new ExceptionPointConfig();
+						exceConfig.setDeviceType(ew.getParameterType());
+						exceConfig.setDeviceName(deviceName);
+						exceConfig.setParamCode(ew.getParameter());
+						exceConfig.setMax(ew.getMaxVal());
+						exceConfig.setMin(ew.getMinVal());
+						//exceConfig.setDelayTime(ew.getTimeZone());//时间单位
+						exceConfigList.add(exceConfig);						
+					}else{
+						throw new RuntimeException(series+"-"+star+"-"+ew.getParameterType()+"-"+ew.getParameter()+" : 找不到设备2");
+					}
+				}
+				map.put("exceptionPointConfig", JSON.toJSONString(exceConfigList));
+			}
+			return JSON.toJSONString(map);
+		}
+		return null;
+	}
+	//获取飞轮特殊工况和异常参数配置
+	private String getFlywheelExceptionJobConfigList(String series, String star,
+			String parameterType){
+		//特殊工况参数配置
+		List<WarningValue> jobWarningValues = prewarningService.getWarningValueByParams(series, star, null, parameterType, "0");
+		if(jobWarningValues != null && jobWarningValues.size() > 0){
+			Map<String,String> map = new HashMap<String,String>();
+			List<ExceptionJobConfig> jobConfigList = new ArrayList<ExceptionJobConfig>();
+			ExceptionJobConfig jobConfig = null;
+			Set<String> devicdNameSet = new HashSet<String>();
+			for (WarningValue wv : jobWarningValues) {
+				String deviceName = parameterService.getParameter_deviceName_by_en(series, star, wv.getParameterType(), wv.getParameter());
+				if(StringUtils.isNotBlank(deviceName)){
+					//保证一个设备只有一个参数配置
+					if (!devicdNameSet.contains(deviceName)) {
 						jobConfig = new ExceptionJobConfig();
 						jobConfig.setDeviceName(deviceName);
 						jobConfig.setDeviceType(wv.getParameterType());
@@ -83,104 +150,39 @@ public class CommunicateServiceImpl implements ICommunicateService{
 						jobConfig.setDelayTime(wv.getTimeZone() * 60 * 1000);//TODO 设置持续时间 mm，注意时间单位
 						jobConfig.setCount(wv.getLimitTimes());// 设置 限定值出现的频次计为一次特殊工况
 						jobConfigList.add(jobConfig);
-					}else{
-						throw new RuntimeException(series+"-"+star+"-"+wv.getParameterType()+"-"+wv.getParameter()+" : 找不到设备1");
+						devicdNameSet.add(deviceName);
 					}
+				}else{
+					throw new RuntimeException(series+"-"+star+"-"+wv.getParameterType()+"-"+wv.getParameter()+" : 找不到设备1");
 				}
-				map.put("exceptionJobConfig", JSON.toJSONString(jobConfigList));
-				//异常参数配置
-				List<WarningValue> exceWarningValues = prewarningService.getWarningValueByParams(series, star, null, parameterType, "1");
-				if(exceWarningValues != null && exceWarningValues.size() > 0){
-					List<ExceptionPointConfig> exceConfigList = new ArrayList<ExceptionPointConfig>();
-					ExceptionPointConfig exceConfig = null;
-					for (WarningValue ew : exceWarningValues) {
-						String deviceName = parameterService.getParameter_deviceName_by_en(series, star, ew.getParameterType(), ew.getParameter());
-						if(StringUtils.isNotBlank(deviceName)){
-							exceConfig = new ExceptionPointConfig();
-							exceConfig.setDeviceType(ew.getParameterType());
-							exceConfig.setDeviceName(deviceName);
-							exceConfig.setParamCode(ew.getParameter());
-							exceConfig.setMax(ew.getMaxVal());
-							exceConfig.setMin(ew.getMinVal());
-							exceConfig.setDelayTime(ew.getTimeZone() * 60 * 1000);//时间单位
-							exceConfigList.add(exceConfig);						
-						}else{
-							throw new RuntimeException(series+"-"+star+"-"+ew.getParameterType()+"-"+ew.getParameter()+" : 找不到设备2");
-						}
-					}
-					map.put("exceptionPointConfig", JSON.toJSONString(exceConfigList));
-					return JSON.toJSONString(map);
-				}
-//				return JSON.toJSONString(jobConfigList);
 			}
-			break;
-		case 2: //如果陀螺
-			//特殊工况参数配置
-			List<WarningValue> topjobWarningValues = prewarningService.getWarningValueByParams(series, star, null, parameterType, "0");
-			if(topjobWarningValues != null && topjobWarningValues.size() > 0){
-				Map<String,String> map = new HashMap<String,String>();
-				List<ExceptionJobConfig> jobConfigList = new ArrayList<ExceptionJobConfig>();
-				ExceptionJobConfig jobConfig = null;
-				for (WarningValue wv : topjobWarningValues) {
-					//TODO 根据参数的qequence值获取参数所属的设备	当前设计中陀螺的设置在配置文件JSON中，所以没有获取			
-					/*//String deviceName = parameterService.getParameter_deviceName_by_en(series, star, wv.getParameterType(), wv.getParameter());
+			map.put("exceptionJobConfig", JSON.toJSONString(jobConfigList));
+			//异常参数配置
+			List<WarningValue> exceWarningValues = prewarningService.getWarningValueByParams(series, star, null, parameterType, "1");
+			if(exceWarningValues != null && exceWarningValues.size() > 0){
+				List<ExceptionPointConfig> exceConfigList = new ArrayList<ExceptionPointConfig>();
+				ExceptionPointConfig exceConfig = null;
+				for (WarningValue ew : exceWarningValues) {
+					String deviceName = parameterService.getParameter_deviceName_by_en(series, star, ew.getParameterType(), ew.getParameter());
 					if(StringUtils.isNotBlank(deviceName)){
-						jobConfig = new ExceptionJobConfig();
-						jobConfig.setDeviceName(deviceName);
-						jobConfig.setDeviceType(wv.getParameterType());
-						jobConfig.setParamCode(wv.getParameter());
-						jobConfig.setMax(wv.getMaxVal());
-						jobConfig.setMin(wv.getMinVal());
-						jobConfig.setDelayTime(wv.getLimitTimes());//时间单位
-						jobConfig.setCount(wv.getTimeZone());
-						jobConfigList.add(jobConfig);
+						exceConfig = new ExceptionPointConfig();
+						exceConfig.setDeviceType(ew.getParameterType());
+						exceConfig.setDeviceName(deviceName);
+						exceConfig.setParamCode(ew.getParameter());
+						exceConfig.setMax(ew.getMaxVal());
+						exceConfig.setMin(ew.getMinVal());
+						exceConfig.setDelayTime(ew.getTimeZone() * 60 * 1000);//时间单位
+						exceConfigList.add(exceConfig);						
 					}else{
-						throw new RuntimeException(series+"-"+star+"-"+wv.getParameterType()+"-"+wv.getParameter()+" : 找不到设备1");
-					}*/
-					jobConfig = new ExceptionJobConfig();
-					jobConfig.setParamCode(wv.getParameter());
-					jobConfig.setDelayTime(wv.getTimeZone());//TODO 设置持续时间 min，注意时间单位
-					jobConfig.setMax(wv.getMaxVal());
-					jobConfig.setMin(wv.getMinVal());
-					jobConfigList.add(jobConfig);
-					
-				}
-				map.put("exceptionJobConfig", JSON.toJSONString(jobConfigList));
-				//异常参数配置
-				List<WarningValue> exceWarningValues = prewarningService.getWarningValueByParams(series, star, null, parameterType, "1");
-				if(exceWarningValues != null && exceWarningValues.size() > 0){
-					List<ExceptionPointConfig> exceConfigList = new ArrayList<ExceptionPointConfig>();
-					ExceptionPointConfig exceConfig = null;
-					String deviceName = "AA";
-					for (WarningValue ew : exceWarningValues) {
-						//TODO 这里应该根据陀螺CSV文件参数的命名规则，用sequence值获取到所属陀螺的名字
-						//String deviceName = parameterService.getParameter_deviceName_by_en(series, star, ew.getParameterType(), ew.getParameter());
-						if(StringUtils.isNotBlank(deviceName)){
-							exceConfig = new ExceptionPointConfig();
-							exceConfig.setDeviceType(ew.getParameterType());
-							exceConfig.setDeviceName(deviceName);
-							exceConfig.setParamCode(ew.getParameter());
-							exceConfig.setMax(ew.getMaxVal());
-							exceConfig.setMin(ew.getMinVal());
-							//exceConfig.setDelayTime(ew.getTimeZone());//时间单位
-							exceConfigList.add(exceConfig);						
-						}else{
-							throw new RuntimeException(series+"-"+star+"-"+ew.getParameterType()+"-"+ew.getParameter()+" : 找不到设备2");
-						}
+						throw new RuntimeException(series+"-"+star+"-"+ew.getParameterType()+"-"+ew.getParameter()+" : 找不到设备2");
 					}
-					map.put("exceptionPointConfig", JSON.toJSONString(exceConfigList));
-					return JSON.toJSONString(map);
 				}
-//				return JSON.toJSONString(jobConfigList);
+				map.put("exceptionPointConfig", JSON.toJSONString(exceConfigList));
 			}
-			break;
-		default:
-			return null;
+			return JSON.toJSONString(map);
 		}
-		
 		return null;
 	}
-
 	@Override
 	public String getExceptionPointConfigList(String series, String star,
 			String parameterType) {
@@ -324,7 +326,7 @@ public class CommunicateServiceImpl implements ICommunicateService{
 		try {
 			VirtualFileSystem file = fileDao.selectByFileTypeIsFileAndMongoFSUUId(version);
 			if (file != null) {
-				System.out.println("updateStatus...");
+				System.out.println("updateStatus by file ...");
 				System.out.println("file.getFileName(): " + file.getFileName());
 				System.out.println("statusType: " + statusType);
 				System.out.println("statusType: " + StatusTrackingType.getStatusTrackingType(statusType).getName());

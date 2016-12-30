@@ -40,6 +40,7 @@ import DataAn.common.utils.UUIDGeneratorUtil;
 import DataAn.fileSystem.dto.FileDto;
 import DataAn.fileSystem.dto.MongoFSDto;
 import DataAn.fileSystem.option.FileType;
+import DataAn.galaxyManager.option.J9Series_Star_ParameterType;
 import DataAn.jfreechart.dto.ConstraintDto;
 import DataAn.jfreechart.dto.LineChartDto;
 import DataAn.jfreechart.service.IJfreechartServcie;
@@ -177,18 +178,20 @@ public class ReportServiceImpl implements IReoportService {
 	private List<Map<String, Object>> getImgTab(List<ParamImgDataDto> paramImgDatas, String parName, String parImg)
 			throws Exception {
 		List<Map<String, Object>> dataList = new ArrayList<Map<String, Object>>();
-		byte[] image = null;
-		for (ParamImgDataDto param : paramImgDatas) {
-			if (StringUtils.isNotBlank(parImg) && StringUtils.isNotBlank(param.getParImg())) {
-				FileInputStream fis = new FileInputStream(param.getParImg());
-				image = new byte[fis.available()];
-				fis.read(image);
-				fis.close();
+		if(paramImgDatas != null && paramImgDatas.size() > 0){
+			byte[] image = null;
+			for (ParamImgDataDto param : paramImgDatas) {
+				if (StringUtils.isNotBlank(parImg) && StringUtils.isNotBlank(param.getParImg())) {
+					FileInputStream fis = new FileInputStream(param.getParImg());
+					image = new byte[fis.available()];
+					fis.read(image);
+					fis.close();
+				}
+				Map<String, Object> record = new HashMap<String, Object>();
+				record.put(parName, param.getParName());
+				record.put(parImg, image);
+				dataList.add(record);
 			}
-			Map<String, Object> record = new HashMap<String, Object>();
-			record.put(parName, param.getParName());
-			record.put(parImg, image);
-			dataList.add(record);
 		}
 		return dataList;
 	}
@@ -703,44 +706,62 @@ public class ReportServiceImpl implements IReoportService {
 		String chartPathThree = OptionConfig.getWebPath() + "\\report\\wordtemplate\\NoData.png";
 		for (String parName : parameterType) {
 			ParamImgDataDto paramImgData = new ParamImgDataDto();
-			paramImgData.setParName(parName);
+			paramImgData.setParName(J9Series_Star_ParameterType.getJ9SeriesStarParameterType(partsType).getName() + ":" + parName);
 			if (chartMap != null && chartMap.size() != 0) {
 				chartPathThree = chartMap.get(parName);
 			}
 			paramImgData.setParImg(chartPathThree);
 			threeParamImgList.add(paramImgData);
 		}
-
+		if(threeParamImgList.size() == 0){
+			ParamImgDataDto paramImgData = new ParamImgDataDto();
+			paramImgData.setParName("");
+			paramImgData.setParImg("");
+			threeParamImgList.add(paramImgData);
+		}
+			
 		// 封装产品转速、电流 图片list
 		List<ParamImgDataDto> twoParamImgList = new ArrayList<ParamImgDataDto>();
 		String chartPathTwo = OptionConfig.getWebPath() + "\\report\\wordtemplate\\NoData.png";
 		for (String product : productType) {
 			ParamImgDataDto paramImgData = new ParamImgDataDto();
-			paramImgData.setParName(product + paramStr);
+			paramImgData.setParName(J9Series_Star_ParameterType.getJ9SeriesStarParameterType(partsType).getName() + ":" + product + paramStr);
 			if (chartMap != null && chartMap.size() != 0) {
 				chartPathTwo = chartMap.get(product + paramStr);
 			}
 			paramImgData.setParImg(chartPathTwo);
 			twoParamImgList.add(paramImgData);
 		}
-
+		if(twoParamImgList.size() == 0){
+			ParamImgDataDto paramImgData = new ParamImgDataDto();
+			paramImgData.setParName("");
+			paramImgData.setParImg("");
+			twoParamImgList.add(paramImgData);
+		}
+			
 		// 封装产品非转速、电流 图片list
 		List<ParamImgDataDto> oneParamImgList = new ArrayList<ParamImgDataDto>();
 		String chartPathOne = OptionConfig.getWebPath() + "\\report\\wordtemplate\\NoData.png";
 		for (StarParam starParam : firstList) {
 			ParamImgDataDto paramImgData = new ParamImgDataDto();
-			paramImgData.setParName(starParam.getProductName() + starParam.getParameterType());
+			paramImgData.setParName(J9Series_Star_ParameterType.getJ9SeriesStarParameterType(partsType).getName() + ":" + starParam.getProductName() + starParam.getParameterType());
 			if (chartMap != null && chartMap.size() != 0) {
 				chartPathOne = chartMap.get(starParam.getProductName() + starParam.getParameterType());
 			}
 			paramImgData.setParImg(chartPathOne);
 			oneParamImgList.add(paramImgData);
 		}
+		if( oneParamImgList.size() == 0){
+			ParamImgDataDto paramImgData = new ParamImgDataDto();
+			paramImgData.setParName("");
+			paramImgData.setParImg("");
+			oneParamImgList.add(paramImgData);
+		}
+
 		// 封装产品列表list
 		List<ProductDto> products = new ArrayList<ProductDto>();
 
 		for (String product : productType) {
-
 			int proMovableNum = 0;
 			for (StarParam starParam : starParamList) {
 				int movableNum = getMovableNumByParamCode(seriesId, starId, partsType, beginDate, endDate,
@@ -760,6 +781,7 @@ public class ReportServiceImpl implements IReoportService {
 		data.setOneParamImg(oneParamImgList);
 		data.setTwoParamImg(twoParamImgList);
 		data.setThreeParamImg(threeParamImgList);
+
 
 		reportDoc(filename, data, templateUrl, docPath);
 	}

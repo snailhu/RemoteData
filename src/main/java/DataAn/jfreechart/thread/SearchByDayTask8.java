@@ -63,7 +63,7 @@ public class SearchByDayTask8 extends RecursiveTask<LineChartDto>{
 		if(index == 0){
 			throw new RuntimeException(DateUtil.format(beginDate) + " 到 "+ DateUtil.format(endDate) +" 获取数据失败！");
 		}
-		System.out.println(DateUtil.format(beginDate) + " 到 "+ DateUtil.format(endDate) + " index: " + index);
+		System.out.println(DateUtil.format(beginDate) + " 到 "+ DateUtil.format(endDate) + " count==index: " + index);
 		
 		Map<String,TimeSeriesDataItem[]> arrayDataMap = new HashMap<String,TimeSeriesDataItem[]>();
 		
@@ -116,7 +116,7 @@ public class SearchByDayTask8 extends RecursiveTask<LineChartDto>{
 			lineMapDto = task.join();
 			if(lineMapDto != null){
 				
-				System.out.println(lineMapDto);	
+//				System.out.println(lineMapDto);	
 				
 				// 获取最小值
 				tempMinMap = lineMapDto.getMinMap();

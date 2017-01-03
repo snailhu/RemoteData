@@ -14,13 +14,12 @@ import DataAn.mongo.service.IMongoGridFSService;
 @Service
 public class MongoGridFSServiceImpl implements IMongoGridFSService{
 
-	//从mongofs中获取数据流
-	private IDfsDb dfs = MongoDfsDb.getInstance();
 	@Resource
 	private IVirtualFileSystemDao fileDao;
 	
 	@Override
 	public InputStream downLoadToStream(String mongoFSUUId) {
+		IDfsDb dfs = MongoDfsDb.getInstance();
 		List<VirtualFileSystem> list = fileDao.findByParam("mongoFSUUId", mongoFSUUId);
 		if (list != null && list.size() > 0) {
 			VirtualFileSystem fs = list.get(0);

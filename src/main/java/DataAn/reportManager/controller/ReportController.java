@@ -198,18 +198,19 @@ public class ReportController {
 		
 		String time = DateUtil.getNowTime("yyyy-MM-dd");
 		String partsName = "";
-		if("flywheel".equals(partsType)) {
-			partsName = "飞轮";
+		if(J9Series_Star_ParameterType.FLYWHEEL.getValue().equals(partsType)) {
+			partsName = J9Series_Star_ParameterType.FLYWHEEL.getName();
 			templateUrl = OptionConfig.getWebPath() + "\\report\\wordtemplate\\卫星状态报告_flywheel.doc";
-		}else if("top".equals(partsType)) {
-			partsName = "陀螺";
+		}else if(J9Series_Star_ParameterType.TOP.getValue().equals(partsType)) {
+			partsName = J9Series_Star_ParameterType.TOP.getName();
 			templateUrl = OptionConfig.getWebPath() + "\\report\\wordtemplate\\卫星状态报告_top.doc";
 		}
 		String filename = seriesId+"_"+starId+"_"+partsName+"_"+time+".doc";
+		
 		String docPath = OptionConfig.getWebPath() + File.separator + 
 				"report" + File.separator + 
 				DateUtil.format(new Date(), "yyyy-MM-dd")+ File.separator + 
-				UUIDGeneratorUtil.getUUID()+filename;
+				UUIDGeneratorUtil.getUUID()+File.separator +filename;
 		
 		Date beginDate = DateUtil.format(beginTime,"yyyy-MM-dd");
 		Date endDate =  DateUtil.format(endTime,"yyyy-MM-dd");

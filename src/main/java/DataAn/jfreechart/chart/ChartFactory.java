@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 
+import org.apache.commons.lang3.StringUtils;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.DateAxis;
 import org.jfree.chart.axis.DateTickUnit;
@@ -131,8 +132,10 @@ public class ChartFactory {
 			title = configMap.get("title");
 			categoryAxisLabel = configMap.get("categoryAxisLabel"); 
 			valueAxisLabel = configMap.get("valueAxisLabel");
-			y1Label = "单位( " + configMap.get("y1Label") + " )";
-			y2Label = "单位( " + configMap.get("y2Label") + " )";
+			if(StringUtils.isNotBlank(configMap.get("y1Label"))) 
+				y1Label = "单位( " + configMap.get("y1Label") + " )";
+			if(StringUtils.isNotBlank(configMap.get("y2Label"))) 
+				y2Label = "单位( " + configMap.get("y2Label") + " )";
 		}
 		dataset1 = datasetList.get(0);			
         JFreeChart chart = org.jfree.chart.ChartFactory.createTimeSeriesChart(title, categoryAxisLabel, valueAxisLabel,dataset1);

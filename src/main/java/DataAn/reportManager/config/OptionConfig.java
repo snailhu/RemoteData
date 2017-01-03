@@ -11,9 +11,7 @@ public class OptionConfig {
 	private static final String config="reportConfig.properties";
 	
 	private static final String charset="utf-8";
-	
-	
-	
+		
 	private static String PARAM_STR ;
 	
 	public static String getParamStr() {
@@ -27,12 +25,18 @@ public class OptionConfig {
 	}
 	
 	public static String getWebPath(){
-		String classPath = OptionConfig.class.getClassLoader().getResource("").getPath();		
-		String webPath = classPath.substring(0, classPath.indexOf("WEB-INF"));
-		webPath = webPath.replace("/", File.separator);
-		if(webPath.indexOf(File.separator) == 0){
-			webPath = webPath.substring(1);
+		String classPath = OptionConfig.class.getClassLoader().getResource("").getPath();	
+		int index = classPath.indexOf("WEB-INF");
+		if(index > -1){
+			String webPath = classPath.substring(0, index);
+			webPath = webPath.replace("/", File.separator);
+			if(webPath.indexOf(File.separator) == 0){
+				webPath = webPath.substring(1);
+			}
+			return webPath;			
 		}
-		return webPath;
+//		System.out.println("can not get web path...");
+		String temp = "C:\\Development\\Workspaces\\Git\\Repository-1\\RemoteData\\src\\main\\webapp";
+		return temp;
 	}	
 }

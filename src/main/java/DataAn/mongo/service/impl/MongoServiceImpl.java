@@ -7,8 +7,6 @@ import java.util.Set;
 import org.bson.Document;
 import org.springframework.stereotype.Service;
 import com.mongodb.client.MongoCursor;
-import DataAn.common.utils.DateUtil;
-import DataAn.galaxyManager.option.J9Series_Star_ParameterType;
 import DataAn.mongo.client.MongodbUtil;
 import DataAn.mongo.init.InitMongo;
 import DataAn.mongo.service.IMongoService;
@@ -16,11 +14,11 @@ import DataAn.mongo.service.IMongoService;
 @Service
 public class MongoServiceImpl implements IMongoService{
 
-	private MongodbUtil mg = MongodbUtil.getInstance();
 
 	@Override
 	public void saveCSVData(String series, String star,String paramType, String date,
 			List<Document> documents, String versions) throws Exception {
+		MongodbUtil mg = MongodbUtil.getInstance();
 		String databaseName = InitMongo.getDataDBBySeriesAndStar(series, star);
 		Set<String> isexistCols = mg.getExistCollections(databaseName);		
 		String collectionName = paramType;
@@ -51,6 +49,8 @@ public class MongoServiceImpl implements IMongoService{
 	public void saveCSVData(String series, String star, String paramType,
 			String date, Map<String, List<Document>> map, String versions)
 			throws Exception {
+		MongodbUtil mg = MongodbUtil.getInstance();
+		
 		String databaseName = InitMongo.getDataDBBySeriesAndStar(series, star);
 		
 		Set<String> isexistCols = mg.getExistCollections(databaseName);
@@ -93,6 +93,7 @@ public class MongoServiceImpl implements IMongoService{
 	@Override
 	public void updateCSVDataByVersions(String series, String star,
 			String paramType, String versions) {
+		MongodbUtil mg = MongodbUtil.getInstance();
 		String databaseName = InitMongo.getDataDBBySeriesAndStar(series, star);
 //		List<String> list = InitMongo.getGradingCollectionNames(paramType);
 //		if(list != null && list.size() > 0){
@@ -121,6 +122,7 @@ public class MongoServiceImpl implements IMongoService{
 	@Override
 	public void updateCSVDataByDate(String series, String star,
 			String paramType, Date beginDate, Date endDate) {
+		MongodbUtil mg = MongodbUtil.getInstance();
 		String databaseName = InitMongo.getDataDBBySeriesAndStar(series, star);
 //		List<String> list = InitMongo.getGradingCollectionNames(paramType);
 //		if(list != null && list.size() > 0){
@@ -149,6 +151,7 @@ public class MongoServiceImpl implements IMongoService{
 	@Override
 	public MongoCursor<Document> findByYear_month_day(String series,
 			String star, String paramType, String date) {
+		MongodbUtil mg = MongodbUtil.getInstance();
 		String databaseName = InitMongo.getDataDBBySeriesAndStar(series, star);
 		String collectionName =  paramType;
 		
@@ -159,6 +162,7 @@ public class MongoServiceImpl implements IMongoService{
 	@Override
 	public MongoCursor<Document> findByWeek_of_year(String series,
 			String star, String paramType, int week_of_year) {
+		MongodbUtil mg = MongodbUtil.getInstance();
 		String databaseName = InitMongo.getDataDBBySeriesAndStar(series, star);
 		String collectionName =  paramType;
 		
@@ -168,6 +172,7 @@ public class MongoServiceImpl implements IMongoService{
 	@Override
 	public MongoCursor<Document> findByDate(String series, String star,
 			String paramType, Date beginDate, Date endDate) {
+		MongodbUtil mg = MongodbUtil.getInstance();
 		String databaseName = InitMongo.getDataDBBySeriesAndStar(series, star);
 		//1s 等级数据集
 		String collectionName =  paramType + "1s";
@@ -180,6 +185,7 @@ public class MongoServiceImpl implements IMongoService{
 	@Override
 	public long findMovableNumByParamCode(String series, String star, String collectionName, String paramName,
 			Date beginDate, Date endDate) {
+		MongodbUtil mg = MongodbUtil.getInstance();
 		String databaseName = InitMongo.getDataDBBySeriesAndStar(series, star);
 		return mg.countByDate(databaseName, collectionName, beginDate, endDate, "paramName", paramName);
 	}
@@ -187,6 +193,7 @@ public class MongoServiceImpl implements IMongoService{
 	@Override
 	public long findJobNumByDeviceName(String series, String star, String paramType, String deviceName, 
 			Date beginDate,Date endDate) {
+		MongodbUtil mg = MongodbUtil.getInstance();
 		String databaseName = InitMongo.getDataDBBySeriesAndStar(series, star);
 		String collectionName =  paramType + "_job";
 		return mg.countByDate(databaseName, collectionName, beginDate, endDate, "deviceName", deviceName);

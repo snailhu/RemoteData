@@ -15,6 +15,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import DataAn.common.utils.DateUtil;
+import DataAn.galaxy.option.J9Series_Star_ParameterType;
 import DataAn.galaxyManager.option.J9SeriesType;
 import DataAn.galaxyManager.option.SeriesType;
 import DataAn.jfreechart.dto.ConstraintDto;
@@ -116,7 +117,7 @@ public class JfreechartServcieTest {
 		long begin = System.currentTimeMillis();
 		String series = SeriesType.J9_SERIES.getValue();
 		String star = J9SeriesType.STRA5.getValue();
-		String paramType = "flywheel";
+		String paramType = J9Series_Star_ParameterType.FLYWHEEL.getValue();
 		Map<String,List<ConstraintDto>> map = reoportService.getConstraintDtoList(series,star,paramType);
 		
 		Map<String,List<ConstraintDto>> map2 = new HashMap<String,List<ConstraintDto>>();

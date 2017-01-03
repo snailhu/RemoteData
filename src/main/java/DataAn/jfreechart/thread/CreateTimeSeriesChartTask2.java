@@ -5,8 +5,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.RecursiveTask;
 import org.apache.log4j.Logger;
 import org.jfree.chart.ChartUtilities;
@@ -52,8 +54,9 @@ public class CreateTimeSeriesChartTask2 extends RecursiveTask<String>{
 
 	@Override
 	protected String compute() {
+		String noDataChartPath = OptionConfig.getWebPath() + "\\report\\wordtemplate\\NoData.png";
 		if(constraintList == null || constraintList.size() == 0)
-			return null;
+			return noDataChartPath;
 		try {
 			long begin = System.currentTimeMillis();	
 			
@@ -89,8 +92,14 @@ public class CreateTimeSeriesChartTask2 extends RecursiveTask<String>{
 				}
 				//至少有一次
 				if(flag){
-					datasetList.add(dataset);	
-					y1Label = constraintList.get(0).getUnits();
+					datasetList.add(dataset);
+					Set<String> unitsSet = new HashSet<String>();
+					for (ConstraintDto constraintDto : constraintList) {
+						unitsSet.add(constraintDto.getUnits());
+					}
+					//当参数单位只有一个的时候添加
+					if(unitsSet.size() == 1)
+						y1Label = constraintList.get(0).getUnits();
 				}
 			}
 			
@@ -124,8 +133,7 @@ public class CreateTimeSeriesChartTask2 extends RecursiveTask<String>{
 		} catch (IOException e) {
 			e.printStackTrace();
 		}				
-		String chartPathThree = OptionConfig.getWebPath() + "\\report\\wordtemplate\\NoData.png";
-		return chartPathThree;
+		return noDataChartPath;
 	}
 
 }

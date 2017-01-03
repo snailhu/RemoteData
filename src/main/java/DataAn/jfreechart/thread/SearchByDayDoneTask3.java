@@ -54,7 +54,7 @@ public class SearchByDayDoneTask3 extends RecursiveTask<LineMapDto>{
 
 	@Override
 	protected LineMapDto compute() {
-		long begin = System.currentTimeMillis();
+//		long begin = System.currentTimeMillis();
 		
 		MongodbUtil mg = MongodbUtil.getInstance();
 		int index = 0;
@@ -62,7 +62,7 @@ public class SearchByDayDoneTask3 extends RecursiveTask<LineMapDto>{
 			index = (int) mg.countByDate(databaseName, collectionName, beginDate0, beginDate);//计数器
 		}
 		
-		System.out.println(DateUtil.format(beginDate) + " 到 "+ DateUtil.format(endDate) + " begin get mongodb data ...index: " + index);
+//		System.out.println(DateUtil.format(beginDate) + " 到 "+ DateUtil.format(endDate) + " begin get mongodb data ...index: " + index);
 		
 		long nowCount = mg.countByDate(databaseName, collectionName, beginDate, endDate);
 		if(nowCount == 0)
@@ -152,9 +152,10 @@ public class SearchByDayDoneTask3 extends RecursiveTask<LineMapDto>{
 		lineMapDto.setIndex(index);
 		lineMapDto.setCount(count);
 		
-		long end_getData = System.currentTimeMillis();		
-		System.out.println(DateUtil.format(beginDate) + " 到 "+ DateUtil.format(endDate) + " get mongodb data count: " + count);
-		System.out.println("getData time: " + (end_getData - begin));
+//		long end_getData = System.currentTimeMillis();		
+//		System.out.println(DateUtil.format(beginDate) + " 到 "+ DateUtil.format(endDate) + " get mongodb data count: " + count);
+//		System.out.println("getData time: " + (end_getData - begin));
+		
 		return lineMapDto;
 	}
 	

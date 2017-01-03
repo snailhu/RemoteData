@@ -20,6 +20,7 @@ import DataAn.common.utils.UUIDGeneratorUtil;
 import DataAn.fileSystem.dao.IVirtualFileSystemDao;
 import DataAn.fileSystem.domain.VirtualFileSystem;
 import DataAn.fileSystem.service.IVirtualFileSystemService;
+import DataAn.galaxy.option.J9Series_Star_ParameterType;
 import DataAn.mongo.client.MongodbUtil;
 import DataAn.mongo.fs.IDfsDb;
 import DataAn.mongo.fs.MongoDfsDb;
@@ -152,11 +153,11 @@ public class JobServiceImpl implements IJobService{
 			String time = DateUtil.getNowTime("yyyy-MM-dd");
 			
 			String partsName = "";
-			if("flywheel".equals(partsType)) {
-				partsName = "飞轮";
+			if(J9Series_Star_ParameterType.FLYWHEEL.getValue().equals(partsType)) {
+				partsName = J9Series_Star_ParameterType.FLYWHEEL.getName();
 				templateUrl = OptionConfig.getWebPath() + "\\report\\wordtemplate\\卫星状态报告_flywheel.doc";
-			}else if("top".equals(partsType)) {
-				partsName = "陀螺";
+			}else if(J9Series_Star_ParameterType.TOP.getValue().equals(partsType)) {
+				partsName = J9Series_Star_ParameterType.TOP.getName();
 				templateUrl = OptionConfig.getWebPath() + "\\report\\wordtemplate\\卫星状态报告_top.doc";
 			}
 			//TODO 切换数据库

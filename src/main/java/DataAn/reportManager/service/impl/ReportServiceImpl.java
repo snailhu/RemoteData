@@ -633,7 +633,8 @@ public class ReportServiceImpl implements IReoportService {
 		}
 		// 等到产品数 如飞轮A、飞轮B
 		List<String> productType = new ArrayList<String>();
-		for (StarParam starParam : doubleList) {
+//		for (StarParam starParam : doubleList) {
+		for (StarParam starParam : starParamList) {
 			if (!productType.contains(starParam.getProductName())) {
 				productType.add(starParam.getProductName());
 			}

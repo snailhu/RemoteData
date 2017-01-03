@@ -70,4 +70,12 @@ public class CommonConfig {
 								UUIDGeneratorUtil.getUUID();
 		return uploadCachePath;
 	}
+	
+	public static String getDocCachePath() {
+		String docCachePath = getCachePath() + File.separator + 
+								"doc"+ File.separator + 
+								DateUtil.format(new Date(), "yyyy-MM-dd")+ File.separator + 
+								UUIDGeneratorUtil.getUUID();
+		return docCachePath;
+	}
 }

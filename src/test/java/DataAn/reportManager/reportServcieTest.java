@@ -1,6 +1,8 @@
 package DataAn.reportManager;
 
+import java.io.File;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -10,7 +12,12 @@ import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import DataAn.common.config.CommonConfig;
 import DataAn.common.utils.DateUtil;
+import DataAn.common.utils.UUIDGeneratorUtil;
+import DataAn.galaxy.option.J9Series_Star_ParameterType;
+import DataAn.galaxyManager.option.J9SeriesType;
+import DataAn.galaxyManager.option.SeriesType;
 import DataAn.jfreechart.service.IJfreechartServcie;
 import DataAn.reportManager.domain.StarParam;
 import DataAn.reportManager.dto.DataToDocDto;
@@ -43,6 +50,40 @@ public class reportServcieTest {
 			System.out.println(starParam.getParamName());
 		}
 	}
+	
+	@Test
+	public void createReport() throws Exception{
+		
+		String beginTime = "2016-12-01 00:00:00";
+		String endTime = "2016-12-07 00:00:00";
+//		String beginTime = "2005-01-01 00:00:00";
+//		String endTime = "2005-01-05 00:00:00";
+		Date beginDate = DateUtil.format(beginTime,"yyyy-MM-dd");
+		Date endDate =  DateUtil.format(endTime,"yyyy-MM-dd");
+		
+		String seriesId = SeriesType.J9_SERIES.getValue();
+		String starId = J9SeriesType.STRA2.getValue();
+		String partsType = J9Series_Star_ParameterType.FLYWHEEL.getValue();
+		
+		
+		String time = DateUtil.getNowTime("yyyy-MM-dd");
+		String partsName = "";
+		String templateUrl = OptionConfig.getWebPath() + "\\report\\wordtemplate\\卫星状态报告1.doc";
+		if(J9Series_Star_ParameterType.FLYWHEEL.getValue().equals(partsType)) {
+			partsName = J9Series_Star_ParameterType.FLYWHEEL.getName();
+			templateUrl = OptionConfig.getWebPath() + "\\report\\wordtemplate\\卫星状态报告_flywheel.doc";
+		}else if(J9Series_Star_ParameterType.TOP.getValue().equals(partsType)) {
+			partsName = J9Series_Star_ParameterType.TOP.getName();
+			templateUrl = OptionConfig.getWebPath() + "\\report\\wordtemplate\\卫星状态报告_top.doc";
+		}
+		String filename = seriesId+"_"+starId+"_"+partsName+"_"+time+".doc";
+		String docPath = CommonConfig.getDocCachePath() + File.separator + filename;
+		
+		reoportService.createReport(beginDate, endDate, filename, templateUrl, docPath, seriesId, starId, partsType);
+		
+		System.out.println(docPath);
+	}
+	
 	@Test
 	public void createReprotTest() throws Exception{
 		

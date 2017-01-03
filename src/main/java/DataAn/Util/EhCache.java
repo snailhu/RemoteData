@@ -25,7 +25,8 @@ public class EhCache {
 	        /* 
 	     * 通过名称从缓存中获取数据 
 	     */  
-	    public  Object getCacheElement(String cacheKey) throws Exception {  
+	    @SuppressWarnings("deprecation")
+		public  Object getCacheElement(String cacheKey) throws Exception {  
 	            net.sf.ehcache.Element e = cache.get(cacheKey);  
 	        if (e == null) {  
 	            return null;  

@@ -216,9 +216,9 @@ public class MongodbUtil {
 	public Set<String> getExistCollections(String databaseName){
 		Set<String> set = new HashSet<String>();
 		MongoDatabase db = getDB(databaseName);
-		 MongoIterable<String> cols = db.listCollectionNames();
-		 for (String col : cols) {
-			 set.add(col);
+		MongoIterable<String> cols = db.listCollectionNames();
+		for (String col : cols) {
+			set.add(col);
 		}
 		return set;
 	}

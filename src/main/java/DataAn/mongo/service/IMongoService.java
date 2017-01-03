@@ -34,7 +34,7 @@ public interface IMongoService {
 			throws Exception;
 
 	/**
-	* Description: 更新mongodb数据
+	* Description: 更新mongodb数据状态为0
 	* @param series 系列 如：j9
 	* @param star 星号 如：02
 	* @param paramType 参数类型 如：飞轮（flywheel)
@@ -44,7 +44,7 @@ public interface IMongoService {
 			String versions);
 	
 	/**
-	* Description: 通过系列、星、设备类型来 更新mongodb数据
+	* Description: 通过系列、星、设备类型来 更新mongodb数据状态为0
 	* @param series 系列 如：j9
 	* @param star 星号 如：02
 	* @param paramType 参数类型 如：飞轮（flywheel)
@@ -65,4 +65,8 @@ public interface IMongoService {
 	
 	public long findMovableNumByParamCode(String series,String star , 
 			String collectionName, String paramCode,Date beginDate, Date endDate);
+	
+	public long findJobNumByDeviceName(String series,String star , 
+			String paramType, String deviceName,Date beginDate, Date endDate);
+	
 }

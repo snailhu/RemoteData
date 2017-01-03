@@ -94,16 +94,26 @@ public class MongoServiceImpl implements IMongoService{
 	public void updateCSVDataByVersions(String series, String star,
 			String paramType, String versions) {
 		String databaseName = InitMongo.getDataDBBySeriesAndStar(series, star);
-		List<String> list = InitMongo.getGradingCollectionNames(paramType);
-		if(list != null && list.size() > 0){
-			Set<String> isexistCols = mg.getExistCollections(databaseName);
-			if(isexistCols != null && isexistCols.size() > 0){
-				for (String collectionName : list) {
-					if(isexistCols.contains(collectionName)){
-						//设置某一个版本的数据的状态为0
-						mg.update(databaseName, collectionName, "versions", versions);							
-					}
-				}			
+//		List<String> list = InitMongo.getGradingCollectionNames(paramType);
+//		if(list != null && list.size() > 0){
+//			Set<String> isexistCols = mg.getExistCollections(databaseName);
+//			if(isexistCols != null && isexistCols.size() > 0){
+//				for (String collectionName : list) {
+//					if(isexistCols.contains(collectionName)){
+//						//设置某一个版本的数据的状态为0
+//						mg.update(databaseName, collectionName, "versions", versions);							
+//					}
+//				}			
+//			}
+//		}
+		
+		Set<String> isexistCols = mg.getExistCollections(databaseName);
+		if(isexistCols != null && isexistCols.size() > 0){
+			for (String collectionName : isexistCols) {
+				if(collectionName.indexOf(paramType) > -1){
+					//设置某一个版本的数据的状态为0
+					mg.update(databaseName, collectionName, "versions", versions);		
+				}
 			}
 		}
 	}
@@ -112,16 +122,26 @@ public class MongoServiceImpl implements IMongoService{
 	public void updateCSVDataByDate(String series, String star,
 			String paramType, Date beginDate, Date endDate) {
 		String databaseName = InitMongo.getDataDBBySeriesAndStar(series, star);
-		List<String> list = InitMongo.getGradingCollectionNames(paramType);
-		if(list != null && list.size() > 0){
-			Set<String> isexistCols = mg.getExistCollections(databaseName);
-			if(isexistCols != null && isexistCols.size() > 0){
-				for (String collectionName : list) {
-					if(isexistCols.contains(collectionName)){
-						//设置同一时间段的数据的状态为0
-						mg.updateByDate(databaseName, collectionName, beginDate, endDate);								
-					}
-				}			
+//		List<String> list = InitMongo.getGradingCollectionNames(paramType);
+//		if(list != null && list.size() > 0){
+//			Set<String> isexistCols = mg.getExistCollections(databaseName);
+//			if(isexistCols != null && isexistCols.size() > 0){
+//				for (String collectionName : list) {
+//					if(isexistCols.contains(collectionName)){
+//						//设置同一时间段的数据的状态为0
+//						mg.updateByDate(databaseName, collectionName, beginDate, endDate);								
+//					}
+//				}			
+//			}
+//		}
+		
+		Set<String> isexistCols = mg.getExistCollections(databaseName);
+		if(isexistCols != null && isexistCols.size() > 0){
+			for (String collectionName : isexistCols) {
+				if(collectionName.indexOf(paramType) > -1){
+					//设置同一时间段的数据的状态为0
+					mg.updateByDate(databaseName, collectionName, beginDate, endDate);
+				}
 			}
 		}
 	}
@@ -162,6 +182,14 @@ public class MongoServiceImpl implements IMongoService{
 			Date beginDate, Date endDate) {
 		String databaseName = InitMongo.getDataDBBySeriesAndStar(series, star);
 		return mg.countByDate(databaseName, collectionName, beginDate, endDate, "paramName", paramName);
+	}
+
+	@Override
+	public long findJobNumByDeviceName(String series, String star, String paramType, String deviceName, 
+			Date beginDate,Date endDate) {
+		String databaseName = InitMongo.getDataDBBySeriesAndStar(series, star);
+		String collectionName =  paramType + "_job";
+		return mg.countByDate(databaseName, collectionName, beginDate, endDate, "deviceName", deviceName);
 	}
 
 }

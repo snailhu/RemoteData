@@ -763,13 +763,15 @@ public class ReportServiceImpl implements IReoportService {
 
 		for (String product : productType) {
 			int proMovableNum = 0;
-			for (StarParam starParam : starParamList) {
-				int movableNum = getMovableNumByParamCode(seriesId, starId, partsType, beginDate, endDate,
-						starParam.getParamCode());
-				if (product.equals(starParam.getProductName())) {
-					proMovableNum += movableNum;
-				}
-			}
+//			for (StarParam starParam : starParamList) {
+//				int movableNum = getJobNumByParamCode(seriesId, starId, partsType, beginDate, endDate,
+//						starParam.getParamCode());
+//				if (product.equals(starParam.getProductName())) {
+//					proMovableNum += movableNum;
+//				}
+//			}
+			proMovableNum = this.getJobNumByDeviceName(seriesId, starId, partsType, beginDate, endDate, product);
+					
 			ProductDto productDto = new ProductDto();
 			productDto.setProductName(product);
 			productDto.setMovableNum(proMovableNum);
@@ -862,14 +864,22 @@ public class ReportServiceImpl implements IReoportService {
 		constraintDto.setUnits(starParam.getValueUnit());
 		return constraintDto;
 	}
-	private int getMovableNumByParamCode(String seriesId, String starId, String partsType, Date beginDate, Date endDate,
-			String paramCode) {
-		String collectionName = partsType + "_SpecialCase";
-		long mnum = iMongoService.findMovableNumByParamCode(seriesId, starId, collectionName, paramCode, beginDate,
+	
+//	private int getJobNumByParamCode(String seriesId, String starId, String partsType, Date beginDate, Date endDate,
+//			String paramCode) {
+//		String collectionName = partsType + "_SpecialCase";
+//		long mnum = iMongoService.findMovableNumByParamCode(seriesId, starId, collectionName, paramCode, beginDate,
+//				endDate);
+//		return Integer.parseInt(String.valueOf(mnum));
+//	}
+
+	private int getJobNumByDeviceName(String seriesId, String starId, String partsType, Date beginDate, Date endDate,
+			String deviceName) {
+		long mnum = iMongoService.findJobNumByDeviceName(seriesId, starId, partsType, deviceName, beginDate,
 				endDate);
 		return Integer.parseInt(String.valueOf(mnum));
 	}
-
+	
 	@Override
 	public ReportFileSystem insertReportToDB(String filename, String docPath, String seriesId, String starId,
 			String partsType, String startTime, String endTime, String databaseName, String partsName)

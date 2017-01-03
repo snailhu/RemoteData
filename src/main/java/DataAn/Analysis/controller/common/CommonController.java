@@ -1,6 +1,5 @@
 package DataAn.Analysis.controller.common;
 
-import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -22,8 +21,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.ctc.wstx.util.DataUtil;
-
 import DataAn.Analysis.dto.ConstraintDto;
 import DataAn.Analysis.dto.GroupMenu;
 import DataAn.Analysis.dto.ParamAttributeDto;
@@ -35,9 +32,9 @@ import DataAn.Analysis.dto.YearAndParamDataDto;
 import DataAn.Util.EhCache;
 import DataAn.Util.JsonStringToObj;
 import DataAn.common.utils.DateUtil;
-import DataAn.galaxyManager.option.J9Series_Star_ParameterType;
 import DataAn.galaxyManager.dto.SeriesDto;
 import DataAn.galaxyManager.dto.StarDto;
+import DataAn.galaxyManager.option.J9Series_Star_ParameterType;
 import DataAn.galaxyManager.service.IJ9Series_Star_Service;
 import DataAn.galaxyManager.service.IParameterService;
 import DataAn.galaxyManager.service.ISeriesService;

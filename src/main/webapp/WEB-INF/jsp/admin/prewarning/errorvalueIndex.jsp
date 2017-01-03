@@ -663,6 +663,8 @@
 										</select>
 									</div>
 								</div>
+								
+								<div id="edit-flyWheelTimeZoneDiv">
 								<div class="space-4"></div>
 								<div class="form-group">
 									<label class="col-lg-3 control-label no-padding-right"
@@ -672,6 +674,8 @@
 											placeholder="时间区间" class="form-control" />
 									</div>
 								</div>
+								</div>
+								
 								<div class="space-4"></div>
 								<div class="form-group">
 									<label class="col-lg-3 control-label no-padding-right"
@@ -1031,10 +1035,7 @@
 						if(parameterType=='top')
 						{
 							$('#add-timeZone').val(2);
-							//$('#add-timeZone').hide();
-							console.log("隐藏前");
-							$('#add-flyWheelTimeZoneDiv').hide();
-							console.log("隐藏后");							
+							$('#add-flyWheelTimeZoneDiv').hide();							
 						}
 			  $.get('<%=request.getContextPath()%>/admin/prewarning/getParamList', {'parameterType':parameterType , 'series':seriesId ,  'star':starId}, function (res) {
 				  if(res) {
@@ -1058,6 +1059,16 @@
 		 	var parameterType = $('#edit-parameterType').val();	
 		 	var seriesId = $('#edit-series').val();
 		 	 var starId = $('#edit-star').val();
+		 	 
+		 	 $('#edit-flyWheelTimeZoneDiv').show();	 	
+		 	//如果是陀螺则隐藏时间区间输入框
+		 	console.log("当前选择的设备是："+parameterType);
+						if(parameterType=='top')
+						{
+							$('#edit-timeZone').val(2);
+							$('#edit-flyWheelTimeZoneDiv').hide();							
+						}
+		 	 
 			  $.get('<%=request.getContextPath()%>/admin/prewarning/getParamList', {'parameterType':parameterType , 'series':seriesId ,  'star':starId}, function (res) {
 				  if(res) {
 					  $('#edit-parameter').find("option").remove();

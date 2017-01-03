@@ -562,15 +562,19 @@
 										</select>
 									</div>
 								</div>
-								<div class="space-4"></div>
-								<div class="form-group">
-									<label class="col-lg-3 control-label no-padding-right"
-										for="add-timeZone"> 时间区间(min)： </label>
-									<div class="col-sm-6">
-										<input type="text" name="timeZone" id="add-timeZone"
-											placeholder="时间区间" class="form-control" />
+								
+								<div id="add-flyWheelTimeZoneDiv" style="display: none;">
+									<div class="space-4"></div>
+									<div class="form-group">
+										<label class="col-lg-3 control-label no-padding-right"
+											for="add-timeZone"> 时间区间(min)： </label>
+										<div class="col-sm-6">
+											<input type="text" name="timeZone" id="add-timeZone"
+												placeholder="时间区间" class="form-control" />
+										</div>
 									</div>
 								</div>
+								
 								<div class="space-4"></div>
 								<div class="form-group">
 									<label class="col-lg-3 control-label no-padding-right"
@@ -717,7 +721,7 @@
 		var valueGrid;
         $(function () {
         	valueGrid = $("#valueList").datagrid({
-                url: '<%=request.getContextPath()%>/admin/prewarning/getValueList?warningType=1',
+                //url: '<%=request.getContextPath()%>/admin/prewarning/getValueList?warningType=1',
 								rownumbers : true,
 								fitColumns : true,
 								idField : 'valueId',//'valueId',
@@ -1019,7 +1023,19 @@
         $("#add-parameterType").change(function(){
 		 	var parameterType = $('#add-parameterType').val();	
 		 	var seriesId = $('#add-series').val();
-		 	 var starId = $('#add-star').val();
+		 	var starId = $('#add-star').val();	
+		 	
+		 	$('#add-flyWheelTimeZoneDiv').show();	 	
+		 	//如果是陀螺则隐藏时间区间输入框
+		 	console.log("当前选择的设备是："+parameterType);
+						if(parameterType=='top')
+						{
+							$('#add-timeZone').val(2);
+							//$('#add-timeZone').hide();
+							console.log("隐藏前");
+							$('#add-flyWheelTimeZoneDiv').hide();
+							console.log("隐藏后");							
+						}
 			  $.get('<%=request.getContextPath()%>/admin/prewarning/getParamList', {'parameterType':parameterType , 'series':seriesId ,  'star':starId}, function (res) {
 				  if(res) {
 					  $('#add-parameter').find("option").remove();
@@ -1081,13 +1097,184 @@
 			var star = $('#search-star').val();
 			var parameterType = $('#search-parameterType').val();
 			var parameter = $('#search-parameter').val();
-			valueGrid.datagrid('load', {
+			/*valueGrid.datagrid('load', {
 				series : series,
 				star : star,
 				parameterType : parameterType,
 				parameter : parameter,
 				warningType : "1"
-			});
+			});*/
+			if(parameterType=='flywheel'){
+			valueGrid = $("#valueList").datagrid({
+                url: '<%=request.getContextPath()%>/admin/prewarning/getValueList?warningType=1',
+								rownumbers : true,
+								fitColumns : true,
+								idField : 'valueId',//'valueId',
+								pageSize : 10,
+								pagination : true,
+								pageList : [ 10, 20, 30, 40, 50, 60, 70, 80,
+										90, 100 ],
+								onLoadError : function(data) {
+									$.messager.alert("参数信息", "暂无异常参数信息",
+											"error");
+
+								},
+								frozenColumns : [ [ {
+									title : 'valueId',
+									field : 'valueId',//'valueId',
+									width : 50,
+									checkbox : true
+								} ] ],
+								columns : [ [ {
+									field : 'series',
+									title : '星系',
+									width : 100,
+									sortable:true
+								},{
+									field : 'star',
+									title : '星号',
+									width : 100,
+									sortable:true
+								}, {
+									field : 'parameterType',
+									title : '设备',
+									width : 100,
+									sortable:true
+								}, {
+									field : 'parameter',
+									title : '参数',
+									width : 200,
+									sortable:true
+								}, {
+									field : 'timeZone',
+									title : '时间区间(min)',
+									width : 100,
+									sortable:true
+								}, {
+									field : 'maxVal',
+									title : '最大值',
+									width : 100,
+									sortable:true
+								}, {
+									field : 'minVal',
+									title : '最小值',
+									width : 100,
+									sortable:true
+								} ] ],
+
+								toolbar : [ {
+									text : '创建',
+									iconCls : 'icon-add',
+									handler : function() {
+										createValue();
+									}
+								}, '-', {
+									text : '删除',
+									iconCls : 'icon-remove',
+									handler : function() {
+										deleteValue();
+									}
+								}, '-', {
+									text : '编辑',
+									iconCls : 'icon-edit',
+									handler : function() {
+										editValue();
+									}
+								}, '-', {
+									text : '取消选中',
+									iconCls : 'icon-undo',
+									handler : function() {
+										valueGrid.datagrid('unselectAll');
+									}
+								} ]
+							});
+					}
+			if(parameterType=='top'){
+				valueGrid = $("#valueList").datagrid({
+                url: '<%=request.getContextPath()%>/admin/prewarning/getValueList?warningType=1',
+								rownumbers : true,
+								fitColumns : true,
+								idField : 'valueId',//'valueId',
+								pageSize : 10,
+								pagination : true,
+								pageList : [ 10, 20, 30, 40, 50, 60, 70, 80,
+										90, 100 ],
+								onLoadError : function(data) {
+									$.messager.alert("参数信息", "暂无异常参数信息",
+											"error");
+
+								},
+								frozenColumns : [ [ {
+									title : 'valueId',
+									field : 'valueId',//'valueId',
+									width : 50,
+									checkbox : true
+								} ] ],
+								columns : [ [ {
+									field : 'series',
+									title : '星系',
+									width : 100,
+									sortable:true
+								},{
+									field : 'star',
+									title : '星号',
+									width : 100,
+									sortable:true
+								}, {
+									field : 'parameterType',
+									title : '设备',
+									width : 100,
+									sortable:true
+								}, {
+									field : 'parameter',
+									title : '参数',
+									width : 200,
+									sortable:true
+								}, {
+									field : 'timeZone',
+									title : '时间区间(min)',
+									width : 100,
+									sortable:true,
+									hidden: true
+								}, {
+									field : 'maxVal',
+									title : '最大值',
+									width : 100,
+									sortable:true
+								}, {
+									field : 'minVal',
+									title : '最小值',
+									width : 100,
+									sortable:true
+								} ] ],
+
+								toolbar : [ {
+									text : '创建',
+									iconCls : 'icon-add',
+									handler : function() {
+										createValue();
+									}
+								}, '-', {
+									text : '删除',
+									iconCls : 'icon-remove',
+									handler : function() {
+										deleteValue();
+									}
+								}, '-', {
+									text : '编辑',
+									iconCls : 'icon-edit',
+									handler : function() {
+										editValue();
+									}
+								}, '-', {
+									text : '取消选中',
+									iconCls : 'icon-undo',
+									handler : function() {
+										valueGrid.datagrid('unselectAll');
+									}
+								} ]
+							});
+			}
 		});
 		//创建参数
 		function createValue() {

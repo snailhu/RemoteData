@@ -437,7 +437,7 @@ input[type=text]::-webkit-focus-inner {
         	if(datFile.length != 0){
         		var toLowerCaseDatFile = datFile.toLowerCase();
         		var datFileNameLength = toLowerCaseDatFile.length;
-        		var datIndex = toLowerCaseCsvFile.indexOf(".dat");
+        		var datIndex = toLowerCaseDatFile.indexOf(".dat");
         		if(!regexp.test(datFile) || ((datFileNameLength-datIndex)!=4)){
             		$("#returnMsg").html("<img src='${pageContext.request.contextPath}/static/imgs/error.png'/><font color='red'>dat文件名输入不合法</font>");
 					return false;

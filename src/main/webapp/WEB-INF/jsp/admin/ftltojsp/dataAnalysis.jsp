@@ -15,10 +15,24 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<meta http-equiv="expires" content="0">    
 	<meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
 	<meta http-equiv="description" content="This is my page">
-    
+    <!--添加了这个引用会和保存为模板对话框冲突-->
+ 	<!--<jsp:include page="/WEB-INF/jsp/inc/include-easyUI.jsp"></jsp:include>-->
+ 	
+ 	<link
+	href="<%=request.getContextPath()%>/static/content/jquery-easyui-1.4.3/themes/gray/easyui.css"
+	rel="stylesheet" type="text/css" />
+	<link
+	href="<%=request.getContextPath()%>/static/content/jquery-easyui-1.4.3/themes/icon.css"
+	rel="stylesheet" type="text/css" />
+	<script
+	src="<%=request.getContextPath()%>/static/content/jquery-easyui-1.4.3/jquery.easyui.min.js"
+	type="text/javascript"></script>
+	<script
+	src="<%=request.getContextPath()%>/static/content/jquery-easyui-1.4.3/locale/easyui-lang-zh_CN.js"
+	type="text/javascript"></script>
+	
   	 <link href="${pageContext.request.contextPath}/static/assets/css/bootstrap.min.css" rel="stylesheet" />
- <!--添加了这个引用会和保存为模板对话框冲突-->
- <!--<jsp:include page="/WEB-INF/jsp/inc/include-easyUI.jsp"></jsp:include>-->
+ 
    	<link rel="stylesheet" href="${pageContext.request.contextPath}/static/jqwidgets/styles/jqx.base.css" type="text/css" />
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/static/jqwidgets/styles/jqx.energyblue.css" type="text/css" />
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/static/content/css/default.css"  type="text/css"/>	
@@ -590,8 +604,24 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
            columns: [
 	             { text: '参数名称',  dataField: 'name',editable: false, width: 310 },
 	             { text: 'ID',  dataField: 'id',editable: false, width:200, hidden: true },
-	             { text: '最大值', dataField: 'max', width: 140 },
-	             { text: '最小值', dataField: 'min', width: 140 },
+	             { text: '最大值', dataField: 'max', width: 140,
+	               validation: function (cell, value) {
+	               			console.log(parseFloat(value));
+                         if (isNaN(parseFloat(value)) || parseFloat(value) < (-9999.0) || parseFloat(value) > (9999.0)) {
+                             return { message: "请输入正确的最大值最小值(-9999.00~+9999.00)", result: false };
+                         }
+                         return true;
+                     }
+	             },
+	             { text: '最小值', dataField: 'min', width: 140,
+	               validation: function (cell, value) {
+	               			console.log(parseFloat(value));
+                         if (isNaN(parseFloat(value)) || parseFloat(value) < (-9999.0) || parseFloat(value) > (9999.0)) {
+                             return { message: "请输入正确的最大值最小值(-9999.00~+9999.00)", result: false };
+                         }
+                         return true;
+                     }
+	             },
 	             { text: '单位',dataField: 'unit',width:105},
 	             { text: 'Y轴', dataField:'yname',width:105,columnType:'template',
 	             	cellsRenderer: function (row, column, value, rowData) {if(value=="0") {return "Y1"};if(value=="1"){return "Y2"}},
@@ -667,12 +697,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
           var chkObjs = $('input:radio:checked').val();
           var beginDate = $("#dateStart").val();
 		  var endDate = $("#dateEnd").val();
-          if(rowindex.length>0){        	
+          if((typeof(rowindex)!="undefined")&&(rowindex.length>0)){        	
               for(i=0;i<rowindex.length;i++){
-              	var rowObject={}
+              	var rowObject={}              		
                   var parentId = rowindex[i].parentId;
-              	  console.log("parentId: " + parentId);
-                  if(parentId != 0){
+              	
+                  if((parentId != 0) || (typeof(parentId)=="undefined")){
+                    console.log("parentId类型: " + typeof(parentId));
 	                  var value = rowindex[i].name;
 	                  rowObject.id=rowindex[i].id
 	                  rowObject.name=rowindex[i].name;
@@ -680,12 +711,16 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	                  rowObject.min=rowindex[i].min;
 	                  rowObject.unit=rowindex[i].unit;
 	                  var yname = rowindex[i].yname;
-	                  if(yname=='Y2'){
+	                  console.log("模板中Y轴名称"+yname+typeof(yname));
+	                  if((yname=='Y2') || (yname=='1')){
 	                  //这里统一一下（Y1轴的话用大写的‘Y1’,Y2轴用大写的‘Y2’）
 	                	  rowObject.yname=1;
-	                  }else{
+	                  }
+	                  if(yname=='Y1' || (yname=='0'))
+					  {
 		                  rowObject.yname=0;
 	                  }
+	                  console.log("模板中Y轴名称转换"+rowObject.yname);
 	                  selectRow.push( rowObject);
 	                  stringName+=value+",";
 	              }
@@ -713,8 +748,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	        j++;           
 	        JsonG.alldata=AllRowselect;   
        	}else{
-       		top.showMsg('提示', "参数不能为空 ，请至少选择一行参数");
-				  return false;
+       		//top.showMsg('提示', "参数不能为空 ，请至少选择一行参数");
+       		$.messager.alert('提示','参数不能为空 ，请至少选择一行参数','warning');
+			return false;
        		
        	}  
       }
@@ -763,9 +799,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         	},
         	function(data){
         		//添加模板后刷新模板下拉框
-        		//intTemplateList(); 
+        		intTemplateList(); 
         		//添加模板后刷新常用模板
-        		//initTemplateTree();
+        		initTemplateTree();
         		//var url = "${pageContext.request.contextPath}/getConstraint?beginDate="+beginDate+"&endDate="+endDate+"&Series_current="+Series_current+"&Star_current="+Star_current+"&type_current="+type_current;
             	//updateParamTree(url);
         		
@@ -790,12 +826,22 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         } 
         //提交分组响应事件
         function submitGroup(){
-        $.post('${pageContext.request.contextPath}/showPanel',        
+        console.log("类型"+typeof(AllRowselect))
+        if(AllRowselect.length<1)
+        {
+        	//top.showMsg('提示', "请先添加参数分组");
+        	$.messager.alert('提示','请先添加参数分组','warning');
+			return false;
+        }
+        else{
+        	$.post('${pageContext.request.contextPath}/showPanel',        
         	{
         		'JsonG':JSON.stringify(AllRowselect)        	
         	},function(){
         		window.location.href="${pageContext.request.contextPath}/showPanel"
-        	})            
+        	}) 
+        }
+                   
         } 
                 
         //初始化选择模板下拉框

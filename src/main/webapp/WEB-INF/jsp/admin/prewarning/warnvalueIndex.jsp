@@ -214,9 +214,9 @@
 		$('#addValueInfoForm').bootstrapValidator({
 			message : '这个值不能为空！',
 			feedbackIcons : {
-				valid : 'glyphicon glyphicon-ok',
-				invalid : 'glyphicon glyphicon-remove',
-				validating : 'glyphicon glyphicon-refresh'
+			valid : 'glyphicon glyphicon-ok',
+			invalid : 'glyphicon glyphicon-remove',
+			validating : 'glyphicon glyphicon-refresh'
 			},
 			fields : {
 				series : {
@@ -341,13 +341,13 @@
 						}
 					}
 				},
-				parameter : {
-					validators : {
-						notEmpty : {
-							message : '参数不能为空'
-						}
-					}
-				},
+				//parameter : {
+				//	validators : {
+				//		notEmpty : {
+				//			message : '参数不能为空'
+				//		}
+				//	}
+				//},
 				timeZone : {
 					validators : {
 						notEmpty : {
@@ -591,8 +591,11 @@
 										</select>
 									</div>
 								</div>
-								<div class="space-4"></div>
-								<div class="form-group">
+								
+								
+								<div id="add-flywheelValDiv" style="display: none;">
+									<div class="space-4"></div>
+									<div class="form-group">
 									<label class="col-sm-3 control-label no-padding-right"
 										for="add-parameter"> 参数： </label>
 									<div class="col-sm-6">
@@ -601,16 +604,17 @@
 											<option value="">--请选择--</option>
 										</select>
 									</div>
-								</div>
-								<div class="space-4"></div>
-								<div class="form-group">
+									</div>
+									<div class="space-4"></div>
+									
+									<div class="form-group">
 									<label class="col-lg-3 control-label no-padding-right"
 										for="add-timeZone"> 时间区间(min)：</label>
 									<div class="col-sm-6">
 										<input type="text" name="timeZone" id="add-timeZone"
 											placeholder="时间区间" class="form-control" />
 									</div>
-								</div>
+									</div>
 								<div class="space-4"></div>
 								<div class="form-group">
 									<label class="col-lg-3 control-label no-padding-right"
@@ -620,7 +624,7 @@
 											placeholder="限定次数" class="form-control" />
 									</div>
 								</div>
-								<div id="add-flywheelValDiv" style="display: none;">
+									
 									<div class="space-4"></div>
 									<div class="form-group">
 										<label class="col-lg-3 control-label no-padding-right"
@@ -640,7 +644,48 @@
 									<!-- 										</div> -->
 									<!-- 									</div> -->
 								</div>
-								<div id="add-topValDiv" style="display: none;">
+								<div id="add-topValDiv" style="display: none;">	
+									<div class="space-4"></div>
+									<div style="display:none">
+									<div class="form-group">
+									<label class="col-sm-3 control-label no-padding-right"
+										for="add-parameter-top"> 参数： </label>
+									<div class="col-sm-6">
+										<select  id="add-parameter-top"
+											name="parameter">
+											<option value="">--请选择--</option>
+										</select>
+									</div>
+									</div>
+									</div>
+									
+									<div class="space-4"></div>
+									<div id="id_shuoming" style="width:230px;margin: 0px auto;">
+									<div class="form-group">
+										<div class="well well-sm" >
+											陀螺机动规则说明： 陀螺的X、Y、Z三个轴的 
+											任意两个角速度的变化绝对值满足在持续时间内
+											大于最小限制小于最大限制
+										</div>	
+									</div>
+									</div>	
+									<div class="form-group">
+									<label class="col-lg-3 control-label no-padding-right"
+										for="add-timeZone-top"> 持续时间(毫秒)：</label>
+									<div class="col-sm-6">
+										<input type="text" name="timeZone" id="add-timeZone-top"
+											placeholder="持续时间" class="form-control" />
+									</div>
+								</div>
+								<div class="space-4"></div>
+								<!--<div class="form-group">
+									<label class="col-lg-3 control-label no-padding-right"
+										for="add-limitTimes"> 限定次数：</label>
+									<div class="col-sm-6">
+										<input type="text" name="limitTimes" id="add-limitTimes"
+											placeholder="限定次数" class="form-control" />
+									</div>
+								</div>-->
 									<div class="space-4"></div>
 									<div class="form-group">
 										<label class="col-lg-3 control-label no-padding-right"
@@ -658,7 +703,7 @@
 											<input type="text" name="minVal" id="add-minValtop"
 												placeholder="最小变化绝对值" class="form-control" />
 										</div>
-									</div>
+									</div>			
 								</div>
 							</div>
 							<div class="modal-footer">
@@ -709,6 +754,7 @@
 									</div>
 								</div>
 								<div class="space-4"></div>
+								<div class="form-group" id="edit-div-parameterType">
 								<div class="form-group">
 									<label class="col-sm-3 control-label no-padding-right"
 										for="edit-parameterType"> 设备：</label>
@@ -719,8 +765,13 @@
 										</select>
 									</div>
 								</div>
+								</div>
+								
+								
+
+							<div id="edit-flywheelValDiv" style="display: none;">
 								<div class="space-4"></div>
-								<div class="form-group">
+								<div class="form-group" id="edit-div-parameter">
 									<label class="col-sm-3 control-label no-padding-right"
 										for="edit-parameter"> 参数：</label>
 									<div class="col-sm-6">
@@ -748,8 +799,6 @@
 											placeholder="限定次数" class="form-control" />
 									</div>
 								</div>
-
-								<div id="edit-flywheelValDiv" style="display: none;">
 									<div class="space-4"></div>
 									<div class="form-group">
 										<label class="col-lg-3 control-label no-padding-right"
@@ -769,7 +818,53 @@
 									<!-- 										</div> -->
 									<!-- 									</div> -->
 								</div>
+								
 								<div id="edit-topValDiv" style="display: none;">
+									<div class="space-4"></div>
+									<div style="display:none">
+									<div class="form-group">
+									<label class="col-sm-3 control-label no-padding-right"
+										for="edit-parameter-top"> 参数： </label>
+									<div class="col-sm-6">
+										<select  id="edit-parameter-top"
+											name="parameter">
+											<option value="">--请选择--</option>
+										</select>
+									</div>
+									</div>
+									
+									<div class="form-group">
+									<label class="col-lg-3 control-label no-padding-right"
+										for="edit-limitTimestop"> 限定次数：</label>
+									<div class="col-sm-6">
+										<input type="text" name="limitTimes" id="edit-limitTimestop"
+											placeholder="限定次数" class="form-control" value="1" />
+									</div>
+									</div>
+									
+								</div>
+									
+									<div class="space-4"></div>
+									<div id="id_shuoming" style="width:230px;margin: 0px auto;">
+									<div class="form-group">
+										<div class="well well-sm" >
+											陀螺机动规则说明： 陀螺的X、Y、Z三个轴的 
+											任意两个角速度的变化绝对值满足在持续时间内
+											大于最小限制小于最大限制
+										</div>	
+									</div>
+									</div>
+										
+									
+									
+									<div class="form-group">
+									<label class="col-lg-3 control-label no-padding-right"
+										for="edit-timeZonetop"> 时间区间(毫秒)：</label>
+										<div class="col-sm-6">
+											<input type="text" name="timeZone" id="edit-timeZonetop"
+												placeholder="时间区间(毫秒)" class="form-control" />
+										</div>
+									</div>
 									<div class="space-4"></div>
 									<div class="form-group">
 										<label class="col-lg-3 control-label no-padding-right"
@@ -1010,7 +1105,7 @@
 	 $("#add-star").change(function(){
 		 	var parameterType = $('#add-parameterType').val();	
 		 	var seriesId = $('#add-series').val();
-		 	 var starId = $('#add-star').val();
+		 	var starId = $('#add-star').val();
 			  $.get('<%=request.getContextPath()%>/admin/prewarning/getParamList', {'parameterType':parameterType , 'series':seriesId ,  'star':starId}, function (res) {
 				  if(res) {
 					  $('#add-parameter').find("option").remove();
@@ -1093,6 +1188,19 @@
 	            		    	$('#add-parameter').append("<option value='"+ this.code+"'>"+ this.simplyName +"</option>"); 
 	            		    }
 						});
+						//如果是陀螺则设置默认的参数值
+						if(parameterType=='top')
+						{
+							$('#add-parameter').find("option").remove();
+							var seriesid = $('#add-series').val();
+							var starid=$('#add-star').val();
+							var sequence_jiaosudu='sequence_topjiaosudu_'+seriesid+'_'+starid;
+							$('#add-parameter-top').append("<option value='"+sequence_jiaosudu+"'>陀螺角速度</option>"); 
+							$("#add-parameter-top").select2().val(sequence_jiaosudu);
+							//$("#add-parameter-top").select2().val(sequence_jiaosudu);
+							$('#add-limitTimes').val('1');
+							
+						}
 	            	  $("#add-parameter").select2().val("").trigger("change");
 	            	  $('#addValueInfoForm').data('bootstrapValidator').updateStatus('parameter', 'NOT_VALIDATED', null);
 	              }
@@ -1123,6 +1231,18 @@
 	            		    	$('#edit-parameter').append("<option value='"+ this.code+"'>"+ this.simplyName +"</option>"); 
 	            		    }
 						});
+						//如果是陀螺则设置默认的参数值
+						if(parameterType=='top')
+						{
+							//$('#edit-parameter').find("option").remove();
+							//$('#edit-parameter').append("<option value='sequence_jiaosudu'>陀螺角速度</option>"); 
+							//$("#edit-parameter").val("sequence_jiaosudu");
+							$("#edit-parameter").select2().val("sequence_jiaosudu");
+							//$('#edit-limitTimes').val('1');
+							//$('#edit-parameter').append("<option value='sequence_jiaosudu'>陀螺角速度</option>");
+							$('#edit-div-parameter').hide();
+							$('edit-div-parameterType').hide();	
+						}						
 	            	  $("#edit-parameter").select2().val("").trigger("change");
 	            	  $('#editValueInfoForm').data('bootstrapValidator').updateStatus('parameter', 'NOT_VALIDATED', null);
 	              }
@@ -1289,22 +1409,27 @@
 							title : '设备',
 							width : 100,
 							sortable:true
-						}, {
+						}, 
+						{
 							field : 'parameter',
 							title : '参数',
 							width : 200,
-							sortable:true
-						}, {
+							sortable:true,
+							hidden:true
+						},
+						 {
 							field : 'timeZone',
-							title : '时间区间(min)',
+							title : '时间区间(毫秒)',
 							width : 100,
 							sortable:true
-						}, {
-							field : 'limitTimes',
-							title : '限定次数',
-							width : 100,
-							sortable:true
-						}, {
+						}, 
+						//{
+						//	field : 'limitTimes',
+						//	title : '限定次数',
+						//	width : 100,
+						//	sortable:true
+						//}, 
+						{
 							field : 'maxVal',
 							title : '最大变化绝对值',
 							width : 110,
@@ -1347,8 +1472,13 @@
 		
 		//创建参数
 		function createValue() {
+			$('#add-parameter').attr("disabled",false);
+			$('#add-timeZone').attr("disabled",false);
 			$('#add-maxVal').attr("disabled",false);
 			$('#add-minVal').attr("disabled",false);
+			
+			$('#add-parameter-top').attr("disabled",false);
+			$('#add-timeZonetop').attr("disabled",false);
 			$('#add-maxValtop').attr("disabled",false);
 			$('#add-minValtop').attr("disabled",false);
 			$('#addValueModal').modal('show');
@@ -1364,10 +1494,23 @@
 			if($("#add-parameterType").val() == 'top'){
 				$('#add-maxVal').attr("disabled",true);
 				$('#add-minVal').attr("disabled",true);
+				$('#add-timeZone').attr("disabled",true);
+				$('#add-parameter').attr("disabled",true);
+				
+				$('#add-parameter-top').attr("disabled",false);
+				$('#add-timeZonetop').attr("disabled",false);
 				$('#add-maxValtop').attr("disabled",false);
 				$('#add-minValtop').attr("disabled",false);
+				//var timeZone = Number($("#add-timeZone").val());
 				var maxval = Number($("#add-maxValtop").val());
 				var minval = Number($("#add-minValtop").val());
+				//设置陀螺参数值和限定次数   注意：这两个参数对陀螺来说没有实际的意义
+				$('#add-timeZonetop').val(1);
+				var seriesid = $('#add-series').val();
+				var starid=$('#add-star').val();
+				var sequence_jiaosudu='sequence_topjiaosudu_'+seriesid+'_'+starid;
+				$('#add-parameter-top').append("<option value='"+sequence_jiaosudu+"'>陀螺角速度</option>");
+				$('#add-parameter-top').val(sequence_jiaosudu);				
 				if(maxval<minval){
 					top.alertMsg('错误', '最大变化绝对值必须大于最小变化绝对值！');
 					return false;
@@ -1383,8 +1526,13 @@
 			}else{
 				$('#add-maxVal').attr("disabled",false);
 				$('#add-minVal').attr("disabled",false);
+				$('#add-timeZone').attr("disabled",false);
+				$('#add-parameter').attr("disabled",false);
+				
+				$('#add-parameter-top').attr("disabled",true);
 				$('#add-maxValtop').attr("disabled",true);
 				$('#add-minValtop').attr("disabled",true);
+				$('#add-timeZone-top').attr("disabled",true);
 			}
 			var toUrl = '${pageContext.request.contextPath}/admin/prewarning/createWarnValue';
 			f.form('submit', {url : toUrl,
@@ -1423,8 +1571,24 @@
 			if($("#edit-parameterType").val() == 'top'){
 				$('#edit-maxVal').attr("disabled",true);
 				$('#edit-minVal').attr("disabled",true);
+				$('#edit-timeZone').attr("disabled",true);
+				$('#edit-parameter').attr("disabled",true);
+				$('#edit-limitTimes').attr("disabled",true);
+				
+				$('#edit-parameter-top').attr("disabled",false);
+				$('#edit-timeZone-top').attr("disabled",false);
 				$('#edit-maxValtop').attr("disabled",false);
 				$('#edit-minValtop').attr("disabled",false);
+				$('#edit-limitTimestop').attr("disabled",false);
+				
+				//设置陀螺参数值和限定次数   注意：这两个参数对陀螺来说没有实际的意义
+				$('#edit-LimitTimestop').val(1);
+				var seriesid = $('#edit-series').val();
+				var starid=$('#edit-star').val();
+				var sequence_jiaosudu='sequence_topjiaosudu_'+seriesid+'_'+starid;
+				$('#edit-parameter-top').append("<option value='"+sequence_jiaosudu+"'>陀螺角速度</option>");
+				$('#edit-parameter-top').val(sequence_jiaosudu);	
+				
 				var maxval = Number($("#edit-maxValtop").val());
 				var minval = Number($("#edit-minValtop").val());
 				if(maxval<minval){
@@ -1522,8 +1686,13 @@
 		}
 		//编辑用户
 		function editValue() {
+			$('#edit-timeZone').attr("disable",false);
 			$('#edit-maxVal').attr("disabled",false);
 			$('#edit-minVal').attr("disabled",false);
+			$('#add-parameter').attr("disabled",false);
+			
+			$('#add-parameter-top').attr("disabled",false);
+			$('#edit-timeZonetop').attr("disable",false);
 			$('#edit-maxValtop').attr("disabled",false);
 			$('#edit-minValtop').attr("disabled",false);
 			var rows = valueGrid.datagrid('getSelections');
@@ -1556,7 +1725,7 @@
 																			+ this.simplyName
 																			+ "</option>");
 												}
-											});
+											});							
 											$("#edit-parameter").select2().val(data.parameter).trigger("change");
 											$.each(res.stars,function() {
 												if (this.id) {
@@ -1578,17 +1747,23 @@
 										$('#edit-value-id').val(data.valueId)
 										$('#edit-series').val(data.series);
 										$('#edit-parameterType').val(data.parameterType);
-										$('#edit-timeZone').val(data.timeZone);
-										$('#edit-limitTimes').val(data.limitTimes);
+										
+										
 										if (data.parameterType == 'flywheel') {
 											$('#edit-flywheelValDiv').show();
 											$('#edit-topValDiv').hide();
+											$('#edit-limitTimes').val(data.limitTimes);
+											$('#edit-timeZone').val(data.timeZone);
 											$('#edit-maxVal').val(data.maxVal);
 											$('#edit-minVal').val(data.minVal);
 										}
 										if (data.parameterType == 'top') {
+											//$('#edit-div-parameterType').hide();
 											$('#edit-flywheelValDiv').hide();
+											
+											$('#edit-limitTimestop').val(1);
 											$('#edit-topValDiv').show();
+											$('#edit-timeZonetop').val(data.timeZone);
 											$('#edit-maxValtop').val(data.maxVal);
 											$('#edit-minValtop').val(data.minVal);
 										}

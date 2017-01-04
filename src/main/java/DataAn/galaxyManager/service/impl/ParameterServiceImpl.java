@@ -256,15 +256,21 @@ public class ParameterServiceImpl implements IParameterService{
 		if(StringUtils.isNotBlank(param_zh)){
 			if(!param_zh.equals("时间") && !param_zh.equals("接收地方时")){
 				String param = param_zh.split(":")[1];//TODO 根据
-				List<String> typeList = J9Series_Star_ParameterType.getFlywheelTypeOnDataType();
-				for (String type : typeList) {
-					if(param.indexOf(type) > -1){
-						return type;
-					}
+				List<String> typeList = null;
+				if("flywheel".equals(paramType))
+					typeList = J9Series_Star_ParameterType.getFlywheelTypeOnDataType();
+				if("top".equals(paramType))
+					typeList = J9Series_Star_ParameterType.getTopTypeOnName();
+				if(typeList != null && typeList.size() >0){
+					for (String type : typeList) {
+						if(param.indexOf(type) > -1){
+							return type;
+						}
+					}					
 				}
 			}
 		}
-		return null;
+		return "null";
 	}
 
 	@Override
@@ -294,7 +300,7 @@ public class ParameterServiceImpl implements IParameterService{
 				
 			}
 		}
-		return null;
+		return "null";
 	}
 
 

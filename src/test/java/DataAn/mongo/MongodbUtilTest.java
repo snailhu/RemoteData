@@ -1,6 +1,10 @@
 package DataAn.mongo;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import org.bson.Document;
 import org.junit.Before;
@@ -12,6 +16,9 @@ import com.mongodb.client.MongoCursor;
 import com.mongodb.client.model.Filters;
 
 import DataAn.common.utils.DateUtil;
+import DataAn.galaxyManager.option.J9SeriesType;
+import DataAn.galaxyManager.option.J9Series_Star_ParameterType;
+import DataAn.galaxyManager.option.SeriesType;
 import DataAn.mongo.client.MongodbUtil;
 import DataAn.mongo.init.InitMongo;
 
@@ -62,19 +69,39 @@ public class MongodbUtilTest {
 	
 	@Test
 	public void testFind(){
-		Date beginDate = DateUtil.format("2016-12-01 00:00:00");
-		Date endDate = DateUtil.format("2016-12-07 00:00:00");
-		MongoCollection<Document> collection = mg.getCollection("db_j9_02", "flywheel1s");
-		Document keys = new Document();
-		keys.put("_id", 0);
-	    keys.put("datetime", 1);
-	    keys.put("sequence_00428", 1);
-	    MongoCursor<Result> cursor = collection.find(Filters.and(Filters.gte("datetime", beginDate),
-				   Filters.lte("datetime", endDate)),Result.class).iterator();
-	    while (cursor.hasNext()) {
-			System.out.println(cursor.next());
+		String paramStr = "sequence_00817,sequence_00424,sequence_00426,";
+		String[] paramStrs = paramStr.split(",");
+		List<String> paramSet = new ArrayList<String>();
+		for (String param : paramStrs) {
+			paramSet.add(param);
 		}
-	    
+		
+		String databaseName = "db_j9_05";
+		String collectionName =  "flywheel";
+		
+		Date beginDate = DateUtil.format("205-01-01 00:00:00");
+		Date endDate = DateUtil.format("2016-01-07 00:00:00");
+				
+		MongoCursor<Document> cursor = mg.find(databaseName, collectionName, beginDate, endDate);
+		int count = 0;
+		Document doc = null;
+		String value = "";
+	    while (cursor.hasNext()) {
+	    	count++;
+	    	doc = cursor.next();
+	    	System.out.print(DateUtil.format(doc.getDate("datetime")));
+	    	for (String paramCode : paramSet) {
+	    		value = doc.getString(paramCode);
+	    		int i = value.length();
+	    		if(i < 10)
+	    			for (; i < 8; i++) 
+	    				value += " ";
+	    		
+				System.out.print(" : " + value);
+			}
+	    	System.out.println();
+		}
+	    System.out.println("count: " + count);
 	}
 
 }

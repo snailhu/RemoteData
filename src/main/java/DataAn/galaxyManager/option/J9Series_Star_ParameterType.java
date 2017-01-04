@@ -127,6 +127,7 @@ public enum J9Series_Star_ParameterType {
 		List<String> list = new ArrayList<String>();
 		list.add("角速度");
 		list.add("角速率");
+		list.add("角速度");
 		list.add("温度");
 		list.add("指令");
 		list.add("供电状态");

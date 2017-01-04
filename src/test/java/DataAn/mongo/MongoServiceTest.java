@@ -78,16 +78,18 @@ public class MongoServiceTest {
 	@Test
 	public void find(){
 		long begin = System.currentTimeMillis();
-		Date beginDate = DateUtil.format("2016-12-01 00:00:00");
-		Date endDate = DateUtil.format("2016-12-02 00:00:00");
-		MongoCursor<Document> cursor = mongoService.findByDate("j9", "02","flywheel", beginDate, endDate);
+		Date beginDate = DateUtil.format("2015-01-01 00:00:00");
+		Date endDate = DateUtil.format("2015-01-02 00:00:00");
+		MongoCursor<Document> cursor = mongoService.findByDate("j9", "05","flywheel", beginDate, endDate);
 		int i=0;
+		Document doc = null;
 		while (cursor.hasNext()) {
 			i++;
+			doc = cursor.next();
 //			System.out.println(i+++"..");
 //			cursor.next().get("datatime");
 //			long startt = System.currentTimeMillis();
-			cursor.next();
+			System.out.println(DateUtil.format(doc.getDate("datetime")) + " : " + doc.get("sequence_00814"));
 //			long endddd = System.currentTimeMillis();
 //			System.out.println("time: " + (endddd - startt));
 		}

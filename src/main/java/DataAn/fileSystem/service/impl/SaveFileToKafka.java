@@ -189,9 +189,9 @@ public class SaveFileToKafka implements Runnable {
 					boundProducer.send(new Ending(),topic);
 					Log4jUtil.getInstance().getLogger(SaveFileToKafka.class).info(nodeWorker.getId()+ " end send data kafka..count: " + count);
 					if(count <= 3){
-						String msg = "文件记录数过少, count: "+count;
-						System.out.println(msg);
-						statusTrackingService.updateStatusTracking(fileName, StatusTrackingType.IMPORTFAIL.getValue(),name, msg);
+						String msg = "file count: "+count;
+//						System.out.println(msg);
+//						statusTrackingService.updateStatusTracking(fileName, StatusTrackingType.IMPORTFAIL.getValue(),name, msg);
 						throw new RuntimeException(msg);
 					}
 					// mongo...
@@ -205,7 +205,7 @@ public class SaveFileToKafka implements Runnable {
 					System.out.println(nodeWorker.getId()+ " Exception!!!!!!");
 					Log4jUtil.getInstance().getLogger(SaveFileToKafka.class).error(nodeWorker.getId()+ " Exception!!!!!!");
 					FlowUtils.setError(executor, communication, e.getMessage());
-					e.printStackTrace();
+//					e.printStackTrace();
 					throw e;
 				} finally{
 					if(reader != null){
@@ -229,6 +229,7 @@ public class SaveFileToKafka implements Runnable {
 				errorMsg.setWorkerId(nodeWorker.getId());
 				errorMsg.setSequence(communication.getSequence());
 				FlowUtils.setError(executor, errorMsg);
+				CommunicationUtils.get(executor).remove(communication);
 				e.printStackTrace();
 			}finally {
 				try {

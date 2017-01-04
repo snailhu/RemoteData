@@ -54,12 +54,12 @@ public class LoginController {
 				if (password.equals(acticeUser.getPassWord())) {
 					HttpSession session = request.getSession();
 					Long warnCount = 0l;
-//					try {
-//						warnCount = prewarningService.getNotReadCount("", "", "", "", "");
-//					} catch (Exception e) {
-//						// TODO Auto-generated catch block
-//						e.printStackTrace();
-//					}	
+					try {
+						warnCount = prewarningService.getNotReadCount("", "", "", "", "");
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}	
 					User user = new User();
 					user.setUserName(username);
 					session.setAttribute("warnCount", warnCount);

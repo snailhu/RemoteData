@@ -17,6 +17,7 @@ import com.mongodb.client.model.Updates;
 
 import DataAn.common.dao.Pager;
 import DataAn.common.utils.DateUtil;
+import DataAn.common.utils.Log4jUtil;
 import DataAn.galaxyManager.dao.ISeriesDao;
 import DataAn.galaxyManager.dao.IStarDao;
 import DataAn.galaxyManager.domain.Series;
@@ -25,6 +26,7 @@ import DataAn.mongo.client.MongodbUtil;
 import DataAn.mongo.init.InitMongo;
 import DataAn.prewarning.dao.IWarningLogMongoDao;
 import DataAn.prewarning.dto.QueryLogDTO;
+import DataAn.routing.DataSearchTask;
 
 @Repository
 public class WarningLogMongoDaoImpl implements IWarningLogMongoDao {
@@ -57,13 +59,13 @@ public class WarningLogMongoDaoImpl implements IWarningLogMongoDao {
 		} else if (StringUtils.isNotBlank(parameterType) && StringUtils.isBlank(warningType)) {
 			for (String databaseName : databaseNames) {
 				MongoCollection<Document> collection = mongodbUtil.getCollectionNotShard(databaseName,
-						parameterType + "_SpecialCase");
+						parameterType + "_job");
 				if (collection != null) {
 					sum += collection.count(Filters.eq("hadRead", "0"));
 				}
 
 				MongoCollection<Document> collection2 = mongodbUtil.getCollectionNotShard(databaseName,
-						parameterType + "_Exception");
+						parameterType + "_exception");
 				if (collection2 != null) {
 					sum += collection2.count(Filters.eq("hadRead", "0"));
 				}
@@ -72,11 +74,11 @@ public class WarningLogMongoDaoImpl implements IWarningLogMongoDao {
 			String collectionName = "";
 			String collectionName2 = "";
 			if ("0".equals(warningType)) {
-				collectionName = "flywheel_SpecialCase";
-				collectionName2 = "top_SpecialCase";
+				collectionName = "flywheel_job";
+				collectionName2 = "top_job";
 			} else if ("1".equals(warningType)) {
-				collectionName = "flywheel_Exception";
-				collectionName2 = "top_Exception";
+				collectionName = "flywheel_exception";
+				collectionName2 = "top_exception";
 			}
 			for (String databaseName : databaseNames) {
 				MongoCollection<Document> collection = mongodbUtil.getCollectionNotShard(databaseName, collectionName);
@@ -93,22 +95,22 @@ public class WarningLogMongoDaoImpl implements IWarningLogMongoDao {
 		} else {
 			for (String databaseName : databaseNames) {
 				MongoCollection<Document> collection = mongodbUtil.getCollectionNotShard(databaseName,
-						"flywheel_SpecialCase");
+						"flywheel_job");
 				if (collection != null) {
 					sum += collection.count(Filters.eq("hadRead", "0"));
 				}
 				MongoCollection<Document> collection2 = mongodbUtil.getCollectionNotShard(databaseName,
-						"top_SpecialCase");
+						"top_job");
 				if (collection2 != null) {
 					sum += collection2.count(Filters.eq("hadRead", "0"));
 				}
 				MongoCollection<Document> collection3 = mongodbUtil.getCollectionNotShard(databaseName,
-						"flywheel_Exception");
+						"flywheel_exception");
 				if (collection3 != null) {
 					sum += collection3.count(Filters.eq("hadRead", "0"));
 				}
 				MongoCollection<Document> collection4 = mongodbUtil.getCollectionNotShard(databaseName,
-						"top_Exception");
+						"top_exception");
 				if (collection4 != null) {
 					sum += collection4.count(Filters.eq("hadRead", "0"));
 				}
@@ -120,9 +122,9 @@ public class WarningLogMongoDaoImpl implements IWarningLogMongoDao {
 	private String getCollectionName(String parameterType, String warningType) {
 		String collectionName = "";
 		if ("0".equals(warningType)) {
-			collectionName = parameterType + "_SpecialCase";
+			collectionName = parameterType + "_job";
 		} else if ("1".equals(warningType)) {
-			collectionName = parameterType + "_Exception";
+			collectionName = parameterType + "_exception";
 		}
 		return collectionName;
 	}
@@ -134,14 +136,26 @@ public class WarningLogMongoDaoImpl implements IWarningLogMongoDao {
 		}
 		FindIterable<Document> document_It = collection.find(Filters.eq("hadRead", "0"));
 		for (Document doc : document_It) {
+			double value=0.0;
+			String timevalue=timevalue=DateUtil.formatSSS(doc.getDate("datetime"));
+			try{
+				value=Double.parseDouble(doc.getString("value"));				
+			}
+			catch(Exception e)
+			{
+				Log4jUtil.getInstance().getLogger(DataSearchTask.class).error("将字符串转换为Double类型时出错");
+			}
+			
 			QueryLogDTO warningLog = new QueryLogDTO();
 			warningLog.setLogId(doc.getObjectId("_id").toString());
 			warningLog.setParameter(doc.getString("paramName"));
-			warningLog.setParameterType(doc.getString("deviceName"));
-			warningLog.setParamValue(Double.parseDouble(doc.getString("value")));
+			warningLog.setParameterType(doc.getString("deviceType"));
+			//warningLog.setParamValue(Double.parseDouble(doc.getString("value")));
+			warningLog.setParamValue(value);
 			warningLog.setSeries(doc.getString("series"));
 			warningLog.setStar(doc.getString("star"));
-			warningLog.setTimeValue(DateUtil.formatSSS(doc.getDate("datetime")));
+			//warningLog.setTimeValue(DateUtil.formatSSS(doc.getDate("datetime")));
+			warningLog.setTimeValue(timevalue);
 			warningLog.setWarningType(warnType);
 			queryLogDTOs.add(warningLog);
 		}
@@ -155,13 +169,13 @@ public class WarningLogMongoDaoImpl implements IWarningLogMongoDao {
 		List<QueryLogDTO> queryLogAllDTOs = new ArrayList<QueryLogDTO>();
 		for (String databaseName : databaseNames) {
 			queryLogAllDTOs.addAll(getWarningLogListByCollection(
-					mongodbUtil.getCollectionNotShard(databaseName, "flywheel_SpecialCase"), "0"));
+					mongodbUtil.getCollectionNotShard(databaseName, "flywheel_job"), "0"));
 			queryLogAllDTOs.addAll(getWarningLogListByCollection(
-					mongodbUtil.getCollectionNotShard(databaseName, "top_SpecialCase"), "0"));
+					mongodbUtil.getCollectionNotShard(databaseName, "top_job"), "0"));
 			queryLogAllDTOs.addAll(getWarningLogListByCollection(
-					mongodbUtil.getCollectionNotShard(databaseName, "flywheel_Exception"), "1"));
+					mongodbUtil.getCollectionNotShard(databaseName, "flywheel_exception"), "1"));
 			queryLogAllDTOs.addAll(getWarningLogListByCollection(
-					mongodbUtil.getCollectionNotShard(databaseName, "top_Exception"), "1"));
+					mongodbUtil.getCollectionNotShard(databaseName, "top_exception"), "1"));
 		}
 		return queryLogAllDTOs;
 	}
@@ -187,13 +201,13 @@ public class WarningLogMongoDaoImpl implements IWarningLogMongoDao {
 			List<String> databaseNames = getDBsBySeriersAndStar(series, star);
 			for (String databaseName : databaseNames) {
 				queryLogAllDTOs.addAll(getWarningLogListByCollection(
-						mongodbUtil.getCollectionNotShard(databaseName, "flywheel_SpecialCase"), "0"));
+						mongodbUtil.getCollectionNotShard(databaseName, "flywheel_job"), "0"));
 				queryLogAllDTOs.addAll(getWarningLogListByCollection(
-						mongodbUtil.getCollectionNotShard(databaseName, "top_SpecialCase"), "0"));
+						mongodbUtil.getCollectionNotShard(databaseName, "top_job"), "0"));
 				queryLogAllDTOs.addAll(getWarningLogListByCollection(
-						mongodbUtil.getCollectionNotShard(databaseName, "flywheel_Exception"), "1"));
+						mongodbUtil.getCollectionNotShard(databaseName, "flywheel_exception"), "1"));
 				queryLogAllDTOs.addAll(getWarningLogListByCollection(
-						mongodbUtil.getCollectionNotShard(databaseName, "top_Exception"), "1"));
+						mongodbUtil.getCollectionNotShard(databaseName, "top_exception"), "1"));
 			}
 			if (queryLogAllDTOs.size() < pageSize) {
 				for (int i = 0; i < queryLogAllDTOs.size(); i++) {
@@ -288,17 +302,32 @@ public class WarningLogMongoDaoImpl implements IWarningLogMongoDao {
 				}
 
 				for (Document doc : document_It) {
+					
+					double value=0.0;
+					String timevalue=timevalue=DateUtil.formatSSS(doc.getDate("datetime"));
+					try{
+						value=Double.parseDouble(doc.getString("value"));				
+					}
+					catch(Exception e)
+					{
+						Log4jUtil.getInstance().getLogger(DataSearchTask.class).error("将字符串转换为Double类型时出错");
+					}
+					
 					QueryLogDTO warningLog = new QueryLogDTO();
 					warningLog.setLogId(doc.getObjectId("_id").toString());
-					warningLog.setParameter(doc.getString("paramName"));
-					warningLog.setParameterType(doc.getString("deviceName"));
-					warningLog.setParamValue(Double.parseDouble(doc.getString("value")));
+					//warningLog.setParameter(doc.getString("paramName"));
+					warningLog.setParameter(doc.getString("deviceName")+doc.getString("paramName"));
+					warningLog.setParameterType(doc.getString("deviceType"));
+					//warningLog.setParamValue(Double.parseDouble(doc.getString("value")));
+					warningLog.setParamValue(value);					
 					warningLog.setSeries(doc.getString("series"));
 					warningLog.setStar(doc.getString("star"));
-					warningLog.setTimeValue(DateUtil.formatSSS(doc.getDate("datetime")));
+					//warningLog.setTimeValue(DateUtil.formatSSS(doc.getDate("datetime")));
+					warningLog.setTimeValue(timevalue);
 					warningLog.setWarningType(warningType);
 					warningLog.setWarnRemark(doc.getString("remark"));
 					queryLogDTOs.add(warningLog);
+					
 					collection.updateMany(Filters.eq("_id", doc.getObjectId("_id")), Updates.set("hadRead", "1"));
 				}
 				Pager<QueryLogDTO> pager = new Pager<QueryLogDTO>(pageSize, pageIndex, totalCount, queryLogDTOs);

@@ -19,6 +19,8 @@ function intsatellite(seriesId) {
 		            var img = $('<img/>');
 		            var span = $('<span></span>');
 		            span.text(item.name);
+		            //span.text(item.code);
+		            alert(item.code+"-----"+item.name);
 		            img.attr('id',item.id);
 		            var imgurl = "http://localhost:8080/DataRemote/static/images/satellite.png";
 		            img.attr('src',imgurl)
@@ -60,6 +62,7 @@ function intsatellite(seriesId) {
 		            var img = $('<img/>');
 		            var span = $('<span></span>');
 		            span.text(item.name);
+		            //span.text(item.code);
 		            img.attr('id',item.id);
 		            var host = window.location.host;
 		            var imgurl = 'http://'+host+'/DataRemote/static/images/satellite.png';

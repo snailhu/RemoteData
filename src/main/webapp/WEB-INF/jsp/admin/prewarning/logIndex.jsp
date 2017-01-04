@@ -318,7 +318,10 @@
 		<!-- /.page-content -->
 	</div>
 	<!-- /.main-content -->
-	<script type="text/javascript">
+	
+	
+	
+<script type="text/javascript">
 $("#search-createdatetimeStart").keypress(function(){
 	  return false;
 });

@@ -390,7 +390,7 @@ public class CommonController {
 		modelview.addObject("nowSeries", nowSeries.getCode());
 		//当前所在星号
 		modelview.addObject("nowStar", nowStar);
-		
+		System.out.println("常用模板页面获取到的星名称："+nowStar+StarId);
 		String value = "";
 		String name = "";
 		HttpSession session = request.getSession();

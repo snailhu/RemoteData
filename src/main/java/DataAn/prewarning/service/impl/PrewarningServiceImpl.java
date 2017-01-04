@@ -172,19 +172,30 @@ public class PrewarningServiceImpl implements IPrewarningService {
 	public Pager<QueryLogDTO> pageQueryWarningLog(int pageIndex, int pageSize, String series, String star,
 			String parameterType, String parameter, String createdatetimeStart, String createdatetimeEnd,
 			String warningType, String hadRead) throws Exception {
+		String seriesName=null;
+		String starName=null;
+		Series seriesDomain=null;
+		Star starDomain=null;
 		if (StringUtils.isBlank(series) || StringUtils.isBlank(star)) {
-			return null;
+			
+			//return null;
 		}
-		Series seriesDomain = seriersDao.get(Long.parseLong(series));
-		if (seriesDomain == null) {
-			return null;
+		else
+		{
+			seriesDomain = seriersDao.get(Long.parseLong(series));
+			if (seriesDomain == null) {
+				
+				return null;
+			}
+			seriesName = seriesDomain.getCode();
+			starDomain = starDao.get(Long.parseLong(star));
+			if (starDomain == null) {
+				
+				return null;
+			}
+			 starName = starDomain.getCode();
 		}
-		String seriesName = seriesDomain.getCode();
-		Star starDomain = starDao.get(Long.parseLong(star));
-		if (starDomain == null) {
-			return null;
-		}
-		String starName = starDomain.getCode();
+		
 
 		Pager<QueryLogDTO> logPager = warningLogMongoDao.selectByOption(pageIndex, pageSize, seriesName, starName,
 				parameterType, parameter, createdatetimeStart, createdatetimeEnd, warningType, hadRead);

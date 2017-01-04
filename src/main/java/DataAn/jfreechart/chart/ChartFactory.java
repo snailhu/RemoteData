@@ -133,9 +133,11 @@ public class ChartFactory {
 			categoryAxisLabel = configMap.get("categoryAxisLabel"); 
 			valueAxisLabel = configMap.get("valueAxisLabel");
 			if(StringUtils.isNotBlank(configMap.get("y1Label"))) 
-				y1Label = "单位( " + configMap.get("y1Label") + " )";
+				y1Label = configMap.get("y1Label");
+//				y1Label = "单位( " + configMap.get("y1Label") + " )";
 			if(StringUtils.isNotBlank(configMap.get("y2Label"))) 
-				y2Label = "单位( " + configMap.get("y2Label") + " )";
+				y2Label = configMap.get("y2Label");
+//				y2Label = "单位( " + configMap.get("y2Label") + " )";
 		}
 		dataset1 = datasetList.get(0);			
         JFreeChart chart = org.jfree.chart.ChartFactory.createTimeSeriesChart(title, categoryAxisLabel, valueAxisLabel,dataset1);

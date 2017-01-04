@@ -140,6 +140,7 @@ public class StarParamController  extends BaseController {
 			starParamDto.setCreater(currentUserName);
 			starParamService.save(starParamDto);
 		} catch (Exception e) {
+			e.printStackTrace();
 			jsonMsg.setSuccess(false);
 			jsonMsg.setMsg("添加参数出错！");
 			jsonMsg.setObj(e.getMessage());

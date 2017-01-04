@@ -64,8 +64,8 @@ public class CreateTimeSeriesChartTask2 extends RecursiveTask<String>{
 			String y2Label = "";
 			List<TimeSeriesCollection> datasetList = new ArrayList<TimeSeriesCollection>();
 			if(constraintList.size() == 2){
-				y1Label = constraintList.get(0).getUnits();
-				y2Label = constraintList.get(1).getUnits();
+				y1Label = constraintList.get(0).getParamName() + ": 单位( " + constraintList.get(0).getUnits() + " )";
+				y2Label = constraintList.get(1).getParamName() + ": 单位( " + constraintList.get(1).getUnits() + " )";
 				//双Y轴
 				for (ConstraintDto constraintDto : constraintList) {
 					TimeSeriesCollection dataset = new TimeSeriesCollection();
@@ -99,7 +99,7 @@ public class CreateTimeSeriesChartTask2 extends RecursiveTask<String>{
 					}
 					//当参数单位只有一个的时候添加
 					if(unitsSet.size() == 1)
-						y1Label = constraintList.get(0).getUnits();
+						y1Label = constraintList.get(0).getParamName() + ": 单位( " + constraintList.get(0).getUnits() + " )";
 				}
 			}
 			
@@ -114,7 +114,16 @@ public class CreateTimeSeriesChartTask2 extends RecursiveTask<String>{
 			configMap.put("y1Label", y1Label);
 			configMap.put("y2Label", y2Label);
 
-			if(datasetList.size() >0 && datasetList.get(0).getSeries(0).getItemCount() > 0){
+			int itemCount = 0;
+    		for (TimeSeriesCollection dataset : datasetList) {
+    			for (int i = 0; i < dataset.getSeriesCount(); i++) {
+    				if(dataset.getSeries(i).getItemCount() > itemCount){
+    					itemCount = dataset.getSeries(i).getItemCount();
+    				}
+    			}
+			}
+    		
+			if(itemCount > 0){
 				JFreeChart chart = ChartFactory.createTimeSeriesChart(datasetList, beginDate, endDate, configMap);
 				
 				chartName = chartName+"_lineChart.png";

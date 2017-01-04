@@ -289,18 +289,16 @@
             //工具栏
             toolbox: {
                 feature: {
-                    dataZoom: {
-                        yAxisIndex: 'none'
-                    },
-                    magicType : {show: true, type: ['line', 'bar']},
+                    dataZoom: {yAxisIndex: 'none',title:{ zoom:'区域缩放', back:'区域还原'}},
+                    magicType : {show: true, type: ['line', 'bar'],title:{line:'折线图',bar:'柱状图'}},
                     restore: {},
-                    saveAsImage: {}
+                    saveAsImage: {title:'保存图片'}
                 	},
                 itemGap:20,
                 itemSize:20,
                 //borderColor:'#ccc',
                 orient:'vertical',
-                right:'2%',
+                right:'1%',
         		height:'auto',
         		top:'25%',
                 

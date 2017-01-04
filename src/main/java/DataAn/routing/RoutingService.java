@@ -29,6 +29,7 @@ public class RoutingService {
 		long begin_routing = System.currentTimeMillis();
 		
 		Configuration configuration=configurationGetter.getConfiguration();
+		System.out.println("期望的点的个数："+configuration.getCanvasPointNum()+":"+configuration.getPerPointNum()+":"+configuration.getExpectedPerPointNum());
 
 		Repo repo= routingRepoService.getExpectedRepo(requestConfig,configuration);
 		Calendar date1 = Calendar.getInstance();
@@ -88,7 +89,7 @@ public class RoutingService {
 						aheadRepo=repo.ahead();
 					}
 					//如果选择到了1秒的分级库
-					if((repo.index()==0) && aheadRepo==null)
+					if((repo.index()==0) && (aheadRepo==null))
 					{
 						System.out.println("路由选择到了1秒分级库");
 						DefaultRepo  originalrepo= new DefaultRepo();
@@ -103,7 +104,8 @@ public class RoutingService {
 						}						
 						collection = mg.getCollection(originalrepo.database(), originalrepo.collection());		
 						paramCount = collection.count(Filters.and(Filters.gte("datetime", startDate),Filters.lte("datetime", endDate)));
-						if(paramCount<(configuration.getExpectedPerPointNum()*1.2)){
+						System.out.println("原始仓库中点的个数"+paramCount+"当前1S库的点的个数"+"期望的点的个数"+configuration.getExpectedPerPointNum());
+						if(paramCount<(configuration.getExpectedPerPointNum())){
 							repo=originalrepo;
 						}
 					}

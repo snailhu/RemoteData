@@ -29,6 +29,7 @@ public class RoutingService {
 		long begin_routing = System.currentTimeMillis();
 		
 		Configuration configuration=configurationGetter.getConfiguration();
+		System.out.println("期望的点的个数："+configuration.getCanvasPointNum()+":"+configuration.getPerPointNum()+":"+configuration.getExpectedPerPointNum());
 
 		Repo repo= routingRepoService.getExpectedRepo(requestConfig,configuration);
 		Calendar date1 = Calendar.getInstance();
@@ -38,7 +39,7 @@ public class RoutingService {
 		Calendar date2 = Calendar.getInstance();
 		date2.setTime(DateUtil.format(requestConfig.getTimeEnd()));
 		Date endDate = date2.getTime();
-		//如果小于两个小时
+		//如果小于一天
 		if((endDate.getTime()-startDate.getTime())<86400000)
 		{
 			DefaultRepo  originalrepo= new DefaultRepo();
@@ -55,13 +56,13 @@ public class RoutingService {
 			repo=originalrepo;
 		}
 		else
-		{
+		{		
 				MongodbUtil mg = MongodbUtil.getInstance();
 				MongoCollection<Document> collection = mg.getCollection(repo.database(), repo.collection());		
 									
-				long paramCount= 0;
+				long paramCount= 0;				
 				paramCount = collection.count(Filters.and(Filters.gte("datetime", startDate),Filters.lte("datetime", endDate)));						
-				
+				System.out.println("当时间区间大于1天时第二次选择仓库，当前选择仓库的数量为："+paramCount);
 				if(paramCount-configuration.getExpectedPerPointNum()>0){
 					Repo nextRepo=repo.next();
 					while(paramCount-configuration.getExpectedPerPointNum()>0
@@ -78,7 +79,8 @@ public class RoutingService {
 							&&aheadRepo!=null){
 						repo=aheadRepo;
 						collection = mg.getCollection(repo.database(), repo.collection());		
-						paramCount = collection.count(Filters.and(Filters.gte("datetime", startDate),Filters.lte("datetime", endDate)));						
+						paramCount = collection.count(Filters.and(Filters.gte("datetime", startDate),Filters.lte("datetime", endDate)));
+						System.out.println("更加精细一级的点数为："+paramCount+"分级为："+repo.database()+repo.collection());
 						if(paramCount>(configuration.getExpectedPerPointNum()*1.2)){
 							repo=repo.next();
 							collection = mg.getCollection(repo.database(), repo.collection());
@@ -86,6 +88,28 @@ public class RoutingService {
 						}
 						aheadRepo=repo.ahead();
 					}
+					//如果选择到了1秒的分级库
+					if((repo.index()==0) && (aheadRepo==null))
+					{
+						System.out.println("路由选择到了1秒分级库");
+						DefaultRepo  originalrepo= new DefaultRepo();
+						originalrepo.setDatabase(repo.database());
+						if(requestConfig.getDevice().equals("flywheel")){
+							originalrepo.setCollection("flywheel");
+							originalrepo.setIndex(0);
+						}
+						if(requestConfig.getDevice().equals("top")){
+							originalrepo.setCollection("top");
+							originalrepo.setIndex(0);
+						}						
+						collection = mg.getCollection(originalrepo.database(), originalrepo.collection());		
+						paramCount = collection.count(Filters.and(Filters.gte("datetime", startDate),Filters.lte("datetime", endDate)));
+						System.out.println("原始仓库中点的个数"+paramCount+"当前1S库的点的个数"+"期望的点的个数"+configuration.getExpectedPerPointNum());
+						if(paramCount<(configuration.getExpectedPerPointNum())){
+							repo=originalrepo;
+						}
+					}
+					
 				}
 		}
 		
@@ -102,6 +126,7 @@ public class RoutingService {
 		
 		//方法二：
 		//-----------查询多线程迭代获取结果----------------//
+		System.out.println(""+repo.collection());
 		Map<String, YearAndParamDataDto> vals=forkJoinPool.invoke(new DataSearchServiceTask(requestConfig,repo));
 		return vals;	
 		//-----------查询多线程迭代获取结果----------------//

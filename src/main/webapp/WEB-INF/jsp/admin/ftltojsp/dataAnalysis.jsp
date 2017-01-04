@@ -547,10 +547,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		 	var type_current = $('#SatelliteComponents').attr('name');
 		 	console.log("当前"+Series_current+"----"+Star_current);
             var url = "${pageContext.request.contextPath}/getConstraint?beginDate="+beginDate+"&endDate="+endDate+"&Series_current="+Series_current+"&Star_current="+Star_current+"&type_current="+type_current;
-            intTemplateList();
-            updateParamTree(url);
-            
-            
+            //$("#id_dplist_template").jqxDropDownList('clear');
+            $("#id_dplist_template").jqxDropDownList('clearSelection');          
+            updateParamTree(url);   
 		 });
 		 
 		 $("#jqxButton_addgroup").jqxButton({ width: '95', height: '30'});	
@@ -598,17 +597,18 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
            source: dataAdapter,
            sortable: true,
            editable: true,
+           editSettings: { saveOnPageChange: true, saveOnBlur: true, saveOnSelectionChange: true, cancelOnEsc: true, saveOnEnter: true, editSingleCell: true, editOnDoubleClick: true, editOnF2: true },
            checkboxes: true,
            theme: 'energyblue',
            hierarchicalCheckboxes: true,              	
            columns: [
-	             { text: '参数名称',  dataField: 'name',editable: false, width: 310 },
+	             { text: '参数名称',  dataField: 'name',editable: false, width: 310},
 	             { text: 'ID',  dataField: 'id',editable: false, width:200, hidden: true },
-	             { text: '最大值', dataField: 'max', width: 140,
+	             { text: '最大值', dataField: 'max', width: 140,	
 	               validation: function (cell, value) {
 	               			console.log(parseFloat(value));
-                         if (isNaN(parseFloat(value)) || parseFloat(value) < (-9999.0) || parseFloat(value) > (9999.0)) {
-                             return { message: "请输入正确的最大值最小值(-9999.00~+9999.00)", result: false };
+                         if (isNaN(parseFloat(value)) || parseFloat(value) < (-99999.0) || parseFloat(value) > (99999.0)) {
+                             return { message: "请输入正确的最大值最小值(-99999.00~+99999.00)", result: false };
                          }
                          return true;
                      }
@@ -616,15 +616,21 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	             { text: '最小值', dataField: 'min', width: 140,
 	               validation: function (cell, value) {
 	               			console.log(parseFloat(value));
-                         if (isNaN(parseFloat(value)) || parseFloat(value) < (-9999.0) || parseFloat(value) > (9999.0)) {
-                             return { message: "请输入正确的最大值最小值(-9999.00~+9999.00)", result: false };
+                         if (isNaN(parseFloat(value)) || parseFloat(value) < (-99999.0) || parseFloat(value) > (99999.0)) {
+                             return { message: "请输入正确的最大值最小值(-99999.00~+99999.00)", result: false };
                          }
                          return true;
                      }
 	             },
 	             { text: '单位',dataField: 'unit',width:105},
 	             { text: 'Y轴', dataField:'yname',width:105,columnType:'template',
-	             	cellsRenderer: function (row, column, value, rowData) {if(value=="0") {return "Y1"};if(value=="1"){return "Y2"}},
+	             	cellsRenderer: function (row, column, value, rowData) {	if(value=="0") 	{return "Y1"};
+	             															if(value=="1")	{return "Y2"};
+	             															//if(value=="")	{
+	             																//$("#treeGrid").jqxTreeGrid('lockRow', row);
+	             																//console.log("这一行的名字："+value+"行号："+row);
+	             															//};
+	             															},
 					createEditor: function (row, cellValue, editor, cellText, width, height) {
 					  var source = ["Y1", "Y2"];
 					  editor.jqxDropDownList({selectedIndex: 0,autoDropDownHeight: true, placeHolder:'请设置Y轴', source: source, width: '100%', height: '100%' });		 
@@ -641,7 +647,23 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				}                     
 			]
        });
-	} 
+       //根据参数分类将父节点设置为不可编辑
+       	/*var rows = $("#treeGrid").jqxTreeGrid('getRows');
+      	var rowsData = "";
+      	var traverseTree = function(rows)
+      	{
+          	for(var i = 0; i < rows.length; i++)
+          	{
+              rowsData += rows[i].name + " " + rows[i].yname + "\n";
+              if (rows[i].records)
+              {
+                  traverseTree(rows[i].records);
+              }
+          	}
+      	};
+      	console.log("开始执行");
+      	traverseTree(rows);*/     
+	 } 
 	       	
     //添加分组功能
     var JsonG = {}
@@ -822,7 +844,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
             var value2 = $("#treeGrid").jqxTreeGrid('getCellValue', 1, 'max');
             //var value = $("#id_dplist_template").jqxTreeGrid('getCellValue', 2, 'yname');
             //var value2 = $("#id_dplist_template").jqxTreeGrid('getCellValue', 2, 'max');
-            alert(value2+"---"+value);
+            //alert(value2+"---"+value);
         } 
         //提交分组响应事件
         function submitGroup(){

@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import javax.annotation.Resource;
 
@@ -53,14 +54,23 @@ public class JobServiceImpl implements IJobService{
 	
 	//test 没5秒执行一次
 //	@Scheduled(cron = "0/5 * * * * *")  
-	//每月25号的晚上23点执行此方法
-	@Scheduled(cron = "0 0 23 25 * ?")  
+	//每月25号的晚上2点执行此方法
+//	@Scheduled(cron = "0 0 2 25 * ?")  
+	@Scheduled(cron = "0 0 2 25 * ?")  
 	@Override
 	public void delMongoDBInvalidValueJob() {
-//		System.out.println(" JobServiceImpl DelMongoDBValueJob date:" + new Date().toString());
-		String databaseName = InitMongo.DB_J9STAR2;
 		MongodbUtil mg = MongodbUtil.getInstance();
-		//mg.deleteMany(databaseName, "star2", "status", 0);
+		Set<String> databaseNames = mg.getDatabaseNames();
+		for (String databaseName : databaseNames) {
+			if(databaseName.indexOf("db") > -1){
+				Set<String> isexistCols = mg.getExistCollections(databaseName);
+				if(isexistCols != null && isexistCols.size() > 0){
+					for (String collectionName : isexistCols) {
+						mg.deleteMany(databaseName, collectionName, "status", 0);				
+					}
+				}
+			}
+		}
 	}
 
 	//每月20号的晚上23点执行此方法
@@ -75,7 +85,7 @@ public class JobServiceImpl implements IJobService{
 	}
 
 	//每天晚上22点执行此方法
-	@Scheduled(cron = "0 0 2 * * ?") 
+	@Scheduled(cron = "0 0 1 * * ?") 
 	@Override
 	public void updateFileStatusJob() {
 		try {

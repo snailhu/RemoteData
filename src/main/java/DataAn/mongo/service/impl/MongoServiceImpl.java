@@ -183,14 +183,6 @@ public class MongoServiceImpl implements IMongoService{
 	}
 
 	@Override
-	public long findMovableNumByParamCode(String series, String star, String collectionName, String paramName,
-			Date beginDate, Date endDate) {
-		MongodbUtil mg = MongodbUtil.getInstance();
-		String databaseName = InitMongo.getDataDBBySeriesAndStar(series, star);
-		return mg.countByDate(databaseName, collectionName, beginDate, endDate, "paramName", paramName);
-	}
-
-	@Override
 	public long findJobNumByDeviceName(String series, String star, String paramType, String deviceName, 
 			Date beginDate,Date endDate) {
 		MongodbUtil mg = MongodbUtil.getInstance();

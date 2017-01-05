@@ -349,7 +349,7 @@ jeDate({
 });
 		var logGrid;
 		var hadReadFlag = '${hadReadFlag}';
-		var hadRead = "";
+		var hadRead = '${hadReadFlag}';
 		if(hadReadFlag == 0){
 			$("#searchFormDiv").hide();
 			hadRead = 0;
@@ -397,7 +397,7 @@ jeDate({
 						},
 						{
 							field : 'parameter',
-							title : '参数',
+							title : '设备名称/参数名称',
 							width : 200,
 						//sortable:true
 						},
@@ -409,8 +409,8 @@ jeDate({
 						},
 						{
 							field : 'paramValue',
-							title : '参数值',
-							width : 100,
+							title : '说明',
+							//width : 400,
 						//sortable:true
 						},
 						{
@@ -423,6 +423,7 @@ jeDate({
 							field : 'warnRemark',
 							title : '备注',
 							width : 300,
+							hidden: true
 						//sortable:true
 						} ] ],
 
@@ -599,7 +600,7 @@ jeDate({
 							},
 							{
 								field : 'parameter',
-								title : '参数',
+								title : '设备名称/参数名称',
 								width : 200,
 							//sortable:true
 							},
@@ -611,8 +612,8 @@ jeDate({
 							},
 							{
 								field : 'paramValue',
-								title : '参数值',
-								width : 100,
+								title : '说明',
+								//width : 400,
 							//sortable:true
 							},
 							{
@@ -625,6 +626,7 @@ jeDate({
 								field : 'warnRemark',
 								title : '备注',
 								width : 300,
+								hidden: true
 							//sortable:true
 							} ] ],
 
@@ -677,6 +679,13 @@ jeDate({
 									series = rows[i].series;
 									star = rows[i].star;
 									parameterType = rows[i].parameterType;
+									if(parameterType=='飞轮')
+									{
+										parameterType="flywheel";
+									}else if(parameterType=='陀螺')
+									{
+										parameterType="top";
+									}
 									series = rows[i].series;
 									if (rows[i].warningType == '特殊工况') {
 										warningType = "0";
@@ -684,9 +693,8 @@ jeDate({
 										warningType = "1";
 									}
 								}
-								$
-										.ajax({
-											url : '${pageContext.request.contextPath}/admin/prewarning/deleteLog',
+								$.ajax({
+											url : '${pageContext.request.contextPath}/admin/prewarning/deleteLog?hadRead='+ hadRead,
 											data : {
 												logIds : ids.join(','),
 												series : series,

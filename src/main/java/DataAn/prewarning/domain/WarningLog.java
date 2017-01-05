@@ -38,7 +38,7 @@ public class WarningLog implements java.io.Serializable {
 	private Date timeValue; // 时间点
 
 	@Column(name = "warnValue", nullable = true)
-	private double paramValue; // 参数值
+	private String paramValue; // 参数值
 
 	@Column(name = "warningType", nullable = true)
 	private int warningType; // 预警类型（0特殊工况，1异常）
@@ -97,13 +97,7 @@ public class WarningLog implements java.io.Serializable {
 		this.logId = logId;
 	}
 
-	public double getParamValue() {
-		return paramValue;
-	}
-
-	public void setParamValue(double paramValue) {
-		this.paramValue = paramValue;
-	}
+	
 
 	public int getWarningType() {
 		return warningType;
@@ -127,6 +121,14 @@ public class WarningLog implements java.io.Serializable {
 
 	public void setTimeValue(Date timeValue) {
 		this.timeValue = timeValue;
+	}
+
+	public String getParamValue() {
+		return paramValue;
+	}
+
+	public void setParamValue(String paramValue) {
+		this.paramValue = paramValue;
 	}
 
 }

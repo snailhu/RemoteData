@@ -18,7 +18,9 @@ public class QueryLogDTO implements java.io.Serializable {
 
 	private String parameterType; // 设备
 
-	private double paramValue; // 参数值
+	//private double paramValue; // 参数值
+	
+	private String paramValue; //将参数值字段改为记录说明
 
 	private String warningType; // 预警类型（0特殊工况，1异常）
 
@@ -68,13 +70,7 @@ public class QueryLogDTO implements java.io.Serializable {
 		this.parameterType = parameterType;
 	}
 
-	public double getParamValue() {
-		return paramValue;
-	}
-
-	public void setParamValue(double paramValue) {
-		this.paramValue = paramValue;
-	}
+	
 
 	public String getWarningType() {
 		return warningType;
@@ -106,6 +102,14 @@ public class QueryLogDTO implements java.io.Serializable {
 
 	public void setTimeValue(String timeValue) {
 		this.timeValue = timeValue;
+	}
+
+	public String getParamValue() {
+		return paramValue;
+	}
+
+	public void setParamValue(String paramValue) {
+		this.paramValue = paramValue;
 	}
 
 }

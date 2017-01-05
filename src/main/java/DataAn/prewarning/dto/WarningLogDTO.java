@@ -20,7 +20,9 @@ public class WarningLogDTO implements java.io.Serializable {
 
 	private String parameterType; // 设备
 
-	private double paramValue; // 参数值
+	//private double paramValue; // 参数值
+	
+	private String paramValue;
 
 	private int warningType; // 预警类型（0特殊工况，1异常）
 
@@ -76,13 +78,13 @@ public class WarningLogDTO implements java.io.Serializable {
 		this.parameterType = parameterType;
 	}
 
-	public double getParamValue() {
+	/*public double getParamValue() {
 		return paramValue;
 	}
 
 	public void setParamValue(double paramValue) {
 		this.paramValue = paramValue;
-	}
+	}*/
 
 	public int getWarningType() {
 		return warningType;
@@ -99,5 +101,14 @@ public class WarningLogDTO implements java.io.Serializable {
 	public void setHadRead(int hadRead) {
 		this.hadRead = hadRead;
 	}
+
+	public String getParamValue() {
+		return paramValue;
+	}
+
+	public void setParamValue(String paramValue) {
+		this.paramValue = paramValue;
+	}
+
 
 }

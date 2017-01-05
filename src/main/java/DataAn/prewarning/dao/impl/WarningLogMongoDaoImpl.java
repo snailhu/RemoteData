@@ -36,10 +36,25 @@ public class WarningLogMongoDaoImpl implements IWarningLogMongoDao {
 	private IStarDao starDao;
 
 	@Override
-	public void deleteWainingById(String logId, String series, String star, String parameterType, String warningType) {
+	public void deleteWainingById(String logId, String series, String star, String parameterType, String warningType ,String hadRead) {
 		String databaseName = InitMongo.getDataDBBySeriesAndStar(series, star);
 		String collectionName = getCollectionName(parameterType, warningType);
-		MongodbUtil.getInstance().deleteMany(databaseName, collectionName, "_id", logId);
+		System.out.println("删除一条记录,当前页的状态为："+hadRead);
+		if(hadRead.equals("1"))
+		{
+			System.out.println("删除记录"+logId+"("+databaseName+collectionName+")");
+			MongodbUtil.getInstance().deleteMany(databaseName, collectionName, "_id", new ObjectId(logId));
+		}
+		if(hadRead.equals("0"))
+		{
+			System.out.println("标记为已读"+logId);
+			MongodbUtil mongodbUtil = MongodbUtil.getInstance();
+			MongoCollection<Document> collection = mongodbUtil.getCollectionNotShard(databaseName, collectionName);
+			if (collection != null) {
+				collection.updateMany(Filters.eq("_id", new ObjectId(logId)), Updates.set("hadRead", "1"));
+			}
+		}
+		
 	}
 
 	@Override
@@ -53,7 +68,7 @@ public class WarningLogMongoDaoImpl implements IWarningLogMongoDao {
 			for (String databaseName : databaseNames) {
 				MongoCollection<Document> collection = mongodbUtil.getCollectionNotShard(databaseName, collectionName);
 				if (collection != null) {
-					sum += collection.count(Filters.eq("hadRead", "0"));
+					sum += collection.count(Filters.and(Filters.eq("status", 1),Filters.eq("hadRead", "0")));
 				}
 			}
 		} else if (StringUtils.isNotBlank(parameterType) && StringUtils.isBlank(warningType)) {
@@ -61,13 +76,13 @@ public class WarningLogMongoDaoImpl implements IWarningLogMongoDao {
 				MongoCollection<Document> collection = mongodbUtil.getCollectionNotShard(databaseName,
 						parameterType + "_job");
 				if (collection != null) {
-					sum += collection.count(Filters.eq("hadRead", "0"));
+					sum += collection.count(Filters.and(Filters.eq("status", 1),Filters.eq("hadRead", "0")));
 				}
 
 				MongoCollection<Document> collection2 = mongodbUtil.getCollectionNotShard(databaseName,
 						parameterType + "_exception");
 				if (collection2 != null) {
-					sum += collection2.count(Filters.eq("hadRead", "0"));
+					sum += collection2.count(Filters.and(Filters.eq("status", 1),Filters.eq("hadRead", "0")));
 				}
 			}
 		} else if (StringUtils.isBlank(parameterType) && StringUtils.isNotBlank(warningType)) {
@@ -83,13 +98,13 @@ public class WarningLogMongoDaoImpl implements IWarningLogMongoDao {
 			for (String databaseName : databaseNames) {
 				MongoCollection<Document> collection = mongodbUtil.getCollectionNotShard(databaseName, collectionName);
 				if (collection != null) {
-					sum += collection.count(Filters.eq("hadRead", "0"));
+					sum += collection.count(Filters.and(Filters.eq("status", 1),Filters.eq("hadRead", "0")));
 				}
 
 				MongoCollection<Document> collection2 = mongodbUtil.getCollectionNotShard(databaseName,
 						collectionName2);
 				if (collection2 != null) {
-					sum += collection2.count(Filters.eq("hadRead", "0"));
+					sum += collection2.count(Filters.and(Filters.eq("status", 1),Filters.eq("hadRead", "0")));
 				}
 			}
 		} else {
@@ -97,22 +112,22 @@ public class WarningLogMongoDaoImpl implements IWarningLogMongoDao {
 				MongoCollection<Document> collection = mongodbUtil.getCollectionNotShard(databaseName,
 						"flywheel_job");
 				if (collection != null) {
-					sum += collection.count(Filters.eq("hadRead", "0"));
+					sum += collection.count(Filters.and(Filters.eq("status", 1),Filters.eq("hadRead", "0")));
 				}
 				MongoCollection<Document> collection2 = mongodbUtil.getCollectionNotShard(databaseName,
 						"top_job");
 				if (collection2 != null) {
-					sum += collection2.count(Filters.eq("hadRead", "0"));
+					sum += collection2.count(Filters.and(Filters.eq("status", 1),Filters.eq("hadRead", "0")));
 				}
 				MongoCollection<Document> collection3 = mongodbUtil.getCollectionNotShard(databaseName,
 						"flywheel_exception");
 				if (collection3 != null) {
-					sum += collection3.count(Filters.eq("hadRead", "0"));
+					sum += collection3.count(Filters.and(Filters.eq("status", 1),Filters.eq("hadRead", "0")));
 				}
 				MongoCollection<Document> collection4 = mongodbUtil.getCollectionNotShard(databaseName,
 						"top_exception");
 				if (collection4 != null) {
-					sum += collection4.count(Filters.eq("hadRead", "0"));
+					sum += collection4.count(Filters.and(Filters.eq("status", 1),Filters.eq("hadRead", "0")));
 				}
 			}
 		}
@@ -134,21 +149,28 @@ public class WarningLogMongoDaoImpl implements IWarningLogMongoDao {
 		if (collection == null) {
 			return queryLogDTOs;
 		}
-		FindIterable<Document> document_It = collection.find(Filters.eq("hadRead", "0"));
+		FindIterable<Document> document_It = collection.find(Filters.and(Filters.eq("hadRead", "0"),Filters.eq("status", 1)));
 		for (Document doc : document_It) {
-			double value=0.0;
-			String timevalue=timevalue=DateUtil.formatSSS(doc.getDate("datetime"));
+			String value="";
+			String timevalue=DateUtil.formatSSS(doc.getDate("datetime"));
 			try{
-				value=Double.parseDouble(doc.getString("value"));				
-			}
-			catch(Exception e)
-			{
-				Log4jUtil.getInstance().getLogger(DataSearchTask.class).error("将字符串转换为Double类型时出错");
-			}
-			
+				String jobbegintime=doc.getString("beginDate");
+				String jobendtime=doc.getString("endDate");
+				if((jobbegintime != null) && (jobendtime!= null))
+				{
+					value="机动开始时间："+jobbegintime+"结束时间"+jobendtime;
+				}
+				else
+				{
+					value="异常参数值："+doc.getString("value");
+				}	
+			}catch(Exception e){
+				Log4jUtil.getInstance().getLogger(WarningLogMongoDaoImpl.class).error("从"
+						+ "monogodb中查询信息出错，可能是从数据库中查到的字段转换类型时出错");
+			}			
 			QueryLogDTO warningLog = new QueryLogDTO();
 			warningLog.setLogId(doc.getObjectId("_id").toString());
-			warningLog.setParameter(doc.getString("paramName"));
+			warningLog.setParameter(doc.getString("deviceName")+doc.getString("paramName")+doc.getString("paramCode"));
 			warningLog.setParameterType(doc.getString("deviceType"));
 			//warningLog.setParamValue(Double.parseDouble(doc.getString("value")));
 			warningLog.setParamValue(value);
@@ -240,10 +262,11 @@ public class WarningLogMongoDaoImpl implements IWarningLogMongoDao {
 						&& StringUtils.isNotBlank(parameter)) {
 					document_It = collection
 							.find(Filters.and(Filters.eq("paramName", parameter),
+									Filters.eq("status", 1),
 									Filters.gte("datetime", DateUtil.format(createdatetimeStart)),
 									Filters.lte("datetime", DateUtil.format(createdatetimeEnd))))
 							.sort(Filters.eq("datetime", -1)).skip((pageIndex - 1) * pageSize).limit(pageSize);
-					totalCount = collection.count(Filters.and(Filters.eq("paramName", parameter),
+					totalCount = collection.count(Filters.and(Filters.eq("paramName", parameter),Filters.eq("status", 1),
 							Filters.gte("datetime", DateUtil.format(createdatetimeStart)),
 							Filters.lte("datetime", DateUtil.format(createdatetimeEnd))));
 
@@ -252,71 +275,81 @@ public class WarningLogMongoDaoImpl implements IWarningLogMongoDao {
 						&& StringUtils.isBlank(parameter)) {
 					document_It = collection
 							.find(Filters.and(Filters.gte("datetime", DateUtil.format(createdatetimeStart)),
-									Filters.lte("datetime", DateUtil.format(createdatetimeEnd))))
+									Filters.lte("datetime", DateUtil.format(createdatetimeEnd)),Filters.eq("status", 1)))
 							.sort(Filters.eq("datetime", -1)).skip((pageIndex - 1) * pageSize).limit(pageSize);
 					totalCount = collection
-							.count(Filters.and(Filters.gte("datetime", DateUtil.format(createdatetimeStart)),
+							.count(Filters.and(Filters.eq("status", 1),Filters.gte("datetime", DateUtil.format(createdatetimeStart)),
 									Filters.lte("datetime", DateUtil.format(createdatetimeEnd))));
 				}
 				if (StringUtils.isNotBlank(createdatetimeStart) && StringUtils.isBlank(createdatetimeEnd)
 						&& StringUtils.isNotBlank(parameter)) {
 					document_It = collection
 							.find(Filters.and(Filters.eq("paramName", parameter),
+									Filters.eq("status", 1),
 									Filters.gte("datetime", createdatetimeStart)))
 							.sort(Filters.eq("datetime", -1)).skip((pageIndex - 1) * pageSize).limit(pageSize);
-					totalCount = collection.count(Filters.and(Filters.eq("paramName", parameter),
+					totalCount = collection.count(Filters.and(Filters.eq("paramName", parameter),Filters.eq("status", 1),
 							Filters.gte("datetime", DateUtil.format(createdatetimeStart))));
 				}
 				if (StringUtils.isBlank(createdatetimeStart) && StringUtils.isNotBlank(createdatetimeEnd)
 						&& StringUtils.isNotBlank(parameter)) {
 					document_It = collection
-							.find(Filters.and(Filters.eq("paramName", parameter),
+							.find(Filters.and(Filters.eq("paramName", parameter),Filters.eq("status", 1),
 									Filters.lte("datetime", DateUtil.format(createdatetimeEnd))))
 							.sort(Filters.eq("datetime", -1)).skip((pageIndex - 1) * pageSize).limit(pageSize);
-					totalCount = collection.count(Filters.and(Filters.eq("paramName", parameter),
+					totalCount = collection.count(Filters.and(Filters.eq("paramName", parameter),Filters.eq("status", 1),
 							Filters.lte("datetime", DateUtil.format(createdatetimeEnd))));
 				}
 				if (StringUtils.isBlank(createdatetimeStart) && StringUtils.isBlank(createdatetimeEnd)
 						&& StringUtils.isNotBlank(parameter)) {
-					document_It = collection.find(Filters.eq("paramName", parameter)).sort(Filters.eq("datetime", -1))
+					document_It = collection.find(Filters.and(Filters.eq("status", 1),Filters.eq("paramName", parameter))).sort(Filters.eq("datetime", -1))
 							.skip((pageIndex - 1) * pageSize).limit(pageSize);
-					totalCount = collection.count(Filters.eq("paramName", parameter));
+					totalCount = collection.count(Filters.and(Filters.eq("paramName", parameter),Filters.eq("status", 1)));
 				}
 				if (StringUtils.isBlank(createdatetimeStart) && StringUtils.isNotBlank(createdatetimeEnd)
 						&& StringUtils.isBlank(parameter)) {
-					document_It = collection.find(Filters.lte("datetime", DateUtil.format(createdatetimeEnd)))
+					document_It = collection.find(Filters.and(Filters.eq("status", 1),Filters.lte("datetime", DateUtil.format(createdatetimeEnd))))
 							.sort(Filters.eq("datetime", -1)).skip((pageIndex - 1) * pageSize).limit(pageSize);
-					totalCount = collection.count(Filters.lte("datetime", DateUtil.format(createdatetimeEnd)));
+					totalCount = collection.count(Filters.and(Filters.eq("status", 1),Filters.lte("datetime", DateUtil.format(createdatetimeEnd))));
 				}
 				if (StringUtils.isNotBlank(createdatetimeStart) && StringUtils.isBlank(createdatetimeEnd)
 						&& StringUtils.isBlank(parameter)) {
-					document_It = collection.find(Filters.gte("datetime", DateUtil.format(createdatetimeStart)))
+					document_It = collection.find(Filters.and(Filters.eq("status", 1),Filters.gte("datetime", DateUtil.format(createdatetimeStart))))
 							.sort(Filters.eq("datetime", -1)).skip((pageIndex - 1) * pageSize).limit(pageSize);
-					totalCount = collection.count(Filters.gte("datetime", DateUtil.format(createdatetimeStart)));
+					totalCount = collection.count(Filters.and(Filters.eq("status", 1),Filters.gte("datetime", DateUtil.format(createdatetimeStart))));
 				}
 				if (StringUtils.isBlank(createdatetimeStart) && StringUtils.isBlank(createdatetimeEnd)
 						&& StringUtils.isBlank(parameter)) {
-					document_It = collection.find().sort(Filters.eq("datetime", -1)).skip((pageIndex - 1) * pageSize)
+					document_It = collection.find(Filters.eq("status", 1)).sort(Filters.eq("datetime", -1)).skip((pageIndex - 1) * pageSize)
 							.limit(pageSize);
-					totalCount = collection.count();
+					totalCount = collection.count(Filters.eq("status", 1));
+					
 				}
 
 				for (Document doc : document_It) {
 					
-					double value=0.0;
-					String timevalue=timevalue=DateUtil.formatSSS(doc.getDate("datetime"));
+					String value="";
+					String timevalue=DateUtil.formatSSS(doc.getDate("datetime"));
 					try{
-						value=Double.parseDouble(doc.getString("value"));				
+						String jobbegintime=doc.getString("beginDate");
+						String jobendtime=doc.getString("endDate");
+						if((jobbegintime != null) && (jobendtime!= null))
+						{
+							value="机动开始时间："+jobbegintime+"结束时间"+jobendtime;
+						}
+						else
+						{
+							value="异常参数值："+doc.getString("value");
+						}	
+					}catch(Exception e){
+						Log4jUtil.getInstance().getLogger(WarningLogMongoDaoImpl.class).error("从"
+								+ "monogodb中查询信息出错，可能是从数据库中查到的字段转换类型时出错");
 					}
-					catch(Exception e)
-					{
-						Log4jUtil.getInstance().getLogger(DataSearchTask.class).error("将字符串转换为Double类型时出错");
-					}
-					
+																	
 					QueryLogDTO warningLog = new QueryLogDTO();
 					warningLog.setLogId(doc.getObjectId("_id").toString());
 					//warningLog.setParameter(doc.getString("paramName"));
-					warningLog.setParameter(doc.getString("deviceName")+doc.getString("paramName"));
+					warningLog.setParameter(doc.getString("deviceName")+doc.getString("paramName")+doc.getString("paramCode"));
 					warningLog.setParameterType(doc.getString("deviceType"));
 					//warningLog.setParamValue(Double.parseDouble(doc.getString("value")));
 					warningLog.setParamValue(value);					
@@ -328,7 +361,7 @@ public class WarningLogMongoDaoImpl implements IWarningLogMongoDao {
 					warningLog.setWarnRemark(doc.getString("remark"));
 					queryLogDTOs.add(warningLog);
 					
-					collection.updateMany(Filters.eq("_id", doc.getObjectId("_id")), Updates.set("hadRead", "1"));
+					//collection.updateMany(Filters.eq("_id", doc.getObjectId("_id")), Updates.set("hadRead", "1"));
 				}
 				Pager<QueryLogDTO> pager = new Pager<QueryLogDTO>(pageSize, pageIndex, totalCount, queryLogDTOs);
 				return pager;

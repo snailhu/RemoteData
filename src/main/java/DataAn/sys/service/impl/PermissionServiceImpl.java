@@ -33,6 +33,7 @@ public class PermissionServiceImpl implements IPermissionService{
 	private IRoleAuthDao roleAuthDao;
 	
 	@Override
+	@Transactional
 	public void initPermission() {
 		List<Auth> list = authDao.findAll();
 		if(list == null || list.size() == 0){

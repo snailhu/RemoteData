@@ -176,6 +176,7 @@ public class SeriesServiceImpl implements ISeriesService {
 	}
 
 	@Override
+	@Transactional
 	public void initJ9Series() {
 		List<Series> seriesList = seriesDao.findAll();
 		if (seriesList == null || seriesList.size() == 0) {

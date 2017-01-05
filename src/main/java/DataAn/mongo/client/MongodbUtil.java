@@ -131,15 +131,30 @@ public class MongodbUtil {
 		return db;
 	}
 	
+	public Set<String> getDatabaseNames(){
+		Set<String> databaseNames = new HashSet<String>();
+		MongoIterable<String> dbNameIt = mg.listDatabaseNames();
+		for (String dbName : dbNameIt) {
+			databaseNames.add(dbName);
+		}
+		return databaseNames;
+	}
 	/**
 	 * 判断数据库是否存在
 	 * @param databaseName
 	 * @return
 	 */
 	public boolean isExistDB(String databaseName){
-		List<String> databaseNames = mg.getDatabaseNames();
-		if (databaseNames.contains(databaseName)) {
-			return true;
+//		List<String> databaseNames = mg.getDatabaseNames();
+//		if (databaseNames.contains(databaseName)) {
+//			return true;
+//		}
+		if(databaseName != null && !"".equals(databaseName)){
+			MongoIterable<String> dbNameIt = mg.listDatabaseNames();
+			for (String dbName : dbNameIt) {
+				if(dbName.equals(databaseName))
+					return true;
+			}			
 		}
 		return false;
 	}
@@ -379,30 +394,17 @@ public class MongodbUtil {
 										Filters.lte("datetime", endDate)),
 							Updates.set("status", 0));
 	}
-
-
-	public Document findFirst(String databaseName, String collectionName,String key, String value){
-		MongoCollection<Document> collection = this.getCollection(databaseName, collectionName);
-		Document doc = collection.find(Filters.eq(key, value)).first();
-		return doc;
-	}
-	
-	public MongoCursor<Document> findAll(String databaseName,String collectionName){
-		MongoCollection<Document> collection = this.getCollection(databaseName, collectionName);
-		MongoCursor<Document> cursor = collection.find().iterator();
-		
-		return cursor;
-	}
 	
 	public MongoCursor<Document> find(String databaseName,String collectionName, String key, Object value){
 		MongoCollection<Document> collection = this.getCollection(databaseName, collectionName);
-		return collection.find(Filters.eq(key, value)).iterator();
+		return collection.find(Filters.and(Filters.eq(key, value),Filters.eq("status", 1))).iterator();
 	}
 	
 	public MongoCursor<Document> find(String databaseName,String collectionName,Date beginDate, Date endDate){
 		MongoCollection<Document> collection = this.getCollection(databaseName, collectionName);
 		return collection.find(Filters.and(Filters.gte("datetime", beginDate),
-							   Filters.lte("datetime", endDate))).iterator();
+							   Filters.lte("datetime", endDate),
+							   Filters.eq("status", 1))).iterator();
 	}
 	
 	public long countByDate(String databaseName,String collectionName,
@@ -410,6 +412,7 @@ public class MongodbUtil {
 		MongoCollection<Document> collection = this.getCollection(databaseName, collectionName);
 		return collection.count(Filters.and(Filters.gte("datetime", beginDate),
 							   				Filters.lte("datetime", endDate),
+							   				Filters.lte("status", 1),
 							   				Filters.eq(fieldName, value)));
 	}
 	
@@ -417,6 +420,6 @@ public class MongodbUtil {
 			Date beginDate, Date endDate){
 		MongoCollection<Document> collection = this.getCollection(databaseName, collectionName);
 		return collection.count(Filters.and(Filters.gte("datetime", beginDate),
-							   				Filters.lte("datetime", endDate)));
+							   				Filters.lte("datetime", endDate),Filters.eq("status", 1)));
 	}
 }

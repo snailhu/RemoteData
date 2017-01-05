@@ -50,7 +50,7 @@ public class DeviceListController {
 	@Resource
 	private IStarService starService;
 
-	//设备管理
+	//设备管理列表
 	@RequestMapping("/index/{series}/{star}/")
 	public String indexOfDeviceType(@PathVariable String series, @PathVariable String star, Model model) {
 		// 当前所在系列

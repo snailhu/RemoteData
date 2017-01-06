@@ -1,5 +1,6 @@
 package DataAn.prewarning.controller;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -11,11 +12,19 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.StringUtils;
+import org.codehaus.jackson.JsonParseException;
+import org.codehaus.jackson.map.JsonMappingException;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.type.JavaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+
+
+
 
 import DataAn.common.controller.BaseController;
 import DataAn.common.dao.Pager;
@@ -344,14 +353,35 @@ public class PrewarningController extends BaseController {
 	@RequestMapping(value = "/deleteLog")
 	@ResponseBody
 	public JsonMessage deleteLog(HttpServletRequest request, String logIds, String series, String star,
-			String parameterType, String warningType,String hadRead) {
+			String parameterType, String warningType,String hadRead,String records) {
 		System.out.println("come in deleteLog，删除按钮所在页面："+hadRead);
-		System.out.println(logIds);
+		System.out.println(logIds+series+star+parameterType+warningType);
 		String[] logIdArray = logIds.split(",");
 		JsonMessage jsonMsg = new JsonMessage();
+		System.out.println(records);
+		ObjectMapper objectMapper = new ObjectMapper();  
+        JavaType javaType = objectMapper.getTypeFactory().constructParametricType(List.class, QueryLogDTO.class);  
+        List<QueryLogDTO> list=new ArrayList<QueryLogDTO>();
+        try {
+			 list = objectMapper.readValue(records, javaType);
+		} catch (JsonParseException e1) {
+			
+			e1.printStackTrace();
+		} catch (JsonMappingException e1) {
+		
+			e1.printStackTrace();
+		} catch (IOException e1) {
+	
+			e1.printStackTrace();
+		}  
 		try {
-			for (String logId : logIdArray) {
+			/*for (String logId : logIdArray) {
 				prewarningService.deleteWarningLog(logId, series, star, parameterType, warningType,hadRead);
+			}*/
+			for(QueryLogDTO onelog:list)
+			{
+				prewarningService.deleteWarningLog(onelog.getLogId(),onelog.getSeries(),onelog.getStar(),
+						onelog.getParameterType(),onelog.getWarningType(),hadRead);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

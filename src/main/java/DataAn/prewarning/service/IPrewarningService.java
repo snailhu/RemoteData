@@ -36,7 +36,7 @@ public interface IPrewarningService {
 
 	public void updateWarningLog(WarningLogDTO warningLogDTO) throws Exception;
 
-	public void deleteWarningLog(String logId, String series, String star, String parameterType, String warningType)
+	public void deleteWarningLog(String logId, String series, String star, String parameterType, String warningType,String hadRead)
 			throws Exception;
 
 	public Pager<QueryLogDTO> pageQueryWarningLog(int pageIndex, int pageSize, String series, String star,

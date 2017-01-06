@@ -20,7 +20,6 @@ public class InitDataServiceImpl implements IInitDataService{
 	private IJ9Series_Star_Service j9Series_Star_Service;
 	
 	@Override
-	@Transactional
 	public void initDataBase(){
 		System.out.println("come in initDataBase...");
 		//初始化j9星系库数据

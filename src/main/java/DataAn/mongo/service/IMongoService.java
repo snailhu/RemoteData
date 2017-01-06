@@ -63,9 +63,19 @@ public interface IMongoService {
 	public MongoCursor<Document> findByDate(String series,
 			String star, String paramType, Date beginDate, Date endDate);
 	
-	public long findMovableNumByParamCode(String series,String star , 
-			String collectionName, String paramCode,Date beginDate, Date endDate);
-	
+	/**
+	* 通过设备名称获取设备特殊工况次数
+	* @param series
+	* @param star
+	* @param paramType
+	* @param deviceName
+	* @param beginDate
+	* @param endDate
+	* @return
+	* @author Shenwp
+	* @date 2017年1月5日
+	* @version 1.0
+	*/
 	public long findJobNumByDeviceName(String series,String star , 
 			String paramType, String deviceName,Date beginDate, Date endDate);
 	

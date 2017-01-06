@@ -111,7 +111,7 @@ public class ParameterServiceImpl implements IParameterService{
 	public void updateParamter(long paramId, String param_zh) {
 		Parameter param = parameterDao.get(paramId);
 		if(StringUtils.isNotBlank(param_zh)){
-			if(param_zh.equals("接收地方时")){ // || param_zh.equals("时间")
+			if(param_zh.indexOf(":") == -1){//if(param_zh.equals("接收地方时")){ // || param_zh.equals("时间")
 				param.setFullName(param_zh);
 				param.setCode("datetime");
 			}else{
@@ -254,7 +254,7 @@ public class ParameterServiceImpl implements IParameterService{
 			String paramType, String param_en) {
 		String param_zh = this.getParameter_allZh_by_en(series, star, paramType, param_en);
 		if(StringUtils.isNotBlank(param_zh)){
-			if(!param_zh.equals("时间") && !param_zh.equals("接收地方时")){
+			if(param_zh.indexOf(":") != -1){
 				String param = param_zh.split(":")[1];//TODO 根据
 				List<String> typeList = null;
 				if("flywheel".equals(paramType))

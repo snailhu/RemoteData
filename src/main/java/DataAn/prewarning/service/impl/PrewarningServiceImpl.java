@@ -163,9 +163,9 @@ public class PrewarningServiceImpl implements IPrewarningService {
 	}
 
 	@Override
-	public void deleteWarningLog(String logId, String series, String star, String parameterType, String warningType)
+	public void deleteWarningLog(String logId, String series, String star, String parameterType, String warningType,String hadRead)
 			throws Exception {
-		warningLogMongoDao.deleteWainingById(logId, series, star, parameterType, warningType);
+		warningLogMongoDao.deleteWainingById(logId, series, star, parameterType, warningType,hadRead);
 	}
 
 	@Override
@@ -202,14 +202,15 @@ public class PrewarningServiceImpl implements IPrewarningService {
 		for (QueryLogDTO warnLog : logPager.getDatas()) {
 			warnLog.setParameterType(
 					J9Series_Star_ParameterType.getJ9SeriesStarParameterType(warnLog.getParameterType()).getName());
-			if (seriesDomain != null) {
+			/*if (seriesDomain != null) {
 				warnLog.setSeries(seriesDomain.getName());
 				warnLog.setParameter(
 						getParamCNname(seriesDomain.getCode(), starDomain.getCode(), warnLog.getParameter()));
 			}
 			if (starDomain != null) {
 				warnLog.setStar(starDomain.getName());
-			}
+			}*/
+			
 			if (warnLog.getWarningType().equals("0")) {
 				warnLog.setWarningType("特殊工况");
 			} else if (warnLog.getWarningType().equals("1")) {

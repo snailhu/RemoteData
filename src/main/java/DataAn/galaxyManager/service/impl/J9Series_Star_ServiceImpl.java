@@ -12,11 +12,14 @@ import javax.annotation.Resource;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import DataAn.Analysis.dto.ConstraintDto;
 import DataAn.Util.EhCache;
 import DataAn.fileSystem.dao.IDateParametersDao;
 import DataAn.fileSystem.domain.DateParameters;
+import DataAn.galaxyManager.dao.IDeviceTypeDao;
+import DataAn.galaxyManager.domain.DeviceType;
 import DataAn.galaxyManager.dto.ParameterDto;
 import DataAn.galaxyManager.option.J9SeriesType;
 import DataAn.galaxyManager.option.J9Series_Star_FlywheelParameterConfig;
@@ -34,6 +37,8 @@ public class J9Series_Star_ServiceImpl implements IJ9Series_Star_Service{
 	private IDateParametersDao parametersDao;
 	@Resource
 	private IParameterService paramService;
+	@Resource
+	private IDeviceTypeDao deviceTypeDao;
 	
 	@Override
 	public List<ConstraintDto> getAllParameterList(
@@ -366,8 +371,19 @@ public class J9Series_Star_ServiceImpl implements IJ9Series_Star_Service{
 	}
 
 	@Override
+	@Transactional
 	public void initJ9SeriesParameterData() {
 		try {
+			//初始化星系设备类型
+			DeviceType flywheel = new DeviceType();
+			flywheel.setDeviceCode(J9Series_Star_ParameterType.FLYWHEEL.getValue());
+			flywheel.setDeviceName(J9Series_Star_ParameterType.FLYWHEEL.getName());
+			deviceTypeDao.add(flywheel);
+			DeviceType top = new DeviceType();
+			top.setDeviceCode(J9Series_Star_ParameterType.TOP.getValue());
+			top.setDeviceName(J9Series_Star_ParameterType.TOP.getName());
+			deviceTypeDao.add(top);
+			
 			//初始化飞轮数据
 			Set<String> flywheelParamNames = new HashSet<String>();
 			Class<?> flywheelClass = Class.forName(J9Series_Star_FlywheelParameterConfig.class.getName());

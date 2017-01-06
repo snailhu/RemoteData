@@ -36,6 +36,10 @@ public class MongodbUtilTest {
 	public void test(){
 		boolean flag = mg.isExistCollection(InitMongo.DB_J9STAR2, "flywheel5s");
 		System.out.println("flag: " + flag);
+		Set<String> dbNames = mg.getDatabaseNames();
+		for (String dbName : dbNames) {
+			System.out.println(dbName);
+		}
 	}
 
 	@Test

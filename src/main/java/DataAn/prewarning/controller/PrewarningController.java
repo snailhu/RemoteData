@@ -344,14 +344,14 @@ public class PrewarningController extends BaseController {
 	@RequestMapping(value = "/deleteLog")
 	@ResponseBody
 	public JsonMessage deleteLog(HttpServletRequest request, String logIds, String series, String star,
-			String parameterType, String warningType) {
-		System.out.println("come in deleteLog");
+			String parameterType, String warningType,String hadRead) {
+		System.out.println("come in deleteLog，删除按钮所在页面："+hadRead);
 		System.out.println(logIds);
 		String[] logIdArray = logIds.split(",");
 		JsonMessage jsonMsg = new JsonMessage();
 		try {
 			for (String logId : logIdArray) {
-				prewarningService.deleteWarningLog(logId, series, star, parameterType, warningType);
+				prewarningService.deleteWarningLog(logId, series, star, parameterType, warningType,hadRead);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

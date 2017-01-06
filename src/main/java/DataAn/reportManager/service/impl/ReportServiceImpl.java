@@ -865,14 +865,6 @@ public class ReportServiceImpl implements IReoportService {
 		constraintDto.setUnits(starParam.getValueUnit());
 		return constraintDto;
 	}
-	
-//	private int getJobNumByParamCode(String seriesId, String starId, String partsType, Date beginDate, Date endDate,
-//			String paramCode) {
-//		String collectionName = partsType + "_SpecialCase";
-//		long mnum = iMongoService.findMovableNumByParamCode(seriesId, starId, collectionName, paramCode, beginDate,
-//				endDate);
-//		return Integer.parseInt(String.valueOf(mnum));
-//	}
 
 	private int getJobNumByDeviceName(String seriesId, String starId, String partsType, Date beginDate, Date endDate,
 			String deviceName) {

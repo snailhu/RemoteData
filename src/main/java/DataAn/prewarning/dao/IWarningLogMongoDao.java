@@ -7,7 +7,7 @@ import DataAn.prewarning.dto.QueryLogDTO;
 
 public interface IWarningLogMongoDao {
 
-	public void deleteWainingById(String logId, String series, String star, String parameterType, String warningType);
+	public void deleteWainingById(String logId, String series, String star, String parameterType, String warningType,String HadRead);
 
 	public Long getNotReadCount(String series, String star, String parameterType, String parameter, String warningType);
 

@@ -32,13 +32,18 @@ public class InitDataListener implements ApplicationListener<ContextRefreshedEve
 	private IStatusTrackingService statusTrackingService;
 	@Resource
 	private IInitDataService initDataService;
+	private static volatile boolean flag = false;
 	
 	@Override
 	public void onApplicationEvent(ContextRefreshedEvent event) {
 		System.out.println("InitDataListener..." + event);			
 		if(event.getApplicationContext().getParent() == null){
-			System.out.println("加载一次 InitDataListener..." + event);
 			
+			System.out.println("加载一次 InitDataListener..." + event);
+			if(!flag){
+				System.out.println("加载一次 InitDataListener... kafka、initServerConfig...");
+				flag=true;
+			}
 			//开另外一个线程处理存入kafka的数据
 			new Thread(new SaveFileToKafka(paramService, mongoService,statusTrackingService)).start();
 			//初始化数据 //TODO ?

@@ -47,7 +47,6 @@ public class MongodbUtil{
 					singleton = new MongodbUtil();
 				}
 			}
-			singleton = new MongodbUtil();
 		}
 		return singleton;
 	}
@@ -72,8 +71,8 @@ public class MongodbUtil{
 				LogUtil.getInstance().getLogger(this.getClass()).info("启动单机数据库：{}",InitMongo.DB_SERVER_HOST);
 				mg = new MongoClient(InitMongo.DB_SERVER_HOST, InitMongo.DB_SERVER_PORT);
 			}
-			dbs.put(InitMongo.DATABASE_TEST, getDB(InitMongo.DATABASE_TEST));
-			dbs.put(InitMongo.DB_J9STAR2, getDB(InitMongo.DB_J9STAR2));
+//			dbs.put(InitMongo.DATABASE_TEST, getDB(InitMongo.DATABASE_TEST));
+//			dbs.put(InitMongo.DB_J9STAR2, getDB(InitMongo.DB_J9STAR2));
 			//test
 //			mg = new MongoClient("127.0.0.1", 10000);
 //			dbs.put(InitMongo.DATABASE_TEST, getDB(InitMongo.DATABASE_TEST));

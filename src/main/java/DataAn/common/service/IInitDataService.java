@@ -10,5 +10,10 @@ public interface IInitDataService {
 	* @version 1.0
 	 * @throws Exception 
 	*/
-	public abstract void initDataBase();
+	public void initDataBase();
+	
+	public void initServerConfig();
+	
+	public void initMongodbConfig();
+	
 }

@@ -39,16 +39,13 @@ public class WarningLogMongoDaoImpl implements IWarningLogMongoDao {
 	public void deleteWainingById(String logId, String series, String star, String parameterType, String warningType ,String hadRead) {
 		String databaseName = InitMongo.getDataDBBySeriesAndStar(series, star);
 		String collectionName = getCollectionName(parameterType, warningType);
-		System.out.println("删除一条记录,当前页的状态为："+hadRead+databaseName+collectionName+"异常类型："+warningType);
 		if(hadRead.equals("1"))
 		{
-			System.out.println("删除记录"+logId+"("+databaseName+collectionName+")");
 			MongodbUtil.getInstance().deleteMany(databaseName, collectionName, "_id", new ObjectId(logId));
 		}else if(hadRead.equals("0"))
 		{
 			MongoCollection<Document> collection = MongodbUtil.getInstance().getCollectionNotShard(databaseName, collectionName);
 			if (collection != null) {
-				System.out.println("标记为已读"+logId+"("+databaseName+collectionName+")");
 				collection.updateMany(Filters.eq("_id", new ObjectId(logId)), Updates.set("hadRead", "1"));
 			}
 		}
@@ -331,14 +328,13 @@ public class WarningLogMongoDaoImpl implements IWarningLogMongoDao {
 					try{
 						String jobbegintime=doc.getString("beginDate");
 						String jobendtime=doc.getString("endDate");
-						if((jobbegintime != null) && (jobendtime!= null))
+						if(warningType.equals("0"))//若果是特殊工况则说明字段显示起止时间
 						{
-							value="机动开始时间："+jobbegintime+"结束时间"+jobendtime;
-						}
-						else
+							value="起止时间："+jobbegintime+"--"+jobendtime;
+						}else if(warningType.equals("1"))//若果是异常则说明字段显示异常值
 						{
 							value="异常参数值："+doc.getString("value");
-						}	
+						}
 					}catch(Exception e){
 						Log4jUtil.getInstance().getLogger(WarningLogMongoDaoImpl.class).error("从"
 								+ "monogodb中查询信息出错，可能是从数据库中查到的字段转换类型时出错");
@@ -346,10 +342,21 @@ public class WarningLogMongoDaoImpl implements IWarningLogMongoDao {
 																	
 					QueryLogDTO warningLog = new QueryLogDTO();
 					warningLog.setLogId(doc.getObjectId("_id").toString());
-					//warningLog.setParameter(doc.getString("paramName"));
-					warningLog.setParameter(doc.getString("deviceName")+doc.getString("paramName")+doc.getString("paramCode"));
+					
+					if(warningType.equals("0"))//若果是特殊工况则显示设备名称
+					{
+						warningLog.setParameter(doc.getString("deviceName"));
+					}else if(warningType.equals("1"))//若果是异常则显示参数名称
+					{
+						String strParamName = doc.getString("paramName");
+						String strParamCode = doc.getString("paramCode");
+						warningLog.setParameter(strParamName);
+						if(strParamName==null)
+						{
+							warningLog.setParameter(strParamCode);
+						}
+					}
 					warningLog.setParameterType(doc.getString("deviceType"));
-					//warningLog.setParamValue(Double.parseDouble(doc.getString("value")));
 					warningLog.setParamValue(value);					
 					warningLog.setSeries(doc.getString("series"));
 					warningLog.setStar(doc.getString("star"));

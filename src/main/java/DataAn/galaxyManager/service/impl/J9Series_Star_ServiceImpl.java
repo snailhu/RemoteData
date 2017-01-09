@@ -409,14 +409,21 @@ public class J9Series_Star_ServiceImpl implements IJ9Series_Star_Service{
 	public void initJ9SeriesParameterData() {
 		try {
 			//初始化星系设备类型
-			DeviceType flywheel = new DeviceType();
-			flywheel.setDeviceCode(J9Series_Star_ParameterType.FLYWHEEL.getValue());
-			flywheel.setDeviceName(J9Series_Star_ParameterType.FLYWHEEL.getName());
-			deviceTypeDao.add(flywheel);
-			DeviceType top = new DeviceType();
-			top.setDeviceCode(J9Series_Star_ParameterType.TOP.getValue());
-			top.setDeviceName(J9Series_Star_ParameterType.TOP.getName());
-			deviceTypeDao.add(top);
+			
+			DeviceType flywheel = deviceTypeDao.selectByDeviceCode(J9Series_Star_ParameterType.FLYWHEEL.getValue());
+			if(flywheel == null){
+				flywheel = new DeviceType();
+				flywheel.setDeviceCode(J9Series_Star_ParameterType.FLYWHEEL.getValue());
+				flywheel.setDeviceName(J9Series_Star_ParameterType.FLYWHEEL.getName());
+				deviceTypeDao.add(flywheel);				
+			}
+			DeviceType top = deviceTypeDao.selectByDeviceCode(J9Series_Star_ParameterType.TOP.getValue());
+			if(top == null){
+				top = new DeviceType();
+				top.setDeviceCode(J9Series_Star_ParameterType.TOP.getValue());
+				top.setDeviceName(J9Series_Star_ParameterType.TOP.getName());
+				deviceTypeDao.add(top);
+			}
 			
 			//初始化飞轮数据
 			Set<String> flywheelParamNames = new HashSet<String>();

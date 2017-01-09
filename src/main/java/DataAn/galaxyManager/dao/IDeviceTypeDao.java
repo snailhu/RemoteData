@@ -10,4 +10,6 @@ public interface IDeviceTypeDao extends IBaseDao<DeviceType> {
 	public Pager<DeviceType> selectByPager(int pageIndex, int pageSize, String userType);
 
 	public List<DeviceType> getDeviceTypeList();
+	
+	public DeviceType selectByDeviceCode(String deviceCode);
 }

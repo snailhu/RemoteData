@@ -39,18 +39,16 @@ public class WarningLogMongoDaoImpl implements IWarningLogMongoDao {
 	public void deleteWainingById(String logId, String series, String star, String parameterType, String warningType ,String hadRead) {
 		String databaseName = InitMongo.getDataDBBySeriesAndStar(series, star);
 		String collectionName = getCollectionName(parameterType, warningType);
-		System.out.println("删除一条记录,当前页的状态为："+hadRead);
+		System.out.println("删除一条记录,当前页的状态为："+hadRead+databaseName+collectionName+"异常类型："+warningType);
 		if(hadRead.equals("1"))
 		{
 			System.out.println("删除记录"+logId+"("+databaseName+collectionName+")");
 			MongodbUtil.getInstance().deleteMany(databaseName, collectionName, "_id", new ObjectId(logId));
-		}
-		if(hadRead.equals("0"))
+		}else if(hadRead.equals("0"))
 		{
-			System.out.println("标记为已读"+logId);
-			MongodbUtil mongodbUtil = MongodbUtil.getInstance();
-			MongoCollection<Document> collection = mongodbUtil.getCollectionNotShard(databaseName, collectionName);
+			MongoCollection<Document> collection = MongodbUtil.getInstance().getCollectionNotShard(databaseName, collectionName);
 			if (collection != null) {
+				System.out.println("标记为已读"+logId+"("+databaseName+collectionName+")");
 				collection.updateMany(Filters.eq("_id", new ObjectId(logId)), Updates.set("hadRead", "1"));
 			}
 		}
@@ -234,13 +232,13 @@ public class WarningLogMongoDaoImpl implements IWarningLogMongoDao {
 			if (queryLogAllDTOs.size() < pageSize) {
 				for (int i = 0; i < queryLogAllDTOs.size(); i++) {
 					QueryLogDTO queryLogDTO = queryLogAllDTOs.get(i);
-					updateHadRead(queryLogDTO);
+					//updateHadRead(queryLogDTO);
 					queryLogResultDTOs.add(queryLogDTO);
 				}
 			} else {
 				for (int i = 0; i < pageSize; i++) {
 					QueryLogDTO queryLogDTO = queryLogAllDTOs.get(i);
-					updateHadRead(queryLogDTO);
+					//updateHadRead(queryLogDTO);
 					queryLogResultDTOs.add(queryLogDTO);
 				}
 			}

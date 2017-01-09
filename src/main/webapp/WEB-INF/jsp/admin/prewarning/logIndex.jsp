@@ -654,6 +654,7 @@ jeDate({
 		//删除用户
 		function deleteLog() {
 			var ids = [];
+			var records=[];
 			var rows = logGrid.datagrid('getSelections');
 			if (rows.length > 0) {
 				swal(
@@ -676,9 +677,9 @@ jeDate({
 								var warningType = "";
 								for (var i = 0; i < rows.length; i++) {
 									ids.push(rows[i].logId);
-									series = rows[i].series;
-									star = rows[i].star;
-									parameterType = rows[i].parameterType;
+									series = rows[i].series;								
+									star = rows[i].star;									
+									parameterType = rows[i].parameterType;							
 									if(parameterType=='飞轮')
 									{
 										parameterType="flywheel";
@@ -692,6 +693,15 @@ jeDate({
 									} else {
 										warningType = "1";
 									}
+									
+									var record=new Object();
+									record.logId=rows[i].logId;
+									record.series=series;
+									record.star=star;
+									record.parameterType=parameterType;
+									record.warningType=warningType;
+									records.push(record);
+									console.log(rows[i].logId+series+star+parameterType+warningType);
 								}
 								$.ajax({
 											url : '${pageContext.request.contextPath}/admin/prewarning/deleteLog?hadRead='+ hadRead,
@@ -700,7 +710,8 @@ jeDate({
 												series : series,
 												star : star,
 												parameterType : parameterType,
-												warningType : warningType
+												warningType : warningType,
+												records:JSON.stringify(records),
 											},
 											cache : false,
 											dataType : "json",

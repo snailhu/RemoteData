@@ -105,6 +105,7 @@ public class J9Series_Star_ServiceImpl implements IJ9Series_Star_Service{
 			String param_en = "";
 			for (String param_zh : paramSet) {
 				param_en = paramService.getParameter_en_by_allZh(series, star,paramType, param_zh);
+				System.out.println("获取参数列表失败："+param_en+"--");
 				simplyZh_and_enMap.put(param_zh.split(":")[1], param_en);
 			} //TODO 参数分类显示
 			List<String> dataTypes = null;
@@ -325,10 +326,18 @@ public class J9Series_Star_ServiceImpl implements IJ9Series_Star_Service{
 		ConstraintDto c = null;
 		List<ConstraintDto> children = null;
 		ConstraintDto child = null;
-		int count = 1;
+		int count = 2;
 		int parentId = 0;
 //		Map<String,String> map = this.getAllParameterList_simplyZh_and_en();
 		String sameFlyWheelData = "";
+		ConstraintDto nogrouping = new ConstraintDto();//给没有按参数分类规则的参数创建一个“其他”分组类，没有分组的参数都保存在这个分组里
+		nogrouping.setName("未分组");
+		nogrouping.setParentId(0);
+		nogrouping.setId(1);
+		nogrouping.setMax("");
+		nogrouping.setMin("");
+		nogrouping.setUnit("");
+		nogrouping.setYname("");
 		for (String dataType : dataTypes) {
 			c = new ConstraintDto();
 			c.setParentId(0);
@@ -360,10 +369,35 @@ public class J9Series_Star_ServiceImpl implements IJ9Series_Star_Service{
 					children.add(child);
 					count ++;
 				}
+				else{
+					boolean groupingflag=true;
+					for (String groupingname : dataTypes)
+					{
+						if(flyWheelData.indexOf(groupingname) != -1)
+						{
+							groupingflag=false;
+						}
+					}
+					if(groupingflag){
+						child = new ConstraintDto();
+						child.setId(count);
+						child.setParentId(1);
+						child.setName(flyWheelData); //设置中文
+						child.setValue(map.get(flyWheelData)); //设置英文
+						child.setMax("9999");
+						child.setMin("-9999");
+						child.setUnit("");
+						child.setYname("Y1");
+						children.add(child);
+						count ++;
+					}
+					
+				}
 			}
 			if(children != null && children.size() > 0){
 				//c.setChildren(children);
-				list.add(c);	
+				list.add(c);
+				list.add(nogrouping);
 				list.addAll(children);
 			}
 		}

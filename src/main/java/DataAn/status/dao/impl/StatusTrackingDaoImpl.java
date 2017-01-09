@@ -36,8 +36,8 @@ public class StatusTrackingDaoImpl extends BaseDaoImpl<StatusTracking> implement
 		String countHQL = "select count(*) from StatusTracking where (statusType='" + StatusTrackingType.END.getValue()
 				+ "' or statusType like('%e%'))";
 		if (StringUtils.isNotBlank(fileName)) {
-			hql += " and fileName = '" + fileName + "'";
-			countHQL += " and fileName = '" + fileName + "'";
+			hql += " and fileName like '%" + fileName + "%'";
+			countHQL += " and fileName like '%" + fileName + "%'";
 		}
 		if (StringUtils.isNotBlank(userType)) {
 			hql += " and userType = '" + userType + "'";

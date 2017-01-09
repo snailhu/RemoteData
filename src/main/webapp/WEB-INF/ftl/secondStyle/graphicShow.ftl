@@ -108,7 +108,7 @@
 		<label>结束日期</label>
 		<input class="datainp" id="dateEnd" type="text" placeholder="- -请选择结束时间- -" readonly>
 		<!--<input class="btn btn-default getData-btn" id="getData"  type="button" name="getData" value="获取数据">-->
-		<input class="btn btn-default getData-btn" id="changeColor" type="button" name="changeColor" value="配置图参数" data-toggle="modal" data-target="#configChartModal" >
+		<input class="btn btn-default getData-btn" id="changeColor" type="button" name="changeColor" value="配置曲线" data-toggle="modal" data-target="#configChartModal" >
 	</div>
 	<div class="changeColor-div">
 <!--         <#if (params?size>0) > -->
@@ -128,7 +128,7 @@
 		    <div class="modal-content">
 		      <div class="modal-header">
 		        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-		        <h4 class="modal-title" id="configChartModalLabel">配置图参数</h4>
+		        <h4 class="modal-title" id="configChartModalLabel">配置曲线</h4>
 		      </div>
 		      <div class="modal-body">
 		      	<form id="configChartForm" class="form-horizontal" role="form">
@@ -808,25 +808,40 @@ $.post("getDatabytap",
     	
         $('#submit_configChart').click(function(){
 	      	var seriesOptionsDam = [];
+	      	var legendOptionsData = [];
+	      	var legendcolor=[];
         	$('.jscolor').each( function(i, n) {
         	  var paramValue = $(this).attr('name');
         	  var paramColor = '#'+$(this).val();    	  
         	  var width = $('#'+paramValue+'-size').val();
-        	  console.log("曲线颜色值："+paramColor+"曲线粗细："+width);
+        	  //console.log("曲线颜色值："+paramColor+"曲线粗细："+width);
         	  if(paramColor != null && paramColor != 'undefined'){
 		      	  seriesOptionsDam[i] = {
 		      			name: $(this).attr('dataName'),
 		  		        type: 'line',
 		  	            lineStyle:{
-		  	            	normal:{
-		  	            		color: paramColor,
-				  		        width: width,
-		  	            		}}
+		  	            	normal:{color: paramColor,
+				  		        	width: width,}
+				  		}
+				  		 
+		           	};
+		           legendOptionsData[i] ={
+		           		name: $(this).attr('dataName'),
+		           		//icon:'roundRect',
+		           		textStyle:{
+		           			backgroundColor:paramColor
+		           		}
 		           };
+		           legendcolor[i]=paramColor;		           			           		
         	  }
         	});
-        	//console.log(seriesOptionsDam);
-        	options.series = eval(seriesOptionsDam);
+        	        
+        	options.series = eval(seriesOptionsDam);       	        	
+        	options.legend={
+        		top: 'auto',
+        		data:legendOptionsData,
+        	};
+        	options.color=eval(legendcolor);
             myChart.setOption(options);
         })
 

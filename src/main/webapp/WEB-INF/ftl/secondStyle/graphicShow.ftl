@@ -107,7 +107,7 @@
 		<input class="datainp" id="dateStart" type="text" placeholder="- -请选择开始时间- -" readonly>
 		<label>结束日期</label>
 		<input class="datainp" id="dateEnd" type="text" placeholder="- -请选择结束时间- -" readonly>
-		<!--<input class="btn btn-default getData-btn" id="getData"  type="button" name="getData" value="获取数据">-->
+		<input class="btn btn-default getData-btn" id="getData"  type="button" name="getData" value="获取数据">
 		<input class="btn btn-default getData-btn" id="changeColor" type="button" name="changeColor" value="配置曲线" data-toggle="modal" data-target="#configChartModal" >
 	</div>
 	<div class="changeColor-div">
@@ -480,35 +480,7 @@
 	                myChart.setOption(options);
              }
          })
-
-     
-   		//单个组装参数的x和y值
-    //    $.each(names, function (i, n) {       
-	//        $.getJSON('${base}/getData?nowSeries=${nowSeries}&nowStar=${nowStar}&component=${component}&start=${beginDate}&end=${endDate}&paramSize='+paramSize+'&filename=' + n.value, function (data) {	
-	         //   console.log(data)
-	 //           seriesOptions[i] = {
-	 //           	type: 'line',
-	 //               name: n.name,
-	 //               smooth:true,
-	 //               yAxisIndex: n.y,
-	  //              lineStyle:{
-      //              	normal:{
-       //             		color:'dark',
-     //               		width:2,
-        //            	}
-       //             },
-	    //            data: data["paramValue"]
-	   //         };
-	   //         seriesCounter += 1;
-	   //         if (seriesCounter === names.length) {
-	   //         	pSeriesOptions = seriesOptions
-	   //         	options.series = eval(seriesOptions);
-	    //        	pDate=date=options.xAxis.data = data["yearValue"];	            
-	    //            myChart.setOption(options);	                
-	    //        }
-	 //       });
-    //	});   
-       	
+ 	
        	$("#getData").click(function(){
        		startDate =  $('#dateStart').val();
        		endDate =  $('#dateEnd').val();
@@ -608,7 +580,8 @@ $.post("getDatabytap",
 				$('#dateStart').val(startDate);
        			$('#dateEnd').val(endDate);
               	console.log("开始日期"+startDate+"结束日期："+endDate);
-              	if(timeZone>10){
+              	console.log(timeZone);
+              	if(timeZone>0){
               		 if(needGetDate()){
               		 						parent.window.document.body.style.overflow = "hidden";//隐藏滚动条
 						                	$("#main").showLoading(); 
@@ -712,74 +685,6 @@ $.post("getDatabytap",
 								    	                 console.log("画图完成时间："+new Date());
 								                 }
 								             })  	
-						                	
-						                
-						//                 	$("#main").showLoading(); 
-						// 	 				var seriesCounter_new = 0    
-						// 					var seriesOptionsDam = []	
-						// 	                $.each(names, function (i, n) {
-						// 	                    //$.getJSON('${base}/getData?start='+startDate+'&end='+endDate+'&paramSize='+paramSize+'&filename=' + n.value, function (data) {
-						// 	                    $.getJSON('${base}/getData?start='+startDate+'&end='+endDate, function (data) {
-						// 	                    	 $("#main").hideLoading(); 
-						// 	                    	//console.log(data);
-						// 	                    	console.log("开始日期"+startDate+"结束日期："+endDate);
-						// 	                        seriesOptionsDam[i] = {
-						// 	                            type: 'line',
-						// 	                            smooth:true,
-						// 	                            name: n.name,
-						// 	                            yAxisIndex: n.y,
-						// 	                            data: data["paramValue"]
-						// 	                        };
-						// 	                        seriesCounter_new += 1;
-						// 	                        if (seriesCounter_new === names.length) {
-						// 	                            options.series = eval(seriesOptionsDam);
-						// 	                            date=options.xAxis.data = data["yearValue"];
-						// 	                            startDate_init = startDate;
-						// 								endDate_init = endDate;	
-						// 								startDate_init = startDate;
-						//        							endDate_init = endDate;
-						// 	                            myChart.setOption(options);
-						// 	                        }
-						// 	                    });
-							                    
-						// $.post("getDatabytap", 
-						// 		{
-						// 			'startDate' : startDate,
-						// 			'endDate' : endDate
-						// 		},
-						// 	function(data){
-						// //  var json = eval(data);
-						//   var i=0
-						//   //debugger;
-						//   var yname = 0;
-						//   for(var param in data){
-						//   yname  = names[i].y;
-						//   console.log(yname)
-						//   	seriesOptions[i++] = {
-						//         	type: 'line',
-						//             name: param,
-						//             smooth:false,
-						//            	yAxisIndex: yname,
-						//             lineStyle:{
-						//             	normal:{
-						//             		width:0.5 
-						//             		}
-						//             },
-						//             data: data[param].paramValue
-						//         };
-						//         //设置X轴，注意，这里X轴存在问题，默认使用了最后一组参数的X轴
-						//         date =  data[param].yearValue;
-						//   }
-						//   	pSeriesOptions = seriesOptions
-						// 	options.series = eval(seriesOptions);
-						// 	pDate=options.xAxis.data = date;
-						// 	startDate_init = startDate;
-						// 	endDate_init = endDate;
-						//     myChart.setOption(options);
-							
-						// 	});
-							
-						// 	                });
 					}
               }
         });
@@ -860,6 +765,9 @@ $.post("getDatabytap",
     function needGetDate(){
 		var startInit = stringToDate(startDate_init);
 		var endInit = stringToDate(endDate_init);
+		console.log("时间间隔："+startDate_init+startInit+"-----"+endDate_init+endInit+"<---->"+(endInit-startInit));
+		
+		//timespace 精确到分钟,时间相减得到毫秒数，再除以60000得到分钟数
 		var timespace = (endInit-startInit)/60000;
 		var startYear = startInit.getFullYear();
 		var startMonth = startInit.getMonth();
@@ -873,14 +781,13 @@ $.post("getDatabytap",
 		var endHours = endInit.getHours();
 		var endMinutes = endInit.getMinutes();
 		var endSeconds = endInit.getSeconds();
+		
 		var a= stringToDate(startDate);
       	var b= stringToDate(endDate);
-      	
-		
 		if(timespace <= 1440){
 		console.log("选择的时间在一天之内"+timespace);
 			//一天以内，1小时增减
-			if(startDate_init==startDate&&endDate_init==endDate){
+			if((startDate_init==startDate) && (endDate_init==endDate)){
 				startInit.setMinutes(startMinutes-30);
 				endInit.setMinutes(endMinutes+30);
 				startDate = startInit.pattern("yyyy-MM-dd HH:mm:ss");
@@ -890,6 +797,7 @@ $.post("getDatabytap",
 				return true;
 			}else{
 				//原始数据不请求后台
+				console.log("原始数据不请求后台");
 				return false;
 			}
 			return false;

@@ -28,10 +28,12 @@ public class InitDataListener implements ApplicationListener<ContextRefreshedEve
 	public void onApplicationEvent(ContextRefreshedEvent event) {
 		System.out.println("InitDataListener..." + event);			
 		if(event.getApplicationContext().getParent() == null){
-			if(!flag){
-				System.out.println("加载一次 InitDataListener... kafka、initServerConfig...");
-				flag=true;
-				
+			
+//			System.out.println("加载一次 InitDataListener..." + event);
+//			if(!flag){
+//				System.out.println("加载一次 InitDataListener... kafka、initServerConfig...");
+//				flag=true;
+//				
 //				//开另外一个线程处理存入kafka的数据
 //				new Thread(new SaveFileToKafka(paramService, mongoService,statusTrackingService)).start();
 //				
@@ -51,7 +53,7 @@ public class InitDataListener implements ApplicationListener<ContextRefreshedEve
 //						initDataService.initServerConfig();
 //					}
 //				}).start();
-				
+//				
 //				//配置mongodb服务器
 //				new Thread(new Runnable() {
 //					@Override
@@ -59,7 +61,7 @@ public class InitDataListener implements ApplicationListener<ContextRefreshedEve
 //						initDataService.initMongodbConfig();
 //					}
 //				}).start();
-			}
+//			}
 			
 		}
 	}

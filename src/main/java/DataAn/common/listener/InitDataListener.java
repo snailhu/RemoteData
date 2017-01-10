@@ -6,6 +6,7 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Service;
 import DataAn.common.service.IInitDataService;
+import DataAn.fileSystem.service.impl.SaveFileToKafka;
 import DataAn.galaxyManager.service.IParameterService;
 import DataAn.mongo.service.IMongoService;
 import DataAn.status.service.IStatusTrackingService;
@@ -28,11 +29,11 @@ public class InitDataListener implements ApplicationListener<ContextRefreshedEve
 		System.out.println("InitDataListener..." + event);			
 		if(event.getApplicationContext().getParent() == null){
 			
-			System.out.println("加载一次 InitDataListener..." + event);
-			if(!flag){
-				System.out.println("加载一次 InitDataListener... kafka、initServerConfig...");
-				flag=true;
-				
+//			System.out.println("加载一次 InitDataListener..." + event);
+//			if(!flag){
+//				System.out.println("加载一次 InitDataListener... kafka、initServerConfig...");
+//				flag=true;
+//				
 //				//开另外一个线程处理存入kafka的数据
 //				new Thread(new SaveFileToKafka(paramService, mongoService,statusTrackingService)).start();
 //				
@@ -60,7 +61,7 @@ public class InitDataListener implements ApplicationListener<ContextRefreshedEve
 //						initDataService.initMongodbConfig();
 //					}
 //				}).start();
-			}
+//			}
 			
 		}
 	}

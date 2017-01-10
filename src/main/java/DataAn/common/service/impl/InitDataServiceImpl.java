@@ -5,10 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.annotation.Resource;
-
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import DataAn.common.config.CommonConfig;
 import DataAn.common.service.IInitDataService;
 import DataAn.common.utils.JJSON;
@@ -46,7 +43,6 @@ public class InitDataServiceImpl implements IInitDataService{
 	@Override
 	public void initServerConfig() {
 		try {
-			System.out.println("init serverConfig...");
 			Map conf=new HashMap<>();
 			BaseConfig baseConfig=null;
 			baseConfig= StormUtils.getBaseConfig(BaseConfig.class);
@@ -75,7 +71,6 @@ public class InitDataServiceImpl implements IInitDataService{
 	@Override
 	public void initMongodbConfig() {
 		try {
-			System.out.println("init mongodbConfig...");
 			Map conf=new HashMap<>();
 			BaseConfig baseConfig=null;
 			baseConfig= StormUtils.getBaseConfig(BaseConfig.class);

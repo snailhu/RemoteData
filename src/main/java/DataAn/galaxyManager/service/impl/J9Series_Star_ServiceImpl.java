@@ -108,8 +108,9 @@ public class J9Series_Star_ServiceImpl implements IJ9Series_Star_Service{
 			String param_en = "";
 			for (String param_zh : paramSet) {
 				param_en = paramService.getParameter_en_by_allZh(series, star,paramType, param_zh);
-				System.out.println("获取参数列表失败："+param_en+"--");
-				simplyZh_and_enMap.put(param_zh.split(":")[1], param_en);
+//				System.out.println(param_zh + " ："+param_en+"--");
+				if(StringUtils.isNotBlank(param_en))
+					simplyZh_and_enMap.put(param_zh.split(":")[1], param_en);
 			} //TODO 参数分类显示
 			List<String> dataTypes = null;
 			if(paramType.equals(J9Series_Star_ParameterType.FLYWHEEL.getValue())){

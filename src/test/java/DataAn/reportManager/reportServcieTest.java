@@ -13,8 +13,10 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import DataAn.common.config.CommonConfig;
+import DataAn.common.pageModel.Pager;
 import DataAn.common.utils.DateUtil;
 import DataAn.common.utils.UUIDGeneratorUtil;
+import DataAn.fileSystem.dto.MongoFSDto;
 import DataAn.galaxy.option.J9Series_Star_ParameterType;
 import DataAn.galaxyManager.option.J9SeriesType;
 import DataAn.galaxyManager.option.SeriesType;
@@ -51,6 +53,25 @@ public class reportServcieTest {
 		}
 	}
 	
+	@Test
+	public void getMongoFSList(){
+		int pageIndex = 1;
+		int pageSize = 10;
+		String series = "j9";
+		String star = "03";
+		String partsType = "flywheel";
+		long dirId = 0;
+		String sort = null;
+		String order = null;
+		Pager<MongoFSDto> pager = reoportService.getMongoFSList(pageIndex, pageSize, series, star, partsType, dirId, sort, order);
+		if(pager != null){
+			List<MongoFSDto> list = pager.getRows();
+			for (MongoFSDto mongoFSDto : list) {
+				System.out.println(mongoFSDto.getName());
+			}
+		}
+		System.out.println("end...");
+	}
 	@Test
 	public void createReport() throws Exception{
 		

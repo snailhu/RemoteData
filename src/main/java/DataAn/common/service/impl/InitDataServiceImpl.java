@@ -104,6 +104,12 @@ public class InitDataServiceImpl implements IInitDataService{
 			e.printStackTrace();
 		}
 	}
+
+	@Override
+	public void initTopConfig() {
+		// TODO Auto-generated method stub
+		
+	}
 	
 	
 

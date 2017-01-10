@@ -10,16 +10,12 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -109,16 +105,18 @@ public class FileController {
 		String beginTime = request.getParameter("beginTime");
 		String endTime = request.getParameter("endTime");
 		String fileTypes= request.getParameter("fileTypes");
-		System.out.println("getMongoFSList...");
-		System.out.println("series : " + series);
-		System.out.println("star : " + star);
-		System.out.println("paramType : " + paramType);
-		System.out.println("strDirId : " + strDirId);
-		System.out.println("strPage : " + strPage);
-		System.out.println("strRows : " + strRows);
-		System.out.println("beginTime : " + beginTime);
-		System.out.println("endTime : " + endTime);
-		System.out.println("fileTypes : " + fileTypes);
+		
+//		System.out.println("getMongoFSList...");
+//		System.out.println("series : " + series);
+//		System.out.println("star : " + star);
+//		System.out.println("paramType : " + paramType);
+//		System.out.println("strDirId : " + strDirId);
+//		System.out.println("strPage : " + strPage);
+//		System.out.println("strRows : " + strRows);
+//		System.out.println("beginTime : " + beginTime);
+//		System.out.println("endTime : " + endTime);
+//		System.out.println("fileTypes : " + fileTypes);
+		
 		int page = 1;
 		int rows = 10;
 		if(StringUtils.isBlank(series) || StringUtils.isBlank(star) || StringUtils.isBlank(paramType)){
@@ -179,9 +177,10 @@ public class FileController {
 	@RequestMapping(value = "existFile", method = RequestMethod.POST)
 	@ResponseBody
 	public JsonMessage existFile(String parameterType, String fileName){
-		System.out.println("come in existFile...");
-		System.out.println("parameterType: " + parameterType);
-		System.out.println("fileName: " + fileName);
+//		System.out.println("come in existFile...");
+//		System.out.println("parameterType: " + parameterType);
+//		System.out.println("fileName: " + fileName);
+		
 		JsonMessage jsonMsg = new JsonMessage();
 		fileName = fileName.replace("\\", "/");
 		String[] strs = fileName.split("/");
@@ -212,12 +211,12 @@ public class FileController {
 			@RequestParam(value = "dirId", required = true) long dirId,
 			@RequestParam(value = "file", required = false) MultipartFile file) throws Exception {
 		
-		System.out.println("come in uploadFile...");
-		System.out.println("dirId: " + dirId);
-		System.out.println("getName: " + file.getName());
-		System.out.println("getOriginalFilename: " + file.getOriginalFilename());
-		System.out.println("getContentType: " + file.getContentType());
-		System.out.println("getSize: " + file.getSize());		
+//		System.out.println("come in uploadFile...");
+//		System.out.println("dirId: " + dirId);
+//		System.out.println("getName: " + file.getName());
+//		System.out.println("getOriginalFilename: " + file.getOriginalFilename());
+//		System.out.println("getContentType: " + file.getContentType());
+//		System.out.println("getSize: " + file.getSize());		
 		
 		FileDto fileDto = new FileDto();
 //		fileDto.setDirId(dirId);			
@@ -237,18 +236,19 @@ public class FileController {
 			@RequestParam(value = "paramType", required = true) String paramType,
 			HttpServletRequest request
 			) throws Exception {
-		System.out.println("come in uploadFiles...");
-		System.out.println("datFile...");
-		System.out.println("getName: " + datFile.getName());
-		System.out.println("getOriginalFilename: " + datFile.getOriginalFilename());
-		System.out.println("getContentType: " + datFile.getContentType());
-		System.out.println("getSize: " + datFile.getSize());	
-		System.out.println("csvFile...");
-		System.out.println("getName: " + csvFile.getName());
-		System.out.println("getOriginalFilename: " + csvFile.getOriginalFilename());
-		System.out.println("getContentType: " + csvFile.getContentType());
-		System.out.println("getSize: " + csvFile.getSize());
-		System.out.println("paramType: " + paramType);
+		
+//		System.out.println("come in uploadFiles...");
+//		System.out.println("datFile...");
+//		System.out.println("getName: " + datFile.getName());
+//		System.out.println("getOriginalFilename: " + datFile.getOriginalFilename());
+//		System.out.println("getContentType: " + datFile.getContentType());
+//		System.out.println("getSize: " + datFile.getSize());	
+//		System.out.println("csvFile...");
+//		System.out.println("getName: " + csvFile.getName());
+//		System.out.println("getOriginalFilename: " + csvFile.getOriginalFilename());
+//		System.out.println("getContentType: " + csvFile.getContentType());
+//		System.out.println("getSize: " + csvFile.getSize());
+//		System.out.println("paramType: " + paramType);
 		
 		long begin = System.currentTimeMillis();
 		final Map<String, FileDto> map = new HashMap<String,FileDto>();
@@ -437,8 +437,10 @@ public class FileController {
 	@RequestMapping(value="/deleteFiles",method = { RequestMethod.POST })
 	@ResponseBody
 	public JsonMessage deleteFiles(HttpServletRequest request,String itemIds) {
-		System.out.println("deleteFiles...");
-		System.out.println("itemIds: " + itemIds);
+		
+//		System.out.println("deleteFiles...");
+//		System.out.println("itemIds: " + itemIds);
+		
 		JsonMessage jsonMsg = new JsonMessage();
 		try {
 			fileService.deleteFile(request,itemIds);

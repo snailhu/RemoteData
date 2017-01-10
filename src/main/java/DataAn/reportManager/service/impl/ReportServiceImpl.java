@@ -243,7 +243,8 @@ public class ReportServiceImpl implements IReoportService {
 
 	private ReportFileSystem createMonthDir(String series, String star, String year, String month, String partsType,
 			ReportFileSystem yearDir) {
-		ReportFileSystem monthDir = fileDao.selectByParentIdAndFileName(yearDir.getId(), month);
+//		ReportFileSystem monthDir = fileDao.selectByParentIdAndFileName(yearDir.getId(), month);
+		ReportFileSystem monthDir = fileDao.selectBySeriesAndStarAndParameterTypeAndParentIdAndFileName(series, star, partsType, yearDir.getId(), month);
 		if (monthDir == null) {
 			monthDir = new ReportFileSystem();
 			monthDir.setSeries(series);
@@ -261,7 +262,8 @@ public class ReportServiceImpl implements IReoportService {
 
 	private ReportFileSystem createYearDir(String series, String star, String year, String partsType,
 			ReportFileSystem docDir) {
-		ReportFileSystem yearDir = fileDao.selectByParentIdAndFileName(docDir.getId(), year);
+//		ReportFileSystem yearDir = fileDao.selectByParentIdAndFileName(docDir.getId(), year);
+		ReportFileSystem yearDir = fileDao.selectBySeriesAndStarAndParameterTypeAndParentIdAndFileName(series, star, partsType, docDir.getId(), year);
 		if (yearDir == null) {
 			yearDir = new ReportFileSystem();
 			yearDir.setSeries(series);
@@ -278,7 +280,8 @@ public class ReportServiceImpl implements IReoportService {
 	}
 
 	private ReportFileSystem createDocDir(String series, String star, String partsType, String partsName) {
-		ReportFileSystem docDir = fileDao.selectByParentIdisNullAndFileName(partsName);
+//		ReportFileSystem docDir = fileDao.selectByParentIdisNullAndFileName(partsName);
+		ReportFileSystem docDir = fileDao.selectBySeriesAndStarAndParameterTypeAndParentIdAndFileName(series, star, partsType, 0, partsName);
 		if (docDir == null) {
 			docDir = new ReportFileSystem();
 			docDir.setSeries(series);

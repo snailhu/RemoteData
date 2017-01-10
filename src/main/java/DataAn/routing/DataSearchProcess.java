@@ -42,8 +42,9 @@ public class DataSearchProcess {
 			{
 				String error = "将字符串转换为Double类型时出错";
 				Log4jUtil.getInstance().getLogger(DataSearchTask.class).error(error);
+				paraValtemp=maxtemp+1;//如果参数为字母，则将参数排除
 			}
-			if((paraValtemp==null)|(paraValtemp>maxtemp) | (paraValtemp<mintemp))
+			if((paraValtemp==null) | (paraValtemp>maxtemp) | (paraValtemp<mintemp))
 			{paraVal = "\'-\'";}
 		}
 		

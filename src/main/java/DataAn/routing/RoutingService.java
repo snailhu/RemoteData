@@ -61,7 +61,7 @@ public class RoutingService {
 				MongoCollection<Document> collection = mg.getCollection(repo.database(), repo.collection());		
 									
 				long paramCount= 0;				
-				paramCount = collection.count(Filters.and(Filters.gte("datetime", startDate),Filters.lte("datetime", endDate)));						
+				paramCount = collection.count(Filters.and(Filters.gte("datetime", startDate),Filters.lte("datetime", endDate),Filters.eq("status", 1)));						
 				System.out.println("当时间区间大于1天时第二次选择仓库，当前选择仓库的数量为："+paramCount);
 				if(paramCount-configuration.getExpectedPerPointNum()>0){
 					Repo nextRepo=repo.next();
@@ -69,7 +69,7 @@ public class RoutingService {
 							&&nextRepo!=null){
 						repo=nextRepo;
 						collection = mg.getCollection(repo.database(), repo.collection());		
-						paramCount = collection.count(Filters.and(Filters.gte("datetime", startDate),Filters.lte("datetime", endDate)));						
+						paramCount = collection.count(Filters.and(Filters.gte("datetime", startDate),Filters.lte("datetime", endDate),Filters.eq("status", 1)));						
 					}
 					nextRepo=repo.next();
 				}
@@ -79,7 +79,7 @@ public class RoutingService {
 							&&aheadRepo!=null){
 						repo=aheadRepo;
 						collection = mg.getCollection(repo.database(), repo.collection());		
-						paramCount = collection.count(Filters.and(Filters.gte("datetime", startDate),Filters.lte("datetime", endDate)));
+						paramCount = collection.count(Filters.and(Filters.gte("datetime", startDate),Filters.lte("datetime", endDate),Filters.eq("status", 1)));
 						System.out.println("更加精细一级的点数为："+paramCount+"分级为："+repo.database()+repo.collection());
 						if(paramCount>(configuration.getExpectedPerPointNum()*1.2)){
 							repo=repo.next();
@@ -103,7 +103,7 @@ public class RoutingService {
 							originalrepo.setIndex(0);
 						}						
 						collection = mg.getCollection(originalrepo.database(), originalrepo.collection());		
-						paramCount = collection.count(Filters.and(Filters.gte("datetime", startDate),Filters.lte("datetime", endDate)));
+						paramCount = collection.count(Filters.and(Filters.gte("datetime", startDate),Filters.lte("datetime", endDate),Filters.eq("status", 1)));
 						System.out.println("原始仓库中点的个数"+paramCount+"当前1S库的点的个数"+"期望的点的个数"+configuration.getExpectedPerPointNum());
 						if(paramCount<(configuration.getExpectedPerPointNum())){
 							repo=originalrepo;

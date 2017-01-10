@@ -71,7 +71,7 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 	@Resource
 	private IVirtualFileSystemDao fileDao;
 	@Resource
-	private IDateParametersDao parametersDao;
+	private IDateParametersDao dateParametersDao;
 	@Resource
 	private ICSVService csvService;	
 	@Resource
@@ -233,6 +233,16 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 			final List<VirtualFileSystem> files = new ArrayList<VirtualFileSystem>();
 			files.add(file);
 			this.deleteFile(null,file);	
+			//删除参数
+			List<DateParameters> paramList = dateParametersDao.selectByOption(file.getSeries(), file.getStar(), file.getParameterType(), file.getYear_month_day());
+			if(paramList != null && paramList.size() > 0){
+				List<Long> ids = new ArrayList<Long>();
+				for (DateParameters dateParameters : paramList) {
+					ids.add(dateParameters.getId());
+				}
+				if(ids.size() > 0)
+					dateParametersDao.deleteByIds(ids);
+			}
 			this.deleteMongodbFile(files);
 		}
 	}
@@ -519,7 +529,7 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 		dateParameters.setParameterType(parameterType);
 		dateParameters.setParameters(title);
 		dateParameters.setYear_month_day(date);
-		parametersDao.add(dateParameters);
+		dateParametersDao.add(dateParameters);
 		
 		new Thread(new Runnable() {
 			@Override
@@ -639,7 +649,7 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 			dateParameters.setParameterType(parameterType);
 			dateParameters.setParameters(title);
 			dateParameters.setYear_month_day(date);
-			parametersDao.add(dateParameters);
+			dateParametersDao.add(dateParameters);
 		}
 		
 		//查找csv的文件夹是否存在

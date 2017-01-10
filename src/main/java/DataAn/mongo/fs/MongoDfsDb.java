@@ -57,7 +57,7 @@ public class MongoDfsDb implements IDfsDb{
 		
 		mg = new MongoClient(InitMongo.FS_SERVER_HOST, InitMongo.FS_SERVER_PORT);
 		
-		dbs.put(InitMongo.FS_J9STAR2, getDB(InitMongo.FS_J9STAR2));
+//		dbs.put(InitMongo.FS_J9STAR2, getDB(InitMongo.FS_J9STAR2));
 	}
 
 	/**

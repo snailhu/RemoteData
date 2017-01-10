@@ -82,4 +82,13 @@ public class ConfigTest {
 		if(paths.length > 2)
 			System.out.println("admin".equals(paths[0]));
 	}
+	
+	@Test
+	public void test4(){
+		String str = "1211";
+		if(str != null && str.matches("^[-+]?(([0-9]+)((([.]{0})([0-9]*))|(([.]{1})([0-9]+))))$")){
+			System.out.println(Double.parseDouble(str));
+		}
+		System.out.println("....");
+	}
 }

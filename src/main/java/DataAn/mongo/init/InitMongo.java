@@ -76,8 +76,6 @@ public class InitMongo {
 	* @return
 	*/
 	public static final String getDataDBBySeriesAndStar(String series,String star){
-//		String seriesName = SeriesType.getSeriesType(series).getName();
-//		String starName = J9SeriesType.getJ9SeriesType(star).getName();
 		String dbName = "db_" + series + "_" + star;
 		return dbName;
 	}
@@ -89,8 +87,6 @@ public class InitMongo {
 	* @return
 	*/
 	public static final String getFSBDNameBySeriesAndStar(String series,String star){
-//		String seriesName = SeriesType.getSeriesType(series).getName();
-//		String starName = J9SeriesType.getJ9SeriesType(star).getName();
 		String dbName =  "fs_" + series + "_" + star;
 		return dbName;
 	}
@@ -102,8 +98,6 @@ public class InitMongo {
 	* @return
 	*/
 	public static final String getReportFSBySeriesAndStar(String series,String star){
-//		String seriesName = SeriesType.getSeriesType(series).getName();
-//		String starName = J9SeriesType.getJ9SeriesType(star).getName();
 		String dbName = "report_" + series + "_" + star;
 		return dbName;
 	}

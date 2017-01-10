@@ -4,11 +4,16 @@ import static javax.persistence.GenerationType.IDENTITY;
 
 import java.util.Date;
 
+import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.Type;
 
 /**
  * @author wj
@@ -34,6 +39,9 @@ public class StatusTracking implements java.io.Serializable {
 	@Column(name = "statusType", nullable = true)
 	private String statusType; // 所处状态
 
+	@Lob   
+	@Basic(fetch = FetchType.LAZY)   
+	@Type(type="text")
 	@Column(name = "exceptionInfo", nullable = true)
 	private String exceptionInfo; // 异常详情
 

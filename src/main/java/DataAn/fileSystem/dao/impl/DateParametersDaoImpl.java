@@ -5,12 +5,10 @@ import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Query;
 import org.springframework.stereotype.Repository;
-
 import DataAn.common.dao.BaseDaoImpl;
 import DataAn.common.utils.DateUtil;
 import DataAn.fileSystem.dao.IDateParametersDao;
 import DataAn.fileSystem.domain.DateParameters;
-import DataAn.fileSystem.option.FileType;
 
 @Repository
 public class DateParametersDaoImpl extends BaseDaoImpl<DateParameters>
@@ -69,6 +67,29 @@ implements IDateParametersDao{
 			query.setParameter("endDate", endDate);
 		}
 		return query.list();
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<DateParameters> selectByOption(String series, String star, String parameterType, String year_month_day) {
+		String hql = "from DateParameters dp where dp.series=:series and "
+				+ "dp.star=:star and "
+				+ "dp.parameterType=:parameterType and "
+				+ "dp.year_month_day=:year_month_day";
+		Query query = this.getSession().createQuery(hql)
+				.setParameter("series", series)
+				.setParameter("star", star)
+				.setParameter("parameterType", parameterType)
+				.setParameter("year_month_day", year_month_day);
+		
+		return query.list();
+	}
+
+	@Override
+	public void deleteByIds(List<Long> ids) {
+		String hql = "delete from DateParameters dp where dp.id in (:ids)";
+		this.getSession().createQuery(hql).setParameterList("ids", ids).executeUpdate();
+		
 	}
 
 }

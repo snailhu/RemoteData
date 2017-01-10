@@ -42,4 +42,14 @@ public class DeviceTypeDaoImpl extends BaseDaoImpl<DeviceType> implements IDevic
 		return list;
 	}
 
+	@SuppressWarnings("unchecked")
+	@Override
+	public DeviceType selectByDeviceCode(String deviceCode) {
+		String hql = "from DeviceType d where d.deviceCode=?";
+		List<DeviceType> list = this.getSession().createQuery(hql).setParameter(0, deviceCode).list();
+		if(list != null && list.size() > 0)
+			return list.get(0);
+		return null;
+	}
+
 }

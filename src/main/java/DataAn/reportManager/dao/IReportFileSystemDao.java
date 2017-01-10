@@ -8,6 +8,10 @@ import DataAn.reportManager.domain.ReportFileSystem;
 
 public interface IReportFileSystemDao extends IBaseDao<ReportFileSystem> {
 
+	public ReportFileSystem selectBySeriesAndStarAndParameterTypeAndParentIdAndFileName(
+			String series, String star, String parameterType, long parentId,
+			String fileName);
+	
 	public ReportFileSystem selectByFileName(String fileName);
 
 	public ReportFileSystem selectByParentIdisNullAndFileName(String fileName);

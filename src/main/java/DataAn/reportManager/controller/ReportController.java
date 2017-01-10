@@ -2,6 +2,7 @@ package DataAn.reportManager.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -92,6 +93,18 @@ public class ReportController {
 		String fileTypes= request.getParameter("fileTypes");
 		String sort = request.getParameter("sort"); 
 		String order = request.getParameter("order"); 
+		
+		System.out.println("get report MongoFSList...");
+		System.out.println("series : " + series);
+		System.out.println("star : " + star);
+		System.out.println("paramType : " + paramType);
+		System.out.println("strDirId : " + strDirId);
+		System.out.println("strPage : " + strPage);
+		System.out.println("strRows : " + strRows);
+		System.out.println("beginTime : " + beginTime);
+		System.out.println("endTime : " + endTime);
+		System.out.println("fileTypes : " + fileTypes);
+		
 		int page = 1;
 		int rows = 10;
 		long dirId = 0L;
@@ -100,6 +113,8 @@ public class ReportController {
 		}
 		if (StringUtils.isNotBlank(strPage)) {
 			page = Integer.parseInt(strPage);
+			if(page == 0)
+				page = 1;
 		}
 		if (StringUtils.isNotBlank(strRows)) {
 			rows = Integer.parseInt(strRows);
@@ -121,16 +136,21 @@ public class ReportController {
 			}
 			paramType = value;
 		}
-		Pager<MongoFSDto> pager = null;
-		if("createDate".equals(sort))
-			sort = "updateDate";
-		if(StringUtils.isNotBlank(beginTime) || StringUtils.isNotBlank(endTime) || StringUtils.isNotBlank(fileTypes) ){
-			pager = reoportService.getMongoFSList(page, rows, series, star, paramType, dirId, beginTime, endTime, sort, order);
-		}else{
-			pager = reoportService.getMongoFSList(page, rows, series, star, paramType, dirId, sort, order);			
+		if(StringUtils.isBlank(series) || StringUtils.isBlank(star)){
+			json.setRows(new ArrayList<MongoFSDto>());
+			json.setTotal(0l);
+		}{
+			Pager<MongoFSDto> pager = null;
+			if("createDate".equals(sort))
+				sort = "updateDate";
+			if(StringUtils.isNotBlank(beginTime) || StringUtils.isNotBlank(endTime)){
+				pager = reoportService.getMongoFSList(page, rows, series, star, paramType, dirId, beginTime, endTime, sort, order);
+			}else{
+				pager = reoportService.getMongoFSList(page, rows, series, star, paramType, dirId, sort, order);			
+			}
+			json.setRows(pager.getRows());
+			json.setTotal(pager.getTotalCount());	
 		}
-		json.setRows(pager.getRows());
-		json.setTotal(pager.getTotalCount());	
 		return json;
 	}
 	

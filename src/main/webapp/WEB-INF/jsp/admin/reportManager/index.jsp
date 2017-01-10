@@ -149,6 +149,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	text-align:left;
 }
 a:hover{color:#0909df;}
+.mustchoose {
+    padding-top: 5px;
+    padding-left: 5px;
+    color: red;
+}
   </style>
   <script type="text/javascript">
 	$(function(){
@@ -209,27 +214,29 @@ a:hover{color:#0909df;}
 								<form id="fileupload" action="" class="form-horizontal" role="form" >
 								<div class="space-4"></div>
 									<div class="form-group">
-										<label class="col-sm-5 control-label no-padding-right" for="form-series">星系：</label>
-										<div class="col-sm-3"  >
-										<select name="series"  id="form-series" class="form-control " >
-										<option value="">--请选择--</option>
-				                       </select>
-									</div>
-									</div>
-									<div class="space-4"></div>
-									<div class="form-group">
-										<label class="col-sm-5 control-label no-padding-right" for="form-star">星号：</label>
-										<div class="col-sm-3">
-												<select name="star"  id="form-star" class="form-control " >
-												<option value="">--请选择--</option>
-				                       			</select>
+										<label class="col-sm-4 control-label no-padding-right" for="form-series">星系：</label>
+										<div class="col-sm-8"  >
+											<select name="series"  id="form-series" class="col-xs-10 col-sm-5" >
+											<option value="">--请选择--</option>
+					                        </select>
+					                        <label class="mustchoose">*</label>
 										</div>
 									</div>
 									<div class="space-4"></div>
 									<div class="form-group">
-										<label class="col-sm-5 control-label no-padding-right" for="form-partsType">设备：</label>
-										<div class="col-sm-3">
-											<select name="partsType"  id="form-partsType" class="form-control " >
+										<label class="col-sm-4 control-label no-padding-right" for="form-star">星号：</label>
+										<div class="col-sm-8">
+											<select name="star"  id="form-star" class="col-xs-10 col-sm-5" >
+											<option value="">--请选择--</option>
+			                       			</select>
+			                       			<label class="mustchoose">*</label>
+										</div>
+									</div>
+									<div class="space-4"></div>
+									<div class="form-group">
+										<label class="col-sm-4 control-label no-padding-right" for="form-partsType">设备：</label>
+										<div class="col-sm-8">
+											<select name="partsType"  id="form-partsType" class="col-xs-10 col-sm-5" >
 				                           		<option selected="selected" value="">--请选择--</option>
 				                       		</select>
 										</div>
@@ -237,8 +244,8 @@ a:hover{color:#0909df;}
 								
 									<div class="space-4"></div>
 									<div class="form-group">
-										<label class="col-sm-5 control-label no-padding-right" for="form-beginTime">开始时间：</label>
-										<div class="col-sm-3">
+										<label class="col-sm-4 control-label no-padding-right" for="form-beginTime">开始时间：</label>
+										<div class="col-sm-8">
 											<input class="form-control"  id="form-beginTime"   name="beginTime" type="text" 
 											placeholder="--请选择开始时间--" readonly="true"/>
 											<!-- <input type="text" id="form-beginTime" name="beginTime" placeholder="开始时间" class="col-xs-10 col-sm-5" />
@@ -247,8 +254,8 @@ a:hover{color:#0909df;}
 									</div>
 									<div class="space-4"></div>
 									<div class="form-group">
-										<label class="col-sm-5 control-label no-padding-right" for="form-endTime">结束时间：</label>
-										<div class="col-sm-3">
+										<label class="col-sm-4 control-label no-padding-right" for="form-endTime">结束时间：</label>
+										<div class="col-sm-8">
 											<input  class="form-control"  id="form-endTime" name="endTime"  type="text" 
 											placeholder="--请选择结束时间--" readonly="true"/>
 											<!-- class="datainp" <input type="text" id="form-endTime" name="endTime" placeholder="结束时间" class="col-xs-10 col-sm-5" />
@@ -257,18 +264,18 @@ a:hover{color:#0909df;}
 									</div>
 									<div class="space-4"></div>
 									<div class="form-group">
-									<div class="col-sm-6 control-label no-padding-right">
+										<label class="col-sm-4 control-label no-padding-right" for="form-endTime"></label>
+										<div class="col-sm-8">
 											<button type="button" id="btn-search" class="subbutton_1">
 							                    <i></i>
 							                    <span>搜索</span>
 							                </button>
-										</div>
-										<div class="col-sm-1 control-label no-padding-right">
-											  <button type="reset" id = "btn-cancel" class="cancelbutton_1">
+											<button type="reset" id = "btn-cancel" class="cancelbutton_1">
 							                    <i></i>
 							                    <span>取消</span>
 							                </button>
 										</div>
+										
 			                       </div>
 								</form>
 							</div>
@@ -305,7 +312,7 @@ a:hover{color:#0909df;}
 				</div>
 			</div>
 
-			<div class="row">
+			<div class="row" id="div-fsList">
 				<div class="col-xs-12 col-sm-12">
 					<ul class="breadcrumb" id="fileCatalog">
 						<li class="active">全部文件</li>
@@ -343,7 +350,7 @@ a:hover{color:#0909df;}
 					flag=true;
 				}
 			});
-			$("#change-search-box").click();
+			//$("#change-search-box").click();
 		  
 			$("#form-beginTime").keypress(function(){
 			    return false;
@@ -408,10 +415,22 @@ a:hover{color:#0909df;}
 	          }
 	          ]]
 	      });
+	    //隐藏文件列表
+	      $("#div-fsList").hide();
 	      $('#btn-search').click(function(){
 	    	  $('#fileCatalog').empty();
 	    	  var Qseries =  $('#form-series').val();
+	    	  if (Qseries == "" || Qseries.length == 0) {
+					top.alertMsg('提示', '请选择星系！');
+					return;
+				  }
 			  var Qstar = $('#form-star').val();
+			  if (Qstar == "" || Qstar.length == 0) {
+					top.alertMsg('提示', '请选择星号！');
+					return;
+				  }
+			  //显示文件列表
+	    	  $("#div-fsList").show();
 			  var QpartsType = $('#form-partsType').val();
 	    	  var beginTime = $('#form-beginTime').val();
 	    	  var endTime = $('#form-endTime').val();

@@ -248,7 +248,7 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 	}
 
 	private void deleteFile(List<VirtualFileSystem> files, VirtualFileSystem file) {
-		if(file.getFileType().getName().equals("dir")){
+		if(file.getFileType().getName().equals(FileType.DIR.getName())){
 			List<VirtualFileSystem> fileList = fileDao.findByParam("parentId", file.getId());
 			if(fileList != null && fileList.size() > 0){
 				for (VirtualFileSystem childFile : fileList) {
@@ -259,8 +259,8 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 			if(files != null){
 				files.add(file);
 			}
-			fileDao.delete(file);
 		}
+		fileDao.delete(file);
 	}
 	private void deleteMongodbFile(final List<VirtualFileSystem> files){
 		new Thread(new Runnable(){

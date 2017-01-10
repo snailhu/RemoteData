@@ -75,7 +75,7 @@ public class InitDataServiceImpl implements IInitDataService{
 	@Override
 	public void initMongodbConfig() {
 		try {
-			System.out.println("init serverConfig...");
+			System.out.println("init mongodbConfig...");
 			Map conf=new HashMap<>();
 			BaseConfig baseConfig=null;
 			baseConfig= StormUtils.getBaseConfig(BaseConfig.class);

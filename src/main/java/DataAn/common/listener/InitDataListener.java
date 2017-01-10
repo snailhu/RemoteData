@@ -51,7 +51,7 @@ public class InitDataListener implements ApplicationListener<ContextRefreshedEve
 //						initDataService.initServerConfig();
 //					}
 //				}).start();
-				
+//				
 //				//配置mongodb服务器
 //				new Thread(new Runnable() {
 //					@Override

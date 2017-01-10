@@ -71,6 +71,7 @@ public class CommunicateServiceImpl implements ICommunicateService{
 		List<WarningValue> topjobWarningValues = prewarningService.getWarningValueByParams(series, star, null, parameterType, "0");
 		if(topjobWarningValues != null && topjobWarningValues.size() > 0){
 			Map<String,String> map = new HashMap<String,String>();
+			map.put("top", "sss");
 			List<ExceptionJobConfig> jobConfigList = new ArrayList<ExceptionJobConfig>();
 			ExceptionJobConfig jobConfig = null;
 			for (WarningValue wv : topjobWarningValues) {

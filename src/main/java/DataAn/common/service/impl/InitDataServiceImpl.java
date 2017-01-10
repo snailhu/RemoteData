@@ -105,6 +105,15 @@ public class InitDataServiceImpl implements IInitDataService{
 		}
 	}
 	
+	@Override
+	public void initTopjobConfig(){
+		try{
+			System.out.println("int TopjobrulesConfig...");
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+	}
+	
 	
 
 }

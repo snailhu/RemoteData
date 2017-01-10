@@ -437,9 +437,7 @@
 	  				  	}
 	  				  }
   				  
-	             	  legendname =names[names.length-1-i].name;
-	             	  //console.log(names.length);
-	             	  //console.log(yname+legendname+unit);            	  	
+	             	  legendname =names[names.length-1-i].name;         	  	
 	             	  	seriesOptions[i++] = {
 				            	type: 'line',
 				                //name: param,
@@ -569,10 +567,10 @@ $.post("getDatabytap",
               		var b= stringToDate(endDate);
 					$('#dateStart').val(startDate);
        				$('#dateEnd').val(endDate);
-       				timeZone = (b-a)/60000;
+       				timeZone = (b-a)/60000;//时间区间单位从毫秒转换为分钟
        				console.log(timeZone);
 				}else{
-					if(timeZone>10){
+					if(timeZone>0){
 						startDate = startDate_init;
 						endDate = endDate_init;	
 					}
@@ -580,7 +578,6 @@ $.post("getDatabytap",
 				$('#dateStart').val(startDate);
        			$('#dateEnd').val(endDate);
               	console.log("开始日期"+startDate+"结束日期："+endDate);
-              	console.log(timeZone);
               	if(timeZone>0){
               		 if(needGetDate()){
               		 						parent.window.document.body.style.overflow = "hidden";//隐藏滚动条

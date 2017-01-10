@@ -165,7 +165,7 @@ public class WarningLogMongoDaoImpl implements IWarningLogMongoDao {
 			}			
 			QueryLogDTO warningLog = new QueryLogDTO();
 			warningLog.setLogId(doc.getObjectId("_id").toString());
-			warningLog.setParameter(doc.getString("deviceName")+doc.getString("paramName")+doc.getString("paramCode"));
+			//warningLog.setParameter(doc.getString("deviceName")+doc.getString("paramName")+doc.getString("paramCode"));
 			warningLog.setParameterType(doc.getString("deviceType"));
 			//warningLog.setParamValue(Double.parseDouble(doc.getString("value")));
 			warningLog.setParamValue(value);

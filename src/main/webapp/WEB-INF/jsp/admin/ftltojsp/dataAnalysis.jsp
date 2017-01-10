@@ -600,7 +600,19 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
            editSettings: { saveOnPageChange: true, saveOnBlur: true, saveOnSelectionChange: true, cancelOnEsc: true, saveOnEnter: true, editSingleCell: true, editOnDoubleClick: true, editOnF2: true },
            checkboxes: true,
            theme: 'energyblue',
-           hierarchicalCheckboxes: true,              	
+           hierarchicalCheckboxes: true, 
+           ready:function()
+           {
+           		//根据参数分类将父节点设置为不可编辑
+       			var rows = $("#treeGrid").jqxTreeGrid('getRows');  
+          		for(var i = 0; i < rows.length; i++)
+          		{
+              		if (rows[i].parentId==0)
+              		{
+                  		$("#treeGrid").jqxTreeGrid('lockRow',rows[i].id);
+              		}
+          		}
+           },            	
            columns: [
 	             { text: '参数名称',  dataField: 'name',editable: false, width: 310},
 	             { text: 'ID',  dataField: 'id',editable: false, width:200, hidden: true },
@@ -646,23 +658,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					}				
 				}                     
 			]
-       });
-       //根据参数分类将父节点设置为不可编辑
-       	/*var rows = $("#treeGrid").jqxTreeGrid('getRows');
-      	var rowsData = "";
-      	var traverseTree = function(rows)
-      	{
-          	for(var i = 0; i < rows.length; i++)
-          	{
-              rowsData += rows[i].name + " " + rows[i].yname + "\n";
-              if (rows[i].records)
-              {
-                  traverseTree(rows[i].records);
-              }
-          	}
-      	};
-      	console.log("开始执行");
-      	traverseTree(rows);*/     
+       }); 
 	 } 
 	       	
     //添加分组功能

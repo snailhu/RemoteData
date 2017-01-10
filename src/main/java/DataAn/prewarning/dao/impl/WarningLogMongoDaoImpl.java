@@ -146,19 +146,21 @@ public class WarningLogMongoDaoImpl implements IWarningLogMongoDao {
 		}
 		FindIterable<Document> document_It = collection.find(Filters.and(Filters.eq("hadRead", "0"),Filters.eq("status", 1)));
 		for (Document doc : document_It) {
+			String deviceorparamname="";
 			String value="";
 			String timevalue=DateUtil.formatSSS(doc.getDate("datetime"));
 			try{
 				String jobbegintime=doc.getString("beginDate");
 				String jobendtime=doc.getString("endDate");
-				if((jobbegintime != null) && (jobendtime!= null))
+				if(warnType.equals("0"))//若果是特殊工况则说明字段显示起止时间
 				{
-					value="机动开始时间："+jobbegintime+"结束时间"+jobendtime;
-				}
-				else
+					deviceorparamname=doc.getString("deviceName");
+					value="起止时间："+jobbegintime+"--"+jobendtime;
+				}else if(warnType.equals("1"))//若果是异常则说明字段显示异常值
 				{
+					deviceorparamname=doc.getString("paramName")+doc.getString("paramCode");
 					value="异常参数值："+doc.getString("value");
-				}	
+				}
 			}catch(Exception e){
 				Log4jUtil.getInstance().getLogger(WarningLogMongoDaoImpl.class).error("从"
 						+ "monogodb中查询信息出错，可能是从数据库中查到的字段转换类型时出错");
@@ -166,6 +168,7 @@ public class WarningLogMongoDaoImpl implements IWarningLogMongoDao {
 			QueryLogDTO warningLog = new QueryLogDTO();
 			warningLog.setLogId(doc.getObjectId("_id").toString());
 			//warningLog.setParameter(doc.getString("deviceName")+doc.getString("paramName")+doc.getString("paramCode"));
+			warningLog.setParameter(deviceorparamname);
 			warningLog.setParameterType(doc.getString("deviceType"));
 			//warningLog.setParamValue(Double.parseDouble(doc.getString("value")));
 			warningLog.setParamValue(value);

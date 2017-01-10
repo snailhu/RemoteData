@@ -84,12 +84,10 @@ public class CommonController {
 	public void showPanel(
 			HttpServletRequest request,
 			HttpServletResponse response,
-			@RequestParam(value="JsonG",required = true) String JsonG) throws Exception {	
-		System.out.println("执行了showPanel的POST的请求方法，提交分组按钮把参数传递给showPanel按钮，JsonG: " + JsonG);
+			@RequestParam(value="JsonG",required = true) String JsonG) throws Exception {
 		Map<String, Class<SingleParamDto>> classMap = new HashMap<String, Class<SingleParamDto>>();
 		classMap.put("secectRow", SingleParamDto.class);
 		List<ParamGroup> pgs =JsonStringToObj.jsonArrayToListObject(JsonG,ParamGroup.class,classMap);
-		System.out.println("将js的Json对象转换成列表对象List<ParamGroup> pgs："+pgs);
 		EhCache ehCache = new EhCache(); 
 		String sessionId = request.getSession().getId();
 		ehCache.addToCache(sessionId+"AllJsonData", pgs);		
@@ -216,7 +214,6 @@ public class CommonController {
 			@RequestParam(value="paramObject",required = true) String paramObject
 			) throws Exception{
 		long begin = System.currentTimeMillis();
-	System.out.println("----------------后台开始时间："+ DateUtil.formatSSS(new Date()));
 		//String key = start+end;
 //	  	Jedis jedis = RedisPoolUtil.buildJedisPool().getResource(); 
 //				if(jedis.exists((key+"year"+filename).getBytes()) && jedis.exists((key+"param"+filename).getBytes())){
@@ -253,18 +250,13 @@ public class CommonController {
 	//将propeities从字符串数据转换成对象数组
 	//String[] properties=new String[pbd.getParamAttribute().size()];
 	ParamAttributeDto properties[]=new ParamAttributeDto[pbd.getParamAttribute().size()];
-	//System.out.println("pbd.getParamAttribute().size()的值为："+pbd.getParamAttribute().size());
 	int i=0;
 	List<ParamAttributeDto> listparam=pbd.getParamAttribute();
 	for(ParamAttributeDto paramAttributeDto: listparam){
 		//properties[i++]=paramAttributeDto.getValue();
 		String value =paramAttributeDto.getValue();
-		properties[i++]=paramAttributeDto;
-		
-		//System.out.println(paramAttributeDto.getMax()+"最小值"+paramAttributeDto.getMin());
-		//System.out.println("添加到requestConfig的参数值"+paramAttributeDto.getValue()+"nanme属性为："+paramAttributeDto.getName());
+		properties[i++]=paramAttributeDto;	
 	}
-	//System.out.println("设置requestConfig的Properties属性为："+properties);
 	requestConfig.setProperties(properties);
 	requestConfig.setSeries(pbd.getNowSeries());
 	requestConfig.setStar(pbd.getNowStar());
@@ -272,15 +264,7 @@ public class CommonController {
 	requestConfig.setTimeStart(pbd.getStartTime());
 	requestConfig.setTimeEnd(pbd.getEndTime());
 	
-	Map<String, YearAndParamDataDto> result = routingService.getData(requestConfig);	
-	/*for (String key : result.keySet()) {
-        YearAndParamDataDto value =  result.get(key);
-        List paramlist =value.getParamValue();
-        System.out.println("key:"+key + "参数集合对象的大小" + paramlist.size());
-    }*/
-	long end = System.currentTimeMillis();
-	System.out.println("----------------后台结束时间："+  DateUtil.formatSSS(new Date()));
-	System.out.println("----------------后台总处理时间："+ (end-begin));
+	Map<String, YearAndParamDataDto> result = routingService.getData(requestConfig);
 	return result;			
 	}
 	
@@ -307,7 +291,6 @@ public class CommonController {
 			requestConfig.setPropertyCount(pbd.getParamAttribute().size());
 			//String[] properties=new String[pbd.getParamAttribute().size()];
 			ParamAttributeDto[] properties=new ParamAttributeDto[pbd.getParamAttribute().size()];
-			System.out.println("pbd.getParamAttribute().size()的值为："+pbd.getParamAttribute().size());
 			int i=0;
 			List<ParamAttributeDto> listparam=pbd.getParamAttribute();
 			for(ParamAttributeDto paramAttributeDto: listparam){
@@ -317,7 +300,6 @@ public class CommonController {
 				//properties[i++].setValue(paramAttributeDto.getValue());
 				System.out.println("添加到requestConfig的参数值"+paramAttributeDto.getValue()+"nanme属性为："+paramAttributeDto.getName());
 			}
-			System.out.println("设置requestConfig的Properties属性为："+properties);
 			requestConfig.setProperties(properties);
 			requestConfig.setSeries(pbd.getNowSeries());
 			requestConfig.setStar(pbd.getNowStar());
@@ -344,9 +326,7 @@ public class CommonController {
 	@ResponseBody
 	public List<SeriesBtnMenu> getSeriesBtnMenus(
 			HttpServletRequest request, 
-			HttpServletResponse response) throws Exception{
-			//EhCache ehCache = new EhCache();
-			//@SuppressWarnings("unchecked")		
+			HttpServletResponse response) throws Exception{		
 			List<SeriesDto> lsb = seriesService.getAllSeries() ;
 			List<SeriesBtnMenu> lseriesbtnMenu =new ArrayList<SeriesBtnMenu>();
 			for(SeriesDto pg:lsb){
@@ -379,7 +359,6 @@ public class CommonController {
 				@PathVariable String StarId,
 				HttpServletRequest request,HttpServletResponse response
 				){
-	    //ModelAndView modelview = new ModelAndView("/secondStyle/dataAnalysis");	
 		ModelAndView modelview = new ModelAndView("/admin/ftltojsp/dataAnalysis");
 		String nowSeriesId=null;
 		String nowStar=null;

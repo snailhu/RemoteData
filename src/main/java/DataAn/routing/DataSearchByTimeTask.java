@@ -48,7 +48,9 @@ public class DataSearchByTimeTask extends RecursiveTask<Map<String, YearAndParam
 		Map<String, YearAndParamDataDto> valstemp=new HashMap<String, YearAndParamDataDto>();				
 		MongodbUtil mg = MongodbUtil.getInstance();
 		MongoCollection<Document> collection = mg.getCollection(repo.database(), repo.collection());
-		FindIterable<Document> document_It = collection.find(Filters.and(Filters.gte("datetime", startDate),Filters.lte("datetime", endDate)));
+		Document docSort = new Document();
+		docSort.put("datetime", 1);
+		FindIterable<Document> document_It = collection.find(Filters.and(Filters.gte("datetime", startDate),Filters.lte("datetime", endDate),Filters.eq("status", 1))).sort(docSort);
 		System.out.println("开始一轮迭代,仓库名字为："+repo.database()+":"+repo.collection()+"开始时间："+DateUtil.format(startDate)+"结束时间："+DateUtil.format(endDate));											
 		
 		for (Document doc : document_It) {

@@ -18,4 +18,6 @@ public interface IInitDataService {
 	
 	public void initTopjobConfig();
 	
+	public void initTopDenoiseConfig();
+	
 }

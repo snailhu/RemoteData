@@ -1,15 +1,11 @@
 package DataAn.reportManager.dao.impl;
 
-import java.util.ArrayList;
 import java.util.List;
-
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Query;
 import org.springframework.stereotype.Repository;
-
 import DataAn.common.dao.BaseDaoImpl;
 import DataAn.common.pageModel.Pager;
-import DataAn.fileSystem.option.FileDataType;
 import DataAn.fileSystem.option.FileType;
 import DataAn.reportManager.dao.IReportFileSystemDao;
 import DataAn.reportManager.domain.ReportFileSystem;
@@ -18,7 +14,36 @@ import DataAn.reportManager.domain.ReportFileSystem;
 @Repository
 public class ReportFileSystemDaoImpl extends BaseDaoImpl<ReportFileSystem> implements IReportFileSystemDao{
 
-	
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public ReportFileSystem selectBySeriesAndStarAndParameterTypeAndParentIdAndFileName(
+			String series, String star, String parameterType, long parentId,
+			String fileName) {
+		if(parentId == 0){
+			String hql = "from ReportFileSystem fs where fs.series=? and fs.star=? "
+					+ "and fs.partsType=? and fs.fileName=? and fs.parentId is null";
+			List<ReportFileSystem> list = this.getSession().createQuery(hql)
+					.setParameter(0, series).setParameter(1, star)
+					.setParameter(2, parameterType).setParameter(3, fileName)
+					.list();
+			if (list != null && list.size() > 0) {
+				return list.get(0);
+			}
+		}else{
+			String hql = "from ReportFileSystem fs where fs.series=? and fs.star=? "
+					+ "and fs.partsType=? and fs.fileName=? and fs.parentId=?";
+			List<ReportFileSystem> list = this.getSession().createQuery(hql)
+					.setParameter(0, series).setParameter(1, star)
+					.setParameter(2, parameterType).setParameter(3, fileName)
+					.setParameter(4, parentId).list();
+			if (list != null && list.size() > 0) {
+				return list.get(0);
+			}
+		}
+		return null;
+	}
+
 	@SuppressWarnings("unchecked")
 	@Override
 	public ReportFileSystem selectByFileName(String fileName) {
@@ -92,7 +117,7 @@ public class ReportFileSystemDaoImpl extends BaseDaoImpl<ReportFileSystem> imple
 	@Override
 	public Pager<ReportFileSystem> selectBySeriesAndStarAndParameterTypeAndParentIdisNullAndOrder(
 			String series, String star, String partsType, String order, int pageIndex, int pageSize) {
-		String hql = "from ReportFileSystem fs where  fs.parentId is null  " ;
+		String hql = "from ReportFileSystem fs where fs.parentId is null " ;
 		String countHQl = "select count(*) from ReportFileSystem fs where fs.parentId is null ";
 		if(StringUtils.isNotBlank(series)){
 			hql += " and fs.series = :series";

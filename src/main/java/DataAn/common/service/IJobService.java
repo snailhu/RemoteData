@@ -25,6 +25,12 @@ public interface IJobService {
 	*/
 	public void delCacheFileJob();
 	
+	/**
+	* Description: 针对无效文件，更新文件上传状态
+	* @author Shenwp
+	* @date 2017年1月10日
+	* @version 1.0
+	*/
 	public void updateFileStatusJob();
 	
 	/**

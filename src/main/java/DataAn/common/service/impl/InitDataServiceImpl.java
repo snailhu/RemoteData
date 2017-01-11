@@ -116,7 +116,7 @@ public class InitDataServiceImpl implements IInitDataService{
 			ZooKeeperNameKeys.setZooKeeperServer(conf, baseConfig.getZooKeeper());
 			ZooKeeperNameKeys.setNamespace(conf, baseConfig.getNamespace());
 			ZookeeperExecutor executor=new ZooKeeperClient()
-			.connectString(ZooKeeperNameKeys.getNamespace(conf))
+			.connectString(ZooKeeperNameKeys.getZooKeeperServer(conf))
 			.namespace(ZooKeeperNameKeys.getNamespace(conf))
 			.build();
 			String topjobConfig=CommonConfig.getTopjobConfig();
@@ -145,7 +145,7 @@ public class InitDataServiceImpl implements IInitDataService{
 				ZooKeeperNameKeys.setZooKeeperServer(conf, baseConfig.getZooKeeper());
 				ZooKeeperNameKeys.setNamespace(conf, baseConfig.getNamespace());
 				ZookeeperExecutor executor=new ZooKeeperClient()
-				.connectString(ZooKeeperNameKeys.getNamespace(conf))
+				.connectString(ZooKeeperNameKeys.getZooKeeperServer(conf))
 				.namespace(ZooKeeperNameKeys.getNamespace(conf))
 				.build();
 				String topDenoiseConfig=CommonConfig.getTopDenoiseConfig();

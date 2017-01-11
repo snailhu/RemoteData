@@ -25,12 +25,12 @@ public class IInitDataServieTest {
 	@Test
 	public void test2() throws Exception{
 		String topDenoiseConfig=CommonConfig.getTopDenoiseConfig();
-		System.out.println(topDenoiseConfig);
+		//System.out.println(topDenoiseConfig);
 		String topjobConfig=CommonConfig.getTopjobConfig();
-		System.out.println(topDenoiseConfig);
+		//System.out.println(topDenoiseConfig);
 		
 		initDataServie.initTopjobConfig();
-		initDataServie.initTopDenoiseConfig();
+		//initDataServie.initTopDenoiseConfig();
 		
 	}
 }

@@ -603,6 +603,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
            hierarchicalCheckboxes: true, 
            ready:function()
            {
+           		console.log("加载完毕，开始锁定编辑");
            		//根据参数分类将父节点设置为不可编辑
        			var rows = $("#treeGrid").jqxTreeGrid('getRows');  
           		for(var i = 0; i < rows.length; i++)

@@ -95,11 +95,10 @@ public class InitDataServiceImpl implements IInitDataService{
 			if(flag){
 //				byte[] bytes = executor.getPath(path);
 //				Map<String,String> config = JJSON.get().parse(new String(bytes, Charset.forName("utf-8")), Map.class);
-				
-				executor.setPath(path, JJSON.get().formatObject(mongodbConfig));
-			}else{
-				executor.createPath(path,JJSON.get().formatObject(mongodbConfig).getBytes(Charset.forName("utf-8")));
+				executor.deletePath(path);
+//				executor.setPath(path, JJSON.get().formatObject(mongodbConfig));
 			}
+			executor.createPath(path,JJSON.get().formatObject(mongodbConfig).getBytes(Charset.forName("utf-8")));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

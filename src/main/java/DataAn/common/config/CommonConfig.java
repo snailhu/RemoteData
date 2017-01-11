@@ -1,13 +1,20 @@
 package DataAn.common.config;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.util.Date;
 
 import org.apache.commons.lang3.StringUtils;
 
+import DataAn.common.service.impl.InitDataServiceImpl;
 import DataAn.common.utils.DateUtil;
+import DataAn.common.utils.Log4jUtil;
 import DataAn.common.utils.PropertiesUtil;
 import DataAn.common.utils.UUIDGeneratorUtil;
+import DataAn.storm.exceptioncheck.ExceptionUtils;
 
 public class CommonConfig {
 
@@ -20,6 +27,30 @@ public class CommonConfig {
 	
 	/** mongodb服务IP*/
 	private static String CACHE_PATH ;
+	
+	public static String getTopjobConfig(){
+		String topjobConfig="";
+		try {
+			topjobConfig=new String(getBytes(
+					CommonConfig.class.getResourceAsStream("topjidongcount.json")),"utf-8");
+		} catch (UnsupportedEncodingException e) {
+			Log4jUtil.getInstance().getLogger(CommonConfig.class).error("从JSON文件读取陀螺的机动规则失败");
+			e.printStackTrace();
+		}
+		return topjobConfig;
+	}
+	
+	public static String getTopDenoiseConfig(){
+		String topDenoiseConfig="";
+		try {
+			topDenoiseConfig=new String(getBytes(
+						CommonConfig.class.getResourceAsStream("topdenoiseparam.json")),"utf-8");
+		} catch (UnsupportedEncodingException e) {
+			Log4jUtil.getInstance().getLogger(CommonConfig.class).error("从JSON文件读取陀螺的去噪规则失败");
+			e.printStackTrace();
+		}
+		return topDenoiseConfig;
+	}
 
 	public static String getServerConfig() {
 		String serverConfig = "http://localhost:8080";
@@ -77,5 +108,20 @@ public class CommonConfig {
 								DateUtil.format(new Date(), "yyyy-MM-dd")+ File.separator + 
 								UUIDGeneratorUtil.getUUID();
 		return docCachePath;
+	}
+	
+	private static byte[] getBytes(InputStream input) {
+	    ByteArrayOutputStream output = new ByteArrayOutputStream();
+	    byte[] buffer = new byte[4096];
+	    int n = 0;
+	    try {
+			while (-1 != (n = input.read(buffer))) {
+			    output.write(buffer, 0, n);
+			}
+			output.flush();
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+	    return output.toByteArray();
 	}
 }

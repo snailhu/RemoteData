@@ -120,7 +120,7 @@ public class InitDataServiceImpl implements IInitDataService{
 			.namespace(ZooKeeperNameKeys.getNamespace(conf))
 			.build();
 			String topjobConfig=CommonConfig.getTopjobConfig();
-			String path = "/conf/topjobConfig";
+			String path = "/cfg/topjobConfig";
 			boolean flag=executor.exists(path);
 			if(flag){
 				byte[] bytes=executor.getPath(path);
@@ -149,7 +149,7 @@ public class InitDataServiceImpl implements IInitDataService{
 				.namespace(ZooKeeperNameKeys.getNamespace(conf))
 				.build();
 				String topDenoiseConfig=CommonConfig.getTopDenoiseConfig();
-				String path = "/conf/topDenioseConfig";
+				String path = "/cfg/topDenioseConfig";
 				boolean flag=executor.exists(path);
 				if(flag){
 					byte[] bytes=executor.getPath(path);

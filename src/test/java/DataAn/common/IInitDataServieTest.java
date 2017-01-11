@@ -19,7 +19,7 @@ public class IInitDataServieTest {
 	
 	@Test
 	public void test() throws Exception{
-		initDataServie.initDataBase();
+		//initDataServie.initDataBase();
 	}
 	
 	@Test
@@ -28,5 +28,9 @@ public class IInitDataServieTest {
 		System.out.println(topDenoiseConfig);
 		String topjobConfig=CommonConfig.getTopjobConfig();
 		System.out.println(topDenoiseConfig);
+		
+		initDataServie.initTopjobConfig();
+		initDataServie.initTopDenoiseConfig();
+		
 	}
 }

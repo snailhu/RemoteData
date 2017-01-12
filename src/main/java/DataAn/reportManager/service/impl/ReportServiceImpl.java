@@ -778,6 +778,23 @@ public class ReportServiceImpl implements IReoportService {
 			oneParamImgList.add(paramImgData);
 		}
 
+		//去重复
+		for (ParamImgDataDto paramImgDataDto2 : twoParamImgList) {
+			for (ParamImgDataDto paramImgDataDto1 : oneParamImgList) {
+				if(!paramImgDataDto2.getParName().equals("") && paramImgDataDto2.getParName().equals(paramImgDataDto1.getParName()))
+					twoParamImgList.remove(paramImgDataDto2);
+			}
+		}
+		for (ParamImgDataDto paramImgDataDto3 : threeParamImgList) {
+			for (ParamImgDataDto paramImgDataDto1 : oneParamImgList) {
+				if(!paramImgDataDto3.getParName().equals("") && paramImgDataDto3.getParName().equals(paramImgDataDto1.getParName()))
+					threeParamImgList.remove(paramImgDataDto3);
+			}
+			for (ParamImgDataDto paramImgDataDto2 : twoParamImgList) {
+				if(!paramImgDataDto3.getParName().equals("") && paramImgDataDto3.getParName().equals(paramImgDataDto2.getParName()))
+					threeParamImgList.remove(paramImgDataDto3);
+			}
+		}
 		// 封装产品列表list
 		List<ProductDto> products = new ArrayList<ProductDto>();
 

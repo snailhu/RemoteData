@@ -720,7 +720,9 @@ public class ReportServiceImpl implements IReoportService {
 				param.setParamNumMin("null");
 			params.add(param);
 		}
-
+		
+		//去重复
+		Set<String> paramNameSet = new HashSet<String>();
 		// 封装参数类型 图片list
 		List<ParamImgDataDto> threeParamImgList = new ArrayList<ParamImgDataDto>();
 		String chartPathThree = OptionConfig.getWebPath() + "\\report\\wordtemplate\\NoData.png";
@@ -731,7 +733,10 @@ public class ReportServiceImpl implements IReoportService {
 				chartPathThree = chartMap.get(parName);
 			}
 			paramImgData.setParImg(chartPathThree);
-			threeParamImgList.add(paramImgData);
+			if(!paramNameSet.contains(paramImgData.getParName())){
+				threeParamImgList.add(paramImgData);
+				paramNameSet.add(paramImgData.getParName());
+			}
 		}
 		if(threeParamImgList.size() == 0){
 			ParamImgDataDto paramImgData = new ParamImgDataDto();
@@ -751,7 +756,10 @@ public class ReportServiceImpl implements IReoportService {
 					chartPathTwo = chartMap.get(product + paramStr);
 				}
 				paramImgData.setParImg(chartPathTwo);
-				twoParamImgList.add(paramImgData);				
+				if(!paramNameSet.contains(paramImgData.getParName())){
+					twoParamImgList.add(paramImgData);				
+					paramNameSet.add(paramImgData.getParName());
+				}
 			}
 		}
 		if(twoParamImgList.size() == 0){
@@ -771,7 +779,10 @@ public class ReportServiceImpl implements IReoportService {
 				chartPathOne = chartMap.get(starParam.getProductName() + starParam.getParameterType());
 			}
 			paramImgData.setParImg(chartPathOne);
-			oneParamImgList.add(paramImgData);
+			if(!paramNameSet.contains(paramImgData.getParName())){
+				oneParamImgList.add(paramImgData);
+				paramNameSet.add(paramImgData.getParName());
+			}
 		}
 		if( oneParamImgList.size() == 0){
 			ParamImgDataDto paramImgData = new ParamImgDataDto();
@@ -780,6 +791,26 @@ public class ReportServiceImpl implements IReoportService {
 			oneParamImgList.add(paramImgData);
 		}
 
+//		//去重复
+//		if(twoParamImgList.size() > 0 && !twoParamImgList.get(0).getParName().equals(""))
+//			for (ParamImgDataDto paramImgDataDto2 : twoParamImgList) {
+//				for (ParamImgDataDto paramImgDataDto1 : oneParamImgList) {
+//					if(!paramImgDataDto2.getParName().equals("") && paramImgDataDto2.getParName().equals(paramImgDataDto1.getParName()))
+//						twoParamImgList.remove(paramImgDataDto2);
+//				}
+//			}
+//		if(threeParamImgList.size() > 0 && !threeParamImgList.get(0).getParName().equals(""))
+//			for (ParamImgDataDto paramImgDataDto3 : threeParamImgList) {
+//				for (ParamImgDataDto paramImgDataDto1 : oneParamImgList) {
+//					if(!paramImgDataDto3.getParName().equals("") && paramImgDataDto3.getParName().equals(paramImgDataDto1.getParName()))
+//						threeParamImgList.remove(paramImgDataDto3);
+//				}
+//				for (ParamImgDataDto paramImgDataDto2 : twoParamImgList) {
+//					if(!paramImgDataDto3.getParName().equals("") && paramImgDataDto3.getParName().equals(paramImgDataDto2.getParName()))
+//						threeParamImgList.remove(paramImgDataDto3);
+//				}
+//			}
+		
 		// 封装产品列表list
 		List<ProductDto> products = new ArrayList<ProductDto>();
 

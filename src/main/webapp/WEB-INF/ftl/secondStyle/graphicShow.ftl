@@ -718,7 +718,8 @@ $.post("getDatabytap",
         	  var width = $('#'+paramValue+'-size').val();
         	  //console.log("曲线颜色值："+paramColor+"曲线粗细："+width);
         	  if(paramColor != null && paramColor != 'undefined'){
-		      	  seriesOptionsDam[i] = {
+        	  var tempnumber =names.length;
+		      	  seriesOptionsDam[names.length-1-i] = {
 		      			name: $(this).attr('dataName'),
 		  		        //type: 'line',
 		  	            lineStyle:{
@@ -727,14 +728,14 @@ $.post("getDatabytap",
 				  		}
 				  		 
 		           	};
-		           legendOptionsData[i] ={
+		           legendOptionsData[names.length-1-i] ={
 		           		name: $(this).attr('dataName'),
 		           		//icon:'roundRect',
 		           		textStyle:{
 		           			backgroundColor:paramColor
 		           		}
 		           };
-		           legendcolor[i]=paramColor;		           			           		
+		           legendcolor[names.length-1-i]=paramColor;		           			           		
         	  }
         	});
         	        

@@ -612,6 +612,8 @@ public class ReportServiceImpl implements IReoportService {
 			for (StarParam starParam : starParams) {
 				if(starParam.getProductName().equals("null"))
 					starParam.setProductName("");
+				if(starParam.getParameterType().equals("null"))
+					starParam.setParameterType(starParam.getParamName());;
 				starParamList.add(starParam);
 			}
 		}else{

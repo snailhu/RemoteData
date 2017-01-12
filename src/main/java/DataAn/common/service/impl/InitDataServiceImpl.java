@@ -5,10 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.annotation.Resource;
-
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import DataAn.common.config.CommonConfig;
 import DataAn.common.service.IInitDataService;
 import DataAn.common.utils.JJSON;
@@ -47,7 +44,6 @@ public class InitDataServiceImpl implements IInitDataService{
 	@Override
 	public void initServerConfig() {
 		try {
-			System.out.println("init serverConfig...");
 			Map conf=new HashMap<>();
 			BaseConfig baseConfig=null;
 			baseConfig= StormUtils.getBaseConfig(BaseConfig.class);
@@ -76,7 +72,6 @@ public class InitDataServiceImpl implements IInitDataService{
 	@Override
 	public void initMongodbConfig() {
 		try {
-			System.out.println("init mongodbConfig...");
 			Map conf=new HashMap<>();
 			BaseConfig baseConfig=null;
 			baseConfig= StormUtils.getBaseConfig(BaseConfig.class);
@@ -96,11 +91,10 @@ public class InitDataServiceImpl implements IInitDataService{
 			if(flag){
 //				byte[] bytes = executor.getPath(path);
 //				Map<String,String> config = JJSON.get().parse(new String(bytes, Charset.forName("utf-8")), Map.class);
-				
-				executor.setPath(path, JJSON.get().formatObject(mongodbConfig));
-			}else{
-				executor.createPath(path,JJSON.get().formatObject(mongodbConfig).getBytes(Charset.forName("utf-8")));
+				executor.deletePath(path);
+//				executor.setPath(path, JJSON.get().formatObject(mongodbConfig));
 			}
+			executor.createPath(path,JJSON.get().formatObject(mongodbConfig).getBytes(Charset.forName("utf-8")));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -109,7 +103,6 @@ public class InitDataServiceImpl implements IInitDataService{
 	@Override 
 	public void initTopjobConfig(){
 		try{
-			System.out.println("int TopjobrulesConfig...");
 			Map conf=new HashMap<>();
 			BaseConfig baseConfig=null;
 			baseConfig=StormUtils.getBaseConfig(BaseConfig.class);
@@ -138,7 +131,6 @@ public class InitDataServiceImpl implements IInitDataService{
 		@Override 
 		public void initTopDenoiseConfig(){
 			try{
-				System.out.println("int TopDenoiseConfig...");
 				Map conf=new HashMap<>();
 				BaseConfig baseConfig=null;
 				baseConfig=StormUtils.getBaseConfig(BaseConfig.class);

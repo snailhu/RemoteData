@@ -196,7 +196,7 @@ public class SaveFileToKafka implements Runnable {
 					}
 					// mongo...
 					Log4jUtil.getInstance().getLogger(SaveFileToKafka.class).info(nodeWorker.getId()+ " to update mongodb data..");
-					mongoService.updateCSVDataByDate(series, star, name, dateTime1, dateTime);
+					mongoService.updateCSVDataByDate(series, star, name, dateTime1, dateTime,true);
 					Log4jUtil.getInstance().getLogger(SaveFileToKafka.class).info(nodeWorker.getId()+ " finish push data to kafka!!!!!!!!");
 					System.out.println(nodeWorker.getId()+ " finish push data to kafka!!!!!!!!--> data count: " + count);
 					//更行文件状态

@@ -66,6 +66,12 @@ public class CommonController {
 	@ResponseBody
 	public List<ConstraintDto> getConstraint(String beginDate,String endDate,String Series_current,String Star_current,String type_current) 
 			throws Exception{
+		System.out.println("获取echart 画图 参数列表。。");
+		System.out.println("beginDate: " + beginDate);
+		System.out.println("endDate: " + endDate);
+		System.out.println("Series_current: " + Series_current);
+		System.out.println("Star_current: " + Star_current);
+		System.out.println("type_current: " + type_current);
 		if(StringUtils.isNotBlank(Series_current) && StringUtils.isNotBlank(Star_current) && StringUtils.isNotBlank(type_current))
 			if(StringUtils.isNotBlank(beginDate) || StringUtils.isNotBlank(endDate)){
 				return j9Series_Star_Service.getAllParameterList(beginDate, endDate, Series_current, Star_current, type_current);			

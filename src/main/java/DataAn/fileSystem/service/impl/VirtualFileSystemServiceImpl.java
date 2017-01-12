@@ -233,16 +233,7 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 			final List<VirtualFileSystem> files = new ArrayList<VirtualFileSystem>();
 			files.add(file);
 			this.deleteFile(null,file);	
-			//删除参数
-			List<DateParameters> paramList = dateParametersDao.selectByOption(file.getSeries(), file.getStar(), file.getParameterType(), file.getYear_month_day());
-			if(paramList != null && paramList.size() > 0){
-				List<Long> ids = new ArrayList<Long>();
-				for (DateParameters dateParameters : paramList) {
-					ids.add(dateParameters.getId());
-				}
-				if(ids.size() > 0)
-					dateParametersDao.deleteByIds(ids);
-			}
+			
 			this.deleteMongodbFile(files);
 		}
 	}
@@ -258,6 +249,18 @@ public class VirtualFileSystemServiceImpl implements IVirtualFileSystemService{
 		}else{
 			if(files != null){
 				files.add(file);
+			}
+		}
+		if(file.getFileType().getName().equals(FileType.FILE.getName())){
+			//删除参数
+			List<DateParameters> paramList = dateParametersDao.selectByOption(file.getSeries(), file.getStar(), file.getParameterType(), file.getYear_month_day());
+			if(paramList != null && paramList.size() > 0){
+				List<Long> ids = new ArrayList<Long>();
+				for (DateParameters dateParameters : paramList) {
+					ids.add(dateParameters.getId());
+				}
+				if(ids.size() > 0)
+					dateParametersDao.deleteByIds(ids);
 			}
 		}
 		fileDao.delete(file);

@@ -24,7 +24,7 @@ public class ConfigTest {
 		System.out.println(str);
 		System.out.println(CommonConfig.getUplodCachePath());
 		System.out.println(CommonConfig.getDownloadCachePath());
-		System.out.println(String.valueOf(null));
+		System.out.println(CommonConfig.getServerConfig());
 	}
 	
 	@Test
@@ -90,5 +90,18 @@ public class ConfigTest {
 			System.out.println(Double.parseDouble(str));
 		}
 		System.out.println("....");
+	}
+	
+	@Test
+	public void test5(){
+		List<String> list = new ArrayList<String>();
+		list.add("aa");
+		list.add("bb");
+		for (String item : list) {
+			item = "cc";
+		}
+		for (String string : list) {
+			System.out.println(string);
+		}
 	}
 }

@@ -24,9 +24,9 @@ public class InitMongo {
 	 * 获取配置文件参数
 	 * */
 	/** mongodb单机测试服务IP*/
-	public static final String TEST_SERVER_HOST = PropertiesUtil.getProperties(config, charset).getProperty("test.mongodb.ip").trim();
+	public static final String TEST_SERVER_HOST = "127.0.0.1";//PropertiesUtil.getProperties(config, charset).getProperty("test.mongodb.ip").trim();
 	/** mongodb单机测试服务端口*/
-	public static final int TEST_SERVER_PORT = Integer.parseInt(PropertiesUtil.getProperties(config, charset).getProperty("test.mongodb.port").trim());
+	public static final int TEST_SERVER_PORT = 27017;//Integer.parseInt(PropertiesUtil.getProperties(config, charset).getProperty("test.mongodb.port").trim());
 	
 	/** mongodb数据服务IP*/
 	public static final String DB_SERVER_HOST = PropertiesUtil.getProperties(config, charset).getProperty("db.mongodb.ip").trim();

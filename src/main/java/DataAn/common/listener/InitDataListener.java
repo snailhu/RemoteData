@@ -27,8 +27,8 @@ public class InitDataListener implements ApplicationListener<ContextRefreshedEve
 	@Override
 	public void onApplicationEvent(ContextRefreshedEvent event) {
 //		System.out.println("InitDataListener..." + event);			
-//		if(event.getApplicationContext().getParent() == null){
-//			
+		if(event.getApplicationContext().getParent() == null){
+			
 //			if(!flag){
 //				System.out.println("加载一次 InitDataListener... kafka、initServerConfig...");
 //				flag=true;
@@ -49,6 +49,7 @@ public class InitDataListener implements ApplicationListener<ContextRefreshedEve
 //				new Thread(new Runnable() {
 //					@Override
 //					public void run() {
+//						System.out.println("init serverConfig...");
 //						initDataService.initServerConfig();
 //					}
 //				}).start();
@@ -57,14 +58,15 @@ public class InitDataListener implements ApplicationListener<ContextRefreshedEve
 //				new Thread(new Runnable() {
 //					@Override
 //					public void run() {
+//						System.out.println("init mongodbConfig...");
 //						initDataService.initMongodbConfig();
 //					}
 //				}).start();
-//				
 //				//配置陀螺去噪参数列表
 //				new Thread(new Runnable() {
 //					@Override
 //					public void run() {
+//						System.out.println("int TopDenoiseConfig...");
 //						initDataService.initTopDenoiseConfig();;
 //					}
 //				}).start();
@@ -72,12 +74,13 @@ public class InitDataListener implements ApplicationListener<ContextRefreshedEve
 //				new Thread(new Runnable() {
 //					@Override
 //					public void run() {
+//						System.out.println("int TopjobrulesConfig...");
 //						initDataService.initTopjobConfig();;
 //					}
 //				}).start();
 //			}
-//			
-//		}
+			
+		}
 	}
 
 	

@@ -98,7 +98,7 @@ public class J9Series_Star_ServiceImpl implements IJ9Series_Star_Service{
 					String[] items = dp.getParameters().split(",");
 					for (String item : items) {
 //					if(!item.equals("时间") && !item.equals("接收地方时") &&!item.equals("星上系统钟")){
-						if(item.indexOf(":") != -1){
+						if(item.indexOf(":") != -1 && !paramSet.contains(item)){
 							paramSet.add(item);
 						}
 					}
@@ -108,7 +108,9 @@ public class J9Series_Star_ServiceImpl implements IJ9Series_Star_Service{
 			String param_en = "";
 			for (String param_zh : paramSet) {
 				param_en = paramService.getParameter_en_by_allZh(series, star,paramType, param_zh);
-				simplyZh_and_enMap.put(param_zh.split(":")[1], param_en);
+//				System.out.println(param_zh + " ："+param_en+"--");
+				if(StringUtils.isNotBlank(param_en))
+					simplyZh_and_enMap.put(param_zh.split(":")[1], param_en);
 			} //TODO 参数分类显示
 			List<String> dataTypes = null;
 			if(paramType.equals(J9Series_Star_ParameterType.FLYWHEEL.getValue())){

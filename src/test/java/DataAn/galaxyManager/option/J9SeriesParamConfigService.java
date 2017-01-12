@@ -10,7 +10,7 @@ public class J9SeriesParamConfigService {
 
 	public static Map<String,String> getJ9Series_FlywheelParamConfigMap() throws Exception{
 		Map<String,String> map = new HashMap<String,String>();
-		Class<?> pojoClass = Class.forName("DataAn.galaxyManager.option.J9Series_Star_Flywheel_ParameterConfig");
+		Class<?> pojoClass = Class.forName(J9Series_Star_FlywheelParameterConfig.class.getName());
 		Object obj = pojoClass.newInstance();
 		Field[] fields = pojoClass.getDeclaredFields();
 		for (Field field : fields) {
@@ -22,7 +22,7 @@ public class J9SeriesParamConfigService {
 	
 	public static List<String> getJ9Series_FlywheelParamConfigList() throws Exception{
 		List<String> list= new ArrayList<String>();
-		Class<?> pojoClass = Class.forName("DataAn.galaxyManager.option.J9Series_Star_Flywheel_ParameterConfig");
+		Class<?> pojoClass = Class.forName(J9Series_Star_FlywheelParameterConfig.class.getName());
 		Object obj = pojoClass.newInstance();
 		Field[] fields = pojoClass.getDeclaredFields();
 		for (Field field : fields) {

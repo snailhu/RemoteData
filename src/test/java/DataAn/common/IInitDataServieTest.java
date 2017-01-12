@@ -30,7 +30,7 @@ public class IInitDataServieTest {
 		//System.out.println(topDenoiseConfig);
 		
 		initDataServie.initTopjobConfig();
-		//initDataServie.initTopDenoiseConfig();
+		initDataServie.initTopDenoiseConfig();
 		
 	}
 }

@@ -3,7 +3,6 @@ package DataAn.galaxyManager.option;
 public class J9Series_Star_FlywheelParameterConfig {
 
 	public String datetime = "接收地方时";
-
 	public String sequence_00814 = "F10W111:飞轮电流Xa(00814)";
 	public String sequence_00816 = "F10W113:飞轮电流Ya(00816)";
 	public String sequence_00818 = "F10W115:飞轮电流Za(00818)";

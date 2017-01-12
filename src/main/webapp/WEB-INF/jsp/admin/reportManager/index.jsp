@@ -395,7 +395,7 @@ a:hover{color:#0909df;}
 	          columns: [[ {
 	              field: 'name',
 	              title: '文件名',
-	              width: 200,
+	              width: 50,
 	              formatter: function (value, row, index) {
 	            	  if(row.type == 'dir'){
                       	return "<a href=\"javascript:doGetChildDir('" + row.id +  "');\"" + " title='"+row.name+"'>"+row.name+"</a>";	            		  
@@ -406,11 +406,11 @@ a:hover{color:#0909df;}
 	          }, {
 	              field: 'fileSize',
 	              title: '大小',
-	              width: 100
+	              width: 30
 	          },  {
 	              field: 'createDate',
 	              title: '生成时间',
-	              width: 150,
+	              width: 80,
 	              sortable:true
 	          }
 	          ]]

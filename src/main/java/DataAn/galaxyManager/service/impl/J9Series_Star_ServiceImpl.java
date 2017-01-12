@@ -98,7 +98,7 @@ public class J9Series_Star_ServiceImpl implements IJ9Series_Star_Service{
 					String[] items = dp.getParameters().split(",");
 					for (String item : items) {
 //					if(!item.equals("时间") && !item.equals("接收地方时") &&!item.equals("星上系统钟")){
-						if(item.indexOf(":") != -1){
+						if(item.indexOf(":") != -1 && !paramSet.contains(item)){
 							paramSet.add(item);
 						}
 					}

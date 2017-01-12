@@ -113,7 +113,7 @@ public class MongoServiceImpl implements IMongoService{
 			for (String collectionName : isexistCols) {
 				if(collectionName.indexOf(paramType) > -1){
 					//设置某一个版本的数据的状态为0
-					mg.update(databaseName, collectionName, "versions", versions);		
+					mg.update(databaseName, collectionName, "versions", versions);	
 				}
 			}
 		}
@@ -121,7 +121,7 @@ public class MongoServiceImpl implements IMongoService{
 	
 	@Override
 	public void updateCSVDataByDate(String series, String star,
-			String paramType, Date beginDate, Date endDate) {
+			String paramType, Date beginDate, Date endDate, boolean isTemp) {
 		MongodbUtil mg = MongodbUtil.getInstance();
 		String databaseName = InitMongo.getDataDBBySeriesAndStar(series, star);
 //		List<String> list = InitMongo.getGradingCollectionNames(paramType);
@@ -141,8 +141,13 @@ public class MongoServiceImpl implements IMongoService{
 		if(isexistCols != null && isexistCols.size() > 0){
 			for (String collectionName : isexistCols) {
 				if(collectionName.indexOf(paramType) > -1){
-					//设置同一时间段的数据的状态为0
-					mg.updateByDate(databaseName, collectionName, beginDate, endDate);
+					if(isTemp){
+						//设置同一时间段的数据的状态为2,此为临时状态
+						mg.updateByDate(databaseName, collectionName, beginDate, endDate, 2);
+					}else{
+						//设置同一时间段的数据的状态为0
+						mg.updateByDate(databaseName, collectionName, beginDate, endDate, 0);						
+					}
 				}
 			}
 		}

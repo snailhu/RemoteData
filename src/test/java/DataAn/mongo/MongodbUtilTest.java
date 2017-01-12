@@ -43,21 +43,11 @@ public class MongodbUtilTest {
 	}
 
 	@Test
-	public void test2(){
-
-		Date startDate = DateUtil.format("2000-01-01 10:58:00");
-		Date endDate = DateUtil.format("2000-01-01 13:58:01");
-		MongoCollection<Document> collection = mg.getCollection("db_j9_02", "flywheel1s");
-		FindIterable<Document> document_It = collection.find(Filters.and(Filters.gte("datetime", startDate),Filters.lte("datetime", endDate)));						
-		long begin = System.currentTimeMillis();
-		int count =0;
-		for (Document document : document_It) {
-			String paraVal = document.getString("year");
-			//System.out.println(document);
-			count++;
-		}
-		long end=System.currentTimeMillis();
-				System.out.println("多少个数据："+count+"耗时："+(end-begin));
+	public void update(){
+		
+		String databaseName = "db_j9_05";
+		String collectionName = "flywheel_job";
+		mg.update(databaseName, collectionName, "status", 1, "status", 2);
 		
 	}
 	

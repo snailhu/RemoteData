@@ -3,6 +3,7 @@ package DataAn.reportManager.config;
 import java.io.File;
 
 import DataAn.common.utils.PropertiesUtil;
+import DataAn.galaxyManager.option.J9Series_Star_ParameterType;
 public class OptionConfig {
 	
 	/**
@@ -12,18 +13,33 @@ public class OptionConfig {
 	
 	private static final String charset="utf-8";
 		
-	private static String PARAM_STR ;
 	
 	public static String getParamStr() {
-		String paramStr = PropertiesUtil.getProperties(config, charset).getProperty("paramStr");
+		String param_str = "";
+		String paramStr = PropertiesUtil.getProperties(config, charset).getProperty("flywheelParamStr");
 		if(paramStr != null && !paramStr.equals("")){
-			PARAM_STR = paramStr.trim();
+			param_str = paramStr.trim();
 		}else{
-			PARAM_STR =   "转速,电流";
+			param_str = "转速,电流";
 		}
-		return PARAM_STR;
+		return param_str;
 	}
 	
+	public static String getParamStr(String deviceType){
+		String param_str = "";
+		if(J9Series_Star_ParameterType.FLYWHEEL.getValue().equals(deviceType)) {
+			return getParamStr();
+		}else if(J9Series_Star_ParameterType.TOP.getValue().equals(deviceType)) {
+//			String paramStr = PropertiesUtil.getProperties(config, charset).getProperty("topParamStr");
+//			if(paramStr != null && !paramStr.equals("")){
+//				param_str = paramStr.trim();
+//			}else{
+//				param_str = "转速,电流";
+//			}
+			return param_str;
+		}
+		return null;
+	}
 	public static String getWebPath(){
 		String classPath = OptionConfig.class.getClassLoader().getResource("").getPath();	
 		int index = classPath.indexOf("WEB-INF");

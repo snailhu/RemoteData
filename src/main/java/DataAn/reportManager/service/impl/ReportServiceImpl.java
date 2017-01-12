@@ -611,16 +611,19 @@ public class ReportServiceImpl implements IReoportService {
 			reportNullDoc(filename, templateNullUrl, docPath, data.getBeginDate(), data.getEndDate(), "参数管理中未配置任何参数信息");
 			return;
 		}
-		List<String> parList = new ArrayList<String>();
-		String paramStr = OptionConfig.getParamStr();
-		String[] parArr = paramStr.split(",");
-		for (String p : parArr) {
-			parList.add(p);
-		}
-
+		
 		Map<String, List<ConstraintDto>> constraintsMap = new HashMap<String, List<ConstraintDto>>();
+		
+		List<String> parList = new ArrayList<String>();
+		String paramStr = OptionConfig.getParamStr(partsType);
+		if(StringUtils.isNotBlank(paramStr)){
+			String[] parArr = paramStr.split(",");
+			for (String p : parArr) {
+				parList.add(p);
+			}			
+		}
+		
 		List<StarParam> doubleList = new ArrayList<StarParam>();
-
 		// 封装一条线（温度、电压等）的参数值
 		List<StarParam> firstList = new ArrayList<StarParam>();
 		for (StarParam starParam : starParamList) {
@@ -647,11 +650,11 @@ public class ReportServiceImpl implements IReoportService {
 			List<ConstraintDto> productlist = new ArrayList<ConstraintDto>();
 			for (StarParam starParam : doubleList) {
 				if (product.equals(starParam.getProductName())) {
-					
 					productlist.add(this.StarParamToConstraintDto(starParam));
 				}
 			}
-			constraintsMap.put(product + paramStr, productlist);
+			if(doubleList.size() > 0)
+				constraintsMap.put(product + paramStr, productlist);
 		}
 
 		// 等到参数类型 如转速、电流、温度、电压等
@@ -667,12 +670,13 @@ public class ReportServiceImpl implements IReoportService {
 			List<ConstraintDto> parameterTypelist = new ArrayList<ConstraintDto>();
 			for (StarParam starParam : starParamList) {
 				if (string.equals(starParam.getParameterType())) {
-					
 					parameterTypelist.add(this.StarParamToConstraintDto(starParam));
 				}
 			}
-			constraintsMap.put(string, parameterTypelist);
+			if(parameterTypelist.size() > 0)
+				constraintsMap.put(string, parameterTypelist);
 		}
+		
 		LineChartDto lineChartDto = null;
 		// 画图并返回参数
 		lineChartDto = jfreechartServcie.createLineChart(seriesId, starId, partsType, beginDate, endDate,

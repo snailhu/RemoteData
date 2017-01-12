@@ -605,22 +605,35 @@ public class ReportServiceImpl implements IReoportService {
 		data.setEndDate(DateUtil.format(endDate, "yyyy-MM-dd"));
 		data.setCreateDate(DateUtil.getNowTime("yyyy-MM-dd"));
 
-		List<StarParam> starParamList = starParamService.getStarParamForReport(seriesId, starId, partsType);
+		List<StarParam> starParamList = null;
+		List<StarParam> starParams = starParamService.getStarParamForReport(seriesId, starId, partsType);
+		if(J9Series_Star_ParameterType.TOP.getValue().equals(partsType)) {
+			starParamList = new ArrayList<StarParam>();
+			for (StarParam starParam : starParams) {
+				if(starParam.getProductName().equals("null"))
+					starParam.setProductName("");
+				starParamList.add(starParam);
+			}
+		}else{
+			starParamList = starParams;
+		}
 		if (starParamList == null || starParamList.size() < 1) {
 			String templateNullUrl = OptionConfig.getWebPath() + "\\report\\wordtemplate\\nullData.doc";
 			reportNullDoc(filename, templateNullUrl, docPath, data.getBeginDate(), data.getEndDate(), "参数管理中未配置任何参数信息");
 			return;
 		}
-		List<String> parList = new ArrayList<String>();
-		String paramStr = OptionConfig.getParamStr();
-		String[] parArr = paramStr.split(",");
-		for (String p : parArr) {
-			parList.add(p);
-		}
-
 		Map<String, List<ConstraintDto>> constraintsMap = new HashMap<String, List<ConstraintDto>>();
+		
+		List<String> parList = new ArrayList<String>();
+		String paramStr = OptionConfig.getParamStr(partsType);
+		if(StringUtils.isNotBlank(paramStr)){
+			String[] parArr = paramStr.split(",");
+			for (String p : parArr) {
+				parList.add(p);
+			}			
+		}
+		
 		List<StarParam> doubleList = new ArrayList<StarParam>();
-
 		// 封装一条线（温度、电压等）的参数值
 		List<StarParam> firstList = new ArrayList<StarParam>();
 		for (StarParam starParam : starParamList) {
@@ -647,11 +660,11 @@ public class ReportServiceImpl implements IReoportService {
 			List<ConstraintDto> productlist = new ArrayList<ConstraintDto>();
 			for (StarParam starParam : doubleList) {
 				if (product.equals(starParam.getProductName())) {
-					
 					productlist.add(this.StarParamToConstraintDto(starParam));
 				}
 			}
-			constraintsMap.put(product + paramStr, productlist);
+			if(doubleList.size() > 0)
+				constraintsMap.put(product + paramStr, productlist);
 		}
 
 		// 等到参数类型 如转速、电流、温度、电压等
@@ -667,12 +680,13 @@ public class ReportServiceImpl implements IReoportService {
 			List<ConstraintDto> parameterTypelist = new ArrayList<ConstraintDto>();
 			for (StarParam starParam : starParamList) {
 				if (string.equals(starParam.getParameterType())) {
-					
 					parameterTypelist.add(this.StarParamToConstraintDto(starParam));
 				}
 			}
-			constraintsMap.put(string, parameterTypelist);
+			if(parameterTypelist.size() > 0)
+				constraintsMap.put(string, parameterTypelist);
 		}
+		
 		LineChartDto lineChartDto = null;
 		// 画图并返回参数
 		lineChartDto = jfreechartServcie.createLineChart(seriesId, starId, partsType, beginDate, endDate,
@@ -729,12 +743,14 @@ public class ReportServiceImpl implements IReoportService {
 		String chartPathTwo = OptionConfig.getWebPath() + "\\report\\wordtemplate\\NoData.png";
 		for (String product : productType) {
 			ParamImgDataDto paramImgData = new ParamImgDataDto();
-			paramImgData.setParName(J9Series_Star_ParameterType.getJ9SeriesStarParameterType(partsType).getName() + ":" + product + paramStr);
-			if (chartMap != null && chartMap.size() != 0) {
-				chartPathTwo = chartMap.get(product + paramStr);
+			if(StringUtils.isNotBlank(product) && StringUtils.isNotBlank(paramStr)){
+				paramImgData.setParName(J9Series_Star_ParameterType.getJ9SeriesStarParameterType(partsType).getName() + ":" + product + paramStr);
+				if (chartMap != null && chartMap.size() != 0) {
+					chartPathTwo = chartMap.get(product + paramStr);
+				}
+				paramImgData.setParImg(chartPathTwo);
+				twoParamImgList.add(paramImgData);				
 			}
-			paramImgData.setParImg(chartPathTwo);
-			twoParamImgList.add(paramImgData);
 		}
 		if(twoParamImgList.size() == 0){
 			ParamImgDataDto paramImgData = new ParamImgDataDto();

@@ -444,11 +444,11 @@
 				                name:legendname,
 				                smooth:false,
 				               	yAxisIndex: yname,
-				                lineStyle:{
+				                /*lineStyle:{
 			                    	normal:{
 			                    		width:0.5 
 			                    		}
-			                    },
+			                    },*/
 				                data: data[param].paramValue
 				            };
 				            //设置X轴，注意，这里X轴存在问题，默认使用了最后一组参数的X轴
@@ -660,16 +660,16 @@ $.post("getDatabytap",
 								                 	  
 								                 	  console.log(yname+legendname)
 								                 	  	seriesOptions[i++] = {
-								    			            	type: lineType,
+								    			            	//type: lineType,
 								    			                //name: param,
 								    			                name:legendname,
 								    			                smooth:false,
 								    			               	yAxisIndex: yname,
-								    			                lineStyle:{
+								    			                /*lineStyle:{
 								    		                    	normal:{
 								    		                    		width:0.5 
 								    		                    		}
-								    		                    },
+								    		                    },*/
 								    			                data: data[param].paramValue
 								    			            };
 								    			            //设置X轴，注意，这里X轴存在问题，默认使用了最后一组参数的X轴
@@ -720,7 +720,7 @@ $.post("getDatabytap",
         	  if(paramColor != null && paramColor != 'undefined'){
 		      	  seriesOptionsDam[i] = {
 		      			name: $(this).attr('dataName'),
-		  		        type: 'line',
+		  		        //type: 'line',
 		  	            lineStyle:{
 		  	            	normal:{color: paramColor,
 				  		        	width: width,}

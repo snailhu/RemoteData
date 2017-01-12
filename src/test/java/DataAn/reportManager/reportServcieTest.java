@@ -75,17 +75,20 @@ public class reportServcieTest {
 	@Test
 	public void createReport() throws Exception{
 		
-		String beginTime = "2016-12-08 00:00:00";
-		String endTime = "2016-12-09 00:00:00";
-//		String beginTime = "2005-01-01 00:00:00";
-//		String endTime = "2005-01-05 00:00:00";
+//		String beginTime = "2016-12-08 00:00:00";
+//		String endTime = "2016-12-09 00:00:00";
+		String beginTime = "2015-01-01 00:00:00";
+		String endTime = "2015-01-02 00:00:00";
 		Date beginDate = DateUtil.format(beginTime,"yyyy-MM-dd");
 		Date endDate =  DateUtil.format(endTime,"yyyy-MM-dd");
 		
-		String seriesId = SeriesType.J9_SERIES.getValue();
-		String starId = J9SeriesType.STRA3.getValue();
-		String partsType = J9Series_Star_ParameterType.FLYWHEEL.getValue();
+//		String seriesId = SeriesType.J9_SERIES.getValue();
+//		String starId = J9SeriesType.STRA2.getValue();
+//		String partsType = J9Series_Star_ParameterType.FLYWHEEL.getValue();
 		
+		String seriesId = "j8";
+		String starId = "01";
+		String partsType = J9Series_Star_ParameterType.TOP.getValue();
 		
 		String time = DateUtil.getNowTime("yyyy-MM-dd");
 		String partsName = "";

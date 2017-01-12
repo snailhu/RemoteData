@@ -52,7 +52,7 @@ public interface IMongoService {
 	* @param endDate 结束时间
 	*/
 	public void updateCSVDataByDate(String series, String star, String paramType,
-			Date beginDate, Date endDate);
+			Date beginDate, Date endDate, boolean isTemp);
 		
 	public MongoCursor<Document> findByYear_month_day(String series,
 			String star, String paramType, String date);

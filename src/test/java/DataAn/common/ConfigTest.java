@@ -91,4 +91,17 @@ public class ConfigTest {
 		}
 		System.out.println("....");
 	}
+	
+	@Test
+	public void test5(){
+		List<String> list = new ArrayList<String>();
+		list.add("aa");
+		list.add("bb");
+		for (String item : list) {
+			item = "cc";
+		}
+		for (String string : list) {
+			System.out.println(string);
+		}
+	}
 }

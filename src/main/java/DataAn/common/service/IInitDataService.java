@@ -16,6 +16,8 @@ public interface IInitDataService {
 	
 	public void initMongodbConfig();
 	
-	public void initTopConfig();
+	public void initTopjobConfig();
+	
+	public void initTopDenoiseConfig();
 	
 }

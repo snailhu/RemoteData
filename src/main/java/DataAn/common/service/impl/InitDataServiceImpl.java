@@ -14,6 +14,7 @@ import DataAn.galaxyManager.service.ISeriesService;
 import DataAn.mongo.init.InitMongo;
 import DataAn.storm.BaseConfig;
 import DataAn.storm.StormUtils;
+import DataAn.storm.exceptioncheck.ExceptionUtils;
 import DataAn.storm.zookeeper.ZooKeeperClient;
 import DataAn.storm.zookeeper.ZooKeeperNameKeys;
 import DataAn.storm.zookeeper.ZooKeeperClient.ZookeeperExecutor;
@@ -90,20 +91,69 @@ public class InitDataServiceImpl implements IInitDataService{
 			if(flag){
 //				byte[] bytes = executor.getPath(path);
 //				Map<String,String> config = JJSON.get().parse(new String(bytes, Charset.forName("utf-8")), Map.class);
-				
-				executor.setPath(path, JJSON.get().formatObject(mongodbConfig));
-			}else{
-				executor.createPath(path,JJSON.get().formatObject(mongodbConfig).getBytes(Charset.forName("utf-8")));
+				executor.deletePath(path);
+//				executor.setPath(path, JJSON.get().formatObject(mongodbConfig));
 			}
+			executor.createPath(path,JJSON.get().formatObject(mongodbConfig).getBytes(Charset.forName("utf-8")));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-
-	@Override
-	public void initTopConfig() {
-		// TODO Auto-generated method stub
+	
+	@Override 
+	public void initTopjobConfig(){
+		try{
+			Map conf=new HashMap<>();
+			BaseConfig baseConfig=null;
+			baseConfig=StormUtils.getBaseConfig(BaseConfig.class);
+			ZooKeeperNameKeys.setZooKeeperServer(conf, baseConfig.getZooKeeper());
+			ZooKeeperNameKeys.setNamespace(conf, baseConfig.getNamespace());
+			ZookeeperExecutor executor=new ZooKeeperClient()
+			.connectString(ZooKeeperNameKeys.getZooKeeperServer(conf))
+			.namespace(ZooKeeperNameKeys.getNamespace(conf))
+			.build();
+			String topjobConfig=CommonConfig.getTopjobConfig();
+			String path = "/cfg/topjobConfig";
+			boolean flag=executor.exists(path);
+			if(flag){
+				byte[] bytes=executor.getPath(path);
+				String config = new String(bytes,Charset.forName("utf-8"));
+				if(!topjobConfig.equals(config))
+					executor.setPath(path, topjobConfig);
+			}else{
+				executor.createPath(path,topjobConfig.getBytes(Charset.forName("utf-8")));
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+	}
 		
+		@Override 
+		public void initTopDenoiseConfig(){
+			try{
+				Map conf=new HashMap<>();
+				BaseConfig baseConfig=null;
+				baseConfig=StormUtils.getBaseConfig(BaseConfig.class);
+				ZooKeeperNameKeys.setZooKeeperServer(conf, baseConfig.getZooKeeper());
+				ZooKeeperNameKeys.setNamespace(conf, baseConfig.getNamespace());
+				ZookeeperExecutor executor=new ZooKeeperClient()
+				.connectString(ZooKeeperNameKeys.getZooKeeperServer(conf))
+				.namespace(ZooKeeperNameKeys.getNamespace(conf))
+				.build();
+				String topDenoiseConfig=CommonConfig.getTopDenoiseConfig();
+				String path = "/cfg/topDenioseConfig";
+				boolean flag=executor.exists(path);
+				if(flag){
+					byte[] bytes=executor.getPath(path);
+					String config = new String(bytes,Charset.forName("utf-8"));
+					if(!topDenoiseConfig.equals(config))
+						executor.setPath(path, topDenoiseConfig);
+				}else{
+					executor.createPath(path,topDenoiseConfig.getBytes(Charset.forName("utf-8")));
+				}
+			}catch(Exception e){
+				e.printStackTrace();
+			}
 	}
 	
 	

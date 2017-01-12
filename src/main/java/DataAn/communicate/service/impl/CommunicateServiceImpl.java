@@ -23,6 +23,8 @@ import DataAn.fileSystem.domain.VirtualFileSystem;
 import DataAn.fileSystem.service.IVirtualFileSystemService;
 import DataAn.galaxy.option.J9Series_Star_ParameterType;
 import DataAn.galaxyManager.service.IParameterService;
+import DataAn.mongo.client.MongodbUtil;
+import DataAn.mongo.init.InitMongo;
 import DataAn.prewarning.domain.WarningValue;
 import DataAn.prewarning.service.IPrewarningService;
 import DataAn.status.option.StatusTrackingType;
@@ -71,6 +73,7 @@ public class CommunicateServiceImpl implements ICommunicateService{
 		List<WarningValue> topjobWarningValues = prewarningService.getWarningValueByParams(series, star, null, parameterType, "0");
 		if(topjobWarningValues != null && topjobWarningValues.size() > 0){
 			Map<String,String> map = new HashMap<String,String>();
+			map.put("top", "sss");
 			List<ExceptionJobConfig> jobConfigList = new ArrayList<ExceptionJobConfig>();
 			ExceptionJobConfig jobConfig = null;
 			for (WarningValue wv : topjobWarningValues) {
@@ -339,6 +342,18 @@ public class CommunicateServiceImpl implements ICommunicateService{
 				if(statusType.equals(StatusTrackingType.PREHANDLEFAIL.getValue())){
 					System.out.println("begin delete file version: " + version);
 					fileService.deleteFileByUUId(version);
+					MongodbUtil mg = MongodbUtil.getInstance();
+					String databaseName = InitMongo.getDataDBBySeriesAndStar(file.getSeries(), file.getStar());
+					Set<String> isexistCols = mg.getExistCollections(databaseName);
+					if(isexistCols != null && isexistCols.size() > 0){
+						for (String collectionName : isexistCols) {
+							if(collectionName.indexOf(file.getParameterType()) > -1){
+								//设置某一个版本的数据的状态为1,设置临时状态为正常状态
+								//TODO 待测？
+								mg.update(databaseName, collectionName, "status", 2, "status", 1);
+							}
+						}
+					}
 				}
 				
 				jsonObject.put("sucFlag", true);

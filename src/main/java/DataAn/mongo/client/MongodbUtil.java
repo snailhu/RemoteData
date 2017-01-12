@@ -387,12 +387,26 @@ public class MongodbUtil {
 //                "$mul", new Document("hotness", 2)));
 	}
 	
+	public void update(String databaseName, String collectionName,String selectkKey,Object selectValue,
+			String setKey,Object setValue){
+		MongoCollection<Document> collection = this.getCollection(databaseName, collectionName);
+		collection.updateMany(Filters.eq(selectkKey, selectValue), Updates.set(setKey, setValue));
+	}
 	public void updateByDate(String databaseName, String collectionName, Object beginDate, Object endDate) {
 		MongoCollection<Document> collection = this.getCollection(databaseName, collectionName);
 		collection.updateMany(
 							Filters.and(Filters.gte("datetime", beginDate),
 										Filters.lte("datetime", endDate)),
 							Updates.set("status", 0));
+	}
+	
+	public void updateByDate(String databaseName, String collectionName, Object beginDate, Object endDate,
+			int value) {
+		MongoCollection<Document> collection = this.getCollection(databaseName, collectionName);
+		collection.updateMany(
+							Filters.and(Filters.gte("datetime", beginDate),
+										Filters.lte("datetime", endDate)),
+							Updates.set("status", value));
 	}
 	
 	public MongoCursor<Document> find(String databaseName,String collectionName, String key, Object value){

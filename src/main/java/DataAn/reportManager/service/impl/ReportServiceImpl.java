@@ -605,13 +605,23 @@ public class ReportServiceImpl implements IReoportService {
 		data.setEndDate(DateUtil.format(endDate, "yyyy-MM-dd"));
 		data.setCreateDate(DateUtil.getNowTime("yyyy-MM-dd"));
 
-		List<StarParam> starParamList = starParamService.getStarParamForReport(seriesId, starId, partsType);
+		List<StarParam> starParamList = null;
+		List<StarParam> starParams = starParamService.getStarParamForReport(seriesId, starId, partsType);
+		if(J9Series_Star_ParameterType.TOP.getValue().equals(partsType)) {
+			starParamList = new ArrayList<StarParam>();
+			for (StarParam starParam : starParams) {
+				if(starParam.getProductName().equals("null"))
+					starParam.setProductName("");
+				starParamList.add(starParam);
+			}
+		}else{
+			starParamList = starParams;
+		}
 		if (starParamList == null || starParamList.size() < 1) {
 			String templateNullUrl = OptionConfig.getWebPath() + "\\report\\wordtemplate\\nullData.doc";
 			reportNullDoc(filename, templateNullUrl, docPath, data.getBeginDate(), data.getEndDate(), "参数管理中未配置任何参数信息");
 			return;
 		}
-		
 		Map<String, List<ConstraintDto>> constraintsMap = new HashMap<String, List<ConstraintDto>>();
 		
 		List<String> parList = new ArrayList<String>();
@@ -733,12 +743,14 @@ public class ReportServiceImpl implements IReoportService {
 		String chartPathTwo = OptionConfig.getWebPath() + "\\report\\wordtemplate\\NoData.png";
 		for (String product : productType) {
 			ParamImgDataDto paramImgData = new ParamImgDataDto();
-			paramImgData.setParName(J9Series_Star_ParameterType.getJ9SeriesStarParameterType(partsType).getName() + ":" + product + paramStr);
-			if (chartMap != null && chartMap.size() != 0) {
-				chartPathTwo = chartMap.get(product + paramStr);
+			if(StringUtils.isNotBlank(product) && StringUtils.isNotBlank(paramStr)){
+				paramImgData.setParName(J9Series_Star_ParameterType.getJ9SeriesStarParameterType(partsType).getName() + ":" + product + paramStr);
+				if (chartMap != null && chartMap.size() != 0) {
+					chartPathTwo = chartMap.get(product + paramStr);
+				}
+				paramImgData.setParImg(chartPathTwo);
+				twoParamImgList.add(paramImgData);				
 			}
-			paramImgData.setParImg(chartPathTwo);
-			twoParamImgList.add(paramImgData);
 		}
 		if(twoParamImgList.size() == 0){
 			ParamImgDataDto paramImgData = new ParamImgDataDto();

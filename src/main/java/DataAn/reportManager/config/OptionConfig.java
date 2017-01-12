@@ -26,16 +26,14 @@ public class OptionConfig {
 	}
 	
 	public static String getParamStr(String deviceType){
-		String param_str = "";
 		if(J9Series_Star_ParameterType.FLYWHEEL.getValue().equals(deviceType)) {
 			return getParamStr();
 		}else if(J9Series_Star_ParameterType.TOP.getValue().equals(deviceType)) {
-//			String paramStr = PropertiesUtil.getProperties(config, charset).getProperty("topParamStr");
-//			if(paramStr != null && !paramStr.equals("")){
-//				param_str = paramStr.trim();
-//			}else{
-//				param_str = "转速,电流";
-//			}
+			String param_str = "";
+			String paramStr = PropertiesUtil.getProperties(config, charset).getProperty("topParamStr");
+			if(paramStr != null && !paramStr.equals("")){
+				param_str = paramStr.trim();
+			}
 			return param_str;
 		}
 		return null;

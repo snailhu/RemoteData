@@ -58,7 +58,8 @@ public class CommonController {
 	@RequestMapping(value = "/Index", method = { RequestMethod.GET })
 	public String goIndex(HttpServletRequest request, HttpServletResponse response) {
 		System.out.println("come in Index "+ DateUtil.format(new Date()));
-		return "index";
+//		return "index";
+		return "redirect:/conditionMonitoring";
 	}
 	
 	//根据用户选择的星系时间区间判断在 参数列表里显示的参数

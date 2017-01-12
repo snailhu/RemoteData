@@ -45,7 +45,7 @@ public class MakeCSVFile {
 	@Test
 	public void copyFlywheelDataCSV() throws Exception{
 		List<String> list = new ArrayList<String>();
-		String filePath = "C:\\j9-02--2016-02-01.csv";
+		String filePath = "C:\\feb-9-05.csv";
 		File file = new File(filePath);
 		InputStream in = new FileInputStream(file);
 		InputStreamReader inputStreamReader = new InputStreamReader(in, "gb2312");

@@ -591,6 +591,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
            url: url
        };
        var dataAdapter = new $.jqx.dataAdapter(source);
+       console.log("执行参数列表");
        $("#treeGrid").jqxTreeGrid(
        {
            width: 800,                
@@ -660,6 +661,17 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				}                     
 			]
        }); 
+       
+       var rows = $("#treeGrid").jqxTreeGrid('getRows'); 
+       console.log("长度："+rows.length);
+          		for(var i = 0; i < rows.length; i++)
+          		{
+              		if (rows[i].parentId==0)
+              		{
+                  		$("#treeGrid").jqxTreeGrid('lockRow',rows[i].id);
+              		}
+          		}
+          		
 	 } 
 	       	
     //添加分组功能

@@ -333,6 +333,7 @@ public class J9Series_Star_ServiceImpl implements IJ9Series_Star_Service{
 //		Map<String,String> map = this.getAllParameterList_simplyZh_and_en();
 		String sameFlyWheelData = "";
 		boolean showNogroupingFlag = false;//是否显示“未分组参数”分组。false:不显示  true：显示
+		Set<String> nogroupingset = new HashSet();
 		ConstraintDto nogrouping = new ConstraintDto();//给没有按参数分类规则的参数创建一个“其他”分组类，没有分组的参数都保存在这个分组里
 		nogrouping.setName("未分组参数");
 		nogrouping.setParentId(0);
@@ -379,6 +380,7 @@ public class J9Series_Star_ServiceImpl implements IJ9Series_Star_Service{
 						if(flyWheelData.indexOf(groupingname) != -1)
 						{
 							groupingflag=false;
+							
 						}
 					}
 					if(groupingflag){
@@ -391,8 +393,13 @@ public class J9Series_Star_ServiceImpl implements IJ9Series_Star_Service{
 						child.setMin("-9999");
 						child.setUnit("");
 						child.setYname("Y1");
-						children.add(child);
+						if(!nogroupingset.contains(flyWheelData))
+						{
+							nogroupingset.add(flyWheelData);
+							children.add(child);
+						}
 						count ++;
+						
 						showNogroupingFlag=true;
 						
 					}

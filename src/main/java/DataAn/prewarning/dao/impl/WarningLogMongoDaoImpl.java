@@ -229,7 +229,7 @@ public class WarningLogMongoDaoImpl implements IWarningLogMongoDao {
 				queryLogAllDTOs.addAll(getWarningLogListByCollection(
 						mongodbUtil.getCollectionNotShard(databaseName, "top_exception"), "1"));
 			}
-			if (queryLogAllDTOs.size() < pageSize) {
+			/*if (queryLogAllDTOs.size() < pageSize) {
 				for (int i = 0; i < queryLogAllDTOs.size(); i++) {
 					QueryLogDTO queryLogDTO = queryLogAllDTOs.get(i);
 					//updateHadRead(queryLogDTO);
@@ -241,6 +241,12 @@ public class WarningLogMongoDaoImpl implements IWarningLogMongoDao {
 					//updateHadRead(queryLogDTO);
 					queryLogResultDTOs.add(queryLogDTO);
 				}
+			}*/
+			//获取未读的预警信息时不对预警信息进行分页
+			for (int i = 0; i < queryLogAllDTOs.size(); i++) {
+				QueryLogDTO queryLogDTO = queryLogAllDTOs.get(i);
+				//updateHadRead(queryLogDTO);
+				queryLogResultDTOs.add(queryLogDTO);
 			}
 			Pager<QueryLogDTO> pager = new Pager<QueryLogDTO>(pageSize, pageIndex, queryLogAllDTOs.size(),
 					queryLogResultDTOs);

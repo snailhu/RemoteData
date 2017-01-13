@@ -22,6 +22,8 @@ import DataAn.galaxyManager.dao.ISeriesDao;
 import DataAn.galaxyManager.dao.IStarDao;
 import DataAn.galaxyManager.domain.Series;
 import DataAn.galaxyManager.domain.Star;
+import DataAn.galaxyManager.service.IParameterService;
+import DataAn.galaxyManager.service.impl.ParameterServiceImpl;
 import DataAn.mongo.client.MongodbUtil;
 import DataAn.mongo.init.InitMongo;
 import DataAn.prewarning.dao.IWarningLogMongoDao;
@@ -34,7 +36,8 @@ public class WarningLogMongoDaoImpl implements IWarningLogMongoDao {
 	private ISeriesDao seriersDao;
 	@Resource
 	private IStarDao starDao;
-
+	@Resource
+	private IParameterService ParameterService;
 	@Override
 	public void deleteWainingById(String logId, String series, String star, String parameterType, String warningType ,String hadRead) {
 		String databaseName = InitMongo.getDataDBBySeriesAndStar(series, star);
@@ -158,8 +161,11 @@ public class WarningLogMongoDaoImpl implements IWarningLogMongoDao {
 					value="起止时间："+jobbegintime+"--"+jobendtime;
 				}else if(warnType.equals("1"))//若果是异常则说明字段显示异常值
 				{
-					deviceorparamname=doc.getString("paramName")+doc.getString("paramCode");
-					value="异常参数值："+doc.getString("value");
+					
+					String paramCode=doc.getString("paramCode");
+					String paramname=ParameterService.getParameter_simpleZh_by_en(doc.getString("series"),doc.getString("star"),doc.getString("deviceType"),paramCode);
+					deviceorparamname=paramname;
+					value="异常参数值："+doc.getString("paramValue");
 				}
 			}catch(Exception e){
 				Log4jUtil.getInstance().getLogger(WarningLogMongoDaoImpl.class).error("从"
@@ -357,13 +363,18 @@ public class WarningLogMongoDaoImpl implements IWarningLogMongoDao {
 						warningLog.setParameter(doc.getString("deviceName"));
 					}else if(warningType.equals("1"))//若果是异常则显示参数名称
 					{
-						String strParamName = doc.getString("paramName");
+						/*String strParamName = doc.getString("paramName");
 						String strParamCode = doc.getString("paramCode");
 						warningLog.setParameter(strParamName);
 						if(strParamName==null)
 						{
 							warningLog.setParameter(strParamCode);
-						}
+						}*/						
+						String paramCode=doc.getString("paramCode");
+						String paramname=ParameterService.getParameter_simpleZh_by_en(doc.getString("series"),doc.getString("star"),doc.getString("deviceType"),paramCode);
+						String deviceorparamname=paramname;
+						warningLog.setParameter(deviceorparamname);
+						value="异常参数值："+doc.getString("paramValue");
 					}
 					warningLog.setParameterType(doc.getString("deviceType"));
 					warningLog.setParamValue(value);					

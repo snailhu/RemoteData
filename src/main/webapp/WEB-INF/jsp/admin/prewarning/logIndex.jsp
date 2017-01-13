@@ -156,6 +156,51 @@
 		
 		$("#logList").hide();
 	});
+//实现假分页
+function myLoader(param, success, error) {
+    var that = $(this);
+    var opts = that.datagrid("options");
+    if (!opts.url) {
+        return false;
+    }
+
+    var cache = that.data().datagrid.cache;
+    if (!cache) {
+        $.ajax({
+            type: opts.method,
+            url: opts.url,
+            data: param,
+            dataType: "json",
+            success: function (data) {
+                that.data().datagrid['cache'] = data;
+                success(bulidData(data));
+            },
+            error: function () {
+                error.apply(this, arguments);
+            }
+        });
+    } else {
+        success(bulidData(cache));
+    }
+
+    function bulidData(data) {
+        var temp = $.extend({}, data);
+        var tempRows = [];
+        var start = (param.page - 1) * parseInt(param.rows);
+        var end = start + parseInt(param.rows);
+        var rows = data.rows;
+        for (var i = start; i < end; i++) {
+            if (rows[i]) {
+                tempRows.push(rows[i]);
+            } else {
+                break;
+            }
+        }
+
+        temp.rows = tempRows;
+        return temp;
+    }
+}
 </script>
 </head>
 <body>
@@ -347,6 +392,7 @@ jeDate({
 	//minDate:"2014-09-19 00:00:00",//最小日期
 	maxDate:jeDate.now(0), //设定最大日期为当前日期
 });
+
 		var logGrid;
 		var hadReadFlag = '${hadReadFlag}';
 		var hadRead = '${hadReadFlag}';
@@ -354,15 +400,20 @@ jeDate({
 			$("#searchFormDiv").hide();
 			hadRead = 0;
 			logGrid = $("#logList").datagrid({
+				loadMsg: '正在努力为您加载数据',
                 url: '<%=request.getContextPath()%>/admin/prewarning/getLogList?hadRead='+ hadRead,
-				rownumbers : true,
 				fitColumns : true,
 				idField : 'logId',//'logId',
+				pageNumber:1,
+				pagination : true,//分页控件
+				rownumbers : true,//显示行号
 				pageSize : 10,
-				pagination : true,
-				pageList : [ 10, 20, 30,
-						40, 50, 60, 70, 80,
-						90, 100 ],
+				pageList : [ 10, 20, 30,40,50,60,70,80,90,100],
+				loader: myLoader, //前端分页加载函数
+                /*onLoadSuccess: function (data) {
+                      	$('#logList').data().datagrid.cache = null;//清除datagrid 缓存，保证前台假分页;
+                      	//$('#logList').datagrid('reload');显示更新后的数据
+                },*/
 				onLoadError : function(data) {
 					$.messager.alert(
 							"预警信息",
@@ -428,7 +479,7 @@ jeDate({
 						} ] ],
 
 				toolbar : [ {
-					text : '删除',
+					text : '标记已读',
 					iconCls : 'icon-remove',
 					handler : function() {
 						deleteLog();
@@ -735,7 +786,6 @@ jeDate({
 		}
 		function getSelectId() {
 			var row = logGrid.datagrid('getSelected');
-
 			if (!row) {
 				$.messager.show({
 					title : '提示',

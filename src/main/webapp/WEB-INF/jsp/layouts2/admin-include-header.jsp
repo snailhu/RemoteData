@@ -37,7 +37,7 @@
         <div class="head_button">
             <span>
                 <img src="${pageContext.request.contextPath}/static/new/img/head/gonggongshouye.png">
-                <a href="login">公共首页</a>
+                <a href="home">公共首页</a>
             </span>
 <!--             <span> -->
 <!--                 <img src="${pageContext.request.contextPath}/static/new/img/head/mimaxiugai.png"> -->

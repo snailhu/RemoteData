@@ -4,12 +4,15 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>综合预览页面</title>
-<link href="${base}/static/css/bootstrap.css" rel="stylesheet" />   
+<link href="${base}/static/css/bootstrap.css" rel="stylesheet" />
+<link type="text/css" rel="stylesheet" href="${base}/static/new/css/all.css"/>
+<link href="${base}/static/jquerypin/css/style.css" rel="stylesheet">  
 <script type="text/javascript" src="${base}/static/js/jquery-1.8.3.min.js"></script>
 <script type="text/javascript" src="${base}/static/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="${base}/static/js/conditionMonitoring/datediff.js"></script>
 <script type="text/javascript" src="${base}/static/js/conditionMonitoring/intsatellite.js"></script>
-<script type="text/javascript" src="${base}/static/js/conditionMonitoring/series-button.js"></script> 	
+<script type="text/javascript" src="${base}/static/js/conditionMonitoring/series-button.js"></script> 
+<script type="text/javascript" src="${base}/static/jquerypin/jquery.pin.js"></script>	
 <script type="text/javascript">
 	var currentDate =new Date();
 	var beginDate=new Date(2016,1,1,1,1,1)
@@ -148,6 +151,11 @@
 		});
 		}	
 		$('#id_div_seriesbtnmanage').seriesbtnmenu({ url: "${base}/getSeriesBtnMenus"});
+		$("#id_div_systemmanage").pin({containerSelector: ".systemmanage", minWidth: 940});
+		 $(document.body).css({
+   		"overflow-x":"hidden",
+   		"overflow-y":"hidden"
+ 		});
 	});
 </script>
 <style type="text/css">
@@ -155,7 +163,8 @@
 	body{
 		background:#FFFFFF;
 		}	
-	.container{position:relative;width:1000px;height:700px; margin:0 auto;z-index:0}
+	<!--.container{position:relative;width:1000px;height:700px; margin:0 auto;z-index:0}-->
+	.container{position:absolute;width:100%;height:100%; margin:0 auto;z-index:0}
 	.dot{ position:absolute;width:20px;height:20px;background:#F00;}
 	.container img {
 		position:absolute;
@@ -170,17 +179,33 @@
 	.imagediv{position:absolute;width:150px;height:144px;z-index:2}
 	.imagediv span{font-size:16px;color:red;position:absolute;left:0px;top:0px;padding:0px;margin:0px}
 	.background{position:absolute; width:100%; height:100%; z-index:-1}
-	.seriesbutton{position:absolute;width:1000px;height:50px; margin:0 auto;z-index:1}
+	.seriesbutton{position:absolute;width:98%;height:50px; margin:10px;z-index:1}
+	.systemmanage{float:right;border: 1px solid #000;height:50px;}
+	.pinned{border: 1px solid #000;width:200px;height:50px;}
+	.title{position:absolute;width:300px;height:50px;bottom:0;left:50%;margin-left:-50px;}
+	.body{display:inline-block;*display:inline;zoom:1;min-width:600px;min-width:1000px;white-space:nowrap}
 </style>
 </head>
-<body>
+<body>	
 	<div class="background">    
 		<img src="${base}/static/images/earth.jpg" height="100%" width="100%">
-		</img>
 	</div>
+	
 	<div id="id_div_seriesbtnmanage" class="seriesbutton" >
+		<div class="title">			
+			<span style="color:white">卫星概况</span>
+		</div>
+		<div  class="systemmanage" >
+			<button id="id_btn_home" type="button" class="btn btn-info" onclick="location.href='http://'+window.location.host+'/DataRemote/home'">公共首页</button>
+		</div>
 	</div>
-	<div id="id_container" class="container">		
+		
+	<div id="id_container" class="container">
+		<div class="tail">
+        <div class="container">
+        </div>
+    </div>
 	</div>
+	
 </body>
 </html>

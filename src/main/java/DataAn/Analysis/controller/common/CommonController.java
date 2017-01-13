@@ -61,6 +61,10 @@ public class CommonController {
 //		return "index";
 		return "redirect:/conditionMonitoring";
 	}
+	@RequestMapping(value = "/home", method = { RequestMethod.GET })
+	public String home(HttpServletRequest request, HttpServletResponse response) {
+		return "index";
+	}
 	
 	//根据用户选择的星系时间区间判断在 参数列表里显示的参数
 	@RequestMapping(value = "/getConstraint", method = RequestMethod.GET)

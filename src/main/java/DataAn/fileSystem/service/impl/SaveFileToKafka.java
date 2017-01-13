@@ -11,6 +11,7 @@ import java.nio.charset.Charset;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -142,6 +143,9 @@ public class SaveFileToKafka implements Runnable {
 					int count = 1;
 					DefaultFetchObj defaultFetchObj = null;
 					String[] propertyVals = null;
+					//存放有效结果集
+					Map<String,String> validMap = null;
+					Set<String> validKeySet = null;
 					
 					//获取配置参数
 					InnerProducer innerProducer=new InnerProducer(conf);
@@ -164,27 +168,44 @@ public class SaveFileToKafka implements Runnable {
 						count ++;
 						
 						propertyVals = new String[array.length - 1];
+						validMap = new HashMap<String,String>();
 						for (int i = 1; i < items.length; i++) {
 							//获取值除时间外
 							propertyVals[i - 1] = items[i];
+							//判断是否是数字字符串
+							if(items[i].matches("^[-+]?(([0-9]+)((([.]{0})([0-9]*))|(([.]{1})([0-9]+))))$"))
+								validMap.put(properties[i-1], propertyVals[i - 1]);
 						}
-						//
-						defaultFetchObj = new DefaultFetchObj();
-						defaultFetchObj.setId(UUIDGeneratorUtil.getUUID());
-						defaultFetchObj.setName(name);
-						defaultFetchObj.setSeries(series);
-						defaultFetchObj.setStar(star);
-						defaultFetchObj.setTime(DateUtil.format(dateTime));
-						defaultFetchObj.set_time(dateTime.getTime());
-						defaultFetchObj.setProperties(properties);
-						defaultFetchObj.setPropertyVals(propertyVals);
-						defaultFetchObj.setVersions(versions);
 						
-						//发送到kafka
-						boundProducer.send(defaultFetchObj,topic);
-						
-//						if(count < 50)
-//							System.out.println(defaultFetchObj);
+						if(validMap != null && validMap.size() > 0){
+							validKeySet = validMap.keySet();
+							properties = new String[validKeySet.size()];
+							propertyVals = new String[validKeySet.size()];
+							int i = 0;
+							for (String key : validKeySet) {
+								properties[i] = key;
+								propertyVals[i] = validMap.get(key);
+								i++;
+							}
+							//
+							defaultFetchObj = new DefaultFetchObj();
+							defaultFetchObj.setId(UUIDGeneratorUtil.getUUID());
+							defaultFetchObj.setName(name);
+							defaultFetchObj.setSeries(series);
+							defaultFetchObj.setStar(star);
+							defaultFetchObj.setTime(DateUtil.format(dateTime));
+							defaultFetchObj.set_time(dateTime.getTime());
+							defaultFetchObj.setProperties(properties);
+							defaultFetchObj.setPropertyVals(propertyVals);
+							defaultFetchObj.setVersions(versions);
+							
+							//发送到kafka
+							boundProducer.send(defaultFetchObj,topic);
+							
+							if(count < 50)
+								System.out.println(defaultFetchObj);
+							
+						}
 					}
 					boundProducer.send(new Ending(),topic);
 					Log4jUtil.getInstance().getLogger(SaveFileToKafka.class).info(nodeWorker.getId()+ " end send data kafka..count: " + count);

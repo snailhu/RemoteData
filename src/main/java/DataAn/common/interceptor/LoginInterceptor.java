@@ -50,6 +50,9 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 		if(servletPath.equals("/Index")){
 			return true;
 		}
+		if(servletPath.equals("/new/index")){
+			return true;
+		}
 		HttpSession session = request.getSession();
 		ActiveUserDto acticeUser = (ActiveUserDto) session.getAttribute("activeUser");
 		if(acticeUser == null ){

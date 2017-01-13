@@ -31,6 +31,9 @@ public class PermissionInterceptor implements HandlerInterceptor{
 		if(servletPath.equals("/Index")){
 			return true;
 		}
+		if(servletPath.equals("/new/index")){
+			return true;
+		}
 		//获取session
 		HttpSession session = request.getSession();
 		ActiveUserDto activeUser = (ActiveUserDto) session.getAttribute("activeUser");

@@ -482,68 +482,41 @@
        	$("#getData").click(function(){
        		startDate =  $('#dateStart').val();
        		endDate =  $('#dateEnd').val();
-       		startDate_init = startDate;
-       		endDate_init = endDate;
+       		console.log("开始时间："+startDate+"结束时间"+endDate);
+       		//startDate_init = startDate;
+       		//endDate_init = endDate;
        		if(endDate && startDate){
-       			/*var seriesCounter_date = 0  
-       			var seriesOptionsDate = []	
-       			  $.each(names, function (i, n) {       
-			        $.getJSON('${base}/getData?start='+startDate+'&end='+endDate+'&paramSize='+paramSize+'&filename=' + n.value, function (data) {	
-			            seriesOptionsDate[i] = {
-			            	type: 'line',
-			                name: n.name,
-			                smooth:true,
-			                yAxisIndex: 1,
-			                data: data["paramValue"]
-			            };
-			            seriesCounter_date += 1;
-			            if (seriesCounter_date === names.length) {			            	
-			            	options.series = eval(seriesOptionsDate);
-			            	date=options.xAxis.data = data["yearValue"];	            
-			                myChart.setOption(options);
-			                //myChart.setTheme(vintage);             
-			            }
-			        });
-		    	});*/
-//修改之后
-$.post("getDatabytap", 
-		{
-			'startDate' : startDate,
-			'endDate' : endDate
-		},
-		function(data){
-             	  var i=0
-             	  var yname = 0;
-             	  var legendname ="";
-             	  for(var param in data){
-             	  yname  = names[i].y;
-             	  legendname =names[i].name;
-             	  console.log(yname+legendname)
-             	  	seriesOptions[i++] = {
-			            	type: 'line',
-			                //name: param,
-			                name:legendname,
-			                smooth:false,
-			               	yAxisIndex: yname,
-			                lineStyle:{
-		                    	normal:{
-		                    		width:0.5 
-		                    		}
-		                    },
-			                data: data[param].paramValue
-			            };
-			            //设置X轴，注意，这里X轴存在问题，默认使用了最后一组参数的X轴
-			            date =  data[param].yearValue;
-  		}
-  	pSeriesOptions = seriesOptions
-	options.series = eval(seriesOptions);
-	pDate=options.xAxis.data = date;
-	startDate_init = startDate;
-    endDate_init = endDate;
-    myChart.setOption(options);
-	
-	});
-		    	   
+			$.post("getDatabytap", 
+					{
+						'startDate' : startDate,
+						'endDate' : endDate
+					},
+					function(data){
+			             	  var i=0
+			             	  var yname = 0;
+			             	  var legendname ="";
+			             	  for(var param in data){
+			             	  yname  = names[i].y;
+			             	  legendname =names[i].name;
+			             	  console.log(yname+legendname)
+			             	  	seriesOptions[i++] = {
+						            	type: 'line',
+						                //name: param,
+						                name:legendname,
+						                smooth:false,
+						               	yAxisIndex: yname,
+						                data: data[param].paramValue
+						            };
+						            //设置X轴，注意，这里X轴存在问题，默认使用了最后一组参数的X轴
+						            date =  data[param].yearValue;
+			  		}
+				  	pSeriesOptions = seriesOptions
+					options.series = eval(seriesOptions);
+					pDate=options.xAxis.data = date;
+					startDate_init = startDate;
+				    endDate_init = endDate;
+				    myChart.setOption(options);
+					});   
        		}       		      	             	
        	})
        	

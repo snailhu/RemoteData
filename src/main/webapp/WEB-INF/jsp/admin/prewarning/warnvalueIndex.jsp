@@ -663,9 +663,9 @@
 									<div id="id_shuoming" style="width:230px;margin: 0px auto;">
 									<div class="form-group">
 										<div class="well well-sm" >
-											陀螺机动规则说明： 陀螺的X、Y、Z三个轴的 
-											任意两个角速度的变化绝对值满足在持续时间内
-											大于最小限制小于最大限制
+											陀螺机动规则说明: X、Y、Z三个轴中
+											任意 两个轴的角速度的变化绝对值value
+											在持续时间内满足:最小值&lt;value&lt;最大值
 										</div>	
 									</div>
 									</div>	
@@ -850,7 +850,7 @@
 										<div class="well well-sm" >
 											陀螺机动规则说明: X、Y、Z三个轴中
 											任意 两个轴的角速度的变化绝对值value
-											满足:最小值<value<最大值
+											在持续时间内满足:最小值&lt;value&lt;最大值
 										
 										</div>	
 									</div>

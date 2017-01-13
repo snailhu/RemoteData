@@ -342,16 +342,22 @@ public class CommunicateServiceImpl implements ICommunicateService{
 				if(statusType.equals(StatusTrackingType.PREHANDLEFAIL.getValue())){
 					System.out.println("begin delete file version: " + version);
 					fileService.deleteFileByUUId(version);
-					MongodbUtil mg = MongodbUtil.getInstance();
-					String databaseName = InitMongo.getDataDBBySeriesAndStar(file.getSeries(), file.getStar());
-					Set<String> isexistCols = mg.getExistCollections(databaseName);
-					if(isexistCols != null && isexistCols.size() > 0){
-						for (String collectionName : isexistCols) {
-							if(collectionName.indexOf(file.getParameterType()) > -1){
-								//设置某一个版本的数据的状态为1,设置临时状态为正常状态
-								//TODO 待测？
+				}
+				
+				MongodbUtil mg = MongodbUtil.getInstance();
+				String databaseName = InitMongo.getDataDBBySeriesAndStar(file.getSeries(), file.getStar());
+				Set<String> isexistCols = mg.getExistCollections(databaseName);
+				if(isexistCols != null && isexistCols.size() > 0){
+					for (String collectionName : isexistCols) {
+						if(collectionName.indexOf(file.getParameterType()) > -1){
+							//设置某一个版本的数据的状态为1,设置临时状态为正常状态
+							//TODO 待测？
+							//文件上传失败，更新为原来正常状态
+							if(statusType.equals(StatusTrackingType.PREHANDLEFAIL.getValue()))
 								mg.update(databaseName, collectionName, "status", 2, "status", 1);
-							}
+							//文件上传成功，更新状态
+							if(statusType.equals(StatusTrackingType.END.getValue()))
+								mg.update(databaseName, collectionName, "status", 2, "status", 0);
 						}
 					}
 				}

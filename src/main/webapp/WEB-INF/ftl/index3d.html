@@ -1,15 +1,9 @@
-<%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
-<%
-	String path = request.getContextPath();
-	String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort()
-			+ path + "/";
-%>
-
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html>
+<#assign base=request.contextPath + '/DataRemote' >
+<!DOCTYPE html>
+<html lang="en">
 <head>
-<base href="<%=basePath%>">
-<title>My JSP 'index.jsp' starting page</title>
+<meta charset="UTF-8">
+<title>首页</title>
 <meta http-equiv="pragma" content="no-cache">
 <meta http-equiv="cache-control" content="no-cache">
 <meta http-equiv="expires" content="0">
@@ -17,40 +11,35 @@
 <meta http-equiv="description" content="This is my page">
 
 <link rel="stylesheet"
-	href="${pageContext.request.contextPath}/static/content/echarts-x/doc/css/common.css">
+	href="${base}/static/content/echarts-x/doc/css/common.css">
 <link rel="stylesheet"
-	href="${pageContext.request.contextPath}/static/content/echarts-x/doc/css/example.css">
+	href="${base}/static/content/echarts-x/doc/css/example.css">
 <link rel="stylesheet"
-	href="${pageContext.request.contextPath}/static/content/echarts-x/doc/css/codemirror.css">
+	href="${base}/static/content/echarts-x/doc/css/codemirror.css">
 <link rel="stylesheet"
-	href="${pageContext.request.contextPath}/static/content/echarts-x/doc/css/monokai.css">
+	href="${base}/static/content/echarts-x/doc/css/monokai.css">
 <link rel="stylesheet"
-	href="${pageContext.request.contextPath}/static/content/echarts-x/doc/css/twilight.css">
-
-
-<script
-	src="${pageContext.request.contextPath}/static/content/echarts-x/doc/lib/esl.js"></script>
-<script
-	src="${pageContext.request.contextPath}/static/content/echarts-x/doc/lib/jquery.min.js"></script>
-<script
-	src="${pageContext.request.contextPath}/static/content/echarts-x/doc/example/js/bootExample.js"></script>
+	href="${base}/static/content/echarts-x/doc/css/twilight.css">
+<script src="${base}/static/content/echarts-x/doc/lib/esl.js"></script>
+<script src="${base}/static/content/echarts-x/doc/lib/jquery.min.js"></script>
+<script src="${base}/static/content/echarts-x/doc/example/js/bootExample.js"></script>
 
 <script async=""
-	src="${pageContext.request.contextPath}/static/content/echarts-x/doc/lib/echarts-x/echarts-x.js"></script>
+	src="${base}/static/content/echarts-x/doc/lib/echarts-x/echarts-x.js"></script>
 <script async=""
-	src="${pageContext.request.contextPath}/static/content/echarts-x/doc/lib/echarts/echarts.js"></script>
+	src="${base}/static/content/echarts-x/doc/lib/echarts/echarts.js"></script>
 <script async=""
-	src="${pageContext.request.contextPath}/static/content/echarts-x/doc/lib/echarts/chart/map.js"></script>
+	src="${base}/static/content/echarts-x/doc/lib/echarts/chart/map.js"></script>
 <script data-require-id="js/example" async=""
-	src="${pageContext.request.contextPath}/static/content/echarts-x/doc/example/js/example.js"></script>
+	src="${base}/static/content/echarts-x/doc/example/js/example.js"></script>
 <script data-require-id="lib/codemirror/codemirror" async=""
-	src="${pageContext.request.contextPath}/static/content/echarts-x/doc/lib/codemirror/codemirror.js"></script>
+	src="${base}/static/content/echarts-x/doc/lib/codemirror/codemirror.js"></script>
 <script data-require-id="echarts/chart/bar" async=""
-	src="${pageContext.request.contextPath}/static/content/echarts-x/doc/lib/echarts/chart/bar.js"></script>
+	src="${base}/static/content/echarts-x/doc/lib/echarts/chart/bar.js"></script>
 <script data-require-id="echarts-x/chart/map3d" async=""
-	src="${pageContext.request.contextPath}/static/content/echarts-x/doc/lib/echarts-x/chart/map3d.js"></script>
+	src="${base}/static/content/echarts-x/doc/lib/echarts-x/chart/map3d.js"></script>
 <script data-require-id="lib/codemirror/mode/javascript" async=""
-	src="${pageContext.request.contextPath}/static/content/echarts-x/doc/lib/codemirror/mode/javascript.js"></script>
+	src="${base}/static/content/echarts-x/doc/lib/codemirror/mode/javascript.js"></script>
 <style id="style-1-cropbar-clipper">/* Copyright 2014 Evernote Corporation. All rights reserved. */
 .en-markup-crop-options {
 	top: 18px !important;
@@ -67,20 +56,17 @@
 </style>
 
 <!-- 必须要先引入 ECharts 主文件 -->
-<script
-	src="${pageContext.request.contextPath}/static/content/echarts-x/echarts/src/echarts.js"></script>
+<script src="${base}/static/content/echarts-x/echarts/src/echarts.js"></script>
 <!-- 引入 ECharts-X 主文件 -->
-<script
-	src="${pageContext.request.contextPath}/static/content/echarts-x/build/source/echarts-x.js"></script>
+<script src="${base}/static/content/echarts-x/build/source/echarts-x.js"></script>
 
 <style type="text/css">
-#main {
+
+#main{
 	margin-top: -50px;
-	background-image:
-		"${pageContext.request.contextPath}/static/content/echarts-x/doc/example/asset/starfield.jpg"
+	background-image: "${base}/static/content/echarts-x/doc/example/asset/starfield.jpg"
 }
 </style>
-
 </head>
 <body>
 
@@ -123,16 +109,16 @@
 									type : 'map3d',
 									mapType : 'world',
 									//环境贴图，图片需要是一张全景图
-									background : '${pageContext.request.contextPath}/static/content/echarts-x/doc/example/asset/starfield.jpg',
+									background : '${base}/static/content/echarts-x/doc/example/asset/starfield.jpg',
 									// Have a try to change an environment
 									// background: 'asset/background.jpg',
 
 									// 底图配置
 									baseLayer : {
 										backgroundColor : '',
-										backgroundImage : '${pageContext.request.contextPath}/static/content/echarts-x/doc/example/asset/earth.jpg',
+										backgroundImage : '${base}/static/content/echarts-x/doc/example/asset/earth.jpg',
 										quality : 'medium',
-										heightImage : '${pageContext.request.contextPath}/static/content/echarts-x/doc/example/asset/elev_bump.jpg'
+										heightImage : '${base}/static/content/echarts-x/doc/example/asset/elev_bump.jpg'
 									},
 									//光照配置
 									light : {

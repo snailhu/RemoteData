@@ -772,6 +772,14 @@ function myLoader(param, success, error) {
 											dataType : "json",
 											success : function(data) {
 												if (data.success) {
+												
+													if(hadReadFlag == 0)
+													{
+														var options = $('#logList').datagrid('getPager').data("pagination").options;  
+														var totalRowNum = options.total;
+														$("#prewarningcount").text(totalRowNum-rows.length+'条未读预警信息');
+														
+													}
 													swal("删除成功", "", "success");
 													reloadDataGrid();
 													
@@ -780,18 +788,7 @@ function myLoader(param, success, error) {
 													swal("删除失败", data.obj,
 															"error");
 												}
-												if(hadReadFlag == 0)
-													{
-														//location.reload(true);
-														//console.log(window.location.href);
-														//location.replace(window.location.href);
-														//warnCount = ${warnCount}
-														console.log("唯独的数量"+${warnCount});
-														var options = $('#logList').datagrid('getPager').data("pagination").options;  
-														var totalRowNum = options.total;
-														//var selectedNum=$('#logList').datagrid('getSelections').length;
-														//console.log("表格控件的总数："+totalRowNum+"选择的行数"+selectedNum);
-													}
+												
 												
 											}
 										});

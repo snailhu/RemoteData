@@ -97,10 +97,10 @@ public class ConfigTest {
 		List<String> list = new ArrayList<String>();
 		list.add("aa");
 		list.add("bb");
-		for (String item : list) {
-			item = "cc";
-		}
-		for (String string : list) {
+		list.add("cc");
+//		String [] strs = new String[]{};
+		String [] strs = list.toArray(new String[]{});
+		for (String string : strs) {
 			System.out.println(string);
 		}
 	}

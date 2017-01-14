@@ -64,6 +64,7 @@
     
     <!--对静态资源文件的访问-->
 	<mvc:resources mapping="/static/**" location="/static/" />
+	
 	<!-- 开始spring mvc的注解 -->
 	 <mvc:annotation-driven>  
         <!-- <mvc:argument-resolvers> <bean class="org.springframework.data.web.PagedResourcesAssemblerArgumentResolver"   

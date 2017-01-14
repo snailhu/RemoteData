@@ -1,170 +1,159 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%
-String path = request.getContextPath();
-String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
+	String path = request.getContextPath();
+	String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort()
+			+ path + "/";
 %>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
-  <head>
-    <base href="<%=basePath%>">
+<head>
+<base href="<%=basePath%>">
+<title>My JSP 'index.jsp' starting page</title>
+<meta http-equiv="pragma" content="no-cache">
+<meta http-equiv="cache-control" content="no-cache">
+<meta http-equiv="expires" content="0">
+<meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
+<meta http-equiv="description" content="This is my page">
+
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/static/content/echarts-x/doc/css/common.css">
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/static/content/echarts-x/doc/css/example.css">
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/static/content/echarts-x/doc/css/codemirror.css">
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/static/content/echarts-x/doc/css/monokai.css">
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/static/content/echarts-x/doc/css/twilight.css">
+
+
+<script src="${pageContext.request.contextPath}/static/content/echarts-x/doc/lib/esl.js"></script>
+<script src="${pageContext.request.contextPath}/static/content/echarts-x/doc/lib/jquery.min.js"></script>
+<script src="${pageContext.request.contextPath}/static/content/echarts-x/doc/example/js/bootExample.js"></script>
+
+<script async=""
+	src="${pageContext.request.contextPath}/static/content/echarts-x/doc/lib/echarts-x/echarts-x.js"></script>
+<script async=""
+	src="${pageContext.request.contextPath}/static/content/echarts-x/doc/lib/echarts/echarts.js"></script>
+<script async=""
+	src="${pageContext.request.contextPath}/static/content/echarts-x/doc/lib/echarts/chart/map.js"></script>
+<script data-require-id="js/example" async=""
+	src="${pageContext.request.contextPath}/static/content/echarts-x/doc/example/js/example.js"></script>
+<script data-require-id="lib/codemirror/codemirror" async=""
+	src="${pageContext.request.contextPath}/static/content/echarts-x/doc/lib/codemirror/codemirror.js"></script>
+<script data-require-id="echarts/chart/bar" async=""
+	src="${pageContext.request.contextPath}/static/content/echarts-x/doc/lib/echarts/chart/bar.js"></script>
+<script data-require-id="echarts-x/chart/map3d" async=""
+	src="${pageContext.request.contextPath}/static/content/echarts-x/doc/lib/echarts-x/chart/map3d.js"></script>
+<script data-require-id="lib/codemirror/mode/javascript" async=""
+	src="${pageContext.request.contextPath}/static/content/echarts-x/doc/lib/codemirror/mode/javascript.js"></script>
+<style id="style-1-cropbar-clipper">/* Copyright 2014 Evernote Corporation. All rights reserved. */
+.en-markup-crop-options {
+	top: 18px !important;
+	left: 50% !important;
+	margin-left: -100px !important;
+	width: 200px !important;
+	border: 2px rgba(255, 255, 255, .38) solid !important;
+	border-radius: 4px !important;
+}
+
+.en-markup-crop-options div div:first-of-type {
+	margin-left: 0px !important;
+}
+</style>
+
+<!-- 必须要先引入 ECharts 主文件 -->
+<script src="${pageContext.request.contextPath}/static/content/echarts-x/echarts/src/echarts.js"></script>
+<!-- 引入 ECharts-X 主文件 -->
+<script src="${pageContext.request.contextPath}/static/content/echarts-x/build/source/echarts-x.js"></script>
+
+<style type="text/css">
+
+#main{
+	margin-top: -50px;
+}
+</style>
+
+</head>
+<body>
+
+	<main id="main" style="width: 100%;height:100%;">
+		<div id="chart"></div>
+	</main>
+	
+	<script type="text/javascript">
+        // 配置后续加载的各种 chart 配置 config
+        require.config({
+            paths: {
+                'echarts': 'dep/echarts/build',
+                'echarts-x': 'dep/echarts-x/build'
+            }
+        });
+
+        // 然后就可以动态加载图表进行绘制啦
+        require([
+            'echarts',
+            'echarts-x',
+            // ECharts-X 中 map3d 的地图绘制基于 ECharts 中的 map。
+            'echarts/chart/map',
+            'echarts-x/chart/map3d'
+        ], function (ec) {
+            // 跟 ECharts 一样的方式初始化
+            var myChart = ec.init(document.getElementById('main'));
+            myChart.setOption({
+                title: {
+                    text: '',
+                    subtext: '',
+                    sublink: '',
+                    x: 'center',
+                    textStyle: {
+                        color: 'white'
+                    }
+                },
+                tooltip: {
+                    formatter: '{b}'
+                },
+                series: [{
+                    type: 'map3d',
+                    mapType: 'world',
+                    // 底图配置
+                    background: '${pageContext.request.contextPath}/static/content/echarts-x/doc/example/asset/starfield.jpg',
+                    // Have a try to change an environment
+                    // background: 'asset/background.jpg',
+
+                    baseLayer: {
+                        backgroundColor: '',
+                        backgroundImage: '${pageContext.request.contextPath}/static/content/echarts-x/doc/example/asset/earth.jpg',
+                        quality: 'medium',
+
+                        heightImage: '${pageContext.request.contextPath}/static/content/echarts-x/doc/example/asset/elev_bump.jpg'
+                    },
+
+                    light: {
+                        show: true,
+                        // Use the system time
+                        // time: '2013-08-07 18:09:09',
+                        sunIntensity: 1
+                    },
+
+                    itemStyle: {
+                        normal: {
+                            label: {
+                                show: true
+                            },
+                            borderWidth: 1,
+                            borderColor: 'yellow',
+                            areaStyle: {
+                                color: 'rgba(0, 0, 0, 0)'
+                            }
+                        }
+                    },
+                    data: [{}]
+                }]
+            });
+        });
+    </script>
     
-    <title>My JSP 'index.jsp' starting page</title>
-    
-	<meta http-equiv="pragma" content="no-cache">
-	<meta http-equiv="cache-control" content="no-cache">
-	<meta http-equiv="expires" content="0">    
-	<meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
-	<meta http-equiv="description" content="This is my page">
-	<!--
-	<link rel="stylesheet" type="text/css" href="styles.css">
-	-->
-
-  </head>
-  
-  <body>
-        <div class="right">
-        <div class="right_head">
-            <img src="${pageContext.request.contextPath}/static/new/img/DataImport/home.png">
-            <span>位置:</span>
-            <span>用户管理></span>
-        </div>
-
-        <div class="right_content">
-            <div class="title">
-                搜索
-                <img src="${pageContext.request.contextPath}/static/new/img/DataImport_manage/xia.png">
-            </div>
-            <div class="input_content">
-                <div>
-                    <span>开始时间</span><input/>
-                </div>
-                <div>
-                    <span>文件类型</span><input/>
-                </div>
-                <div class="last">
-                    文件类型
-                    <label class="first_label">
-                        <input type="radio" name="type" value="*.dat" checked/>
-                        *.dat
-                    </label>
-                    <label>
-                        <input type="radio" name="type" value="*.csv"/>
-                        *.csv
-                    </label>
-                </div>
-
-                <button class="button_1">搜索</button>
-                <button class="button_2">取消</button>
-            </div>
-        </div>
-
-        <div class="content_table">
-            <div class="table_title">
-                文件列表
-            </div>
-            <div class="table_content">
-                <div class="button">
-                    <button><span>下载</span></button>
-                    <button class="choose"><span>删除</span></button>
-                    <button><span>取消选中</span></button>
-                </div>
-                <table border="1">
-                    <tr class="color">
-                        <th class="hao"></th>
-                        <th class="hao"><input type="checkbox"/></th>
-                        <th class="flite">文件名</th>
-                        <th class="sum">大小</th>
-                        <th class="time">上传时间</th>
-                    </tr>
-                    <tr class="xuan">
-                        <td class="hao color">1</td>
-                        <td class="hao"><input type="checkbox" name="checkbox" checked/></td>
-                        <td class="flite">j9-02--2010-01-01.csv</td>
-                        <td class="sum">35.0 M</td>
-                        <td class="time">2016-09-26 10:53:52</td>
-                    </tr>
-                    <tr>
-                        <td class="hao color">2</td>
-                        <td class="hao"><input type="checkbox" name="checkbox"/></td>
-                        <td class="flite">j9-02--2010-01-02.csv</td>
-                        <td class="sum">35.0 M</td>
-                        <td class="time">2016-09-26 10:51:53</td>
-                    </tr>
-
-                    <tr>
-                        <td class="hao color">3</td>
-                        <td class="hao"><input type="checkbox" name="checkbox"/></td>
-                        <td class="flite">j9-02--2010-01-03.csv</td>
-                        <td class="sum">35.0 M</td>
-                        <td class="time">2016-09-26 10:15:54</td>
-                    </tr>
-                    <tr>
-                        <td class="hao color">4</td>
-                        <td class="hao"><input type="checkbox" name="checkbox"/></td>
-                        <td class="flite">j9-02--2010-01-04.csv</td>
-                        <td class="sum">35.0 M</td>
-                        <td class="time">2016-09-26 10:45:54</td>
-                    </tr>
-                    <tr>
-                        <td class="hao color">5</td>
-                        <td class="hao"><input type="checkbox" name="checkbox"/></td>
-                        <td class="flite">j9-02--2010-01-05.csv</td>
-                        <td class="sum">35.0 M</td>
-                        <td class="time">2016-09-26 10:35:54</td>
-                    </tr>
-                    <tr>
-                        <td class="hao color">6</td>
-                        <td class="hao"><input type="checkbox" name="checkbox"/></td>
-                        <td class="flite">j9-02--2010-01-06.csv</td>
-                        <td class="sum">35.0 M</td>
-                        <td class="time">2016-09-26 10:43:54</td>
-                    </tr>
-                    <tr>
-                        <td class="hao color">7</td>
-                        <td class="hao"><input type="checkbox" name="checkbox"/></td>
-                        <td class="flite">j9-02--2010-01-07.csv</td>
-                        <td class="sum">35.0 M</td>
-                        <td class="time">2016-09-26 10:51:54</td>
-                    </tr>
-                    <tr>
-                        <td class="hao color">8</td>
-                        <td class="hao"><input type="checkbox" name="checkbox"/></td>
-                        <td class="flite">j9-02--2010-01-08.csv</td>
-                        <td class="sum">35.0 M</td>
-                        <td class="time">2016-09-26 10:05:54</td>
-                    </tr>
-                    <tr>
-                        <td class="hao color">9</td>
-                        <td class="hao"><input type="checkbox" name="checkbox"/></td>
-                        <td class="flite">j9-02--2010-01-09.csv</td>
-                        <td class="sum">35.0 M</td>
-                        <td class="time">2016-09-26 10:33:54</td>
-                    </tr>
-                    <tr>
-                        <td class="hao color">10</td>
-                        <td class="hao"><input type="checkbox" name="checkbox"/></td>
-                        <td class="flite">j9-02--2010-01-10.csv</td>
-                        <td class="sum">35.0 M</td>
-                        <td class="time">2016-09-26 10:22:54</td>
-                    </tr>
-                </table>
-                <div class="page">
-                    <div>
-                        <input class="float_left" type="number" value="1">
-                        <span class="float_left">/</span>
-                        <span class="float_left">20</span>
-                        <button class="float_left">上一页</button>
-                        <div class="xuan float_left">1</div>
-                        <div class="float_left">2</div>
-                        <div class="float_left">3</div>
-                        <span class="float_left">...</span>
-                        <button>下一页</button>
-                        <button>最后一页</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-  </body>
+</body>
 </html>

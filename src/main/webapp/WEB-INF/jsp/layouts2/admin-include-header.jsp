@@ -24,7 +24,7 @@
 	var warnCount = ${warnCount};
 	$(function () {
 		if(activeUser != ''){
-			$('#prewarning').append("<a href='${pageContext.request.contextPath}/admin/prewarning/logIndex?hadReadFlag=0' id='prewarning'>"+warnCount+"条未读预警信息</a>");
+			$('#prewarning').append("<a href='${pageContext.request.contextPath}/admin/prewarning/logIndex?hadReadFlag=0' id='prewarningcount'>"+warnCount+"条未读预警信息</a>");
 		}else{
 			$('#prewarning').append("<a href='${pageContext.request.contextPath}/loginOut' id='prewarning'>请先登录！</a>");
 		}

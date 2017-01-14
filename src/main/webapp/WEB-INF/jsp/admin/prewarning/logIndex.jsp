@@ -355,7 +355,6 @@ function myLoader(param, success, error) {
     if (!opts.url) {
         return false;
     }
-	console.log(opts.url);
     var cache = that.data().datagrid.cache;
     if (!cache) {
         $.ajax({
@@ -364,8 +363,7 @@ function myLoader(param, success, error) {
             data: param,
             dataType: "json",
             success: function (data) {
-            console.log("data"+JSON.stringify(data));
-            console.log("再次加载数据");
+            //console.log("data"+JSON.stringify(data));
                 //that.data().datagrid['cache'] = data;
                 success(bulidData(data));
             },
@@ -374,7 +372,6 @@ function myLoader(param, success, error) {
             }
         });
     } else {
-    console.log("=======================================================");
         success(bulidData(cache));
         
     }
@@ -385,10 +382,8 @@ function myLoader(param, success, error) {
         var start = (param.page - 1) * parseInt(param.rows);
         var end = start + parseInt(param.rows);
         var rows = data.rows;
-        console.log("start"+start+"end"+end);
         for (var i = start; i < end; i++) {
             if (rows[i]) {
-            //console.log("rows[i]"+rows[i].logId);
                 tempRows.push(rows[i]);
             }else {
                 break;
@@ -421,9 +416,8 @@ function myLoader(param, success, error) {
 				pageList : [ 10,20,30,40,50,60,70,80,90,100],
 				loader: myLoader, //前端分页加载函数
                 onLoadSuccess: function (data) { 	
-                      	$('#logList').data().datagrid.cache = null;//清除datagrid 缓存，保证前台假分页;	
+                      	//$('#logList').data().datagrid.cache = null;//清除datagrid 缓存，保证前台假分页;	
                       	//$('#logList').datagrid('reload');显示更新后的数据
-                      	console.log("--------------------------------------------------");
                 },
 				onLoadError : function(data) {
 					$.messager.alert(
@@ -763,7 +757,6 @@ function myLoader(param, success, error) {
 									record.parameterType=parameterType;
 									record.warningType=warningType;
 									records.push(record);
-									console.log(rows[i].logId+series+star+parameterType+warningType);
 								}
 								$.ajax({
 											url : '${pageContext.request.contextPath}/admin/prewarning/deleteLog?hadRead='+ hadRead,
@@ -781,10 +774,25 @@ function myLoader(param, success, error) {
 												if (data.success) {
 													swal("删除成功", "", "success");
 													reloadDataGrid();
+													
+													
 												} else {
 													swal("删除失败", data.obj,
 															"error");
 												}
+												if(hadReadFlag == 0)
+													{
+														//location.reload(true);
+														//console.log(window.location.href);
+														//location.replace(window.location.href);
+														//warnCount = ${warnCount}
+														console.log("唯独的数量"+${warnCount});
+														var options = $('#logList').datagrid('getPager').data("pagination").options;  
+														var totalRowNum = options.total;
+														//var selectedNum=$('#logList').datagrid('getSelections').length;
+														//console.log("表格控件的总数："+totalRowNum+"选择的行数"+selectedNum);
+													}
+												
 											}
 										});
 							} else {

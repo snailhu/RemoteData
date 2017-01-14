@@ -126,8 +126,12 @@ public class RoutingService {
 		
 		//方法二：
 		//-----------查询多线程迭代获取结果----------------//
+		long begtime=System.currentTimeMillis();
 		System.out.println(""+repo.collection());
 		Map<String, YearAndParamDataDto> vals=forkJoinPool.invoke(new DataSearchServiceTask(requestConfig,repo));
+		long endtime=System.currentTimeMillis();
+		System.out.println("3线程查询数据总共耗时："+(endtime-begtime)/1000+"秒");
+
 		return vals;	
 		//-----------查询多线程迭代获取结果----------------//
 		

@@ -50,7 +50,7 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 		if(servletPath.equals("/Index")){
 			return true;
 		}
-		if(servletPath.equals("/new/index")){
+		if(servletPath.indexOf("new") > -1){
 			return true;
 		}
 		HttpSession session = request.getSession();

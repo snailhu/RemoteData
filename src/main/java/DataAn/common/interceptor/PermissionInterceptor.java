@@ -31,7 +31,7 @@ public class PermissionInterceptor implements HandlerInterceptor{
 		if(servletPath.equals("/Index")){
 			return true;
 		}
-		if(servletPath.equals("/new/index")){
+		if(servletPath.indexOf("new") > -1){
 			return true;
 		}
 		//获取session

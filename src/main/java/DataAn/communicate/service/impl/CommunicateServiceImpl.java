@@ -132,16 +132,16 @@ public class CommunicateServiceImpl implements ICommunicateService{
 	//获取飞轮特殊工况和异常参数配置
 	private String getFlywheelExceptionJobConfigList(String series, String star,
 			String parameterType){
+		Map<String,String> map = new HashMap<String,String>();
 		//特殊工况参数配置
 		List<WarningValue> jobWarningValues = prewarningService.getWarningValueByParams(series, star, null, parameterType, "0");
 		if(jobWarningValues != null && jobWarningValues.size() > 0){
-			Map<String,String> map = new HashMap<String,String>();
 			List<ExceptionJobConfig> jobConfigList = new ArrayList<ExceptionJobConfig>();
 			ExceptionJobConfig jobConfig = null;
 			Set<String> devicdNameSet = new HashSet<String>();
 			for (WarningValue wv : jobWarningValues) {
 				String deviceName = parameterService.getParameter_deviceName_by_en(series, star, wv.getParameterType(), wv.getParameter());
-				if(StringUtils.isNotBlank(deviceName)){
+				if(StringUtils.isNotBlank(deviceName) && !deviceName.equals("null")){
 					//保证一个设备只有一个参数配置
 					if (!devicdNameSet.contains(deviceName)) {
 						jobConfig = new ExceptionJobConfig();
@@ -155,35 +155,38 @@ public class CommunicateServiceImpl implements ICommunicateService{
 						jobConfigList.add(jobConfig);
 						devicdNameSet.add(deviceName);
 					}
-				}else{
-					throw new RuntimeException(series+"-"+star+"-"+wv.getParameterType()+"-"+wv.getParameter()+" : 找不到设备1");
 				}
+//				else{
+//					throw new RuntimeException(series+"-"+star+"-"+wv.getParameterType()+"-"+wv.getParameter()+" : 找不到设备1");
+//				}
 			}
 			map.put("exceptionJobConfig", JSON.toJSONString(jobConfigList));
-			//异常参数配置
-			List<WarningValue> exceWarningValues = prewarningService.getWarningValueByParams(series, star, null, parameterType, "1");
-			if(exceWarningValues != null && exceWarningValues.size() > 0){
-				List<ExceptionPointConfig> exceConfigList = new ArrayList<ExceptionPointConfig>();
-				ExceptionPointConfig exceConfig = null;
-				for (WarningValue ew : exceWarningValues) {
-					String deviceName = parameterService.getParameter_deviceName_by_en(series, star, ew.getParameterType(), ew.getParameter());
-					if(StringUtils.isNotBlank(deviceName)){
-						exceConfig = new ExceptionPointConfig();
-						exceConfig.setDeviceType(ew.getParameterType());
-						exceConfig.setDeviceName(deviceName);
-						exceConfig.setParamCode(ew.getParameter());
-						exceConfig.setMax(ew.getMaxVal());
-						exceConfig.setMin(ew.getMinVal());
-						exceConfig.setDelayTime(ew.getTimeZone() * 60 * 1000);//时间单位
-						exceConfigList.add(exceConfig);						
-					}else{
-						throw new RuntimeException(series+"-"+star+"-"+ew.getParameterType()+"-"+ew.getParameter()+" : 找不到设备2");
-					}
-				}
-				map.put("exceptionPointConfig", JSON.toJSONString(exceConfigList));
-			}
-			return JSON.toJSONString(map);
 		}
+		//异常参数配置
+		List<WarningValue> exceWarningValues = prewarningService.getWarningValueByParams(series, star, null, parameterType, "1");
+		if(exceWarningValues != null && exceWarningValues.size() > 0){
+			List<ExceptionPointConfig> exceConfigList = new ArrayList<ExceptionPointConfig>();
+			ExceptionPointConfig exceConfig = null;
+			for (WarningValue ew : exceWarningValues) {
+				String deviceName = parameterService.getParameter_deviceName_by_en(series, star, ew.getParameterType(), ew.getParameter());
+				exceConfig = new ExceptionPointConfig();
+				exceConfig.setDeviceType(ew.getParameterType());
+				if(StringUtils.isNotBlank(deviceName) && !deviceName.equals("null"))
+					exceConfig.setDeviceName(deviceName);
+				exceConfig.setParamCode(ew.getParameter());
+				exceConfig.setMax(ew.getMaxVal());
+				exceConfig.setMin(ew.getMinVal());
+				exceConfig.setDelayTime(ew.getTimeZone() * 60 * 1000);//时间单位
+				exceConfigList.add(exceConfig);						
+//				else{
+//					throw new RuntimeException(series+"-"+star+"-"+ew.getParameterType()+"-"+ew.getParameter()+" : 找不到设备2");
+//				}
+			}
+			map.put("exceptionPointConfig", JSON.toJSONString(exceConfigList));
+		}
+		if(map.size() > 0)
+			return JSON.toJSONString(map);
+		
 		return null;
 	}
 	@Override

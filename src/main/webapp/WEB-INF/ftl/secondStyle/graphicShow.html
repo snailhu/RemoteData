@@ -226,14 +226,15 @@
 		isTime:true, //是否开启时间选择
 		minDate:'${beginDate}',//最小日期
 		maxDate:'${endDate}', //设定最大日期为当前日期
-	});	
+	});
+	
 	//从滚轮处获取到的画布开始时间和结束时间
 	var startDate ="";
 	var endDate ="";
 	//当前echars画布中最大时间区间
 	var startDate_init = '${beginDate}';
 	var endDate_init = '${endDate}';
-	//实时时间跨度
+	//实时时间跨度(分钟)
 	var timeZone = stringToDate(endDate_init) - stringToDate(startDate_init)/60000;
 
     $(function(){
@@ -242,17 +243,17 @@
     	$(".modal-footer").find("button").css({"margin-right":"20px","width":"80px"});
     	$(".modal-dialog").css("margin","20px auto");
     	
-    	var paramObject={};	
+    	var paramObject={}
     	var myChart = echarts.init(document.getElementById('main'),'macarons');
-    	var seriesOptions = []
+    	var seriesOptions = [] 
     	var pSeriesOptions = []
         var seriesCounter = 0
-        var date = [];
-        var pDate = [];
-        var names = [];
-        var tuli=[];
-        var mouseover_message=[];
-        var paramSize= ${params?size};
+        var date = []
+        var pDate = []
+        var names = []
+        var tuli=[]
+        var mouseover_message=[]
+        var paramSize= ${params?size}
         <#if (params?size>0) >
         	<#list params as param>
 		        var n={};
@@ -262,7 +263,6 @@
         		n.y = '${param.yname}';
         		n.max = '${param.max}';
         		n.min = '${param.min}';
-        		console.log("每条曲线的参数：参数名"+n.name+"*参数值:"+n.value+"单位"+n.unit+"*Y轴:"+n.y+"*最大值:"+n.max+"*最小值："+n.min);
         		names.push(n);
         	</#list>       	
         <#else>
@@ -277,10 +277,10 @@
 			//	     mouseover_message = params;
  			//		}           
             },
-            title: {
+            /* title: {
             	text: '分析图',
                 //left: 'center'
-            },
+            }, */
            	// 图例	
             legend: {
                 top: 'auto', 
@@ -325,23 +325,15 @@
 		            }
 	        	}
             ],
-            /*dataZoom: [{
-                type: 'inside',
-                start:0,
-                end:100,
-                realtime:false
-            }],*/
             dataZoom: [
         	{
         		type:'slider',
-            	show: true,
-            	realtime: true,
-            	//start: 1,
-            	//end: 99
+            	start: 1,
+            	end: 99
         	},
         	{
             	type: 'inside',
-            	realtime: true,
+            	disable:true, 
             	start: 1,
             	end: 99
         	}],
@@ -380,7 +372,6 @@
  
    		  		
      	//一次性组装所有参数的x和y值
-     	console.log("开始隐藏");
      	$("#main").showLoading();
    		$.ajax({
              url: '${base}/getData',
@@ -391,7 +382,6 @@
              data: {'paramObject':JSON.stringify(paramObject)},
               //成功执行方法
              success: function(data){
-             	  //var json = eval(data);
              	  $("#main").hideLoading(); 
              	  var i=0
              	  var yname = 0;
@@ -533,10 +523,10 @@
        	
        	//数据缩放区域事件	  	      
         myChart.on('dataZoom', function (params) {
-        		console.log(myChart.getOption().series[0].type);
         	  	var lineType = myChart.getOption().series[0].type;
               	var xAxis = myChart.getModel().option.xAxis[0];
-				if(xAxis.data[xAxis.rangeStart]&&xAxis.data[xAxis.rangeEnd]){
+              	console.log("横坐标起始值："+xAxis.rangeStart+"+++"+xAxis.rangeEnd);
+				if(xAxis.data[xAxis.rangeStart] && xAxis.data[xAxis.rangeEnd]){
 					startDate = xAxis.data[xAxis.rangeStart]
 					endDate = xAxis.data[xAxis.rangeEnd];
 					var a= stringToDate(startDate);
@@ -544,10 +534,9 @@
 					$('#dateStart').val(startDate);
        				$('#dateEnd').val(endDate);
        				timeZone = (b-a)/60000;//时间区间单位从毫秒转换为分钟
-       				console.log(timeZone);
 				}else{
 					if(timeZone>0){
-						startDate = startDate_init;
+						startDate = startDate_init; //若果通过坐标轴获取不到当前画布X轴的起始值，则设置时间基数为本次查询的时间值
 						endDate = endDate_init;	
 					}
 				}
@@ -560,8 +549,6 @@
 						                	$("#main").showLoading(); 
 											var a= stringToDate(startDate);
 							              	var b= stringToDate(endDate);
-							              	console.log(a);
-							              	console.log(b);
 							              	startDate = a.pattern("yyyy-MM-dd HH:mm:ss");
 							              	endDate = b.pattern("yyyy-MM-dd HH:mm:ss");
 							              	console.log(startDate);
@@ -574,7 +561,6 @@
 								       		paramObject.endTime=endDate;
 								       		paramObject.paramAttribute=names;
 								       		  		
-								       		 console.log("开始请求后台时间："+new Date());
 								       		  console.log(JSON.stringify(paramObject));
 								         	//一次性组装所有参数的x和y值
 								       		$.ajax({
@@ -586,11 +572,8 @@
 								                 data: {'paramObject':JSON.stringify(paramObject)},
 								                  //成功执行方法
 								                 success: function(data){
-								                 	 console.log("请求后台完成时间："+new Date());
 								                	 $("#main").hideLoading(); 
 								                	 parent.window.document.body.style.overflow = "auto";//开启滚动
-								                	 console.log("111"+startDate_init);
-											         console.log("111"+endDate_init);
 								                	 startDate_init = startDate;
 													 endDate_init = endDate;	
 													 $('#dateStart').val(startDate);
@@ -637,7 +620,6 @@
 						             	  			  //legendname =names[names.length-1-i].name;
 						             	  			  legendname =names[i].name;
 								                 	  
-								                 	  console.log(yname+legendname)
 								                 	  	seriesOptions[i++] = {
 								    			            	//type: lineType,
 								    			                //name: param,
@@ -745,7 +727,6 @@
     function needGetDate(){
 		var startInit = stringToDate(startDate_init);
 		var endInit = stringToDate(endDate_init);
-		console.log("时间间隔："+startDate_init+startInit+"-----"+endDate_init+endInit+"<---->"+(endInit-startInit));
 		
 		//timespace 精确到分钟,时间相减得到毫秒数，再除以60000得到分钟数
 		var timespace = (endInit-startInit)/60000;

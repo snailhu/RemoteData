@@ -1,5 +1,5 @@
 <#assign base=request.contextPath + '/DataRemote' >
-<html lang="en">
+<html>
 <head>
 <meta charset="UTF-8">
 <title>首页</title>
@@ -19,6 +19,8 @@
 	href="${base}/static/content/echarts-x/doc/css/monokai.css">
 <link rel="stylesheet"
 	href="${base}/static/content/echarts-x/doc/css/twilight.css">
+	
+
 <script src="${base}/static/content/echarts-x/doc/lib/esl.js"></script>
 <script src="${base}/static/content/echarts-x/doc/lib/jquery.min.js"></script>
 <script src="${base}/static/content/echarts-x/doc/example/js/bootExample.js"></script>
@@ -274,14 +276,28 @@
 		</div>
 	</div>
 	
-	<script type="text/javascript">
+<script type="text/javascript">
+	$(function() {
+		try {
+		    var canvas = document.createElement('canvas');
+		    var gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+		    if (!gl) {
+		    	//window.location.href='${base}/conditionMonitoring'; 
+		    	throw "can not support webGL";
+		    }
+		} catch (e) {
+		    // 浏览器不支持 WebGL
+			 window.location.href='${base}/conditionMonitoring'; 
+		}
+	});
+
 	// 配置后续加载的各种 chart 配置 config
-// 	require.config({
-// 		paths : {
-// 			'echarts' : 'dep/echarts/build',
-// 			'echarts-x' : 'static/content/echarts-x/build'
-// 		}
-// 	});
+	require.config({
+		paths : {
+			'echarts' : 'static/content/echarts-x/echarts/build',
+			'echarts-x' : 'static/content/echarts-x/build'
+		}
+	});
 
 	// 然后就可以动态加载图表进行绘制啦
 	require(
@@ -365,26 +381,27 @@
 			});
 </script>
 <script type="text/javascript">
-function disabledMouseWheel() {  
-	  if (document.addEventListener) {  
-	    document.addEventListener('DOMMouseScroll', scrollFunc, false);  
-	  }//W3C  
-	  window.onmousewheel = document.onmousewheel = scrollFunc;//IE/Opera/Chrome  
-	}  
-	function scrollFunc(evt) {  
-	  evt = evt || window.event;  
-	    if(evt.preventDefault) {  
-	    // Firefox  
-	      evt.preventDefault();  
-	      evt.stopPropagation();  
-	    } else {  
-	      // IE  
-	      evt.cancelBubble=true;  
-	      evt.returnValue = false;  
-	  }  
-	  return false;  
-	}  
-	window.onload=disabledMouseWheel;  
+	
+	function disabledMouseWheel() {
+		if (document.addEventListener) {
+			document.addEventListener('DOMMouseScroll', scrollFunc, false);
+		}//W3C  
+		window.onmousewheel = document.onmousewheel = scrollFunc;//IE/Opera/Chrome  
+	}
+	function scrollFunc(evt) {
+		evt = evt || window.event;
+		if (evt.preventDefault) {
+			// Firefox  
+			evt.preventDefault();
+			evt.stopPropagation();
+		} else {
+			// IE  
+			evt.cancelBubble = true;
+			evt.returnValue = false;
+		}
+		return false;
+	}
+	window.onload = disabledMouseWheel;
 </script>
 </body>
 </html>

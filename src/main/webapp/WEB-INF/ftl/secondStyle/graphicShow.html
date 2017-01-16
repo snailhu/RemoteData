@@ -327,7 +327,9 @@
             ],
             dataZoom: [
         	{
+        		id:'dataZoomX',
         		type:'slider',
+        		xAxisIndex:0,
             	start: 1,
             	end: 99
         	},
@@ -475,7 +477,7 @@
        	$("#getData").click(function(){
        		startDate =  $('#dateStart').val();
        		endDate =  $('#dateEnd').val();
-       		console.log("开始时间："+startDate+"结束时间"+endDate);
+       		//console.log("开始时间："+startDate+"结束时间"+endDate);
        		//startDate_init = startDate;
        		//endDate_init = endDate;
        		if(endDate && startDate){
@@ -491,7 +493,7 @@
 			             	  for(var param in data){
 			             	  yname  = names[i].y;
 			             	  legendname =names[i].name;
-			             	  console.log(yname+legendname)
+			             	  //console.log(yname+legendname)
 			             	  	seriesOptions[i++] = {
 						            	type: 'line',
 						                //name: param,
@@ -525,7 +527,9 @@
         myChart.on('dataZoom', function (params) {
         	  	var lineType = myChart.getOption().series[0].type;
               	var xAxis = myChart.getModel().option.xAxis[0];
-              	console.log("横坐标起始值："+xAxis.rangeStart+"+++"+xAxis.rangeEnd);
+              	console.log("dataZoom的起始值"+params.start+"+++"+params.end);
+              	console.log("滑动块横坐标起始值："+xAxis.data[xAxis.rangeStart]+"+++"+xAxis.data[xAxis.rangeEnd]);
+              	console.log("X轴的横坐标的起始值"+xAxis.data[0]+"+++"+xAxis.data[xAxis.data.length-1]+"总数："+xAxis.data.length);
 				if(xAxis.data[xAxis.rangeStart] && xAxis.data[xAxis.rangeEnd]){
 					startDate = xAxis.data[xAxis.rangeStart]
 					endDate = xAxis.data[xAxis.rangeEnd];
@@ -542,7 +546,7 @@
 				}
 				$('#dateStart').val(startDate);
        			$('#dateEnd').val(endDate);
-              	console.log("开始日期"+startDate+"结束日期："+endDate);
+              	//console.log("开始日期"+startDate+"结束日期："+endDate);
               	if(timeZone>0){
               		 if(needGetDate()){
               		 						parent.window.document.body.style.overflow = "hidden";//隐藏滚动条
@@ -551,8 +555,6 @@
 							              	var b= stringToDate(endDate);
 							              	startDate = a.pattern("yyyy-MM-dd HH:mm:ss");
 							              	endDate = b.pattern("yyyy-MM-dd HH:mm:ss");
-							              	console.log(startDate);
-							              	console.log(endDate);
 								       		//将一组中的所有参数组装为object
 								       		paramObject.nowSeries='${nowSeries}';
 								       		paramObject.nowStar='${nowStar}';
@@ -561,7 +563,7 @@
 								       		paramObject.endTime=endDate;
 								       		paramObject.paramAttribute=names;
 								       		  		
-								       		  console.log(JSON.stringify(paramObject));
+								       		//console.log(JSON.stringify(paramObject));
 								         	//一次性组装所有参数的x和y值
 								       		$.ajax({
 								                 url: '${base}/getData',
@@ -640,7 +642,7 @@
 								    	            	options.series = eval(seriesOptions);
 								    	            	pDate=options.xAxis.data = date;
 								    	                myChart.setOption(options);
-								    	                 console.log("画图完成时间："+new Date());
+								    	                //console.log("画图完成时间："+new Date());
 								                 }
 								             })  	
 					}
@@ -718,10 +720,7 @@
 			var color = picker.toHEXString();
 			var id= picker.valueElement.name;   		
     		var id2=id+"-color"; 
-    		//console.log('当前id:'+id2+'   RGB：'+color);
-    		//$("#"+id2).attr("value",value);
     		document.getElementById(id2).value=color;    		
-   			//console.log('当前id:'+id2+'   RGB：'+document.getElementById(id2).value);
 	}
 		
     function needGetDate(){
@@ -758,7 +757,7 @@
 				return true;
 			}else{
 				//原始数据不请求后台
-				console.log("原始数据不请求后台");
+				//console.log("原始数据不请求后台");
 				return false;
 			}
 			return false;
@@ -849,7 +848,7 @@
 				endDate_init = endDate;
 				return true;
 			}else{
-				console.log(startDate);
+				//console.log(startDate);
 				if(a/60000 - startInit/60000 >= 129600 || endInit/60000-b/60000 >= 129600){
 					return true;
 				}else{

@@ -55,7 +55,7 @@
     }
 
     function boot() {
-       // require(['js/example']);
+        require(['static/content/echarts-x/doc/example/js/example']);
     }
 
     function loadScript(urlList, onload) {

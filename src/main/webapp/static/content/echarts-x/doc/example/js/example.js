@@ -1,10 +1,10 @@
 define(function (require) {
     var CodeMirror = require('static/content/echarts-x/doc/lib/codemirror/codemirror');
-    var ec = require('echarts');
-    require('echarts-x');
-    require('echarts/chart/map');
-    require('echarts/chart/bar');
-    require('echarts-x/chart/map3d');
+    var ec = require('static/content/echarts-x/doc/lib/echarts/echarts');
+    require('static/content/echarts-x/doc/lib/echarts-x/echarts-x');
+    require('static/content/echarts-x/doc/lib/echarts/chart/map');
+    require('static/content/echarts-x/doc/lib/echarts/chart/bar');
+    require('static/content/echarts-x/doc/lib/echarts-x/chart/map3d');
     require('static/content/echarts-x/doc/lib/codemirror/mode/javascript');
 
     var myChart = null;

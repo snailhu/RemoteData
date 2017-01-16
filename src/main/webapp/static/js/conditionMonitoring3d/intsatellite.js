@@ -1,7 +1,9 @@
 function intsatellite(seriesId) {	 
 	 var starList = new Array();
 	 //var url = window.location.pathname+"/getSatellites";
-	 var url = "http://localhost:8080/DataRemote/conditionMonitoring/getSatellites";
+//	 var url = "conditionMonitoring/getSatellites";
+	 var host = window.location.host;
+	 var url = 'http://'+host+'/DataRemote/conditionMonitoring/getSatellites';
 	 //var base=window.location;
 	 var containerdiv=$("#id_container");
 	 	 containerdiv.empty();

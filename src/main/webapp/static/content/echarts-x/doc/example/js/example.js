@@ -1,11 +1,11 @@
 define(function (require) {
-    var CodeMirror = require('lib/codemirror/codemirror');
+    var CodeMirror = require('static/content/echarts-x/doc/lib/codemirror/codemirror');
     var ec = require('echarts');
     require('echarts-x');
     require('echarts/chart/map');
     require('echarts/chart/bar');
     require('echarts-x/chart/map3d');
-    require('lib/codemirror/mode/javascript');
+    require('static/content/echarts-x/doc/lib/codemirror/mode/javascript');
 
     var myChart = null;
 

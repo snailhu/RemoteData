@@ -336,8 +336,8 @@
         		type:'slider',
             	show: true,
             	realtime: true,
-            	start: 1,
-            	end: 99
+            	//start: 1,
+            	//end: 99
         	},
         	{
             	type: 'inside',
@@ -404,8 +404,10 @@
              	  var Y2nametemp ="Y2轴";
              	  
              	  for(var param in data){             	  
-	             	  unit = names[names.length-1-i].unit;
-	             	  yname  = names[names.length-1-i].y;	  				  
+	             	  //unit = names[names.length-1-i].unit;
+	             	  //yname  = names[names.length-1-i].y;	  				  
+	             	  unit = names[i].unit;
+	             	  yname  = names[i].y;	  				  
 	  				  //Y1轴
 	  				  if(yname==0)
 	  				  {
@@ -437,7 +439,8 @@
 	  				  	}
 	  				  }
   				  
-	             	  legendname =names[names.length-1-i].name;         	  	
+	             	  //legendname =names[names.length-1-i].name;
+	             	  legendname =names[i].name;         	  	
 	             	  	seriesOptions[i++] = {
 				            	type: 'line',
 				                //name: param,
@@ -604,8 +607,10 @@
 										         	  var Y2name ="Y2轴";
 										         	  var Y2nametemp ="Y2轴";
 								                 	  for(var param in data){								                 	  
-									                 	  unit = names[names.length-1-i].unit;
-										             	  yname  = names[names.length-1-i].y;	  				  
+									                 	  //unit = names[names.length-1-i].unit;
+										             	  //yname  = names[names.length-1-i].y;	  				  
+									                 	  unit = names[i].unit;
+										             	  yname  = names[i].y;	  				  
 										  				  //Y1轴
 										  				  if(yname==0)
 										  				  {
@@ -629,7 +634,8 @@
 										  				  	}
 										  				  }
 										  				  
-						             	  			  legendname =names[names.length-1-i].name;
+						             	  			  //legendname =names[names.length-1-i].name;
+						             	  			  legendname =names[i].name;
 								                 	  
 								                 	  console.log(yname+legendname)
 								                 	  	seriesOptions[i++] = {
@@ -692,7 +698,8 @@
         	  //console.log("曲线颜色值："+paramColor+"曲线粗细："+width);
         	  if(paramColor != null && paramColor != 'undefined'){
         	  var tempnumber =names.length;
-		      	  seriesOptionsDam[names.length-1-i] = {
+		      	  //seriesOptionsDam[names.length-1-i] = {
+		      	  seriesOptionsDam[i] = {
 		      			name: $(this).attr('dataName'),
 		  		        //type: 'line',
 		  	            lineStyle:{
@@ -701,14 +708,16 @@
 				  		}
 				  		 
 		           	};
-		           legendOptionsData[names.length-1-i] ={
+		           //legendOptionsData[names.length-1-i] ={
+		           legendOptionsData[i] ={
 		           		name: $(this).attr('dataName'),
 		           		//icon:'roundRect',
 		           		textStyle:{
 		           			backgroundColor:paramColor
 		           		}
 		           };
-		           legendcolor[names.length-1-i]=paramColor;		           			           		
+		           //legendcolor[names.length-1-i]=paramColor;		           			           		
+		           legendcolor[i]=paramColor;		           			           		
         	  }
         	});
         	        

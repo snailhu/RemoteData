@@ -433,12 +433,12 @@ a {
 						src="${pageContext.request.contextPath}/static/new/img/images/images/A_78.png">
 						<span id="permissionmanage-text">权限管理</span>
 				</a></li>
-				<li><a
+				<%-- <li><a
 					href="${pageContext.request.contextPath}/admin/stormServers/index"
 					class="tab_li"> <img class="img_head" id="servermanage-img"
 						src="${pageContext.request.contextPath}/static/new/img/images/images/A_14.png">
 						<span id="servermanage-text">服务器管理</span>
-				</a></li>
+				</a></li> --%>
 			</ul></li>
 		<!-- 		<li>
 			<a href="#" class="dropdown-toggle"> <i class="icon-list"></i>

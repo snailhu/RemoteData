@@ -165,18 +165,7 @@ public class CommonController {
 		String sessionId = request.getSession().getId();
 		@SuppressWarnings("unchecked")
 		List<ParamGroup> lPs = (List<ParamGroup>) ehCache.getCacheElement(sessionId+"AllJsonData");
-		List<SingleParamDto> params = new ArrayList<SingleParamDto>();
-		/*Map<String,String> map = j9Series_Star_Service.getAllParameterList_simplyZh_and_en();
-
-		
-		Iterator it = map.keySet().iterator();  
-        while(it.hasNext()){  
-             String key;     
-             String value;     
-             key=it.next().toString();     
-             value=(String) map.get(key);     
-             System.out.println(key+"--"+value);     
-        }*/
+		List<SingleParamDto> params = new ArrayList<SingleParamDto>();		
         
 		ModelAndView mv = new ModelAndView("/secondStyle/graphicShow");
 		//ModelAndView mv = new ModelAndView("/admin/ftltojsp/graphicShow");
@@ -184,9 +173,8 @@ public class CommonController {
 			if(pg.getId()==id){
 				List<SingleParamDto> spds = pg.getSecectRow();
 				for(SingleParamDto spd : spds){
-					//spd.setValue(map.get(spd.getName()));
+
 					String sequencevalue =parameter_Service.getParameter_en_by_simpleZh(pg.getNowSeries(),pg.getNowStar(),pg.getComponent(),spd.getName());
-					//String sequencevalue =parameter_Service.getParameter_en_by_simpleZh("j9","02","flywhell",spd.getName());
 					System.out.println(sequencevalue);
 					spd.setValue(sequencevalue);
 					System.out.println("根据参数名名字设置参数的value值(sequence):"+spd.getName()+"对应的value:"+sequencevalue);
@@ -210,27 +198,11 @@ public class CommonController {
 	public Map<String,YearAndParamDataDto> getData(
 			HttpServletRequest request,
 			HttpServletResponse response,
-//			@RequestParam(value="paramNames",required = true) Object paramNames,
-//			@RequestParam(value="start",required = true) String start,
-//			@RequestParam(value="end",required = true) String end,
-//			@RequestParam(value="paramSize",required = true) Integer paramSize,
-//			@RequestParam(value="nowSeries",required = true) String nowSeries,
-//			@RequestParam(value="nowStar",required = true) String nowStar,
 			@RequestParam(value="paramObject",required = true) String paramObject
 			) throws Exception{
 		long begin = System.currentTimeMillis();
-		//String key = start+end;
-//	  	Jedis jedis = RedisPoolUtil.buildJedisPool().getResource(); 
-//				if(jedis.exists((key+"year"+filename).getBytes()) && jedis.exists((key+"param"+filename).getBytes())){
-//					List<String> year_list = RedisPoolUtil.getList(key+"year"+filename);
-//					List<String> parm_list = RedisPoolUtil.getList(key+"param"+filename);
-//					YearAndParamDataDto result =  new YearAndParamDataDto();
-//					result.setParamValue(parm_list);
-//					result.setYearValue(year_list);	
-//					return result;	
-//				} 
+
 	//paramObiect的结构eg:{"nowSeries":"j9name","nowStar":"02","component":"flywheel","startTime":"2016-06-22 13:02:08","endTime":"2016-06-23 13:02:23","paramAttribute":[{"name":"飞轮温度Xa(00815)","value":"","y":"0"},{"name":"飞轮温度Ya(00817)","value":"","y":"0"},{"name":"飞轮温度Za(00819)","value":"","y":"0"}]}
-	//System.out.println("需要展现的曲线的信息paramObject: " + paramObject);
 	//将参数信息放进缓存，供绘制曲线tab自己在读取
 	EhCache ehCache = new EhCache(); 
 	String sessionId = request.getSession().getId();
@@ -239,15 +211,6 @@ public class CommonController {
 	Map<String, Class<ParamAttributeDto>> classMap = new HashMap<String, Class<ParamAttributeDto>>();
 	classMap.put("paramAttribute", ParamAttributeDto.class);
 	ParamBatchDto pbd =JsonStringToObj.jsonToObject(paramObject,ParamBatchDto.class,classMap);
-	//System.out.println("将paramAttrribute转换成对象pbd");
-//	 YearAndParamDataDto result = mongoService.getList(paramSize,new String[]{start,end,paramNames,nowSeries,nowStar,component});				
-//		ThreadPoolExecutor executor = new ThreadPoolExecutor(5, 10, 200, TimeUnit.SECONDS,new ArrayBlockingQueue<Runnable>(5));
-//		executor.execute(new Runnable() {
-//	            public void run() {
-//	            	RedisPoolUtil.saveList(key+"year"+filename, result.getYearValue());
-//	        		RedisPoolUtil.saveList(key+"param"+filename, result.getParamValue());				
-//	            }
-//	        });
 
 	RoutingService routingService=new RoutingService();
 	RequestConfig requestConfig=new RequestConfig();
@@ -282,8 +245,6 @@ public class CommonController {
 				@RequestParam(value="endDate",required = true) String endDate
 
 				) throws Exception{
-
-			//paramObiect的结构eg:{"nowSeries":"j9name","nowStar":"02","component":"flywheel","startTime":"2016-06-22 13:02:08","endTime":"2016-06-23 13:02:23","paramAttribute":[{"name":"飞轮温度Xa(00815)","value":"","y":"0"},{"name":"飞轮温度Ya(00817)","value":"","y":"0"},{"name":"飞轮温度Za(00819)","value":"","y":"0"}]}
 			Map<String, Class<ParamAttributeDto>> classMap = new HashMap<String, Class<ParamAttributeDto>>();
 			classMap.put("paramAttribute", ParamAttributeDto.class);					
 			EhCache ehCache = new EhCache();
@@ -300,10 +261,6 @@ public class CommonController {
 			List<ParamAttributeDto> listparam=pbd.getParamAttribute();
 			for(ParamAttributeDto paramAttributeDto: listparam){
 				properties[i++]=paramAttributeDto;
-				System.out.println(paramAttributeDto.getMax()+"最小值"+paramAttributeDto.getMin());
-				System.out.println(paramAttributeDto.getMax()+"最大值"+paramAttributeDto.getMin());
-				//properties[i++].setValue(paramAttributeDto.getValue());
-				System.out.println("添加到requestConfig的参数值"+paramAttributeDto.getValue()+"nanme属性为："+paramAttributeDto.getName());
 			}
 			requestConfig.setProperties(properties);
 			requestConfig.setSeries(pbd.getNowSeries());

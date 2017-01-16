@@ -555,6 +555,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		 $("#jqxButton_addgroup").jqxButton({ width: '95', height: '30'});	
 		 $("#jqxButton_addgroup").click(function(){
 		 	getSelected();
+		 	var checkedRows = $("#treeGrid").jqxTreeGrid('getCheckedRows');
+     		 for (var i = 0; i < checkedRows.length; i++) {
+          		var rowid = checkedRows[i].id;
+          		$("#treeGrid").jqxTreeGrid('uncheckRow', rowid);
+     		 }
 		 });
 		 
 		 $("#jqxButton_submitgroup").jqxButton({ width: '95', height: '30'});	

@@ -59,8 +59,15 @@ public class CommonController {
 	public String goIndex(HttpServletRequest request, HttpServletResponse response) {
 		System.out.println("come in Index "+ DateUtil.format(new Date()));
 //		return "index";
-		return "redirect:/conditionMonitoring";
+		//return "redirect:/conditionMonitoring";
+		return "redirect:/Index3d";
 	}
+	
+	@RequestMapping(value="/Index3d", method = { RequestMethod.GET })
+	public String index3d() {
+		return "/index3d";
+	}
+	
 	@RequestMapping(value = "/home", method = { RequestMethod.GET })
 	public String home(HttpServletRequest request, HttpServletResponse response) {
 		return "index";

@@ -13,11 +13,6 @@ public class HomeController {
 		return "/admin/new/index";
 	}
 	
-	@RequestMapping(value="/newIndex3d", method = { RequestMethod.GET })
-	public String index3d() {
-		return "/index3d";
-	}
-	
 	@RequestMapping(value="/newIndex3d2", method = { RequestMethod.GET })
 	public String index3d2() {
 		return "/index3d2";

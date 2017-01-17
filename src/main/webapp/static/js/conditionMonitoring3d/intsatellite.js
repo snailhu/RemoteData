@@ -1,4 +1,6 @@
 function intsatellite(seriesId) {	 
+	$("#id_container").show();
+//	$("#id_container").removeAttr("hidden");
 	 var starList = new Array();
 	 //var url = window.location.pathname+"/getSatellites";
 //	 var url = "conditionMonitoring/getSatellites";

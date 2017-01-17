@@ -47,10 +47,7 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 		//得到请求servletPath 路径
 		String servletPath = request.getServletPath();
 		//判断是否是公开 地址
-		if(servletPath.equals("/Index")){
-			return true;
-		}
-		if(servletPath.indexOf("new") > -1){
+		if(servletPath.equals("/home")){
 			return true;
 		}
 		HttpSession session = request.getSession();

@@ -126,7 +126,7 @@ $(function() {
                         message : '参数名不能为空'
                     },
                     regexp : { //任意字符 ((?:.|(\s\r\n\+))*)
-                        regexp : /^[\u4E00-\u9FA5A-Za-z0-9_:\s\+\u4E00-\u9FA5A-Za-z0-9_]+(\([0-9]*\))+$/,
+                        regexp : /^[\u4E00-\u9FA5A-Za-z0-9_:\s\r\n\+\-\u4E00-\u9FA5A-Za-z0-9_]+(\([0-9]*\))+$/,
                         message : '参数名格式不对'
                     },
                 }
@@ -179,7 +179,7 @@ $(function() {
                         message : '参数名不能为空'
                     },
                     regexp : { 
-                        regexp : /^[\u4E00-\u9FA5A-Za-z0-9_:\s\+\u4E00-\u9FA5A-Za-z0-9_]+(\([0-9]*\))+$/,
+                        regexp : /^[\u4E00-\u9FA5A-Za-z0-9_:\s\r\n\+\-\u4E00-\u9FA5A-Za-z0-9_]+(\([0-9]*\))+$/,
                         message : '参数名格式不对'
                     },
                 }

@@ -415,10 +415,12 @@ public class MongodbUtil {
 	}
 	
 	public MongoCursor<Document> find(String databaseName,String collectionName,Date beginDate, Date endDate){
+		Document sort = new Document();
+		sort.append("datetime", 1);
 		MongoCollection<Document> collection = this.getCollection(databaseName, collectionName);
 		return collection.find(Filters.and(Filters.gte("datetime", beginDate),
 							   Filters.lte("datetime", endDate),
-							   Filters.eq("status", 1))).iterator();
+							   Filters.eq("status", 1))).sort(sort).iterator();
 	}
 	
 	public long countByDate(String databaseName,String collectionName,

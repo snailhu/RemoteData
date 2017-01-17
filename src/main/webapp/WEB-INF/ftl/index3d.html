@@ -268,9 +268,10 @@
 		<div  class="systemmanage" >
 			<button id="id_btn_home" type="button" class="btn btn-info" onclick="location.href='http://'+window.location.host+'/DataRemote/home'">公共首页</button>
 		</div>
+		<button type="button" id="resetShowStar" class="btn btn-info"><span>取消选择</span></button>
 	</div>
 
-	<div id="id_container" class="container">
+	<div id="id_container" class="container" >
 		<div class="tail">
 			<div class="container"></div>
 		</div>
@@ -289,6 +290,12 @@
 		    // 浏览器不支持 WebGL
 			 window.location.href='${base}/conditionMonitoring'; 
 		}
+		$("#id_container").hide();
+		//$(".container").attr("hidden","true");
+		$("#resetShowStar").click(function(){
+			$("#id_container").hide();
+			$("#id_container").empty();
+		})
 	});
 
 	// 配置后续加载的各种 chart 配置 config
@@ -301,9 +308,11 @@
 
 	// 然后就可以动态加载图表进行绘制啦
 	require(
-			[ 'echarts', 'echarts-x',
+			[ 
+			'echarts', 'echarts-x',
 			// ECharts-X 中 map3d 的地图绘制基于 ECharts 中的 map。
-			'echarts/chart/map', 'echarts-x/chart/map3d' ],
+			'echarts/chart/map', 'echarts-x/chart/map3d' 
+			],
 			function(ec) {
 				
 				// 跟 ECharts 一样的方式初始化

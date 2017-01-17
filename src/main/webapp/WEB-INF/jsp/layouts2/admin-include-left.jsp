@@ -198,7 +198,7 @@ a {
 			</ul></li>
 			
 		<li><a
-			href="${pageContext.request.contextPath}/conditionMonitoring"
+			href="${pageContext.request.contextPath}/Index3d"
 			class="tab_title"> <img class="img_head"
 				id="conditionmonitoring-img"
 				src="${pageContext.request.contextPath}/static/new/img/images/images/A_86.png">

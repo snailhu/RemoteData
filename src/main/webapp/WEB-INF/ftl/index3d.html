@@ -82,13 +82,22 @@
 	
 	//卫星信息显示悬浮窗口Title
 	function title() {
-	    return '卫星运行状态信息';
+	    //return '<div style="margin:10px auto; text-align:left; color:white; font-size:20px; text-align:center;">卫星信息</div>';
+	    return '<div></div>'
 	}
 	//卫星信息显示悬浮窗口，动态加载内容(真实情况可能会跟后台进行ajax交互)
-	function content(id,begintime,rundate) {
-	    var data = $("<form><ul><li><span aria-hidden='true' class='icon_globe'></span>&nbsp;<font>卫星代号:</font>"+id+"</li>" +
-	             "<li><span aria-hidden='true' class='icon_piechart'></span>&nbsp;<font>开始时间:</font>"+begintime+"</li>" +
-	             "<li><span aria-hidden='true' class='icon_search_alt'></span>&nbsp;<font>运行时间:"+rundate+"天</font></li>"); 
+	function content(id,begintime,rundate) {	 
+	    var data="<ul style='width: 150px;top: 40px;'>"
+		         +"<a style='margin-left:-20px;'></a>"
+		         +"<a style='font-size:12px;'>卫星代号："+id+"</a>"
+		         +"<hr style='visibility:hidden;'>"
+		         +"<a style='margin-left:-20px;'></a>"
+		         +"<a style='font-size:12px;'>开始时间："+begintime+"</a>"
+		         +"<hr style='visibility:hidden;'>"
+		         +"<a style='margin-left:-20px;'></a>"
+		         +"<a style='font-size:12px;'>运行时间："+rundate+"天</a>"
+		         +"<hr style='visibility:hidden;'>"
+		         +"</ul>"
 	    return data;
 	}
 	

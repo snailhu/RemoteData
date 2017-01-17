@@ -75,6 +75,12 @@
 <script type="text/javascript" src="${base}/static/js/conditionMonitoring3d/intsatellite.js"></script>
 <script type="text/javascript" src="${base}/static/js/conditionMonitoring3d/series-button.js"></script> 
 <script type="text/javascript" src="${base}/static/jquerypin/jquery.pin.js"></script>	
+<style type="text/css">
+.popover-content {
+    padding: 9px 14px;
+    font-size: 12px;
+}
+</style>
 <script type="text/javascript">
 	var currentDate =new Date();
 	var beginDate=new Date(2016,1,1,1,1,1)
@@ -92,12 +98,12 @@
 		         +"<a style='font-size:12px;'>卫星代号："+starname+"</a>"
 		         +"<hr style='visibility:hidden;'>"
 		         +"<a style='margin-left:-20px;'></a>"
-		         +"<a style='font-size:12px;'>开始时间："+begintime+"</a>"
+		         +"<a style='font-size:12px;margin-top:10px;'>开始时间："+begintime+"</a>"
 		         +"<hr style='visibility:hidden;'>"
-		         +"<a style='margin-left:-20px;'></a>"
-		         +"<a style='font-size:12px;'>运行时间："+rundate+"天</a>"
+		         +"<a style='margin-left:-20px;margin-top:10px;'></a>"
+		         +"<a style='font-size:12px;margin-top:10px;'>运行时间："+rundate+"天</a>"
 		         +"<hr style='visibility:hidden;'>"
-		         +"</ul>"
+		         +"</ul>";
 	    return data;
 	}
 	
@@ -363,7 +369,7 @@
 							//日照强度
 							sunIntensity : 1,
 							//环境光照强度，有时候为了更清楚的展现地球暗面的信息，需要把这个值调高。
-							ambientIntensity : 0.1
+							ambientIntensity : 0.5
 						},
 						// 地图绘制配置成只绘制轮廓线和标签
 						itemStyle : {

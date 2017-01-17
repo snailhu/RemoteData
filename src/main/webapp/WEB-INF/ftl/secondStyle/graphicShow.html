@@ -475,44 +475,95 @@
          })
  	
        	$("#getData").click(function(){
-       		startDate =  $('#dateStart').val();
-       		endDate =  $('#dateEnd').val();
-       		//console.log("开始时间："+startDate+"结束时间"+endDate);
-       		//startDate_init = startDate;
-       		//endDate_init = endDate;
-       		if(endDate && startDate){
-			$.post("getDatabytap", 
-					{
-						'startDate' : startDate,
-						'endDate' : endDate
-					},
-					function(data){
-			             	  var i=0
-			             	  var yname = 0;
-			             	  var legendname ="";
-			             	  for(var param in data){
-			             	  yname  = names[i].y;
-			             	  legendname =names[i].name;
-			             	  //console.log(yname+legendname)
-			             	  	seriesOptions[i++] = {
-						            	type: 'line',
-						                //name: param,
-						                name:legendname,
-						                smooth:false,
-						               	yAxisIndex: yname,
-						                data: data[param].paramValue
-						            };
-						            //设置X轴，注意，这里X轴存在问题，默认使用了最后一组参数的X轴
-						            date =  data[param].yearValue;
-			  		}
-				  	pSeriesOptions = seriesOptions
-					options.series = eval(seriesOptions);
-					pDate=options.xAxis.data = date;
-					startDate_init = startDate;
-				    endDate_init = endDate;
-				    myChart.setOption(options);
-					});   
-       		}       		      	             	
+       		paramObject.nowSeries='${nowSeries}';
+								       		paramObject.nowStar='${nowStar}';
+								       		paramObject.component='${component}';
+								       		paramObject.startTime=startDate;
+								       		paramObject.endTime=endDate;
+								       		paramObject.paramAttribute=names;
+								       		  		
+								       		//console.log(JSON.stringify(paramObject));
+								         	//一次性组装所有参数的x和y值
+								       		$.ajax({
+								                 url: '${base}/getData',
+								                 type: 'POST',
+								                 dataType: 'json',
+								                 timeout: 100000,
+								                 cache: false,
+								                 data: {'paramObject':JSON.stringify(paramObject)},
+								                  //成功执行方法
+								                 success: function(data){
+								                	 $("#main").hideLoading(); 
+								                	 parent.window.document.body.style.overflow = "auto";//开启滚动
+								                	 startDate_init = startDate;
+													 endDate_init = endDate;	
+													 $('#dateStart').val(startDate);
+						       						 $('#dateEnd').val(endDate);
+								                	 //var json = eval(data);
+								                 	  var i=0
+								                 	  var yname = 0;
+								                 	  var legendname ="";
+								                 	  
+								                 	  var unit=null;
+								                 	  var Y1name ="Y1轴";
+										         	  var Y1nametemp ="Y1轴";
+										         	  
+										         	  var Y2name ="Y2轴";
+										         	  var Y2nametemp ="Y2轴";
+								                 	  for(var param in data){								                 	  
+									                 	  //unit = names[names.length-1-i].unit;
+										             	  //yname  = names[names.length-1-i].y;	  				  
+									                 	  unit = names[i].unit;
+										             	  yname  = names[i].y;	  				  
+										  				  //Y1轴
+										  				  if(yname==0)
+										  				  {
+										  				  	Y1nametemp = Y1name;
+										  				  	Y1name ="Y1轴"+"("+unit+")";  				  	
+										  				  	if((Y1nametemp!="Y1轴") && (Y1name!=Y1nametemp))
+										  				  	{	  				  		
+										  				  			Y1name ="Y1轴 ";
+										  				  			
+										  				  	}
+										  				  	
+										  				  }
+										  				  //Y2轴
+										  				  if(yname==1)
+										  				  {
+										  				    var Y2nametemp =Y2name;
+										  				  	Y2name ="Y2轴"+"("+unit+")";	  				  	
+										  				  	if((Y2nametemp!="Y2轴")&&(Y2name!=Y2nametemp))
+										  				  	{
+										  				  		Y2name ="Y2轴 ";
+										  				  	}
+										  				  }
+										  				  
+						             	  			  //legendname =names[names.length-1-i].name;
+						             	  			  legendname =names[i].name;
+								                 	  
+								                 	  	seriesOptions[i++] = {
+								    			            	//type: lineType,
+								    			                //name: param,
+								    			                name:legendname,
+								    			                smooth:false,
+								    			               	yAxisIndex: yname,
+								    			                /*lineStyle:{
+								    		                    	normal:{
+								    		                    		width:0.5 
+								    		                    		}
+								    		                    },*/
+								    			                data: data[param].paramValue
+								    			            };
+								    			            //设置X轴，注意，这里X轴存在问题，默认使用了最后一组参数的X轴
+								    			            date =  data[param].yearValue;
+								                 	  }
+								                 	  	pSeriesOptions = seriesOptions
+								    	            	options.series = eval(seriesOptions);
+								    	            	pDate=options.xAxis.data = date;
+								    	                myChart.setOption(options);
+								    	                //console.log("画图完成时间："+new Date());
+								                 }
+								             })  	          	
        	})
        	
        	

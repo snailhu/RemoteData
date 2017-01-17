@@ -133,7 +133,8 @@ function intsatellite(seriesId) {
     	});
 			//加载悬浮提示窗口
 			$("[data-toggle='popover']").popover({  
-	        html : true,    
+			animation:false,
+			html : true, 
 	        title: title(),    
 	        delay:{show:1, hide:100},  
 	        content: function() { 

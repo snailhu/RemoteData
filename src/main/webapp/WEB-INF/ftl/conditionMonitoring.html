@@ -24,21 +24,20 @@
 	    return '<div></div>'
 	}
 	//卫星信息显示悬浮窗口，动态加载内容(真实情况可能会跟后台进行ajax交互)
-	function content(id,begintime,rundate) {	 
+	function content(starname,begintime,rundate) {
 	    var data="<ul style='width: 150px;top: 0px;padding: 0px;font-size: 12px;'>"
-		         +"<a style='margin-top:-10px;'></a>"
-		         +"<a style='font-size:12px;'>卫星代号："+id+"</a>"
-		         +"<br>"
-		         +"<a style='margin-top:-10px;'></a>"
-		         +"<a style='font-size:12px;margin-top:-10px;'>开始时间："+begintime+"</a>"
-		         +"<br>"
-		         +"<a style='margin-top:-10px;'></a>"
-		         +"<a style='font-size:12px;margin-top:-10px;'>运行时间："+rundate+"天</a>"
-		         +"<br>"
-		         +"</ul>";
+	         +"<a style='margin-top:-10px;'></a>"
+	         +"<a style='font-size:12px;'>卫星代号："+starname+"</a>"
+	         +"<br>"
+	         +"<a style='margin-top:-10px;'></a>"
+	         +"<a style='font-size:12px;margin-top:-10px;'>开始时间："+begintime+"</a>"
+	         +"<br>"
+	         +"<a style='margin-top:-10px;'></a>"
+	         +"<a style='font-size:12px;margin-top:-10px;'>运行时间："+rundate+"天</a>"
+	         +"<br>"
+	         +"</ul>";
 	    return data;
-	}
-	
+	}	
 	//中心点横坐标
 	var dotLeft = ($(".container").width()-$(".dot").width())/2-100;
 	//中心点纵坐标

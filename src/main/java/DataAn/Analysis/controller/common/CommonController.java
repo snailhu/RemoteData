@@ -330,10 +330,10 @@ public class CommonController {
 				){
 		ModelAndView modelview = new ModelAndView("/admin/ftltojsp/dataAnalysis");
 		String nowSeriesId=null;
-		String nowStar=null;
+		String nowStarId=null;
 		try {
 			nowSeriesId = new String(SeriesId.getBytes("ISO-8859-1"),"UTF-8");
-			nowStar = new String(StarId.getBytes("ISO-8859-1"),"UTF-8");					 
+			nowStarId = new String(StarId.getBytes("ISO-8859-1"),"UTF-8");					 
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}
@@ -342,9 +342,11 @@ public class CommonController {
 		//modelview.addObject("nowSeries", nowSeries.getName());
 		//把卫星所在系列的系列编码传递到参数选择页面，供参数查询时使用
 		modelview.addObject("nowSeries", nowSeries.getCode());
+		modelview.addObject("nowSeriesname",nowSeries.getName());
 		//当前所在星号
-		modelview.addObject("nowStar", nowStar);
-		System.out.println("常用模板页面获取到的星名称："+nowStar+StarId);
+		modelview.addObject("nowStar", nowStarId);
+		modelview.addObject("nowStarname",starService.getStarDtoById(Long.parseLong(nowStarId)).getName());
+		
 		String value = "";
 		String name = "";
 		HttpSession session = request.getSession();

@@ -541,7 +541,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		 	var beginDate = $("#dateStart").val();
 		 	var endDate = $("#dateEnd").val();		 	
 		 	var Series_current="${nowSeries}";
-		 	var Star_current="${nowStar}";
+		 	var Star_current="${nowStarname}";
 		 	//var type_current="${nowParameterTypeName}";
 		 	//var type_current="${nowParameterTypeValue}";
 		 	var type_current = $('#SatelliteComponents').attr('name');
@@ -772,7 +772,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			groupObject.beginDate = beginDate;
 			groupObject.endDate = endDate;
 			groupObject.nowSeries = "${nowSeries}";
-			groupObject.nowStar ="${nowStar}";
+			groupObject.nowStar ="${nowStarname}";
 			groupObject.component = $('#SatelliteComponents').attr('name');	
            //在已分组列表上添加“删除”和“保存为模板”按钮
             var btn_savemodel="<button type='button' class='keepTemplet close' onclick='saveToLineTemplate(this)' style='background-color: #efa90e;'><span aria-hidden='true'>保存为模板</span></button>";

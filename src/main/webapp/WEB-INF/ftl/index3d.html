@@ -86,10 +86,10 @@
 	    return '<div></div>'
 	}
 	//卫星信息显示悬浮窗口，动态加载内容(真实情况可能会跟后台进行ajax交互)
-	function content(id,begintime,rundate) {	 
+	function content(starname,begintime,rundate) {	 
 	    var data="<ul style='width: 150px;top: 40px;'>"
 		         +"<a style='margin-left:-20px;'></a>"
-		         +"<a style='font-size:12px;'>卫星代号："+id+"</a>"
+		         +"<a style='font-size:12px;'>卫星代号："+starname+"</a>"
 		         +"<hr style='visibility:hidden;'>"
 		         +"<a style='margin-left:-20px;'></a>"
 		         +"<a style='font-size:12px;'>开始时间："+begintime+"</a>"

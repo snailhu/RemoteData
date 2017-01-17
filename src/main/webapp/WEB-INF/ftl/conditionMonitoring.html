@@ -23,8 +23,8 @@
 	    return '卫星运行状态信息';
 	}
 	//卫星信息显示悬浮窗口，动态加载内容(真实情况可能会跟后台进行ajax交互)
-	function content(id,begintime,rundate) {
-	    var data = $("<form><ul><li><span aria-hidden='true' class='icon_globe'></span>&nbsp;<font>卫星代号:</font>"+id+"</li>" +
+	function content(starname,begintime,rundate) {
+	    var data = $("<form><ul><li><span aria-hidden='true' class='icon_globe'></span>&nbsp;<font>卫星名称:</font>"+starname+"</li>" +
 	             "<li><span aria-hidden='true' class='icon_piechart'></span>&nbsp;<font>开始时间:</font>"+begintime+"</li>" +
 	             "<li><span aria-hidden='true' class='icon_search_alt'></span>&nbsp;<font>运行时间:"+rundate+"天</font></li>"); 
 	    return data;

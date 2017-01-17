@@ -333,12 +333,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			<ul class="breadcrumb">
 				<li>					
 					<a href="${pageContext.request.contextPath}/conditionMonitoring"><i class="icon-home home-icon"></i></a>
-					<span class="menu-text">${nowSeries}</span>
+					<span class="menu-text">${nowSeriesname}</span>
 				</li>
 	
 				<li>
 					<a href="javascript:void(0);"  onclick="this.setAttribute('disabled','disabled')"></a>
-					<span class="menu-text">${nowStar}</span>
+					<span class="menu-text">${nowStarname}</span>
 				</li>
 				
 				<li class="active"  value="">

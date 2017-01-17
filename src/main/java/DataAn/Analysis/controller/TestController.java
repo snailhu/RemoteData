@@ -41,8 +41,8 @@ public class TestController {
 	@RequestMapping(value ="/conditionMonitoring")
 	public String goConditionMonitoring()
 	{
-//		return "conditionMonitoring";
-		return "redirect:/Index3d";
+		return "conditionMonitoring";
+//		return "redirect:/Index3d";
 	}
 
 	

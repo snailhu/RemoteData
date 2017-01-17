@@ -55,12 +55,12 @@ public class LoginController {
 					HttpSession session = request.getSession();
 					
 					Long warnCount = 0l;
-//					try {
-//						warnCount = prewarningService.getNotReadCount("", "", "", "", "");
-//					} catch (Exception e) {
-//						// TODO Auto-generated catch block
-//						e.printStackTrace();
-//					}	
+					try {
+						warnCount = prewarningService.getNotReadCount("", "", "", "", "");
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}	
 					
 					User user = new User();
 					user.setUserName(username);

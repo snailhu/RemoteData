@@ -237,6 +237,7 @@
         		n.y = '${param.yname}';
         		n.max = '${param.max}';
         		n.min = '${param.min}';
+        		
         		names.push(n);
         	</#list>       	
         <#else>
@@ -380,7 +381,7 @@
 	  				  		Y2name ="Y2轴 ";
 	  				  	}
 	  				  }
-	             	  legendname =names[i].name;         	  	
+	             	  legendname =names[i].name;        	  	
 	             	  	seriesOptions[i++] = {
 				            	type: 'line',
 				                //name: param,

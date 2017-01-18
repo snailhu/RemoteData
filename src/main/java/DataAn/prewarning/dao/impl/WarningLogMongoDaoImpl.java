@@ -147,7 +147,7 @@ public class WarningLogMongoDaoImpl implements IWarningLogMongoDao {
 		if (collection == null) {
 			return queryLogDTOs;
 		}
-		FindIterable<Document> document_It = collection.find(Filters.and(Filters.eq("hadRead", "0"),Filters.eq("status", 1)));
+		FindIterable<Document> document_It = collection.find(Filters.and(Filters.eq("hadRead", "0"),Filters.eq("status", 1))).sort(Filters.eq("_recordtime",-1));
 		for (Document doc : document_It) {
 			String deviceorparamname="";
 			String value="";

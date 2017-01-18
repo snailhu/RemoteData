@@ -271,12 +271,12 @@ public class WarningLogMongoDaoImpl implements IWarningLogMongoDao {
 				if (StringUtils.isNotBlank(createdatetimeStart) && StringUtils.isNotBlank(createdatetimeEnd)
 						&& StringUtils.isNotBlank(parameter)) {
 					document_It = collection
-							.find(Filters.and(Filters.eq("paramName", parameter),
+							.find(Filters.and(Filters.eq("paramCode", parameter),
 									Filters.eq("status", 1),
 									Filters.gte("datetime", DateUtil.format(createdatetimeStart)),
 									Filters.lte("datetime", DateUtil.format(createdatetimeEnd))))
 							.sort(Filters.eq("datetime", -1)).skip((pageIndex - 1) * pageSize).limit(pageSize);
-					totalCount = collection.count(Filters.and(Filters.eq("paramName", parameter),Filters.eq("status", 1),
+					totalCount = collection.count(Filters.and(Filters.eq("paramCode", parameter),Filters.eq("status", 1),
 							Filters.gte("datetime", DateUtil.format(createdatetimeStart)),
 							Filters.lte("datetime", DateUtil.format(createdatetimeEnd))));
 
@@ -294,27 +294,27 @@ public class WarningLogMongoDaoImpl implements IWarningLogMongoDao {
 				if (StringUtils.isNotBlank(createdatetimeStart) && StringUtils.isBlank(createdatetimeEnd)
 						&& StringUtils.isNotBlank(parameter)) {
 					document_It = collection
-							.find(Filters.and(Filters.eq("paramName", parameter),
+							.find(Filters.and(Filters.eq("paramCode", parameter),
 									Filters.eq("status", 1),
 									Filters.gte("datetime", createdatetimeStart)))
 							.sort(Filters.eq("datetime", -1)).skip((pageIndex - 1) * pageSize).limit(pageSize);
-					totalCount = collection.count(Filters.and(Filters.eq("paramName", parameter),Filters.eq("status", 1),
+					totalCount = collection.count(Filters.and(Filters.eq("paramCode", parameter),Filters.eq("status", 1),
 							Filters.gte("datetime", DateUtil.format(createdatetimeStart))));
 				}
 				if (StringUtils.isBlank(createdatetimeStart) && StringUtils.isNotBlank(createdatetimeEnd)
 						&& StringUtils.isNotBlank(parameter)) {
 					document_It = collection
-							.find(Filters.and(Filters.eq("paramName", parameter),Filters.eq("status", 1),
+							.find(Filters.and(Filters.eq("paramCode", parameter),Filters.eq("status", 1),
 									Filters.lte("datetime", DateUtil.format(createdatetimeEnd))))
 							.sort(Filters.eq("datetime", -1)).skip((pageIndex - 1) * pageSize).limit(pageSize);
-					totalCount = collection.count(Filters.and(Filters.eq("paramName", parameter),Filters.eq("status", 1),
+					totalCount = collection.count(Filters.and(Filters.eq("paramCode", parameter),Filters.eq("status", 1),
 							Filters.lte("datetime", DateUtil.format(createdatetimeEnd))));
 				}
 				if (StringUtils.isBlank(createdatetimeStart) && StringUtils.isBlank(createdatetimeEnd)
 						&& StringUtils.isNotBlank(parameter)) {
-					document_It = collection.find(Filters.and(Filters.eq("status", 1),Filters.eq("paramName", parameter))).sort(Filters.eq("datetime", -1))
+					document_It = collection.find(Filters.and(Filters.eq("status", 1),Filters.eq("paramCode", parameter))).sort(Filters.eq("datetime", -1))
 							.skip((pageIndex - 1) * pageSize).limit(pageSize);
-					totalCount = collection.count(Filters.and(Filters.eq("paramName", parameter),Filters.eq("status", 1)));
+					totalCount = collection.count(Filters.and(Filters.eq("paramCode", parameter),Filters.eq("status", 1)));
 				}
 				if (StringUtils.isBlank(createdatetimeStart) && StringUtils.isNotBlank(createdatetimeEnd)
 						&& StringUtils.isBlank(parameter)) {

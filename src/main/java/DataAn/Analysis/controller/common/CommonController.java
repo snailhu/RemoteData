@@ -162,11 +162,8 @@ public class CommonController {
 			if(pg.getId()==id){
 				List<SingleParamDto> spds = pg.getSecectRow();
 				for(SingleParamDto spd : spds){
-
 					String sequencevalue =parameter_Service.getParameter_en_by_simpleZh(pg.getNowSeries(),pg.getNowStar(),pg.getComponent(),spd.getName());
-					System.out.println(sequencevalue);
 					spd.setValue(sequencevalue);
-					System.out.println("根据参数名名字设置参数的value值(sequence):"+spd.getName()+"对应的value:"+sequencevalue);
 					params.add(spd);
 				}	
 				mv.addObject("beginDate", pg.getBeginDate());
@@ -175,7 +172,6 @@ public class CommonController {
 				mv.addObject("nowStar", pg.getNowStar());
 				mv.addObject("component", pg.getComponent());
 				mv.addObject("params", params);	
-				System.out.println("点击分组按钮时添加到tabl页的参数组的属性"+params);
 			}
 		}
 		return mv;
@@ -195,7 +191,7 @@ public class CommonController {
 	EhCache ehCache = new EhCache(); 
 	String sessionId = request.getSession().getId();
 	ehCache.addToCache(sessionId+"paramObject", paramObject);
-	//System.out.println("在选择曲线组别页面保存参数信息时的sessionid："+sessionId);
+	
 	Map<String, Class<ParamAttributeDto>> classMap = new HashMap<String, Class<ParamAttributeDto>>();
 	classMap.put("paramAttribute", ParamAttributeDto.class);
 	ParamBatchDto pbd =JsonStringToObj.jsonToObject(paramObject,ParamBatchDto.class,classMap);
@@ -204,13 +200,10 @@ public class CommonController {
 	RequestConfig requestConfig=new RequestConfig();
 	requestConfig.setPropertyCount(pbd.getParamAttribute().size());
 	//将propeities从字符串数据转换成对象数组
-	//String[] properties=new String[pbd.getParamAttribute().size()];
 	ParamAttributeDto properties[]=new ParamAttributeDto[pbd.getParamAttribute().size()];
 	int i=0;
 	List<ParamAttributeDto> listparam=pbd.getParamAttribute();
 	for(ParamAttributeDto paramAttributeDto: listparam){
-		//properties[i++]=paramAttributeDto.getValue();
-		String value =paramAttributeDto.getValue();
 		properties[i++]=paramAttributeDto;	
 	}
 	requestConfig.setProperties(properties);

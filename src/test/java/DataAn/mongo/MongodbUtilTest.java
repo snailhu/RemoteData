@@ -63,7 +63,7 @@ public class MongodbUtilTest {
 	
 	@Test
 	public void testFind(){
-		String paramStr = "sequence_00814,status";
+		String paramStr = "";
 		String[] paramStrs = paramStr.split(",");
 		List<String> paramSet = new ArrayList<String>();
 		for (String param : paramStrs) {

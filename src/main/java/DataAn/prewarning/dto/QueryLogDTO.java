@@ -29,6 +29,8 @@ public class QueryLogDTO implements java.io.Serializable {
 	private String timeValue; // 时间点
 
 	private String warnRemark; // 预警备注
+	
+	private String recordtime;//记录入数据库的时间
 
 	public String getWarnRemark() {
 		return warnRemark;
@@ -110,6 +112,14 @@ public class QueryLogDTO implements java.io.Serializable {
 
 	public void setParamValue(String paramValue) {
 		this.paramValue = paramValue;
+	}
+
+	public String getRecordtime() {
+		return recordtime;
+	}
+
+	public void setRecordtime(String recordtime) {
+		this.recordtime = recordtime;
 	}
 
 }

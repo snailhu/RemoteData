@@ -146,6 +146,8 @@ public class SaveFileToKafka implements Runnable {
 					//存放有效结果集
 					Map<String,String> validMap = null;
 					Set<String> validKeySet = null;
+					String[] validPropertyVals = null;
+					String[] validProperties = null;
 					
 					//获取配置参数
 					InnerProducer innerProducer=new InnerProducer(conf);
@@ -169,6 +171,7 @@ public class SaveFileToKafka implements Runnable {
 						
 						propertyVals = new String[array.length - 1];
 						validMap = new HashMap<String,String>();
+						//System.out.println("properties: " + properties.length + " propertyVals: " + propertyVals.length);
 						for (int i = 1; i < items.length; i++) {
 							//获取值除时间外
 							propertyVals[i - 1] = items[i];
@@ -179,12 +182,12 @@ public class SaveFileToKafka implements Runnable {
 						
 						if(validMap != null && validMap.size() > 0){
 							validKeySet = validMap.keySet();
-							properties = new String[validKeySet.size()];
-							propertyVals = new String[validKeySet.size()];
+							validProperties = new String[validKeySet.size()];
+							validPropertyVals = new String[validKeySet.size()];
 							int i = 0;
 							for (String key : validKeySet) {
-								properties[i] = key;
-								propertyVals[i] = validMap.get(key);
+								validProperties[i] = key;
+								validPropertyVals[i] = validMap.get(key);
 								i++;
 							}
 							//
@@ -195,8 +198,8 @@ public class SaveFileToKafka implements Runnable {
 							defaultFetchObj.setStar(star);
 							defaultFetchObj.setTime(DateUtil.format(dateTime));
 							defaultFetchObj.set_time(dateTime.getTime());
-							defaultFetchObj.setProperties(properties);
-							defaultFetchObj.setPropertyVals(propertyVals);
+							defaultFetchObj.setProperties(validProperties);
+							defaultFetchObj.setPropertyVals(validPropertyVals);
 							defaultFetchObj.setVersions(versions);
 							
 							//发送到kafka

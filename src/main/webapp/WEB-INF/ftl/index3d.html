@@ -303,7 +303,7 @@
 		    }
 		} catch (e) {
 		    // 浏览器不支持 WebGL
-			 window.location.href='${base}/conditionMonitoring'; 
+			 window.location.href="${base}/conditionMonitoring"; 
 		}
 		$("#id_container").hide();
 		//$(".container").attr("hidden","true");
@@ -405,6 +405,20 @@
 			});
 </script>
 <script type="text/javascript">
+	function checkIsSupportWebGL(){
+		try {
+		    var canvas = document.createElement('canvas');
+		    var gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+		    if (!gl) {
+		    	//window.location.href='${base}/conditionMonitoring'; 
+		    	throw "can not support webGL";
+		    }
+		} catch (e) {
+		    // 浏览器不支持 WebGL
+			 window.location.href="${base}/conditionMonitoring"; 
+		}
+	}
+	window.onload = checkIsSupportWebGL;
 	
 	function disabledMouseWheel() {
 		if (document.addEventListener) {

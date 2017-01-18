@@ -63,7 +63,7 @@ public class MongodbUtilTest {
 	
 	@Test
 	public void testFind(){
-		String paramStr = "sequence_00814,status";
+		String paramStr = "sequence_00131,sequence_00135";
 		String[] paramStrs = paramStr.split(",");
 		List<String> paramSet = new ArrayList<String>();
 		for (String param : paramStrs) {
@@ -72,7 +72,7 @@ public class MongodbUtilTest {
 		}
 		
 		String databaseName = "db_j8_01";
-		String collectionName =  "flywheel";
+		String collectionName =  "top";
 		
 		Date beginDate = DateUtil.format("2015-01-03 00:00:00");
 		Date endDate = DateUtil.format("2015-01-04 00:00:00");

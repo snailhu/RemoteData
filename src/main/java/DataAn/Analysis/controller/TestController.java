@@ -42,7 +42,7 @@ public class TestController {
 	public String goConditionMonitoring()
 	{
 		return "conditionMonitoring";
-//		return "redirect:/Index3d";
+
 	}
 
 	

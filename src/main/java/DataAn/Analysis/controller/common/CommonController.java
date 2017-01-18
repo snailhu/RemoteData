@@ -4,6 +4,7 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -220,7 +221,12 @@ public class CommonController {
 	requestConfig.setTimeEnd(pbd.getEndTime());
 	
 	Map<String, YearAndParamDataDto> result = routingService.getData(requestConfig);
-	return result;			
+	Map<String,YearAndParamDataDto> linkedResult = new LinkedHashMap<String,YearAndParamDataDto>();
+	for (ParamAttributeDto paramAttributeDto : listparam) {
+		linkedResult.put(paramAttributeDto.getValue(), result.get(paramAttributeDto.getValue()));
+	}
+	
+	return linkedResult;			
 	}
 	
 	//鼠标滚轮滚动时

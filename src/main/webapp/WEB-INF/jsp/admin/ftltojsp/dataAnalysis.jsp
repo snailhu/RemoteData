@@ -862,7 +862,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         } 
         //提交分组响应事件
         function submitGroup(){
-        console.log("类型"+typeof(AllRowselect))
         if(AllRowselect.length<1)
         {
         	//top.showMsg('提示', "请先添加参数分组");

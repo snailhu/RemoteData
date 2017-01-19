@@ -205,8 +205,8 @@ public class SaveFileToKafka implements Runnable {
 							//发送到kafka
 							boundProducer.send(defaultFetchObj,topic);
 							
-							if(count < 50)
-								System.out.println(defaultFetchObj);
+//							if(count < 50)
+//								System.out.println(defaultFetchObj);
 							
 						}
 					}

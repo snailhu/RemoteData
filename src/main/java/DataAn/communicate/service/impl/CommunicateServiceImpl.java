@@ -1,6 +1,7 @@
 package DataAn.communicate.service.impl;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -10,13 +11,16 @@ import java.util.Set;
 import javax.annotation.Resource;
 
 import org.apache.commons.lang3.StringUtils;
+import org.bson.Document;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.mongodb.client.MongoCursor;
 
+import DataAn.common.utils.DateUtil;
 import DataAn.communicate.service.ICommunicateService;
 import DataAn.fileSystem.dao.IVirtualFileSystemDao;
 import DataAn.fileSystem.domain.VirtualFileSystem;
@@ -364,7 +368,28 @@ public class CommunicateServiceImpl implements ICommunicateService{
 						}
 					}
 				}
-				
+				//更新特殊工况和异常状态
+				if(statusType.equals(StatusTrackingType.END.getValue())){
+					String job_collectionName = file.getParameterType() + "_job";
+					String exception_collectionName = file.getParameterType() + "_exception";
+					mg.update(databaseName, job_collectionName, "status", 3, "status", 1);
+					MongoCursor<Document> cursor = mg.find(databaseName, job_collectionName, "versions", file.getMongoFSUUId());
+					Document doc = null;
+					String strBeginDate = null;
+					String strEndDate = null;
+					Date beginDate = null;
+					Date endDate = null;
+				    while (cursor.hasNext()) {
+				    	doc = cursor.next();
+				    	strBeginDate = doc.getString("beginDate");
+				    	strEndDate = doc.getString("endDate");
+				    	if(strBeginDate != null && strEndDate != null){
+				    		beginDate = DateUtil.format(strBeginDate);
+				    		endDate = DateUtil.format(strEndDate);
+				    		mg.updateByDate(databaseName, exception_collectionName, beginDate, endDate, 1);
+				    	}
+				    }
+				}
 				jsonObject.put("sucFlag", true);
 				return jsonObject.toJSONString();
 			} else {

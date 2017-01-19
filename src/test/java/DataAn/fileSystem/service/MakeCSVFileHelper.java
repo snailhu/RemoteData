@@ -3,6 +3,7 @@ package DataAn.fileSystem.service;
 import java.io.File;
 import java.nio.charset.Charset;
 import java.text.DecimalFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -14,12 +15,19 @@ import DataAn.galaxyManager.option.J9SeriesParamConfigService;
 public class MakeCSVFileHelper {
 
 	//陀螺数据构造，生成一个月的数据集， 拷贝原有的数据点
-	public static void writeTopCSV(List<String> list, int year,int month) throws Exception {
+	public static void writeTopCSV(List<String> list, int year,int month,int beginDay,int endDay) throws Exception {
+		if(beginDay < 1)
+			beginDay = 1;
+		if(endDay < 1)
+			endDay = 1;
+		if(beginDay > endDay)
+			return;
+		
 		DecimalFormat df = new DecimalFormat("00");
 		//目录
-		String dirPath = "E:\\data\\top\\" + year;
+		String dirPath = "E:\\data\\top\\" + year+"\\"+df.format(month);
 		//文件路径
-		String outputFile = dirPath +"\\" +"j9-02--" + year +"-" + df.format(month) +"-01" +".csv";
+		String outputFile = dirPath +"\\" +"j9-05--" + year +"-" + df.format(month) +"-" + df.format(beginDay) +".csv";
 		String strYear = year + "年";
 		String strMonth = df.format(month) + "月";
 		File dir = new File(dirPath);
@@ -35,7 +43,10 @@ public class MakeCSVFileHelper {
 		csvOutput.endRecord();
 		
 		int days = getDays(year, month);
-		for (int day = 1; day < days; day++) {
+		if(days < endDay)
+			endDay = days;
+		
+		for (int day = beginDay; day <= endDay; day++) {
 			String strDay = df.format(day)+"日";
 			for (int i = 1; i < list.size(); i++) {
 				String[] array = list.get(i).split(",");
@@ -53,12 +64,21 @@ public class MakeCSVFileHelper {
 	}
 	
 	//陀螺数据构造 拷贝原有的数据点
-	public static void writeFlywheelCSV(List<String> list, int year,int month) throws Exception {
+	public static void writeFlywheelCSV(String titleLine, List<String> datalist, int year,int month) throws Exception {
+		if(datalist == null || datalist.size() == 0)
+			return;
+		
+		String[] firstaArray = datalist.get(0).split(",");
+		Date firstDate = DateUtil.format(firstaArray[0], "yyyy年MM月dd日HH时mm分ss秒");
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(firstDate);
+		int day = cal.get(Calendar.DAY_OF_MONTH);
+		
 		DecimalFormat df = new DecimalFormat("00");
 		//目录
-		String dirPath = "E:\\data\\flywheel\\" + year;
+		String dirPath = "E:\\data\\flywheel\\" + year + "\\" + df.format(month);
 		//文件路径
-		String outputFile = dirPath +"\\" +"j9-02--" + year +"-" + df.format(month) +"-01" +".csv";
+		String outputFile = dirPath +"\\" +"j9-05--" + year +"-" + df.format(month) +"-" + df.format(day) +".csv";
 		String strYear = year + "年";
 		String strMonth = df.format(month) + "月";
 		File dir = new File(dirPath);
@@ -66,17 +86,15 @@ public class MakeCSVFileHelper {
 			dir.mkdirs();
 		}
 		CsvWriter csvOutput = new CsvWriter(outputFile, ',',Charset.forName("gb2312"));
-		String line1 = list.get(0);
-		String[] array1 = line1.split(",");
-		for (String title : array1) {
+		String[] titleArray = titleLine.split(",");
+		for (String title : titleArray) {
 			csvOutput.write(title);
 		}
 		csvOutput.endRecord();
 		
-		for (int i = 1; i < list.size(); i++) {
-			String[] array = list.get(i).split(",");
+		for (int i = 1; i < datalist.size(); i++) {
+			String[] array = datalist.get(i).split(",");
 			String datetime = array[0].replace("2016年", strYear).replace("02月", strMonth);
-			//datetime = DateUtil.formatString(datetime, "yyyy年MM月dd日HH时mm分ss.SSS秒","yyyy年MM月dd日HH时mm分ss秒");
 			csvOutput.write(datetime);
 			for (int j = 1; j < array.length; j++) {
 				csvOutput.write(array[j]);

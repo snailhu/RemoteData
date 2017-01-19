@@ -377,16 +377,18 @@ public class CommunicateServiceImpl implements ICommunicateService{
 					Document doc = null;
 					String strBeginDate = null;
 					String strEndDate = null;
+					String deviceName = null;
 					Date beginDate = null;
 					Date endDate = null;
 				    while (cursor.hasNext()) {
 				    	doc = cursor.next();
 				    	strBeginDate = doc.getString("beginDate");
 				    	strEndDate = doc.getString("endDate");
-				    	if(strBeginDate != null && strEndDate != null){
+				    	deviceName = doc.getString("deviceName");
+				    	if(StringUtils.isNotBlank(strBeginDate) && StringUtils.isNotBlank(strEndDate) && StringUtils.isNotBlank(deviceName)){
 				    		beginDate = DateUtil.format(strBeginDate);
 				    		endDate = DateUtil.format(strEndDate);
-				    		mg.updateByDate(databaseName, exception_collectionName, beginDate, endDate, 1);
+				    		mg.updateByDate(databaseName, exception_collectionName, beginDate, endDate, deviceName, 1);
 				    	}
 				    }
 				}

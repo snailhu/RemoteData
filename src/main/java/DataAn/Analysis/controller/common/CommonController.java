@@ -92,7 +92,7 @@ public class CommonController {
 		return new ArrayList<ConstraintDto>();
 	}
 	
-	
+	//点击“提交分组”按钮，向查看曲线页面以post方式提交参数“AllRowselect”
 	@RequestMapping(value = "/showPanel", method = { RequestMethod.POST})
 	public void showPanel(
 			HttpServletRequest request,
@@ -106,7 +106,7 @@ public class CommonController {
 		ehCache.addToCache(sessionId+"AllJsonData", pgs);		
 	}
 	
-
+	//点击“提交分组”按钮，若果post请求成功，则跳转页面
 	@RequestMapping(value = "/showPanel", method = { RequestMethod.GET})
 	public ModelAndView showGraphic(
 			HttpServletRequest request,
@@ -114,29 +114,10 @@ public class CommonController {
 		EhCache ehCache = new EhCache(); 
 		@SuppressWarnings("unchecked")
 		List<ParamGroup> lPs = (List<ParamGroup>) ehCache.getCacheElement("AllJsonData");
-		//ModelAndView mv = new ModelAndView("/secondStyle/showGraphicByGroup");
 		ModelAndView mv = new ModelAndView("/admin/ftltojsp/showGraphicByGroup");
 		mv.addObject("lPs", lPs);
-		System.out.println("提交分组按钮提交参数成功，页面将跳转到showpanel（showGraphicByGroup）页面");
 		return mv;
 		}
-	
-
-	
-//	@RequestMapping(value = "/getDate", method = RequestMethod.GET)
-//	@ResponseBody
-//	public List<String> getDate(
-//			HttpServletRequest request,
-//			HttpServletResponse response,
-//			@RequestParam(value="start",required = true) String start,
-//			@RequestParam(value="end",required = true) String end,
-//			@RequestParam(value="paramSize",required = true) Integer paramSize
-//			) throws Exception{
-//			MongodbUtil mg = MongodbUtil.getInstance();
-//			List<String> result = mg.getDateList(paramSize,new String[]{start,end});
-//			return result;
-//		}
-	
 	
 	@RequestMapping(value = "/getMenus", method = RequestMethod.GET)
 	@ResponseBody
@@ -181,11 +162,8 @@ public class CommonController {
 			if(pg.getId()==id){
 				List<SingleParamDto> spds = pg.getSecectRow();
 				for(SingleParamDto spd : spds){
-
 					String sequencevalue =parameter_Service.getParameter_en_by_simpleZh(pg.getNowSeries(),pg.getNowStar(),pg.getComponent(),spd.getName());
-					System.out.println(sequencevalue);
 					spd.setValue(sequencevalue);
-					System.out.println("根据参数名名字设置参数的value值(sequence):"+spd.getName()+"对应的value:"+sequencevalue);
 					params.add(spd);
 				}	
 				mv.addObject("beginDate", pg.getBeginDate());
@@ -194,7 +172,6 @@ public class CommonController {
 				mv.addObject("nowStar", pg.getNowStar());
 				mv.addObject("component", pg.getComponent());
 				mv.addObject("params", params);	
-				System.out.println("点击分组按钮时添加到tabl页的参数组的属性"+params);
 			}
 		}
 		return mv;
@@ -208,14 +185,13 @@ public class CommonController {
 			HttpServletResponse response,
 			@RequestParam(value="paramObject",required = true) String paramObject
 			) throws Exception{
-		long begin = System.currentTimeMillis();
-
+	long begin = System.currentTimeMillis();
 	//paramObiect的结构eg:{"nowSeries":"j9name","nowStar":"02","component":"flywheel","startTime":"2016-06-22 13:02:08","endTime":"2016-06-23 13:02:23","paramAttribute":[{"name":"飞轮温度Xa(00815)","value":"","y":"0"},{"name":"飞轮温度Ya(00817)","value":"","y":"0"},{"name":"飞轮温度Za(00819)","value":"","y":"0"}]}
 	//将参数信息放进缓存，供绘制曲线tab自己在读取
 	EhCache ehCache = new EhCache(); 
 	String sessionId = request.getSession().getId();
 	ehCache.addToCache(sessionId+"paramObject", paramObject);
-	//System.out.println("在选择曲线组别页面保存参数信息时的sessionid："+sessionId);
+	
 	Map<String, Class<ParamAttributeDto>> classMap = new HashMap<String, Class<ParamAttributeDto>>();
 	classMap.put("paramAttribute", ParamAttributeDto.class);
 	ParamBatchDto pbd =JsonStringToObj.jsonToObject(paramObject,ParamBatchDto.class,classMap);
@@ -224,13 +200,10 @@ public class CommonController {
 	RequestConfig requestConfig=new RequestConfig();
 	requestConfig.setPropertyCount(pbd.getParamAttribute().size());
 	//将propeities从字符串数据转换成对象数组
-	//String[] properties=new String[pbd.getParamAttribute().size()];
 	ParamAttributeDto properties[]=new ParamAttributeDto[pbd.getParamAttribute().size()];
 	int i=0;
 	List<ParamAttributeDto> listparam=pbd.getParamAttribute();
 	for(ParamAttributeDto paramAttributeDto: listparam){
-		//properties[i++]=paramAttributeDto.getValue();
-		String value =paramAttributeDto.getValue();
 		properties[i++]=paramAttributeDto;	
 	}
 	requestConfig.setProperties(properties);

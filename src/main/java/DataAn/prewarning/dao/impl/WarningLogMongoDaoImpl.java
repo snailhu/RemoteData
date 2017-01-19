@@ -1,6 +1,9 @@
 package DataAn.prewarning.dao.impl;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -183,6 +186,7 @@ public class WarningLogMongoDaoImpl implements IWarningLogMongoDao {
 			//warningLog.setTimeValue(DateUtil.formatSSS(doc.getDate("datetime")));
 			warningLog.setTimeValue(timevalue);
 			warningLog.setWarningType(warnType);
+			warningLog.setRecordtime(doc.getString("_recordtime"));
 			queryLogDTOs.add(warningLog);
 		}
 		return queryLogDTOs;
@@ -205,6 +209,7 @@ public class WarningLogMongoDaoImpl implements IWarningLogMongoDao {
 		}
 		return queryLogAllDTOs;
 	}
+	
 
 	private void updateHadRead(QueryLogDTO queryLogDTO) {
 		MongodbUtil mongodbUtil = MongodbUtil.getInstance();
@@ -248,6 +253,26 @@ public class WarningLogMongoDaoImpl implements IWarningLogMongoDao {
 					queryLogResultDTOs.add(queryLogDTO);
 				}
 			}*/
+
+			//获取未读的预警信息时根据时间对记录排序
+			Collections.sort(queryLogAllDTOs, new Comparator<QueryLogDTO>(){
+				public int compare(QueryLogDTO o1,QueryLogDTO o2){
+					Date o1date = DateUtil.format(o1.getRecordtime(),"yyyy-MM-dd HH:mm:ss");
+					Date o2date = DateUtil.format(o2.getRecordtime(),"yyyy-MM-dd HH:mm:ss");
+					
+					if(o1date.equals(o2date)){
+						return 0;
+					}
+					if(o1date.before(o2date)){
+						return 1;
+					}
+					if(o1date.after(o2date)){
+						return -1;
+					}
+					return 0;
+				}
+			});
+			
 			//获取未读的预警信息时不对预警信息进行分页
 			for (int i = 0; i < queryLogAllDTOs.size(); i++) {
 				QueryLogDTO queryLogDTO = queryLogAllDTOs.get(i);
@@ -271,12 +296,12 @@ public class WarningLogMongoDaoImpl implements IWarningLogMongoDao {
 				if (StringUtils.isNotBlank(createdatetimeStart) && StringUtils.isNotBlank(createdatetimeEnd)
 						&& StringUtils.isNotBlank(parameter)) {
 					document_It = collection
-							.find(Filters.and(Filters.eq("paramName", parameter),
+							.find(Filters.and(Filters.eq("paramCode", parameter),
 									Filters.eq("status", 1),
 									Filters.gte("datetime", DateUtil.format(createdatetimeStart)),
 									Filters.lte("datetime", DateUtil.format(createdatetimeEnd))))
 							.sort(Filters.eq("datetime", -1)).skip((pageIndex - 1) * pageSize).limit(pageSize);
-					totalCount = collection.count(Filters.and(Filters.eq("paramName", parameter),Filters.eq("status", 1),
+					totalCount = collection.count(Filters.and(Filters.eq("paramCode", parameter),Filters.eq("status", 1),
 							Filters.gte("datetime", DateUtil.format(createdatetimeStart)),
 							Filters.lte("datetime", DateUtil.format(createdatetimeEnd))));
 
@@ -294,27 +319,27 @@ public class WarningLogMongoDaoImpl implements IWarningLogMongoDao {
 				if (StringUtils.isNotBlank(createdatetimeStart) && StringUtils.isBlank(createdatetimeEnd)
 						&& StringUtils.isNotBlank(parameter)) {
 					document_It = collection
-							.find(Filters.and(Filters.eq("paramName", parameter),
+							.find(Filters.and(Filters.eq("paramCode", parameter),
 									Filters.eq("status", 1),
 									Filters.gte("datetime", createdatetimeStart)))
 							.sort(Filters.eq("datetime", -1)).skip((pageIndex - 1) * pageSize).limit(pageSize);
-					totalCount = collection.count(Filters.and(Filters.eq("paramName", parameter),Filters.eq("status", 1),
+					totalCount = collection.count(Filters.and(Filters.eq("paramCode", parameter),Filters.eq("status", 1),
 							Filters.gte("datetime", DateUtil.format(createdatetimeStart))));
 				}
 				if (StringUtils.isBlank(createdatetimeStart) && StringUtils.isNotBlank(createdatetimeEnd)
 						&& StringUtils.isNotBlank(parameter)) {
 					document_It = collection
-							.find(Filters.and(Filters.eq("paramName", parameter),Filters.eq("status", 1),
+							.find(Filters.and(Filters.eq("paramCode", parameter),Filters.eq("status", 1),
 									Filters.lte("datetime", DateUtil.format(createdatetimeEnd))))
 							.sort(Filters.eq("datetime", -1)).skip((pageIndex - 1) * pageSize).limit(pageSize);
-					totalCount = collection.count(Filters.and(Filters.eq("paramName", parameter),Filters.eq("status", 1),
+					totalCount = collection.count(Filters.and(Filters.eq("paramCode", parameter),Filters.eq("status", 1),
 							Filters.lte("datetime", DateUtil.format(createdatetimeEnd))));
 				}
 				if (StringUtils.isBlank(createdatetimeStart) && StringUtils.isBlank(createdatetimeEnd)
 						&& StringUtils.isNotBlank(parameter)) {
-					document_It = collection.find(Filters.and(Filters.eq("status", 1),Filters.eq("paramName", parameter))).sort(Filters.eq("datetime", -1))
+					document_It = collection.find(Filters.and(Filters.eq("status", 1),Filters.eq("paramCode", parameter))).sort(Filters.eq("datetime", -1))
 							.skip((pageIndex - 1) * pageSize).limit(pageSize);
-					totalCount = collection.count(Filters.and(Filters.eq("paramName", parameter),Filters.eq("status", 1)));
+					totalCount = collection.count(Filters.and(Filters.eq("paramCode", parameter),Filters.eq("status", 1)));
 				}
 				if (StringUtils.isBlank(createdatetimeStart) && StringUtils.isNotBlank(createdatetimeEnd)
 						&& StringUtils.isBlank(parameter)) {
@@ -384,6 +409,7 @@ public class WarningLogMongoDaoImpl implements IWarningLogMongoDao {
 					warningLog.setTimeValue(timevalue);
 					warningLog.setWarningType(warningType);
 					warningLog.setWarnRemark(doc.getString("remark"));
+					warningLog.setRecordtime(doc.getString("_recordtime"));
 					queryLogDTOs.add(warningLog);
 					
 					//collection.updateMany(Filters.eq("_id", doc.getObjectId("_id")), Updates.set("hadRead", "1"));

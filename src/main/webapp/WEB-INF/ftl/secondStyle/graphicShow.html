@@ -224,7 +224,7 @@
         var seriesCounter = 0
         var date = []
         var pDate = []
-        var names = []
+        var names = [] 
         var tuli=[]
         var mouseover_message=[]
         var paramSize= ${params?size}
@@ -237,6 +237,7 @@
         		n.y = '${param.yname}';
         		n.max = '${param.max}';
         		n.min = '${param.min}';
+        		
         		names.push(n);
         	</#list>       	
         <#else>
@@ -380,7 +381,7 @@
 	  				  		Y2name ="Y2轴 ";
 	  				  	}
 	  				  }
-	             	  legendname =names[i].name;         	  	
+	             	  legendname =names[i].name;        	  	
 	             	  	seriesOptions[i++] = {
 				            	type: 'line',
 				                //name: param,

@@ -549,7 +549,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
             var url = "${pageContext.request.contextPath}/getConstraint?beginDate="+beginDate+"&endDate="+endDate+"&Series_current="+Series_current+"&Star_current="+Star_current+"&type_current="+type_current;
             //$("#id_dplist_template").jqxDropDownList('clear');
             $("#id_dplist_template").jqxDropDownList('clearSelection');          
-            updateParamTree(url);   
+            updateParamTree(url);
+            $("#id_dplist_template").jqxDropDownList('updateItem');   
 		 });
 		 
 		 $("#jqxButton_addgroup").jqxButton({ width: '95', height: '30'});	
@@ -596,7 +597,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
            url: url
        };
        var dataAdapter = new $.jqx.dataAdapter(source);
-       console.log("执行参数列表");
+       console.log("执行参数列表updateParamTree()");
+       
        $("#treeGrid").jqxTreeGrid(
        {
            width: 800,                
@@ -683,47 +685,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     var JsonG = {}
 	var AllRowselect = [];
 	var j=0;
-		/*//模板树提交分组按钮响应事件
-        function getTemplate(){      	
-            var groupObject={}
-            var selectRow = []
-            var rowindex = $("#id_templateTreeGrid").jqxTreeGrid('getCheckedRows');
-            var stringName="参数名：";
-            var chkObjs = $('input:radio:checked').val();
-            if(rowindex.length>0){        	
-                for(i=0;i<rowindex.length;i++){
-                	var rowObject={}
-                    var value = rowindex[i].name;
-                    rowObject.id=rowindex[i].id
-                    rowObject.name=rowindex[i].name;
-                    rowObject.max=rowindex[i].max;
-                    rowObject.min=rowindex[i].min;
-                    rowObject.unit=rowindex[i].unit;
-                    rowObject.yname=rowindex[i].yname;
-                    if(rowObject.yname=="y2"){
-                    	chkObjs=2;
-                    }
-                    selectRow.push( rowObject);
-                    stringName+=value+",";
-                }
-            }
-            groupObject.id=j
-            groupObject.secectRow = selectRow;
-            groupObject.Ycount = chkObjs;
-            groupObject.Y1name=$("#firsty-name").val();
-            if(chkObjs=="2"){
-            	groupObject.Y2name= $("#secondy-name").val();
-            }
-            //在已分组列表上添加“删除”和“保存为模板”按钮
-            var btn_savemodel="<button type='button' class='keepTemplet close' onclick='saveToLineTemplate(this)' style='background-color: #efa90e;'><span aria-hidden='true'>保存为模板</span></button>";
-            var group= $("<div name="+j+" class='button alert alert-block alert-success' role='alert'> <button type='button' class='deleteGroup close' onclick='clearGroup(this)'><span aria-hidden='true'>删除分组</span></button>"+btn_savemodel+stringName+"</div>")
-            $('#jqxWidget').append(group)
-            
-            AllRowselect[j]=groupObject;
-            j++;           
-            JsonG.alldata=AllRowselect;
-            
-        }*/
 	//添加分组按钮响应事件
       function getSelected(){      	
           var groupObject={};
@@ -763,11 +724,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
               }
            groupObject.id=j
            groupObject.secectRow = selectRow;
-//            groupObject.Ycount = chkObjs;
-//            groupObject.Y1name=$("#firsty-name").val();
-//            if(chkObjs=="2"){
-//            	groupObject.Y2name= $("#secondy-name").val();
-//            }
 			//设置每一组的开始和结束时间
 			groupObject.beginDate = beginDate;
 			groupObject.endDate = endDate;
@@ -816,10 +772,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         		paramarray.push(param);
         		//alert(param.name+"max:"+param.max+"min:"+param.min+param.yname);
         	}
-        	/*var a=AllRowselect[1].secectRow;
-        	var b=a[1];
-        	c=b.name;*/
-        	//alert(a.getname());
         	JsonParams.alldata=paramarray;
         }
         function postTemplate()
@@ -835,13 +787,16 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         	},
         	function(data){
         		//添加模板后刷新模板下拉框
-        		intTemplateList(); 
+        		console.log("保存模板提交数据成功");
+        		updateTemplateList();
+        		 
         		//添加模板后刷新常用模板
-        		initTemplateTree();
+        		//initTemplateTree();
         		//var url = "${pageContext.request.contextPath}/getConstraint?beginDate="+beginDate+"&endDate="+endDate+"&Series_current="+Series_current+"&Star_current="+Star_current+"&type_current="+type_current;
             	//updateParamTree(url);
         		
-        	})
+        	});
+        	$("#id_dplist_template").jqxDropDownList('clearSelection');
         	$(id_template_name).val("");
         	$(id_template_description).val("")
         	      	
@@ -897,7 +852,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	
 	            // Create a jqxDropDownList
 	            $("#id_dplist_template").jqxDropDownList({
-	                selectedIndex: 2, 
+	                //selectedIndex: 2, 
 	                source: dataAdapter, 
 	                displayMember: "name", 
 	                valueMember: "id",
@@ -917,6 +872,31 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	                    }
 	                }
 	            });
+            }
+            
+            //保存为模板后刷新模板列表
+            function updateTemplateList(){
+            console.log("刷新下拉框");
+            	var url_updatetemplatelist = "${pageContext.request.contextPath}/getTemplateList";
+	            var source_templatelist =
+	            {
+	                datatype: "json",
+	                datafields: [
+	                    { name: 'name' },
+	                    { name: 'id' }
+	                ],
+	                url: url_updatetemplatelist,
+	                async: true
+	            };
+	            var dataAdapter = new $.jqx.dataAdapter(source_templatelist);
+				$("#id_dplist_template").jqxDropDownList({
+	                source: dataAdapter, 
+	                displayMember: "name", 
+	                valueMember: "id",
+	                placeHolder:"请选择模板",
+	            });
+	            //$("#id_dplist_template").jqxDropDownList('updateItem');
+	            console.log("刷新下拉框结束");
             }
             
             //常用曲线模板树 

@@ -88,23 +88,23 @@ public class JobServiceImpl implements IJobService{
 	@Scheduled(cron = "0 0 1 * * ?") 
 	@Override
 	public void updateFileStatusJob() {
-		try {
-			List<StatusTracking> statusTrackings = statusTrackingDao.getStatusTrackingByParams(null);
-			if(statusTrackings != null && statusTrackings.size() > 0){
-				VirtualFileSystem file = null;
-				String statusType = StatusTrackingType.PREHANDLEFAIL.getValue();
-				for (StatusTracking statusTracking : statusTrackings) {
-					file = fileDao.selectByParameterTypeAndFileName(statusTracking.getUserType(),statusTracking.getFileName());
-					if(file != null){
-						statusTrackingService.updateStatusTracking(file.getFileName(), statusType, 
-								file.getParameterType(),"后台数据处理超时...");
-						fileService.deleteFileByUUId(file.getMongoFSUUId());
-					}
-				}
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+//		try {
+//			List<StatusTracking> statusTrackings = statusTrackingDao.getStatusTrackingByParams(null);
+//			if(statusTrackings != null && statusTrackings.size() > 0){
+//				VirtualFileSystem file = null;
+//				String statusType = StatusTrackingType.PREHANDLEFAIL.getValue();
+//				for (StatusTracking statusTracking : statusTrackings) {
+//					file = fileDao.selectByParameterTypeAndFileName(statusTracking.getUserType(),statusTracking.getFileName());
+//					if(file != null){
+//						statusTrackingService.updateStatusTracking(file.getFileName(), statusType, 
+//								file.getParameterType(),"后台数据处理超时...");
+//						fileService.deleteFileByUUId(file.getMongoFSUUId());
+//					}
+//				}
+//			}
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
 		
 	}
 	

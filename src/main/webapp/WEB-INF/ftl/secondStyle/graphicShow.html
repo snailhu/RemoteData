@@ -14,28 +14,11 @@
     <script type="text/javascript" src="${base}/static/scripts/vintage.js"></script>
     <script type="text/javascript" src="${base}/static/scripts/macarons.js"></script>
     <script type="text/javascript" src="${base}/static/js/conditionMonitoring/datediff.js"></script>
-    <!--<script type="text/javascript" src="${base}/static/scripts/test.js"></script>-->
     <!-- 时间选择器 -->
     <link type="text/css" rel="stylesheet" href="${base}/static/content/jeDate/jedate/skin/jedate.css">
     <script type="text/javascript" src="${base}/static/content/jeDate/jedate/jedate.js"></script>
-    <!--颜色选择器 -->
-    	<!--<link rel="stylesheet" href="${base}/static/content/minicolors/bootstrap.min.css">
-		<script type="text/javascript" src="${base}/static/content/minicolors/bootstrap.min.js"></script>
-		<link rel="stylesheet" href="${base}/static/content/minicolors/jquery.minicolors.css">
-		<script type="text/javascript" src="${base}/static/content/minicolors/jquery.minicolors.js"></script>
-		<script type="text/javascript" src="${base}/static/content/minicolors/jquery.colorpicker.js"></script>
-    	-->
-    	<!-- 颜色选择器jscolor-->
-		<script type="text/javascript" src="${base}/static/content/minicolors/jscolor.js"></script>
-    <!-- ps颜色选择器 -->
-<!--     <link rel="stylesheet" type="text/css" href="${base}/static/content/pscolors/css/colorpicker.css"/> -->
-<!--     <link rel="stylesheet" media="screen" type="text/css" href="${base}/static/content/pscolors/css/layout.css" /> -->
-<!-- 	<script type="text/javascript" src="${base}/static/content/pscolors/js/jquery.js"></script> -->
-<!-- 	<script type="text/javascript" src="${base}/static/content/pscolors/js/colorpicker.js"></script> -->
-<!--     <script type="text/javascript" src="${base}/static/content/pscolors/js/eye.js"></script> -->
-<!--     <script type="text/javascript" src="${base}/static/content/pscolors/js/utils.js"></script> -->
-<!--     <script type="text/javascript" src="${base}/static/content/pscolors/js/layout.js?ver=1.0.2"></script> -->
-    
+   	<!-- 颜色选择器jscolor-->
+	<script type="text/javascript" src="${base}/static/content/minicolors/jscolor.js"></script>
     <link rel="stylesheet" href="${base}/static/assets/css/bootstrap.min.css">
     <!--<script src="${base}/static/assets/js/bootstrap.min.js"></script>-->
     <!--<script src=${base}/static/assets/js/bootstrap-tag.min.js"></script>-->
@@ -107,21 +90,10 @@
 		<input class="datainp" id="dateStart" type="text" placeholder="- -请选择开始时间- -" readonly>
 		<label>结束日期</label>
 		<input class="datainp" id="dateEnd" type="text" placeholder="- -请选择结束时间- -" readonly>
-		<input class="btn btn-default getData-btn" id="getData"  type="button" name="getData" value="获取数据">
+		<!--<input class="btn btn-default getData-btn" id="getData"  type="button" name="getData" value="获取数据">-->
 		<input class="btn btn-default getData-btn" id="changeColor" type="button" name="changeColor" value="配置曲线" data-toggle="modal" data-target="#configChartModal" >
 	</div>
 	<div class="changeColor-div">
-<!--         <#if (params?size>0) > -->
-<!-- 	       	<#list params as param> -->
-<!-- 	       		<div class="form-group"> -->
-<!-- 					<input type="text" id="${param.value}" name="${param.value}" dataName="${param.name}" class="demo" style="height: 25px;width: 55px;border: none;" data-position="bottom left" value="#0088cc"> -->
-<!-- 					<label for="${param.value}">${param.name}</label> -->
-<!-- 				</div> -->
-<!-- 	       	</#list>       	 -->
-<!-- 		</#if> -->
-<!-- 		<div class="form-group"> -->
-<!-- 			<button name="changeColor" id="changeColor"> 确定改变颜色 </button> -->
-<!-- 		</div> -->
 		<!-- 配置图表参数表单 -->
 		<div class="modal fade" id="configChartModal" tabindex="-1" role="dialog" aria-labelledby="configChartModalLabel"  >
 		  <div class="modal-dialog" role="document" style="margin:35px 180px" >
@@ -170,8 +142,8 @@
 	</div>
 	<hr/>
 	<div id="main" style="width: 870px;height:480px;"></div>
-</div><!-- /.page-content -->		
-</div><!-- /.main-content -->	
+</div>		
+</div>	
 </body>
 <script type="text/javascript">
 	Date.prototype.pattern=function(fmt) {          
@@ -226,14 +198,15 @@
 		isTime:true, //是否开启时间选择
 		minDate:'${beginDate}',//最小日期
 		maxDate:'${endDate}', //设定最大日期为当前日期
-	});	
+	});
+	
 	//从滚轮处获取到的画布开始时间和结束时间
 	var startDate ="";
 	var endDate ="";
 	//当前echars画布中最大时间区间
 	var startDate_init = '${beginDate}';
 	var endDate_init = '${endDate}';
-	//实时时间跨度
+	//实时时间跨度(分钟)
 	var timeZone = stringToDate(endDate_init) - stringToDate(startDate_init)/60000;
 
     $(function(){
@@ -241,18 +214,20 @@
     	$(".modal-footer").css("text-align","center");
     	$(".modal-footer").find("button").css({"margin-right":"20px","width":"80px"});
     	$(".modal-dialog").css("margin","20px auto");
+    	$('#dateStart').val('${beginDate}');
+    	$('#dateEnd').val('${endDate}');
     	
-    	var paramObject={};	
+    	var paramObject={}
     	var myChart = echarts.init(document.getElementById('main'),'macarons');
-    	var seriesOptions = []
+    	var seriesOptions = [] 
     	var pSeriesOptions = []
         var seriesCounter = 0
-        var date = [];
-        var pDate = [];
-        var names = [];
-        var tuli=[];
-        var mouseover_message=[];
-        var paramSize= ${params?size};
+        var date = []
+        var pDate = []
+        var names = [] 
+        var tuli=[]
+        var mouseover_message=[]
+        var paramSize= ${params?size}
         <#if (params?size>0) >
         	<#list params as param>
 		        var n={};
@@ -262,7 +237,7 @@
         		n.y = '${param.yname}';
         		n.max = '${param.max}';
         		n.min = '${param.min}';
-        		console.log("每条曲线的参数：参数名"+n.name+"*参数值:"+n.value+"单位"+n.unit+"*Y轴:"+n.y+"*最大值:"+n.max+"*最小值："+n.min);
+        		
         		names.push(n);
         	</#list>       	
         <#else>
@@ -277,10 +252,10 @@
 			//	     mouseover_message = params;
  			//		}           
             },
-            title: {
+            /* title: {
             	text: '分析图',
                 //left: 'center'
-            },
+            }, */
            	// 图例	
             legend: {
                 top: 'auto', 
@@ -325,48 +300,20 @@
 		            }
 	        	}
             ],
-            /*dataZoom: [{
-                type: 'inside',
-                start:0,
-                end:100,
-                realtime:false
-            }],*/
             dataZoom: [
         	{
+        		id:'dataZoomX',
         		type:'slider',
-            	show: true,
-            	realtime: true,
-            	//start: 1,
-            	//end: 99
+        		xAxisIndex:0,
+            	start: 1,
+            	end: 99
         	},
         	{
             	type: 'inside',
-            	realtime: true,
+            	disable:true, 
             	start: 1,
             	end: 99
         	}],
-        	
-        	//时间轴
-        	/*timeline: {
-            show : true,
-            type: 'slider',
-            axisType: 'category',
-            currentIndex:0,
-            data:[
-				    '1S',
-				    '5S',
-				    '15s',
-				    '30s',
-				    '1m',
-				    '15m',
-				    '30m',
-				    '1h',
-				    '6d',
-				    '12d',
-				    '30d',
-				]
-        	},*/
-            
             series: []
         };    	     	
    
@@ -380,7 +327,6 @@
  
    		  		
      	//一次性组装所有参数的x和y值
-     	console.log("开始隐藏");
      	$("#main").showLoading();
    		$.ajax({
              url: '${base}/getData',
@@ -391,7 +337,6 @@
              data: {'paramObject':JSON.stringify(paramObject)},
               //成功执行方法
              success: function(data){
-             	  //var json = eval(data);
              	  $("#main").hideLoading(); 
              	  var i=0
              	  var yname = 0;
@@ -404,8 +349,6 @@
              	  var Y2nametemp ="Y2轴";
              	  
              	  for(var param in data){             	  
-	             	  //unit = names[names.length-1-i].unit;
-	             	  //yname  = names[names.length-1-i].y;	  				  
 	             	  unit = names[i].unit;
 	             	  yname  = names[i].y;	  				  
 	  				  //Y1轴
@@ -438,9 +381,7 @@
 	  				  		Y2name ="Y2轴 ";
 	  				  	}
 	  				  }
-  				  
-	             	  //legendname =names[names.length-1-i].name;
-	             	  legendname =names[i].name;         	  	
+	             	  legendname =names[i].name;        	  	
 	             	  	seriesOptions[i++] = {
 				            	type: 'line',
 				                //name: param,
@@ -483,44 +424,89 @@
          })
  	
        	$("#getData").click(function(){
-       		startDate =  $('#dateStart').val();
-       		endDate =  $('#dateEnd').val();
-       		console.log("开始时间："+startDate+"结束时间"+endDate);
-       		//startDate_init = startDate;
-       		//endDate_init = endDate;
-       		if(endDate && startDate){
-			$.post("getDatabytap", 
-					{
-						'startDate' : startDate,
-						'endDate' : endDate
-					},
-					function(data){
-			             	  var i=0
-			             	  var yname = 0;
-			             	  var legendname ="";
-			             	  for(var param in data){
-			             	  yname  = names[i].y;
-			             	  legendname =names[i].name;
-			             	  console.log(yname+legendname)
-			             	  	seriesOptions[i++] = {
-						            	type: 'line',
-						                //name: param,
-						                name:legendname,
-						                smooth:false,
-						               	yAxisIndex: yname,
-						                data: data[param].paramValue
-						            };
-						            //设置X轴，注意，这里X轴存在问题，默认使用了最后一组参数的X轴
-						            date =  data[param].yearValue;
-			  		}
-				  	pSeriesOptions = seriesOptions
-					options.series = eval(seriesOptions);
-					pDate=options.xAxis.data = date;
-					startDate_init = startDate;
-				    endDate_init = endDate;
-				    myChart.setOption(options);
-					});   
-       		}       		      	             	
+       		parent.window.document.body.style.overflow = "hidden";//隐藏滚动条
+       		$("#main").showLoading();
+       		paramObject.nowSeries='${nowSeries}';
+								       		paramObject.nowStar='${nowStar}';
+								       		paramObject.component='${component}';
+								       		paramObject.startTime=$('#dateStart').val();
+								       		paramObject.endTime=$('#dateEnd').val();
+								       		paramObject.paramAttribute=names;
+								         	//一次性组装所有参数的x和y值
+								       		$.ajax({
+								                 url: '${base}/getData',
+								                 type: 'POST',
+								                 dataType: 'json',
+								                 timeout: 100000,
+								                 cache: false,
+								                 data: {'paramObject':JSON.stringify(paramObject)},
+								                  //成功执行方法
+								                 success: function(data){
+								                	 $("#main").hideLoading(); 
+								                	 parent.window.document.body.style.overflow = "auto";//开启滚动
+								                	 startDate_init = startDate;
+													 endDate_init = endDate;	
+													 $('#dateStart').val(startDate);
+						       						 $('#dateEnd').val(endDate);
+								                 	  var i=0
+								                 	  var yname = 0;
+								                 	  var legendname ="";
+								                 	  
+								                 	  var unit=null;
+								                 	  var Y1name ="Y1轴";
+										         	  var Y1nametemp ="Y1轴";
+										         	  
+										         	  var Y2name ="Y2轴";
+										         	  var Y2nametemp ="Y2轴";
+								                 	  for(var param in data){								                 	  
+									                 	  unit = names[i].unit;
+										             	  yname  = names[i].y;	  				  
+										  				  //Y1轴
+										  				  if(yname==0)
+										  				  {
+										  				  	Y1nametemp = Y1name;
+										  				  	Y1name ="Y1轴"+"("+unit+")";  				  	
+										  				  	if((Y1nametemp!="Y1轴") && (Y1name!=Y1nametemp))
+										  				  	{	  				  		
+										  				  			Y1name ="Y1轴 ";
+										  				  			
+										  				  	}
+										  				  	
+										  				  }
+										  				  //Y2轴
+										  				  if(yname==1)
+										  				  {
+										  				    var Y2nametemp =Y2name;
+										  				  	Y2name ="Y2轴"+"("+unit+")";	  				  	
+										  				  	if((Y2nametemp!="Y2轴")&&(Y2name!=Y2nametemp))
+										  				  	{
+										  				  		Y2name ="Y2轴 ";
+										  				  	}
+										  				  }
+						             	  			  legendname =names[i].name;
+								                 	  
+								                 	  	seriesOptions[i++] = {
+								    			            	//type: lineType,
+								    			                //name: param,
+								    			                name:legendname,
+								    			                smooth:false,
+								    			               	yAxisIndex: yname,
+								    			                /*lineStyle:{
+								    		                    	normal:{
+								    		                    		width:0.5 
+								    		                    		}
+								    		                    },*/
+								    			                data: data[param].paramValue
+								    			            };
+								    			            //设置X轴，注意，这里X轴存在问题，默认使用了最后一组参数的X轴
+								    			            date =  data[param].yearValue;
+								                 	  }
+								                 	  	pSeriesOptions = seriesOptions
+								    	            	options.series = eval(seriesOptions);
+								    	            	pDate=options.xAxis.data = date;
+								    	                myChart.setOption(options);
+								                 }
+								             })  	          	
        	})
        	
        	
@@ -533,10 +519,12 @@
        	
        	//数据缩放区域事件	  	      
         myChart.on('dataZoom', function (params) {
-        		console.log(myChart.getOption().series[0].type);
         	  	var lineType = myChart.getOption().series[0].type;
               	var xAxis = myChart.getModel().option.xAxis[0];
-				if(xAxis.data[xAxis.rangeStart]&&xAxis.data[xAxis.rangeEnd]){
+              	console.log("dataZoom的起始值"+params.start+"+++"+params.end);
+              	console.log("滑动块横坐标起始值："+xAxis.data[xAxis.rangeStart]+"+++"+xAxis.data[xAxis.rangeEnd]);
+              	console.log("X轴的横坐标的起始值"+xAxis.data[0]+"+++"+xAxis.data[xAxis.data.length-1]+"总数："+xAxis.data.length);
+				if(xAxis.data[xAxis.rangeStart] && xAxis.data[xAxis.rangeEnd]){
 					startDate = xAxis.data[xAxis.rangeStart]
 					endDate = xAxis.data[xAxis.rangeEnd];
 					var a= stringToDate(startDate);
@@ -544,28 +532,22 @@
 					$('#dateStart').val(startDate);
        				$('#dateEnd').val(endDate);
        				timeZone = (b-a)/60000;//时间区间单位从毫秒转换为分钟
-       				console.log(timeZone);
 				}else{
 					if(timeZone>0){
-						startDate = startDate_init;
+						startDate = startDate_init; //若果通过坐标轴获取不到当前画布X轴的起始值，则设置时间基数为本次查询的时间值
 						endDate = endDate_init;	
 					}
 				}
 				$('#dateStart').val(startDate);
        			$('#dateEnd').val(endDate);
-              	console.log("开始日期"+startDate+"结束日期："+endDate);
               	if(timeZone>0){
               		 if(needGetDate()){
               		 						parent.window.document.body.style.overflow = "hidden";//隐藏滚动条
 						                	$("#main").showLoading(); 
 											var a= stringToDate(startDate);
 							              	var b= stringToDate(endDate);
-							              	console.log(a);
-							              	console.log(b);
 							              	startDate = a.pattern("yyyy-MM-dd HH:mm:ss");
 							              	endDate = b.pattern("yyyy-MM-dd HH:mm:ss");
-							              	console.log(startDate);
-							              	console.log(endDate);
 								       		//将一组中的所有参数组装为object
 								       		paramObject.nowSeries='${nowSeries}';
 								       		paramObject.nowStar='${nowStar}';
@@ -573,9 +555,6 @@
 								       		paramObject.startTime=startDate;
 								       		paramObject.endTime=endDate;
 								       		paramObject.paramAttribute=names;
-								       		  		
-								       		 console.log("开始请求后台时间："+new Date());
-								       		  console.log(JSON.stringify(paramObject));
 								         	//一次性组装所有参数的x和y值
 								       		$.ajax({
 								                 url: '${base}/getData',
@@ -586,11 +565,8 @@
 								                 data: {'paramObject':JSON.stringify(paramObject)},
 								                  //成功执行方法
 								                 success: function(data){
-								                 	 console.log("请求后台完成时间："+new Date());
 								                	 $("#main").hideLoading(); 
 								                	 parent.window.document.body.style.overflow = "auto";//开启滚动
-								                	 console.log("111"+startDate_init);
-											         console.log("111"+endDate_init);
 								                	 startDate_init = startDate;
 													 endDate_init = endDate;	
 													 $('#dateStart').val(startDate);
@@ -637,7 +613,6 @@
 						             	  			  //legendname =names[names.length-1-i].name;
 						             	  			  legendname =names[i].name;
 								                 	  
-								                 	  console.log(yname+legendname)
 								                 	  	seriesOptions[i++] = {
 								    			            	//type: lineType,
 								    			                //name: param,
@@ -658,35 +633,12 @@
 								    	            	options.series = eval(seriesOptions);
 								    	            	pDate=options.xAxis.data = date;
 								    	                myChart.setOption(options);
-								    	                 console.log("画图完成时间："+new Date());
 								                 }
 								             })  	
 					}
               }
         });
-
-    	/*//设置颜色
-    	$('.jscolor').each( function() {
-			$(this).minicolors({
-				control: $(this).attr('data-control') || 'hue',
-				defaultValue: $(this).attr('data-defaultValue') || '',
-				inline: $(this).attr('data-inline') === 'true',
-				letterCase: $(this).attr('data-letterCase') || 'lowercase',
-				opacity: $(this).attr('data-opacity'),
-				position: $(this).attr('data-position') || 'bottom left',
-				change: function(hex, opacity) {
-					var log;
-					try {
-						log = hex ? hex : 'transparent';
-						if( opacity ) log += ', ' + opacity;
-						//console.log(log);
-						$(this).attr('value',log);
-					} catch(e) {}
-				},
-				theme: 'default'		                  
-        	});
-		});	*/	
-    	
+        
         $('#submit_configChart').click(function(){
 	      	var seriesOptionsDam = [];
 	      	var legendOptionsData = [];
@@ -736,16 +688,12 @@
 			var color = picker.toHEXString();
 			var id= picker.valueElement.name;   		
     		var id2=id+"-color"; 
-    		//console.log('当前id:'+id2+'   RGB：'+color);
-    		//$("#"+id2).attr("value",value);
     		document.getElementById(id2).value=color;    		
-   			//console.log('当前id:'+id2+'   RGB：'+document.getElementById(id2).value);
 	}
 		
     function needGetDate(){
 		var startInit = stringToDate(startDate_init);
 		var endInit = stringToDate(endDate_init);
-		console.log("时间间隔："+startDate_init+startInit+"-----"+endDate_init+endInit+"<---->"+(endInit-startInit));
 		
 		//timespace 精确到分钟,时间相减得到毫秒数，再除以60000得到分钟数
 		var timespace = (endInit-startInit)/60000;
@@ -777,7 +725,7 @@
 				return true;
 			}else{
 				//原始数据不请求后台
-				console.log("原始数据不请求后台");
+				//console.log("原始数据不请求后台");
 				return false;
 			}
 			return false;
@@ -868,7 +816,7 @@
 				endDate_init = endDate;
 				return true;
 			}else{
-				console.log(startDate);
+				//console.log(startDate);
 				if(a/60000 - startInit/60000 >= 129600 || endInit/60000-b/60000 >= 129600){
 					return true;
 				}else{

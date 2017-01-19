@@ -38,7 +38,7 @@ public class StarParamDao extends BaseDaoImpl<StarParam> implements IStarParamDa
 			hql += " and u.paramCode = :paramCode";
 			countHql += " and u.paramCode = :paramCode";
 		}
-			hql += " order by u.createDate";
+			hql += " order by u.createDate desc";
 		
 		Query query = this.getSession().createQuery(hql);
 		Query countQuery = this.getSession().createQuery(countHql);

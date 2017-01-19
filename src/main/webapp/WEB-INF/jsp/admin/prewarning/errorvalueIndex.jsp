@@ -1108,13 +1108,13 @@
 			var star = $('#search-star').val();
 			var parameterType = $('#search-parameterType').val();
 			var parameter = $('#search-parameter').val();
-			/*valueGrid.datagrid('load', {
+			valueGrid.datagrid('load', {
 				series : series,
 				star : star,
 				parameterType : parameterType,
 				parameter : parameter,
 				warningType : "1"
-			});*/
+			});
 			if(parameterType=='flywheel'){
 			valueGrid = $("#valueList").datagrid({
                 url: '<%=request.getContextPath()%>/admin/prewarning/getValueList?warningType=1',

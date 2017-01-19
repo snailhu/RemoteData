@@ -1,0 +1,851 @@
+<#assign base=request.contextPath + '/DataRemote' />
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="${base}/static/js/jquery-2.0.3.min.js"></script>
+
+	<script  src="${base}/static/js/jquery.mousewheel.js"></script>
+    <script  src="${base}/static/showLoading/js/jquery.showLoading.min.js"></script>
+    <link rel="stylesheet"  href="${base}/static/showLoading/css/showLoading.css" />
+    <script type="text/javascript" src="${base}/static/scripts/echarts.js"></script>
+    <!--Echart主题-->
+    <script type="text/javascript" src="${base}/static/scripts/vintage.js"></script>
+    <script type="text/javascript" src="${base}/static/scripts/macarons.js"></script>
+    <script type="text/javascript" src="${base}/static/js/conditionMonitoring/datediff.js"></script>
+    <!--<script type="text/javascript" src="${base}/static/scripts/test.js"></script>-->
+    <!-- 时间选择器 -->
+    <link type="text/css" rel="stylesheet" href="${base}/static/content/jeDate/jedate/skin/jedate.css">
+    <script type="text/javascript" src="${base}/static/content/jeDate/jedate/jedate.js"></script>
+    <!-- 颜色选择器jscolor-->
+	<script type="text/javascript" src="${base}/static/content/minicolors/jscolor.js"></script>
+    
+    <link rel="stylesheet" href="${base}/static/assets/css/bootstrap.min.css">
+    <script src="${pageContext.request.contextPath}/DataRemote/static/assets/js/bootstrap.min.js"></script>
+	<script src="${pageContext.request.contextPath}/DataRemote/static/assets/js/typeahead-bs2.min.js"></script>
+	
+    <style type="text/css">
+    .dateStyle{
+    	margin-left: 80px;
+    	margin-top: 25px;
+    }
+    .datainp{
+		width: 150px;
+		height: 25px;
+	}
+	.getData-btn{
+		height: 30px;
+		width: 100px;
+	}
+	.form-group {
+		margin-left:0px;
+		margin-right:0px;
+	}
+	.dateStyle label {
+		font-size: 16px;
+    	text-align: center;
+    	color: #000000;
+    	border-width: 1px;
+	}
+	.form-horizontal .control-label {
+	    text-align: center;
+	}
+	.shujufenxibutton {
+    height: 31px;
+    width: 80px;
+    color: white;
+    background-color: #4B92DD;
+    border-width: 2px;
+	}
+	#getData,#changeColor{
+    overflow:hidden;
+    padding: 0px;
+    line-height: 30px;
+    border-radius:10px;
+    background-color: #1C76C5;
+    color: white; 
+    //margin-left:120px;
+    //margin-top:-32px
+    }
+	#add-series-close{
+	color: white;
+    font-size: 14px;
+    width: 80px;
+    background-color: #abbac3;
+    height: 34px;
+    border-width: 0;
+	margin-left: 20px;
+	}
+	#add-series-close:hover{background-color:#8b9aa3;border-color:#abbac3;}
+	#submit_configChart{ width: 80px;}
+	.col-lg-4{text-align:center;}
+    </style>
+</head>
+<body>
+<div class="main-content">
+<div class="page-content">
+	<div class="dateStyle">
+		<label>开始日期</label>
+		<input class="datainp" id="dateStart" type="text" placeholder="- -请选择开始时间- -" readonly>
+		<label>结束日期</label>
+		<input class="datainp" id="dateEnd" type="text" placeholder="- -请选择结束时间- -" readonly>
+		<input class="btn btn-default getData-btn" id="getData"  type="button" name="getData" value="获取数据">
+		<input class="btn btn-default getData-btn" id="changeColor" type="button" name="changeColor" value="配置曲线" data-toggle="modal" data-target="#configChartModal" >
+	</div>
+	<div class="changeColor-div">
+		<!-- 配置图表参数表单 -->
+		<div class="modal fade" id="configChartModal" tabindex="-1" role="dialog" aria-labelledby="configChartModalLabel"  >
+		  <div class="modal-dialog" role="document" style="margin:35px 180px" >
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+		        <h4 class="modal-title" id="configChartModalLabel">配置曲线</h4>
+		      </div>
+		      <div class="modal-body">
+		      	<form id="configChartForm" class="form-horizontal" role="form">
+					<div class="space-4"></div>
+					<div class="form-group">
+						<label class="col-sm-5 control-label"> 参数名称</label>
+						<label class="col-sm-3 control-label"> 颜色</label>
+						<label class="col-sm-3 control-label"> 大小</label>
+					</div>
+					<#if (params?size>0) > 
+						<#list params as param>
+							<div class="space-4"></div>
+							<div class="form-group">
+								<label class="col-sm-5 control-label"> ${param.name} </label>
+								<div class="col-sm-3">
+									<input type="text" id="${param.value}-color" name="${param.value}" dataName="${param.name}" class=" form-control jscolor {onFineChange:'update(this)'}"  style="border: none;" data-position="bottom left" value="">					       				
+								</div>
+								<div class="col-sm-3">
+									<select class="form-control" id="${param.value}-size">
+										<option value="1">1</option>
+										<option value="2" selected="true">2</option>
+										<option value="3">3</option>
+									</select>
+								</div>
+							</div>
+						</#list>
+					</#if>
+				</form>
+		      </div>
+		      <div class="modal-footer">
+		      	<div class="col-lg-4 col-lg-offset-5">
+			        <button type="button" class="btn btn-primary" data-dismiss="modal" id="submit_configChart">确定</button>
+			        <button type="button" class="btn btn-default" id="add-series-close" data-dismiss="modal">关闭</button>
+                   </div>
+		      </div>
+		    </div>
+		  </div>
+		</div>
+	</div>
+	<hr/>
+	<div id="main" style="width: 870px;height:480px;"></div>
+</div>		
+</div>
+</body>
+<script type="text/javascript">
+	Date.prototype.pattern=function(fmt) {          
+       	    var o = {          
+       	    "M+" : this.getMonth()+1, //月份          
+       	    "d+" : this.getDate(), //日          
+       	    "h+" : this.getHours()%12 == 0 ? 12 : this.getHours()%12, //小时          
+       	    "H+" : this.getHours(), //小时          
+       	    "m+" : this.getMinutes(), //分          
+       	    "s+" : this.getSeconds(), //秒          
+       	    "q+" : Math.floor((this.getMonth()+3)/3), //季度          
+       	    "S" : this.getMilliseconds() //毫秒          
+       	    };          
+       	    var week = {          
+       	    "0" : "\u65e5",          
+       	    "1" : "\u4e00",          
+       	    "2" : "\u4e8c",          
+       	    "3" : "\u4e09",          
+       	    "4" : "\u56db",          
+       	    "5" : "\u4e94",          
+       	    "6" : "\u516d"         
+       	    };          
+       	    if(/(y+)/.test(fmt)){          
+       	        fmt=fmt.replace(RegExp.$1, (this.getFullYear()+"").substr(4 - RegExp.$1.length));          
+       	    }          
+       	    if(/(E+)/.test(fmt)){          
+       	        fmt=fmt.replace(RegExp.$1, ((RegExp.$1.length>1) ? (RegExp.$1.length>2 ? "\u661f\u671f" : "\u5468") : "")+week[this.getDay()+""]);          
+       	    }          
+       	    for(var k in o){          
+       	        if(new RegExp("("+ k +")").test(fmt)){          
+       	            fmt = fmt.replace(RegExp.$1, (RegExp.$1.length==1) ? (o[k]) : (("00"+ o[k]).substr((""+ o[k]).length)));          
+       	        }          
+       	    }          
+       	    return fmt;          
+       	}  
+
+	jeDate({
+		dateCell:"#dateStart",//直接显示日期层的容器，可以是ID  CLASS
+		format:"YYYY-MM-DD hh:mm:ss",//日期格式
+		isinitVal:false, //是否初始化时间
+		startMin:"",//清除日期后返回到预设的最小日期
+		festival:false, //是否显示节日
+		isTime:true, //是否开启时间选择
+		minDate:'${beginDate}',//最小日期
+		maxDate:'${endDate}', //设定最大日期为当前日期
+	});
+	jeDate({
+		dateCell:"#dateEnd",//直接显示日期层的容器，可以是ID  CLASS
+		format:"YYYY-MM-DD hh:mm:ss",//日期格式
+		isinitVal:false, //是否初始化时间
+		festival:false, //是否显示节日
+		isTime:true, //是否开启时间选择
+		minDate:'${beginDate}',//最小日期
+		maxDate:'${endDate}', //设定最大日期为当前日期
+	});
+	
+	//当前画布的起止时间
+	var startDate ="";
+	var endDate ="";
+	
+	//下次次请求数据的起止时间
+	var startDate_init = '${beginDate}';
+	var endDate_init = '${endDate}';
+	
+	//下次请求的时间跨度(分钟)
+	console.log(startDate_init);
+	var timeZone = stringToDate(endDate_init) - stringToDate(startDate_init)/60000;
+
+    $(function(){
+    	//修改页面缩放，界面显示不正常
+    	$(".modal-footer").css("text-align","center");
+    	$(".modal-footer").find("button").css({"margin-right":"20px","width":"80px"});
+    	$(".modal-dialog").css("margin","20px auto");
+    	
+    	var paramObject={}
+    	var myChart = echarts.init(document.getElementById('main'),'macarons');
+    	var seriesOptions = [] 
+    	var pSeriesOptions = []
+        var seriesCounter = 0
+        var date = []
+        var pDate = []
+        var names = []
+        var tuli=[]
+        var mouseover_message=[]
+        var paramSize= ${params?size}
+        <#if (params?size>0) >
+        	<#list params as param>
+		        var n={};
+        		n.name = '${param.name}';
+        		n.value = '${param.value}';
+        		n.unit = '${param.unit}';
+        		n.y = '${param.yname}';
+        		n.max = '${param.max}';
+        		n.min = '${param.min}';
+        		names.push(n);
+        	</#list>       	
+        <#else>
+        	names = ['flywheel_a_speed','flywheel_f_motor_current'];
+		</#if>
+        
+         var options = {
+       		//color:['green'],
+            tooltip: {
+                trigger: 'axis'
+           	//      formatter: function (params) {
+			//	     mouseover_message = params;
+ 			//		}           
+            },
+            /* title: {
+            	text: '分析图',
+                //left: 'center'
+            }, */
+           	// 图例	
+            legend: {
+                top: 'auto', 
+                data: names
+            },
+            //工具栏
+            toolbox: {
+                feature: {
+                    dataZoom: {id:'dataZoomi',yAxisIndex: false,xAxisIndex:[0], brush:{type:['rect','lineX']},title:{ zoom:'区域缩放', back:'区域还原'}},
+                    magicType : {show: true, type: ['line', 'bar'],title:{line:'折线图',bar:'柱状图'}},
+                    restore: {},
+                    saveAsImage: {title:'保存图片'}
+                	},
+                itemGap:20,
+                itemSize:20,
+                //borderColor:'#ccc',
+                orient:'vertical',
+                right:'1%',
+        		height:'auto',
+        		top:'25%',
+                
+            },
+            xAxis: {
+            	// axisLabel: {					
+				//	rotate: 10
+				//	},
+                type: 'category',
+                boundaryGap: false,
+                data:[]              
+            },
+            yAxis: [{
+            		name: 'Y1轴',
+                	type: 'value',
+                	splitLine : {
+		                show: true
+		            }
+            	},{
+            		name: 'Y2轴',
+		            type : 'value',
+		            splitLine : {
+		                show: false
+		            }
+	        	}
+            ],
+            dataZoom: [
+        	{
+        		id:'dataZooms',
+        		type:'slider',
+        		xAxisIndex:0,
+            	start: 1,
+            	end: 99
+        	},
+        	{
+        		id:'dataZoomi',
+            	type: 'inside',
+            	disable:true, 
+            	start: 1,
+            	end: 99
+        	}],
+            series: []
+        };    	     	
+   
+   		//将一组中的所有参数组装为object
+   		paramObject.nowSeries='${nowSeries}';
+   		paramObject.nowStar='${nowStar}';
+   		paramObject.component='${component}';
+   		paramObject.startTime='${beginDate}';
+   		paramObject.endTime='${endDate}';
+   		paramObject.paramAttribute=names;
+    		  		
+     	//一次性组装所有参数的x和y值
+     	$("#main").showLoading();
+   		$.ajax({
+             url: '${base}/getData',
+             type: 'POST',
+             dataType: 'json',
+             timeout: 100000,
+             cache: false,
+             data: {'paramObject':JSON.stringify(paramObject)},
+              //成功执行方法
+             success: function(data){
+             	  $("#main").hideLoading(); 
+             	  var i=0
+             	  var yname = 0;
+             	  var legendname ="";
+             	  var unit=null;          	  
+             	  var Y1name ="Y1轴";
+             	  var Y1nametemp ="Y1轴";
+             	  
+             	  var Y2name ="Y2轴";
+             	  var Y2nametemp ="Y2轴";
+             	  
+             	  for(var param in data){             	  
+	             	  //unit = names[names.length-1-i].unit;
+	             	  //yname  = names[names.length-1-i].y;	  				  
+	             	  unit = names[i].unit;
+	             	  yname  = names[i].y;	  				  
+	  				  //Y1轴
+	  				  if(yname==0)
+	  				  {
+	  				  	Y1nametemp = Y1name;
+	  				  	Y1name ="Y1轴"+"("+unit+")"; 
+	  				  	if(Y1name=="Y1轴()")
+	  				  	{
+	  				  		Y1name="Y1轴";
+	  				  	} 				  	
+	  				  	if((Y1nametemp!="Y1轴") && (Y1name!=Y1nametemp))
+	  				  	{	  				  		
+	  				  			Y1name ="Y1轴 ";
+	  				  			
+	  				  	}
+	  				  	
+	  				  }
+	  				  //Y2轴
+	  				  if(yname==1)
+	  				  {
+	  				    var Y2nametemp =Y2name;
+	  				  	Y2name ="Y2轴"+"("+unit+")";	
+	  				  	if(Y2name=="Y2轴()")
+	  				  	{
+	  				  		Y2name="Y2轴";
+	  				  	}   				  	
+	  				  	if((Y2nametemp!="Y2轴")&&(Y2name!=Y2nametemp))
+	  				  	{
+	  				  		Y2name ="Y2轴 ";
+	  				  	}
+	  				  }
+  				  
+	             	  //legendname =names[names.length-1-i].name;
+	             	  legendname =names[i].name;         	  	
+	             	  	seriesOptions[i++] = {
+				            	type: 'line',
+				                //name: param,
+				                name:legendname,
+				                smooth:false,
+				               	yAxisIndex: yname,
+				                /*lineStyle:{
+			                    	normal:{
+			                    		width:0.5 
+			                    		}
+			                    },*/
+				                data: data[param].paramValue
+				            };
+				            //设置X轴，注意，这里X轴存在问题，默认使用了最后一组参数的X轴
+				            date =  data[param].yearValue;
+             	  }
+             	  
+             	  //修改Y轴坐标单位
+             	  var YAxixs =[{
+				        		name: Y1name,
+				            	type: 'value',
+				            	splitLine : {
+					                show: true
+					            }
+				        	},{
+				        		name: Y2name,
+					            type : 'value',
+					            splitLine : {
+					                show: false
+					            }
+				        	}
+				        ]
+             	 	
+             	  	pSeriesOptions = seriesOptions;
+	            	options.series = eval(seriesOptions);
+	            	options.yAxis =YAxixs;
+	            	pDate=options.xAxis.data = date;
+	                myChart.setOption(options);
+             }             
+         })		
+		  
+		$('#dateStart').val('${beginDate}');
+       	$('#dateEnd').val('${endDate}');
+       	    	
+       	myChart.on('restore' ,function(params){
+       		options.series = eval(pSeriesOptions);
+            date=options.xAxis.data = pDate;	
+            myChart.setOption(options);
+       		
+       	});
+    	
+       	//数据缩放区域事件	  	      
+        myChart.on('dataZoom', function (params) {
+        	  	/*var lineType = myChart.getOption().series[0].type;
+              	var xAxis = myChart.getModel().option.xAxis[0];
+              	console.log(myChart.getOption().xAxis[0].start);
+              	console.log("params:"+params.type+params.dataZoomId);
+              	console.log(params.dataZoomInside+"--"+params.dataZoomSlider);
+              	//console.log("dataZoom的起始值start:"+params.start+"+++"+params.end+"======="+(params.end-params.start));
+              	console.log("dataZoom的起始值startValue:"+params.startValue+"+++"+params.endValue);
+              	console.log("xAxis.rangeStart"+xAxis.rangeStart);
+              	console.log("滑动块横坐标起始值："+xAxis.data[xAxis.rangeStart]+"+++"+xAxis.data[xAxis.rangeEnd]);
+              	console.log("X轴的横坐标的起始值"+xAxis.data[0]+"+++"+xAxis.data[xAxis.data.length-1]+"总数："+xAxis.data.length);
+				console.log("响应条件："+xAxis.data[xAxis.rangeStart]);
+				console.log(typeof(params.start));*/
+				var mouseState ='stop';
+				window.onmousewheel = document.onmousewheel = scrollFunc;
+				console.log(mouseState);
+				/*//确定是鼠标滚动事件
+				if((typeof(params.start)=="undefined") && (typeof(params.startValue)=="undefined") && (params.dataZoomId!="dataZooms")){             						
+              		console.log("缩放");
+              		
+              		//setinit_time(0);
+              		var expectstartDate= stringToDate(startDate_init);
+              		var expectendDate= stringToDate(endDate_init);       					       					    			              	
+              		timeZone = (expectendDate-expectstartDate)/60000;//时间区间单位从毫秒转换为分钟  
+              		if(setinit_time(0) && timeZone>0) {
+              				console.log("开始时间："+startDate_init+"结束时间:"+endDate_init)
+       						reloadgraphic(paramObject,names,seriesOptions,options,myChart);              	
+       					}      
+				}
+				//若果是移动滑块或者是拉伸滑块
+				if(params.dataZoomId=="dataZooms"){
+					$('#dateStart').val(startDate_init);
+       				$('#dateEnd').val(endDate_init);
+       				console.log("拉伸滑块.移动滑块");
+				}
+				//若果是用inside datazoom移动时间轴
+				if(3==2){
+					$('#dateStart').val(startDate_init);
+       				$('#dateEnd').val(endDate_init);
+       				console.log("移动滑块");
+				}
+				*/
+				
+				
+				
+        });
+	   	
+		//手动获取输入时间区间获取数据	
+		$("#getData").click(function(){
+				startDate_init =  $('#dateStart').val();
+				endDate_init =  $('#dateEnd').val();
+				if(startDate_init && endDate_init){
+				reloadgraphic(paramObject,names,seriesOptions,options,myChart);
+				}       		      	             	
+			})
+		
+		//修改曲线颜色确定按钮
+        $('#submit_configChart').click(function(){
+	      	var seriesOptionsDam = [];
+	      	var legendOptionsData = [];
+	      	var legendcolor=[];
+        	$('.jscolor').each( function(i, n) {
+        	  var paramValue = $(this).attr('name');
+        	  var paramColor = '#'+$(this).val();    	  
+        	  var width = $('#'+paramValue+'-size').val();
+        	  //console.log("曲线颜色值："+paramColor+"曲线粗细："+width);
+        	  if(paramColor != null && paramColor != 'undefined'){
+        	  var tempnumber =names.length;
+		      	  //seriesOptionsDam[names.length-1-i] = {
+		      	  seriesOptionsDam[i] = {
+		      			name: $(this).attr('dataName'),
+		  		        //type: 'line',
+		  	            lineStyle:{
+		  	            	normal:{color: paramColor,
+				  		        	width: width,}
+				  		}
+				  		 
+		           	};
+		           //legendOptionsData[names.length-1-i] ={
+		           legendOptionsData[i] ={
+		           		name: $(this).attr('dataName'),
+		           		//icon:'roundRect',
+		           		textStyle:{
+		           			backgroundColor:paramColor
+		           		}
+		           };
+		           //legendcolor[names.length-1-i]=paramColor;		           			           		
+		           legendcolor[i]=paramColor;		           			           		
+        	  }
+        	});
+        	        
+        	options.series = eval(seriesOptionsDam);       	        	
+        	options.legend={
+        		top: 'auto',
+        		data:legendOptionsData,
+        	};
+        	options.color=eval(legendcolor);
+            myChart.setOption(options);
+        })
+
+    })
+		
+    //jscolor 设置颜色
+	function update(picker) {
+			var color = picker.toHEXString();
+			var id= picker.valueElement.name;   		
+    		var id2=id+"-color"; 
+    		document.getElementById(id2).value=color;    		
+	}
+	
+	
+	function reloadgraphic(paramObject,names,seriesOptions,options,myChart){
+											parent.window.document.body.style.overflow = "hidden";//隐藏滚动条
+						                	$("#main").showLoading(); 
+								       		//将一组中的所有参数组装为object
+								       		paramObject.nowSeries='${nowSeries}';
+								       		paramObject.nowStar='${nowStar}';
+								       		paramObject.component='${component}';
+								       		paramObject.startTime=startDate_init;
+								       		paramObject.endTime=endDate_init;
+								       		paramObject.paramAttribute=names;								       		  		
+								       		$.ajax({
+								                 url: '${base}/getData',
+								                 type: 'POST',
+								                 dataType: 'json',
+								                 timeout: 100000,
+								                 cache: false,
+								                 data: {'paramObject':JSON.stringify(paramObject)},
+								                 success: function(data){
+								                	 $("#main").hideLoading(); 
+								                	 parent.window.document.body.style.overflow = "auto";//开启滚动
+								                 	  var i=0
+								                 	  var yname = 0;
+								                 	  var legendname ="";
+								                 	  
+								                 	  var unit=null;
+								                 	  var Y1name ="Y1轴";
+										         	  var Y1nametemp ="Y1轴";
+										         	  
+										         	  var Y2name ="Y2轴";
+										         	  var Y2nametemp ="Y2轴";
+								                 	  for(var param in data){								                 	  
+									                 	  //unit = names[names.length-1-i].unit;
+										             	  //yname  = names[names.length-1-i].y;	  				  
+									                 	  unit = names[i].unit;
+										             	  yname  = names[i].y;	  				  
+										  				  //Y1轴
+										  				  if(yname==0)
+										  				  {
+										  				  	Y1nametemp = Y1name;
+										  				  	Y1name ="Y1轴"+"("+unit+")";  				  	
+										  				  	if((Y1nametemp!="Y1轴") && (Y1name!=Y1nametemp))
+										  				  	{	  				  		
+										  				  			Y1name ="Y1轴 ";
+										  				  	}
+										  				  }
+										  				  //Y2轴
+										  				  if(yname==1)
+										  				  {
+										  				    var Y2nametemp =Y2name;
+										  				  	Y2name ="Y2轴"+"("+unit+")";	  				  	
+										  				  	if((Y2nametemp!="Y2轴")&&(Y2name!=Y2nametemp))
+										  				  	{
+										  				  		Y2name ="Y2轴 ";
+										  				  	}
+										  				  }
+						             	  			  legendname =names[i].name;
+								                 	  
+								                 	  	seriesOptions[i++] = {
+								    			            	//type: lineType,
+								    			                //name: param,
+								    			                name:legendname,
+								    			                smooth:false,
+								    			               	yAxisIndex: yname,
+								    			                /*lineStyle:{
+								    		                    	normal:{
+								    		                    		width:0.5 
+								    		                    		}
+								    		                    },*/
+								    			                data: data[param].paramValue
+								    			            };
+								    			            date =  data[param].yearValue;
+								                 	  }
+								    	            	options.series = eval(seriesOptions);
+								    	            	pDate=options.xAxis.data = date;
+								    	                myChart.setOption(options);
+								    	                $('#dateStart').val(startDate_init);
+								    	                $('#dateEnd').val(endDate_init);
+								                 }
+								             }) 
+	}
+	
+	//判断是否需要求情后台数据
+    function needGetDate(){
+		var startInit = stringToDate(startDate_init);
+		var endInit = stringToDate(endDate_init);
+		
+		//timespace 精确到分钟,时间相减得到毫秒数，再除以60000得到分钟数
+		var timespace = (endInit-startInit)/60000;
+		
+		var startYear = startInit.getFullYear();
+		var startMonth = startInit.getMonth();
+		var startDay = startInit.getDate();
+		var startHours = startInit.getHours();
+		var startMinutes = startInit.getMinutes();
+		var startSeconds = startInit.getSeconds();
+		var endYear = endInit.getFullYear();
+		var endMonth = endInit.getMonth();
+		var endDay = endInit.getDate();
+		var endHours = endInit.getHours();
+		var endMinutes = endInit.getMinutes();
+		var endSeconds = endInit.getSeconds();
+		
+		var a= stringToDate(startDate);
+      	var b= stringToDate(endDate);
+		if(timespace <= 1440){
+		console.log("当前区间在一天之内"+timespace);
+			//一天以内，1小时增减
+			if((startDate_init==startDate) && (endDate_init==endDate)){
+				startInit.setMinutes(startMinutes-30);
+				endInit.setMinutes(endMinutes+30);
+				startDate = startInit.pattern("yyyy-MM-dd HH:mm:ss");
+				endDate = endInit.pattern("yyyy-MM-dd HH:mm:ss");
+				startDate_init = startDate;
+				endDate_init = endDate;
+				return true;
+			}else{
+				//原始数据不请求后台
+				//console.log("原始数据不请求后台");
+				return false;
+			}
+			return false;
+		}
+		if(timespace > 1440 && timespace <=2880){
+			//一天到两天，两小时增减
+			if(startDate_init==startDate&&endDate_init==endDate){
+				startInit.setHours(startHours-1);
+				endInit.setHours(endHours+1);
+				startDate = startInit.pattern("yyyy-MM-dd HH:mm:ss");
+				endDate = endInit.pattern("yyyy-MM-dd HH:mm:ss");
+				startDate_init = startDate;
+				endDate_init = endDate;
+				return true;
+			}else{
+				if(a/60000 - startInit/60000 >= 60 || endInit/60000-b/60000 >= 60){
+					return true;
+				}else{
+					return false;
+				}
+			}
+		}
+		if(timespace > 2880 && timespace <=10080){
+			//两天到一周，一天增减
+			if(startDate_init==startDate&&endDate_init==endDate){
+				startInit.setHours(startHours-12);
+				endInit.setHours(endHours+12);
+				startDate = startInit.pattern("yyyy-MM-dd HH:mm:ss");
+				endDate = endInit.pattern("yyyy-MM-dd HH:mm:ss");
+				console.log("-------------------------------------------"+startDate);
+				startDate_init = startDate;
+				endDate_init = endDate;
+				return true;
+			}else{
+				if(a/60000-startInit/60000 >= 720 || endInit/60000-b/60000 >= 720){
+					return true;
+				}else{
+					return false;
+				}
+			}
+		}
+		if(timespace > 10080 && timespace <=43200){
+			//一周到一个月，四天天增减
+			if(startDate_init==startDate&&endDate_init==endDate){
+				startInit.setDate(startDay-2);
+				endInit.setDate(endDay+2);
+				startDate = startInit.pattern("yyyy-MM-dd HH:mm:ss");
+				endDate = endInit.pattern("yyyy-MM-dd HH:mm:ss");
+				startDate_init = startDate;
+				endDate_init = endDate;
+				return true;
+			}else{
+				console.log(startDate);
+				if(a/60000 - startInit/60000 >= 2880 || endInit/60000-b/60000 >= 2880){
+					return true;
+				}else{
+					return false;
+				}
+			}
+		}
+		if(timespace > 43200 && timespace <=518400){
+			//一月到一年，一月增减
+			if(startDate_init==startDate&&endDate_init==endDate){
+				startInit.setDate(startDay-15);
+				endInit.setDate(endDay+15);
+				startDate = startInit.pattern("yyyy-MM-dd HH:mm:ss");
+				endDate = endInit.pattern("yyyy-MM-dd HH:mm:ss");
+				startDate_init = startDate;
+				endDate_init = endDate;
+				return true;
+			}else{
+				console.log(startDate);
+				if(a/60000 - startInit/60000 >= 21600 || endInit/60000-b/60000 >= 21600){
+					return true;
+				}else{
+					return false;
+				}
+			}
+		}
+		if(timespace > 518400){
+			//大于一年，六个月增减
+			if(startDate_init==startDate&&endDate_init==endDate){
+				startInit.setMonth(startMonth-3);
+				endInit.setMonth(endMonth+3);
+				startDate = startInit.pattern("yyyy-MM-dd HH:mm:ss");
+				endDate = endInit.pattern("yyyy-MM-dd HH:mm:ss");
+				startDate_init = startDate;
+				endDate_init = endDate;
+				return true;
+			}else{
+				//console.log(startDate);
+				if(a/60000 - startInit/60000 >= 129600 || endInit/60000-b/60000 >= 129600){
+					return true;
+				}else{
+					return false;
+				}
+			}
+		}
+	}
+	//判断是否需要求情后台数据( )
+    function setinit_time(fangda){//fangda==0 时间区间放大   fangda ==1 时间区间缩小
+		var startInit = stringToDate(startDate_init);
+		var endInit = stringToDate(endDate_init);
+		//timespace 精确到分钟,时间相减得到毫秒数，再除以60000得到分钟数
+		var timespace = (endInit-startInit)/60000;
+		
+		var startInit_time=startInit.getTime();
+		var endInit_time=endInit.getTime();
+		
+		//时间每次的增加量和减小量为当前间隔的10%
+		var time_space=(endInit_time-startInit_time)/10;
+		
+		if(timespace <= 1440){//若果当前区间小于1天
+			if(fangda==0){
+				startInit_time = startInit_time - time_space;
+				endInit_time = endInit_time + time_space;
+				startInit.setTime(startInit_time);
+				endInit.setTime(endInit_time);
+				startDate = startInit.pattern("yyyy-MM-dd HH:mm:ss");
+				endDate = endInit.pattern("yyyy-MM-dd HH:mm:ss");
+				startDate_init = startDate;
+				endDate_init = endDate;
+				console.log("小于1天时增加时间区间");
+				if((endInit_time-startInit_time)/60000>1440){return false}
+				$('#dateStart').val(startDate_init);
+				$('#dateEnd').val(endDate_init);
+				return true;
+			}else if(fangda==1){
+				return false;
+			}else{
+					return false;
+				}
+		}
+		else{
+			if(fangda==0)
+			{
+				startInit_time = startInit_time - time_space;
+				endInit_time = endInit_time + time_space;
+				startInit.setTime(startInit_time);
+				endInit.setTime(endInit_time);
+				startDate = startInit.pattern("yyyy-MM-dd HH:mm:ss");
+				endDate = endInit.pattern("yyyy-MM-dd HH:mm:ss");
+				startDate_init = startDate;
+				endDate_init = endDate;
+				return true;
+			}else if(fangda==1){
+					startInit_time = startInit_time + time_space;
+					endInit_time = endInit_time - time_space;
+					startInit.setTime(startInit_time);
+					endInit.setTime(endInit_time);
+					startDate = startInit.pattern("yyyy-MM-dd HH:mm:ss");
+					endDate = endInit.pattern("yyyy-MM-dd HH:mm:ss");
+					startDate_init = startDate;
+					endDate_init = endDate;
+					return true;
+				}else{
+					return false;
+				}
+		}
+	}
+	
+	var scrollFunc = function (e) {
+        e = e || window.event;
+        if (e.wheelDelta) {  //判断浏览器IE，谷歌滑轮事件             
+            if (e.wheelDelta > 0) { //当滑轮向上滚动时
+                console.log("滑轮向上滚动");
+            }
+            if (e.wheelDelta < 0) { //当滑轮向下滚动时
+                console.log("滑轮向下滚动");
+            }
+        } else if (e.detail) {  //Firefox滑轮事件
+            if (e.detail> 0) { //当滑轮向上滚动时
+                console.log("滑轮向上滚动");
+            }
+            if (e.detail< 0) { //当滑轮向下滚动时
+                console.log("滑轮向下滚动");
+            }
+        }
+    }
+	
+ </script>	
+</html>

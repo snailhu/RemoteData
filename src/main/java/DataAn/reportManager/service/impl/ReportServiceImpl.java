@@ -665,7 +665,7 @@ public class ReportServiceImpl implements IReoportService {
 					productlist.add(this.StarParamToConstraintDto(starParam));
 				}
 			}
-			if(doubleList.size() > 0)
+//			if(doubleList.size() > 0)
 				constraintsMap.put(product + paramStr, productlist);
 		}
 

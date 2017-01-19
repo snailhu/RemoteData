@@ -333,12 +333,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			<ul class="breadcrumb">
 				<li>					
 					<a href="${pageContext.request.contextPath}/conditionMonitoring"><i class="icon-home home-icon"></i></a>
-					<span class="menu-text">${nowSeries}</span>
+					<span class="menu-text">${nowSeriesname}</span>
 				</li>
 	
 				<li>
 					<a href="javascript:void(0);"  onclick="this.setAttribute('disabled','disabled')"></a>
-					<span class="menu-text">${nowStar}</span>
+					<span class="menu-text">${nowStarname}</span>
 				</li>
 				
 				<li class="active"  value="">
@@ -541,7 +541,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		 	var beginDate = $("#dateStart").val();
 		 	var endDate = $("#dateEnd").val();		 	
 		 	var Series_current="${nowSeries}";
-		 	var Star_current="${nowStar}";
+		 	var Star_current="${nowStarname}";
 		 	//var type_current="${nowParameterTypeName}";
 		 	//var type_current="${nowParameterTypeValue}";
 		 	var type_current = $('#SatelliteComponents').attr('name');
@@ -555,6 +555,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		 $("#jqxButton_addgroup").jqxButton({ width: '95', height: '30'});	
 		 $("#jqxButton_addgroup").click(function(){
 		 	getSelected();
+		 	var checkedRows = $("#treeGrid").jqxTreeGrid('getCheckedRows');
+     		 for (var i = 0; i < checkedRows.length; i++) {
+          		var rowid = checkedRows[i].id;
+          		$("#treeGrid").jqxTreeGrid('uncheckRow', rowid);
+     		 }
 		 });
 		 
 		 $("#jqxButton_submitgroup").jqxButton({ width: '95', height: '30'});	
@@ -767,7 +772,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			groupObject.beginDate = beginDate;
 			groupObject.endDate = endDate;
 			groupObject.nowSeries = "${nowSeries}";
-			groupObject.nowStar ="${nowStar}";
+			groupObject.nowStar ="${nowStarname}";
 			groupObject.component = $('#SatelliteComponents').attr('name');	
            //在已分组列表上添加“删除”和“保存为模板”按钮
             var btn_savemodel="<button type='button' class='keepTemplet close' onclick='saveToLineTemplate(this)' style='background-color: #efa90e;'><span aria-hidden='true'>保存为模板</span></button>";
@@ -857,7 +862,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         } 
         //提交分组响应事件
         function submitGroup(){
-        console.log("类型"+typeof(AllRowselect))
         if(AllRowselect.length<1)
         {
         	//top.showMsg('提示', "请先添加参数分组");

@@ -1,4 +1,6 @@
 function intsatellite(seriesId) {	 
+	$("#id_container").show();
+//	$("#id_container").removeAttr("hidden");
 	 var starList = new Array();
 	 //var url = window.location.pathname+"/getSatellites";
 //	 var url = "conditionMonitoring/getSatellites";
@@ -61,7 +63,7 @@ function intsatellite(seriesId) {
 		            var div = $('<div></div>');
 		            div.attr('class','imagediv')
 		            var a = $('<a></a>');
-		            a.attr('href','analysisData/'+seriesId+'/'+item.name);
+		            a.attr('href','analysisData/'+seriesId+'/'+item.id);
 		            var img = $('<img/>');
 		            var span = $('<span></span>');
 		            span.text(item.name);
@@ -131,7 +133,8 @@ function intsatellite(seriesId) {
     	});
 			//加载悬浮提示窗口
 			$("[data-toggle='popover']").popover({  
-	        html : true,    
+			animation:false,
+			html : true, 
 	        title: title(),    
 	        delay:{show:1, hide:100},  
 	        content: function() { 

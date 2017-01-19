@@ -364,7 +364,7 @@ function myLoader(param, success, error) {
             dataType: "json",
             success: function (data) {
             //console.log("data"+JSON.stringify(data));
-                //that.data().datagrid['cache'] = data;
+                that.data().datagrid['cache'] = data;
                 success(bulidData(data));
             },
             error: function () {
@@ -774,11 +774,11 @@ function myLoader(param, success, error) {
 												if (data.success) {
 												
 													if(hadReadFlag == 0)
-													{
+													{	
+														$('#logList').data().datagrid.cache = null;//清除datagrid 缓存，保证前台假分页;	
 														var options = $('#logList').datagrid('getPager').data("pagination").options;  
 														var totalRowNum = options.total;
 														$("#prewarningcount").text(totalRowNum-rows.length+'条未读预警信息');
-														
 													}
 													swal("删除成功", "", "success");
 													reloadDataGrid();

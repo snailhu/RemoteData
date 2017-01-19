@@ -409,16 +409,28 @@ public class MongodbUtil {
 							Updates.set("status", value));
 	}
 	
+	public void updateByDate(String databaseName, String collectionName, Object beginDate, Object endDate,
+			String deviceName, int value) {
+		MongoCollection<Document> collection = this.getCollection(databaseName, collectionName);
+		collection.updateMany(
+							Filters.and(Filters.gte("datetime", beginDate),
+										Filters.lte("datetime", endDate),
+										Filters.eq("deviceName", deviceName)),
+							Updates.set("status", value));
+	}
+	
 	public MongoCursor<Document> find(String databaseName,String collectionName, String key, Object value){
 		MongoCollection<Document> collection = this.getCollection(databaseName, collectionName);
 		return collection.find(Filters.and(Filters.eq(key, value),Filters.eq("status", 1))).iterator();
 	}
 	
 	public MongoCursor<Document> find(String databaseName,String collectionName,Date beginDate, Date endDate){
+		Document sort = new Document();
+		sort.append("datetime", 1);
 		MongoCollection<Document> collection = this.getCollection(databaseName, collectionName);
 		return collection.find(Filters.and(Filters.gte("datetime", beginDate),
 							   Filters.lte("datetime", endDate),
-							   Filters.eq("status", 1))).iterator();
+							   Filters.eq("status", 1))).sort(sort).iterator();
 	}
 	
 	public long countByDate(String databaseName,String collectionName,

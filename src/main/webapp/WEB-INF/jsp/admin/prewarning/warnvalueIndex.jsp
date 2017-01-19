@@ -755,7 +755,6 @@
 								</div>
 								<div class="space-4"></div>
 								<div class="form-group" id="edit-div-parameterType">
-								<div class="form-group">
 									<label class="col-sm-3 control-label no-padding-right"
 										for="edit-parameterType"> 设备：</label>
 									<div class="col-sm-6">
@@ -764,7 +763,6 @@
 											<option value="">--请选择--</option>
 										</select>
 									</div>
-								</div>
 								</div>
 								
 								
@@ -1609,9 +1607,11 @@
 				$('#edit-minVal').attr("disabled",false);
 				$('#edit-maxValtop').attr("disabled",true);
 				$('#edit-minValtop').attr("disabled",true);
+				$('#edit-parameter-top').attr("disabled",true);
 			}
 			
 			var toUrl = '${pageContext.request.contextPath}/admin/prewarning/editWarnValue';
+			console.log("修改特殊特殊工况的参数"+$('#edit-parameter').val());
 			f.form('submit',{url : toUrl,onsubmit : function() {
 				var flag = $(this).form('validate');
 				if (flag) {

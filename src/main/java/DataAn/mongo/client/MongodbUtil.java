@@ -410,6 +410,16 @@ public class MongodbUtil {
 	}
 	
 	public void updateByDate(String databaseName, String collectionName, Object beginDate, Object endDate,
+			String key, Object value, int status) {
+		MongoCollection<Document> collection = this.getCollection(databaseName, collectionName);
+		collection.updateMany(
+							Filters.and(Filters.gte("datetime", beginDate),
+										Filters.lte("datetime", endDate),
+										Filters.eq(key, value)),
+							Updates.set("status", status));
+	}
+	
+	public void updateByDate(String databaseName, String collectionName, Object beginDate, Object endDate,
 			String deviceName, int value) {
 		MongoCollection<Document> collection = this.getCollection(databaseName, collectionName);
 		collection.updateMany(

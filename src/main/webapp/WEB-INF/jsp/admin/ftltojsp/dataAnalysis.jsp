@@ -18,25 +18,18 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     <!--添加了这个引用会和保存为模板对话框冲突-->
  	<!--<jsp:include page="/WEB-INF/jsp/inc/include-easyUI.jsp"></jsp:include>-->
  	
- 	<link
-	href="<%=request.getContextPath()%>/static/content/jquery-easyui-1.4.3/themes/gray/easyui.css"
-	rel="stylesheet" type="text/css" />
-	<link
-	href="<%=request.getContextPath()%>/static/content/jquery-easyui-1.4.3/themes/icon.css"
-	rel="stylesheet" type="text/css" />
-	<script
-	src="<%=request.getContextPath()%>/static/content/jquery-easyui-1.4.3/jquery.easyui.min.js"
-	type="text/javascript"></script>
-	<script
-	src="<%=request.getContextPath()%>/static/content/jquery-easyui-1.4.3/locale/easyui-lang-zh_CN.js"
-	type="text/javascript"></script>
-	
-  	 <link href="${pageContext.request.contextPath}/static/assets/css/bootstrap.min.css" rel="stylesheet" />
- 
+ 	<link href="<%=request.getContextPath()%>/static/content/jquery-easyui-1.4.3/themes/gray/easyui.css" rel="stylesheet" type="text/css" />
+	<link href="<%=request.getContextPath()%>/static/content/jquery-easyui-1.4.3/themes/icon.css" rel="stylesheet" type="text/css" />		
+  	<link href="${pageContext.request.contextPath}/static/assets/css/bootstrap.min.css" rel="stylesheet" /> 
    	<link rel="stylesheet" href="${pageContext.request.contextPath}/static/jqwidgets/styles/jqx.base.css" type="text/css" />
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/static/jqwidgets/styles/jqx.energyblue.css" type="text/css" />
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/static/content/css/default.css"  type="text/css"/>	
-    
+	
+    <script src="<%=request.getContextPath()%>/static/content/jquery-easyui-1.4.3/jquery.easyui.min.js" type="text/javascript"></script>
+	<script src="<%=request.getContextPath()%>/static/content/jquery-easyui-1.4.3/locale/easyui-lang-zh_CN.js" type="text/javascript"></script>
+	
+	<!--<script type="text/javascript" src="${pageContext.request.contextPath}/static/assets/js/bootstrap.min.js"></script>-->
+	
     <script type="text/javascript" src="${pageContext.request.contextPath}/static/jqwidgets/jqxcore.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/static/jqwidgets/jqxdatetimeinput.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/static/jqwidgets/jqxcalendar.js"></script>
@@ -48,13 +41,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     <script type="text/javascript" src="${pageContext.request.contextPath}/static/jqwidgets/jqxmenu.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/static/jqwidgets/jqxcheckbox.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/static/jqwidgets/jqxlistbox.js"></script>
-    <script type="text/javascript" src="${pageContext.request.contextPath}/static/jqwidgets/jqxdropdownlist.js"></script>
- 
+    <script type="text/javascript" src="${pageContext.request.contextPath}/static/jqwidgets/jqxdropdownlist.js"></script> 
     <script type="text/javascript" src="${pageContext.request.contextPath}/static/scripts/demos.js"></script>  
     <script type="text/javascript" src="${pageContext.request.contextPath}/static/jqwidgets/jqxdatatable.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/static/jqwidgets/jqxtreegrid.js"></script>     
-
-    <script type="text/javascript" src="${pageContext.request.contextPath}/static/jqwidgets/jqxbuttons.js"></script>
 
 	<link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/static/content/jeDate/jedate/skin/jedate.css">
     <script type="text/javascript" src="${pageContext.request.contextPath}/static/content/jeDate/jedate/jedate.js"></script>
@@ -371,7 +361,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				</div>
 				<div class="dateStyle">
 				<select class="select5" id="edit_component" name="component" style="display:none;">
-<!-- 					<option value="">选择设备</option> -->
+					<!--<option value="">选择设备</option> -->
 				</select>
 				</div>
 				<button style="height: 35px;"  id='jqxButton-getParameters' onMouseOut="this.style.backgroundColor=''" onMouseOver="this.style.backgroundColor='#00A1CB'">获取参数</button>
@@ -399,8 +389,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				</div>
 			</div><!-- /.col -->
 		 </div>
-		  	
-		 <!--<div class="hr hr32 hr-dotted"></div>-->
 		 
 			<div class="row">
 			<div class="groupButton col-xs-12">
@@ -484,18 +472,17 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		var  flag=false;
 		//$(".selftoolbar").click(function(){
 		$('#change-search-box').click(function(){
-		if(flag){
-			$("#toolimg").attr("src","${pageContext.request.contextPath}/static/imgs/DataImport_manage/xia.png")
-			$(".widget-body").slideUp("slow");
-			flag=false;
-		}else{
-			initTemplateTree();
-			$("#toolimg").attr("src","${pageContext.request.contextPath}/static/imgs/DataImport_manage/xia2.png")
-			$(".widget-body").css("border","1px solid #ccc");
-    		$(".widget-body").slideDown("slow");   		
-			flag=true;
-		}
-		
+			if(flag){
+				$("#toolimg").attr("src","${pageContext.request.contextPath}/static/imgs/DataImport_manage/xia.png")
+				$(".widget-body").slideUp("slow");
+				flag=false;
+			}else{
+				initTemplateTree();
+				$("#toolimg").attr("src","${pageContext.request.contextPath}/static/imgs/DataImport_manage/xia2.png")
+				$(".widget-body").css("border","1px solid #ccc");
+    			$(".widget-body").slideDown("slow");   		
+				flag=true;
+			}
 		})
 		
 		$('#edit_component').append("<option value='flywheel'>飞轮</option>");
@@ -545,7 +532,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		 	//var type_current="${nowParameterTypeName}";
 		 	//var type_current="${nowParameterTypeValue}";
 		 	var type_current = $('#SatelliteComponents').attr('name');
-		 	console.log("当前"+Series_current+"----"+Star_current);
             var url = "${pageContext.request.contextPath}/getConstraint?beginDate="+beginDate+"&endDate="+endDate+"&Series_current="+Series_current+"&Star_current="+Star_current+"&type_current="+type_current;
             //$("#id_dplist_template").jqxDropDownList('clear');
             $("#id_dplist_template").jqxDropDownList('clearSelection');          
@@ -576,7 +562,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		
 	//刷新参数列表树
 	function updateParamTree(url){
-       var source =
+		console.log("-----------------刷新参数列表树-----------------------")
+       	$("#treeGrid").jqxTreeGrid('clear');
+       	var source =
        	{
            dataType: "json",
            dataFields: [
@@ -596,9 +584,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
            id: 'id',
            url: url
        };
-       var dataAdapter = new $.jqx.dataAdapter(source);
-       console.log("执行参数列表updateParamTree()");
-       
+       console.log("准备获取参数列表数据"); 
+       var dataAdapter = new $.jqx.dataAdapter(source); 
+       console.log("已经获取参数列表数据");     
        $("#treeGrid").jqxTreeGrid(
        {
            width: 800,                
@@ -615,7 +603,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
            		//根据参数分类将父节点设置为不可编辑
        			var rows = $("#treeGrid").jqxTreeGrid('getRows');  
           		for(var i = 0; i < rows.length; i++)
-          		{
+          		{	
+          			console.log("父ID为多少："+rows[i].parentId+"类型"+typeof(rows[i].parentId));
               		if (rows[i].parentId==0)
               		{
                   		$("#treeGrid").jqxTreeGrid('lockRow',rows[i].id);
@@ -647,10 +636,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	             { text: 'Y轴', dataField:'yname',width:105,columnType:'template',
 	             	cellsRenderer: function (row, column, value, rowData) {	if(value=="0") 	{return "Y1"};
 	             															if(value=="1")	{return "Y2"};
-	             															//if(value=="")	{
-	             																//$("#treeGrid").jqxTreeGrid('lockRow', row);
-	             																//console.log("这一行的名字："+value+"行号："+row);
-	             															//};
 	             															},
 					createEditor: function (row, cellValue, editor, cellText, width, height) {
 					  var source = ["Y1", "Y2"];
@@ -661,24 +646,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					},
 					getEditorValue: function (row, cellValue, editor) {
 					    var yname = editor.val();
-						//alert(row+yname);
 						$("#treeGrid").jqxTreeGrid('setCellValue', row, 'yname', yname);
 						return editor.val();
 					}				
 				}                     
 			]
-       }); 
-       
-       var rows = $("#treeGrid").jqxTreeGrid('getRows'); 
-       console.log("长度："+rows.length);
-          		for(var i = 0; i < rows.length; i++)
-          		{
-              		if (rows[i].parentId==0)
-              		{
-                  		$("#treeGrid").jqxTreeGrid('lockRow',rows[i].id);
-              		}
-          		}
-          		
+       });        
+     console.log("刷新参数列表树结束");   		
 	 } 
 	       	
     //添加分组功能
@@ -791,7 +765,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         		updateTemplateList();
         		 
         		//添加模板后刷新常用模板
-        		//initTemplateTree();
+        		initTemplateTree();
         		//var url = "${pageContext.request.contextPath}/getConstraint?beginDate="+beginDate+"&endDate="+endDate+"&Series_current="+Series_current+"&Star_current="+Star_current+"&type_current="+type_current;
             	//updateParamTree(url);
         		
@@ -811,9 +785,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
          function getCleared(){      
             var value = $("#treeGrid").jqxTreeGrid('getCellValue', 1, 'yname');            
             var value2 = $("#treeGrid").jqxTreeGrid('getCellValue', 1, 'max');
-            //var value = $("#id_dplist_template").jqxTreeGrid('getCellValue', 2, 'yname');
-            //var value2 = $("#id_dplist_template").jqxTreeGrid('getCellValue', 2, 'max');
-            //alert(value2+"---"+value);
         } 
         //提交分组响应事件
         function submitGroup(){
@@ -868,7 +839,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	                    var item = event.args.item;
 	                    if (item) {
 	                    var url = "${pageContext.request.contextPath}/getParamsByTemplateId?templateId="+item.value;
-	                    updateParamTree(url);                                           
+	                    updateParamTree(url); 
+	                    console.log("选择模板响应事件");                                          
 	                    }
 	                }
 	            });
@@ -876,7 +848,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
             
             //保存为模板后刷新模板列表
             function updateTemplateList(){
-            console.log("刷新下拉框");
             	var url_updatetemplatelist = "${pageContext.request.contextPath}/getTemplateList";
 	            var source_templatelist =
 	            {
@@ -896,7 +867,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	                placeHolder:"请选择模板",
 	            });
 	            //$("#id_dplist_template").jqxDropDownList('updateItem');
-	            console.log("刷新下拉框结束");
             }
             
             //常用曲线模板树 
@@ -916,12 +886,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	                    { name: 'templateName', type: 'string' },
 	                    { name: 'templateid', type: 'number' },
 	                    { name: 'rowid', type: 'number'},
-	                    { name: 'parentid',type: 'number'}
+	                    { name: 'parentId',type: 'number'}
 	                ],
 	                hierarchy:
 	                {
 	                    keyDataField: { name: 'rowid' },
-	                    parentDataField: { name: 'parentid' }
+	                    parentDataField: { name: 'parentId' }
 	                    //root: "templateid"
 	                },
 	                id: 'rowid',

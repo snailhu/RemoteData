@@ -88,6 +88,7 @@ public class TmplParamServiceImpl implements ITmplParamService {
 			TemplateParameterDto dto = null;
 			for (TemplateParameter tmplparam : list) {
 				dto = new TemplateParameterDto();
+				dto.setParentId(9999);
 				dto.setId(tmplparam.getId());
 				dto.setName(tmplparam.getName());
 				dto.setMax(tmplparam.getMax());
@@ -114,7 +115,7 @@ public class TmplParamServiceImpl implements ITmplParamService {
 				dto = new TemplateParameterDto();
 				//dto.setId(template.getId());
 				dto.setRowid(count);
-				dto.setParentid(0);
+				dto.setParentId(0);
 				dto.setTemplateid(template.getId());
 				dto.setYname("添加到分组");
 				count++;
@@ -129,7 +130,7 @@ public class TmplParamServiceImpl implements ITmplParamService {
 						param.setId(tmplparam.getId());
 						param.setRowid(count);
 						param.setName(tmplparam.getName());
-						param.setParentid(dto.getRowid());
+						param.setParentId(dto.getRowid());
 						//param.setTemplateid(tmplparam.getLinegraphtemplale().getId());
 						//param.setTemplateName(template.getName());
 						param.setMax(tmplparam.getMax());
@@ -160,7 +161,7 @@ public class TmplParamServiceImpl implements ITmplParamService {
 				dto = new TemplateParameterDto();
 				//dto.setId(template.getId());
 				dto.setRowid(count);
-				dto.setParentid(0);
+				dto.setParentId(0);
 				dto.setTemplateid(template.getId());
 				dto.setYname("添加到分组");
 				count++;
@@ -175,7 +176,7 @@ public class TmplParamServiceImpl implements ITmplParamService {
 						param.setId(tmplparam.getId());
 						param.setRowid(count);
 						param.setName(tmplparam.getName());
-						param.setParentid(dto.getRowid());
+						param.setParentId(dto.getRowid());
 						//param.setTemplateid(tmplparam.getLinegraphtemplale().getId());
 						//param.setTemplateName(template.getName());
 						param.setMax(tmplparam.getMax());

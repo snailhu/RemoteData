@@ -107,6 +107,10 @@ public class J9Series_Star_ServiceImpl implements IJ9Series_Star_Service{
 			Map<String,String> simplyZh_and_enMap = new HashMap<String,String>();
 			String param_en = "";
 			for (String param_zh : paramSet) {
+				if(paramType.equals(J9Series_Star_ParameterType.FLYWHEEL.getValue()) && param_zh.indexOf(J9Series_Star_ParameterType.TOP.getName()) > -1)
+					continue;
+				if(paramType.equals(J9Series_Star_ParameterType.TOP.getValue()) && param_zh.indexOf(J9Series_Star_ParameterType.FLYWHEEL.getName()) > -1)
+					continue;
 				param_en = paramService.getParameter_en_by_allZh(series, star,paramType, param_zh);
 //				System.out.println(param_zh + " ："+param_en+"--");
 				if(StringUtils.isNotBlank(param_en))

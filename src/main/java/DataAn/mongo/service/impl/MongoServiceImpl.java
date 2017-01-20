@@ -143,7 +143,8 @@ public class MongoServiceImpl implements IMongoService{
 				if(collectionName.indexOf(paramType) > -1){
 					if(isTemp){
 						//设置同一时间段的数据的状态为2,此为临时状态
-						mg.updateByDate(databaseName, collectionName, beginDate, endDate, 2);
+//						mg.updateByDate(databaseName, collectionName, beginDate, endDate, 2);
+						mg.updateByDate(databaseName, collectionName, beginDate, endDate, "status", 1, 2);
 					}else{
 						//设置同一时间段的数据的状态为0
 						mg.updateByDate(databaseName, collectionName, beginDate, endDate, 0);						

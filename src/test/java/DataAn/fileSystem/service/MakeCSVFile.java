@@ -102,17 +102,9 @@ public class MakeCSVFile {
 			list.add(line);
 		}
 		System.out.println("size: " + list.size());
-		for (int year = 2016; year <= 2016; year++) {
-			for (int month = 1; month <= 1; month++) {
-				int count = list.size()/100000 + 1;
-				for (int i = 0; i < count; i++) {
-					int fromIndex = i * 100000;
-					int toIndex = (i + 1) * 100000;
-					if(toIndex > (list.size() - 1))
-						toIndex = list.size() - 1;
-					
-					MakeCSVFileHelper.writeFlywheelCSV(titleLine,list.subList(fromIndex, toIndex), year, month);							
-				}
+		for (int year = 2016; year <= 2017; year++) {
+			for (int month = 1; month <= 12; month++) {
+				MakeCSVFileHelper.writeFlywheelCSV(titleLine,list, year, month);							
 			}
 		}
 	}

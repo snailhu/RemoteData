@@ -76,7 +76,8 @@ public class MakeCSVFileHelper {
 		
 		DecimalFormat df = new DecimalFormat("00");
 		//目录
-		String dirPath = "E:\\data\\flywheel\\" + year + "\\" + df.format(month);
+		String dirPath = "E:\\data\\flywheel\\" + year;
+//		String dirPath = "E:\\data\\flywheel\\" + year + "\\" + df.format(month);
 		//文件路径
 		String outputFile = dirPath +"\\" +"j9-05--" + year +"-" + df.format(month) +"-" + df.format(day) +".csv";
 		String strYear = year + "年";

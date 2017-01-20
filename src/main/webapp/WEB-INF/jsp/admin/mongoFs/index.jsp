@@ -343,6 +343,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	    	  $("#search-paramType").combobox('clear');
 	      });
 	      $('#btn-search').click(function(){
+	    	  fsGrid.datagrid('unselectAll');
 	      	  $('#fileCatalog').empty();
 	    	  var nowSeries = $("#search-series").combobox('getValue');
 	    	  var nowStar = $("#search-star").combobox('getValue');

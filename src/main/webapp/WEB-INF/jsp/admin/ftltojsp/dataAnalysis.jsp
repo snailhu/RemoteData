@@ -43,7 +43,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     <script type="text/javascript" src="${pageContext.request.contextPath}/static/jqwidgets/jqxlistbox.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/static/jqwidgets/jqxdropdownlist.js"></script> 
     <script type="text/javascript" src="${pageContext.request.contextPath}/static/scripts/demos.js"></script>  
-    <script type="text/javascript" src="${pageContext.request.contextPath}/static/jqwidgets/jqxdatatable.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/static/jqwidgets/jqxdatatable_self.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/static/jqwidgets/jqxtreegrid.js"></script>     
 
 	<link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/static/content/jeDate/jedate/skin/jedate.css">
@@ -468,7 +468,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		//左菜单栏
 		$("#conditionmonitoring-img").attr("src","${pageContext.request.contextPath}/static/new/img/images/a_86.png");
 		$("#conditionmonitoring-text").css("color","#5d90d6");	
-		//intTemplateList();
 		var  flag=false;
 		//$(".selftoolbar").click(function(){
 		$('#change-search-box').click(function(){
@@ -524,13 +523,20 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
          $("#edit_component").jqxButton({ width: '35', height: '20'});
          
 		 $("#jqxButton-getParameters").jqxButton({ width: '100', height: '30'});	
+		 
+		 var beginDate_int = $("#dateStart").val();
+		 var endDate_int = $("#dateEnd").val();		 	
+		 var Series_current_int="${nowSeries}";
+		 var Star_current_int="${nowStarname}";
+		 var type_current_int = $('#SatelliteComponents').attr('name');
+         var url_paramlsit = "${pageContext.request.contextPath}/getConstraint?beginDate="+beginDate_int+"&endDate="+endDate_int+"&Series_current="+Series_current_int+"&Star_current="+Star_current_int+"&type_current="+type_current_int;
+		 initParamTree(url_paramlsit);
+		 
 		 $("#jqxButton-getParameters").click( function ()  {    
 		 	var beginDate = $("#dateStart").val();
 		 	var endDate = $("#dateEnd").val();		 	
 		 	var Series_current="${nowSeries}";
 		 	var Star_current="${nowStarname}";
-		 	//var type_current="${nowParameterTypeName}";
-		 	//var type_current="${nowParameterTypeValue}";
 		 	var type_current = $('#SatelliteComponents').attr('name');
             var url = "${pageContext.request.contextPath}/getConstraint?beginDate="+beginDate+"&endDate="+endDate+"&Series_current="+Series_current+"&Star_current="+Star_current+"&type_current="+type_current;
             //$("#id_dplist_template").jqxDropDownList('clear');
@@ -553,17 +559,15 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		 $("#jqxButton_submitgroup").click(function(){
 		 	submitGroup();
 		 });
-		 intTemplateList()
 		 initTemplateTree();
 		 intTemplateList();
 		 $(".widget-body").slideUp("slow"); 
 		 //$('#change-search-box').click();
 	});
 		
-	//刷新参数列表树
-	function updateParamTree(url){
-		console.log("-----------------刷新参数列表树-----------------------")
-       	$("#treeGrid").jqxTreeGrid('clear');
+	//初始化参数列表树
+	function initParamTree(url){
+		console.log("-----------------初始化话参数列表树-----------------------")
        	var source =
        	{
            dataType: "json",
@@ -584,9 +588,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
            id: 'id',
            url: url
        };
-       console.log("准备获取参数列表数据"); 
        var dataAdapter = new $.jqx.dataAdapter(source); 
-       console.log("已经获取参数列表数据");     
        $("#treeGrid").jqxTreeGrid(
        {
            width: 800,                
@@ -604,7 +606,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
        			var rows = $("#treeGrid").jqxTreeGrid('getRows');  
           		for(var i = 0; i < rows.length; i++)
           		{	
-          			console.log("父ID为多少："+rows[i].parentId+"类型"+typeof(rows[i].parentId));
+          			if(rows[i].parentId != null)
               		if (rows[i].parentId==0)
               		{
                   		$("#treeGrid").jqxTreeGrid('lockRow',rows[i].id);
@@ -652,8 +654,50 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				}                     
 			]
        });        
-     console.log("刷新参数列表树结束");   		
 	 } 
+	 
+	//刷新参数列表树
+	function updateParamTree(url){
+       	var source =
+       	{
+           dataType: "json",
+           dataFields: [
+               { name: 'id', type: 'number' },
+               { name: 'parentId', type: 'number' },
+               { name: 'name', type: 'string' },
+               { name: 'max', type: 'string' },
+               { name: 'min', type: 'stirng' },
+               { name: 'unit', type: 'string'},
+               { name: 'yname',type:'string'}
+           ],
+           hierarchy:
+           {
+               keyDataField: { name: 'id' },
+               parentDataField: { name: 'parentId' }
+           },
+           id: 'id',
+           url: url
+       };
+       var dataAdapter = new $.jqx.dataAdapter(source); 
+       $("#treeGrid").jqxTreeGrid(
+       {              
+           source: dataAdapter,
+           ready:function()
+           {
+           		console.log("加载完毕，开始锁定编辑");
+           		//根据参数分类将父节点设置为不可编辑
+       			var rows = $("#treeGrid").jqxTreeGrid('getRows');  
+          		for(var i = 0; i < rows.length; i++)
+          		{	
+              		if (rows[i].parentId==0)
+              		{
+                  		$("#treeGrid").jqxTreeGrid('lockRow',rows[i].id);
+              		}
+          		}
+           },
+       });        
+       console.log("刷新参数树"); 
+	}
 	       	
     //添加分组功能
     var JsonG = {}
@@ -763,12 +807,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         		//添加模板后刷新模板下拉框
         		console.log("保存模板提交数据成功");
         		updateTemplateList();
-        		 
         		//添加模板后刷新常用模板
-        		initTemplateTree();
-        		//var url = "${pageContext.request.contextPath}/getConstraint?beginDate="+beginDate+"&endDate="+endDate+"&Series_current="+Series_current+"&Star_current="+Star_current+"&type_current="+type_current;
-            	//updateParamTree(url);
-        		
+        		initTemplateTree();       		
         	});
         	$("#id_dplist_template").jqxDropDownList('clearSelection');
         	$(id_template_name).val("");
@@ -821,7 +861,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	            };
 	            var dataAdapter = new $.jqx.dataAdapter(source_templatelist);
 	
-	            // Create a jqxDropDownList
 	            $("#id_dplist_template").jqxDropDownList({
 	                //selectedIndex: 2, 
 	                source: dataAdapter, 
@@ -833,15 +872,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	                height: 30
 	            });
 	
-	            // subscribe to the select event.
 	            $("#id_dplist_template").on('select', function (event) {
-	                if (event.args) {            
-	                    var item = event.args.item;
-	                    if (item) {
+	                var args = event.args;
+	                var item = $('#id_dplist_template').jqxDropDownList('getItem', args.index);
+	                if (item != null) {          	                    
 	                    var url = "${pageContext.request.contextPath}/getParamsByTemplateId?templateId="+item.value;
 	                    updateParamTree(url); 
-	                    console.log("选择模板响应事件");                                          
-	                    }
 	                }
 	            });
             }
@@ -862,9 +898,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	            var dataAdapter = new $.jqx.dataAdapter(source_templatelist);
 				$("#id_dplist_template").jqxDropDownList({
 	                source: dataAdapter, 
-	                displayMember: "name", 
-	                valueMember: "id",
-	                placeHolder:"请选择模板",
+	                //displayMember: "name", 
+	                //valueMember: "id",
+	                //placeHolder:"请选择模板",
 	            });
 	            //$("#id_dplist_template").jqxDropDownList('updateItem');
             }

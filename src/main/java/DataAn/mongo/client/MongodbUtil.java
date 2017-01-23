@@ -434,6 +434,11 @@ public class MongodbUtil {
 		return collection.find(Filters.and(Filters.eq(key, value),Filters.eq("status", 1))).iterator();
 	}
 	
+	public MongoCursor<Document> findByNoStatus(String databaseName,String collectionName, String key, Object value){
+		MongoCollection<Document> collection = this.getCollection(databaseName, collectionName);
+		return collection.find(Filters.eq(key, value)).iterator();
+	}
+	
 	public MongoCursor<Document> find(String databaseName,String collectionName,Date beginDate, Date endDate){
 		Document sort = new Document();
 		sort.append("datetime", 1);

@@ -374,7 +374,7 @@ public class CommunicateServiceImpl implements ICommunicateService{
 					String exception_collectionName = file.getParameterType() + "_exception";
 					mg.update(databaseName, job_collectionName, "versions", file.getMongoFSUUId(), "status", 1);
 					mg.update(databaseName, exception_collectionName, "versions", file.getMongoFSUUId(), "status", 1);
-					MongoCursor<Document> cursor = mg.find(databaseName, job_collectionName, "versions", file.getMongoFSUUId());
+					MongoCursor<Document> cursor = mg.findByNoStatus(databaseName, job_collectionName, "versions", file.getMongoFSUUId());
 					Document doc = null;
 					String strBeginDate = null;
 					String strEndDate = null;
@@ -390,7 +390,7 @@ public class CommunicateServiceImpl implements ICommunicateService{
 								&& StringUtils.isNotBlank(deviceName)) {
 							beginDate = DateUtil.format(strBeginDate);
 							endDate = DateUtil.format(strEndDate);
-							mg.updateByDate(databaseName, exception_collectionName, beginDate, endDate, deviceName, 1);
+							mg.updateByDate(databaseName, exception_collectionName, beginDate, endDate, deviceName, 0);
 						}
 					}
 				}

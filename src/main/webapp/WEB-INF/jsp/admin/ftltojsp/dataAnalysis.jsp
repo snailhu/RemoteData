@@ -171,6 +171,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     	margin-left:120px;
     	margin-top:-32px 	
     }
+    #id_btn_deletetemplate{
+    	margin-left:480px;
+    	margin-top:-32px 
+    }
     #id_dplist_template{
     	margin-left:590px;
     	margin-top:-32px;
@@ -338,7 +342,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		</div>	
 		<div class="page-content">
 			<div class="page-header">
-			<div class="dateRange">日期范围</div>
+			<!--<div class="dateRange">日期范围</div>-->
 				<div class="dateSelect">
 				<button id="btn_flywheel"  style="display:none;">
 					飞轮
@@ -369,7 +373,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				<div style="clear:both"></div>
 			</div>
 			<!-- /.page-header -->
-
+		<div style="display:none">
 		<div style="margin-left:-20px;">
 			<div class="col-xs-12 col-sm-12">
 				<div class="widget-box">
@@ -389,19 +393,17 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				</div>
 			</div><!-- /.col -->
 		 </div>
+		 </div>
 		 
 			<div class="row">
 			<div class="groupButton col-xs-12">
 					<div id='jqxButton_addgroup' onMouseOut="this.style.backgroundColor=''" onMouseOver="this.style.backgroundColor='#aaa'">添加分组</div>
   					<div id='jqxButton_submitgroup' onMouseOut="this.style.backgroundColor=''" onMouseOver="this.style.backgroundColor='#00A1CB'">提交分组</div>
   					<!--<button onclick="getCleared()">清空已选参数</button>-->
+  					<div id="id_btn_deletetemplate" type='button' class="btn btn-ptimary" style="visibility:hidden">删除该模板</div>
   					<div id="id_dplist_template"></div>
-  		 	</div>
-  		 		
-  				<div id='jqxWidgett'>
-			        <div id="treeGrid"></div>			       	
-			     </div>
-				      		     
+  		 	</div> 				
+			<div id="treeGrid"></div>			       				     				      		     
 			</div><!-- /.row -->
 			
 			<div class="new_hr hr hr32 hr-dotted"></div>
@@ -501,9 +503,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				$("#edit_component").show();
 			}
 			else{
-			$("#btn_flywheel").hide();
-			$("#btn_top").hide();
-			$("#edit_component").hide();
+				$("#btn_flywheel").hide();
+				$("#btn_top").hide();
+				$("#edit_component").hide();
 			}
 		}
 		
@@ -542,7 +544,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
             //$("#id_dplist_template").jqxDropDownList('clear');
             $("#id_dplist_template").jqxDropDownList('clearSelection');          
             updateParamTree(url);
-            $("#id_dplist_template").jqxDropDownList('updateItem');   
+            $("#id_dplist_template").jqxDropDownList('updateItem'); 
+            $("#id_btn_deletetemplate").css({'visibility':'hidden'});  
 		 });
 		 
 		 $("#jqxButton_addgroup").jqxButton({ width: '95', height: '30'});	
@@ -681,22 +684,18 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
        var dataAdapter = new $.jqx.dataAdapter(source); 
        $("#treeGrid").jqxTreeGrid(
        {              
-           source: dataAdapter,
-           ready:function()
-           {
-           		console.log("加载完毕，开始锁定编辑");
-           		//根据参数分类将父节点设置为不可编辑
+           source: dataAdapter,                              
+       }); 
+        /*   		//根据参数分类将父节点设置为不可编辑
        			var rows = $("#treeGrid").jqxTreeGrid('getRows');  
           		for(var i = 0; i < rows.length; i++)
           		{	
               		if (rows[i].parentId==0)
               		{
                   		$("#treeGrid").jqxTreeGrid('lockRow',rows[i].id);
+                  		console.log("加载完毕，开始锁定编辑");
               		}
-          		}
-           },
-       });        
-       console.log("刷新参数树"); 
+          		} */       
 	}
 	       	
     //添加分组功能
@@ -759,7 +758,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	        JsonG.alldata=AllRowselect;   
        	}else{
        		//top.showMsg('提示', "参数不能为空 ，请至少选择一行参数");
-       		$.messager.alert('提示','参数不能为空 ，请至少选择一行参数','warning');
+       		//$.messager.alert('提示','参数不能为空 ，请至少选择一行参数','warning');
+       		$.messager.show({
+       			title:"提示",
+       			msg:"参数不能为空 ，请至少选择一行参数",
+       			timeout:5000,
+       			showType:'show',
+       			
+       		});
 			return false;
        		
        	}  
@@ -805,7 +811,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         	},
         	function(data){
         		//添加模板后刷新模板下拉框
-        		console.log("保存模板提交数据成功");
         		updateTemplateList();
         		//添加模板后刷新常用模板
         		initTemplateTree();       		
@@ -877,7 +882,19 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	                var item = $('#id_dplist_template').jqxDropDownList('getItem', args.index);
 	                if (item != null) {          	                    
 	                    var url = "${pageContext.request.contextPath}/getParamsByTemplateId?templateId="+item.value;
-	                    updateParamTree(url); 
+	                    updateParamTree(url);
+	                    $("#id_btn_deletetemplate").css({'visibility':'visible'});
+	                    $("#id_btn_deletetemplate").click(function() {
+							$.post('${pageContext.request.contextPath}/deleteTemplates',        
+								        	{
+								        		'templateIds' : item.value,						        		    	
+								        	},
+								    function(data){
+								    	updateTemplateList();
+								    	$.messager.alert('提示','删除模板成功','warning');
+								    }
+								   );
+            			});
 	                }
 	            });
             }

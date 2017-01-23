@@ -116,18 +116,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	}
 	#dateStart-div,#dateEnd-div{
 		display:inline;
-	}
-	.row {
-		margin:0px !important
-	}
-	.page-header{
-		padding:0px !important;
-		border-top: 1px solid #DEDEDE;
-    	background-color: white;
-    	height: 90px;
-    	margin-left: -20px;
-    	width:950px;
-	}
+	}	
 	.widget-box{border-bottom:none;}
 	.widget-body{border:none;}
 	.datainp{
@@ -189,13 +178,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     	margin-top:35px;
     }
     #jqxWidget{
-    	height: 40px;
+    	//height: 40px;
     	line-height: 40px;
     	color: #0076ca;
     	/*padding-left: -20px;
     	border-bottom: 1px solid #DEDEDE;*/
     	font-size:16px;
-		margin-bottom:200px;
     }
     #jqxWidget .button{
     	padding: 9px;   	
@@ -341,7 +329,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			</ul><!-- .breadcrumb -->		
 		</div>	
 		<div class="page-content">
-			<div class="page-header">
+		<div class="row">
 			<!--<div class="dateRange">日期范围</div>-->
 				<div class="dateSelect">
 				<button id="btn_flywheel"  style="display:none;">
@@ -369,10 +357,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				</select>
 				</div>
 				<button style="height: 35px;"  id='jqxButton-getParameters' onMouseOut="this.style.backgroundColor=''" onMouseOver="this.style.backgroundColor='#00A1CB'">获取参数</button>
-				</div>
-				<div style="clear:both"></div>
-			</div>
-			<!-- /.page-header -->
+				</div>		
 		<div style="display:none">
 		<div style="margin-left:-20px;">
 			<div class="col-xs-12 col-sm-12">
@@ -395,7 +380,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		 </div>
 		 </div>
 		 
-			<div class="row">
+			
 			<div class="groupButton col-xs-12">
 					<div id='jqxButton_addgroup' onMouseOut="this.style.backgroundColor=''" onMouseOver="this.style.backgroundColor='#aaa'">添加分组</div>
   					<div id='jqxButton_submitgroup' onMouseOut="this.style.backgroundColor=''" onMouseOver="this.style.backgroundColor='#00A1CB'">提交分组</div>
@@ -403,18 +388,20 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   					<div id="id_btn_deletetemplate" type='button' class="btn btn-ptimary" style="visibility:hidden">删除该模板</div>
   					<div id="id_dplist_template"></div>
   		 	</div> 				
-			<div id="treeGrid"></div>			       				     				      		     
-			</div><!-- /.row -->
+			<div class="col-xs-12">
+				<div id="treeGrid"></div>			       				     				      		     
+			</div>
+			
 			
 			<div class="new_hr hr hr32 hr-dotted"></div>
 			
-			<div class="row">
+		
 			<div class="col-xs-12">	
   				<div id='jqxWidget'>
 			              已有分组：		       	
 			    </div>
 			 </div>
-			 </div>
+		</div>
 									
 		</div><!-- /.page-content -->
 			

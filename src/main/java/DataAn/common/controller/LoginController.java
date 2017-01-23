@@ -52,6 +52,7 @@ public class LoginController {
 		if (acticeUser != null) {
 			if(username.equals(acticeUser.getUserName())){
 				if (password.equals(acticeUser.getPassWord())) {
+					acticeUser.setPassWord("");
 					HttpSession session = request.getSession();
 					
 					Long warnCount = 0l;

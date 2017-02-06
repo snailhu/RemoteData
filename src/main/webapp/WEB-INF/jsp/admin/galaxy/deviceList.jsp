@@ -103,7 +103,11 @@
 					validators : {
 						notEmpty : {
 							message : '设备名称不能为空'
-						}
+						},
+						stringLength: {
+	                        max: 64,
+	                        message: '设备名称不能多于64个字符'
+	                    }
 					}
 				},
 				model : {
@@ -129,7 +133,11 @@
 					validators : {
 						notEmpty : {
 							message : '设备名称不能为空'
-						}
+						},
+						stringLength: {
+	                        max: 64,
+	                        message: '设备名称不能多于64个字符'
+	                    }
 					}
 				},
 				model : {

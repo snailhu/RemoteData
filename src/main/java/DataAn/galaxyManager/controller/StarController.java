@@ -48,8 +48,8 @@ public class StarController {
 		starDto.setCode(code);
 		starDto.setDescription(description);
 		starDto.setBeginDate(beginDate);
-		System.out.println("come in createStar..");
-		System.out.println(starDto);
+//		System.out.println("come in createStar..");
+//		System.out.println(starDto);
 		JsonMessage jsonMsg = new JsonMessage();
 		if (starService.isExistStarByName(starDto)) {
 			jsonMsg.setSuccess(false);
@@ -99,8 +99,8 @@ public class StarController {
 		starDto.setCode(code);
 		starDto.setDescription(description);
 		starDto.setBeginDate(beginDate);
-		System.out.println("come in editStar..");
-		System.out.println(starDto);
+//		System.out.println("come in editStar..");
+//		System.out.println(starDto);
 		JsonMessage jsonMsg = new JsonMessage();
 		if (starService.isExistStarByName(starDto)) {
 			jsonMsg.setSuccess(false);
@@ -130,9 +130,9 @@ public class StarController {
 	@RequestMapping(value="/deleteStar", method = RequestMethod.POST)
 	@ResponseBody
 	public JsonMessage deleteStar(@RequestParam(value = "starId", required = true) long starId){
-		System.out.println("come in deleteStar..");
-		System.out.println("starId: " + starId);
-		System.out.println();
+//		System.out.println("come in deleteStar..");
+//		System.out.println("starId: " + starId);
+//		System.out.println();
 		JsonMessage jsonMsg = new JsonMessage();
 		try {
 			starService.deleteStar(starId);
@@ -151,9 +151,9 @@ public class StarController {
 	@RequestMapping("/getStarComboData")
 	@ResponseBody
 	public List<Combo> getStarComboData(String seriesCode, String starCode) {
-		System.out.println("getStarComboData..");
-		System.out.println("seriesId: " + seriesCode);
-		System.out.println("starId: " + starCode);
+//		System.out.println("getStarComboData..");
+//		System.out.println("seriesId: " + seriesCode);
+//		System.out.println("starId: " + starCode);
 		List<Combo> list = starService.getStarComboData(seriesCode, starCode);
 //		for (Combo combo : list) {
 //			System.out.println(combo);

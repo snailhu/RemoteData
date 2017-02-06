@@ -54,8 +54,8 @@ public class SeriesController {
 		dto.setName(name);
 		dto.setCode(code);
 		dto.setDescription(description);
-		System.out.println("come in createSeries..");
-		System.out.println(dto);
+//		System.out.println("come in createSeries..");
+//		System.out.println(dto);
 		JsonMessage jsonMsg = new JsonMessage();
 		if (seriesService.isExistSeriesByName(dto)) {
 			jsonMsg.setSuccess(false);
@@ -100,9 +100,8 @@ public class SeriesController {
 		dto.setName(name);
 		dto.setCode(code);
 		dto.setDescription(description);
-		System.out.println("come in editSeries...");
-		System.out.println(dto);
-		
+//		System.out.println("come in editSeries...");
+//		System.out.println(dto);
 		JsonMessage jsonMsg = new JsonMessage();
 		if (seriesService.isExistSeriesByName(dto)) {
 			jsonMsg.setSuccess(false);
@@ -132,9 +131,9 @@ public class SeriesController {
 	@RequestMapping(value="/deleteSeries", method = RequestMethod.POST)
 	@ResponseBody
 	public JsonMessage deleteSeries(@RequestParam(value = "seriesIds", required = true) String seriesIds){
-		System.out.println("come in deleteSeries..");
-		System.out.println("seriesIds: " + seriesIds);
-		System.out.println();
+//		System.out.println("come in deleteSeries..");
+//		System.out.println("seriesIds: " + seriesIds);
+//		System.out.println();
 		JsonMessage jsonMsg = new JsonMessage();
 		try {
 			seriesService.deleteSeries(seriesIds);

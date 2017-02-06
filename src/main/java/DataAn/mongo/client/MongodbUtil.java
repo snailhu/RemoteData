@@ -410,6 +410,16 @@ public class MongodbUtil {
 	}
 	
 	public void updateByDate(String databaseName, String collectionName, Object beginDate, Object endDate,
+			String key, Object value, int status) {
+		MongoCollection<Document> collection = this.getCollection(databaseName, collectionName);
+		collection.updateMany(
+							Filters.and(Filters.gte("datetime", beginDate),
+										Filters.lte("datetime", endDate),
+										Filters.eq(key, value)),
+							Updates.set("status", status));
+	}
+	
+	public void updateByDate(String databaseName, String collectionName, Object beginDate, Object endDate,
 			String deviceName, int value) {
 		MongoCollection<Document> collection = this.getCollection(databaseName, collectionName);
 		collection.updateMany(
@@ -422,6 +432,11 @@ public class MongodbUtil {
 	public MongoCursor<Document> find(String databaseName,String collectionName, String key, Object value){
 		MongoCollection<Document> collection = this.getCollection(databaseName, collectionName);
 		return collection.find(Filters.and(Filters.eq(key, value),Filters.eq("status", 1))).iterator();
+	}
+	
+	public MongoCursor<Document> findByNoStatus(String databaseName,String collectionName, String key, Object value){
+		MongoCollection<Document> collection = this.getCollection(databaseName, collectionName);
+		return collection.find(Filters.eq(key, value)).iterator();
 	}
 	
 	public MongoCursor<Document> find(String databaseName,String collectionName,Date beginDate, Date endDate){

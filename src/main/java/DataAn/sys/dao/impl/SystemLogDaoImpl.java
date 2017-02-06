@@ -43,4 +43,12 @@ public class SystemLogDaoImpl extends BaseDaoImpl<SystemLog> implements
 		return list;
 	}
 
+	@Override
+	public void deleteSystemlog() {
+		String hql ="select count(*) from SystemLog where 1=1";
+		int count = ((Number)this.getSession().createQuery(hql).uniqueResult()).intValue();
+		System.out.println(count);
+		
+	}
+
 }

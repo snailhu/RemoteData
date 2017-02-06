@@ -372,25 +372,27 @@ public class CommunicateServiceImpl implements ICommunicateService{
 				if(statusType.equals(StatusTrackingType.END.getValue())){
 					String job_collectionName = file.getParameterType() + "_job";
 					String exception_collectionName = file.getParameterType() + "_exception";
-					mg.update(databaseName, job_collectionName, "status", 3, "status", 1);
-					MongoCursor<Document> cursor = mg.find(databaseName, job_collectionName, "versions", file.getMongoFSUUId());
+					mg.update(databaseName, job_collectionName, "versions", file.getMongoFSUUId(), "status", 1);
+					mg.update(databaseName, exception_collectionName, "versions", file.getMongoFSUUId(), "status", 1);
+					MongoCursor<Document> cursor = mg.findByNoStatus(databaseName, job_collectionName, "versions", file.getMongoFSUUId());
 					Document doc = null;
 					String strBeginDate = null;
 					String strEndDate = null;
 					String deviceName = null;
 					Date beginDate = null;
 					Date endDate = null;
-				    while (cursor.hasNext()) {
-				    	doc = cursor.next();
-				    	strBeginDate = doc.getString("beginDate");
-				    	strEndDate = doc.getString("endDate");
-				    	deviceName = doc.getString("deviceName");
-				    	if(StringUtils.isNotBlank(strBeginDate) && StringUtils.isNotBlank(strEndDate) && StringUtils.isNotBlank(deviceName)){
-				    		beginDate = DateUtil.format(strBeginDate);
-				    		endDate = DateUtil.format(strEndDate);
-				    		mg.updateByDate(databaseName, exception_collectionName, beginDate, endDate, deviceName, 1);
-				    	}
-				    }
+					while (cursor.hasNext()) {
+						doc = cursor.next();
+						strBeginDate = doc.getString("beginDate");
+						strEndDate = doc.getString("endDate");
+						deviceName = doc.getString("deviceName");
+						if (StringUtils.isNotBlank(strBeginDate) && StringUtils.isNotBlank(strEndDate) 
+								&& StringUtils.isNotBlank(deviceName)) {
+							beginDate = DateUtil.format(strBeginDate);
+							endDate = DateUtil.format(strEndDate);
+							mg.updateByDate(databaseName, exception_collectionName, beginDate, endDate, deviceName, 0);
+						}
+					}
 				}
 				jsonObject.put("sucFlag", true);
 				return jsonObject.toJSONString();

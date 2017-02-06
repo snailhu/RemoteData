@@ -6,7 +6,7 @@ public class TemplateParameterDto {
 	
 	private long rowid;
 	
-	private long parentid;
+	private long parentId;
 	
 	private String name;
 	
@@ -69,12 +69,12 @@ public class TemplateParameterDto {
 		this.rowid = rowid;
 	}
 
-	public long getParentid() {
-		return parentid;
+	public long getParentId() {
+		return parentId;
 	}
 
-	public void setParentid(long parentid) {
-		this.parentid = parentid;
+	public void setParentId(long parentId) {
+		this.parentId = parentId;
 	}
 
 	public String getMax() {

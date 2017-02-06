@@ -74,6 +74,15 @@ public class CommonController {
 		return "index";
 	}
 	
+	
+	//信息预览页面
+	@RequestMapping(value ="/conditionMonitoring")
+	public String goConditionMonitoring()
+	{
+		return "conditionMonitoring";
+
+	}
+
 	//根据用户选择的星系时间区间判断在 参数列表里显示的参数
 	@RequestMapping(value = "/getConstraint", method = RequestMethod.GET)
 	@ResponseBody

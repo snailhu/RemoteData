@@ -84,7 +84,7 @@ public class SystemLogServiceImpl implements SystemLogService{
 
 	@Override
 	public void deleteSystemlogs() {
-		// TODO Auto-generated method stub
+		systemLogDao.deleteSystemlog();
 		
 	}
 

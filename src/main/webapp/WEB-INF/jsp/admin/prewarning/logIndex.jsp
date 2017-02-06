@@ -538,6 +538,26 @@ function myLoader(param, success, error) {
 	             }
 	         });
 		});
+		$("#search-star").change(function(){
+			var seriesId = $('#search-series').val();
+			var starId = $('#search-star').val();
+			var parameterType = $('#search-parameterType').val();
+			$.get('<%=request.getContextPath()%>/admin/prewarning/getParamList', {'parameterType':parameterType , 'series':seriesId ,  'star':starId}, function (res) {
+				  if(res) {
+					  $('#search-parameter').find("option").remove();
+					  $('#search-parameter').append("<option value=''>--请选择--</option>"); 
+	           	  $.each(res.paramaters ,function(){
+	           		    if(this.code){
+	           		    	$('#search-parameter').append("<option value='"+ this.code+"'>"+ this.simplyName +"</option>"); 
+	           		    }
+						});
+	           	  $("#search-parameter").select2().val("").trigger("change");
+	             }
+	             else {
+	           	  top.showMsg('提示', res.msg);
+	             }
+	         });
+		});
         
         $("#search-parameterType").change(function(){
 		 	var parameterType = $('#search-parameterType').val();	

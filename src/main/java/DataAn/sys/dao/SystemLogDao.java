@@ -15,4 +15,6 @@ public interface SystemLogDao extends IBaseDao<SystemLog> {
 	
 	public List<SystemLog> getSystemLogsBykeyWord(Date startDate, Date endDate,String keyWord);
 	
+	public void deleteSystemlog ();
+	
 }

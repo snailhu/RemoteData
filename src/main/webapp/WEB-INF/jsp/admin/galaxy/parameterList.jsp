@@ -431,6 +431,12 @@ $(function() {
 		if(!isValid){
 			return false;
 		}
+		var paramName = $("#add-param-fullName").val();
+		if(paramName.match(/\:/g).length > 1){
+			f.data('bootstrapValidator')
+			.updateStatus('fullName', 'INVALID', 'regexp');
+		    return false;
+		}
 // 		var series = $("#add-param-series").val();
 // 		var star = $("#add-param-star").val();
 		var name = $('#add-param-fullName').val();
@@ -486,6 +492,12 @@ $(function() {
 		var isValid = f.data('bootstrapValidator').isValid();
 		if(!isValid){
 			return false;
+		}
+		var paramName = $("#edit-param-fullName").val();
+		if(paramName.match(/\:/g).length > 1){
+			f.data('bootstrapValidator')
+			.updateStatus('fullName', 'INVALID', 'regexp');
+		    return false;
 		}
 		var id = $('#edit-param-id').val();
 		var name = $('#edit-param-fullName').val();

@@ -177,7 +177,7 @@ public class DeviceDaoImpl extends BaseDaoImpl<Device> implements IDeviceDao {
 		String hql = "from Device d where d.seriersId = " + series + " and d.starId=" + star + " and d.deviceType = "
 				+ deviceType;
 		if (StringUtils.isNotBlank(model)) {
-			hql += " and d.model = '" + model + "'";
+			hql += " and d.model like '%" + model + "%'";
 		}
 		List<Device> devices = this.getSession().createQuery(hql).list();
 		int totalDays = 0;
@@ -198,7 +198,7 @@ public class DeviceDaoImpl extends BaseDaoImpl<Device> implements IDeviceDao {
 		String hql = "select count(*) from Device d where d.seriersId = " + series + " and d.starId=" + star
 				+ " and d.deviceType = " + deviceType;
 		if (StringUtils.isNotBlank(model)) {
-			hql += " and d.model = '" + model + "'";
+			hql += " and d.model like '%" + model + "%'";
 		}
 		Query countQuery = this.getSession().createQuery(hql);
 		Long totalCount = 0L;

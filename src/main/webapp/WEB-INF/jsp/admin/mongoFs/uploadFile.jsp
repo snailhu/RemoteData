@@ -427,17 +427,21 @@ input[type=text]::-webkit-focus-inner {
   		
 	$('#submit-fileupload').click(function() {
         var fileName = $('#csvFile').val();
+        fileName = fileName.substr(fileName.lastIndexOf("\\")+1);
         var parameterType = $("input[name='paramType']:checked").val(); 
         if(fileName.length == 0){
         	$("#returnMsg").html("<img src='${pageContext.request.contextPath}/static/imgs/error.png'/><font color='red'>csv文件不能为空</font>");
         }else{
         	var regexp = /[a-zA-Z0-9]-\d{1,}--([0-9]{3}[1-9]|[0-9]{2}[1-9][0-9]{1}|[0-9]{1}[1-9][0-9]{2}|[1-9][0-9]{3})-(((0[13578]|1[02])-(0[1-9]|[12][0-9]|3[01]))|((0[469]|11)-(0[1-9]|[12][0-9]|30))|(02-(0[1-9]|[1][0-9]|2[0-8])))/;
         	var datFile = $('#datFile').val();
+        	datFile = datFile.substr(datFile.lastIndexOf("\\")+1);
         	var flag = true;
+        	var datFileName = '';
         	if(datFile.length != 0){
         		var toLowerCaseDatFile = datFile.toLowerCase();
         		var datFileNameLength = toLowerCaseDatFile.length;
         		var datIndex = toLowerCaseDatFile.indexOf(".dat");
+        		datFileName = toLowerCaseDatFile.substr(0,datIndex);
         		if(!regexp.test(datFile) || ((datFileNameLength-datIndex)!=4)){
             		$("#returnMsg").html("<img src='${pageContext.request.contextPath}/static/imgs/error.png'/><font color='red'>dat文件名输入不合法</font>");
 					return false;
@@ -466,6 +470,18 @@ input[type=text]::-webkit-focus-inner {
         		var toLowerCaseCsvFile = fileName.toLowerCase();
         		var csvFileNameLength = toLowerCaseCsvFile.length;
         		var csvIndex = toLowerCaseCsvFile.indexOf(".csv");
+        		var csvFileName = toLowerCaseCsvFile.substr(0,csvIndex);
+        		if(datFileName.length > 1 && datFileName != csvFileName){
+        			$("#returnMsg").html("<img src='${pageContext.request.contextPath}/static/imgs/error.png'/><font color='red'>dat与csv开始时间不一致</font>");
+        			return false;
+        		}
+        		var csvFileDateIndex = toLowerCaseCsvFile.indexOf("--") + 2;
+        		var csvFileDate = csvFileName.substr(csvFileDateIndex);
+        		var dateRegexp = /^(?:(?!0000)[0-9]{4}-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1[0-9]|2[0-8])|(?:0[13-9]|1[0-2])-(?:29|30)|(?:0[13578]|1[02])-31)|(?:[0-9]{2}(?:0[48]|[2468][048]|[13579][26])|(?:0[48]|[2468][048]|[13579][26])00)-02-29)$/;
+        		if(!dateRegexp.test(csvFileDate)){
+        			$("#returnMsg").html("<img src='${pageContext.request.contextPath}/static/imgs/error.png'/><font color='red'>时间格式不对</font>");
+        			return false;
+        		}
         		if(regexp.test(fileName) && ((csvFileNameLength-csvIndex)==4)){
             		var activeUser = '${activeUser}';
             		if(activeUser != null){

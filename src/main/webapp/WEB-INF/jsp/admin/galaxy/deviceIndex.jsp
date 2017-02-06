@@ -239,9 +239,12 @@
 	</div>
 	<!-- /.main-content -->
 	<script type="text/javascript">
-		var deviceGrid;
+		var deviceGrid = null;
 		//快速搜索按钮
 		$('#btn-search').click(function() {
+			if(deviceGrid != null){
+				deviceGrid.datagrid('unselectAll');			
+			}
 			var parameterType = $('#search-parameterType').val();
 			if (parameterType == "" || parameterType.length == 0) {
 				top.alertMsg('提示', '请选择设备类型！');

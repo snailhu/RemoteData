@@ -91,7 +91,8 @@
 		<label>结束日期</label>
 		<input class="datainp" id="dateEnd" type="text" placeholder="- -请选择结束时间- -" readonly>
 		<!--<input class="btn btn-default getData-btn" id="getData"  type="button" name="getData" value="获取数据">-->
-		<input class="btn btn-default getData-btn" id="changeColor" type="button" name="changeColor" value="配置曲线" data-toggle="modal" data-target="#configChartModal" >
+		<!--<input class="btn btn-default getData-btn" id="changeColor" type="button" name="changeColor" value="配置曲线" data-toggle="modal" data-target="#configChartModal" >-->
+		<input class="btn btn-default getData-btn" id="changeColor" type="button" name="changeColor" onclick='getchangcolorModal(this)' value="配置曲线"  >
 	</div>
 	<div class="changeColor-div">
 		<!-- 配置图表参数表单 -->
@@ -116,12 +117,12 @@
 							<div class="form-group">
 								<label class="col-sm-5 control-label"> ${param.name} </label>
 								<div class="col-sm-3">
-									<input type="text" id="${param.value}-color" name="${param.value}" dataName="${param.name}" class=" form-control jscolor {onFineChange:'update(this)'}"  style="border: none;" data-position="bottom left" value="">					       				
+									<input type="text" id="${param.value}-color" name="${param.value}" dataName="${param.name}" class=" form-control jscolor {onFineChange:'update(this)'}"  style="border: none;" data-position="bottom left" value="">
 								</div>
 								<div class="col-sm-3">
 									<select class="form-control" id="${param.value}-size">
-										<option value="1">1</option>
-										<option value="2" selected="true">2</option>
+										<option value="1" selected="true">1</option>
+										<option value="2">2</option>
 										<option value="3">3</option>
 									</select>
 								</div>
@@ -146,6 +147,9 @@
 </div>	
 </body>
 <script type="text/javascript">
+	//存放曲曲线颜色的
+	var linecolor_toset = []
+	
 	Date.prototype.pattern=function(fmt) {          
        	    var o = {          
        	    "M+" : this.getMonth()+1, //月份          
@@ -337,7 +341,7 @@
              data: {'paramObject':JSON.stringify(paramObject)},
               //成功执行方法
              success: function(data){
-             	  $("#main").hideLoading(); 
+             	  $("#main").hideLoading();
              	  var i=0
              	  var yname = 0;
              	  var legendname ="";
@@ -388,11 +392,11 @@
 				                name:legendname,
 				                smooth:false,
 				               	yAxisIndex: yname,
-				                /*lineStyle:{
+				                lineStyle:{
 			                    	normal:{
-			                    		width:0.5 
+			                    		width:1 
 			                    		}
-			                    },*/
+			                    },
 				                data: data[param].paramValue
 				            };
 				            //设置X轴，注意，这里X轴存在问题，默认使用了最后一组参数的X轴
@@ -420,9 +424,14 @@
 	            	options.yAxis =YAxixs;
 	            	pDate=options.xAxis.data = date;
 	                myChart.setOption(options);
+	                initlinecolor(myChart);               
+	                $('input.jscolor').each( function(i) {
+        	  			$(this).val(linecolor_toset[i].substr(1,6).toUpperCase());
+		           	});
+	                                 
              }
          })
- 	
+          	
        	$("#getData").click(function(){
        		parent.window.document.body.style.overflow = "hidden";//隐藏滚动条
        		$("#main").showLoading();
@@ -639,7 +648,7 @@
               }
         });
         
-        $('#submit_configChart').click(function(){
+        $('#submit_configChart').click(function(){                      
 	      	var seriesOptionsDam = [];
 	      	var legendOptionsData = [];
 	      	var legendcolor=[];
@@ -688,8 +697,27 @@
 			var color = picker.toHEXString();
 			var id= picker.valueElement.name;   		
     		var id2=id+"-color"; 
-    		document.getElementById(id2).value=color;    		
+    		document.getElementById(id2).value=color; 
 	}
+	
+	function initlinecolor(myChart){
+			var linecolor_default = myChart.getModel().option.color;
+        	var linecolor_custom = myChart.getModel().option.series;          
+            for(var m=0;m<linecolor_custom.length;m++)
+            {
+            	if(typeof(linecolor_custom[m].lineStyle.normal.color)=='undefined')
+            	{
+            		linecolor_toset[m]=linecolor_default[m];
+            	}
+            	else{
+            		linecolor_toset[m]=linecolor_custom[m].lineStyle.normal.color;
+            	}
+            }
+	}
+	
+	function getchangcolorModal(obj){
+			$(configChartModal).modal('show');
+        }
 		
     function needGetDate(){
 		var startInit = stringToDate(startDate_init);

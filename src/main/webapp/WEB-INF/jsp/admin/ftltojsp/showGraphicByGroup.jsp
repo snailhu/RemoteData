@@ -32,7 +32,7 @@
     width: 80px;
     font-size: 14px;
     margin-right: 15px;
-}
+}		
 </style>
 </head>
 <body>	
@@ -44,8 +44,7 @@
 				} catch (e) {
 				}
 			</script>
-			<ul class="breadcrumb">
-				<br/>
+			<ul class="breadcrumb" style="margin-top: 10px;">
 				<li>
 					<img src="${pageContext.request.contextPath}/static/imgs/DataImport/home.png" style="margin-bottom: 3px;">
 					<span>数据分析</span>
@@ -53,7 +52,6 @@
 				<li class="active">查看曲线</li>
 			</ul>
 		</div>
-
 		<div class="page-content">
 			
 			<div  style="margin:0px height:31px !important">

@@ -34,6 +34,7 @@ import DataAn.status.domain.StatusTracking;
 import DataAn.status.dto.StatusYstepDTO;
 import DataAn.status.service.IStatusTrackingService;
 import DataAn.storm.status.StatusTrackingType;
+import DataAn.sys.service.SystemLogService;
 import DataAn.wordManager.config.OptionConfig;
 
 @Service
@@ -51,6 +52,8 @@ public class JobServiceImpl implements IJobService{
 	private IStatusTrackingDao statusTrackingDao;
 	@Resource
 	private IStatusTrackingService statusTrackingService;
+	@Resource
+	private SystemLogService systemlogservice;
 	
 	//test 没5秒执行一次
 //	@Scheduled(cron = "0/5 * * * * *")  
@@ -243,6 +246,13 @@ public class JobServiceImpl implements IJobService{
 //				reoportService.removeDoc(docPath);
 //			}
 //		}
+	}
+	
+	//每周五下午18:00:00执行
+	@Scheduled(cron = "0 0 18 ? * FRI") 
+	@Override
+	public void deletesystemlog() throws Exception {
+		systemlogservice.deleteSystemlogs();
 	}
 
 }

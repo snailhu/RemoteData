@@ -46,4 +46,12 @@ public interface IJobService {
 	public void createReport() throws Exception;
 	
 	public void createReport2() throws Exception;
+	
+	/**
+	 * Description: 通过定时任务来删除系统日志，保证日志表中不超过一定数量的记录
+	 * @author hanz
+	 * @date 2017年2月7号
+	 * @throws Exception
+	 */
+	public void deletesystemlog() throws Exception;
 }

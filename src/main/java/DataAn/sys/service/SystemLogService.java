@@ -16,6 +16,7 @@ public interface SystemLogService {
 	
 	//添加一条日志记录，需要的参数为 request对象和操作的具体内容
 	public void addOneSystemlogs(HttpServletRequest request,String operateJob);
+	
 	public void deleteSystemlogs();
 	
 	public List<SystemLog> getSystemLogs();

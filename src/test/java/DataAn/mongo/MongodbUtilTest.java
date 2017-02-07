@@ -63,7 +63,7 @@ public class MongodbUtilTest {
 	
 	@Test
 	public void testFind(){
-		String paramStr = "sequence_00131,sequence_00135";
+		String paramStr = "";
 		String[] paramStrs = paramStr.split(",");
 		List<String> paramSet = new ArrayList<String>();
 		for (String param : paramStrs) {
@@ -72,12 +72,14 @@ public class MongodbUtilTest {
 		}
 		
 		String databaseName = "db_j8_01";
-		String collectionName =  "top";
+		String collectionName =  "flywheel_exception";
 		
-		Date beginDate = DateUtil.format("2015-01-03 00:00:00");
-		Date endDate = DateUtil.format("2015-01-04 00:00:00");
-				
+		Date beginDate = DateUtil.format("2015-01-21 01:00:00");
+		Date endDate = DateUtil.format("2015-01-21 01:01:00");
+		
+//		MongoCursor<Document> cursor = mg.findByNoStatus(databaseName, collectionName, beginDate, endDate);
 		MongoCursor<Document> cursor = mg.find(databaseName, collectionName, beginDate, endDate);
+		
 		int count = 0;
 		Document doc = null;
 		String value = "";

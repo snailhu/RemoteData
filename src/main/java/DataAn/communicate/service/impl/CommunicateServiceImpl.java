@@ -53,6 +53,8 @@ public class CommunicateServiceImpl implements ICommunicateService{
 	@Resource
 	private IStormServerService stormServerService;
 	
+	private Map<String,ExceptionJobConfig> jobConfigMap = new HashMap<String,ExceptionJobConfig>();
+	
 	@Override
 	public String getExceptionJobConfigList(String series, String star,
 			String parameterType) {		
@@ -158,6 +160,7 @@ public class CommunicateServiceImpl implements ICommunicateService{
 						jobConfig.setCount(wv.getLimitTimes());// 设置 限定值出现的频次计为一次特殊工况
 						jobConfigList.add(jobConfig);
 						devicdNameSet.add(deviceName);
+						jobConfigMap.put(jobConfig.getDeviceName(), jobConfig);
 					}
 				}
 //				else{
@@ -181,7 +184,7 @@ public class CommunicateServiceImpl implements ICommunicateService{
 				exceConfig.setMax(ew.getMaxVal());
 				exceConfig.setMin(ew.getMinVal());
 				exceConfig.setDelayTime(ew.getTimeZone() * 60 * 1000);//时间单位
-				exceConfigList.add(exceConfig);						
+				exceConfigList.add(exceConfig);				
 //				else{
 //					throw new RuntimeException(series+"-"+star+"-"+ew.getParameterType()+"-"+ew.getParameter()+" : 找不到设备2");
 //				}
@@ -381,19 +384,33 @@ public class CommunicateServiceImpl implements ICommunicateService{
 					String deviceName = null;
 					Date beginDate = null;
 					Date endDate = null;
+					ExceptionJobConfig jobConfig =null;
 					while (cursor.hasNext()) {
 						doc = cursor.next();
 						strBeginDate = doc.getString("beginDate");
-						strEndDate = doc.getString("endDate");
 						deviceName = doc.getString("deviceName");
-						if (StringUtils.isNotBlank(strBeginDate) && StringUtils.isNotBlank(strEndDate) 
-								&& StringUtils.isNotBlank(deviceName)) {
+						if (StringUtils.isNotBlank(strBeginDate) && StringUtils.isNotBlank(deviceName)) {
 							beginDate = DateUtil.format(strBeginDate);
-							endDate = DateUtil.format(strEndDate);
+							jobConfig = jobConfigMap.get(deviceName);
+							if(jobConfig != null){
+								endDate = new Date(beginDate.getTime() + jobConfig.getDelayTime());
+							}else{
+								System.out.println("jobConfig is null...");
+								strEndDate = doc.getString("endDate");
+								if(StringUtils.isNotBlank(strEndDate))
+									endDate = DateUtil.format(strEndDate);								
+							}
+							System.out.println("updateByDate...");
+							System.out.println("databaseName: " + databaseName);
+							System.out.println("exception_collectionName: " + exception_collectionName);
+							System.out.println("beginDate: " + DateUtil.format(beginDate));
+							System.out.println("endDate: " + DateUtil.format(endDate));
+							System.out.println("deviceName: " + deviceName);
 							mg.updateByDate(databaseName, exception_collectionName, beginDate, endDate, deviceName, 0);
 						}
 					}
 				}
+				jobConfigMap.clear();
 				jsonObject.put("sucFlag", true);
 				return jsonObject.toJSONString();
 			} else {

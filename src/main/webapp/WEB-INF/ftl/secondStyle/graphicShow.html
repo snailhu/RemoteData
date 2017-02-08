@@ -425,8 +425,9 @@
 	            	pDate=options.xAxis.data = date;
 	                myChart.setOption(options);
 	                initlinecolor(myChart);               
-	                $('input.jscolor').each( function(i) {
-        	  			$(this).val(linecolor_toset[i].substr(1,6).toUpperCase());
+	                $('input.jscolor').each( function(index,element) {
+        	  			$(this).val(linecolor_toset[index].substr(1,6).toUpperCase());
+        	  			element.jscolor.fromString(linecolor_toset[index].substr(1,6).toUpperCase());
 		           	});
 	                                 
              }

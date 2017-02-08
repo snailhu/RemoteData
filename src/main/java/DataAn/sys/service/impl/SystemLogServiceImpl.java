@@ -81,14 +81,24 @@ public class SystemLogServiceImpl implements SystemLogService{
 		slog.setOperateJob(operateJob);
 		systemLogDao.add(slog);
 	}
-
+	
+	/* (non-Javadoc)
+	 * @see DataAn.sys.service.SystemLogService#deleteSystemlogs()
+	 * 供定时job使用，删除系统日志，当记录表中的记录超过8000条时，以10条为单位删除记录，使记录少于8000条
+	 */
 	@Override
 	public void deleteSystemlogs() {
-		systemLogDao.deleteSystemlog();
-		
+		long count = systemLogDao.getSystemLogCount();
+		while(count>8000)
+		{
+			List<SystemLog> logs=systemLogDao.getallSystemLogs();
+			for(int i=1;i<=10;i++)
+			{
+				systemLogDao.deleteSystemlogById(logs.get(logs.size()-i));
+			}
+			count = systemLogDao.getSystemLogCount();
+		}
 	}
-
-
 
 	
 }

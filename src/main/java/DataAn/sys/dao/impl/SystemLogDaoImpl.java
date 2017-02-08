@@ -44,11 +44,15 @@ public class SystemLogDaoImpl extends BaseDaoImpl<SystemLog> implements
 	}
 
 	@Override
-	public void deleteSystemlog() {
+	public void deleteSystemlogById(SystemLog log) {
+		this.delete(log);
+	}
+
+	@Override
+	public long getSystemLogCount() {
 		String hql ="select count(*) from SystemLog where 1=1";
 		int count = ((Number)this.getSession().createQuery(hql).uniqueResult()).intValue();
-		System.out.println(count);
-		
+		return count;
 	}
 
 }

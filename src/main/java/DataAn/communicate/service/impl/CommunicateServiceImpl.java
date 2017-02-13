@@ -339,7 +339,7 @@ public class CommunicateServiceImpl implements ICommunicateService{
 		try {
 			VirtualFileSystem file = fileDao.selectByFileTypeIsFileAndMongoFSUUId(version);
 			if (file != null) {
-				System.out.println("updateStatus by file ...");
+				System.out.println("updateStatus by file ..."+DateUtil.format(new Date()));
 				System.out.println("file.getFileName(): " + file.getFileName());
 				System.out.println("statusType: " + statusType);
 				System.out.println("statusType: " + StatusTrackingType.getStatusTrackingType(statusType).getName());
@@ -395,17 +395,17 @@ public class CommunicateServiceImpl implements ICommunicateService{
 							if(jobConfig != null){
 								endDate = new Date(beginDate.getTime() + jobConfig.getDelayTime());
 							}else{
-								System.out.println("jobConfig is null...");
+//								System.out.println("jobConfig is null...");
 								strEndDate = doc.getString("endDate");
 								if(StringUtils.isNotBlank(strEndDate))
 									endDate = DateUtil.format(strEndDate);								
 							}
-							System.out.println("updateByDate...");
-							System.out.println("databaseName: " + databaseName);
-							System.out.println("exception_collectionName: " + exception_collectionName);
-							System.out.println("beginDate: " + DateUtil.format(beginDate));
-							System.out.println("endDate: " + DateUtil.format(endDate));
-							System.out.println("deviceName: " + deviceName);
+//							System.out.println("updateByDate...");
+//							System.out.println("databaseName: " + databaseName);
+//							System.out.println("exception_collectionName: " + exception_collectionName);
+//							System.out.println("beginDate: " + DateUtil.format(beginDate));
+//							System.out.println("endDate: " + DateUtil.format(endDate));
+//							System.out.println("deviceName: " + deviceName);
 							mg.updateByDate(databaseName, exception_collectionName, beginDate, endDate, deviceName, 0);
 						}
 					}

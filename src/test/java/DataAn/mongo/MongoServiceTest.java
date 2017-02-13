@@ -98,5 +98,24 @@ public class MongoServiceTest {
 		
 	}
 	
-	
+	@Test
+	public void findJobNumByDeviceName(){
+		String series = SeriesType.J9_SERIES.getName();
+		String star = J9SeriesType.STRA5.getValue();
+		String paramType = J9Series_Star_ParameterType.FLYWHEEL.getValue();
+		String deviceName = "Za";
+		
+		Date beginDate = DateUtil.format("2016-01-01 00:00:00");
+		Date endDate = DateUtil.format("2016-01-03 00:00:00");
+		
+		long count = mongoService.findJobNumByDeviceName(series, star, paramType, deviceName, beginDate, endDate);
+		System.out.println(DateUtil.format(beginDate) + " to " + DateUtil.format(endDate) + " size: " + count);
+		
+		beginDate = DateUtil.format("2016-03-01 00:00:00");
+		endDate = DateUtil.format("2016-03-03 00:00:00");
+		
+		count = mongoService.findJobNumByDeviceName(series, star, paramType, deviceName, beginDate, endDate);
+		System.out.println(DateUtil.format(beginDate) + " to " + DateUtil.format(endDate) + " size: " + count);
+		
+	}
 }

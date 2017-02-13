@@ -17,4 +17,6 @@ public interface IWarningLogMongoDao {
 			String parameterType, String parameter, String createdatetimeStart, String createdatetimeEnd,
 			String warningType, String hadRead);
 
+	public void readAllWarningLog();
+
 }

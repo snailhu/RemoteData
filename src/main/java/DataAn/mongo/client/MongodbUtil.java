@@ -448,6 +448,14 @@ public class MongodbUtil {
 							   Filters.eq("status", 1))).sort(sort).iterator();
 	}
 	
+	public MongoCursor<Document> findByNoStatus(String databaseName,String collectionName,Date beginDate, Date endDate){
+		Document sort = new Document();
+		sort.append("datetime", 1);
+		MongoCollection<Document> collection = this.getCollection(databaseName, collectionName);
+		return collection.find(Filters.and(Filters.gte("datetime", beginDate),
+							   Filters.lte("datetime", endDate))).sort(sort).iterator();
+	}
+	
 	public long countByDate(String databaseName,String collectionName,
 			Date beginDate, Date endDate,String fieldName,String value ){
 		MongoCollection<Document> collection = this.getCollection(databaseName, collectionName);

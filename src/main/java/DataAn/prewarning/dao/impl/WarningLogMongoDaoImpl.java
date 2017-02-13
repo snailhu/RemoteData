@@ -57,6 +57,40 @@ public class WarningLogMongoDaoImpl implements IWarningLogMongoDao {
 		}
 		
 	}
+	@Override
+	public void readAllWarningLog(){
+		List<String> dbNames = new ArrayList<String>();
+		List<Series> seriesList = new ArrayList<Series>();
+		seriesList = seriersDao.findAll();
+		for (Series s : seriesList) {
+			List<Star> starList = null;
+			starList = starDao.getStarListBySeriesId(s.getId());
+			for (Star str : starList) {
+				String db = InitMongo.getDataDBBySeriesAndStar(s.getCode(), str.getCode());
+				dbNames.add(db);
+			}
+		}
+		MongodbUtil mongodbUtil = MongodbUtil.getInstance(); 
+		for (String databaseName : dbNames) {
+			MongoCollection<Document> collection1 = mongodbUtil.getCollectionNotShard(databaseName,"top_job");
+			if (collection1 != null) {
+				collection1.updateMany(Filters.eq("hadRead", "0"), Updates.set("hadRead", "1"));
+			}
+			MongoCollection<Document> collection2 = mongodbUtil.getCollectionNotShard(databaseName,"top_exception");
+			if (collection2 != null) {
+				collection2.updateMany(Filters.eq("hadRead", "0"), Updates.set("hadRead", "1"));
+			}			
+			MongoCollection<Document> collection3 = mongodbUtil.getCollectionNotShard(databaseName,"flywheel_job");
+			if (collection3 != null) {
+				collection3.updateMany(Filters.eq("hadRead", "0"), Updates.set("hadRead", "1"));
+			}			
+			MongoCollection<Document> collection4 = mongodbUtil.getCollectionNotShard(databaseName,"flywheel_exception");
+			if (collection4 != null) {
+				collection4.updateMany(Filters.eq("hadRead", "0"), Updates.set("hadRead", "1"));
+			}
+		}
+	
+	}
 
 	@Override
 	public Long getNotReadCount(String series, String star, String parameterType, String parameter,

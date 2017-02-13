@@ -394,6 +394,26 @@ public class PrewarningController extends BaseController {
 		jsonMsg.setMsg("删除预警成功!");
 		return jsonMsg;
 	}
+	
+	//预警信息全部标记为已读
+	@RequestMapping(value="/readAllLog")
+	@ResponseBody
+	public JsonMessage readAlllog(HttpServletRequest request ,String hadRead){
+		JsonMessage jsonMsg = new JsonMessage();
+		try{
+			prewarningService.readAllWarningLog(hadRead);
+		}catch (Exception e){
+			e.printStackTrace();
+			jsonMsg.setSuccess(false);
+			jsonMsg.setMsg("全部标记已读失败");
+			jsonMsg.setObj(e.getMessage());
+			return jsonMsg;
+		}
+		jsonMsg.setSuccess(true);
+		jsonMsg.setMsg("标记全部已读成功");
+		return jsonMsg;
+	}
+	
 
 	@RequestMapping(value = "/getStarList")
 	@ResponseBody

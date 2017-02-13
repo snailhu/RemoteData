@@ -488,8 +488,14 @@ function myLoader(param, success, error) {
 					iconCls : 'icon-remove',
 					handler : function() {
 						deleteLog();
-					}
-				} ]
+						}
+					}, '-',{
+					text : '全部已读',
+					iconCls : 'icon-remove',
+					handler : function() {
+						readall();
+						}
+					}]
 			});
 		}
         $(function () {
@@ -820,6 +826,51 @@ function myLoader(param, success, error) {
 				top.showMsg("提示", "请选择要删除的信息！");
 			}
 		}
+		//标记全部已读
+		function readall(){			
+				swal(
+						{
+							title : "您是否确定全部标记已读？",
+							//text : "确认删除？",
+							type : "warning",
+							showCancelButton : true,
+							confirmButtonColor : "#DD6B55",
+							confirmButtonText : "确认",
+							cancelButtonText : "取消",
+							closeOnConfirm : false,
+							closeOnCancel : false
+						},
+						function(isConfirm) {
+							if (isConfirm) {						
+								$.ajax({
+											url : '${pageContext.request.contextPath}/admin/prewarning/readAllLog?hadRead='+ hadRead,
+											data : {
+											},
+											cache : false,
+											success : function(data) {
+												if (data.success) {
+													if(hadReadFlag == 0)
+													{	
+														$('#logList').data().datagrid.cache = null;//清除datagrid 缓存，保证前台假分页;	
+														var options = $('#logList').datagrid('getPager').data("pagination").options;  
+														var totalRowNum = options.total;
+														$("#prewarningcount").text('0条未读预警信息');
+													}
+													swal("已经全部标记为已读", "", "success");
+													reloadDataGrid();
+												} else {
+													swal("标记失败", data.obj,
+															"error");
+												}
+											}
+										});
+							} else {
+								swal("取消", "", "error");
+							}
+							}
+					);
+		}
+		
 		function getSelectId() {
 			var row = logGrid.datagrid('getSelected');
 			if (!row) {

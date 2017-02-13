@@ -167,6 +167,13 @@ public class PrewarningServiceImpl implements IPrewarningService {
 			throws Exception {
 		warningLogMongoDao.deleteWainingById(logId, series, star, parameterType, warningType,hadRead);
 	}
+	
+	@Override
+	public void readAllWarningLog(String hadRead)throws Exception{
+		System.out.println("开始执行全部标记为已读");
+		warningLogMongoDao.readAllWarningLog();
+		System.out.println("全部标记为已读");
+	}
 
 	@Override
 	public Pager<QueryLogDTO> pageQueryWarningLog(int pageIndex, int pageSize, String series, String star,

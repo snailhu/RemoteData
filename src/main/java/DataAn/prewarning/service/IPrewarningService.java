@@ -24,6 +24,9 @@ public interface IPrewarningService {
 	public void updateWarnValue(WarnValueDTO warnValueDTO) throws Exception;
 
 	public void deleteWarningValue(long valueId) throws Exception;
+	
+	//将未读预警信息全部标记为已读
+	public void readAllWarningLog(String hadRead) throws Exception;
 
 	public Pager<QueryValueDTO> pageQueryWarningValue(int pageIndex, int pageSize, String sort, String order,
 			String series, String star, String parameter, String parameterType, String warningType) throws Exception;
@@ -57,4 +60,6 @@ public interface IPrewarningService {
 			String parameterType, String warningType);
 
 	public List<Star> getStarList(String seriesId);
+
+	
 }

@@ -70,32 +70,23 @@ public class WarningLogMongoDaoImpl implements IWarningLogMongoDao {
 				dbNames.add(db);
 			}
 		}
-		for(int i=0;i<dbNames.size();i++)
-		{
-			System.out.println(dbNames.get(i));
-		}
 		MongodbUtil mongodbUtil = MongodbUtil.getInstance(); 
 		for (String databaseName : dbNames) {
-			/*MongoCollection<Document> collection1 = mongodbUtil.getCollectionNotShard(databaseName,"top_job");
+			MongoCollection<Document> collection1 = mongodbUtil.getCollectionNotShard(databaseName,"top_job");
 			if (collection1 != null) {
-				mongodbUtil.update(databaseName, "top_job", "hadRead", "1");
-				System.out.println("陀螺机动");
+				collection1.updateMany(Filters.eq("hadRead", "0"), Updates.set("hadRead", "1"));
 			}
 			MongoCollection<Document> collection2 = mongodbUtil.getCollectionNotShard(databaseName,"top_exception");
 			if (collection2 != null) {
-				mongodbUtil.update(databaseName, "top_exception", "hadRead", "1");
-				System.out.println("陀螺异常");
-
-			}*/			
+				collection2.updateMany(Filters.eq("hadRead", "0"), Updates.set("hadRead", "1"));
+			}			
 			MongoCollection<Document> collection3 = mongodbUtil.getCollectionNotShard(databaseName,"flywheel_job");
 			if (collection3 != null) {
-				mongodbUtil.update(databaseName, "flywheel_job", "hadRead", "1");
+				collection3.updateMany(Filters.eq("hadRead", "0"), Updates.set("hadRead", "1"));
 			}			
 			MongoCollection<Document> collection4 = mongodbUtil.getCollectionNotShard(databaseName,"flywheel_exception");
 			if (collection4 != null) {
-				mongodbUtil.update(databaseName, "flywheel_exception", "hadRead", "1");
-				System.out.println("飞轮机动");
-
+				collection4.updateMany(Filters.eq("hadRead", "0"), Updates.set("hadRead", "1"));
 			}
 		}
 	

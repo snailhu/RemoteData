@@ -76,8 +76,8 @@ public class MakeCSVFileHelper {
 		
 		DecimalFormat df = new DecimalFormat("00");
 		//目录
-		String dirPath = "E:\\data\\flywheel\\" + year;
-//		String dirPath = "E:\\data\\flywheel\\" + year + "\\" + df.format(month);
+//		String dirPath = "E:\\data\\flywheel\\" + year;
+		String dirPath = "E:\\data\\flywheel\\" + year + "\\" + df.format(month);
 		//文件路径
 		String outputFile = dirPath +"\\" +"j9-05--" + year +"-" + df.format(month) +"-" + df.format(day) +".csv";
 		String strYear = year + "年";
@@ -188,7 +188,7 @@ public class MakeCSVFileHelper {
 		System.out.println("file: " + outputFile);
 	}
 	
-	private static int getDays(int year, int month) {
+	public static int getDays(int year, int month) {
 		int days = 0;
 		if (month == 1 || month == 3 || month == 5 || month == 7 || month == 8 || month == 10 || month == 12) {
 			days = 31;
@@ -196,9 +196,9 @@ public class MakeCSVFileHelper {
 			days = 30;
 		} else {
 			if (year % 4 == 0 || year % 400 == 0 && year % 100 != 0) {
-				days = 28;
-			} else {
 				days = 29;
+			} else {
+				days = 28;
 			}
 		}
 		return days;

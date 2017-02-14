@@ -511,6 +511,16 @@ function myLoader(param, success, error) {
              });
 		});
         
+        $("#search-warningType").change(function(){
+        	var seriesId = $('#search-series').val();
+			var starId = $('#search-star').val();
+			var parameterType = $('#search-parameterType').val();
+			if((seriesId) && (starId) && (parameterType)){
+				reloadSearchParameter();
+			}else{
+				$('#search-parameter').find("option").remove();
+			}
+        });
         $("#search-series").change(function(){
 		 	var seriesId = $('#search-series').val();	
 		 	  $.get('<%=request.getContextPath()%>/admin/prewarning/getStarList', {'seriesId':seriesId},  function (res) {
@@ -528,80 +538,121 @@ function myLoader(param, success, error) {
 		 	  
 		 	 var parameterType = $('#search-parameterType').val();
 		 	var starId = $('#search-star').val();
-			  $.get('<%=request.getContextPath()%>/admin/prewarning/getParamList', {'parameterType':parameterType , 'series':seriesId ,  'star':starId}, function (res) {
-				  if(res) {
-					  $('#search-parameter').find("option").remove();
-					  $('#search-parameter').append("<option value=''>--请选择--</option>"); 
-	           	  $.each(res.paramaters ,function(){
-	           		    if(this.code){
-	           		    	$('#search-parameter').append("<option value='"+ this.code+"'>"+ this.simplyName +"</option>"); 
-	           		    }
-						});
-	           	  $("#search-parameter").select2().val("").trigger("change");
-	             }
-	             else {
-	           	  top.showMsg('提示', res.msg);
-	             }
-	         });
+		 	if((starId) && (parameterType)){
+		 		reloadSearchParameter();
+		 		
+		 	}
 		});
 		$("#search-star").change(function(){
 			var seriesId = $('#search-series').val();
 			var starId = $('#search-star').val();
 			var parameterType = $('#search-parameterType').val();
-			$.get('<%=request.getContextPath()%>/admin/prewarning/getParamList', {'parameterType':parameterType , 'series':seriesId ,  'star':starId}, function (res) {
-				  if(res) {
-					  $('#search-parameter').find("option").remove();
-					  $('#search-parameter').append("<option value=''>--请选择--</option>"); 
-	           	  $.each(res.paramaters ,function(){
-	           		    if(this.code){
-	           		    	$('#search-parameter').append("<option value='"+ this.code+"'>"+ this.simplyName +"</option>"); 
-	           		    }
-						});
-	           	  $("#search-parameter").select2().val("").trigger("change");
-	             }
-	             else {
-	           	  top.showMsg('提示', res.msg);
-	             }
-	         });
+			if((seriesId) && (parameterType)){
+				reloadSearchParameter();
+			}
+			
 		});
         
         $("#search-parameterType").change(function(){
 		 	var parameterType = $('#search-parameterType').val();	
 		 	var seriesId = $('#search-series').val();
 		 	var starId = $('#search-star').val();
-			  $.get('<%=request.getContextPath()%>/admin/prewarning/getParamList',
-											{
-												'parameterType' : parameterType,
-												'series' : seriesId,
-												'star':starId
-											},
-											function(res) {
-												if (res) {
-													$('#search-parameter')
-															.find("option")
-															.remove();
-													$('#search-parameter')
-															.append(
-																	"<option value=''>--请选择--</option>");
-													$
-															.each(
-																	res.paramaters,
-																	function() {
-																		if (this.code) {
-																			$(
-																					'#search-parameter')
-																					.append(
-																							"<option value='"+ this.code+"'>"
-																									+ this.simplyName
-																									+ "</option>");
-																		}
-																	});
-												} else {
-													top.showMsg('提示', res.msg);
+		 	var warningType = $('#search-warningType').val();
+		 	if(warningType == 1){
+				$.get('<%=request.getContextPath()%>/admin/prewarning/getParamList',
+					{
+						'parameterType' : parameterType,
+						'series' : seriesId,
+						'star':starId
+					},
+					function(res) {
+						if (res) {
+							$('#search-parameter').find("option").remove();
+							$('#search-parameter').append("<option value=''>--请选择--</option>");
+							$.each(res.paramaters,function() {
+												if (this.code) {
+													$('#search-parameter').append(
+																	"<option value='"+ this.code+"'>"
+																			+ this.simplyName
+																			+ "</option>");
 												}
 											});
+						} else {
+							top.showMsg('提示', res.msg);
+						}
+					});
+		 	}else if(warningType == 0){
+		 		$.get('<%=request.getContextPath()%>/admin/parameter/getDeviceList',
+						{
+							'paramType' : parameterType
+						},
+						function(data) {
+							if (data) {
+								$('#search-parameter').find("option").remove();
+								$('#search-parameter').append("<option value=''>--请选择--</option>");
+								$.each(data,function() {
+													$('#search-parameter').append(
+																	"<option value='"+ this+"'>"
+																			+ this
+																			+ "</option>");
+												});
+							} else {
+								top.showMsg('提示', res.msg);
+							}
 						});
+		 	}
+		});
 
+        function reloadSearchParameter(){
+        	var parameterType = $('#search-parameterType').val();	
+		 	var seriesId = $('#search-series').val();
+		 	var starId = $('#search-star').val();
+        	var warningType = $('#search-warningType').val();
+		 	if(warningType == 1){//异常
+				$.get('<%=request.getContextPath()%>/admin/prewarning/getParamList',
+					{
+						'parameterType' : parameterType,
+						'series' : seriesId,
+						'star':starId
+					},
+					function(res) {
+						if (res) {
+							$('#search-parameter').find("option").remove();
+							$('#search-parameter').append("<option value=''>--请选择--</option>");
+							$.each(res.paramaters,function() {
+												if (this.code) {
+													$('#search-parameter').append(
+																	"<option value='"+ this.code+"'>"
+																			+ this.simplyName
+																			+ "</option>");
+												}
+											});
+							$("#search-parameter").select2().val("").trigger("change");
+						} else {
+							top.showMsg('提示', res.msg);
+						}
+					});
+		 	}else if(warningType == 0){//特殊工况
+		 		$.get('<%=request.getContextPath()%>/admin/parameter/getDeviceList',
+						{
+							'paramType' : parameterType
+						},
+						function(data) {
+							if (data) {
+								$('#search-parameter').find("option").remove();
+								$('#search-parameter').append("<option value=''>--请选择--</option>");
+								$.each(data,function() {
+													$('#search-parameter').append(
+																	"<option value='"+ this+"'>"
+																			+ this
+																			+ "</option>");
+												});
+							} else {
+								top.showMsg('提示', res.msg);
+							}
+						});
+		 	}
+        }
 		function reloadDataGrid() {
 			logGrid.datagrid('clearChecked');
 			logGrid.datagrid('reload');

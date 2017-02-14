@@ -5,18 +5,20 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.Date;
-
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
-
-import DataAn.common.service.impl.InitDataServiceImpl;
 import DataAn.common.utils.DateUtil;
 import DataAn.common.utils.Log4jUtil;
 import DataAn.common.utils.PropertiesUtil;
 import DataAn.common.utils.UUIDGeneratorUtil;
-import DataAn.storm.exceptioncheck.ExceptionUtils;
 
 public class CommonConfig {
+
+	private static Map<String,List<String>> map = new HashMap<String,List<String>>();
 
 	/**
 	 * 配置文件地址
@@ -108,6 +110,74 @@ public class CommonConfig {
 								DateUtil.format(new Date(), "yyyy-MM-dd")+ File.separator + 
 								UUIDGeneratorUtil.getUUID();
 		return docCachePath;
+	}
+	
+	public static List<String> getFlywheelDeviceNames() {
+		String deviceNameKey = "flywheel.deviceNames";
+		List<String> list = map.get(deviceNameKey);
+		if(list == null){
+			list = new ArrayList<String>();
+			String deviceNames = PropertiesUtil.getProperties(config, charset).getProperty(deviceNameKey);
+			if(deviceNames != null && !deviceNames.equals("")){
+				String[] deviceNameArray = deviceNames.trim().split(",");
+				for (String deviceName : deviceNameArray) {
+					list.add(deviceName);
+				}
+				map.put(deviceNameKey, list);
+			}			
+		}
+		return list;
+	}
+	
+	public static List<String> getFlywheelParamTypes() {
+		String paramTypeKey = "flywheel.paramTypes";
+		List<String> list = map.get(paramTypeKey);
+		if(list == null){
+			list = new ArrayList<String>();
+			String paramTypes = PropertiesUtil.getProperties(config, charset).getProperty(paramTypeKey);
+			if(paramTypes != null && !paramTypes.equals("")){
+				String[] paramTypeArray = paramTypes.trim().split(",");
+				for (String paramType : paramTypeArray) {
+					list.add(paramType);
+				}
+				map.put(paramTypeKey, list);
+			}			
+		}
+		return list;
+	}
+	
+	public static List<String> getTopDeviceNames() {
+		String deviceNameKey = "top.deviceNames";
+		List<String> list = map.get(deviceNameKey);
+		if(list == null){
+			list = new ArrayList<String>();
+			String deviceNames = PropertiesUtil.getProperties(config, charset).getProperty(deviceNameKey);
+			if(deviceNames != null && !deviceNames.equals("")){
+				String[] deviceNameArray = deviceNames.trim().split(",");
+				for (String deviceName : deviceNameArray) {
+					list.add(deviceName);
+				}
+				map.put(deviceNameKey, list);
+			}			
+		}
+		return list;
+	}
+	
+	public static List<String> getTopParamTypes() {
+		String paramTypeKey = "top.paramTypes";
+		List<String> list = map.get(paramTypeKey);
+		if(list == null){
+			list = new ArrayList<String>();
+			String paramTypes = PropertiesUtil.getProperties(config, charset).getProperty(paramTypeKey);
+			if(paramTypes != null && !paramTypes.equals("")){
+				String[] paramTypeArray = paramTypes.trim().split(",");
+				for (String paramType : paramTypeArray) {
+					list.add(paramType);
+				}
+				map.put(paramTypeKey, list);
+			}			
+		}
+		return list;
 	}
 	
 	private static byte[] getBytes(InputStream input) {

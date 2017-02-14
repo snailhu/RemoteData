@@ -115,7 +115,7 @@ public class CSVServiceTest {
 	public void testWriteCSVByJavacsv(int year,int month,int day) throws Exception{
 		String type = J9Series_Star_ParameterType.FLYWHEEL.getName();
 		//飞轮-->"电流","转速","温度","指令","供电状态","角动量"
-		List<String> params = J9Series_Star_ParameterType.getFlywheelTypeOnDataType();
+		List<String> params = J9Series_Star_ParameterType.getFlywheelParamTypeList();
 		Map<String,String> map =  j9Series_Star_Service.getAllParameterList_allZh_and_enByOption(type,params);
 		Set<String> keys = map.keySet();
 		List<String> titleList = new ArrayList<String>();

@@ -180,6 +180,15 @@ public class WarningLogMongoDaoImpl implements IWarningLogMongoDao {
 		return collectionName;
 	}
 
+	private String getParameterKey(String warningType){
+		String parameterKey = "";
+		if ("0".equals(warningType)) {
+			parameterKey = "deviceName";
+		} else if ("1".equals(warningType)) {
+			parameterKey = "paramCode";
+		}
+		return parameterKey;
+	}
 	private List<QueryLogDTO> getWarningLogListByCollection(MongoCollection<Document> collection, String warnType) {
 		List<QueryLogDTO> queryLogDTOs = new ArrayList<QueryLogDTO>();
 		if (collection == null) {
@@ -363,13 +372,14 @@ public class WarningLogMongoDaoImpl implements IWarningLogMongoDao {
 			} else {
 				if (StringUtils.isNotBlank(createdatetimeStart) && StringUtils.isNotBlank(createdatetimeEnd)
 						&& StringUtils.isNotBlank(parameter)) {
+					String paramKey = getParameterKey(warningType);
 					document_It = collection
-							.find(Filters.and(Filters.eq("paramCode", parameter),
+							.find(Filters.and(Filters.eq(paramKey, parameter),
 									Filters.eq("status", 1),
 									Filters.gte("datetime", DateUtil.format(createdatetimeStart)),
 									Filters.lte("datetime", DateUtil.format(createdatetimeEnd))))
 							.sort(Filters.eq("datetime", -1)).skip((pageIndex - 1) * pageSize).limit(pageSize);
-					totalCount = collection.count(Filters.and(Filters.eq("paramCode", parameter),Filters.eq("status", 1),
+					totalCount = collection.count(Filters.and(Filters.eq(paramKey, parameter),Filters.eq("status", 1),
 							Filters.gte("datetime", DateUtil.format(createdatetimeStart)),
 							Filters.lte("datetime", DateUtil.format(createdatetimeEnd))));
 
@@ -386,28 +396,31 @@ public class WarningLogMongoDaoImpl implements IWarningLogMongoDao {
 				}
 				if (StringUtils.isNotBlank(createdatetimeStart) && StringUtils.isBlank(createdatetimeEnd)
 						&& StringUtils.isNotBlank(parameter)) {
+					String paramKey = getParameterKey(warningType);
 					document_It = collection
-							.find(Filters.and(Filters.eq("paramCode", parameter),
+							.find(Filters.and(Filters.eq(paramKey, parameter),
 									Filters.eq("status", 1),
 									Filters.gte("datetime", createdatetimeStart)))
 							.sort(Filters.eq("datetime", -1)).skip((pageIndex - 1) * pageSize).limit(pageSize);
-					totalCount = collection.count(Filters.and(Filters.eq("paramCode", parameter),Filters.eq("status", 1),
+					totalCount = collection.count(Filters.and(Filters.eq(paramKey, parameter),Filters.eq("status", 1),
 							Filters.gte("datetime", DateUtil.format(createdatetimeStart))));
 				}
 				if (StringUtils.isBlank(createdatetimeStart) && StringUtils.isNotBlank(createdatetimeEnd)
 						&& StringUtils.isNotBlank(parameter)) {
+					String paramKey = getParameterKey(warningType);
 					document_It = collection
-							.find(Filters.and(Filters.eq("paramCode", parameter),Filters.eq("status", 1),
+							.find(Filters.and(Filters.eq(paramKey, parameter),Filters.eq("status", 1),
 									Filters.lte("datetime", DateUtil.format(createdatetimeEnd))))
 							.sort(Filters.eq("datetime", -1)).skip((pageIndex - 1) * pageSize).limit(pageSize);
-					totalCount = collection.count(Filters.and(Filters.eq("paramCode", parameter),Filters.eq("status", 1),
+					totalCount = collection.count(Filters.and(Filters.eq(paramKey, parameter),Filters.eq("status", 1),
 							Filters.lte("datetime", DateUtil.format(createdatetimeEnd))));
 				}
 				if (StringUtils.isBlank(createdatetimeStart) && StringUtils.isBlank(createdatetimeEnd)
 						&& StringUtils.isNotBlank(parameter)) {
-					document_It = collection.find(Filters.and(Filters.eq("status", 1),Filters.eq("paramCode", parameter))).sort(Filters.eq("datetime", -1))
+					String paramKey = getParameterKey(warningType);
+					document_It = collection.find(Filters.and(Filters.eq("status", 1),Filters.eq(paramKey, parameter))).sort(Filters.eq("datetime", -1))
 							.skip((pageIndex - 1) * pageSize).limit(pageSize);
-					totalCount = collection.count(Filters.and(Filters.eq("paramCode", parameter),Filters.eq("status", 1)));
+					totalCount = collection.count(Filters.and(Filters.eq(paramKey, parameter),Filters.eq("status", 1)));
 				}
 				if (StringUtils.isBlank(createdatetimeStart) && StringUtils.isNotBlank(createdatetimeEnd)
 						&& StringUtils.isBlank(parameter)) {

@@ -78,9 +78,9 @@ public class J9Series_Star_ServiceImpl implements IJ9Series_Star_Service{
 			}
 			List<String> dataTypes = null;
 			if(type.equals(J9Series_Star_ParameterType.FLYWHEEL.getValue())){
-				dataTypes = J9Series_Star_ParameterType.getFlywheelTypeOnParamTypeName();
+				dataTypes = J9Series_Star_ParameterType.getFlywheelDeviceNameList();
 			}else{
-				dataTypes = J9Series_Star_ParameterType.getTopTypeOnName();
+				dataTypes = J9Series_Star_ParameterType.getTopParamTypeList();
 			}
 			return this.getFlyWheelOrTopParameterList(simplyZh_and_enMap,dataTypes);
 		}
@@ -118,9 +118,9 @@ public class J9Series_Star_ServiceImpl implements IJ9Series_Star_Service{
 			} //TODO 参数分类显示
 			List<String> dataTypes = null;
 			if(paramType.equals(J9Series_Star_ParameterType.FLYWHEEL.getValue())){
-				dataTypes = J9Series_Star_ParameterType.getFlywheelTypeOnParamTypeName();
+				dataTypes = J9Series_Star_ParameterType.getFlywheelDeviceNameList();
 			}else{
-				dataTypes = J9Series_Star_ParameterType.getTopTypeOnName();
+				dataTypes = J9Series_Star_ParameterType.getTopParamTypeList();
 			}
 			return this.getFlyWheelOrTopParameterList(simplyZh_and_enMap,dataTypes);
 		}
@@ -138,9 +138,9 @@ public class J9Series_Star_ServiceImpl implements IJ9Series_Star_Service{
 		}
 		List<String> dataTypes = null;
 		if(paramType.equals(J9Series_Star_ParameterType.FLYWHEEL.getValue())){
-			dataTypes = J9Series_Star_ParameterType.getFlywheelTypeOnParamTypeName();
+			dataTypes = J9Series_Star_ParameterType.getFlywheelDeviceNameList();
 		}else{
-			dataTypes = J9Series_Star_ParameterType.getTopTypeOnName();
+			dataTypes = J9Series_Star_ParameterType.getTopParamTypeList();
 		}
 		return this.getFlyWheelOrTopParameterList(map,dataTypes);
 	}
@@ -162,7 +162,7 @@ public class J9Series_Star_ServiceImpl implements IJ9Series_Star_Service{
 				map.put(parameterDto.getSimplyName(), parameterDto.getCode());				
 			}
 		}
-		List<String> flyWheelDataTypes = J9Series_Star_ParameterType.getFlywheelTypeOnParamTypeName();
+		List<String> flyWheelDataTypes = J9Series_Star_ParameterType.getFlywheelDeviceNameList();
 		return this.getFlyWheelOrTopParameterList(map, flyWheelDataTypes);
 	}
 
@@ -207,7 +207,7 @@ public class J9Series_Star_ServiceImpl implements IJ9Series_Star_Service{
 				map.put(parameterDto.getSimplyName(), parameterDto.getCode());				
 			}
 		}
-		List<String> topDataTypes = J9Series_Star_ParameterType.getTopTypeOnName();
+		List<String> topDataTypes = J9Series_Star_ParameterType.getTopParamTypeList();
 		return this.getFlyWheelOrTopParameterList(map, topDataTypes);
 	}
 	

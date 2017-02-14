@@ -1,5 +1,8 @@
 package DataAn.galaxyManager.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Controller;
@@ -14,6 +17,7 @@ import DataAn.common.dao.Pager;
 import DataAn.common.pageModel.EasyuiDataGridJson;
 import DataAn.common.pageModel.JsonMessage;
 import DataAn.galaxyManager.dto.ParameterDto;
+import DataAn.galaxyManager.option.J9Series_Star_ParameterType;
 import DataAn.galaxyManager.service.IParameterService;
 import DataAn.galaxyManager.service.ISeriesService;
 import DataAn.galaxyManager.service.IStarService;
@@ -149,5 +153,16 @@ public class ParameterController {
 		jsonMsg.setSuccess(true);
 		jsonMsg.setMsg("删除参数成功!");
 		return jsonMsg;
+	}
+	
+	@RequestMapping("/getDeviceList")
+	@ResponseBody
+	public List<String> getDeviceList(String paramType){
+		List<String> list = new ArrayList<String>();
+		if("flywheel".equals(paramType))
+			list.addAll(J9Series_Star_ParameterType.getFlywheelDeviceNameList());
+		if("top".equals(paramType))
+			list.addAll(J9Series_Star_ParameterType.getTopDeviceNameList());
+		return list;
 	}
 }

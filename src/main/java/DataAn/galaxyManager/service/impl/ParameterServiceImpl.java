@@ -258,9 +258,9 @@ public class ParameterServiceImpl implements IParameterService{
 				String param = param_zh.split(":")[1];//TODO 根据
 				List<String> typeList = null;
 				if("flywheel".equals(paramType))
-					typeList = J9Series_Star_ParameterType.getFlywheelTypeOnDataType();
+					typeList = J9Series_Star_ParameterType.getFlywheelParamTypeList();
 				if("top".equals(paramType))
-					typeList = J9Series_Star_ParameterType.getTopTypeOnName();
+					typeList = J9Series_Star_ParameterType.getTopParamTypeList();
 				if(typeList != null && typeList.size() >0){
 					for (String type : typeList) {
 						if(param.indexOf(type) > -1){
@@ -287,9 +287,9 @@ public class ParameterServiceImpl implements IParameterService{
 				String param = param_zh.split(":")[1];//TODO 根据
 				List<String> typeList = null;
 				if("flywheel".equals(paramType))
-					typeList = J9Series_Star_ParameterType.getFlywheelTypeOnParamTypeName();					
+					typeList = J9Series_Star_ParameterType.getFlywheelDeviceNameList();					
 				if("top".equals(paramType))
-					typeList = J9Series_Star_ParameterType.getTopTypeOnParamTypeName();
+					typeList = J9Series_Star_ParameterType.getTopDeviceNameList();
 				if(typeList != null && typeList.size() >0){
 					for (String type : typeList) {
 						if(param.indexOf(type) > -1){

@@ -79,7 +79,7 @@ public class CommunicateServiceImpl implements ICommunicateService{
 		List<WarningValue> topjobWarningValues = prewarningService.getWarningValueByParams(series, star, null, parameterType, "0");
 		if(topjobWarningValues != null && topjobWarningValues.size() > 0){
 			Map<String,String> map = new HashMap<String,String>();
-			map.put("top", "sss");
+			map.put("top", "top");
 			List<ExceptionJobConfig> jobConfigList = new ArrayList<ExceptionJobConfig>();
 			ExceptionJobConfig jobConfig = null;
 			for (WarningValue wv : topjobWarningValues) {
@@ -115,7 +115,6 @@ public class CommunicateServiceImpl implements ICommunicateService{
 				String deviceName = "AA";
 				for (WarningValue ew : exceWarningValues) {
 					//TODO 这里应该根据陀螺CSV文件参数的命名规则，用sequence值获取到所属陀螺的名字
-					//String deviceName = parameterService.getParameter_deviceName_by_en(series, star, ew.getParameterType(), ew.getParameter());
 					if(StringUtils.isNotBlank(deviceName)){
 						exceConfig = new ExceptionPointConfig();
 						exceConfig.setDeviceType(ew.getParameterType());

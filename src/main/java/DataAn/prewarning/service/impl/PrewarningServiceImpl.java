@@ -170,9 +170,7 @@ public class PrewarningServiceImpl implements IPrewarningService {
 	
 	@Override
 	public void readAllWarningLog(String hadRead)throws Exception{
-		System.out.println("开始执行全部标记为已读");
 		warningLogMongoDao.readAllWarningLog();
-		System.out.println("全部标记为已读");
 	}
 
 	@Override

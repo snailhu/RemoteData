@@ -90,12 +90,10 @@ public enum J9Series_Star_ParameterType {
 	
 	public static List<String> getTopTypeOnParamTypeName() {
 		List<String> list = new ArrayList<String>();
-		list.add("Xa");
-		list.add("Ya");
-		list.add("Za");
-		list.add("Xb");
-		list.add("Yb");
-		list.add("Zb");
+		list.add("陀螺");
+		list.add("陀螺1a");
+		list.add("陀螺1b");
+		list.add("陀螺2");
 		return list;
 	}
 	/**

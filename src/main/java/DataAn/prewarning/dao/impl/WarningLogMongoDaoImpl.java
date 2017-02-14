@@ -197,13 +197,13 @@ public class WarningLogMongoDaoImpl implements IWarningLogMongoDao {
 		//FindIterable<Document> document_It = collection.find(Filters.and(Filters.eq("hadRead", "0"),Filters.eq("status", 1))).sort(Filters.eq("_recordtime",-1));
 		FindIterable<Document> document_It = collection.find(Filters.and(Filters.eq("hadRead", "0"),Filters.eq("status", 1))).limit(1000);
 		
-		String res;
+		/*String res;
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         long lt = System.currentTimeMillis();
         Date date = new Date(lt);
         res = simpleDateFormat.format(date);
 		System.out.println("开始迭代:"+res);
-		System.out.println(collection.count(Filters.and(Filters.eq("status", 1),Filters.eq("hadRead", "0"))));
+		System.out.println(collection.count(Filters.and(Filters.eq("status", 1),Filters.eq("hadRead", "0"))));*/
 		for (Document doc : document_It) {
 			String deviceorparamname="";
 			String value="";
@@ -243,12 +243,12 @@ public class WarningLogMongoDaoImpl implements IWarningLogMongoDao {
 			queryLogDTOs.add(warningLog);
 		}
 		
-		String res2;
+		/*String res2;
         SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         long lt2 = System.currentTimeMillis();
         Date date2 = new Date(lt2);
         res2 = simpleDateFormat2.format(date2);
-		System.out.println("结束迭代:"+res2);
+		System.out.println("结束迭代:"+res2);*/
 		return queryLogDTOs;
 	}
 
@@ -293,16 +293,12 @@ public class WarningLogMongoDaoImpl implements IWarningLogMongoDao {
 			for (String databaseName : databaseNames) {
 				queryLogAllDTOs.addAll(getWarningLogListByCollection(
 						mongodbUtil.getCollectionNotShard(databaseName, "flywheel_job"), "0"));
-				System.out.println(databaseName+"*******************飞轮机动库****************");
 				queryLogAllDTOs.addAll(getWarningLogListByCollection(
 						mongodbUtil.getCollectionNotShard(databaseName, "top_job"), "0"));
-				System.out.println(databaseName+"*******************陀螺机动库****************");
 				queryLogAllDTOs.addAll(getWarningLogListByCollection(
 						mongodbUtil.getCollectionNotShard(databaseName, "flywheel_exception"), "1"));
-				System.out.println(databaseName+"*******************飞轮异常库****************");
 				queryLogAllDTOs.addAll(getWarningLogListByCollection(
 						mongodbUtil.getCollectionNotShard(databaseName, "top_exception"), "1"));
-				System.out.println(databaseName+"*******************陀螺异常库****************");
 			}
 			/*if (queryLogAllDTOs.size() < pageSize) {
 				for (int i = 0; i < queryLogAllDTOs.size(); i++) {

@@ -18,7 +18,7 @@ public class CommunicateServiceTest {
 	
 	@Test
 	public void getExceptionJobConfigList(){
-		String json = communicateService.getExceptionJobConfigList("j8", "01", "flywheel");
+		String json = communicateService.getExceptionJobConfigList("j8", "01", "top");
 		System.out.println(json);
 	}
 }

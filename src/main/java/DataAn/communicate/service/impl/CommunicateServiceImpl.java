@@ -20,6 +20,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.mongodb.client.MongoCursor;
 
+import DataAn.common.config.CommonConfig;
 import DataAn.common.utils.DateUtil;
 import DataAn.communicate.service.ICommunicateService;
 import DataAn.fileSystem.dao.IVirtualFileSystemDao;
@@ -33,8 +34,11 @@ import DataAn.prewarning.domain.WarningValue;
 import DataAn.prewarning.service.IPrewarningService;
 import DataAn.status.option.StatusTrackingType;
 import DataAn.status.service.IStatusTrackingService;
+import DataAn.storm.exceptioncheck.ExceptionUtils;
 import DataAn.storm.exceptioncheck.model.ExceptionJobConfig;
 import DataAn.storm.exceptioncheck.model.ExceptionPointConfig;
+import DataAn.storm.exceptioncheck.model.TopJsondto;
+import DataAn.storm.exceptioncheck.model.TopJsonparamdto;
 import DataAn.sys.service.IStormServerService;
 
 @Service
@@ -115,6 +119,29 @@ public class CommunicateServiceImpl implements ICommunicateService{
 				String deviceName = "AA";
 				for (WarningValue ew : exceWarningValues) {
 					//TODO 这里应该根据陀螺CSV文件参数的命名规则，用sequence值获取到所属陀螺的名字
+					List<TopJsondto> toplist =new ArrayList<TopJsondto>();			
+					//从json文件读取陀螺列表以及相应的参数列表
+					String topjobConfig=CommonConfig.getTopjobConfig();
+					try {
+						toplist = ExceptionUtils.getTopjidongcountList(topjobConfig);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+					for(int i=0;i<toplist.size();i++)
+					{
+						List<TopJsonparamdto> paramlist = new ArrayList<>();
+						paramlist=toplist.get(i).getJdparamlist();
+						for(int n=0;n<paramlist.size();n++)
+						{
+							if(paramlist.get(n).getCode().equals(ew.getParameter()))
+							{
+								deviceName=toplist.get(i).getTopname();
+								break;
+							}
+						}
+					}
+					//String test = parameterService.getParameter_deviceName_by_en(series, star, ew.getParameterType(), ew.getParameter());
+					
 					if(StringUtils.isNotBlank(deviceName)){
 						exceConfig = new ExceptionPointConfig();
 						exceConfig.setDeviceType(ew.getParameterType());

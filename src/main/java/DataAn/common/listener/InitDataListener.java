@@ -27,10 +27,10 @@ public class InitDataListener implements ApplicationListener<ContextRefreshedEve
 	@Override
 	public void onApplicationEvent(ContextRefreshedEvent event) {
 //		System.out.println("InitDataListener..." + event);			
-		/*if(event.getApplicationContext().getParent() == null){
+		if(event.getApplicationContext().getParent() == null){
 			
 			if(!flag){
-				System.out.println("加载一次 InitDataListener... kafka、initServerConfig...");
+				/*System.out.println("加载一次 InitDataListener... kafka、initServerConfig...");
 				flag=true;
 				
 				//开另外一个线程处理存入kafka的数据
@@ -77,10 +77,10 @@ public class InitDataListener implements ApplicationListener<ContextRefreshedEve
 						System.out.println("int TopjobrulesConfig...");
 						initDataService.initTopjobConfig();;
 					}
-				}).start();
+				}).start();*/
 			}
 			
-		}*/
+		}
 	}
 
 	

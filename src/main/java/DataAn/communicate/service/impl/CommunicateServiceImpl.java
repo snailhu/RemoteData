@@ -136,6 +136,7 @@ public class CommunicateServiceImpl implements ICommunicateService{
 							if(paramlist.get(n).getCode().equals(ew.getParameter()))
 							{
 								deviceName=toplist.get(i).getTopname();
+								System.out.println("从json中读取到的陀螺名称："+deviceName);
 								break;
 							}
 						}

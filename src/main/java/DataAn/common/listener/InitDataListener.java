@@ -27,7 +27,7 @@ public class InitDataListener implements ApplicationListener<ContextRefreshedEve
 	@Override
 	public void onApplicationEvent(ContextRefreshedEvent event) {
 //		System.out.println("InitDataListener..." + event);			
-		/*if(event.getApplicationContext().getParent() == null){
+		if(event.getApplicationContext().getParent() == null){
 			
 			if(!flag){
 				System.out.println("加载一次 InitDataListener... kafka、initServerConfig...");
@@ -80,7 +80,7 @@ public class InitDataListener implements ApplicationListener<ContextRefreshedEve
 				}).start();
 			}
 			
-		}*/
+		}
 	}
 
 	

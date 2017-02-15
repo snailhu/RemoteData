@@ -1,5 +1,8 @@
 package DataAn.communicate.controller;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+
 import javax.annotation.Resource;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,11 +19,35 @@ public class CommunicateController extends BaseController {
 	@Resource
 	private ICommunicateService communicateService;
 	// 获取星系设备:特殊工况参数配置信息
+//	@RequestMapping(value = "/getExceptionJobConfigList")
+//	@ResponseBody
+//	public String getExceptionJobConfigList(String series, String star, String parameterType) {
+//		String json =communicateService.getExceptionJobConfigList(series, star, parameterType);
+//		try {
+//			json=new String(json.getBytes(), "UTF-8");
+//		} catch (UnsupportedEncodingException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		/*try {
+//			URLEncoder.encode(json,"utf-8");
+//		} catch (UnsupportedEncodingException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}*/
+//		return json;
+//	}
+	
 	@RequestMapping(value = "/getExceptionJobConfigList")
 	@ResponseBody
-	public String getExceptionJobConfigList(String series, String star, String parameterType) {
+	public byte[] getExceptionJobConfigList(String series, String star, String parameterType) {
 		String json =communicateService.getExceptionJobConfigList(series, star, parameterType);
-		return json;
+		try {
+			return json.getBytes("UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 	
 	// 获取星系设备:异常参数配置信息

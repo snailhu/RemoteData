@@ -19,8 +19,8 @@ public class CommunicateController extends BaseController {
 	@RequestMapping(value = "/getExceptionJobConfigList")
 	@ResponseBody
 	public String getExceptionJobConfigList(String series, String star, String parameterType) {
-		
-		return communicateService.getExceptionJobConfigList(series, star, parameterType);
+		String json =communicateService.getExceptionJobConfigList(series, star, parameterType);
+		return json;
 	}
 	
 	// 获取星系设备:异常参数配置信息

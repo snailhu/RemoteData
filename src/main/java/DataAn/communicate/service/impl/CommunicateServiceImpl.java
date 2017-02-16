@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -69,6 +70,7 @@ public class CommunicateServiceImpl implements ICommunicateService{
 		System.out.println("查询的参数的是："+parameterType);
 		if(J9Series_Star_ParameterType.TOP.getValue().equals(parameterType))
 		{
+			System.out.println("系列："+series+"星"+star);
 			return this.getTopExceptionJobConfigList(series, star, parameterType);
 		}
 		if(J9Series_Star_ParameterType.FLYWHEEL.getValue().equals(parameterType))
@@ -124,6 +126,26 @@ public class CommunicateServiceImpl implements ICommunicateService{
 					String topjobConfig=CommonConfig.getTopjobConfig();
 					try {
 						toplist = ExceptionUtils.getTopjidongcountList(topjobConfig);
+						/*for(int i=0;i<toplist.size();i++)
+						{
+							if(toplist.get(i).getSeries().equals(series) && toplist.get(i).getStar().equals(star))
+							{}
+							else{
+								toplist.remove(i);
+							}
+							
+						}*/
+						Iterator<TopJsondto> it=toplist.iterator();
+						while(it.hasNext()){
+							TopJsondto top =it.next();
+							if(top.getSeries().equals(series) && top.getStar().equals(star)){
+								System.out.println("保留"+top.getTopname());
+							}
+							else{
+								it.remove();
+								System.out.println("移除"+top.getTopname());
+							}
+						}
 					} catch (Exception e) {
 						e.printStackTrace();
 					}

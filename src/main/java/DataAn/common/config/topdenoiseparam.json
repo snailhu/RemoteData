@@ -18,6 +18,24 @@
 	"parameterType":"top"
 },
 {
+	"code":"sequence_00102",
+	"fullName":"F0W53_54:滚动陀螺角速度(00102)",
+	"simplyName":"F0W53_54:滚动陀螺角速度(00102)",
+	"parameterType":"top"
+},
+{
+	"code":"sequence_00104",
+	"fullName":"F0W55_56:俯仰陀螺角速度(00104)",
+	"simplyName":"F0W55_56:俯仰陀螺角速度(00104)",
+	"parameterType":"top"
+},
+{
+	"code":"sequence_00106",
+	"fullName":"F0W57_58:偏航陀螺角速度(00106)",
+	"simplyName":"F0W57_58:偏航陀螺角速度(00106)",
+	"parameterType":"top"
+},
+{
 	"code":"sequence_16016",
 	"fullName":"采集数据16：1a滚动陀螺信号输出（16016）",
 	"simplyName":"采集数据16：1a滚动陀螺信号输出（16016）",

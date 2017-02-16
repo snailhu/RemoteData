@@ -132,7 +132,7 @@ public class CommonConfig {
 	public static List<String> getFlywheelParamTypes() {
 		String paramTypeKey = "flywheel.paramTypes";
 		List<String> list = map.get(paramTypeKey);
-		if(list == null){
+		if(list == null || list.size() == 0){
 			list = new ArrayList<String>();
 			String paramTypes = PropertiesUtil.getProperties(config, charset).getProperty(paramTypeKey);
 			if(paramTypes != null && !paramTypes.equals("")){
@@ -149,7 +149,7 @@ public class CommonConfig {
 	public static List<String> getTopDeviceNames() {
 		String deviceNameKey = "top.deviceNames";
 		List<String> list = map.get(deviceNameKey);
-		if(list == null){
+		if(list == null || list.size() == 0){
 			list = new ArrayList<String>();
 			String deviceNames = PropertiesUtil.getProperties(config, charset).getProperty(deviceNameKey);
 			if(deviceNames != null && !deviceNames.equals("")){
@@ -166,7 +166,7 @@ public class CommonConfig {
 	public static List<String> getTopParamTypes() {
 		String paramTypeKey = "top.paramTypes";
 		List<String> list = map.get(paramTypeKey);
-		if(list == null){
+		if(list == null || list.size() == 0){
 			list = new ArrayList<String>();
 			String paramTypes = PropertiesUtil.getProperties(config, charset).getProperty(paramTypeKey);
 			if(paramTypes != null && !paramTypes.equals("")){

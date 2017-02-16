@@ -49,9 +49,9 @@ public class ParameterServiceImpl implements IParameterService{
 		}else{
 			String item = param_zh.trim();
 			String num = item.substring(item.indexOf("(") + 1, item.indexOf(")"));
-			String sequence = "";//sequence
+			String sequence = "sequence";
 			String[] sequences = item.split(":");
-			if(sequences.length > 0)
+			if(sequences.length > 0 && StringUtils.isNotBlank(sequences[0]))
 				sequence = sequences[0];
 			String code = sequence + "_" + num;
 			param.setSeries(series);

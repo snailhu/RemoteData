@@ -103,7 +103,7 @@ public class ParameterServiceTest {
 		String series = SeriesType.J9_SERIES.getName();
 		String star = J9SeriesType.STRA5.getValue();
 		String paramType = J9Series_Star_ParameterType.TOP.getValue();
-		String param_en = "sequence_00926";
+		String param_en = "W199_01551";
 		String deviceName = parameterService.getParameter_deviceName_by_en(series, star, paramType, param_en);
 		System.out.println("deviceName: " + deviceName);
 		String dataType = parameterService.getParameter_dataType_by_en(series, star, paramType, param_en);

@@ -72,7 +72,7 @@ public class LoginController {
 					//添加登录日志到日志数据库
 					String operatejob = "登录系统";
 					systemLogService.addOneSystemlogs(request,operatejob);
-					
+					//response.sendRedirect(request.getContextPath() + request.getRequestURI());
 					return "redirect:/Index";
 				} else {
 					request.setAttribute("loginFlag", 1);

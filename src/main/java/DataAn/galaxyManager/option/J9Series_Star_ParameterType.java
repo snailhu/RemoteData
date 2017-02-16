@@ -71,31 +71,17 @@ public enum J9Series_Star_ParameterType {
 			list.add("Xb");
 			list.add("Yb");
 			list.add("Zb");
+//			list.add("飞轮a");
+//			list.add("飞轮b");
+//			list.add("飞轮c");
+//			list.add("飞轮d");
+//			list.add("飞轮e");
+//			list.add("飞轮f");
 			return list;			
 		}
 	}
 	
-	public static List<String> getFlywheelTypeOnParamTypeName() {
-		List<String> list = new ArrayList<String>();
-		list.add("Xa");
-		list.add("Ya");
-		list.add("Za");
-		list.add("Xb");
-		list.add("Yb");
-		list.add("Zb");
-		return list;
-	}
-	
-	public static List<String> getTopTypeOnParamTypeName() {
-		List<String> list = new ArrayList<String>();
-		list.add("陀螺");
-		list.add("陀螺1a");
-		list.add("陀螺1b");
-		list.add("陀螺2");
-		return list;
-	}
 	public static List<String> getTopDeviceNameList() {
-		
 		List<String> list = CommonConfig.getTopDeviceNames();
 		if(list != null && list.size() > 0){
 			return list;
@@ -132,11 +118,12 @@ public enum J9Series_Star_ParameterType {
 	* @return
 	*/
 	public static List<String> getTopParamTypeList() {
-		List<String> list = CommonConfig.getTopDeviceNames();
+		List<String> list = CommonConfig.getTopParamTypes();
 		if(list != null && list.size() > 0){
 			return list;
 		}else{
 			list = new ArrayList<String>();
+			list.add("角速率");
 			list.add("角速度");
 			list.add("温度");
 			return list;			

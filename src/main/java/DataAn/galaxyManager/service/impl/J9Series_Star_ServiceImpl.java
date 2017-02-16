@@ -453,8 +453,9 @@ public class J9Series_Star_ServiceImpl implements IJ9Series_Star_Service{
 			Field[] flywheelFields = flywheelClass.getDeclaredFields();
 			for (Field field : flywheelFields) {
 				String paramName = field.get(flywheelObj).toString().trim();
-				if(paramName != null && !paramName.equals("接收地方时")){
-					flywheelParamNames.add(paramName);					
+				if(paramName != null){
+					if((!paramName.equals("接收地方时")) || (!paramName.equals("时间")))
+						flywheelParamNames.add(paramName);					
 				}
 			}
 			//初始化陀螺数据
@@ -464,8 +465,9 @@ public class J9Series_Star_ServiceImpl implements IJ9Series_Star_Service{
 			Field[] topFields = topClass.getDeclaredFields();
 			for (Field field : topFields) {
 				String paramName = field.get(topObj).toString().trim();
-				if(paramName != null && !paramName.equals("接收地方时")){
-					topParamNames.add(paramName);					
+				if(paramName != null){
+					if((!paramName.equals("接收地方时")) || (!paramName.equals("时间")))
+						topParamNames.add(paramName);					
 				}
 			}
 			

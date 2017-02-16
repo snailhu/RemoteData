@@ -439,10 +439,12 @@ public class WarningLogMongoDaoImpl implements IWarningLogMongoDao {
 				}
 
 				for (Document doc : document_It) {
-					String paramKey = getParameterKey(warningType);
-					String param = doc.getString(paramKey);
-					if(StringUtils.isBlank(param) || (!param.equals(parameter)))
-						continue;
+					if(StringUtils.isNotBlank(parameter) && warningType.equals("0")){
+						String paramKey = getParameterKey(warningType);
+						String param = doc.getString(paramKey);
+						if(StringUtils.isBlank(param) || (!param.equals(parameter)))
+							continue;						
+					}
 					
 					String value="";
 					String timevalue=DateUtil.formatSSS(doc.getDate("datetime"));

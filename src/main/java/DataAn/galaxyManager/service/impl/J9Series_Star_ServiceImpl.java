@@ -348,6 +348,7 @@ public class J9Series_Star_ServiceImpl implements IJ9Series_Star_Service{
 		nogrouping.setMin("");
 		nogrouping.setUnit("");
 		nogrouping.setYname("");
+		Set<String> hadAddSet = new HashSet<String>();
 		for (String dataType : dataTypes) {
 			c = new ConstraintDto();
 			c.setParentId(0);
@@ -362,6 +363,9 @@ public class J9Series_Star_ServiceImpl implements IJ9Series_Star_Service{
 			children = new ArrayList<ConstraintDto>();
 			Set<String> flyWheelDatas = map.keySet();
 			for (String flyWheelData : flyWheelDatas) {
+				if(hadAddSet.contains(flyWheelData))
+					continue;
+				
 				// 采集数据107:飞轮A转速(16107) == 采集数据107:飞轮a转速(16107) 大小写一样
 				//sameFlyWheelData = flyWheelData.toLowerCase();
 				if(flyWheelData.indexOf(dataType) != -1){
@@ -377,6 +381,7 @@ public class J9Series_Star_ServiceImpl implements IJ9Series_Star_Service{
 					child.setUnit("");
 					child.setYname("Y1");
 					children.add(child);
+					hadAddSet.add(flyWheelData);
 					count ++;
 				}
 				else{
@@ -403,6 +408,7 @@ public class J9Series_Star_ServiceImpl implements IJ9Series_Star_Service{
 						{
 							nogroupingset.add(flyWheelData);
 							children.add(child);
+							hadAddSet.add(flyWheelData);
 						}
 						count ++;
 						

@@ -2,8 +2,10 @@ package DataAn.mongo;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.bson.Document;
@@ -106,5 +108,14 @@ public class MongodbUtilTest {
 		}
 	    System.out.println("count: " + count);
 	}
-
+	
+	@Test
+	public void test2()
+	{
+		mg = MongodbUtil.getInstance();
+		Map<String, Object> map =new HashMap();
+		map.put("currenttime1", String.valueOf(System.currentTimeMillis()));
+		map.put("currenttime2", String.valueOf(System.currentTimeMillis()));
+		mg.insertOne("test", "test", map);
+	}
 }

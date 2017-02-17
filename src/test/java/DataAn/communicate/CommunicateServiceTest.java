@@ -23,11 +23,11 @@ public class CommunicateServiceTest {
 	
 	@Test
 	public void getExceptionJobConfigList(){
-		String json = communicateService.getExceptionJobConfigList("j8", "02", "top");
+		String json = communicateService.getExceptionJobConfigList("j8", "01", "top");
 		System.out.println("本地方法获取:"+json);
 		String entity;
 		try {
-			entity = HttpUtil.get("http://192.168.0.158:8080/DataRemote/Communicate/getExceptionJobConfigList?series=j8&star=02&parameterType=top");
+			entity = HttpUtil.get("http://192.168.0.158:8080/DataRemote/Communicate/getExceptionJobConfigList?series=j8&star=01&parameterType=top");
 			//entity = new String(entity.getBytes("ISO-8859-1"),"UTF-8");
 			System.out.println("httpget获取2："+entity);
 		} catch (IOException | IDLTypeException e) {

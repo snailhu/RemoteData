@@ -83,6 +83,21 @@ public class CommunicateServiceImpl implements ICommunicateService{
 	private String getTopExceptionJobConfigList(String series, String star,
 			String parameterType){
 		List<WarningValue> topjobWarningValues = prewarningService.getWarningValueByParams(series, star, null, parameterType, "0");
+		if(topjobWarningValues ==null || topjobWarningValues.size()==0)
+		{
+			WarningValue topjidongrule=new WarningValue();
+			//topjidongrule.setSeries(Long.parseLong(series));
+			//topjidongrule.setStar(Long.parseLong(star));
+			topjidongrule.setSeries(1l);
+			topjidongrule.setStar(1l);
+			topjidongrule.setMaxVal(0.06);
+			topjidongrule.setMinVal(0.05);
+			topjidongrule.setTimeZone(100000);
+			topjidongrule.setParameterType("top");
+			topjidongrule.setWarningType(0);
+			topjidongrule.setParameter("sequence_topjiaosudu_1_1");
+			topjobWarningValues.add(topjidongrule);
+		}
 		if(topjobWarningValues != null && topjobWarningValues.size() > 0){
 			Map<String,String> map = new HashMap<String,String>();
 			map.put("top", "top");

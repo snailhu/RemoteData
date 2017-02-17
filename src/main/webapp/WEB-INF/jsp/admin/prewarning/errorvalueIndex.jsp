@@ -581,7 +581,7 @@
 										for="add-maxVal"> 最大值： </label>
 									<div class="col-sm-6">
 										<input type="text" name="maxVal" id="add-maxVal"
-											placeholder="最大值" class="form-control" />
+											placeholder="最大绝对值" class="form-control" />
 									</div>
 								</div>
 								<div class="space-4"></div>
@@ -590,7 +590,7 @@
 										for="add-minVal"> 最小值：</label>
 									<div class="col-sm-6">
 										<input type="text" name="minVal" id="add-minVal"
-											placeholder="最小值" class="form-control" />
+											placeholder="最小绝对值" class="form-control" />
 									</div>
 								</div>
 							</div>

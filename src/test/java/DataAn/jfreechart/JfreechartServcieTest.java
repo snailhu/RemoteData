@@ -117,7 +117,7 @@ public class JfreechartServcieTest {
 		long begin = System.currentTimeMillis();
 		String series = SeriesType.J9_SERIES.getValue();
 		String star = J9SeriesType.STRA5.getValue();
-		String paramType = J9Series_Star_ParameterType.FLYWHEEL.getValue();
+		String paramType = J9Series_Star_ParameterType.TOP.getValue();
 		Map<String,List<ConstraintDto>> map = reoportService.getConstraintDtoList(series,star,paramType);
 		
 		Map<String,List<ConstraintDto>> map2 = new HashMap<String,List<ConstraintDto>>();
@@ -129,15 +129,15 @@ public class JfreechartServcieTest {
 			count++;
 			map2.put(key, map.get(key));			
 		}
-		for (String key : map2.keySet()) {
-			System.out.println(map2.get(key));
-			System.out.println();
-		}
+//		for (String key : map2.keySet()) {
+//			System.out.println(map2.get(key));
+//			System.out.println();
+//		}
 //		Date beginDate = DateUtil.format("2016-12-13 13:00:00");
 //		Date endDate = DateUtil.format("2016-12-19 13:00:00");
 		
-		Date beginDate = DateUtil.format("2015-01-01 00:00:00");
-		Date endDate = DateUtil.format("2015-01-07 00:00:00");
+		Date beginDate = DateUtil.format("2017-01-01 00:00:00");
+		Date endDate = DateUtil.format("2017-01-07 00:00:00");
 		
 		LineChartDto lineChartDto = jfreechartServcie.createLineChart(series, star, paramType, beginDate, endDate, map2);
 //		System.out.println(lineChartDto);

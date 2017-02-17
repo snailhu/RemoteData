@@ -175,7 +175,7 @@ public class SearchByDayTask8 extends RecursiveTask<LineChartDto>{
 		
 		for (String line : lineMap.keySet()) {
 			timeseries = lineMap.get(line);
-			System.out.println("code: "+line + "-name: " + paramsMap.get(line) + 
+			System.out.println("code: "+line + " <->name: " + paramsMap.get(line) + 
 					" count: " + timeseries.getItemCount());
 //			for (int i = 0; i < timeseries.getItemCount(); i++) {
 //				System.out.println(timeseries.getDataItem(i).getPeriod() + " : " + timeseries.getDataItem(i).getValue());

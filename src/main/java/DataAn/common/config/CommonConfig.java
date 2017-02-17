@@ -138,7 +138,8 @@ public class CommonConfig {
 			if(paramTypes != null && !paramTypes.equals("")){
 				String[] paramTypeArray = paramTypes.trim().split(",");
 				for (String paramType : paramTypeArray) {
-					list.add(paramType);
+					if(StringUtils.isNotBlank(paramType))
+						list.add(paramType);
 				}
 				map.put(paramTypeKey, list);
 			}			
@@ -155,7 +156,8 @@ public class CommonConfig {
 			if(deviceNames != null && !deviceNames.equals("")){
 				String[] deviceNameArray = deviceNames.trim().split(",");
 				for (String deviceName : deviceNameArray) {
-					list.add(deviceName);
+					if(StringUtils.isNotBlank(deviceName))
+						list.add(deviceName);
 				}
 				map.put(deviceNameKey, list);
 			}			

@@ -4,9 +4,9 @@
 	"series":"j9",
 	"star":"05",
 	"jdparamlist":[
-	    			{"code":"sequence_00102","fullName":"F0W53_54:滚动陀螺角速度(00102)"},
-					{"code":"sequence_00104","fullName":"F0W55_56:俯仰陀螺角速度(00104),"},
-					{"code":"sequence_00106","fullName":"F0W57_58:偏航陀螺角速度(00106),"}
+	    			{"code":"F0W53_54_00102","fullName":"F0W53_54:滚动陀螺角速度(00102)"},
+					{"code":"F0W55_56_00104","fullName":"F0W55_56:俯仰陀螺角速度(00104),"},
+					{"code":"F0W57_58_00106","fullName":"F0W57_58:偏航陀螺角速度(00106),"}
 					]
 },
 {
@@ -14,9 +14,9 @@
 	"star":"04",
 	"topname":"j9-04陀螺",
 	"jdparamlist":[
-	    			{"code":"sequence_00102","fullName":"F0W53_54:滚动陀螺角速度(00102)"},
-					{"code":"sequence_00104","fullName":"F0W55_56:俯仰陀螺角速度(00104),"},
-					{"code":"sequence_00106","fullName":"F0W57_58:偏航陀螺角速度(00106),"}
+	    			{"code":"F0W53_54_00102","fullName":"F0W53_54:滚动陀螺角速度(00102)"},
+					{"code":"F0W55_56_00104","fullName":"F0W55_56:俯仰陀螺角速度(00104),"},
+					{"code":"F0W57_58_00106","fullName":"F0W57_58:偏航陀螺角速度(00106),"}
 					]
 },
 {
@@ -24,9 +24,9 @@
 	"star":"03",
 	"topname":"j9-03陀螺",
 	"jdparamlist":[
-	    			{"code":"sequence_00102","fullName":"F0W53_54:滚动陀螺角速度(00102)"},
-					{"code":"sequence_00104","fullName":"F0W55_56:俯仰陀螺角速度(00104),"},
-					{"code":"sequence_00106","fullName":"F0W57_58:偏航陀螺角速度(00106),"}
+	    			{"code":"F0W53_54_00102","fullName":"F0W53_54:滚动陀螺角速度(00102)"},
+					{"code":"F0W55_56_00104","fullName":"F0W55_56:俯仰陀螺角速度(00104),"},
+					{"code":"F0W57_58_00106","fullName":"F0W57_58:偏航陀螺角速度(00106),"}
 					]
 },
 {
@@ -34,9 +34,19 @@
 	"star":"02",
 	"topname":"j9-02陀螺",
 	"jdparamlist":[
-	    			{"code":"sequence_00131","fullName":"F0W53_54:滚动陀螺角速度(00131)"},
-					{"code":"sequence_00133","fullName":"F0W55_56:俯仰陀螺角速度(00133)"},
-					{"code":"sequence_00135","fullName":"F0W57_58:偏航陀螺角速度(00135)"}
+	    			{"code":"F0W53_54_00131","fullName":"F0W53_54:滚动陀螺角速度(00131)"},
+					{"code":"F0W55_56_00133","fullName":"F0W55_56:俯仰陀螺角速度(00133)"},
+					{"code":"F0W57_58_00135","fullName":"F0W57_58:偏航陀螺角速度(00135)"}
+					]
+},
+{
+	"series":"j9",
+	"star":"01",
+	"topname":"j9-01陀螺",
+	"jdparamlist":[
+	    			{"code":"F0W53_54_00131","fullName":"F0W53_54:滚动陀螺角速度(00131)"},
+					{"code":"F0W55_56_00133","fullName":"F0W55_56:俯仰陀螺角速度(00133)"},
+					{"code":"F0W57_58_00135","fullName":"F0W57_58:偏航陀螺角速度(00135)"}
 					]
 },
 {
@@ -44,9 +54,9 @@
 	"series":"j8",
 	"star":"05",
 	"jdparamlist":[
-	    			{"code":"sequence_00102","fullName":"F0W53_54:滚动陀螺角速度(00102)"},
-					{"code":"sequence_00104","fullName":"F0W55_56:俯仰陀螺角速度(00104),"},
-					{"code":"sequence_00106","fullName":"F0W57_58:偏航陀螺角速度(00106),"}
+	    			{"code":"F0W53_54_00102","fullName":"F0W53_54:滚动陀螺角速度(00102)"},
+					{"code":"F0W55_56_00104","fullName":"F0W55_56:俯仰陀螺角速度(00104),"},
+					{"code":"F0W57_58_00106","fullName":"F0W57_58:偏航陀螺角速度(00106),"}
 					]
 },
 {
@@ -54,9 +64,9 @@
 	"star":"04",
 	"topname":"j8-04陀螺",
 	"jdparamlist":[
-	    			{"code":"sequence_00102","fullName":"F0W53_54:滚动陀螺角速度(00102)"},
-					{"code":"sequence_00104","fullName":"F0W55_56:俯仰陀螺角速度(00104),"},
-					{"code":"sequence_00106","fullName":"F0W57_58:偏航陀螺角速度(00106),"}
+	    			{"code":"F0W53_54_00102","fullName":"F0W53_54:滚动陀螺角速度(00102)"},
+					{"code":"F0W55_56_00104","fullName":"F0W55_56:俯仰陀螺角速度(00104),"},
+					{"code":"F0W57_58_00106","fullName":"F0W57_58:偏航陀螺角速度(00106),"}
 					]
 },
 {
@@ -64,9 +74,9 @@
 	"star":"03",
 	"topname":"j8-03陀螺",
 	"jdparamlist":[
-	    			{"code":"sequence_00102","fullName":"F0W53_54:滚动陀螺角速度(00102)"},
-					{"code":"sequence_00104","fullName":"F0W55_56:俯仰陀螺角速度(00104),"},
-					{"code":"sequence_00106","fullName":"F0W57_58:偏航陀螺角速度(00106),"}
+	    			{"code":"F0W53_54_00102","fullName":"F0W53_54:滚动陀螺角速度(00102)"},
+					{"code":"F0W55_56_00104","fullName":"F0W55_56:俯仰陀螺角速度(00104),"},
+					{"code":"F0W57_58_00106","fullName":"F0W57_58:偏航陀螺角速度(00106),"}
 					]
 },
 {
@@ -74,9 +84,9 @@
 	"star":"02",
 	"topname":"j8-02陀螺",
 	"jdparamlist":[
-	    			{"code":"sequence_00131","fullName":"F0W53_54:滚动陀螺角速度(00131)"},
-					{"code":"sequence_00133","fullName":"F0W55_56:俯仰陀螺角速度(00133)"},
-					{"code":"sequence_00135","fullName":"F0W57_58:偏航陀螺角速度(00135)"}
+	    			{"code":"F0W53_54_00131","fullName":"F0W53_54:滚动陀螺角速度(00131)"},
+					{"code":"F0W55_56_00133","fullName":"F0W55_56:俯仰陀螺角速度(00133)"},
+					{"code":"F0W57_58_00135","fullName":"F0W57_58:偏航陀螺角速度(00135)"}
 					]
 },
 {
@@ -84,9 +94,9 @@
 	"star":"01",
 	"topname":"j8-01陀螺",
 	"jdparamlist":[
-	    			{"code":"sequence_00131","fullName":"F0W53_54:滚动陀螺角速度(00131)"},
-					{"code":"sequence_00133","fullName":"F0W55_56:俯仰陀螺角速度(00133)"},
-					{"code":"sequence_00135","fullName":"F0W57_58:偏航陀螺角速度(00135)"}
+	    			{"code":"F0W53_54_00131","fullName":"F0W53_54:滚动陀螺角速度(00131)"},
+					{"code":"F0W55_56_00133","fullName":"F0W55_56:俯仰陀螺角速度(00133)"},
+					{"code":"F0W57_58_00135","fullName":"F0W57_58:偏航陀螺角速度(00135)"}
 					]
 }
 ]

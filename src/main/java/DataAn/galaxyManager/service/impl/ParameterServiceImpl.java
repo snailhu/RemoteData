@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.annotation.Resource;
 
@@ -51,7 +53,7 @@ public class ParameterServiceImpl implements IParameterService{
 			String num = item.substring(item.indexOf("(") + 1, item.indexOf(")"));
 			String sequence = "sequence";
 			String[] sequences = item.split(":");
-			if(sequences.length > 0 && StringUtils.isNotBlank(sequences[0]))
+			if(sequences.length > 0 && StringUtils.isNotBlank(sequences[0]) && (!isContainChinese(sequences[0])))
 				sequence = sequences[0];
 			String code = sequence + "_" + num;
 			param.setSeries(series);
@@ -308,5 +310,14 @@ public class ParameterServiceImpl implements IParameterService{
 	}
 
 
+	private boolean isContainChinese(String str) {
+
+		Pattern p = Pattern.compile("[\u4e00-\u9fa5]");
+		Matcher m = p.matcher(str);
+		if (m.find()) {
+			return true;
+		}
+		return false;
+	}
 
 }

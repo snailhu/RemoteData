@@ -682,7 +682,7 @@
 										for="edit-maxVal"> 最大值：</label>
 									<div class="col-sm-6">
 										<input type="text" name="maxVal" id="edit-maxVal"
-											placeholder="最大值" class="form-control" />
+											placeholder="最大值绝对值" class="form-control" />
 									</div>
 								</div>
 								<div class="space-4"></div>
@@ -691,7 +691,7 @@
 										for="edit-minVal"> 最小值：</label>
 									<div class="col-sm-6">
 										<input type="text" name="minVal" id="edit-minVal"
-											placeholder="最小值" class="form-control" />
+											placeholder="最小值绝对" class="form-control" />
 									</div>
 								</div>
 							</div>
@@ -1357,12 +1357,12 @@
 				return false;
 			}
 			if($("#edit-parameterType").val() == 'top'){
-				if(maxval >2.2||maxval<-2.2){
-					top.alertMsg('错误', '最大值不能大于2.2,不能小于-2.2！');
+				if(maxval<0){
+					top.alertMsg('错误', '最大值不能小于0！');
 					return false;
 				}
-				if(minval >2.2||minval<-2.2){
-					top.alertMsg('错误', '最小值不能大于2.2,不能小于-2.2！');
+				if(minval<0){
+					top.alertMsg('错误', '最小值不能小于0！');
 					return false;
 				}
 			}

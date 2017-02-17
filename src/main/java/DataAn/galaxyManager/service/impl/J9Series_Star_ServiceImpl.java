@@ -120,7 +120,7 @@ public class J9Series_Star_ServiceImpl implements IJ9Series_Star_Service{
 			if(paramType.equals(J9Series_Star_ParameterType.FLYWHEEL.getValue())){
 				dataTypes = J9Series_Star_ParameterType.getFlywheelDeviceNameList();
 			}else{
-				dataTypes = J9Series_Star_ParameterType.getTopParamTypeList();
+				dataTypes = J9Series_Star_ParameterType.getTopDeviceNameList();
 			}
 			return this.getFlyWheelOrTopParameterList(simplyZh_and_enMap,dataTypes);
 		}
@@ -363,6 +363,8 @@ public class J9Series_Star_ServiceImpl implements IJ9Series_Star_Service{
 			children = new ArrayList<ConstraintDto>();
 			Set<String> flyWheelDatas = map.keySet();
 			for (String flyWheelData : flyWheelDatas) {
+//				if(flyWheelData.indexOf("程序标志") > -1)
+//					continue;
 				if(hadAddSet.contains(flyWheelData))
 					continue;
 				

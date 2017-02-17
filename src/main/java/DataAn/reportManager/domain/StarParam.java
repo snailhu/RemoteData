@@ -165,4 +165,14 @@ public class StarParam {
 	public void setCreater(String creater) {
 		this.creater = creater;
 	}
+
+	@Override
+	public String toString() {
+		return "StarParam [id=" + id + ", paramCode=" + paramCode + ", paramName=" + paramName + ", creater=" + creater
+				+ ", series=" + series + ", star=" + star + ", parameterType=" + parameterType + ", partsType="
+				+ partsType + ", effeMin=" + effeMin + ", effeMax=" + effeMax + ", productName=" + productName
+				+ ", valueUnit=" + valueUnit + ", createDate=" + createDate + "]";
+	}
+	
+	
 }

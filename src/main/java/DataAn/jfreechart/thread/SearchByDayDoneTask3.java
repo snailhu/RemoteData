@@ -62,7 +62,7 @@ public class SearchByDayDoneTask3 extends RecursiveTask<LineMapDto>{
 			index = (int) mg.countByDate(databaseName, collectionName, beginDate0, beginDate);//计数器
 		}
 		
-//		System.out.println(DateUtil.format(beginDate) + " 到 "+ DateUtil.format(endDate) + " begin get mongodb data ...index: " + index);
+		System.out.println(DateUtil.format(beginDate) + " 到 "+ DateUtil.format(endDate) + " begin get mongodb data ...index: " + index);
 		
 		long nowCount = mg.countByDate(databaseName, collectionName, beginDate, endDate);
 		if(nowCount == 0)

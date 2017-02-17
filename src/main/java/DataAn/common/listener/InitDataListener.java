@@ -29,56 +29,56 @@ public class InitDataListener implements ApplicationListener<ContextRefreshedEve
 //		System.out.println("InitDataListener..." + event);			
 		if(event.getApplicationContext().getParent() == null){
 			
-			if(!flag){
-				System.out.println("加载一次 InitDataListener... kafka、initServerConfig...");
-				flag=true;
-				
-				//开另外一个线程处理存入kafka的数据
-				new Thread(new SaveFileToKafka(paramService, mongoService,statusTrackingService)).start();
-				
-				//初始化数据 //TODO ?
-				new Thread(new Runnable() {
-					@Override
-					public void run() {
-						System.out.println("init j9 data...");
-						initDataService.initDataBase();
-					}
-				}).start();
-				
-				//配置服务器IP端口
-				new Thread(new Runnable() {
-					@Override
-					public void run() {
-						System.out.println("init serverConfig...");
-						initDataService.initServerConfig();
-					}
-				}).start();
-				
-				//配置mongodb服务器
-				new Thread(new Runnable() {
-					@Override
-					public void run() {
-						System.out.println("init mongodbConfig...");
-						initDataService.initMongodbConfig();
-					}
-				}).start();
-				//配置陀螺去噪参数列表
-				new Thread(new Runnable() {
-					@Override
-					public void run() {
-						System.out.println("int TopDenoiseConfig...");
-						initDataService.initTopDenoiseConfig();;
-					}
-				}).start();
-				//配置陀螺机动（特殊工况）参数列表
-				new Thread(new Runnable() {
-					@Override
-					public void run() {
-						System.out.println("int TopjobrulesConfig...");
-						initDataService.initTopjobConfig();;
-					}
-				}).start();
-			}
+//			if(!flag){
+//				System.out.println("加载一次 InitDataListener... kafka、initServerConfig...");
+//				flag=true;
+//				
+//				//开另外一个线程处理存入kafka的数据
+//				new Thread(new SaveFileToKafka(paramService, mongoService,statusTrackingService)).start();
+//				
+//				//初始化数据 //TODO ?
+//				new Thread(new Runnable() {
+//					@Override
+//					public void run() {
+//						System.out.println("init j9 data...");
+//						initDataService.initDataBase();
+//					}
+//				}).start();
+//				
+//				//配置服务器IP端口
+//				new Thread(new Runnable() {
+//					@Override
+//					public void run() {
+//						System.out.println("init serverConfig...");
+//						initDataService.initServerConfig();
+//					}
+//				}).start();
+//				
+//				//配置mongodb服务器
+//				new Thread(new Runnable() {
+//					@Override
+//					public void run() {
+//						System.out.println("init mongodbConfig...");
+//						initDataService.initMongodbConfig();
+//					}
+//				}).start();
+//				//配置陀螺去噪参数列表
+//				new Thread(new Runnable() {
+//					@Override
+//					public void run() {
+//						System.out.println("int TopDenoiseConfig...");
+//						initDataService.initTopDenoiseConfig();;
+//					}
+//				}).start();
+//				//配置陀螺机动（特殊工况）参数列表
+//				new Thread(new Runnable() {
+//					@Override
+//					public void run() {
+//						System.out.println("int TopjobrulesConfig...");
+//						initDataService.initTopjobConfig();;
+//					}
+//				}).start();
+//			}
 			
 		}
 	}

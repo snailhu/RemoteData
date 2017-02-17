@@ -1,36 +1,36 @@
 [
 {
-	"code":"sequence_00131",
+	"code":"F0W53_54_00131",
 	"fullName":"F0W53_54:滚动陀螺角速度(00131)",
 	"simplyName":"F0W53_54:滚动陀螺角速度(00131)",
 	"parameterType":"top"
 },
 {
-	"code":"sequence_00133",
+	"code":"F0W55_56_00133",
 	"fullName":"F0W55_56:俯仰陀螺角速度(00133)",
 	"simplyName":"F0W55_56:俯仰陀螺角速度(00133)",
 	"parameterType":"top"
 },
 {
-	"code":"sequence_00135",
+	"code":"F0W57_58_00135",
 	"fullName":"F0W57_58:偏航陀螺角速度(00135)",
 	"simplyName":"F0W57_58:偏航陀螺角速度(00135)",
 	"parameterType":"top"
 },
 {
-	"code":"sequence_00102",
+	"code":"F0W53_54_00102",
 	"fullName":"F0W53_54:滚动陀螺角速度(00102)",
 	"simplyName":"F0W53_54:滚动陀螺角速度(00102)",
 	"parameterType":"top"
 },
 {
-	"code":"sequence_00104",
+	"code":"F0W55_56_00104",
 	"fullName":"F0W55_56:俯仰陀螺角速度(00104)",
 	"simplyName":"F0W55_56:俯仰陀螺角速度(00104)",
 	"parameterType":"top"
 },
 {
-	"code":"sequence_00106",
+	"code":"F0W57_58_00106",
 	"fullName":"F0W57_58:偏航陀螺角速度(00106)",
 	"simplyName":"F0W57_58:偏航陀螺角速度(00106)",
 	"parameterType":"top"

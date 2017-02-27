@@ -76,12 +76,12 @@ public class reportServcieTest {
 	public void createReport() throws Exception{
 		
 		//top
-		String beginTime = "2015-01-01 00:00:00";
-		String endTime = "2015-01-02 00:00:00";
+		String beginTime = "2017-01-01 00:00:00";
+		String endTime = "2017-01-07 00:00:00";
 		Date beginDate = DateUtil.format(beginTime,"yyyy-MM-dd");
 		Date endDate =  DateUtil.format(endTime,"yyyy-MM-dd");
-		String seriesId = "j8";
-		String starId = "01";
+		String seriesId = "j9";
+		String starId = "05";
 		String partsType = J9Series_Star_ParameterType.TOP.getValue();
 		
 		//flywheel

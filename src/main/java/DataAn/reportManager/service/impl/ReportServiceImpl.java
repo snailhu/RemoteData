@@ -597,7 +597,153 @@ public class ReportServiceImpl implements IReoportService {
 	@Override
 	public void createReport(Date beginDate, Date endDate, String filename, String templateUrl, String docPath,
 			String seriesId, String starId, String partsType) throws Exception {
+		if(J9Series_Star_ParameterType.TOP.getValue().equals(partsType)) {
+			this.createTopReport(beginDate, endDate, filename, templateUrl, docPath, seriesId, starId, partsType);
+		}else{
+			this.createFlywheelReport(beginDate, endDate, filename, templateUrl, docPath, seriesId, starId, partsType);
+		}
+	}
 
+	@Override
+	public Map<String, List<ConstraintDto>> getConstraintDtoList(String seriesId, String starId, String partsType) {
+		List<StarParam> starParamList = starParamService.getStarParamForReport(seriesId, starId, partsType);
+		List<String> parList = new ArrayList<String>();
+		String paramStr = "转速,电流";
+		String[] parArr = paramStr.split(",");
+		for (String p : parArr) {
+			parList.add(p);
+		}
+		Map<String, List<ConstraintDto>> constraintsMap = new HashMap<String, List<ConstraintDto>>();
+		List<StarParam> doubleList = new ArrayList<StarParam>();
+
+		// 封装一条线（温度、电压等）的参数值
+		List<StarParam> firstList = new ArrayList<StarParam>();
+		for (StarParam starParam : starParamList) {
+			if (!parList.contains(starParam.getParameterType())) {
+				String key = starParam.getProductName() + starParam.getParameterType();
+				List<ConstraintDto> listSingle = new ArrayList<ConstraintDto>();
+				
+				listSingle.add(this.StarParamToConstraintDto(starParam));
+				constraintsMap.put(key, listSingle);
+				firstList.add(starParam);
+			} else {
+				doubleList.add(starParam);
+			}
+		}
+		// 等到产品数 如飞轮A、飞轮B
+		List<String> productType = new ArrayList<String>();
+		for (StarParam starParam : doubleList) {
+			if (!productType.contains(starParam.getProductName())) {
+				productType.add(starParam.getProductName());
+			}
+		}
+		// 封装两条线（转速,电流）的参数值 如 飞轮A转速,电流 ；飞轮B转速,电流
+		for (String product : productType) {
+			List<ConstraintDto> productlist = new ArrayList<ConstraintDto>();
+			for (StarParam starParam : doubleList) {
+				if (product.equals(starParam.getProductName())) {
+					
+					productlist.add(this.StarParamToConstraintDto(starParam));
+				}
+			}
+			constraintsMap.put(product + paramStr, productlist);
+		}
+
+		// 等到参数类型 如转速、电流、温度、电压等
+		List<String> parameterType = new ArrayList<String>();
+		for (StarParam starParam : starParamList) {
+			if (!parameterType.contains(starParam.getParameterType())) {
+				parameterType.add(starParam.getParameterType());
+			}
+		}
+
+		// 封装同一参数类型下的多条线 如 在轨电流、在轨转速、在轨温度等
+		for (String string : parameterType) {
+			List<ConstraintDto> parameterTypelist = new ArrayList<ConstraintDto>();
+			for (StarParam starParam : starParamList) {
+				if (string.equals(starParam.getParameterType())) {
+					
+					parameterTypelist.add(this.StarParamToConstraintDto(starParam));
+				}
+			}
+			constraintsMap.put(string, parameterTypelist);
+		}
+		return constraintsMap;
+	}
+
+	private ConstraintDto StarParamToConstraintDto(StarParam starParam){
+		ConstraintDto constraintDto = new ConstraintDto();
+		constraintDto.setParamName(starParam.getParamName());
+		constraintDto.setParamCode(starParam.getParamCode());
+		constraintDto.setMax(starParam.getEffeMax());
+		constraintDto.setMin(starParam.getEffeMin());
+		constraintDto.setUnits(starParam.getValueUnit());
+		return constraintDto;
+	}
+
+	private int getJobNumByDeviceName(String seriesId, String starId, String partsType, Date beginDate, Date endDate,
+			String deviceName) {
+		long mnum = iMongoService.findJobNumByDeviceName(seriesId, starId, partsType, deviceName, beginDate,
+				endDate);
+		return Integer.parseInt(String.valueOf(mnum));
+	}
+	
+	@Override
+	public ReportFileSystem insertReportToDB(String filename, String docPath, String seriesId, String starId,
+			String partsType, String startTime, String endTime, String databaseName, String partsName)
+			throws FileNotFoundException, IOException {
+		/******************************** 保存报告到db ***********************************/
+		Map<String, String> dataMap = new HashMap<String, String>();
+		dataMap.put("series", seriesId);
+		dataMap.put("star", starId);
+		String date = DateUtil.getNowTime("yyyy-MM-dd");
+		dataMap.put("date", DateUtil.formatString(date, "yyyy-MM-dd", "yyyy-MM-dd"));
+		String year = DateUtil.formatString(date, "yyyy-MM-dd", "yyyy");
+		dataMap.put("year", year);
+		String month = DateUtil.formatString(date, "yyyy-MM-dd", "MM");
+		dataMap.put("month", month);
+		String versions = UUIDGeneratorUtil.getUUID();
+		dataMap.put("versions", versions);
+		dataMap.put("startTime", startTime);
+		dataMap.put("endTime", endTime);
+		dataMap.put("partsType", partsType);
+		dataMap.put("partsName", partsName);
+		dataMap.put("databaseName", databaseName);
+
+		InputStream input = new FileInputStream(docPath);
+
+		ReportFileDto reportFileDto = new ReportFileDto();
+		DecimalFormat df = new DecimalFormat("#.00");
+		reportFileDto.setFileName(filename);
+		double size = input.available() / 1024;
+		String strSize = df.format(size);
+		reportFileDto.setFileSize(Float.parseFloat(strSize));
+		reportFileDto.setIn(input);
+
+		ReportFileSystem reportFileSystem = saveReport(reportFileDto, dataMap);
+
+		input.close();
+		return reportFileSystem;
+	}
+
+	@Override
+	public void removeDoc(String docPath) {
+		File file = new File(docPath);
+		if (file.exists()) {
+			file.delete();
+		}
+	}
+
+	@Override
+	public void downloadReport(HttpServletResponse response, String docPath, String filename)
+			throws FileNotFoundException {
+		InputStream inputStream = new FileInputStream(docPath);
+		downLoadReportForDis(inputStream, filename, response);
+	}
+	
+	private void createFlywheelReport(Date beginDate, Date endDate, String filename, String templateUrl, String docPath,
+			String seriesId, String starId, String partsType) throws Exception {
+		
 		DataToDocDto data = new DataToDocDto();
 		data.setSeries(seriesId);
 		data.setStar(starId);
@@ -605,20 +751,8 @@ public class ReportServiceImpl implements IReoportService {
 		data.setEndDate(DateUtil.format(endDate, "yyyy-MM-dd"));
 		data.setCreateDate(DateUtil.getNowTime("yyyy-MM-dd"));
 
-		List<StarParam> starParamList = null;
-		List<StarParam> starParams = starParamService.getStarParamForReport(seriesId, starId, partsType);
-		if(J9Series_Star_ParameterType.TOP.getValue().equals(partsType)) {
-			starParamList = new ArrayList<StarParam>();
-			for (StarParam starParam : starParams) {
-				if(starParam.getProductName().equals("null"))
-					starParam.setProductName("");
-				if(starParam.getParameterType().equals("null"))
-					starParam.setParameterType(starParam.getParamName());;
-				starParamList.add(starParam);
-			}
-		}else{
-			starParamList = starParams;
-		}
+		List<StarParam> starParamList = starParamService.getStarParamForReport(seriesId, starId, partsType);
+		
 		if (starParamList == null || starParamList.size() < 1) {
 			String templateNullUrl = OptionConfig.getWebPath() + "\\report\\wordtemplate\\nullData.doc";
 			reportNullDoc(filename, templateNullUrl, docPath, data.getBeginDate(), data.getEndDate(), "参数管理中未配置任何参数信息");
@@ -839,142 +973,265 @@ public class ReportServiceImpl implements IReoportService {
 
 
 		reportDoc(filename, data, templateUrl, docPath);
-	}
-
-	@Override
-	public Map<String, List<ConstraintDto>> getConstraintDtoList(String seriesId, String starId, String partsType) {
-		List<StarParam> starParamList = starParamService.getStarParamForReport(seriesId, starId, partsType);
-		List<String> parList = new ArrayList<String>();
-		String paramStr = "转速,电流";
-		String[] parArr = paramStr.split(",");
-		for (String p : parArr) {
-			parList.add(p);
-		}
-		Map<String, List<ConstraintDto>> constraintsMap = new HashMap<String, List<ConstraintDto>>();
-		List<StarParam> doubleList = new ArrayList<StarParam>();
-
-		// 封装一条线（温度、电压等）的参数值
-		List<StarParam> firstList = new ArrayList<StarParam>();
-		for (StarParam starParam : starParamList) {
-			if (!parList.contains(starParam.getParameterType())) {
-				String key = starParam.getProductName() + starParam.getParameterType();
-				List<ConstraintDto> listSingle = new ArrayList<ConstraintDto>();
-				
-				listSingle.add(this.StarParamToConstraintDto(starParam));
-				constraintsMap.put(key, listSingle);
-				firstList.add(starParam);
-			} else {
-				doubleList.add(starParam);
-			}
-		}
-		// 等到产品数 如飞轮A、飞轮B
-		List<String> productType = new ArrayList<String>();
-		for (StarParam starParam : doubleList) {
-			if (!productType.contains(starParam.getProductName())) {
-				productType.add(starParam.getProductName());
-			}
-		}
-		// 封装两条线（转速,电流）的参数值 如 飞轮A转速,电流 ；飞轮B转速,电流
-		for (String product : productType) {
-			List<ConstraintDto> productlist = new ArrayList<ConstraintDto>();
-			for (StarParam starParam : doubleList) {
-				if (product.equals(starParam.getProductName())) {
-					
-					productlist.add(this.StarParamToConstraintDto(starParam));
-				}
-			}
-			constraintsMap.put(product + paramStr, productlist);
-		}
-
-		// 等到参数类型 如转速、电流、温度、电压等
-		List<String> parameterType = new ArrayList<String>();
-		for (StarParam starParam : starParamList) {
-			if (!parameterType.contains(starParam.getParameterType())) {
-				parameterType.add(starParam.getParameterType());
-			}
-		}
-
-		// 封装同一参数类型下的多条线 如 在轨电流、在轨转速、在轨温度等
-		for (String string : parameterType) {
-			List<ConstraintDto> parameterTypelist = new ArrayList<ConstraintDto>();
-			for (StarParam starParam : starParamList) {
-				if (string.equals(starParam.getParameterType())) {
-					
-					parameterTypelist.add(this.StarParamToConstraintDto(starParam));
-				}
-			}
-			constraintsMap.put(string, parameterTypelist);
-		}
-		return constraintsMap;
-	}
-
-	private ConstraintDto StarParamToConstraintDto(StarParam starParam){
-		ConstraintDto constraintDto = new ConstraintDto();
-		constraintDto.setParamName(starParam.getParamName());
-		constraintDto.setParamCode(starParam.getParamCode());
-		constraintDto.setMax(starParam.getEffeMax());
-		constraintDto.setMin(starParam.getEffeMin());
-		constraintDto.setUnits(starParam.getValueUnit());
-		return constraintDto;
-	}
-
-	private int getJobNumByDeviceName(String seriesId, String starId, String partsType, Date beginDate, Date endDate,
-			String deviceName) {
-		long mnum = iMongoService.findJobNumByDeviceName(seriesId, starId, partsType, deviceName, beginDate,
-				endDate);
-		return Integer.parseInt(String.valueOf(mnum));
+	
 	}
 	
-	@Override
-	public ReportFileSystem insertReportToDB(String filename, String docPath, String seriesId, String starId,
-			String partsType, String startTime, String endTime, String databaseName, String partsName)
-			throws FileNotFoundException, IOException {
-		/******************************** 保存报告到db ***********************************/
-		Map<String, String> dataMap = new HashMap<String, String>();
-		dataMap.put("series", seriesId);
-		dataMap.put("star", starId);
-		String date = DateUtil.getNowTime("yyyy-MM-dd");
-		dataMap.put("date", DateUtil.formatString(date, "yyyy-MM-dd", "yyyy-MM-dd"));
-		String year = DateUtil.formatString(date, "yyyy-MM-dd", "yyyy");
-		dataMap.put("year", year);
-		String month = DateUtil.formatString(date, "yyyy-MM-dd", "MM");
-		dataMap.put("month", month);
-		String versions = UUIDGeneratorUtil.getUUID();
-		dataMap.put("versions", versions);
-		dataMap.put("startTime", startTime);
-		dataMap.put("endTime", endTime);
-		dataMap.put("partsType", partsType);
-		dataMap.put("partsName", partsName);
-		dataMap.put("databaseName", databaseName);
+	private void createTopReport(Date beginDate, Date endDate, String filename, String templateUrl, String docPath,
+			String seriesId, String starId, String partsType) throws Exception {
+		
+		DataToDocDto data = new DataToDocDto();
+		data.setSeries(seriesId);
+		data.setStar(starId);
+		data.setBeginDate(DateUtil.format(beginDate, "yyyy-MM-dd"));
+		data.setEndDate(DateUtil.format(endDate, "yyyy-MM-dd"));
+		data.setCreateDate(DateUtil.getNowTime("yyyy-MM-dd"));
 
-		InputStream input = new FileInputStream(docPath);
-
-		ReportFileDto reportFileDto = new ReportFileDto();
-		DecimalFormat df = new DecimalFormat("#.00");
-		reportFileDto.setFileName(filename);
-		double size = input.available() / 1024;
-		String strSize = df.format(size);
-		reportFileDto.setFileSize(Float.parseFloat(strSize));
-		reportFileDto.setIn(input);
-
-		ReportFileSystem reportFileSystem = saveReport(reportFileDto, dataMap);
-
-		input.close();
-		return reportFileSystem;
-	}
-
-	@Override
-	public void removeDoc(String docPath) {
-		File file = new File(docPath);
-		if (file.exists()) {
-			file.delete();
+		List<StarParam> starParamList = new ArrayList<StarParam>();
+		List<StarParam> starParams = starParamService.getStarParamForReport(seriesId, starId, partsType);
+		for (StarParam starParam : starParams) {
+			if(starParam.getProductName().equals("null"))
+				starParam.setProductName("");
+			if(starParam.getParameterType().equals("null"))
+				starParam.setParameterType(starParam.getParamName());;
+				starParamList.add(starParam);
 		}
-	}
+		
+		if (starParamList == null || starParamList.size() < 1) {
+			String templateNullUrl = OptionConfig.getWebPath() + "\\report\\wordtemplate\\nullData.doc";
+			reportNullDoc(filename, templateNullUrl, docPath, data.getBeginDate(), data.getEndDate(), "参数管理中未配置任何参数信息");
+			return;
+		}
+		Map<String, List<ConstraintDto>> constraintsMap = new HashMap<String, List<ConstraintDto>>();
+		
+		List<String> parList = new ArrayList<String>();
+		String paramStr = OptionConfig.getParamStr(partsType);
+		if(StringUtils.isNotBlank(paramStr)){
+			String[] parArr = paramStr.split(",");
+			for (String p : parArr) {
+				parList.add(p);
+			}			
+		}
+		
+		// 封装同一参数类型下的多条线 （按类型：欧拉角速度L,角速度,陀螺角,漂移估计等）
+		//List<StarParam> firstList = new ArrayList<StarParam>();
+		for (StarParam starParam : starParamList) {
+			String key = starParam.getParameterType();
+			List<ConstraintDto> list = constraintsMap.get(key);
+			if(list == null){
+				list = new ArrayList<ConstraintDto>();					
+			}
+			list.add(this.StarParamToConstraintDto(starParam));
+			constraintsMap.put(key, list);
+			//firstList.add(starParam);
+			
+		}
+		
+		Map<String,String> code_productNameMap = new HashMap<String,String>();
+		// 等到产品数 如陀螺
+		List<String> productNameList = new ArrayList<String>();
+//		for (StarParam starParam : doubleList) {
+		for (StarParam starParam : starParamList) {
+			code_productNameMap.put(starParam.getParamCode(), starParam.getProductName());
+			if (!productNameList.contains(starParam.getProductName())) {
+				productNameList.add(starParam.getProductName());
+			}
+		}
+		
+//		List<StarParam> doubleList = new ArrayList<StarParam>();
+//		// 封装两条线（转速,电流）的参数值 如 飞轮A转速,电流 ；飞轮B转速,电流
+//		for (String product : productType) {
+//			List<ConstraintDto> productlist = new ArrayList<ConstraintDto>();
+//			for (StarParam starParam : doubleList) {
+//				if (product.equals(starParam.getProductName())) {
+//					productlist.add(this.StarParamToConstraintDto(starParam));
+//				}
+//			}
+//			if(doubleList.size() > 0)
+//				constraintsMap.put(product + paramStr, productlist);
+//		}
+		// 等到参数类型 如转速、电流、温度、电压等
+		List<String> parameterType = new ArrayList<String>();
+		for (String key : constraintsMap.keySet()) {
+			List<ConstraintDto> list = constraintsMap.get(key);
+			if(list == null || list.size() == 0){
+				constraintsMap.remove(key);
+			}else{
+				parameterType.add(key);
+			}
+		}
+		
+		LineChartDto lineChartDto = null;
+		// 画图并返回参数
+		lineChartDto = jfreechartServcie.createLineChart(seriesId, starId, partsType, beginDate, endDate,
+				constraintsMap);
 
-	@Override
-	public void downloadReport(HttpServletResponse response, String docPath, String filename)
-			throws FileNotFoundException {
-		InputStream inputStream = new FileInputStream(docPath);
-		downLoadReportForDis(inputStream, filename, response);
+		Map<String, Double> minMap = lineChartDto.getMinMap();// 所以参数最小值Map
+		Map<String, Double> maxMap = lineChartDto.getMaxMap();// 所以参数最大值Map
+		Map<String, String> chartMap = lineChartDto.getChartMap();// 所以图片路径Map
+
+		// 封装参数列表list
+		List<ParamDto> params = new ArrayList<ParamDto>();
+		Double paramNumMax = null;
+		Double paramNumMin = null;
+//		for (StarParam starParam : starParamList) {
+//			ParamDto param = new ParamDto();
+//			param.setParamName(starParam.getParamName());
+//			param.setProductName(starParam.getProductName());
+//			if (maxMap != null && maxMap.size() != 0) {
+//				paramNumMax = maxMap.get(starParam.getParamCode());
+//				paramNumMin = minMap.get(starParam.getParamCode());
+//			}
+//			if(paramNumMax != null)
+//				param.setParamNumMax(String.valueOf(paramNumMax));
+//			else
+//				param.setParamNumMax("null");
+//			if(paramNumMin != null)
+//				param.setParamNumMin(String.valueOf(paramNumMin));
+//			else
+//				param.setParamNumMin("null");
+//			params.add(param);
+//		}
+		for (String key : constraintsMap.keySet()) {
+			List<ConstraintDto> list = constraintsMap.get(key);
+			if(list != null && list.size() > 0){
+				for (ConstraintDto constraintDto : list) {
+					ParamDto param = new ParamDto();
+					param.setParamName(constraintDto.getParamName());
+					param.setProductName(code_productNameMap.get(constraintDto.getParamCode()));
+					if (maxMap != null && maxMap.size() != 0) {
+						paramNumMax = maxMap.get(constraintDto.getParamCode());
+						paramNumMin = minMap.get(constraintDto.getParamCode());
+					}
+					if(paramNumMax != null)
+						param.setParamNumMax(String.valueOf(paramNumMax));
+					else
+						param.setParamNumMax("null");
+					if(paramNumMin != null)
+						param.setParamNumMin(String.valueOf(paramNumMin));
+					else
+						param.setParamNumMin("null");
+					params.add(param);
+				}
+			}
+		}
+		//去重复
+		Set<String> paramNameSet = new HashSet<String>();
+		// 封装参数类型 图片list
+		List<ParamImgDataDto> threeParamImgList = new ArrayList<ParamImgDataDto>();
+		String chartPathThree = OptionConfig.getWebPath() + "\\report\\wordtemplate\\NoData.png";
+		for (String parName : parameterType) {
+			ParamImgDataDto paramImgData = new ParamImgDataDto();
+			paramImgData.setParName(J9Series_Star_ParameterType.getJ9SeriesStarParameterType(partsType).getName() + ":" + parName);
+			if (chartMap != null && chartMap.size() != 0) {
+				chartPathThree = chartMap.get(parName);
+			}
+			paramImgData.setParImg(chartPathThree);
+			if(!paramNameSet.contains(paramImgData.getParName())){
+				threeParamImgList.add(paramImgData);
+				paramNameSet.add(paramImgData.getParName());
+			}
+		}
+		if(threeParamImgList.size() == 0){
+			ParamImgDataDto paramImgData = new ParamImgDataDto();
+			paramImgData.setParName("");
+			paramImgData.setParImg("");
+			threeParamImgList.add(paramImgData);
+		}
+			
+		// 封装产品转速、电流 图片list
+		List<ParamImgDataDto> twoParamImgList = new ArrayList<ParamImgDataDto>();
+		String chartPathTwo = OptionConfig.getWebPath() + "\\report\\wordtemplate\\NoData.png";
+		for (String product : productNameList) {
+			ParamImgDataDto paramImgData = new ParamImgDataDto();
+			if(StringUtils.isNotBlank(product) && StringUtils.isNotBlank(paramStr)){
+				paramImgData.setParName(J9Series_Star_ParameterType.getJ9SeriesStarParameterType(partsType).getName() + ":" + product + paramStr);
+				if (chartMap != null && chartMap.size() != 0) {
+					chartPathTwo = chartMap.get(product + paramStr);
+				}
+				paramImgData.setParImg(chartPathTwo);
+				if(!paramNameSet.contains(paramImgData.getParName())){
+					twoParamImgList.add(paramImgData);				
+					paramNameSet.add(paramImgData.getParName());
+				}
+			}
+		}
+		if(twoParamImgList.size() == 0){
+			ParamImgDataDto paramImgData = new ParamImgDataDto();
+			paramImgData.setParName("");
+			paramImgData.setParImg("");
+			twoParamImgList.add(paramImgData);
+		}
+			
+		// 封装产品非转速、电流 图片list
+		List<ParamImgDataDto> oneParamImgList = new ArrayList<ParamImgDataDto>();
+		String chartPathOne = OptionConfig.getWebPath() + "\\report\\wordtemplate\\NoData.png";
+//		for (StarParam starParam : firstList) {
+//			ParamImgDataDto paramImgData = new ParamImgDataDto();
+//			paramImgData.setParName(J9Series_Star_ParameterType.getJ9SeriesStarParameterType(partsType).getName() + ":" + starParam.getProductName() + starParam.getParameterType());
+//			if (chartMap != null && chartMap.size() != 0) {
+//				chartPathOne = chartMap.get(starParam.getProductName() + starParam.getParameterType());
+//			}
+//			paramImgData.setParImg(chartPathOne);
+//			if(!paramNameSet.contains(paramImgData.getParName())){
+//				oneParamImgList.add(paramImgData);
+//				paramNameSet.add(paramImgData.getParName());
+//			}
+//		}
+		if( oneParamImgList.size() == 0){
+			ParamImgDataDto paramImgData = new ParamImgDataDto();
+			paramImgData.setParName("");
+			paramImgData.setParImg("");
+			oneParamImgList.add(paramImgData);
+		}
+
+//		//去重复
+//		if(twoParamImgList.size() > 0 && !twoParamImgList.get(0).getParName().equals(""))
+//			for (ParamImgDataDto paramImgDataDto2 : twoParamImgList) {
+//				for (ParamImgDataDto paramImgDataDto1 : oneParamImgList) {
+//					if(!paramImgDataDto2.getParName().equals("") && paramImgDataDto2.getParName().equals(paramImgDataDto1.getParName()))
+//						twoParamImgList.remove(paramImgDataDto2);
+//				}
+//			}
+//		if(threeParamImgList.size() > 0 && !threeParamImgList.get(0).getParName().equals(""))
+//			for (ParamImgDataDto paramImgDataDto3 : threeParamImgList) {
+//				for (ParamImgDataDto paramImgDataDto1 : oneParamImgList) {
+//					if(!paramImgDataDto3.getParName().equals("") && paramImgDataDto3.getParName().equals(paramImgDataDto1.getParName()))
+//						threeParamImgList.remove(paramImgDataDto3);
+//				}
+//				for (ParamImgDataDto paramImgDataDto2 : twoParamImgList) {
+//					if(!paramImgDataDto3.getParName().equals("") && paramImgDataDto3.getParName().equals(paramImgDataDto2.getParName()))
+//						threeParamImgList.remove(paramImgDataDto3);
+//				}
+//			}
+		
+		// 封装产品列表list
+		List<ProductDto> products = new ArrayList<ProductDto>();
+
+		for (String product : productNameList) {
+			int proMovableNum = 0;
+//			for (StarParam starParam : starParamList) {
+//				int movableNum = getJobNumByParamCode(seriesId, starId, partsType, beginDate, endDate,
+//						starParam.getParamCode());
+//				if (product.equals(starParam.getProductName())) {
+//					proMovableNum += movableNum;
+//				}
+//			}
+			proMovableNum = this.getJobNumByDeviceName(seriesId, starId, partsType, beginDate, endDate, product);
+					
+			ProductDto productDto = new ProductDto();
+			productDto.setProductName(product);
+			productDto.setMovableNum(proMovableNum);
+			products.add(productDto);
+		}
+
+		data.setParams(params);
+		data.setProducts(products);
+		data.setOneParamImg(oneParamImgList);
+		data.setTwoParamImg(twoParamImgList);
+		data.setThreeParamImg(threeParamImgList);
+
+
+		reportDoc(filename, data, templateUrl, docPath);
+	
 	}
 }

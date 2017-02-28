@@ -124,7 +124,7 @@ public class StarParamDao extends BaseDaoImpl<StarParam> implements IStarParamDa
 
 	@Override
 	public long getStarParamForReportCount(String seriesId, String starId, String partsType) {
-		String hql = "select count(*) StarParam u where 1=1";
+		String hql = "select count(*) from StarParam u where 1=1";
 		if(StringUtils.isNotBlank(seriesId)){
 			hql += " and u.series = :series";
 		}
@@ -133,9 +133,7 @@ public class StarParamDao extends BaseDaoImpl<StarParam> implements IStarParamDa
 		}
 		if(StringUtils.isNotBlank(partsType)){
 			hql += " and u.partsType = :partsType";
-		}
-		hql += " order by u.paramName";
-		
+		}		
 		Query query = this.getSession().createQuery(hql);
 		if(StringUtils.isNotBlank(seriesId)){
 			query.setParameter("series", seriesId);

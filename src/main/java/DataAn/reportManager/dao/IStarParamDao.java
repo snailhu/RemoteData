@@ -13,6 +13,8 @@ public interface IStarParamDao  extends IBaseDao<StarParam> {
 	boolean cherkStarParam(String series,String star,String partsType,String paramCode);
 
 	List<StarParam> getStarParamForReport(String seriesId, String starId, String partsType);
+	
+	long getStarParamForReportCount(String seriesId, String starId, String partsType);
 
 	public List<StarParam>  getStarParamByParts();
 }

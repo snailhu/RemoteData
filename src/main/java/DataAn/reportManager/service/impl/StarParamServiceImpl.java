@@ -179,7 +179,12 @@ public class StarParamServiceImpl implements IStarParamService {
 	public List<StarParam> getStarParamForReport(String seriesId, String starId, String partsType) {
 		return starParamDao.getStarParamForReport(seriesId, starId, partsType);
 	}
-
+	
+	@Override
+	public long getStarParamForReportCount(String seriesId,String starId,String partsType){
+		return starParamDao.getStarParamForReportCount(seriesId, starId, partsType);
+	}
+	
 	@Override
 	public List<ConstraintDto> getConstraintList(String series, String star, String paramType) throws Exception {
 		List<ConstraintDto> constraintDtoList = new ArrayList<ConstraintDto>();

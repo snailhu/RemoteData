@@ -121,6 +121,38 @@ public class StarParamDao extends BaseDaoImpl<StarParam> implements IStarParamDa
 		List<StarParam> starParamList =   query.list();
 		return starParamList;
 	}
+
+	@Override
+	public long getStarParamForReportCount(String seriesId, String starId, String partsType) {
+		String hql = "select count(*) StarParam u where 1=1";
+		if(StringUtils.isNotBlank(seriesId)){
+			hql += " and u.series = :series";
+		}
+		if(StringUtils.isNotBlank(starId)){
+			hql += " and u.star = :star";
+		}
+		if(StringUtils.isNotBlank(partsType)){
+			hql += " and u.partsType = :partsType";
+		}
+		hql += " order by u.paramName";
+		
+		Query query = this.getSession().createQuery(hql);
+		if(StringUtils.isNotBlank(seriesId)){
+			query.setParameter("series", seriesId);
+		}
+		if(StringUtils.isNotBlank(starId)){
+			query.setParameter("star", starId);
+		}
+		if(StringUtils.isNotBlank(partsType)){
+			query.setParameter("partsType", partsType);
+		}
+		Long totalCount = 0L;
+		Object obj = query.uniqueResult();
+		if(obj != null){
+			totalCount = (Long) obj;
+		}
+		return totalCount;
+	}
 	
 	@SuppressWarnings("unchecked")
 	@Override
@@ -140,6 +172,7 @@ public class StarParamDao extends BaseDaoImpl<StarParam> implements IStarParamDa
 //		List<StarParam> starParamList =   query.list();
 		return starParamList;
 	}
+
 	
 	
 }

@@ -56,6 +56,7 @@ public class ReportController {
 	private IJfreechartServcie jfreechartServcie;
 	@Resource
 	private IStarParamDao starParamDao;
+	
 	LinkedBlockingQueue<CreateReportDto> createReports = new LinkedBlockingQueue<CreateReportDto>();
 	
 //	@RequestMapping("/index/{series}/{star}/{paramType}/{dirId}/")
@@ -249,12 +250,18 @@ public class ReportController {
 			return res;
 		}
 		try {
-			reoportService.createReport(beginDate, endDate, filename, templateUrl, docPath, seriesId, starId, partsType);
-			
-			Map<String, Object> data = new HashMap<String, Object>();
-			data.put("docPath", docPath);
-			data.put("filename", filename);
-			res.setData(data);
+			long paramCount = starParamService.getStarParamForReportCount(seriesId, starId, partsType);
+			if(paramCount > 0){
+				reoportService.createReport(beginDate, endDate, filename, templateUrl, docPath, seriesId, starId, partsType);
+				
+				Map<String, Object> data = new HashMap<String, Object>();
+				data.put("docPath", docPath);
+				data.put("filename", filename);
+				res.setData(data);				
+			}else{
+				res.setMsg("请配置生成报告参数！");
+				res.setResult(CommonsConstant.RESULT_FALSE);
+			}
 		 } catch (Exception ex) {
 			ex.printStackTrace();
 			res.setMsg(DateUtil.format(beginDate) + " 到 "+ DateUtil.format(endDate) +" 获取数据失败！");

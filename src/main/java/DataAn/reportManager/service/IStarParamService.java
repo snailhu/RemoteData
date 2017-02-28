@@ -26,6 +26,8 @@ public interface IStarParamService {
 	public List<Star> getStarList(String seriesId);
 	
 	public List<StarParam> getStarParamForReport(String seriesId,String starId,String partsType);
+	
+	public long getStarParamForReportCount(String seriesId,String starId,String partsType);
 
 	public List<ConstraintDto> getConstraintList(String series,String star,String paramType) throws Exception;
 

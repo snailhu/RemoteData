@@ -196,6 +196,9 @@ public class ReportController {
 	public void downloadReport(HttpServletResponse response,HttpServletRequest request,String docPath,String filename) throws Exception {
 		
 		try {	
+			System.out.println("come in ReportController downloadReport..");
+			System.out.println("docPath: " + docPath);
+			System.out.println("filename: " + filename);
 			reoportService.downloadReport(response, docPath,filename);
 			reoportService.removeDoc(docPath);
 		} catch (Exception e) {

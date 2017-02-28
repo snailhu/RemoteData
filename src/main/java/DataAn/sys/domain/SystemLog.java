@@ -12,10 +12,8 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import org.springframework.format.annotation.DateTimeFormat;
-
 @Entity
-@Table(name = "t_systemlog", catalog = "mongoyp")
+@Table(name = "t_systemlog")
 public class SystemLog {
 	
 	@Id

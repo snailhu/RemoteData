@@ -413,10 +413,12 @@ $(function(){
 					  $("#downloadReport").hideLoading();
 					 	var docPath = res.data.docPath;
 					 	var filename = res.data.filename;
+					 	var docURI = "report/downloadReport?docPath="+docPath+"&filename="+filename;
 					 	console.log(filename);
 					 	console.log(docPath);
-						console.log("report/downloadReport?docPath="+docPath+"&filename="+filename);
-         				window.location.href="report/downloadReport?docPath="+docPath+"&filename="+filename;
+						console.log(docURI);
+						docURI = encodeURI(encodeURI(docURI));
+         				window.location.href=docURI;
 	              }
 	              else {
 	            	  $("#downloadReport").hideLoading();

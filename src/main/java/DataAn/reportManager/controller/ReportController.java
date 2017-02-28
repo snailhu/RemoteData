@@ -200,6 +200,10 @@ public class ReportController {
 			System.out.println("come in ReportController downloadReport..");
 			System.out.println("docPath: " + docPath);
 			System.out.println("filename: " + filename);
+			docPath = java.net.URLDecoder.decode(docPath,"UTF-8");
+			filename = java.net.URLDecoder.decode(filename,"UTF-8");
+			System.out.println("docPath: " + docPath);
+			System.out.println("filename: " + filename);
 			reoportService.downloadReport(response, docPath,filename);
 			reoportService.removeDoc(docPath);
 		} catch (Exception e) {

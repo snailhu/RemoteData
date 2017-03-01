@@ -237,9 +237,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				},
 				valueUnit : {
 					validators : {
-						notEmpty : {
-							message : '单位不能为空'
-						}
+// 						notEmpty : {
+// 							message : '单位不能为空'
+// 						}
 					}
 				},
 				effeMax : {
@@ -317,9 +317,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				},
 				valueUnit : {
 					validators : {
-						notEmpty : {
-							message : '单位不能为空'
-						}
+// 						notEmpty : {
+// 							message : '单位不能为空'
+// 						}
 					}
 				},
 				effeMax : {
@@ -1031,9 +1031,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			var flag =	validator(series,star,partsType,paramCode,effeMin,effeMax);
 			if(!flag) {
 				return false;
-			} 
-			var toUrl='${pageContext.request.contextPath}/starParam/createStarParam';
+			}
 			var f = $('#addStarParamInfoForm');
+			f.data('bootstrapValidator').validate();
+			var isValid = f.data('bootstrapValidator').isValid();
+			if(!isValid){
+				return false;
+			}
+			var toUrl='${pageContext.request.contextPath}/starParam/createStarParam';
 			         f.form('submit', {
 			             url: toUrl,
 			             onsubmit: function () {
@@ -1260,8 +1265,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			if(!flag) {
 				return false;
 			}
-			var toUrl='${pageContext.request.contextPath}/starParam/editStarParam';
 			var f = $('#editStarParamInfoForm');
+			f.data('bootstrapValidator').validate();
+			var isValid = f.data('bootstrapValidator').isValid();
+			if(!isValid){
+				return false;
+			}
+			var toUrl='${pageContext.request.contextPath}/starParam/editStarParam';
             f.form('submit', {
                 url: toUrl,
                 onsubmit: function () {

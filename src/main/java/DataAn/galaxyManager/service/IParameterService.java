@@ -17,7 +17,7 @@ public interface IParameterService {
 	
 	public void deleteParamter(String paramIds);
 	
-	public void updateParamter(long paramId, String param_zh);
+	public void updateParamter(long paramId, String paramType, String param_zh);
 	
 	public boolean isExistParameter(long paramId, String series, String star, String param_zh);
 	

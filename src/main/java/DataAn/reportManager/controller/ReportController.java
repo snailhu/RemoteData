@@ -222,8 +222,15 @@ public class ReportController {
 		
 		ResultJSON res = ResultJSON.getSuccessResultJSON();
 		
-		String templateUrl = OptionConfig.getWebPath() + "\\report\\wordtemplate\\卫星状态报告.doc";
+		//判断有没有配置参数
+		long paramCount = starParamService.getStarParamForReportCount(seriesId, starId, partsType);
+		if(paramCount == 0){
+			res.setMsg("请配置生成报告参数！");
+			res.setResult(CommonsConstant.RESULT_FALSE);
+			return res;
+		}
 		
+		String templateUrl = OptionConfig.getWebPath() + "\\report\\wordtemplate\\卫星状态报告.doc";
 		String time = DateUtil.getNowTime("yyyy-MM-dd");
 		String partsName = "";
 		if(J9Series_Star_ParameterType.FLYWHEEL.getValue().equals(partsType)) {
@@ -242,7 +249,7 @@ public class ReportController {
 		
 		Date beginDate = DateUtil.format(beginTime,"yyyy-MM-dd");
 		Date endDate =  DateUtil.format(endTime,"yyyy-MM-dd");
-		
+		//判断mongodb有没有数据
 		MongodbUtil mg = MongodbUtil.getInstance();
 		String databaseName = InitMongo.getDataDBBySeriesAndStar(seriesId, starId);
 		//1s 等级数据集 或原数据集
@@ -254,18 +261,13 @@ public class ReportController {
 			return res;
 		}
 		try {
-			long paramCount = starParamService.getStarParamForReportCount(seriesId, starId, partsType);
-			if(paramCount > 0){
-				reoportService.createReport(beginDate, endDate, filename, templateUrl, docPath, seriesId, starId, partsType);
-				
-				Map<String, Object> data = new HashMap<String, Object>();
-				data.put("docPath", docPath);
-				data.put("filename", filename);
-				res.setData(data);				
-			}else{
-				res.setMsg("请配置生成报告参数！");
-				res.setResult(CommonsConstant.RESULT_FALSE);
-			}
+			reoportService.createReport(beginDate, endDate, filename, templateUrl, docPath, seriesId, starId, partsType);
+			
+			Map<String, Object> data = new HashMap<String, Object>();
+			data.put("docPath", docPath);
+			data.put("filename", filename);
+			res.setData(data);				
+			
 		 } catch (Exception ex) {
 			ex.printStackTrace();
 			res.setMsg(DateUtil.format(beginDate) + " 到 "+ DateUtil.format(endDate) +" 获取数据失败！");

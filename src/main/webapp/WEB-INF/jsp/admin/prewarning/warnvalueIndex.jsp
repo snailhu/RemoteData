@@ -1477,7 +1477,7 @@
 			$('#add-minVal').attr("disabled",false);
 			
 			$('#add-parameter-top').attr("disabled",false);
-			$('#add-timeZonetop').attr("disabled",false);
+			$('#add-timeZone-top').attr("disabled",false);
 			$('#add-maxValtop').attr("disabled",false);
 			$('#add-minValtop').attr("disabled",false);
 			$('#addValueModal').modal('show');
@@ -1497,14 +1497,14 @@
 				$('#add-parameter').attr("disabled",true);
 				
 				$('#add-parameter-top').attr("disabled",false);
-				$('#add-timeZonetop').attr("disabled",false);
+				$('#add-timeZone-top').attr("disabled",false);
 				$('#add-maxValtop').attr("disabled",false);
 				$('#add-minValtop').attr("disabled",false);
-				//var timeZone = Number($("#add-timeZone").val());
+				var timeZone = Number($("#add-timeZone-top").val());
 				var maxval = Number($("#add-maxValtop").val());
 				var minval = Number($("#add-minValtop").val());
 				//设置陀螺参数值和限定次数   注意：这两个参数对陀螺来说没有实际的意义
-				$('#add-timeZonetop').val(1);
+				//$('#add-timeZone-top').val(1);
 				var seriesid = $('#add-series').val();
 				var starid=$('#add-star').val();
 				var sequence_jiaosudu='sequence_topjiaosudu_'+seriesid+'_'+starid;

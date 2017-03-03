@@ -30,7 +30,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     
     <script  src="<%=request.getContextPath()%>/static/showLoading/js/jquery.showLoading.min.js"></script>
       <link rel="stylesheet"  href="<%=request.getContextPath()%>/static/showLoading/css/showLoading.css" />
-          <link rel="stylesheet" href="<%=request.getContextPath()%>/static/css/all.css" type="text/css" />
+<%--           <link rel="stylesheet" href="<%=request.getContextPath()%>/static/css/all.css" type="text/css" /> --%>
     
 <style type="text/css">
 .sweet-alert h2 {

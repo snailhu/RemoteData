@@ -19,8 +19,8 @@
 <meta http-equiv="description" content="This is my page">
 
 <jsp:include page="/WEB-INF/jsp/inc/include-easyUI.jsp"></jsp:include>
-<link rel="stylesheet"
-	href="<%=request.getContextPath()%>/static/css/all.css" type="text/css" />
+<!-- <link rel="stylesheet" -->
+<%-- 	href="<%=request.getContextPath()%>/static/css/all.css" type="text/css" /> --%>
 <link rel="stylesheet" type="text/css"
 	href="${pageContext.request.contextPath}/static/statusstep/css/stateTracking.css">
 <link rel="stylesheet" type="text/css"

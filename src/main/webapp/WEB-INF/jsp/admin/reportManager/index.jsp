@@ -29,7 +29,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	
 	<link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/static/content/jeDate/jedate/skin/jedate.css">
     <script type="text/javascript" src="${pageContext.request.contextPath}/static/content/jeDate/jedate/jedate.js"></script>
-	       <link rel="stylesheet" href="<%=request.getContextPath()%>/static/css/all.css" type="text/css" />
+<%-- 	       <link rel="stylesheet" href="<%=request.getContextPath()%>/static/css/all.css" type="text/css" /> --%>
 	  <script type="text/javascript" src="<%=request.getContextPath()%>/static/select2/select2.full.min.js"></script>
 	  	<link rel="stylesheet" href="<%=request.getContextPath()%>/static/select2/select2.min.css" type="text/css" />     
 	       

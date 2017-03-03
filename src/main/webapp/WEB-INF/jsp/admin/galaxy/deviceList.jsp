@@ -24,8 +24,8 @@
 	href="${pageContext.request.contextPath}/static/content/sweetalert/dist/sweetalert.css">
 <script
 	src="${pageContext.request.contextPath}/static/content/sweetalert/dist/sweetalert.min.js"></script>
-<link rel="stylesheet"
-	href="<%=request.getContextPath()%>/static/css/all.css" type="text/css" />
+<!-- <link rel="stylesheet" -->
+<%-- 	href="<%=request.getContextPath()%>/static/css/all.css" type="text/css" /> --%>
 
 <!--     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/content/bootstrapValidator/vendor/bootstrap/css/bootstrap.css"/> -->
 <link rel="stylesheet"

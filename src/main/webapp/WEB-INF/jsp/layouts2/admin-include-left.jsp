@@ -73,7 +73,7 @@
 .DataImport_manage .data_import .left {
 	float: left;
 	width: 189px;
-	background-color: #F3F3F3;
+	background-color: #ffffff;
 	margin-left: 0px;
 }
 

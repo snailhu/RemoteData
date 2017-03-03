@@ -21,8 +21,8 @@
 <jsp:include page="/WEB-INF/jsp/inc/include-easyUI.jsp"></jsp:include>
 <script type="text/javascript"
 	src="${pageContext.request.contextPath}/static/content/jquery-easyui-datagridview/datagrid-detailview.js"></script>
-<link rel="stylesheet"
-	href="<%=request.getContextPath()%>/static/css/all.css" type="text/css" />
+<!-- <link rel="stylesheet" -->
+<%-- 	href="<%=request.getContextPath()%>/static/css/all.css" type="text/css" /> --%>
 <!-- 弹出框 -->
 <link rel="stylesheet" type="text/css"
 	href="${pageContext.request.contextPath}/static/content/sweetalert/dist/sweetalert.css">

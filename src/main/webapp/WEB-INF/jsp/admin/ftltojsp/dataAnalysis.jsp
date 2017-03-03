@@ -211,11 +211,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     	text-shadow: 0 0 0 #FFF;
      	opacity: 1;
     }
-    .down{
+    /*.down{
     	position:fixed;
     	bottom:0px;
     	z-index:10;
-    }
+    }*/
     
     .selftoolbar {
     display: inline-block;
@@ -357,7 +357,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				</select>
 				</div>
 				<button style="height: 35px;"  id='jqxButton-getParameters' onMouseOut="this.style.backgroundColor=''" onMouseOver="this.style.backgroundColor='#00A1CB'">获取参数</button>
-				</div>		
+				</div>
+						
 		<div style="display:none">
 		<div style="margin-left:-20px;">
 			<div class="col-xs-12 col-sm-12">
@@ -379,8 +380,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			</div><!-- /.col -->
 		 </div>
 		 </div>
-		 
-			
+		 				
 			<div class="groupButton col-xs-12">
 					<div id='jqxButton_addgroup' onMouseOut="this.style.backgroundColor=''" onMouseOver="this.style.backgroundColor='#aaa'">添加分组</div>
   					<div id='jqxButton_submitgroup' onMouseOut="this.style.backgroundColor=''" onMouseOver="this.style.backgroundColor='#00A1CB'">提交分组</div>
@@ -745,14 +745,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	        JsonG.alldata=AllRowselect;   
        	}else{
        		//top.showMsg('提示', "参数不能为空 ，请至少选择一行参数");
-       		//$.messager.alert('提示','参数不能为空 ，请至少选择一行参数','warning');
-       		$.messager.show({
+       		$.messager.alert('提示','参数不能为空 ，请至少选择一行参数','warning');
+       		/*$.messager.show({
        			title:"提示",
        			msg:"参数不能为空 ，请至少选择一行参数",
        			timeout:5000,
        			showType:'show',
        			
-       		});
+       		});*/
 			return false;
        		
        	}  

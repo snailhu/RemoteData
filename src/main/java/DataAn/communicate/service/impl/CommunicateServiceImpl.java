@@ -121,7 +121,7 @@ public class CommunicateServiceImpl implements ICommunicateService{
 				}*/
 				jobConfig = new ExceptionJobConfig();
 				jobConfig.setParamCode(wv.getParameter());
-				jobConfig.setDelayTime(wv.getTimeZone());//TODO 设置持续时间 min，注意时间单位
+				jobConfig.setDelayTime(wv.getTimeZone());
 				jobConfig.setMax(wv.getMaxVal());
 				jobConfig.setMin(wv.getMinVal());
 				jobConfigList.add(jobConfig);

@@ -148,6 +148,14 @@
 .breadcrumb {
 	margin-top: 10px;
 }
+.statu-l, .statu-r {
+    display: inline-block;
+    box-sizing: border-box;
+/*     width: 175px; */
+    height: 46px;
+    line-height: 46px;
+    padding: 0 22px;
+}
 </style>
 <script type="text/javascript">
 	$(function() {

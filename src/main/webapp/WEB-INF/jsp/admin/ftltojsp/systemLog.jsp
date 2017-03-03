@@ -132,14 +132,12 @@
 									
 									<div class="space-4"></div>
 									<div class="form-group">
-			                        	<div class="col-sm-6 control-label no-padding-right">
+			                        	<div class="col-lg-4 col-lg-offset-4">
 											<button type="button" id="btn-search" class="subbutton_1">
 							                    <i></i>
 							                    <span>搜索</span>
 							                </button>
-										</div>
-										<div class="col-sm-1 control-label no-padding-right">
-											  <button type="reset" id = "btn-cancel" class="cancelbutton_1">
+											<button type="reset" id = "btn-cancel" class="cancelbutton_1">
 							                    <i></i>
 							                    <span>取消</span>
 							                </button>
@@ -152,7 +150,10 @@
 					</div>	
 			<div class="col-xs-12"><hr/></div>		
 			<div class="col-xs-12">
+				<!--<div id="container_jqxgrid"style="margin:0 auto; width:900px;"></div>-->
+				<div>
 				<div id="jqxgrid"></div>
+				</div>
 			</div>
 			</div>
 			</div>
@@ -160,6 +161,8 @@
 		</div> <!--/.page-content -->		
 	</div><!-- /.main-content -->
  <script type="text/javascript">
+ 	var div_width=$(document.body).width() - 20;
+ 	$("#container_jqxgrid").width(div_width);
     var beginTime ="1900-01-01 00:00:01";
     var endTime = "3000-01-01 11:59:01";
     var keyWord = "all";
@@ -187,10 +190,15 @@
 			}
 		};
 		var dataAdapter = new $.jqx.dataAdapter(source);
+		
+		var div_width=$(document.body).width() - 300;
+		var div_height=$(document.body).width() - 300;
 		$("#jqxgrid").jqxGrid(
 		{
-			width: 900,
-			height: 600,
+			width: div_width,
+			height: div_height,
+			autoheight:true,
+			autorowheight:true,
 			source: dataAdapter,
 			selectionmode: 'multiplerowsextended',
 			theme: 'energyblue',
@@ -200,12 +208,12 @@
 			columnsresize: true,
 			pagermode: 'simple',
 			columns: [
-			  { text: '用户名', datafield: 'userName', width: 150 },
+			  { text: '用户名', datafield: 'userName',width: 150},
 			  { text: '操作时间', datafield: 'operateTime', width: 200, cellsformat: 'D' },
-			//{ text: '退出时间', datafield: 'logOutTime', width: 150, cellsformat: 'F2', cellsalign: 'right' },
+			//{ text: '退出时间', datafield: 'logOutTime',  cellsformat: 'F2', cellsalign: 'right' },
 			  { text: '登录ip', datafield: 'loginIp', width: 250 },
-			  { text: '操作', datafield: 'operateJob', width: 300 }
-			//{ text: '角色', datafield: 'role', width: 100 }
+			  { text: '操作', datafield: 'operateJob'  }
+			//{ text: '角色', datafield: 'role' }
 			]
 		});
 	} 

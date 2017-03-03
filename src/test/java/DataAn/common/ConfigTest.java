@@ -104,4 +104,10 @@ public class ConfigTest {
 			System.out.println(string);
 		}
 	}
+	@Test
+	public void test6(){
+		System.out.println(CommonConfig.getTopjobConfig());
+		System.out.println(CommonConfig.getTopDenoiseConfig());
+		
+	}
 }

@@ -33,6 +33,27 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	.container {
 	    max-width: 1500px;
 	}
+	.DataImport_manage {
+	    margin: 0px;
+	    background-color: #ffffff;
+	    font-family: "微软雅黑";
+	}
+	.DataImport_manage .container {
+	    width: 100%;
+	    margin: 0 auto;
+	    background-color: #ffffff;
+	}
+	@media (min-width: 1200px)
+.container {
+    max-width: 1800px;
+}
+.DataImport_manage .data_import .head {
+    width: 100%;
+    height: 80px;
+    color: #f4f4f4;
+    font-size: 12px;
+    background: url(static/imgs/head/head.png);
+}
 	</style>
 	<script type="text/javascript">
 	

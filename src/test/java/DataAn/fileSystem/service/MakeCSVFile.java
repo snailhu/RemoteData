@@ -23,9 +23,9 @@ public class MakeCSVFile {
 	* 拷贝生成陀螺数据：按周
 	*/
 	@Test
-	public void copyTopDataCSV1() throws Exception{
+	public void copyTopDataCSV2() throws Exception{
 		List<String> list = new ArrayList<String>();
-		String filePath = "C:\\2014-01.csv";
+		String filePath = "E:\\data\\j9-02-top.csv";
 		File file = new File(filePath);
 		InputStream in = new FileInputStream(file);
 		InputStreamReader inputStreamReader = new InputStreamReader(in, "gb2312");
@@ -33,16 +33,17 @@ public class MakeCSVFile {
 		String line = reader.readLine();// 第一行信息，为标题信息，不用,如果需要，注释掉
 		list.add(line);
 		while ((line = reader.readLine()) != null) {
-			if(line.indexOf("2014年01月31日") > -1)
+			if(line.indexOf("2016年10月21日") > -1)
 				list.add(line);
 		}
 		System.out.println("size: " + list.size());
-		for (int year = 2015; year <= 2017; year++) {
+		for (int year = 2016; year <= 2016; year++) {
 			for (int month = 1; month <= 12; month++) {
 				int days = MakeCSVFileHelper.getDays(year, month);
-				for (int i = 1; i <= days; i++) {
-					MakeCSVFileHelper.writeTopCSV(list, year, month, i, i);							
-				}
+//				for (int i = 1; i <= days; i++) {
+//					MakeCSVFileHelper.writeTopCSV(list, year, month, i, i);							
+//				}
+				MakeCSVFileHelper.writeTopCSV(list, year, month, 1, days);
 			}
 		}
 	}
@@ -50,7 +51,7 @@ public class MakeCSVFile {
 	* 拷贝生成陀螺数据：按周
 	*/
 	@Test
-	public void copyTopDataCSV2() throws Exception{
+	public void copyTopDataCSV1() throws Exception{
 		List<String> list = new ArrayList<String>();
 		String filePath = "C:\\2014-01.csv";
 		File file = new File(filePath);

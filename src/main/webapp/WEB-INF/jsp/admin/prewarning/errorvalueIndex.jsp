@@ -61,8 +61,8 @@
 <link rel="stylesheet"
 	href="<%=request.getContextPath()%>/static/select2/select2.min.css"
 	type="text/css" />
-<link rel="stylesheet"
-	href="<%=request.getContextPath()%>/static/css/all.css" type="text/css" />
+<!-- <link rel="stylesheet" -->
+<%-- 	href="<%=request.getContextPath()%>/static/css/all.css" type="text/css" /> --%>
 
 <script type="text/javascript"
 	src="<%=request.getContextPath()%>/static/jqwidgets/jqxcore.js"></script>

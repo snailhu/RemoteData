@@ -46,8 +46,8 @@ public class StarParamServiceTest {
 				+ "F10W131_134:Z轴陀螺漂移估计(00828),";
 		String series = SeriesType.J9_SERIES.getName();
 		String star = J9SeriesType.STRA5.getValue();
-		String paramType = J9Series_Star_ParameterType.TOP.getValue();
-		String[] items = topStr.split(",");
+		String paramType = J9Series_Star_ParameterType.FLYWHEEL.getValue();
+		String[] items = flywheelStr.split(",");
 		StarParamDto starParamDto = null;
 		for (String item : items) {
 			if(item.equals("接收地方时") || item.equals("时间"))

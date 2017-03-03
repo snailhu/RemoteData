@@ -671,7 +671,7 @@
 									</div>	
 									<div class="form-group">
 									<label class="col-lg-3 control-label no-padding-right"
-										for="add-timeZone-top"> 持续时间(毫秒)：</label>
+										for="add-timeZone-top"> 持续时间(秒)：</label>
 									<div class="col-sm-6">
 										<input type="text" name="timeZone" id="add-timeZone-top"
 											placeholder="持续时间" class="form-control" />
@@ -858,10 +858,10 @@
 									
 									<div class="form-group">
 									<label class="col-lg-3 control-label no-padding-right"
-										for="edit-timeZonetop"> 时间区间(毫秒)：</label>
+										for="edit-timeZonetop"> 时间区间(秒)：</label>
 										<div class="col-sm-6">
 											<input type="text" name="timeZone" id="edit-timeZonetop"
-												placeholder="时间区间(毫秒)" class="form-control" />
+												placeholder="时间区间(秒)" class="form-control" />
 										</div>
 									</div>
 									<div class="space-4"></div>
@@ -1418,7 +1418,7 @@
 						},
 						 {
 							field : 'timeZone',
-							title : '时间区间(毫秒)',
+							title : '时间区间(秒)',
 							width : 100,
 							sortable:true
 						}, 

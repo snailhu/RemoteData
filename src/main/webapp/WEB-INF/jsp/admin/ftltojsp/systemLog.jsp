@@ -7,17 +7,18 @@
 <head>
 <base href="<%=basePath%>">
 <title>日志管理</title>
+	<jsp:include page="/WEB-INF/jsp/inc/include-easyUI.jsp"></jsp:include>
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/static/jqwidgets/styles/jqx.base.css" type="text/css" />
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/static/jqwidgets/styles/jqx.energyblue.css" type="text/css" />
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/static/content/css/default.css"  type="text/css"/>
-<%-- 	<link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/all.css" type="text/css" /> --%>
+	<%--<link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/all.css" type="text/css" /> --%>
     <script type="text/javascript" src="${pageContext.request.contextPath}/static/jqwidgets/jqxcore.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/static/jqwidgets/jqxdatetimeinput.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/static/jqwidgets/jqxcalendar.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/static/jqwidgets/jqxtooltip.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/static/jqwidgets/globalization/globalize.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/static/jqwidgets/jqxdata.js"></script>
-    <script type="text/javascript" src="${pageContext.request.contextPath}/static/jqwidgets/jqxbuttons.js"></script>
+    <!--<script type="text/javascript" src="${pageContext.request.contextPath}/static/jqwidgets/jqxbuttons.js"></script>-->
     <script type="text/javascript" src="${pageContext.request.contextPath}/static/jqwidgets/jqxscrollbar.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/static/jqwidgets/jqxmenu.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/static/jqwidgets/jqxcheckbox.js"></script>
@@ -34,6 +35,10 @@
     <script type="text/javascript" src="${pageContext.request.contextPath}/static/jqwidgets/jqxgrid.selection.js"></script> 
     <script type="text/javascript" src="${pageContext.request.contextPath}/static/jqwidgets/jqxbuttons.js"></script>
 	
+	<script type="text/javascript" src="${pageContext.request.contextPath}/static/content/bootstrapValidator/vendor/bootstrap/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/static/content/bootstrapValidator/dist/js/bootstrapValidator.js"></script>
+    
+	<script type="text/javascript" src="${pageContext.request.contextPath}/static/assets/js/bootstrap.min.js"></script>
 	<!-- 时间选择器 -->
 	<link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/static/content/jeDate/jedate/skin/jedate.css">
     <script type="text/javascript" src="${pageContext.request.contextPath}/static/content/jeDate/jedate/jedate.js"></script>
@@ -54,8 +59,15 @@
 	</style>
 <script type="text/javascript">
 	$(function(){
-		$(".col-sm-6").css({"display":"inline","margin-left":"6.6%"});
-		$(".col-sm-1").css("display","inline");		
+		//$(".col-sm-6").css({"display":"inline","margin-left":"6.6%"});
+		//$(".col-sm-1").css("display","inline");
+		//修改页面缩放，界面显示不正常
+		$(".col-lg-3").addClass("col-sm-3");
+		$(".col-lg-7").css("text-align","center");
+		$(".modal-dialog").css("margin","20px auto");
+		//$(".col-lg-4").css({"margin-left":"25%","width":"600px"});
+		$(".col-lg-4").css("margin-left","43%");
+		$(".col-lg-4").find("button").css("display","inline");		
 		
 		//左菜单栏
 		$("#logmanage-img").attr("src","${pageContext.request.contextPath}/static/new/img/images/a_54.png");
@@ -129,9 +141,10 @@
 											<input class="form-control"  id="form-keyWord"   name="keyWord" type="text" placeholder="--请输入操作关键字--">
 										</div>
 									</div>
-									
 									<div class="space-4"></div>
 									<div class="form-group">
+									<!--<div style="margin:0 auto; width:600px;"></div>-->
+					
 			                        	<div class="col-lg-4 col-lg-offset-4">
 											<button type="button" id="btn-search" class="subbutton_1">
 							                    <i></i>
@@ -142,8 +155,8 @@
 							                    <span>取消</span>
 							                </button>
 										</div>
-									</div>
 									
+									</div>
 								</form>
 							</div>
 						</div>

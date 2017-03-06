@@ -8,7 +8,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
   <head>
-    <title>My JSP 'index.jsp' starting page</title>
+    <title>惯性产品在轨数据处理 分析</title>
     
 	<meta http-equiv="pragma" content="no-cache">
 	<meta http-equiv="cache-control" content="no-cache">
@@ -23,12 +23,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   	<link href="${pageContext.request.contextPath}/static/assets/css/bootstrap.min.css" rel="stylesheet" /> 
    	<link rel="stylesheet" href="${pageContext.request.contextPath}/static/jqwidgets/styles/jqx.base.css" type="text/css" />
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/static/jqwidgets/styles/jqx.energyblue.css" type="text/css" />
-	<link rel="stylesheet" href="${pageContext.request.contextPath}/static/content/css/default.css"  type="text/css"/>	
 	
     <script src="<%=request.getContextPath()%>/static/content/jquery-easyui-1.4.3/jquery.easyui.min.js" type="text/javascript"></script>
 	<script src="<%=request.getContextPath()%>/static/content/jquery-easyui-1.4.3/locale/easyui-lang-zh_CN.js" type="text/javascript"></script>
 	
-	<!--<script type="text/javascript" src="${pageContext.request.contextPath}/static/assets/js/bootstrap.min.js"></script>-->
+	<script type="text/javascript" src="${pageContext.request.contextPath}/static/assets/js/bootstrap.min.js"></script>
 	
     <script type="text/javascript" src="${pageContext.request.contextPath}/static/jqwidgets/jqxcore.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/static/jqwidgets/jqxdatetimeinput.js"></script>
@@ -47,9 +46,41 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     <script type="text/javascript" src="${pageContext.request.contextPath}/static/jqwidgets/jqxtreegrid.js"></script>     
 
 	<link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/static/content/jeDate/jedate/skin/jedate.css">
-    <script type="text/javascript" src="${pageContext.request.contextPath}/static/content/jeDate/jedate/jedate.js"></script>
     
+    <link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/static/new/css/all.css"/>
+    
+    <script type="text/javascript" src="${pageContext.request.contextPath}/static/content/jeDate/jedate/jedate.js"></script>
 <style>
+	.DataImport_manage .container {
+	    width: 1200px;
+	    margin: 0 auto;
+	}
+	.container {
+	    max-width: 1500px;
+	}
+	.DataImport_manage {
+	    margin: 0px;
+	    background-color: #ffffff;
+	    font-family: "微软雅黑";
+	}
+	.DataImport_manage .container {
+	    width: 100%;
+	    margin: 0 auto;
+	    background-color: #ffffff;
+	}
+	@media (min-width: 1200px)
+.container {
+    max-width: 1800px;
+}
+.DataImport_manage .data_import .head {
+    width: 100%;
+    height: 80px;
+    color: #f4f4f4;
+    font-size: 12px;
+    background: url(static/imgs/head/head.png);
+}
+
+
 	.breadcrumbs{
 		height:45px;
 	}	
@@ -339,11 +370,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					陀螺
 				</button>
 				
-				<div class="dateStyle">
-					<span>开始日期</span>
-					<div id="dateStart-div">
-						<input class="datainp" id="dateStart" type="text" placeholder="--请选择开始日期--" readonly>
-					</div>
+				<div class="dateStyle">					
+						<span>开始日期</span>
+						<div id="dateStart-div">
+							<input class="datainp" id="dateStart" type="text" placeholder="--请选择开始日期--" readonly>
+						</div>
 				</div>
 				<div class="dateStyle">
 					<span>结束日期</span>

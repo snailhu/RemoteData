@@ -361,8 +361,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		</div>	
 		<div class="page-content">
 		<div class="row">
-			<!--<div class="dateRange">日期范围</div>-->
-				<div class="dateSelect">
+			<div class="dateSelect">
+			<div style="margin:0 auto; width:900px;">
 				<button id="btn_flywheel"  style="display:none;">
 					飞轮
 				</button>
@@ -382,13 +382,16 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						<input class="datainp" id="dateEnd" type="text" placeholder="--请选择开始日期--" readonly>
 					</div>				
 				</div>
+				
 				<div class="dateStyle">
 				<select class="select5" id="edit_component" name="component" style="display:none;">
 					<!--<option value="">选择设备</option> -->
 				</select>
 				</div>
+				
 				<button style="height: 35px;"  id='jqxButton-getParameters' onMouseOut="this.style.backgroundColor=''" onMouseOver="this.style.backgroundColor='#00A1CB'">获取参数</button>
-				</div>
+			</div>
+			</div>
 						
 		<div style="display:none">
 		<div style="margin-left:-20px;">
@@ -413,23 +416,28 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		 </div>
 		 				
 			<div class="groupButton col-xs-12">
+				<div style="margin:0 auto; width:900px;">
 					<div id='jqxButton_addgroup' onMouseOut="this.style.backgroundColor=''" onMouseOver="this.style.backgroundColor='#aaa'">添加分组</div>
   					<div id='jqxButton_submitgroup' onMouseOut="this.style.backgroundColor=''" onMouseOver="this.style.backgroundColor='#00A1CB'">提交分组</div>
-  					<!--<button onclick="getCleared()">清空已选参数</button>-->
   					<div id="id_btn_deletetemplate" type='button' class="btn btn-ptimary" style="visibility:hidden">删除该模板</div>
   					<div id="id_dplist_template"></div>
+  		 		</div>
   		 	</div> 				
 			<div class="col-xs-12">
-				<div id="treeGrid"></div>			       				     				      		     
+				<div style="margin:0 auto; width:900px;">
+					<div id="treeGrid"></div>
+				</div>			       				     				      		     
 			</div>
 			
 			
 			<div class="new_hr hr hr32 hr-dotted"></div>
 			
 		
-			<div class="col-xs-12">	
-  				<div id='jqxWidget'>
-			              已有分组：		       	
+			<div class="col-xs-12">
+				<div style="margin:0 auto; width:900px;">	
+  					<div id='jqxWidget'>
+			             	 已有分组：		       	
+			    	</div>
 			    </div>
 			 </div>
 		</div>
@@ -969,6 +977,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	                url: url_template
 	            };
 	            var data_templateTree = new $.jqx.dataAdapter(source_template);         
+	           	var div_width=$(document.body).width() - 300;
+				var div_height=$(document.body).width() - 300;
 	            $("#id_templateTreeGrid").jqxTreeGrid(
 	            {
 	                width: 880,

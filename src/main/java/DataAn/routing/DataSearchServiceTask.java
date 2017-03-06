@@ -52,7 +52,10 @@ public class DataSearchServiceTask extends RecursiveTask<Map<String, YearAndPara
 		System.out.println("时间区间大小："+timespace);
 		if(timespace<10800000)
 		{
+			System.out.println("时间小于3小时单线程查询");
 			DataSearchByTimeTask task =new DataSearchByTimeTask(repo,startdate,enddate,paramlist,paramrulesmap);
+			forks.add(task);
+			task.fork();
 		}
 		else{
 			for(int i=0;i<THRESHOLD;i++)
@@ -65,6 +68,8 @@ public class DataSearchServiceTask extends RecursiveTask<Map<String, YearAndPara
 				forks.add(task);
 				task.fork();
 			}
+			
+		}
 			for(DataSearchByTimeTask task:forks)
 			{
 				if(vals.isEmpty())
@@ -98,7 +103,7 @@ public class DataSearchServiceTask extends RecursiveTask<Map<String, YearAndPara
 				 
 				 
 			}
-		}
+		
 		
 		return vals;
 	}

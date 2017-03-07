@@ -25,9 +25,10 @@ public class MakeCSVFileHelper {
 		
 		DecimalFormat df = new DecimalFormat("00");
 		//目录
-		String dirPath = "E:\\data\\top\\" + year+"\\"+df.format(month);
+		String dirPath = "E:\\data\\top\\" + year+"-month";
+//		String dirPath = "E:\\data\\top\\" + year+"-day\\"+df.format(month);
 		//文件路径
-		String outputFile = dirPath +"\\" +"j9-05--" + year +"-" + df.format(month) +"-" + df.format(beginDay) +".csv";
+		String outputFile = dirPath +"\\" +"j9-02--" + year +"-" + df.format(month) +"-" + df.format(beginDay) +".csv";
 		String strYear = year + "年";
 		String strMonth = df.format(month) + "月";
 		File dir = new File(dirPath);
@@ -50,7 +51,7 @@ public class MakeCSVFileHelper {
 			String strDay = df.format(day)+"日";
 			for (int i = 1; i < list.size(); i++) {
 				String[] array = list.get(i).split(",");
-				String datetime = array[0].replace("2014年", strYear).replace("01月", strMonth).replace("31日", strDay);
+				String datetime = array[0].replace("2016年", strYear).replace("10月", strMonth).replace("21日", strDay);
 				//datetime = DateUtil.formatString(datetime, "yyyy年MM月dd日HH时mm分ss.SSS秒","yyyy年MM月dd日HH时mm分ss秒");
 				csvOutput.write(datetime);
 				for (int j = 1; j < array.length; j++) {

@@ -8,7 +8,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
   <head>
-    <title>My JSP 'index.jsp' starting page</title>
+    <title>惯性产品在轨数据处理 分析</title>
     
 	<meta http-equiv="pragma" content="no-cache">
 	<meta http-equiv="cache-control" content="no-cache">
@@ -23,12 +23,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   	<link href="${pageContext.request.contextPath}/static/assets/css/bootstrap.min.css" rel="stylesheet" /> 
    	<link rel="stylesheet" href="${pageContext.request.contextPath}/static/jqwidgets/styles/jqx.base.css" type="text/css" />
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/static/jqwidgets/styles/jqx.energyblue.css" type="text/css" />
-	<link rel="stylesheet" href="${pageContext.request.contextPath}/static/content/css/default.css"  type="text/css"/>	
 	
     <script src="<%=request.getContextPath()%>/static/content/jquery-easyui-1.4.3/jquery.easyui.min.js" type="text/javascript"></script>
 	<script src="<%=request.getContextPath()%>/static/content/jquery-easyui-1.4.3/locale/easyui-lang-zh_CN.js" type="text/javascript"></script>
 	
-	<!--<script type="text/javascript" src="${pageContext.request.contextPath}/static/assets/js/bootstrap.min.js"></script>-->
+	<script type="text/javascript" src="${pageContext.request.contextPath}/static/assets/js/bootstrap.min.js"></script>
 	
     <script type="text/javascript" src="${pageContext.request.contextPath}/static/jqwidgets/jqxcore.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/static/jqwidgets/jqxdatetimeinput.js"></script>
@@ -47,9 +46,41 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     <script type="text/javascript" src="${pageContext.request.contextPath}/static/jqwidgets/jqxtreegrid.js"></script>     
 
 	<link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/static/content/jeDate/jedate/skin/jedate.css">
-    <script type="text/javascript" src="${pageContext.request.contextPath}/static/content/jeDate/jedate/jedate.js"></script>
     
+    <link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/static/new/css/all.css"/>
+    
+    <script type="text/javascript" src="${pageContext.request.contextPath}/static/content/jeDate/jedate/jedate.js"></script>
 <style>
+	.DataImport_manage .container {
+	    width: 1200px;
+	    margin: 0 auto;
+	}
+	.container {
+	    max-width: 1500px;
+	}
+	.DataImport_manage {
+	    margin: 0px;
+	    background-color: #ffffff;
+	    font-family: "微软雅黑";
+	}
+	.DataImport_manage .container {
+	    width: 100%;
+	    margin: 0 auto;
+	    background-color: #ffffff;
+	}
+	@media (min-width: 1200px)
+.container {
+    max-width: 1800px;
+}
+.DataImport_manage .data_import .head {
+    width: 100%;
+    height: 80px;
+    color: #f4f4f4;
+    font-size: 12px;
+    background: url(static/imgs/head/head.png);
+}
+
+
 	.breadcrumbs{
 		height:45px;
 	}	
@@ -211,11 +242,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     	text-shadow: 0 0 0 #FFF;
      	opacity: 1;
     }
-    .down{
+    /*.down{
     	position:fixed;
     	bottom:0px;
     	z-index:10;
-    }
+    }*/
     
     .selftoolbar {
     display: inline-block;
@@ -330,8 +361,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		</div>	
 		<div class="page-content">
 		<div class="row">
-			<!--<div class="dateRange">日期范围</div>-->
-				<div class="dateSelect">
+			<div class="dateSelect">
+			<div style="margin:0 auto; width:900px;">
 				<button id="btn_flywheel"  style="display:none;">
 					飞轮
 				</button>
@@ -339,11 +370,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					陀螺
 				</button>
 				
-				<div class="dateStyle">
-					<span>开始日期</span>
-					<div id="dateStart-div">
-						<input class="datainp" id="dateStart" type="text" placeholder="--请选择开始日期--" readonly>
-					</div>
+				<div class="dateStyle">					
+						<span>开始日期</span>
+						<div id="dateStart-div">
+							<input class="datainp" id="dateStart" type="text" placeholder="--请选择开始日期--" readonly>
+						</div>
 				</div>
 				<div class="dateStyle">
 					<span>结束日期</span>
@@ -351,13 +382,17 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						<input class="datainp" id="dateEnd" type="text" placeholder="--请选择开始日期--" readonly>
 					</div>				
 				</div>
+				
 				<div class="dateStyle">
 				<select class="select5" id="edit_component" name="component" style="display:none;">
 					<!--<option value="">选择设备</option> -->
 				</select>
 				</div>
+				
 				<button style="height: 35px;"  id='jqxButton-getParameters' onMouseOut="this.style.backgroundColor=''" onMouseOver="this.style.backgroundColor='#00A1CB'">获取参数</button>
-				</div>		
+			</div>
+			</div>
+						
 		<div style="display:none">
 		<div style="margin-left:-20px;">
 			<div class="col-xs-12 col-sm-12">
@@ -379,26 +414,30 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			</div><!-- /.col -->
 		 </div>
 		 </div>
-		 
-			
+		 				
 			<div class="groupButton col-xs-12">
+				<div style="margin:0 auto; width:900px;">
 					<div id='jqxButton_addgroup' onMouseOut="this.style.backgroundColor=''" onMouseOver="this.style.backgroundColor='#aaa'">添加分组</div>
   					<div id='jqxButton_submitgroup' onMouseOut="this.style.backgroundColor=''" onMouseOver="this.style.backgroundColor='#00A1CB'">提交分组</div>
-  					<!--<button onclick="getCleared()">清空已选参数</button>-->
   					<div id="id_btn_deletetemplate" type='button' class="btn btn-ptimary" style="visibility:hidden">删除该模板</div>
   					<div id="id_dplist_template"></div>
+  		 		</div>
   		 	</div> 				
 			<div class="col-xs-12">
-				<div id="treeGrid"></div>			       				     				      		     
+				<div style="margin:0 auto; width:900px;">
+					<div id="treeGrid"></div>
+				</div>			       				     				      		     
 			</div>
 			
 			
 			<div class="new_hr hr hr32 hr-dotted"></div>
 			
 		
-			<div class="col-xs-12">	
-  				<div id='jqxWidget'>
-			              已有分组：		       	
+			<div class="col-xs-12">
+				<div style="margin:0 auto; width:900px;">	
+  					<div id='jqxWidget'>
+			             	 已有分组：		       	
+			    	</div>
 			    </div>
 			 </div>
 		</div>
@@ -745,14 +784,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	        JsonG.alldata=AllRowselect;   
        	}else{
        		//top.showMsg('提示', "参数不能为空 ，请至少选择一行参数");
-       		//$.messager.alert('提示','参数不能为空 ，请至少选择一行参数','warning');
-       		$.messager.show({
+       		$.messager.alert('提示','参数不能为空 ，请至少选择一行参数','warning');
+       		/*$.messager.show({
        			title:"提示",
        			msg:"参数不能为空 ，请至少选择一行参数",
        			timeout:5000,
        			showType:'show',
        			
-       		});
+       		});*/
 			return false;
        		
        	}  
@@ -938,6 +977,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	                url: url_template
 	            };
 	            var data_templateTree = new $.jqx.dataAdapter(source_template);         
+	           	var div_width=$(document.body).width() - 300;
+				var div_height=$(document.body).width() - 300;
 	            $("#id_templateTreeGrid").jqxTreeGrid(
 	            {
 	                width: 880,

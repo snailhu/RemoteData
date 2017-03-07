@@ -61,8 +61,8 @@
 <link rel="stylesheet"
 	href="<%=request.getContextPath()%>/static/select2/select2.min.css"
 	type="text/css" />
-<link rel="stylesheet"
-	href="<%=request.getContextPath()%>/static/css/all.css" type="text/css" />
+<!-- <link rel="stylesheet" -->
+<%-- 	href="<%=request.getContextPath()%>/static/css/all.css" type="text/css" /> --%>
 
 <script type="text/javascript"
 	src="<%=request.getContextPath()%>/static/jqwidgets/jqxcore.js"></script>
@@ -671,7 +671,7 @@
 									</div>	
 									<div class="form-group">
 									<label class="col-lg-3 control-label no-padding-right"
-										for="add-timeZone-top"> 持续时间(毫秒)：</label>
+										for="add-timeZone-top"> 持续时间(秒)：</label>
 									<div class="col-sm-6">
 										<input type="text" name="timeZone" id="add-timeZone-top"
 											placeholder="持续时间" class="form-control" />
@@ -858,10 +858,10 @@
 									
 									<div class="form-group">
 									<label class="col-lg-3 control-label no-padding-right"
-										for="edit-timeZonetop"> 时间区间(毫秒)：</label>
+										for="edit-timeZonetop"> 时间区间(秒)：</label>
 										<div class="col-sm-6">
 											<input type="text" name="timeZone" id="edit-timeZonetop"
-												placeholder="时间区间(毫秒)" class="form-control" />
+												placeholder="时间区间(秒)" class="form-control" />
 										</div>
 									</div>
 									<div class="space-4"></div>
@@ -1418,7 +1418,7 @@
 						},
 						 {
 							field : 'timeZone',
-							title : '时间区间(毫秒)',
+							title : '时间区间(秒)',
 							width : 100,
 							sortable:true
 						}, 
@@ -1477,7 +1477,7 @@
 			$('#add-minVal').attr("disabled",false);
 			
 			$('#add-parameter-top').attr("disabled",false);
-			$('#add-timeZonetop').attr("disabled",false);
+			$('#add-timeZone-top').attr("disabled",false);
 			$('#add-maxValtop').attr("disabled",false);
 			$('#add-minValtop').attr("disabled",false);
 			$('#addValueModal').modal('show');
@@ -1497,14 +1497,14 @@
 				$('#add-parameter').attr("disabled",true);
 				
 				$('#add-parameter-top').attr("disabled",false);
-				$('#add-timeZonetop').attr("disabled",false);
+				$('#add-timeZone-top').attr("disabled",false);
 				$('#add-maxValtop').attr("disabled",false);
 				$('#add-minValtop').attr("disabled",false);
-				//var timeZone = Number($("#add-timeZone").val());
+				var timeZone = Number($("#add-timeZone-top").val());
 				var maxval = Number($("#add-maxValtop").val());
 				var minval = Number($("#add-minValtop").val());
 				//设置陀螺参数值和限定次数   注意：这两个参数对陀螺来说没有实际的意义
-				$('#add-timeZonetop').val(1);
+				//$('#add-timeZone-top').val(1);
 				var seriesid = $('#add-series').val();
 				var starid=$('#add-star').val();
 				var sequence_jiaosudu='sequence_topjiaosudu_'+seriesid+'_'+starid;

@@ -19,8 +19,8 @@
 <meta http-equiv="description" content="This is my page">
 
 <jsp:include page="/WEB-INF/jsp/inc/include-easyUI.jsp"></jsp:include>
-<link rel="stylesheet"
-	href="<%=request.getContextPath()%>/static/css/all.css" type="text/css" />
+<!-- <link rel="stylesheet" -->
+<%-- 	href="<%=request.getContextPath()%>/static/css/all.css" type="text/css" /> --%>
 <link rel="stylesheet" type="text/css"
 	href="${pageContext.request.contextPath}/static/statusstep/css/stateTracking.css">
 <link rel="stylesheet" type="text/css"
@@ -147,6 +147,14 @@
 
 .breadcrumb {
 	margin-top: 10px;
+}
+.statu-l, .statu-r {
+    display: inline-block;
+    box-sizing: border-box;
+/*     width: 175px; */
+    height: 46px;
+    line-height: 46px;
+    padding: 0 22px;
 }
 </style>
 <script type="text/javascript">

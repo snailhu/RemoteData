@@ -36,7 +36,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/static/content/jeDate/jedate/skin/jedate.css">
     <script type="text/javascript" src="${pageContext.request.contextPath}/static/content/jeDate/jedate/jedate.js"></script>
     
-    <link rel="stylesheet" href="<%=request.getContextPath()%>/static/css/all.css" type="text/css" />
+<%--     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/new/css/all.css" type="text/css" /> --%>
     
 <style type="text/css">
 .glyphicon {

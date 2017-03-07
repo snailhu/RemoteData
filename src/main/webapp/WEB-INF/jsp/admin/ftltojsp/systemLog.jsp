@@ -7,17 +7,18 @@
 <head>
 <base href="<%=basePath%>">
 <title>日志管理</title>
+	<jsp:include page="/WEB-INF/jsp/inc/include-easyUI.jsp"></jsp:include>
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/static/jqwidgets/styles/jqx.base.css" type="text/css" />
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/static/jqwidgets/styles/jqx.energyblue.css" type="text/css" />
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/static/content/css/default.css"  type="text/css"/>
-	<link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/all.css" type="text/css" />
+	<%--<link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/all.css" type="text/css" /> --%>
     <script type="text/javascript" src="${pageContext.request.contextPath}/static/jqwidgets/jqxcore.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/static/jqwidgets/jqxdatetimeinput.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/static/jqwidgets/jqxcalendar.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/static/jqwidgets/jqxtooltip.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/static/jqwidgets/globalization/globalize.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/static/jqwidgets/jqxdata.js"></script>
-    <script type="text/javascript" src="${pageContext.request.contextPath}/static/jqwidgets/jqxbuttons.js"></script>
+    <!--<script type="text/javascript" src="${pageContext.request.contextPath}/static/jqwidgets/jqxbuttons.js"></script>-->
     <script type="text/javascript" src="${pageContext.request.contextPath}/static/jqwidgets/jqxscrollbar.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/static/jqwidgets/jqxmenu.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/static/jqwidgets/jqxcheckbox.js"></script>
@@ -34,6 +35,10 @@
     <script type="text/javascript" src="${pageContext.request.contextPath}/static/jqwidgets/jqxgrid.selection.js"></script> 
     <script type="text/javascript" src="${pageContext.request.contextPath}/static/jqwidgets/jqxbuttons.js"></script>
 	
+	<script type="text/javascript" src="${pageContext.request.contextPath}/static/content/bootstrapValidator/vendor/bootstrap/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/static/content/bootstrapValidator/dist/js/bootstrapValidator.js"></script>
+    
+	<script type="text/javascript" src="${pageContext.request.contextPath}/static/assets/js/bootstrap.min.js"></script>
 	<!-- 时间选择器 -->
 	<link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/static/content/jeDate/jedate/skin/jedate.css">
     <script type="text/javascript" src="${pageContext.request.contextPath}/static/content/jeDate/jedate/jedate.js"></script>
@@ -54,8 +59,15 @@
 	</style>
 <script type="text/javascript">
 	$(function(){
-		$(".col-sm-6").css({"display":"inline","margin-left":"6.6%"});
-		$(".col-sm-1").css("display","inline");		
+		//$(".col-sm-6").css({"display":"inline","margin-left":"6.6%"});
+		//$(".col-sm-1").css("display","inline");
+		//修改页面缩放，界面显示不正常
+		$(".col-lg-3").addClass("col-sm-3");
+		$(".col-lg-7").css("text-align","center");
+		$(".modal-dialog").css("margin","20px auto");
+		//$(".col-lg-4").css({"margin-left":"25%","width":"600px"});
+		$(".col-lg-4").css("margin-left","43%");
+		$(".col-lg-4").find("button").css("display","inline");		
 		
 		//左菜单栏
 		$("#logmanage-img").attr("src","${pageContext.request.contextPath}/static/new/img/images/a_54.png");
@@ -129,30 +141,32 @@
 											<input class="form-control"  id="form-keyWord"   name="keyWord" type="text" placeholder="--请输入操作关键字--">
 										</div>
 									</div>
-									
 									<div class="space-4"></div>
 									<div class="form-group">
-			                        	<div class="col-sm-6 control-label no-padding-right">
+									<!--<div style="margin:0 auto; width:600px;"></div>-->
+					
+			                        	<div class="col-lg-4 col-lg-offset-4">
 											<button type="button" id="btn-search" class="subbutton_1">
 							                    <i></i>
 							                    <span>搜索</span>
 							                </button>
-										</div>
-										<div class="col-sm-1 control-label no-padding-right">
-											  <button type="reset" id = "btn-cancel" class="cancelbutton_1">
+											<button type="reset" id = "btn-cancel" class="cancelbutton_1">
 							                    <i></i>
 							                    <span>取消</span>
 							                </button>
 										</div>
-									</div>
 									
+									</div>
 								</form>
 							</div>
 						</div>
 					</div>	
 			<div class="col-xs-12"><hr/></div>		
 			<div class="col-xs-12">
+				<!--<div id="container_jqxgrid"style="margin:0 auto; width:900px;"></div>-->
+				<div>
 				<div id="jqxgrid"></div>
+				</div>
 			</div>
 			</div>
 			</div>
@@ -160,6 +174,8 @@
 		</div> <!--/.page-content -->		
 	</div><!-- /.main-content -->
  <script type="text/javascript">
+ 	var div_width=$(document.body).width() - 20;
+ 	$("#container_jqxgrid").width(div_width);
     var beginTime ="1900-01-01 00:00:01";
     var endTime = "3000-01-01 11:59:01";
     var keyWord = "all";
@@ -187,10 +203,15 @@
 			}
 		};
 		var dataAdapter = new $.jqx.dataAdapter(source);
+		
+		var div_width=$(document.body).width() - 300;
+		var div_height=$(document.body).width() - 300;
 		$("#jqxgrid").jqxGrid(
 		{
-			width: 900,
-			height: 600,
+			width: div_width,
+			height: div_height,
+			autoheight:true,
+			autorowheight:true,
 			source: dataAdapter,
 			selectionmode: 'multiplerowsextended',
 			theme: 'energyblue',
@@ -200,12 +221,12 @@
 			columnsresize: true,
 			pagermode: 'simple',
 			columns: [
-			  { text: '用户名', datafield: 'userName', width: 150 },
+			  { text: '用户名', datafield: 'userName',width: 150},
 			  { text: '操作时间', datafield: 'operateTime', width: 200, cellsformat: 'D' },
-			//{ text: '退出时间', datafield: 'logOutTime', width: 150, cellsformat: 'F2', cellsalign: 'right' },
+			//{ text: '退出时间', datafield: 'logOutTime',  cellsformat: 'F2', cellsalign: 'right' },
 			  { text: '登录ip', datafield: 'loginIp', width: 250 },
-			  { text: '操作', datafield: 'operateJob', width: 300 }
-			//{ text: '角色', datafield: 'role', width: 100 }
+			  { text: '操作', datafield: 'operateJob'  }
+			//{ text: '角色', datafield: 'role' }
 			]
 		});
 	} 

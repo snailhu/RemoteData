@@ -27,8 +27,7 @@
 	
     <style type="text/css">
     .dateStyle{
-    	margin-left: 80px;
-    	margin-top: 25px;
+    	margin-top: 1px;
     }
     .datainp{
 		width: 150px;
@@ -86,13 +85,14 @@
 <div class="main-content">
 <div class="page-content">
 	<div class="dateStyle">
-		<label>开始日期</label>
-		<input class="datainp" id="dateStart" type="text" placeholder="- -请选择开始时间- -" readonly>
-		<label>结束日期</label>
-		<input class="datainp" id="dateEnd" type="text" placeholder="- -请选择结束时间- -" readonly>
-		<!--<input class="btn btn-default getData-btn" id="getData"  type="button" name="getData" value="获取数据">-->
-		<!--<input class="btn btn-default getData-btn" id="changeColor" type="button" name="changeColor" value="配置曲线" data-toggle="modal" data-target="#configChartModal" >-->
-		<input class="btn btn-default getData-btn" id="changeColor" type="button" name="changeColor" onclick='getchangcolorModal(this)' value="配置曲线"  >
+		<div style="margin:0 auto; width:600px;">
+			<label>开始日期</label>
+			<input class="datainp" id="dateStart" type="text" placeholder="- -请选择开始时间- -" readonly>
+			<label>结束日期</label>
+			<input class="datainp" id="dateEnd" type="text" placeholder="- -请选择结束时间- -" readonly>
+			<!--<input class="btn btn-default getData-btn" id="getData"  type="button" name="getData" value="获取数据">-->
+			<input class="btn btn-default getData-btn" id="changeColor" type="button" name="changeColor" onclick='getchangcolorModal(this)' value="配置曲线"  >
+		</div>
 	</div>
 	<div class="changeColor-div">
 		<!-- 配置图表参数表单 -->
@@ -141,12 +141,17 @@
 		  </div>
 		</div>
 	</div>
-	<hr/>
-	<div id="main" style="width: 870px;height:480px;"></div>
+	<br/>
+	<div id="main" style="width: 1100px;height:480px;"></div>
 </div>		
 </div>	
 </body>
 <script type="text/javascript">
+	var echart_height=$(document.body).height() - 25;
+	var echart_width=$(document.body).width() - 20;
+	$("#main").height(echart_height);
+	$("#main").width(echart_width);
+	$(".dateStyle").css('margin-left:','200px');
 	//存放曲曲线颜色的
 	var linecolor_toset = []
 	

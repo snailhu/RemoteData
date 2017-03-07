@@ -29,12 +29,14 @@ public class CommonConfig {
 	
 	/** mongodb服务IP*/
 	private static String CACHE_PATH ;
-	
+	private ClassLoader classLoader = getClass().getClassLoader();
 	public static String getTopjobConfig(){
-		String topjobConfig="";
+		String topjobConfig="";		 
 		try {
+			ClassLoader classLoader = CommonConfig.class.getClassLoader();
 			topjobConfig=new String(getBytes(
-					CommonConfig.class.getResourceAsStream("topjidongcount.json")),"utf-8");
+					//CommonConfig.class.getResourceAsStream("topjidongcount.json")),"utf-8");
+					classLoader.getResourceAsStream("topjidongcount.json")),"utf-8");
 		} catch (UnsupportedEncodingException e) {
 			Log4jUtil.getInstance().getLogger(CommonConfig.class).error("从JSON文件读取陀螺的机动规则失败");
 			e.printStackTrace();
@@ -45,8 +47,10 @@ public class CommonConfig {
 	public static String getTopDenoiseConfig(){
 		String topDenoiseConfig="";
 		try {
+			ClassLoader classLoader = CommonConfig.class.getClassLoader();
 			topDenoiseConfig=new String(getBytes(
-						CommonConfig.class.getResourceAsStream("topdenoiseparam.json")),"utf-8");
+						//CommonConfig.class.getResourceAsStream("topdenoiseparam.json")),"utf-8");
+						classLoader.getResourceAsStream("topdenoiseparam.json")),"utf-8");
 		} catch (UnsupportedEncodingException e) {
 			Log4jUtil.getInstance().getLogger(CommonConfig.class).error("从JSON文件读取陀螺的去噪规则失败");
 			e.printStackTrace();

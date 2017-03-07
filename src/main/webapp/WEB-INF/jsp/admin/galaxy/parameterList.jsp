@@ -227,9 +227,9 @@ $(function() {
 						<button class="easyui-linkbutton" iconcls="icon-remove" plain="true" style="float: left;"
 							onclick="deleteParam();">删除</button>
 						<div class="datagrid-btn-separator"></div>
-						<button class="easyui-linkbutton" iconcls="icon-edit" plain="true" style="float: left;"
+						<!-- <button class="easyui-linkbutton" iconcls="icon-edit" plain="true" style="float: left;"
 							onclick="editParam();">编辑</button>
-						<div class="datagrid-btn-separator"></div>
+						<div class="datagrid-btn-separator"></div> -->
 						<button class="easyui-linkbutton" iconcls="icon-undo" plain="true" style="float: left;"
 							onclick="paramGrid.datagrid('unselectAll');">取消选中</button>
 					</div>
@@ -422,6 +422,7 @@ $(function() {
 	});
 	$('#addParamModal').on('hide.bs.modal', function () {
 		$('#addParamInfoForm').data('bootstrapValidator').resetForm(true);
+		$('#add-param-deviceTypeCode').combobox('clear');
 	});
 	//创建参数
 	$('#submit_addParamInfo').click(function(){

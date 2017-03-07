@@ -53,7 +53,7 @@ public class ParameterServiceImpl implements IParameterService{
 			String num = item.substring(item.indexOf("(") + 1, item.indexOf(")"));
 			String sequence = "sequence";
 			String[] sequences = item.split(":");
-			if(sequences.length > 0 && StringUtils.isNotBlank(sequences[0]) && (!isContainChinese(sequences[0])))
+			if(sequences.length > 0 && StringUtils.isNotBlank(sequences[0]) && (!isContainChinese(sequences[0]) && (!isNumber(sequences[0]))))
 				sequence = sequences[0];
 			String code = sequence + "_" + num;
 			param.setSeries(series);
@@ -114,7 +114,7 @@ public class ParameterServiceImpl implements IParameterService{
 
 	@Override
 	@Transactional
-	public void updateParamter(long paramId, String param_zh) {
+	public void updateParamter(long paramId, String paramType, String param_zh) {
 		Parameter param = parameterDao.get(paramId);
 		if(StringUtils.isNotBlank(param_zh)){
 			if(param_zh.indexOf(":") == -1){//if(param_zh.equals("接收地方时")){ // || param_zh.equals("时间")
@@ -125,6 +125,8 @@ public class ParameterServiceImpl implements IParameterService{
 				param.setSimplyName(param_zh.split(":")[1]);
 			}			
 		}
+		if(StringUtils.isNotBlank(paramType))
+			param.setDeviceTypeCode(paramType);
 		parameterDao.update(param);
 	}
 
@@ -309,7 +311,9 @@ public class ParameterServiceImpl implements IParameterService{
 		return "null";
 	}
 
-
+	/**
+	 * 是不是一个含中文
+	 */
 	private boolean isContainChinese(String str) {
 
 		Pattern p = Pattern.compile("[\u4e00-\u9fa5]");
@@ -319,5 +323,12 @@ public class ParameterServiceImpl implements IParameterService{
 		}
 		return false;
 	}
-
+	/**
+	 * 是不是一个数字
+	 */
+	private boolean isNumber(String str) {
+		return str != null ? str
+				.matches("^[-+]?(([0-9]+)((([.]{0})([0-9]*))|(([.]{1})([0-9]+))))$")
+				: false;
+	}
 }

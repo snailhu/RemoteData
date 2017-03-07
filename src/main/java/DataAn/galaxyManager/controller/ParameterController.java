@@ -122,7 +122,7 @@ public class ParameterController {
 			return jsonMsg;
 		} 
 		try {
-			parameterService.updateParamter(id, name);
+			parameterService.updateParamter(id, deviceTypeCode, name);
 		} catch (Exception e) {
 			e.printStackTrace();
 			jsonMsg.setSuccess(false);

@@ -121,7 +121,7 @@ public class CommunicateServiceImpl implements ICommunicateService{
 				}*/
 				jobConfig = new ExceptionJobConfig();
 				jobConfig.setParamCode(wv.getParameter());
-				jobConfig.setDelayTime(wv.getTimeZone());//TODO 设置持续时间 min，注意时间单位
+				jobConfig.setDelayTime(wv.getTimeZone() * 1000);//TODO 设置持续时间 mm，注意时间单位,前端传来单位是s
 				jobConfig.setMax(wv.getMaxVal());
 				jobConfig.setMin(wv.getMinVal());
 				jobConfigList.add(jobConfig);
@@ -220,7 +220,7 @@ public class CommunicateServiceImpl implements ICommunicateService{
 						jobConfig.setParamCode(wv.getParameter());
 						jobConfig.setMax(wv.getMaxVal());
 						jobConfig.setMin(wv.getMinVal());
-						jobConfig.setDelayTime(wv.getTimeZone() * 60 * 1000);//TODO 设置持续时间 mm，注意时间单位
+						jobConfig.setDelayTime(wv.getTimeZone() * 60 * 1000);//TODO 设置持续时间 mm，注意时间单位,前端传来时min
 						jobConfig.setCount(wv.getLimitTimes());// 设置 限定值出现的频次计为一次特殊工况
 						jobConfigList.add(jobConfig);
 						devicdNameSet.add(deviceName);

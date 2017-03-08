@@ -51,21 +51,25 @@ public class MongodbUtilTest {
 		String collectionName = "flywheel_job";
 		mg.update(databaseName, collectionName, "status", 1, "status", 2);
 		
-	}
+	} 
 	
 	@Test
 	public void testCount(){
-		Date beginDate = DateUtil.format("2016-12-01 00:00:00");
-		Date endDate = DateUtil.format("2016-12-01 00:00:00");
-		MongoCollection<Document> collection = mg.getCollection("db_j9_02", "flywheel1s");
-		long count = collection.count(Filters.and(Filters.gte("datetime", beginDate),
-							   Filters.lte("datetime", endDate)));
+		Date beginDate = DateUtil.format("2017-02-28 00:00:00");
+		Date endDate = DateUtil.format("2017-03-06 00:00:00");
+//		MongoCollection<Document> collection = mg.getCollection("db_j9_05", "flywheel_job");
+//		long count = collection.count(Filters.and(Filters.gte("datetime", beginDate),
+//							   Filters.lte("datetime", endDate),
+//							   Filters.eq("status", 1),
+//							   Filters.eq("deviceName", "Xa"),
+//							   Filters.eq("hadRead", "1")));
+		long count = mg.countByDate("db_j9_05", "flywheel_job", beginDate, endDate, "deviceName", "Xa");
 		System.out.println("count: " + count);
 	}
 	
 	@Test
 	public void testFind(){
-		String paramStr = "F5W65_68_00149";
+		String paramStr = "";
 		String[] paramStrs = paramStr.split(",");
 		List<String> paramSet = new ArrayList<String>();
 		for (String param : paramStrs) {
@@ -74,14 +78,18 @@ public class MongodbUtilTest {
 		}
 		
 		String databaseName = "db_j9_05";
-		String collectionName =  "flywheel";
+		String collectionName =  "flywheel_job";
 		
-		Date beginDate = DateUtil.format("2017-02-15 00:00:00");
-		Date endDate = DateUtil.format("2017-02-15 12:14:00");
+		Date beginDate = DateUtil.format("2017-02-28 00:00:00");
+		Date endDate = DateUtil.format("2017-03-06 00:00:00");
 		
 //		MongoCursor<Document> cursor = mg.findByNoStatus(databaseName, collectionName, beginDate, endDate);
-		MongoCursor<Document> cursor = mg.find(databaseName, collectionName, beginDate, endDate);
-		
+//		MongoCursor<Document> cursor = mg.find(databaseName, collectionName, beginDate, endDate);
+		MongoCollection<Document> collection = mg.getCollection("db_j9_05", "flywheel_job");
+		MongoCursor<Document> cursor = collection.find(Filters.and(Filters.gte("datetime", beginDate),
+							   Filters.lte("datetime", endDate),
+							   Filters.eq("status", 1),
+							   Filters.eq("deviceName", "Xa"))).iterator();
 		int count = 0;
 		Document doc = null;
 		String value = "";
@@ -103,6 +111,7 @@ public class MongodbUtilTest {
 	    		}
 	    		System.out.println();
 	    	}else{
+	    		doc.append("pointList", "");
 	    		System.out.println(doc);
 	    	}
 		}

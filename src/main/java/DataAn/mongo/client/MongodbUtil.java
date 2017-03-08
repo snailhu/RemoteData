@@ -461,7 +461,7 @@ public class MongodbUtil {
 		MongoCollection<Document> collection = this.getCollection(databaseName, collectionName);
 		return collection.count(Filters.and(Filters.gte("datetime", beginDate),
 							   				Filters.lte("datetime", endDate),
-							   				Filters.lte("status", 1),
+							   				Filters.eq("status", 1),
 							   				Filters.eq(fieldName, value)));
 	}
 	

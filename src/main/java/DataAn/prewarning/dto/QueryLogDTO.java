@@ -122,4 +122,12 @@ public class QueryLogDTO implements java.io.Serializable {
 		this.recordtime = recordtime;
 	}
 
+	@Override
+	public String toString() {
+		return "QueryLogDTO [logId=" + logId + ", series=" + series + ", star=" + star + ", parameter=" + parameter
+				+ ", parameterType=" + parameterType + ", paramValue=" + paramValue + ", warningType=" + warningType
+				+ ", hadRead=" + hadRead + ", timeValue=" + timeValue + ", warnRemark=" + warnRemark + ", recordtime="
+				+ recordtime + "]";
+	}
+
 }

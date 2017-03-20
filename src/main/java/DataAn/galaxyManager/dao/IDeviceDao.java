@@ -25,5 +25,9 @@ public interface IDeviceDao extends IBaseDao<Device> {
 	public boolean checkDevice(String series, String star, String deviceType, String deviceName);
 
 	public Pager<DeviceViewDTO> selectViewDTObyPager(String deviceType, String model, int pageIndex, int pageSize);
+	
+	public void deleteBySeriesId(long seriesId);
+	
+	public void deleteByStarId(long starId);
 
 }

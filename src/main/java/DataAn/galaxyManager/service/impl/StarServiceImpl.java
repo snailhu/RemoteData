@@ -49,6 +49,7 @@ public class StarServiceImpl implements IStarService {
 	@Override
 	@Transactional
 	public boolean deleteStar(long starId) {
+		deviceDao.deleteByStarId(starId);
 		starDao.delete(starId);
 		return true;
 	}

@@ -12,12 +12,12 @@ public enum SeriesType {
 	J9_SERIES {
 		@Override
 		public String getName() {
-			return "j9";
+			return "s9";
 		}
 
 		@Override
 		public String getValue() {
-			return "j9";
+			return "s9";
 		}
 		
 	};
@@ -27,7 +27,7 @@ public enum SeriesType {
 	
 	public static SeriesType getSeriesType(String type) {
 		switch (type) {
-		case "j9":
+		case "s9":
 			return SeriesType.J9_SERIES;
 		default:
 			return null;

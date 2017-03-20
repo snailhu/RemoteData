@@ -209,4 +209,16 @@ public class DeviceDaoImpl extends BaseDaoImpl<Device> implements IDeviceDao {
 		return totalCount;
 	}
 
+	@Override
+	public void deleteBySeriesId(long seriesId) {
+		String hql = "delete from Device d where d.seriersId=?";
+		this.getSession().createQuery(hql).setParameter(0, seriesId).executeUpdate();
+	}
+
+	@Override
+	public void deleteByStarId(long starId) {
+		String hql = "delete from Device d where d.starId=?";
+		this.getSession().createQuery(hql).setParameter(0, starId).executeUpdate();
+	}
+
 }

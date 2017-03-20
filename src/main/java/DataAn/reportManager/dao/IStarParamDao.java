@@ -17,4 +17,8 @@ public interface IStarParamDao  extends IBaseDao<StarParam> {
 	long getStarParamForReportCount(String seriesId, String starId, String partsType);
 
 	public List<StarParam>  getStarParamByParts();
+	
+	public void deleteBySeriesCode(String seriesCode);
+	
+	public void deleteByStarCode(String starCode);
 }

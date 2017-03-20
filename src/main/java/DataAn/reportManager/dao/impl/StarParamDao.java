@@ -171,6 +171,18 @@ public class StarParamDao extends BaseDaoImpl<StarParam> implements IStarParamDa
 		return starParamList;
 	}
 
+	@Override
+	public void deleteBySeriesCode(String seriesCode) {
+		String hql = "delete from StarParam sp where sp.series=?";
+		this.getSession().createQuery(hql).setParameter(0, seriesCode).executeUpdate();
+	}
+
+	@Override
+	public void deleteByStarCode(String starCode) {
+		String hql = "delete from StarParam sp where sp.star=?";
+		this.getSession().createQuery(hql).setParameter(0, starCode).executeUpdate();
+	}
+
 	
 	
 }

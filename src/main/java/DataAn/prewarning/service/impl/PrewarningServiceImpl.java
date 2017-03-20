@@ -93,34 +93,38 @@ public class PrewarningServiceImpl implements IPrewarningService {
 		List<WarningValue> warningValues = warningPger.getDatas();
 		if (warningValues != null && warningValues.size() > 0) {
 			for (WarningValue value : warningValues) {
-				QueryValueDTO valueDTO = new QueryValueDTO();
-				valueDTO.setLimitTimes(value.getLimitTimes());
-				valueDTO.setMaxVal(value.getMaxVal());
-				valueDTO.setMinVal(value.getMinVal());
-				valueDTO.setParameterType(
-						J9Series_Star_ParameterType.getJ9SeriesStarParameterType(value.getParameterType()).getName());
 				Series seriesDomain = seriersDao.get(value.getSeries());
 				Star starDomain = starDao.get(value.getStar());
-				if (seriesDomain != null) {
-					valueDTO.setSeries(seriesDomain.getName());
-					valueDTO.setParameter(
-							getParamCNname(seriesDomain.getCode(), starDomain.getCode(), value.getParameter()));
-				} else {
-					valueDTO.setSeries(value.getSeries().toString());
+				if(seriesDomain != null && starDomain != null){
+					QueryValueDTO valueDTO = new QueryValueDTO();
+					valueDTO.setLimitTimes(value.getLimitTimes());
+					valueDTO.setMaxVal(value.getMaxVal());
+					valueDTO.setMinVal(value.getMinVal());
+					valueDTO.setParameterType(
+							J9Series_Star_ParameterType.getJ9SeriesStarParameterType(value.getParameterType()).getName());
+					if (seriesDomain != null) {
+						valueDTO.setSeries(seriesDomain.getName());
+						valueDTO.setParameter(
+								getParamCNname(seriesDomain.getCode(), starDomain.getCode(), value.getParameter()));
+					} 
+//					else {
+//						valueDTO.setSeries(value.getSeries().toString());
+//					}
+					if (starDomain != null) {
+						valueDTO.setStar(starDomain.getName());
+					} 
+//					else {
+//						valueDTO.setStar(value.getStar().toString());
+//					}
+					valueDTO.setTimeZone(value.getTimeZone());
+					valueDTO.setValueId(value.getValueId());
+					if (value.getWarningType() == 0) {
+						valueDTO.setWarningType("特殊工况");
+					} else if (value.getWarningType() == 1) {
+						valueDTO.setWarningType("异常");
+					}
+					valueDTOs.add(valueDTO);
 				}
-				if (starDomain != null) {
-					valueDTO.setStar(starDomain.getName());
-				} else {
-					valueDTO.setStar(value.getStar().toString());
-				}
-				valueDTO.setTimeZone(value.getTimeZone());
-				valueDTO.setValueId(value.getValueId());
-				if (value.getWarningType() == 0) {
-					valueDTO.setWarningType("特殊工况");
-				} else if (value.getWarningType() == 1) {
-					valueDTO.setWarningType("异常");
-				}
-				valueDTOs.add(valueDTO);
 			}
 		}
 		Pager<QueryValueDTO> pager = new Pager<QueryValueDTO>(pageSize, pageIndex, warningPger.getTotalCount(),

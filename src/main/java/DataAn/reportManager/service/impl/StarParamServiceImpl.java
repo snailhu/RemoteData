@@ -52,8 +52,11 @@ public class StarParamServiceImpl implements IStarParamService {
 		Pager<StarParam> paramPager = starParamDao.selectByOption(pageIndex, pageSize, series, star, partsType,
 				paramCode);
 		List<StarParam> userList = paramPager.getDatas();
+		StarParamDto starParamDto = null;
 		for (StarParam starParam : userList) {
-			starParamModelList.add(pojoToDto(starParam));
+			starParamDto = pojoToDto(starParam);
+			if(starParamDto != null)
+				starParamModelList.add(starParamDto);
 		}
 		Pager<StarParamDto> pager = new Pager<StarParamDto>(pageIndex, pageSize, paramPager.getTotalCount(),
 				starParamModelList);
@@ -61,22 +64,27 @@ public class StarParamServiceImpl implements IStarParamService {
 	}
 
 	private StarParamDto pojoToDto(StarParam starParam) throws Exception {
-		StarParamDto starParamDto = new StarParamDto();
-		starParamDto.setId(starParam.getId());
-		starParamDto.setParamCode(starParam.getParamCode());
-		starParamDto.setParamName(getParamCNname(starParam.getSeries(), starParam.getStar(), starParam.getParamCode()));
-		starParamDto.setEffeMin(starParam.getEffeMin());
-		starParamDto.setEffeMax(starParam.getEffeMax());
-		starParamDto.setParameterType(starParam.getParameterType());
-		starParamDto.setProductName(starParam.getProductName());
-		starParamDto.setPartsType(
-				J9Series_Star_ParameterType.getJ9SeriesStarParameterType(starParam.getPartsType()).getName());
-		starParamDto.setSeries(getSeriesName(starParam.getSeries()));
-		starParamDto.setStar(getStarName(starParam.getSeries(), starParam.getStar()));
-		starParamDto.setCreater(starParam.getCreater());
-		starParamDto.setCreateDate(starParam.getCreateDate());
-		starParamDto.setValueUnit(starParam.getValueUnit());
-		return starParamDto;
+		String seriesName = getSeriesName(starParam.getSeries());
+		String starName = getStarName(starParam.getSeries(), starParam.getStar());
+		if(StringUtils.isNotBlank(seriesName) && StringUtils.isNotBlank(starName)){
+			StarParamDto starParamDto = new StarParamDto();
+			starParamDto.setId(starParam.getId());
+			starParamDto.setParamCode(starParam.getParamCode());
+			starParamDto.setParamName(getParamCNname(starParam.getSeries(), starParam.getStar(), starParam.getParamCode()));
+			starParamDto.setEffeMin(starParam.getEffeMin());
+			starParamDto.setEffeMax(starParam.getEffeMax());
+			starParamDto.setParameterType(starParam.getParameterType());
+			starParamDto.setProductName(starParam.getProductName());
+			starParamDto.setPartsType(
+					J9Series_Star_ParameterType.getJ9SeriesStarParameterType(starParam.getPartsType()).getName());
+			starParamDto.setSeries(seriesName);
+			starParamDto.setStar(starName);
+			starParamDto.setCreater(starParam.getCreater());
+			starParamDto.setCreateDate(starParam.getCreateDate());
+			starParamDto.setValueUnit(starParam.getValueUnit());
+			return starParamDto;
+		}
+		return null;
 	}
 
 	private String getStarName(String series, String star) {

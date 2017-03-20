@@ -21,6 +21,7 @@ import DataAn.galaxyManager.dto.SeriesDto;
 import DataAn.galaxyManager.option.J9SeriesType;
 import DataAn.galaxyManager.option.SeriesType;
 import DataAn.galaxyManager.service.ISeriesService;
+import DataAn.reportManager.dao.IStarParamDao;
 import DataAn.sys.domain.User;
 
 @Service
@@ -32,7 +33,9 @@ public class SeriesServiceImpl implements ISeriesService {
 	private IStarDao starDao;
 	@Resource
 	private IDeviceDao deviceDao;
-
+	@Resource
+	private IStarParamDao starParamDao;
+	
 	@Override
 	@Transactional
 	public void saveSeries(SeriesDto dto) {
@@ -47,11 +50,16 @@ public class SeriesServiceImpl implements ISeriesService {
 	@Transactional
 	public void deleteSeries(String seriesIds) {
 		String[] ids = seriesIds.split(",");
+		Series series = null;
 		for (String strId : ids) {
 			long seriesId = Long.parseLong(strId);
-			deviceDao.deleteBySeriesId(seriesId);
-			starDao.deleteBySeriesId(seriesId);
-			seriesDao.delete(seriesId);
+			series = seriesDao.get(seriesId);
+			if(series != null){
+				//starParamDao.deleteBySeriesCode(series.getCode());
+				deviceDao.deleteBySeriesId(seriesId);
+				starDao.deleteBySeriesId(seriesId);
+				seriesDao.delete(seriesId);				
+			}
 		}
 	}
 

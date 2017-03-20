@@ -9,7 +9,7 @@ import DataAn.jfreechart.chart.ChartFactory;
 import DataAn.jfreechart.chart.Serie;
 
 public class ChartFactoryTest {
-
+  
 	public static void main(String[] args) {
 		
 		Vector<String> categoriesV = new Vector<String>();

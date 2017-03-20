@@ -49,6 +49,7 @@ public class SeriesServiceImpl implements ISeriesService {
 		String[] ids = seriesIds.split(",");
 		for (String strId : ids) {
 			long seriesId = Long.parseLong(strId);
+			deviceDao.deleteBySeriesId(seriesId);
 			starDao.deleteBySeriesId(seriesId);
 			seriesDao.delete(seriesId);
 		}
